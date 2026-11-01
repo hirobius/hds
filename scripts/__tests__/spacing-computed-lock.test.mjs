@@ -45,7 +45,7 @@ import { fileURLToPath } from 'url';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 import { resolveSx } from '../../src/app/components/box-sx.ts';
 import { Stack } from '../../src/app/components/stack.tsx';
 import { Grid } from '../../src/app/components/grid.tsx';
@@ -270,8 +270,8 @@ const PAGE_CSS = [
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
 ].join('\n');
 
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 async function measureAll() {
   const browser = await chromium.launch({ executablePath: CHROMIUM });
@@ -367,6 +367,46 @@ describe.runIf(CAPTURE_LAYOUT)('capture the layout-gap lock fixture', () => {
 
 // ── The lock ──────────────────────────────────────────────────────────────────
 
+// The one deliberate move since the fixtures: the 2026-10 spacing bump raised the
+// t-shirt scale with the type ramp (comfortable 8/16/24/32/48 -> 8/20/28/40/64px;
+// compact 6/12/20/24/40 -> 8/16/24/32/48px). A probe that reads a semantic spacing
+// var (its emitted CSS names --semantic-space-*, subgrid aside) must compute the old
+// pixel moved through that map for its cell's density; every other probe (numbers,
+// hds.space.px*, rem) must still compute exactly what it did.
+// The second deliberate move, compact density for apps: compact became the app
+// rhythm (scale 8/12/16/24/32px), and the deprecated layout.* names and
+// section.stack gained compact steps (12/16/24/32px, 48px). On c506c3b those had
+// no compact step, so a compact cell recorded the comfortable pixel; they move by
+// the compactFixed map, and stay on the comfortable map in comfortable cells.
+const SCALE_BUMP = {
+  comfortable: { '16px': '20px', '24px': '28px', '32px': '40px', '48px': '64px', '80px': '96px' },
+  compact: { '6px': '8px', '12px': '12px', '20px': '16px', '24px': '24px', '40px': '32px' },
+  compactFixed: { '16px': '12px', '24px': '16px', '32px': '24px', '48px': '32px', '80px': '48px' },
+};
+const readsScale = (css) => /--semantic-space-(?!subgrid|component-medium)/.test(css ?? '');
+const fixedStep = (css) =>
+  /--semantic-space-(layout-(tight|normal|inset|spacious)|section-)/.test(css);
+/** The fixture's value for one cell, moved through the bump when the probe reads the scale. */
+const expected = (css, cell, value) => {
+  if (!readsScale(css)) return value;
+  const density = cell.split('|')[1];
+  // Compact holds section.stack at 48px at every width (it never grows on a phone).
+  if (density === 'compact' && /--semantic-space-section-stack/.test(css)) return '48px';
+  const map = fixedStep(css) ? (density === 'compact' ? 'compactFixed' : 'comfortable') : density;
+  return SCALE_BUMP[map][value] ?? value;
+};
+
+// The third: hds#625 removed the semantic.space.layout.* vars Box sx's deprecated
+// names read, so they read the scale step each names. Those vars had carried the
+// scale's values at both densities since the compact move, so only the emitted
+// var name changes; the computed lock still reads the fixture's CSS (fixedStep).
+const REMOVED_LAYOUT_VARS = { tight: 'sm', normal: 'md', inset: 'lg', spacious: 'xl' };
+const renamed = (css) =>
+  css.replace(
+    /--semantic-space-layout-(tight|normal|inset|spacious)\b/g,
+    (m, name) => `--semantic-space-scale-${REMOVED_LAYOUT_VARS[name]}`,
+  );
+
 describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
   const fixture = existsSync(FIXTURE)
     ? JSON.parse(readFileSync(FIXTURE, 'utf8'))
@@ -381,7 +421,7 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
   it.each(PROBES.filter((p) => !ADDED.has(p.key)).map((p) => p.key))(
     '%s emits the CSS it emitted on c506c3b',
     (key) => {
-      expect(emitted[key]).toBe(fixture.emitted[key]);
+      expect(emitted[key]).toBe(renamed(fixture.emitted[key]));
     },
   );
 
@@ -402,7 +442,9 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
     it.each(PROBES.filter((p) => !ADDED.has(p.key)).map((p) => p.key))(
       '%s computes what it computed on c506c3b',
       (key) => {
-        const want = fixture.computed[key].split(' ');
+        const want = fixture.computed[key]
+          .split(' ')
+          .map((v, i) => expected(fixture.emitted[key], fixture.cells[i], v));
         const got = computed[key].split(' ');
         const diffs = fixture.cells
           .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))
@@ -427,6 +469,13 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
 
 // ── The layout-gap lock (hds#404) ─────────────────────────────────────────────
 
+/** The one declaration of a layout probe's inline style that drives what it measures. */
+function measuredDecl(key) {
+  const probe = LAYOUT_PROBES.find((p) => p.key === key);
+  const prop = probe.measure === 'paddingTop' ? 'padding' : 'gap';
+  return new RegExp(`(?:^|;)\\s*${prop}:([^;]*)`).exec(layoutEmitted[key])?.[1] ?? '';
+}
+
 describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a', () => {
   const fixture = existsSync(LAYOUT_FIXTURE)
     ? JSON.parse(readFileSync(LAYOUT_FIXTURE, 'utf8'))
@@ -446,7 +495,13 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
       // hug; `align="stretch"` opts in). That is not spacing, so the lock compares
       // everything else on the emitted style byte for byte.
       const withoutAlign = (style) => style?.replace(/align-items:[a-z-]+;/, '');
-      expect(withoutAlign(layoutEmitted[key])).toBe(withoutAlign(fixture.emitted[key]));
+      // 2026-10 spacing bump: Card padding="item" moved from a fixed 16px onto
+      // scale.sm, so it follows density like the other steps.
+      const bumped = (style) =>
+        key.startsWith('card padding item ')
+          ? style?.replace('padding:16px', 'padding:var(--semantic-space-scale-sm)')
+          : style;
+      expect(withoutAlign(layoutEmitted[key])).toBe(withoutAlign(bumped(fixture.emitted[key])));
     },
   );
 
@@ -457,7 +512,16 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
     }, 120_000);
 
     it.each(LAYOUT_PROBES.map((p) => p.key))('%s computes what it computed on 8e53a8a', (key) => {
-      const want = fixture.computed[key].split(' ');
+      // Card padding="item" was a fixed 16px on 8e53a8a in every cell; it reads scale.sm
+      // now (the bump above), which is 12px under compact density for apps.
+      const itemPad = key === 'card padding item paddingTop';
+      const want = fixture.computed[key]
+        .split(' ')
+        .map((v, i) =>
+          itemPad && fixture.cells[i].split('|')[1] === 'compact'
+            ? '12px'
+            : expected(measuredDecl(key), fixture.cells[i], v),
+        );
       const got = computed[key].split(' ');
       const diffs = fixture.cells
         .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))

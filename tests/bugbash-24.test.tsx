@@ -223,10 +223,10 @@ describe('SegmentedControl (items 6, 8, 15)', () => {
     await userEvent.tab();
     expect(screen.getByRole('radio', { name: 'Day' }).getAttribute('aria-checked')).toBe('true');
   });
-  it('segments carry the touch-row hook and a phone-sized default inline padding', () => {
+  it('segments carry the touch-target hook (both axes, hds#750) and a phone-sized default inline padding', () => {
     render(<Harness />);
     for (const r of screen.getAllByRole('radio')) {
-      expect(r.className).toMatch(/hds-touch-row/);
+      expect(r.className).toMatch(/hds-touch-target/);
       expect(r.className).toMatch(/px-\[var\(--semantic-space-scale-xs\)\]/);
       expect(r.style.paddingLeft).toBe('');
     }
@@ -250,10 +250,18 @@ describe('Touch targets (item 6, and the highlight fill of item 21)', () => {
     expect(src(file)).toContain(cls);
     expect(src(file)).toMatch(touch);
   });
+  it.each(['combobox.tsx', 'combobox-creatable.tsx', 'command-palette.tsx'])(
+    '%s marks its active option with the shared listbox-nav look',
+    (file) => {
+      expect(src(file)).toContain('ACTIVE_OPTION_CLASS');
+      expect(src(file)).not.toMatch(/data-\[active=true\]:bg-accent/);
+    },
+  );
   it('combobox chip remove and options both use them', () => {
     expect((src('combobox.tsx').match(/hds-touch-row/g) ?? []).length).toBeGreaterThanOrEqual(2);
   });
-  it.each(['menu.tsx', 'select.tsx', 'combobox.tsx'])(
+  // Combobox and CommandPalette take the active-row look from listbox-nav.ts.
+  it.each(['menu.tsx', 'select.tsx', 'listbox-nav.ts'])(
     '%s highlight fill is a step from the popover surface, not shadcn bg-accent',
     (file) => {
       expect(src(file)).toMatch(/bg-\[var\(--semantic-color-surface-sunken\)\]/);
@@ -286,14 +294,14 @@ describe('Card inset (items 11, 18)', () => {
   it('parts add no second inset inside a padded Card', () => {
     const { container } = render(parts());
     const html = container.innerHTML;
-    for (const sel of ['p-6', 'px-6', 'pt-0', 'pb-2']) {
+    for (const sel of ['p-surface-padding', 'px-surface-padding', 'pt-0', 'pb-2']) {
       expect(html.split(/\s+/).join(' ')).not.toMatch(new RegExp(`class="[^"]*\\b${sel}\\b`));
     }
   });
   it('parts keep their own inset under padding="none" (the legacy composition)', () => {
     const { container } = render(parts('none'));
-    expect(container.querySelectorAll('.p-6').length).toBeGreaterThanOrEqual(2);
-    expect(container.querySelector('.px-6')).not.toBeNull();
+    expect(container.querySelectorAll('.p-surface-padding').length).toBeGreaterThanOrEqual(2);
+    expect(container.querySelector('.px-surface-padding')).not.toBeNull();
   });
   it('an accent Card gives the extra border pixel back from its padding', () => {
     render(
@@ -372,7 +380,7 @@ describe('FormField error reaches the control (items 13, 14, 19)', () => {
       </>,
     );
     for (const root of Array.from(container.children)) {
-      expect((root as HTMLElement).className).toMatch(/\bgap-2\b/);
+      expect((root as HTMLElement).className).toMatch(/\bgap-scale-xs\b/);
       expect((root as HTMLElement).className).not.toMatch(/gap-1\.5/);
     }
   });
@@ -455,8 +463,9 @@ describe('Overflow (item 15) and shape (item 16)', () => {
     }
   });
   it('Badge, CodeBlock use the tenant-following radius, not a fixed value', () => {
+    // Badge sits a step under the action radius (rounded-sm, role.radius - 2px; hds#757).
     expect(render(<Badge>b</Badge>).container.firstElementChild!.className).toMatch(
-      /\brounded-md\b/,
+      /\brounded-sm\b/,
     );
     expect(src('code-block.tsx')).not.toMatch(/rounded-\[var\(--semantic-radius-action\)\]/);
   });

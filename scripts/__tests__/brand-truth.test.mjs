@@ -120,6 +120,21 @@ describe('violationsInSource — what the rule deliberately leaves alone', () =>
     expect(names('The brand accent is a per-tenant knob.')).toEqual([]);
   });
 
+  it('does NOT flag an opt-in accent theme set by data-accent', () => {
+    // DESIGN.md documents the Cobalt accent theme; graphite stays the default.
+    expect(
+      names(
+        '- **Accent theme — Cobalt** (`#112DE8`): opt-in. Set `data-accent="cobalt"` on `<html>`.',
+      ),
+    ).toEqual([]);
+  });
+
+  it('STILL flags an accent claim that names no data-accent theme', () => {
+    expect(names('- **Accent theme — Cobalt** (`#112DE8`): the brand accent.')).toEqual([
+      '#112de8',
+    ]);
+  });
+
   it('is case-insensitive about the hex, since docs mix both', () => {
     expect(names('The brand accent is #111111.')).toEqual([]);
     expect(names('The brand accent is #111111'.toLowerCase())).toEqual([]);

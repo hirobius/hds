@@ -3,7 +3,7 @@
    prose `code` is 13px; this keeps HDS's mono size). Moving them into a layer silently
    changed docs inline code 15px -> 13px (hds#754). Guarded by
    __tests__/utilities-layer.test.ts and tests/visual/docs-cascade.spec.ts.
-   The three type utilities below stay after the block (and unlayered) so they still override
+   The type utility below stays after the block (and unlayered) so it still overrides
    it, exactly as they did when all of this lived unlayered in utilities.css. */
 .font-mono,
 code,
@@ -19,10 +19,4 @@ samp {
 /* type-ramp-ok: legacy utility kept for consumers until 1.0.0 */
 .font-normal {
   font-weight: var(--semantic-typography-mono-font-weight);
-}
-.tracking-wider {
-  letter-spacing: 0.08em;
-}
-.tracking-widest {
-  letter-spacing: 0.12em;
 }

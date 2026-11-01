@@ -5,21 +5,25 @@ status: 'stable'
 since: '0.1.0'
 ---
 
-## Principle
+## Tokens
 
-Three typefaces, each with one job:
-
-- **Sora** sets headings: ExtraBold (800) for display, titles and small titles.
-- **Plus Jakarta Sans** sets everything people read: 450 for body, 500 for controls and captions, 700 for bold text. It ships as a variable font, so the 450 body weight renders as itself.
-- **IBM Plex Mono** sets code, token names and ids.
+{/* generated: tokens */}
 
 ## The ramp
 
 Six text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.<role>` or the `.hds-type-<role>` class.
 
-The Tokens section below draws each step in its real font, size and leading, read straight from the tokens.
+<PrinciplesAndPractices>
 
-## Best practices
+### Principle
+
+Three typefaces, each with one job:
+
+- **Sora** sets headings: Bold (700) for display, titles and small titles. Heading levels differ by size (56, 28 and 20px), not weight.
+- **Plus Jakarta Sans** sets everything people read: 400 for body, 500 for controls, labels and bold lead-ins, 700 for bold text.
+- **IBM Plex Mono** sets code, token names and ids.
+
+### Best practices
 
 - Set text with the `Text` component so sizes stay on the ramp.
 - Use `title` for headings, `titleSm` for the heading of a small band such as a danger zone, `body` for prose and `ui` for controls and labels.
@@ -28,6 +32,4 @@ The Tokens section below draws each step in its real font, size and leading, rea
 - Don't set your own font sizes or line heights.
 - Don't mix weights within one set of controls.
 
-## Tokens
-
-{/* generated: tokens */}
+</PrinciplesAndPractices>

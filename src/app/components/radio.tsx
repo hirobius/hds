@@ -26,6 +26,7 @@ import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import { CONTROL_COLOR_FADE } from './control-color-fade';
 
 /** Radio — radio button with animated selection indicator. */
 export type HdsRadioDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
@@ -80,12 +81,12 @@ const radioRootVariants = /* @__PURE__ */ cva(
  * same shape as `checkboxGlyphVariants` — framer-motion's `animate` prop
  * cannot interpolate `var(...)` color strings (hds#257), so only `scale`
  * stays on `animate`; the color swap is a CSS transition applied inline
- * (see the `motion-ok` comment at the call site).
+ * (`CONTROL_COLOR_FADE`, on the productive motion token).
  */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border; var()-based, no Tailwind-theme utility exists
 const radioRingVariants = /* @__PURE__ */ cva(
-  // tier-ok: primitive.size.20 / primitive.radius.full mirror checkbox's glyph box model 1:1 — no semantic alias for either
-  'inline-flex shrink-0 items-center justify-center w-[var(--primitive-size-20)] h-[var(--primitive-size-20)] rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)]',
+  // tier-ok: primitive.radius.full is the "fully round" constant; the 20px ring is semantic.size.control.md, checkbox's glyph box
+  'inline-flex shrink-0 items-center justify-center w-[var(--semantic-size-control-md)] h-[var(--semantic-size-control-md)] rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)]',
   {
     variants: {
       state: {
@@ -255,12 +256,8 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
           duration: productiveMotion.duration,
           ease: productiveMotion.easing,
         }}
-        // motion-ok: background-color/border-color swap on state change; framer-motion's
-        // `animate` prop cannot interpolate var(...) color strings (hds#257), so the CSS
-        // transition (not a framer `animate` target) is left inline so the color fade
-        // keeps working even though the colors themselves now live in cva.
         style={{
-          transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
+          transition: CONTROL_COLOR_FADE,
         }}
       >
         {checked && (
@@ -278,7 +275,7 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
       </motion.span>
       <motion.span
         animate={{
-          x: isPressed ? hds.space.px1 : 0,
+          x: isPressed ? hds.semantic.space.subgrid.hairline : 0,
         }}
         transition={{
           duration: productiveMotion.duration,

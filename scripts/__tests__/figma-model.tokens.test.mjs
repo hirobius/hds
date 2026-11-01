@@ -91,8 +91,23 @@ describe('Figma model of hirobius.tokens.json', () => {
         'semantic',
       );
     }
-    for (const c of model.collections.filter((x) => x.key !== 'semantic')) {
+    for (const c of model.collections.filter((x) => !['semantic', 'density'].includes(x.key))) {
       expect(c.modes, c.name).toEqual(['Default']);
+    }
+  });
+
+  it('gives base tokens with a Compact mode a Hirobius/Density variable (compact density for apps)', () => {
+    const density = model.collections.find((c) => c.key === 'density');
+    expect(density.modes).toEqual(['Comfortable', 'Compact']);
+    const sm = density.variables.find((v) => v.path === 'density.semantic.space.scale.sm');
+    expect(sm.valuesByMode).toEqual({
+      Comfortable: { alias: 'primitive.space.5' },
+      Compact: { alias: 'primitive.space.3' },
+    });
+    for (const entry of Object.values(
+      variables.find((v) => v.path === 'semantic.space.scale.sm').valuesByMode,
+    )) {
+      expect(entry).toEqual({ alias: 'density.semantic.space.scale.sm' });
     }
   });
 

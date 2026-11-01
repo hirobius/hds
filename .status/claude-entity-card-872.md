@@ -1,0 +1,1 @@
+Card.Source and Card.Facts: the entity card (source row with avatar, name and time; icon facts row) with a docs demo and a DESIGN.md anatomy paragraph (#872, epic #863). Figma lane follow-up: draw Source and Facts in the library; Card code-connect stays queued.

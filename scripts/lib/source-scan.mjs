@@ -37,6 +37,7 @@
 
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { emitResult } from './gate-output.mjs';
 
 // ── Scan roots ───────────────────────────────────────────────────────────────
 
@@ -212,8 +213,12 @@ export const EXEMPTION_MARKERS = [
   'type-ramp-ok',
   // check-no-uppercase.mjs (a reason is required)
   'uppercase-ok',
+  // bin/hds-check.mjs shadows rule (hds#664; a reason is required)
+  'shadow-ok',
   // src/app/components/__tests__/no-css-var-in-motion-animate.test.ts (hds#372)
   'motion-animate-var-ok',
+  // check-no-custom-tracking.mjs (a reason is required)
+  'tracking-ok',
 ];
 
 function assertKnownMarker(marker) {
@@ -288,17 +293,72 @@ export function suppressionFor(marker, { requireReason = false, lookback = 1 } =
  * @param {{leadChars?: string}} [options]  characters that may precede a `//`
  *   comment (default space and tab)
  */
-export function maskComments(text, { leadChars = ' \t' } = {}) {
-  const lead = leadChars.replace(/[\]\\^-]/g, '\\$&');
-  return text
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
-    .replace(
-      new RegExp(`(^|[${lead}])\\/\\/[^\\n]*`, 'gm'),
-      (m, l) => l + ' '.repeat(m.length - l.length),
-    );
-}
+// One copy, shipped with the consumer `hds-check` CLI (hds#664).
+export { maskComments } from '../../bin/lib/visual-rules.mjs';
 
 /** 1-based line number of a character index in `text`. */
 export function lineOf(text, index) {
   return text.slice(0, index).split('\n').length;
+}
+
+/**
+ * Whether a gate runs in fixture mode (`--fixture-mode` or HDS_FIXTURE_MODE=1).
+ *
+ * @param {readonly string[]} argv
+ * @param {Record<string, string|undefined>} [env]
+ * @returns {boolean}
+ */
+export function isFixtureRun(argv, env = process.env) {
+  return argv.includes('--fixture-mode') || env.HDS_FIXTURE_MODE === '1';
+}
+
+/**
+ * Shared report for line-scoped gates whose violations are
+ * `{ file, line, rule, message, sample }` (hds#1010; gate-output.mjs is ops-canonical, so it lives here). Prints the JSON payload
+ * or the human report and returns the exit code; the caller exits.
+ *
+ * Human shape: `[ok] <gate>: <ok>` when clean, else
+ * `\n✗ <gate>: <n> <noun(n)>\n`, then `  file:line  [rule] message` and
+ * `    sample` per violation, then each `fix` line on stderr. A file-level
+ * violation (no `line`, no `sample`, e.g. a token-file check) prints `  file  [rule] message`.
+ * A violation's optional `extra` object is spread into its JSON entry between
+ * `message` and `sample` (check-hardcoded-spacing keeps its `prop`/`value`).
+ *
+ * @param {Array<{file:string,line?:number|null,rule:string,message:string,sample?:string,extra?:object}>} violations
+ * @param {boolean} jsonMode
+ * @param {{ gate: string, ok: string, noun: (n: number) => string, fix: string[] }} opts
+ * @returns {0|1}
+ */
+export function reportLineViolations(violations, jsonMode, { gate, ok, noun, fix }) {
+  const code = violations.length === 0 ? 0 : 1;
+  if (jsonMode) {
+    emitResult(
+      {
+        violations: violations.map((v) => ({
+          file: v.file,
+          line: v.line,
+          rule: v.rule,
+          severity: 'error',
+          message: v.message,
+          ...v.extra,
+          sample: v.sample,
+        })),
+        summary: { total: violations.length },
+        ok: code === 0,
+      },
+      true,
+    );
+    return code;
+  }
+  if (code === 0) {
+    console.log(`[ok] ${gate}: ${ok}`);
+    return 0;
+  }
+  console.error(`\n✗ ${gate}: ${violations.length} ${noun(violations.length)}\n`);
+  for (const v of violations) {
+    console.error(`  ${v.file}${v.line ? `:${v.line}` : ''}  [${v.rule}] ${v.message}`);
+    if (v.sample) console.error(`    ${v.sample}`);
+  }
+  for (const line of fix) console.error(line);
+  return 1;
 }

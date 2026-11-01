@@ -34,9 +34,6 @@
   --component-button-secondary-border-hover: var(
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --component-button-secondary-border-pressed: var(
-    --semantic-color-border-accent
-  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-tag-activeBackground: var(
     --semantic-accent-rest
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
@@ -45,12 +42,6 @@
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-tag-activeHover: var(
     --semantic-accent-hover
-  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --component-nav-bgActive: var(
-    --semantic-accent-subtle
-  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --component-nav-borderActive: var(
-    --semantic-color-surface-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-accent-rest: var(
     --primitive-color-cobalt-600
@@ -85,6 +76,7 @@
   --semantic-color-content-onAccent: var(
     --primitive-color-neutral-white
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --hds-edge-primary: #081c98; /* css-ok: raised edge (hds#897) */
 }
 [data-accent='cobalt'][data-theme='dark'] {
   --semantic-accent-rest: var(
@@ -120,4 +112,5 @@
   --semantic-color-content-onAccent: var(
     --primitive-color-neutral-black
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --hds-edge-primary: #636cae; /* css-ok: raised edge (hds#897) */
 }

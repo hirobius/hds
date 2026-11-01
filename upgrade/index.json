@@ -1,8 +1,64 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.26.2",
-  "floor": "0.16.0",
+  "latest": "0.32.0",
+  "floor": "0.9.0",
   "versions": [
+    {
+      "version": "0.10.0",
+      "date": "2026-07-02",
+      "bump": "minor",
+      "breaking": 1,
+      "summary": "The ./protocol subpath, the signed envelope of the retired Figma bridge, is removed."
+    },
+    {
+      "version": "0.11.0",
+      "date": "2026-07-04",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "Adds HdsTooltip, HdsThemeProvider with useHdsTheme, Textarea and a caption type style; nothing to change."
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-07-08",
+      "bump": "minor",
+      "breaking": 7,
+      "summary": "Stat, Field and Card move to the shared tone set and InfoPage is removed; adds dozens of components, /brand and /scroll."
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-07-09",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "Adds the CSS-only static.css layer and stops Icon logging a console error for token sizes; nothing to change."
+    },
+    {
+      "version": "0.13.1",
+      "date": "2026-09-20",
+      "bump": "patch",
+      "breaking": 0,
+      "summary": "Manifest Figma links, package metadata and a tenant overlay CSS fix; nothing for a consumer to change."
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-09-23",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "TenantProvider takes the tenant as a slug prop, dev warnings fire in consumer builds, and types resolve under node16."
+    },
+    {
+      "version": "0.15.0",
+      "date": "2026-09-23",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "Exports every component's props type and marks React bundles 'use client' for the Next.js App Router; nothing to change."
+    },
+    {
+      "version": "0.16.0",
+      "date": "2026-09-26",
+      "bump": "minor",
+      "breaking": 1,
+      "summary": "Six unused typography tokens are removed and five docs-internal components are deprecated; adds HdsSelect at the root."
+    },
     {
       "version": "0.17.0",
       "date": "2026-09-30",
@@ -114,6 +170,55 @@
       "bump": "patch",
       "breaking": 0,
       "summary": "Nothing in this release asks anything of a consumer."
+    },
+    {
+      "version": "0.27.0",
+      "date": "2026-10-19",
+      "bump": "minor",
+      "breaking": 3,
+      "summary": "5 changes to make by hand (3 breaking) and 33 that look different."
+    },
+    {
+      "version": "0.28.0",
+      "date": "2026-10-20",
+      "bump": "minor",
+      "breaking": 1,
+      "summary": "1 change to make by hand (1 breaking) and 4 that look different."
+    },
+    {
+      "version": "0.29.0",
+      "date": "2026-10-20",
+      "bump": "minor",
+      "breaking": 12,
+      "summary": "12 changes to make by hand (12 breaking), 34 that look different and 1 deprecation."
+    },
+    {
+      "version": "0.30.0",
+      "date": "2026-10-21",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "37 that look different and 2 deprecations."
+    },
+    {
+      "version": "0.31.0",
+      "date": "2026-10-22",
+      "bump": "minor",
+      "breaking": 2,
+      "summary": "2 changes to make by hand (2 breaking) and 18 that look different."
+    },
+    {
+      "version": "0.31.1",
+      "date": "2026-10-23",
+      "bump": "patch",
+      "breaking": 0,
+      "summary": "1 that looks different."
+    },
+    {
+      "version": "0.32.0",
+      "date": "2026-10-24",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "11 that look different."
     }
   ],
   "deprecated": [
@@ -223,9 +328,19 @@
       "step": "0.20.0/deprecated/kept-utilities"
     },
     {
+      "name": "primitive-color-lime",
+      "removeIn": "1.0.0",
+      "step": "0.30.0/deprecated/primitive-color-lime"
+    },
+    {
       "name": "pt-1",
       "removeIn": "1.0.0",
       "step": "0.20.0/deprecated/kept-utilities"
+    },
+    {
+      "name": "semantic-accent-delight",
+      "removeIn": "1.0.0",
+      "step": "0.30.0/deprecated/semantic-accent-delight"
     },
     {
       "name": "semantic.space.component.gap",

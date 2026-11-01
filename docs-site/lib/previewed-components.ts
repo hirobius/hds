@@ -5,6 +5,7 @@
  * preview yet" note on their generated page instead of a broken demo.
  */
 export const PREVIEWED_COMPONENTS = [
+  'AppShell',
   'Button',
   'Input',
   'Select',
@@ -22,6 +23,7 @@ export const PREVIEWED_COMPONENTS = [
   'Card',
   'Combobox',
   'Composer',
+  'CommandPalette',
   'Container',
   'Disclosure',
   'Divider',
@@ -32,11 +34,13 @@ export const PREVIEWED_COMPONENTS = [
   'InlineLink',
   'Kbd',
   'MetaLine',
+  'NavList',
   'Pagination',
   'Popover',
   'Progress',
   'Radio',
   'SegmentedControl',
+  'Sheet',
   'Skeleton',
   'Slider',
   'Spinner',
@@ -49,6 +53,7 @@ export const PREVIEWED_COMPONENTS = [
   'ThemeToggle',
   'Timeline',
   'Toggle',
+  'TokenField',
   'Tooltip',
   'VisuallyHidden',
   // Patterns (@hirobius/design-system/patterns)
@@ -59,6 +64,7 @@ export const PREVIEWED_COMPONENTS = [
   'FormActions',
   'DataTableSection',
   'DestructiveSection',
+  'AsyncState',
   'ErrorPattern',
   'CodeBlock',
   'AssetImg',

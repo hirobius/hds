@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "The 6px and 10px spacing steps are kept: 0.29.0 deprecated them for removal in 0.31.0, and that removal is cancelled; nothing to change."
+}

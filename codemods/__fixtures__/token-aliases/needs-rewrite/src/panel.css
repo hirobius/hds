@@ -1,0 +1,5 @@
+.panel {
+  padding: var(--semantic-space-component-padding);
+  margin: var(--semantic-space-layout-tight) var(--semantic-space-layout-gutter);
+  border-bottom: 1px solid var(--semantic-color-border-subdued);
+}

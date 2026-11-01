@@ -15,7 +15,21 @@
       "kind": "overlay",
       "probe": false
     },
+    "AppShell": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "AssetImg": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "AsyncState": {
       "width": "hug",
       "height": "hug",
       "pads": false,
@@ -113,6 +127,13 @@
       "kind": "part",
       "probe": false
     },
+    "CardFacts": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "CardFooter": {
       "width": "hug",
       "height": "hug",
@@ -162,6 +183,13 @@
       "kind": "part",
       "probe": false
     },
+    "CardSource": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "CardTitle": {
       "width": "hug",
       "height": "hug",
@@ -190,6 +218,13 @@
       "kind": "leaf",
       "probe": true,
       "maxWidth": "40rem"
+    },
+    "CommandPalette": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
     },
     "Composer": {
       "width": "hug",
@@ -437,6 +472,20 @@
       "kind": "container",
       "probe": true
     },
+    "NavList": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "NavListItem": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Page": {
       "width": "fill",
       "height": "hug",
@@ -507,6 +556,13 @@
       "kind": "leaf",
       "probe": true,
       "maxWidth": "40rem"
+    },
+    "Sheet": {
+      "width": "hug",
+      "height": "hug",
+      "pads": true,
+      "kind": "overlay",
+      "probe": false
     },
     "Sidebar": {
       "width": "fill",
@@ -676,6 +732,14 @@
       "pads": false,
       "kind": "leaf",
       "probe": true
+    },
+    "TokenField": {
+      "width": "fill",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true,
+      "maxWidth": "40rem"
     },
     "Tooltip": {
       "width": "hug",

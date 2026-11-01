@@ -13,9 +13,13 @@
  *   - package.json `exports`        the import subpaths
  *   - scripts/lib/layout-recipe.mjs the screen layout recipe (shared with llms.txt)
  *   - docs/CONSUMING.md             the do/don't rules and the lint install line
+ *   - package.json `version`        the `hds-version` metadata (hds#463)
+ *   - upgrade/index.json + ledgers  the deprecated names (scripts/lib/upgrade-digest.mjs)
  *
  * Output: skills/hds-consumer/SKILL.md (installable with
- * `npx skills add hirobius/hds --skill hds-consumer`).
+ * `npx skills add hirobius/hds --skill hds-consumer`). It ships in the package,
+ * and `npx @hirobius/design-system@latest upgrade` copies it into a project's
+ * `.claude/skills/hds-consumer/` (hds#463).
  *
  * Usage:
  *   node scripts/generate-consumer-skill.mjs                   write the file
@@ -32,6 +36,8 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import { layoutRecipeSteps, layoutNegativeRules } from './lib/layout-recipe.mjs';
 import { coreByCategory, renderCoreSetByCategory } from './lib/core-set.mjs';
 import { rootFromArgv, runGenerator } from './lib/generated-check.mjs';
+import { UPGRADE_COMMAND } from './lib/version-stamp.mjs';
+import { DEPRECATED_TOKENS_NOTE, deprecatedLines, deprecatedRows } from './lib/upgrade-digest.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -40,6 +46,18 @@ export const SKILL_PATH = 'skills/hds-consumer/SKILL.md';
 /** Copied verbatim from docs/CONSUMING.md section 11 (a test pins the match). */
 export const LINT_INSTALL_LINE =
   'pnpm add -D "@hirobius/eslint-plugin-hds@github:hirobius/hds#path:/scripts/eslint-plugin-hds"';
+
+/**
+ * What a consumer's tests and styles may select on (hds#468). Copied verbatim
+ * into CONSUMING.md "What you may select on" (a test pins the match).
+ */
+export const SELECT_ON = [
+  "Role and accessible name, as a screen reader meets them: `getByRole('button', { name: 'Save' })`.",
+  'ARIA states such as `aria-checked`, `aria-selected`, `aria-expanded` and `aria-disabled`.',
+  "The `data-*` attributes a component lists in the manifest's `publicDataAttributes`, such as `data-state`, `data-variant`, `data-size`, `data-tone` and `data-slot`. Not `data-hds-*`, which are internal, or `data-radix-*`, which belong to Radix.",
+  "The `hds-*` classes and the manifest's `publicClasses`, which the CSS contract tracks.",
+  'Never other class names, ids, tag names or how elements nest: those change without an upgrade step.',
+];
 
 const PKG = '@hirobius/design-system';
 const PATTERNS = `${PKG}/patterns`;
@@ -98,6 +116,23 @@ function allowList(manifest, barrelSource) {
   });
 }
 
+/**
+ * Each component's `publicDataAttributes` (hds#960), one line per component
+ * that has any, sorted by name; nothing when none has.
+ */
+export function dataAttributesSection(manifest) {
+  const specs = { ...(manifest.componentSpecs ?? {}), ...(manifest.utilities ?? {}) };
+  const lines = Object.keys(specs)
+    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    .filter((name) => !specs[name]?.deprecated && specs[name]?.publicDataAttributes?.length)
+    .map(
+      (name) =>
+        `- \`${name}\`: ${specs[name].publicDataAttributes.map((a) => `\`${a}\``).join(', ')}`,
+    );
+  if (lines.length === 0) return [];
+  return ['The `data-*` attributes each component renders for you to select on:', '', ...lines, ''];
+}
+
 /** The "## Core set" section (hds#374), or nothing when no spec carries `core: true`. */
 function coreSetSection(manifest) {
   const core = coreByCategory(manifest.componentSpecs ?? {});
@@ -131,10 +166,14 @@ export function buildConsumerSkill({
   indexSource,
   patternsSource = '',
   packageExports = {},
+  version = '0.0.0',
+  deprecated = [],
 }) {
   const numbered = (items) => items.map((s, i) => `${i + 1}. ${s}`).join('\n');
   const dos = [
     'Use tokens only. No raw hex or px in `style`, `className` or `Box` `sx`; the lint rules below enforce this.',
+    'Never guess a token name: run `pnpm exec hds-tokens search <name or words>` first; it says whether the name exists and lists the nearest real ones.',
+    "Size vs space: `semantic.size.*` is an element's own width or height; `semantic.space.*` is the gap or padding between and inside elements.",
     'No inline margins on children to fake sibling spacing; the parent layout primitive owns the gap.',
     'Use an allow-listed HDS component where one exists instead of hand-rolling it.',
     'Keep app-local tokens and styles under your own `--<prefix>-*` prefix, never inside DS-owned namespaces (`--primitive-*`, `--semantic-*`, `--component-*`, `--role-*`, `--hds-*`; `data-hds`, `data-theme`, `data-tenant`).',
@@ -152,12 +191,32 @@ export function buildConsumerSkill({
       '---',
       'name: hds-consumer',
       `description: "Use when building or editing UI in an app that consumes ${PKG}: which components you may import, how to lay out a screen, and the lint step to finish with."`,
+      'metadata:',
+      `  hds-version: "${version}"`,
       '---',
       '',
       '<!-- Generated by scripts/generate-consumer-skill.mjs from public/hds-manifest.json. Do not hand-edit: pnpm check:consumer-skill -->',
       '',
       '# HDS consumer skill',
       '',
+      `This skill describes ${PKG} ${version}.`,
+      '',
+      '## Upgrading',
+      '',
+      `Run \`${UPGRADE_COMMAND} --check\` first. It changes nothing; it exits 1 when the project is behind or still uses a removed name. Then run \`${UPGRADE_COMMAND}\`: it runs the codemods, bumps the dependency, installs, typechecks, refreshes this skill in \`.claude/skills/hds-consumer/\`, and lists what is left to do by hand. Every removed or renamed name with its replacement is in \`node_modules/${PKG}/public/llms/upgrade.txt\`; the guide is \`UPGRADING.md\`.`,
+      '',
+      ...(deprecated.length
+        ? [
+            '## Deprecated: do not use in new code',
+            '',
+            'Still exported until the release named, but do not write new code with them:',
+            '',
+            ...deprecatedLines(deprecated),
+            '',
+            DEPRECATED_TOKENS_NOTE,
+            '',
+          ]
+        : []),
       '## Install and import',
       '',
       importSection(packageExports),
@@ -187,11 +246,19 @@ export function buildConsumerSkill({
       '',
       dos.map((d) => `- ${d}`).join('\n'),
       '',
+      '## What you may select on',
+      '',
+      'In tests and styles, select HDS elements only by:',
+      '',
+      SELECT_ON.map((rule) => `- ${rule}`).join('\n'),
+      '',
+      ...dataAttributesSection(manifest),
       '## Steps',
       '',
       'Finish every task with the last step below.',
       '',
       numbered([
+        `Run \`${UPGRADE_COMMAND} --check\`; when it lists work, run \`${UPGRADE_COMMAND}\` and fix what it leaves under Do by hand.`,
         `Compose the screen from the allow-list and the \`${PATTERNS}\` list, using the layout recipe.`,
         'Style with tokens only.',
         ...finalSteps,
@@ -203,11 +270,14 @@ export function buildConsumerSkill({
 async function main() {
   const root = rootFromArgv(ROOT);
   const read = (rel) => readFileSync(join(root, rel), 'utf8');
+  const pkg = JSON.parse(read('package.json'));
   const content = buildConsumerSkill({
     manifest: JSON.parse(read('public/hds-manifest.json')),
     indexSource: read('src/index.ts'),
     patternsSource: read('src/patterns.ts'),
-    packageExports: JSON.parse(read('package.json')).exports,
+    packageExports: pkg.exports,
+    version: pkg.version,
+    deprecated: deprecatedRows(root),
   });
   await runGenerator({
     root,

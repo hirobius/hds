@@ -1,0 +1,31 @@
+{
+  "impact": "none",
+  "plain": "The lime delight tokens are deprecated and hidden from the docs, but their CSS variables still work, so nothing breaks; avoid them in new code.",
+  "steps": [
+    {
+      "id": "deprecated/semantic-accent-delight",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "--semantic-accent-delight-* still resolve to the same lime; they are hidden while lime is parked (hds#857) and may come back, so keep existing uses and add none.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-delight-base",
+          "--semantic-accent-delight-deep",
+          "--semantic-accent-delight-pale",
+          "--semantic-accent-delight-onDelight"
+        ]
+      },
+      "removeIn": "1.0.0"
+    },
+    {
+      "id": "deprecated/primitive-color-lime",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "--primitive-color-lime-* still resolve; the ramp only feeds the hidden delight accent, so add no new uses.",
+      "detect": {
+        "regex": ["--primitive-color-lime-\\d+"]
+      },
+      "removeIn": "1.0.0"
+    }
+  ]
+}

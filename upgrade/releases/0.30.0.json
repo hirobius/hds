@@ -1,0 +1,665 @@
+{
+  "version": "0.30.0",
+  "date": "2026-10-21",
+  "bump": "minor",
+  "summary": "37 that look different and 2 deprecations.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.30.0/deprecated/primitive-color-lime",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "--primitive-color-lime-* still resolve; the ramp only feeds the hidden delight accent, so add no new uses.",
+      "detect": {
+        "regex": [
+          "--primitive-color-lime-\\d+"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:35"
+    },
+    {
+      "id": "0.30.0/deprecated/semantic-accent-delight",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "--semantic-accent-delight-* still resolve to the same lime; they are hidden while lime is parked (hds#857) and may come back, so keep existing uses and add none.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-delight-base",
+          "--semantic-accent-delight-deep",
+          "--semantic-accent-delight-pale",
+          "--semantic-accent-delight-onDelight"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "source": "CHANGELOG.md:35"
+    },
+    {
+      "id": "0.30.0/value-changed/--component-card-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --component-card-gap is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--component-card-gap"
+        ],
+        "cssVarWrites": [
+          "--component-card-gap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-card-gap:[data-density=\"compact\"]",
+        "css-var-changed:--component-card-gap:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--hds-space-2xl",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-space-2xl is a legacy bridge that tracks its scale twin, so under data-density=\"compact\" it is tighter too; move to --semantic-space-scale-* and check compact screens.",
+      "detect": {
+        "cssVars": [
+          "--hds-space-2xl"
+        ],
+        "cssVarWrites": [
+          "--hds-space-2xl"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-2xl:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--hds-space-lg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-space-lg is a legacy bridge that tracks its scale twin, so under data-density=\"compact\" it is tighter too; move to --semantic-space-scale-* and check compact screens.",
+      "detect": {
+        "cssVars": [
+          "--hds-space-lg"
+        ],
+        "cssVarWrites": [
+          "--hds-space-lg"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-lg:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--hds-space-md",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-space-md is a legacy bridge that tracks its scale twin, so under data-density=\"compact\" it is tighter too; move to --semantic-space-scale-* and check compact screens.",
+      "detect": {
+        "cssVars": [
+          "--hds-space-md"
+        ],
+        "cssVarWrites": [
+          "--hds-space-md"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-md:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--hds-space-xl",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-space-xl is a legacy bridge that tracks its scale twin, so under data-density=\"compact\" it is tighter too; move to --semantic-space-scale-* and check compact screens.",
+      "detect": {
+        "cssVars": [
+          "--hds-space-xl"
+        ],
+        "cssVarWrites": [
+          "--hds-space-xl"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-space-xl:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-docs-space-section",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-docs-space-section is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-docs-space-section"
+        ],
+        "cssVarWrites": [
+          "--semantic-docs-space-section"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-docs-space-section::where([data-density=compact])",
+        "css-var-changed:--semantic-docs-space-section:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-docs-space-section:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-layout-grid-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-layout-grid-gap is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-layout-grid-gap"
+        ],
+        "cssVarWrites": [
+          "--semantic-layout-grid-gap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-grid-gap::where([data-density=compact])",
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width:639px) :where([data-density=compact])",
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width:639px) [data-density=compact]",
+        "css-var-changed:--semantic-layout-grid-gap:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-layout-grid-gap:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-component-padding",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-component-padding is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-component-padding"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-component-padding"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-component-padding::where([data-density=compact])",
+        "css-var-changed:--semantic-space-component-padding:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-component-padding:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-layout-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\" below 640px, --semantic-space-layout-gap is now scale.sm (12px) instead of following the comfortable rule; check compact screens on phones.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-gap"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-gap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) :where([data-density=compact])",
+        "css-var-changed:--semantic-space-layout-gap:@media (max-width:639px) [data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-layout-gutter",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-layout-gutter is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-gutter"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-gutter"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-gutter::where([data-density=compact])",
+        "css-var-changed:--semantic-space-layout-gutter:@media (max-width:639px) :where([data-density=compact])",
+        "css-var-changed:--semantic-space-layout-gutter:@media (max-width:639px) [data-density=compact]",
+        "css-var-changed:--semantic-space-layout-gutter:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-layout-gutter:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-layout-inset",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-layout-inset is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-inset"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-inset"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-inset:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-layout-inset:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-layout-normal",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-layout-normal is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-normal"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-normal"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-normal:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-layout-normal:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-layout-spacious",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-layout-spacious is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-spacious"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-spacious"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-spacious:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-layout-spacious:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-layout-tight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-layout-tight is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-tight"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-tight"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-layout-tight:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-layout-tight:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-region-gutter",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-region-gutter is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-region-gutter"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-region-gutter"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-region-gutter::where([data-density=compact])",
+        "css-var-changed:--semantic-space-region-gutter:@media (max-width:639px) :where([data-density=compact])",
+        "css-var-changed:--semantic-space-region-gutter:@media (max-width:639px) [data-density=compact]",
+        "css-var-changed:--semantic-space-region-gutter:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-region-gutter:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-scale-lg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-scale-lg is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-scale-lg"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-scale-lg"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-lg:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-scale-lg:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-scale-md",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-scale-md is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-scale-md"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-scale-md"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-md:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-scale-md:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-scale-sm",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-scale-sm is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-scale-sm"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-scale-sm"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-sm:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-scale-sm:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-scale-xl",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-scale-xl is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-scale-xl"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-scale-xl"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-xl:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-scale-xl:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-scale-xs",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-space-scale-xs is 8px in both densities as before; the compact rule now comes from tokens.css instead of theme.css, so nothing moves.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-scale-xs"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-scale-xs"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-scale-xs:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-section-stack",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-section-stack is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-section-stack"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-section-stack"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-section-stack:@media (max-width:639px) [data-density=compact]",
+        "css-var-changed:--semantic-space-section-stack:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-section-stack:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-space-surface-padding",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-space-surface-padding is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-surface-padding"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-surface-padding"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-surface-padding::where([data-density=compact])",
+        "css-var-changed:--semantic-space-surface-padding:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-space-surface-padding:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-body-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-body-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-body-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-body-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-body-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-body-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-caption-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-caption-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-caption-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-caption-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-caption-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-caption-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-eyebrow-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-eyebrow-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-eyebrow-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-eyebrow-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-eyebrow-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-eyebrow-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-h1-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-h1-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h1-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-h1-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h1-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-h1-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-h2-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-h2-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h2-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-h2-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h2-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-h2-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-h3-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-h3-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-h3-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-h3-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-h3-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-h3-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-title-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-title-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-title-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-title-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-title-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-title-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/value-changed/--semantic-typography-ui-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-density=\"compact\", --semantic-typography-ui-font-size is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only.",
+      "detect": {
+        "cssVars": [
+          "--semantic-typography-ui-font-size"
+        ],
+        "cssVarWrites": [
+          "--semantic-typography-ui-font-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-typography-ui-font-size:[data-density=\"compact\"]",
+        "css-var-changed:--semantic-typography-ui-font-size:[data-density=compact]"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.30.0/look/avatar-icon-status",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Avatar gains a person-icon fallback and a status dot, and an Avatar with no initials to show now draws the icon instead of an empty circle.",
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.30.0/look/badge-count",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Badge gains a count mode: a number in tabular figures that can be capped (for example 99+) and named for screen readers.",
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.30.0/look/code-block-copy-button",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The CodeBlock copy button is now a 32px icon-only Button in its own column beside the code, so re-take screenshots of pages with code blocks.",
+      "source": "CHANGELOG.md:34"
+    },
+    {
+      "id": "0.30.0/look/disclosure-row",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Disclosure gains a row variant: an expandable list row with a one-line preview and action buttons beside it.",
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.30.0/look/pageheader-metadata",
+      "kind": "look",
+      "impact": "look",
+      "plain": "PageHeader gains an optional metadata row of badges above the title; screens that do not pass it are unchanged.",
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.30.0/look/pagination-compact",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Pagination gains a compact variant, a small \"1 of 4\" pager with previous and next arrows; the default pager is unchanged.",
+      "source": "CHANGELOG.md:30"
+    },
+    {
+      "id": "0.30.0/look/segmented-secondary-contrast",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The secondary SegmentedControl's selected segment now has a darker 1px edge, so re-take screenshots of pages that use it.",
+      "source": "CHANGELOG.md:36"
+    }
+  ]
+}

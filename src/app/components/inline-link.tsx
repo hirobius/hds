@@ -27,6 +27,8 @@ export interface InlineLinkProps {
   children: React.ReactNode;
   /** Append the external-link icon for non-internal URLs. */
   externalIcon?: boolean;
+  /** The link stands on its own, outside running text (such as "Back to companies"): it gets a 24px hit area, 44px tall on touch, without moving the layout. */
+  standalone?: boolean;
 }
 
 // ── InlineLink ─────────────────────────────────────────────────────────────────
@@ -39,13 +41,12 @@ export interface InlineLinkProps {
 //                                         + optional small ExternalLink icon after the label
 //                                         + visually-hidden "(opens in new tab)"
 //
-// Visual contract: semantic accent-content token (mode-aware lightness), always underlined
-// (accessibility requirement — links must not rely on color alone), underline
-// fades to 40% tint at rest and steps up to full on hover.
+// Visual contract (C2): text and underline are both content.primary at rest and turn
+// content.secondary together on hover; always underlined (links must not rely on colour
+// alone). A standalone link gets a 24px hit area (44px tall on touch).
 //
 // To change link styling site-wide: edit .hds-link in theme.css.
-// Hover state handled by CSS .hds-link class — no JS state needed.
-// motion-ok: transitions handled by .hds-link CSS class (color + underline, primitive-duration-fast via CSS)
+// motion-ok: the hover colour transition is on .hds-link in theme.css (productive motion token)
 
 type LinkKind = 'internal' | 'external' | 'plain';
 
@@ -64,13 +65,19 @@ function classifyHref(href: string): LinkKind {
 }
 
 /** @public */
-export function InlineLink({ href, children, externalIcon = true }: InlineLinkProps) {
+export function InlineLink({
+  href,
+  children,
+  externalIcon = true,
+  standalone = false,
+}: InlineLinkProps) {
   const { LinkComponent } = useHdsRouter();
   const kind = classifyHref(href);
+  const standaloneClass = standalone ? ' hds-link-standalone' : '';
 
   if (kind === 'internal') {
     return (
-      <LinkComponent to={href} className="hds-focus hds-link">
+      <LinkComponent to={href} className={`hds-focus hds-link${standaloneClass}`}>
         {children}
       </LinkComponent>
     );
@@ -78,14 +85,19 @@ export function InlineLink({ href, children, externalIcon = true }: InlineLinkPr
 
   if (kind === 'plain') {
     return (
-      <a href={href} className="hds-focus hds-link">
+      <a href={href} className={`hds-focus hds-link${standaloneClass}`}>
         {children}
       </a>
     );
   }
 
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="hds-focus hds-link">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`hds-focus hds-link${standaloneClass}`}
+    >
       {children}
       <span className="sr-only"> (opens in new tab)</span>
       {externalIcon && (

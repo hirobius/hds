@@ -130,6 +130,9 @@ describe('generate-llms-txt --check', () => {
     'public/llms.txt',
     'public/llms-full.txt',
     'public/llms',
+    // hds#463: the Upgrading section and upgrade.txt are projected from the record.
+    'upgrade/index.json',
+    'upgrade/releases',
   ];
 
   it('fails when a slice drifts from its sources, and writes nothing', () => {
@@ -290,6 +293,8 @@ describe('generate-consumer-skill on runGenerator', () => {
       'src/patterns.ts',
       'package.json',
       'skills/hds-consumer/SKILL.md',
+      'upgrade/index.json',
+      'upgrade/releases',
     ],
     out: 'skills/hds-consumer/SKILL.md',
     fix: 'pnpm skill:generate',

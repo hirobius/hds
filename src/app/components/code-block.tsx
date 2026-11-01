@@ -19,6 +19,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } f
 import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { Button } from './button';
 import { Icon } from './icon';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -31,19 +32,19 @@ import { Icon } from './icon';
 const TECHNICAL_TYPE_CLASSES =
   '[font-family:var(--semantic-typography-mono-font-family)] [font-size:var(--semantic-typography-mono-font-size)] [font-weight:var(--semantic-typography-mono-font-weight)] [letter-spacing:var(--semantic-typography-mono-letter-spacing)] [line-height:var(--semantic-typography-mono-line-height)] max-w-[var(--semantic-typography-mono-max-width)]';
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default/surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-raised/radius-action tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const blockContainerVariants = /* @__PURE__ */ cva(
-  'overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)]',
+  'overflow-hidden rounded-md bg-[var(--semantic-color-surface-raised)]',
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + border/surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + semantic-size-control-lg + surface/radius tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const inlineWrapperVariants = /* @__PURE__ */ cva(
-  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex w-full min-w-0 min-h-[var(--semantic-size-control-lg)] items-center justify-between gap-[var(--semantic-space-subgrid-gap)] overflow-hidden rounded-md bg-[var(--semantic-color-surface-raised)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + border-default token have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding/subgrid-gap spacing + surface-muted token have no matching Tailwind-theme utility; var()-based so still token-driven
 const blockHeaderVariants = /* @__PURE__ */ cva(
-  'flex items-center justify-between border-b border-solid border-[var(--semantic-color-border-default)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-surface-padding)] pr-[var(--semantic-space-subgrid-gap)]',
+  'flex items-center justify-between bg-[var(--semantic-color-surface-muted)] py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-surface-padding)] pr-[var(--semantic-space-subgrid-gap)]',
 );
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
@@ -56,10 +57,8 @@ const collapsibleToggleVariants = /* @__PURE__ */ cva(
   `flex w-full cursor-pointer items-center justify-between border-0 bg-transparent px-[var(--semantic-space-surface-padding)] py-[var(--semantic-space-scale-xs)] text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-default token has no matching Tailwind-theme utility; var()-based so still token-driven
-const collapsiblePanelVariants = /* @__PURE__ */ cva(
-  'border-t border-solid border-[var(--semantic-color-border-default)]',
-);
+// The panel sits on the block's raised fill; the toggle row above it is separated by space, not a rule (hds#891).
+const collapsiblePanelVariants = /* @__PURE__ */ cva('');
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- motion.productive.duration token has no matching Tailwind-theme utility; var()-based so still token-driven
 const chevronVariants = /* @__PURE__ */ cva(
@@ -75,7 +74,9 @@ const chevronVariants = /* @__PURE__ */ cva(
   },
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap spacing + radius-action + border-default/surface-raised tokens + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven
+// The block copy button is an icon-only HDS Button, which centres its icon; these classes only place
+// it in its own column beside the code (hds#857).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid-gap/component-gap/scale-xs spacing + motion.productive.duration have no matching Tailwind-theme utility; var()-based so still token-driven
 const copyButtonVariants = /* @__PURE__ */ cva(
   'hds-touch-target flex cursor-pointer items-center gap-[var(--semantic-space-subgrid-gap)]',
   {
@@ -83,8 +84,7 @@ const copyButtonVariants = /* @__PURE__ */ cva(
       variant: {
         inline:
           'shrink-0 border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] pl-[var(--semantic-space-scale-xs)] pr-[var(--semantic-space-subgrid-gap)] transition-[background-color,color,transform] duration-[var(--hds-motion-productive-duration)] ease',
-        block:
-          'absolute right-[var(--semantic-space-subgrid-gap)] top-[var(--semantic-space-subgrid-gap)] rounded-md border border-solid border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-scale-xs)] py-[var(--semantic-space-subgrid-gap)] transition-[background-color,color] duration-[var(--hds-motion-productive-duration)] ease',
+        block: 'shrink-0 m-[var(--semantic-space-scale-xs)]',
       },
     },
     defaultVariants: { variant: 'block' },
@@ -110,10 +110,18 @@ const blockCodeTextVariants = /* @__PURE__ */ cva(
   `whitespace-pre text-[var(--semantic-color-content-primary)] ${TECHNICAL_TYPE_CLASSES}`,
 );
 
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing + semantic-size-control-lg + role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing token has no matching Tailwind-theme utility; var()-based so still token-driven
 const prePanelVariants = /* @__PURE__ */ cva(
   // 16px inset (scale-sm), not section-stack (80px): a 2-line snippet was 188px tall (hds#522).
-  'm-0 overflow-x-auto p-[var(--semantic-space-scale-sm)] pr-[calc(var(--semantic-space-scale-sm)_+_var(--semantic-size-control-lg))]',
+  // flex-1 + min-w-0: the <pre> scrolls inside its own column, so long lines stop at the copy button
+  // instead of running under it (hds#857).
+  'm-0 min-w-0 flex-1 overflow-x-auto p-[var(--semantic-space-scale-sm)]',
+);
+
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- role-muted/surface-raised tokens have no matching Tailwind-theme utility; var()-based so still token-driven
+const codePanelVariants = /* @__PURE__ */ cva(
+  // The code column and the copy-button column, side by side.
+  'flex items-start',
   {
     variants: {
       panelBackground: {
@@ -134,15 +142,7 @@ const prePanelVariants = /* @__PURE__ */ cva(
 // where React 18 warns about useLayoutEffect and neither one runs.
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-function CodePre({
-  panelBackground,
-  label,
-  children,
-}: {
-  panelBackground: boolean;
-  label: string;
-  children: ReactNode;
-}) {
+function CodePre({ label, children }: { label: string; children: ReactNode }) {
   const ref = useRef<HTMLPreElement>(null);
   const [overflows, setOverflows] = useState(false);
   useIsomorphicLayoutEffect(() => {
@@ -159,7 +159,7 @@ function CodePre({
     <pre
       ref={ref}
       {...(overflows ? { tabIndex: 0, role: 'group', 'aria-label': label } : {})}
-      className={prePanelVariants({ panelBackground })}
+      className={prePanelVariants()}
     >
       {children}
     </pre>
@@ -274,30 +274,22 @@ export function CodeBlock({
       </div>
     ) : null;
 
-  const copyBtn = (
-    <button
-      type="button"
-      onClick={handleCopy}
-      aria-label={copied ? 'Copied' : 'Copy code'}
-      className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
-    >
-      {copied ? (
-        <Icon icon={Check} size="small" color="var(--semantic-color-content-primary)" />
-      ) : (
-        <Icon icon={Copy} size="small" color="var(--semantic-color-content-primary)" />
-      )}
-    </button>
-  );
-
-  const codePanel = (
-    <div className="relative">
-      <CodePre
-        panelBackground
-        label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
-      >
+  const label = filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample');
+  const codePanel = (panelBackground: boolean) => (
+    <div className={codePanelVariants({ panelBackground })}>
+      <CodePre label={label}>
         <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
       </CodePre>
-      {copyBtn}
+      <Button
+        variant="secondary"
+        size="sm"
+        iconOnly
+        shadow="none"
+        label={copied ? 'Copied' : 'Copy code'}
+        iconLeft={<Icon icon={copied ? Check : Copy} size="small" />}
+        onClick={handleCopy}
+        className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
+      />
       <CopyStatus copied={copied} />
     </div>
   );
@@ -332,7 +324,7 @@ export function CodeBlock({
         </button>
         {expanded && (
           <div ref={panelRef} id={panelId} className={collapsiblePanelVariants()}>
-            {codePanel}
+            {codePanel(true)}
           </div>
         )}
       </div>
@@ -342,16 +334,7 @@ export function CodeBlock({
   return (
     <div className={cn(blockContainerVariants(), className)}>
       {headerEl}
-      <div className="relative">
-        <CodePre
-          panelBackground={false}
-          label={filename ?? (language ? `${language.toLowerCase()} code` : 'Code sample')}
-        >
-          <code className={blockCodeTextVariants()}>{renderHighlighted(code, language)}</code>
-        </CodePre>
-        {copyBtn}
-        <CopyStatus copied={copied} />
-      </div>
+      {codePanel(false)}
     </div>
   );
 }
@@ -472,15 +455,29 @@ function normaliseLang(lang?: string): string | undefined {
   return undefined;
 }
 
-function tokenizeTs(src: string): Token[] {
+/** Runs `re` over `src`, filling gaps between matches with plain tokens; `emit` turns one match into tokens. */
+function scanTokens(
+  src: string,
+  re: RegExp,
+  emit: (m: RegExpExecArray, tokens: Token[]) => void,
+): Token[] {
   const tokens: Token[] = [];
-  // Combined regex: comments, strings, numbers, identifiers
-  const re =
-    /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)|(\b\d[\d_.eE+-]*\b)|([A-Za-z_$][\w$]*)/g;
   let last = 0;
   let m: RegExpExecArray | null;
   while ((m = re.exec(src)) !== null) {
     if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+    emit(m, tokens);
+    last = re.lastIndex;
+  }
+  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
+  return tokens;
+}
+
+function tokenizeTs(src: string): Token[] {
+  // Combined regex: comments, strings, numbers, identifiers
+  const re =
+    /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)|(\b\d[\d_.eE+-]*\b)|([A-Za-z_$][\w$]*)/g;
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) tokens.push({ kind: 'comment', value: m[1] });
     else if (m[2]) tokens.push({ kind: 'string', value: m[2] });
     else if (m[3]) tokens.push({ kind: 'number', value: m[3] });
@@ -490,38 +487,24 @@ function tokenizeTs(src: string): Token[] {
       else if (/^[A-Z]/.test(word)) tokens.push({ kind: 'type', value: word });
       else tokens.push({ kind: 'plain', value: word });
     }
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function tokenizeJson(src: string): Token[] {
-  const tokens: Token[] = [];
   const re = /("(?:\\.|[^"\\])*")(\s*:)?|(\b-?\d[\d.eE+-]*\b)|\b(true|false|null)\b/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(src)) !== null) {
-    if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) {
       tokens.push({ kind: m[2] ? 'type' : 'string', value: m[1] });
       if (m[2]) tokens.push({ kind: 'plain', value: m[2] });
     } else if (m[3]) tokens.push({ kind: 'number', value: m[3] });
     else if (m[4]) tokens.push({ kind: 'keyword', value: m[4] });
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function tokenizeCss(src: string): Token[] {
-  const tokens: Token[] = [];
   const re =
     /(\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*")|(--[A-Za-z_-][\w-]*)|(#[0-9a-fA-F]{3,8}\b|\b\d[\d.]*(?:px|rem|em|%|vh|vw|s|ms)?\b)|([A-Za-z_-][\w-]*)/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(src)) !== null) {
-    if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) tokens.push({ kind: 'comment', value: m[1] });
     else if (m[2]) tokens.push({ kind: 'string', value: m[2] });
     else if (m[3]) tokens.push({ kind: 'type', value: m[3] });
@@ -532,20 +515,13 @@ function tokenizeCss(src: string): Token[] {
         value: m[5],
       });
     }
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function tokenizeHtml(src: string): Token[] {
-  const tokens: Token[] = [];
   const re =
     /(<!--[\s\S]*?-->)|(<\/?)([A-Za-z][\w-]*)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|([A-Za-z_-][\w-]*)(=)/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(src)) !== null) {
-    if (m.index > last) tokens.push({ kind: 'plain', value: src.slice(last, m.index) });
+  return scanTokens(src, re, (m, tokens) => {
     if (m[1]) tokens.push({ kind: 'comment', value: m[1] });
     else if (m[2] && m[3]) {
       tokens.push({ kind: 'plain', value: m[2] });
@@ -555,10 +531,7 @@ function tokenizeHtml(src: string): Token[] {
       tokens.push({ kind: 'type', value: m[5] });
       tokens.push({ kind: 'plain', value: m[6] });
     }
-    last = re.lastIndex;
-  }
-  if (last < src.length) tokens.push({ kind: 'plain', value: src.slice(last) });
-  return tokens;
+  });
 }
 
 function renderHighlighted(code: string, language?: string): ReactNode {

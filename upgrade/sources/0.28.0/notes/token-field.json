@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New TokenField: a hand-built contenteditable field that shows [Variable] tokens as chips can move onto it, keeping the same plain-string value."
+}

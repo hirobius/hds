@@ -1,1 +1,12 @@
-{ "pages": ["color", "typography", "spacing", "radius", "elevation", "motion", "..."] }
+{
+  "pages": [
+    "color",
+    "typography",
+    "spacing",
+    "radius",
+    "elevation",
+    "motion",
+    "soft-surfaces",
+    "..."
+  ]
+}

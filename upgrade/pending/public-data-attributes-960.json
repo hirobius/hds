@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The manifest now lists each component's public data-* attributes (publicDataAttributes); data-hds-* attributes are internal and not for selecting on."
+}

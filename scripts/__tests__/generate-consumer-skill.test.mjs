@@ -8,18 +8,21 @@
 
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { readFileSync, writeFileSync, mkdtempSync, mkdirSync } from 'fs';
+import { cpSync, readFileSync, writeFileSync, mkdtempSync, mkdirSync } from 'fs';
 import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
 import {
   buildConsumerSkill,
+  dataAttributesSection,
   firstSentence,
   LINT_INSTALL_LINE,
+  SELECT_ON,
   SKILL_PATH,
 } from '../generate-consumer-skill.mjs';
 import { layoutRecipeSteps, layoutNegativeRules } from '../lib/layout-recipe.mjs';
+import { deprecatedRows } from '../lib/upgrade-digest.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
@@ -241,6 +244,8 @@ describe('committed skills/hds-consumer/SKILL.md', () => {
       indexSource: read('src/index.ts'),
       patternsSource: read('src/patterns.ts'),
       packageExports: JSON.parse(read('package.json')).exports,
+      version: JSON.parse(read('package.json')).version,
+      deprecated: deprecatedRows(ROOT),
     });
 
   it('equals the generator output on the real manifest and barrel', () => {
@@ -297,6 +302,42 @@ describe('committed skills/hds-consumer/SKILL.md', () => {
   it('lint install line appears verbatim in docs/CONSUMING.md', () => {
     expect(read('docs/CONSUMING.md')).toContain(LINT_INSTALL_LINE);
   });
+
+  it('"What you may select on" matches CONSUMING.md line for line (hds#468)', () => {
+    const consuming = read('CONSUMING.md');
+    expect(consuming).toContain('### What you may select on');
+    for (const rule of SELECT_ON) expect(consuming).toContain(`- ${rule}`);
+    const out = build();
+    expect(out.match(/^## What you may select on$/gm)).toHaveLength(1);
+    for (const rule of SELECT_ON) expect(out).toContain(`- ${rule}`);
+  });
+});
+
+describe('dataAttributesSection (hds#960)', () => {
+  it('lists each component with publicDataAttributes, sorted, skipping empty and deprecated', () => {
+    const lines = dataAttributesSection({
+      componentSpecs: {
+        Zed: { publicDataAttributes: ['data-tone'] },
+        Alpha: { publicDataAttributes: ['data-size', 'data-state'] },
+        Empty: { publicDataAttributes: [] },
+        Old: { publicDataAttributes: ['data-x'], deprecated: 'gone' },
+      },
+      utilities: { Mid: { publicDataAttributes: ['data-slot'] } },
+    });
+    expect(lines.filter((l) => l.startsWith('- '))).toEqual([
+      '- `Alpha`: `data-size`, `data-state`',
+      '- `Mid`: `data-slot`',
+      '- `Zed`: `data-tone`',
+    ]);
+  });
+
+  it('is nothing when no component declares any', () => {
+    expect(dataAttributesSection({ componentSpecs: { A: {} } })).toEqual([]);
+  });
+
+  it("the committed skill lists Card's attributes", () => {
+    expect(read(SKILL_PATH)).toContain('- `Card`: `data-bordered`');
+  });
 });
 
 describe('--check mode', () => {
@@ -321,6 +362,7 @@ describe('--check mode', () => {
       mkdirSync(dirname(join(root, f)), { recursive: true });
       writeFileSync(join(root, f), read(f));
     }
+    cpSync(join(ROOT, 'upgrade'), join(root, 'upgrade'), { recursive: true });
     const m = JSON.parse(read('public/hds-manifest.json'));
     m.componentInventory.push('BrandNewThing');
     m.componentSpecs.BrandNewThing = {

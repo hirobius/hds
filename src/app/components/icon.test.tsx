@@ -56,6 +56,7 @@ describe('Icon color type', () => {
 
   it('rejects raw hex, rgb() and primitive tokens', () => {
     const errors = typeErrors(
+      // tier-ok: fixture source string for the IconColor type test
       `const a: IconColor = '#ff0000';\nconst b: IconColor = 'rgb(0 0 0)';\nconst c: IconColor = 'var(--primitive-color-neutral-500)';`,
     );
     expect(errors).toHaveLength(3);

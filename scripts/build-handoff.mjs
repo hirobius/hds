@@ -38,6 +38,7 @@ import { fileURLToPath } from 'url';
 
 import { brandAccent } from './lib/brand-truth.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
+import { springToCSS } from './lib/token-emit/css.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -374,7 +375,7 @@ export function buildMotion(raw) {
     const tok = 'primitive.easing.' + path.join('.');
     const val =
       value && typeof value === 'object' && value.type === 'spring'
-        ? `spring(${value.stiffness}, ${value.damping}, ${value.mass})`
+        ? springToCSS(value)
         : Array.isArray(value)
           ? `cubic-bezier(${value.join(', ')})`
           : String(value);
@@ -397,7 +398,7 @@ export function buildMotion(raw) {
     const durationText = `\`${resolveRef(duration, raw)}\``;
     const easingText =
       easing && typeof easing === 'object' && easing.type === 'spring'
-        ? `\`spring(${easing.stiffness}, ${easing.damping}, ${easing.mass})\``
+        ? `\`${springToCSS(easing)}\``
         : `\`${resolveRef(easing, raw)}\``;
     semanticLines.push(row(`\`${tok}\``, durationText, easingText, desc ?? ''));
   }
@@ -438,7 +439,6 @@ export function buildAgentConstraints(raw) {
   const display = (Array.isArray(displayRaw) ? displayRaw[0] : displayRaw) ?? font;
   return [
     `- **One accent color:** \`${accent}\` (\`semantic.accent.rest\`) only — no other hues`,
-    '- **Delight is not an accent:** lime `semantic.accent.delight.*` only for badges, "new" tags, best-fit highlights and illustration — never buttons, links or focus; ink text on it',
     `- **Body / UI typeface:** ${font} — use ${display} Bold (700) for display and title headings and IBM Plex Mono for code; no other faces`,
     `- **Action radius:** \`${resolveRef(raw.semantic?.radius?.action?.$value ?? '{primitive.radius.4}', raw)}\` for interactive controls; \`${containerRadius(raw)}\` containers (\`rounded-lg\`, one step above the action radius)`,
     '- **4px spacing grid:** All spacing snaps to `primitive.space.*` scale',
@@ -492,7 +492,7 @@ export function buildDensity() {
   }
   lines.push('');
   lines.push(
-    '`[data-density="compact"]` remaps `--semantic-space-scale-*` and re-declares `surface.padding` and `region.gutter` (with their deprecated aliases). `Table` follows it unless given a `density` prop.',
+    '`[data-density="compact"]` (generated from the tokens\' Compact modes) remaps `--semantic-space-scale-*`, the deprecated `layout.*` steps, `section.stack` and the body, ui, caption and title type sizes, and re-declares every alias of them (`surface.padding`, `region.gutter`, `grid.gap` and the rest). `Table` follows it unless given a `density` prop.',
   );
   lines.push(
     'The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; do not treat them as the dial.',

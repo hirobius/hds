@@ -21,9 +21,26 @@ export interface TokenRow {
    * has no Dark mode and so is the same in both themes.
    */
   darkValue: string | null;
+  /**
+   * CSS fill for a colour swatch: `var(--…)` of the token the light value's alias
+   * chain ends at (a `--primitive-color-*` variable), or the token's own variable
+   * when it holds the literal. Null for a value that is not a colour.
+   */
+  fill: string | null;
+  /** The same for the dark value; null when the token has no Dark mode. */
+  darkFill: string | null;
   description: string;
   /** True when the value is a color and should render a swatch. */
   swatch: boolean;
+  /**
+   * False when `value` is a readable summary of a composite ("150 ms · ease-out"), set in
+   * the UI font; true (or absent) when it is a raw value (hex, px) set as code.
+   */
+  literal?: boolean;
+  /** A composite's raw part, shown under the summary as code (a cubic-bezier). */
+  detail?: string | null;
+  /** The same for the dark value. */
+  darkDetail?: string | null;
 }
 
 export interface TokenSection {
@@ -42,6 +59,7 @@ const PAGE_GROUPS: Record<string, string> = {
   motion: 'semantic.motion',
   radius: 'semantic.radius',
   elevation: 'semantic.shadow',
+  'soft-surfaces': 'semantic.color.surface',
 };
 
 export const TOKEN_PAGES = Object.keys(PAGE_GROUPS);
@@ -87,6 +105,21 @@ export function resolveTokenValue(tokens: Json, value: Json, seen: string[] = []
   throw new Error(`Unsupported token value: ${JSON.stringify(value)}`);
 }
 
+/**
+ * The CSS var of the last token an alias chain reaches (the one that holds the
+ * literal), or null when `value` is not an alias. Swatches fill from it, so a
+ * swatch shows the shipped variable rather than a copied value (hds#846).
+ */
+function sourceVar(tokens: Json, value: Json): string | null {
+  const alias = typeof value === 'string' ? /^\{([^}]+)\}$/.exec(value) : null;
+  if (!alias) return null;
+  const path = alias[1]!;
+  const target = lookup(tokens, path);
+  return (isNode(target) ? sourceVar(tokens, target.$value) : null) ?? cssVarFor(path);
+}
+
+const isColor = (value: string) => /^(#|rgb|hsl|oklch)/i.test(value);
+
 const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 function darkRaw(node: Node): Json | undefined {
@@ -107,17 +140,98 @@ const readerText = (text: string) =>
 /** A composite's font stack shows only the family it asks for, not the fallbacks. */
 const shortFamily = (value: string) => value.replace(/(fontFamily: )([^,;]+)[^;]*/, '$1$2');
 
+/** CSS keyword for an HDS easing curve, where one matches its intent; else the token's name. */
+const EASING_NAMES: Record<string, string> = {
+  decelerate: 'ease-out',
+  accelerate: 'ease-in',
+  emphasized: 'ease-in-out',
+};
+
+/** `{primitive.easing.decelerate}` -> `decelerate`; a literal curve -> null. */
+const aliasLeaf = (value: Json) =>
+  typeof value === 'string' ? (/^\{(?:[^}]*\.)?([^.}]+)\}$/.exec(value)?.[1] ?? null) : null;
+
+/** `150ms` -> `150 ms`; `0ms` -> `0 ms`. */
+const spacedUnit = (value: string) => value.replace(/^(-?[\d.]+)(ms|s)$/, '$1 $2');
+
+/**
+ * A readable summary of a composite token, or null when it is not one this knows. The raw
+ * object ("duration: 150ms; delay: 0ms; timingFunction: 0, 0, 0.2, 1") reads as a dump.
+ */
+function compositeDisplay(
+  tokens: Json,
+  type: unknown,
+  raw: Json,
+): { value: string; detail: string | null } | null {
+  if (!isNode(raw) || 'unit' in raw) return null;
+  const part = (key: string) => (key in raw ? resolveTokenValue(tokens, raw[key]) : '');
+  if (type === 'transition') {
+    const curve = part('timingFunction');
+    const leaf = aliasLeaf(raw.timingFunction);
+    const easing = (leaf && EASING_NAMES[leaf]) ?? leaf ?? `cubic-bezier(${curve})`;
+    const delay = part('delay');
+    const delayed = delay && !/^0(ms|s)?$/.test(delay) ? ` · ${spacedUnit(delay)} delay` : '';
+    return {
+      value: `${spacedUnit(part('duration'))} · ${easing}${delayed}`,
+      detail: curve ? `cubic-bezier(${curve})` : null,
+    };
+  }
+  if (type === 'typography') {
+    const family = part('fontFamily').split(',')[0]!.replace(/['"]/g, '').trim();
+    const tracking = part('letterSpacing');
+    const tracked = tracking && !/^0(px|em|rem)?$/.test(tracking) ? ` · ${tracking} tracking` : '';
+    return {
+      value: `${family} ${part('fontWeight')} · ${part('fontSize')} / ${part('lineHeight')}${tracked}`,
+      detail: null,
+    };
+  }
+  return null;
+}
+
+/** The $type a token inherits from its own node or the nearest group that sets one. */
+function typeAt(tokens: Json, path: string): unknown {
+  let cur: Json = tokens;
+  let type: unknown;
+  for (const seg of path.split('.')) {
+    if (!isNode(cur)) break;
+    cur = cur[seg];
+    if (isNode(cur) && '$type' in cur) type = cur.$type;
+  }
+  return type;
+}
+
 function rowFor(tokens: Json, path: string, node: Node): TokenRow {
   const raw = node.$value;
-  const value = shortFamily(resolveTokenValue(tokens, raw));
   const dark = darkRaw(node);
+  const type = typeAt(tokens, path);
+  const composite = compositeDisplay(tokens, type, raw);
+  if (composite) {
+    const darkComposite = dark === undefined ? null : compositeDisplay(tokens, type, dark);
+    return {
+      token: path,
+      cssVar: null,
+      value: composite.value,
+      darkValue: darkComposite?.value ?? null,
+      fill: null,
+      darkFill: null,
+      description: typeof node.$description === 'string' ? readerText(node.$description) : '',
+      swatch: false,
+      literal: false,
+      detail: composite.detail,
+      darkDetail: darkComposite?.detail ?? null,
+    };
+  }
+  const value = shortFamily(resolveTokenValue(tokens, raw));
+  const fill = (raw: Json) => `var(${sourceVar(tokens, raw) ?? cssVarFor(path)})`;
   return {
     token: path,
     cssVar: isNode(raw) && !('unit' in raw) ? null : cssVarFor(path),
     value,
     darkValue: dark === undefined ? null : shortFamily(resolveTokenValue(tokens, dark)),
+    fill: isColor(value) ? fill(raw) : null,
+    darkFill: isColor(value) && dark !== undefined ? fill(dark) : null,
     description: typeof node.$description === 'string' ? readerText(node.$description) : '',
-    swatch: path.startsWith('semantic.color.') && /^(#|rgb|hsl|oklch)/i.test(value),
+    swatch: path.startsWith('semantic.color.') && isColor(value),
   };
 }
 

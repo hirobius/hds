@@ -4,13 +4,17 @@ import { useEffect, useState } from 'react';
 import { Button, Popover, SegmentedControl, Stack, Tooltip } from '@hirobius/design-system';
 import { Settings } from '@hirobius/design-system/icons';
 import {
+  ACCENTS,
   CORNERS,
+  DENSITIES,
   SHADOWS,
   DEFAULT_SWITCHES,
   applySwitches,
   readSwitches,
   writeSwitches,
+  type Accent,
   type Corners,
+  type Density,
   type Shadow,
   type Switches,
 } from '../lib/preview-switches';
@@ -20,7 +24,7 @@ const options = <T extends string>(values: readonly T[]) =>
 
 /**
  * Display settings for the docs nav (hds#794): one icon button beside the theme switcher that
- * opens a Popover with the Corners + Shadow preview switches. Persists per viewer. The saved
+ * opens a Popover with the Corners, Shadow, Accent and Density preview switches. Persists per viewer. The saved
  * choice is applied on mount, so it holds whether or not the popover is ever opened.
  */
 export function PreviewSwitches() {
@@ -45,7 +49,7 @@ export function PreviewSwitches() {
         <Tooltip.Trigger asChild>
           <Popover.Trigger asChild>
             <Button
-              variant="secondary"
+              variant="tertiary"
               size="sm"
               iconOnly
               label="Display settings"
@@ -69,6 +73,18 @@ export function PreviewSwitches() {
             options={options(SHADOWS)}
             value={s.shadow}
             onChange={(v) => update({ shadow: v as Shadow })}
+          />
+          <SegmentedControl
+            label="Accent"
+            options={options(ACCENTS)}
+            value={s.accent}
+            onChange={(v) => update({ accent: v as Accent })}
+          />
+          <SegmentedControl
+            label="Density"
+            options={options(DENSITIES)}
+            value={s.density}
+            onChange={(v) => update({ density: v as Density })}
           />
         </Stack>
       </Popover.Content>

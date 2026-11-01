@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Use NavList and NavList.Item for a column of link rows with one marked current, instead of a hand-styled ul of anchors."
+}

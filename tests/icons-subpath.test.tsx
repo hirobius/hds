@@ -12,6 +12,7 @@ import * as icons from '../src/icons';
 import { Ellipsis } from '../src/icons';
 import { Button } from '../src/app/components/button';
 import { Icon } from '../src/app/components/icon';
+import { smokeSubpaths } from '../scripts/lib/smoke-surface.mjs';
 
 const ROOT = resolve(__dirname, '..');
 const read = (rel: string) => readFileSync(resolve(ROOT, rel), 'utf8');
@@ -64,7 +65,9 @@ describe('./icons subpath', () => {
     });
     expect(read('vite.config.lib.ts')).toContain('src/icons.ts');
     expect(JSON.parse(read('tsconfig.dts.json')).include).toContain('src/icons.ts');
-    expect(read('scripts/smoke-consumer.mjs')).toContain("'./icons'");
+    // The smoke derives its subpath lists from exports (hds#458).
+    expect(read('scripts/smoke-consumer.mjs')).toContain('smokeSubpaths(');
+    expect(smokeSubpaths(pkg).imports).toContain('./icons');
   });
 
   it('Button iconOnly renders an svg for an icon from the subpath through Icon', () => {

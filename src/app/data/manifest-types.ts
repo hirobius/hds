@@ -21,7 +21,7 @@
 // ── Building-block types ───────────────────────────────────────────────────────
 
 /** Shape metadata for a single prop as stored in componentSpecs[name].props. */
-export type ManifestPropSpec = {
+type ManifestPropSpec = {
   type?: string;
   values?: Array<string | number | boolean>;
   default?: string | number | boolean;
@@ -29,17 +29,17 @@ export type ManifestPropSpec = {
 };
 
 /** Contract parsed from the @usage / @whenNot / @useInstead JSDoc tags (hds#339). */
-export type ManifestUsage = {
+type ManifestUsage = {
   when?: string;
   whenNot?: string;
   useInstead?: Array<{ component: string; reason?: string }>;
 };
 
 /** One @keyboard JSDoc line: the keys and what they do. */
-export type ManifestKeyboardEntry = { keys: string; effect: string };
+type ManifestKeyboardEntry = { keys: string; effect: string };
 
 /** A named slot declared on a component spec. */
-export type ManifestSlot = {
+type ManifestSlot = {
   name?: string;
   description?: string;
   source?: 'jsdoc';
@@ -47,20 +47,8 @@ export type ManifestSlot = {
   tokenBinding?: Record<string, string>;
 };
 
-/**
- * A documentation row for a single prop as stored in
- * ComponentApiManifest.components[name].props (array, not Record).
- */
-export type ManifestApiPropRow = {
-  name: string;
-  type?: string;
-  default?: string;
-  required?: boolean;
-  description?: string;
-};
-
 /** A role token entry from manifest.tokens.role. */
-export type RoleToken = {
+type RoleToken = {
   path?: string;
   cssVar?: string;
   description?: string;
@@ -73,11 +61,16 @@ export type RoleToken = {
  * A single entry in SystemManifest.componentSpecs (or .utilities).
  * Superset of every field any consumer declares — all fields are optional.
  */
-export type ManifestComponentSpec = {
+type ManifestComponentSpec = {
   category?: string;
   description?: string;
   figmaUrl?: string | null;
   figmaId?: string | null;
+  /**
+   * @deprecated Same URL as `figmaUrl`; read that. Left out of the bundled
+   * `@hirobius/design-system/manifest` entry since 0.33 (hds#413), kept in
+   * public/hds-manifest.json for the repo's tooling.
+   */
   figmaLink?: string | null;
   filePath?: string;
   hidden?: boolean;
@@ -86,6 +79,7 @@ export type ManifestComponentSpec = {
   /** In the ratified core set (hds#254, ADR-031). Present only as `true`; independent of `tier`. */
   core?: true;
   stability?: 'stable' | 'beta';
+  /** HDS repo files that import the component. Not in the bundled `./manifest` entry (hds#413). */
   consumers?: string[];
   tokenMapping?: Record<string, string>;
   preview?: {
@@ -126,42 +120,4 @@ export type SystemManifest = {
     role?: Record<string, RoleToken> | RoleToken[];
     [key: string]: unknown;
   };
-};
-
-// ── ComponentApiManifest types ─────────────────────────────────────────────────
-
-/**
- * A single entry in ComponentApiManifest.components.
- * Uses ManifestApiPropRow[] (array) — distinct from ManifestComponentSpec.props (Record).
- */
-export type ManifestApiComponent = {
-  filePath?: string;
-  category?: string;
-  hidden?: boolean;
-  figmaUrl?: string | null;
-  description?: string;
-  /** In the ratified core set (hds#254, ADR-031). Present only as `true`. */
-  core?: true;
-  usage?: ManifestUsage;
-  keyboard?: ManifestKeyboardEntry[];
-  aiRules?: string;
-  /** Documentation prop rows — array, not a Record. */
-  props?: ManifestApiPropRow[];
-  /** Table only: what each `TableCellSlot` value renders. */
-  cellSlots?: Array<{ name: string; description: string }>;
-  guides?: Array<{
-    label: string;
-    text: string;
-  }>;
-  observedTokens?: Array<{
-    raw: string;
-    tokenPath?: string;
-  }>;
-};
-
-/** The root ComponentApiManifest shape (component-api.json). */
-export type ComponentApiManifest = {
-  generatedAt?: string;
-  source?: string;
-  components?: Record<string, ManifestApiComponent>;
 };

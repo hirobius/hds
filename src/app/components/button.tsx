@@ -1,4 +1,4 @@
-// motion-ok: motion delivered via Tailwind transition-[colors,filter] (colours + the tone hover:brightness filter); the pressed overlay is a token-bound inset shadow that snaps on :active; gate accepts only hds.duration refs
+// motion-ok: motion delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs
 /**
  * @category Actions
  * @tier primitive
@@ -13,6 +13,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';
+import { installWipeListeners } from './button-wipe';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -59,18 +60,26 @@ import { isDevelopment } from '../../lib/env';
 // not on a variant, is what the tone-over-variant contract requires: a
 // `disabled:` class on a variant would become a "must-replace" class every tone
 // would have to drop.
-// Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539).
+// Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539);
+// heights (and the icon-only width) bind `size.<s>.height`, and the label weight binds
+// `component.button.fontWeight`, which beats the hds-type-* role's weight (utilities layer, hds#760).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for transition-[colors,filter]), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-[colors,filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-scale-xs whitespace-nowrap rounded-md [font-weight:var(--component-button-fontWeight)] transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0', // type-ramp-ok: component.button.fontWeight (600) is the button's own label weight over its type role (hds#760)
   {
     variants: {
       variant: {
         primary:
           'bg-primary text-primary-foreground hover:bg-[color:var(--component-button-bgHover)] active:bg-[color:var(--component-button-bgPressed)] active:inset-shadow-transparent',
+        // Soft (tonal) fill, no border (hds#891): component.button.secondary.bg.*. Its 3:1 edge
+        // against the page is the hard shadow (shadow="hard", the default).
         secondary:
-          'border border-input bg-background text-foreground hover:bg-accent hover:border-ring active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent disabled:border-[color:var(--component-button-secondary-border-disabled)]',
-        tertiary: 'text-foreground hover:bg-accent',
+          'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground hover:bg-[color:var(--component-button-secondary-bg-hover)] active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent',
+        // Ghost (C2): transparent at rest, no edge and no movement (shadow is forced off
+        // below); component.button.tertiary.bg.hover (surface.hover) on hover and the
+        // deeper .pressed (surface.soft) on press, wash swapped out like secondary.
+        tertiary:
+          'text-foreground hover:bg-[color:var(--component-button-tertiary-bg-hover)] active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       // Semantic action color. `neutral` (default) keeps the variant's own
       // colors; the status tones apply a token-driven tonal fill (tinted
@@ -101,25 +110,64 @@ const buttonVariants = /* @__PURE__ */ cva(
         info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-info active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
       },
       size: {
-        sm: 'h-8 px-3 hds-type-caption [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
-        md: 'h-10 px-4 py-2 hds-type-ui [&_svg]:size-[var(--component-button-size-md-iconSize)]',
-        lg: 'h-12 px-6 hds-type-ui [&_svg]:size-[var(--component-button-size-lg-iconSize)]',
+        sm: 'h-[var(--component-button-size-sm-height)] px-fixed-xs hds-type-caption hds-touch-row [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
+        md: 'h-[var(--component-button-size-md-height)] px-fixed-sm py-scale-xs hds-type-ui [&_svg]:size-[var(--component-button-size-md-iconSize)]',
+        lg: 'h-[var(--component-button-size-lg-height)] px-fixed-md hds-type-ui [&_svg]:size-[var(--component-button-size-lg-iconSize)]',
       },
       iconOnly: {
         true: 'p-0',
         false: '',
       },
+      // Hover fill. `wipe` (the default since hds#888): the variant's own hover fill
+      // (see the compoundVariants) is drawn by the `.hds-btn-wipe` layer in theme.css
+      // and wipes across from the edge the pointer crosses; the instant hover fill is
+      // swapped out here. `none` opts out: the fill changes in place.
+      hoverEffect: {
+        none: '',
+        wipe: 'hds-btn-wipe relative isolate',
+      },
+      // Hard (zero-blur) edge, theme.css `.hds-btn-hard` (hds#888, C2 fixed base): the face
+      // lifts 1px on hover and sinks 2px on press while the edge under it grows or shrinks
+      // by the same amount. `none` opts out. Tertiary (ghost) never takes it.
+      shadow: {
+        hard: 'hds-btn-hard',
+        none: '',
+      },
     },
     compoundVariants: [
-      { iconOnly: true, size: 'sm', className: 'w-8' },
-      { iconOnly: true, size: 'md', className: 'w-10' },
-      { iconOnly: true, size: 'lg', className: 'w-12' },
+      // wipe x variant (neutral tone only): hold the rest fill on hover; theme.css
+      // `.hds-btn-wipe` paints the variant's hover fill as the wiping layer. A status
+      // tone keeps its own hover classes, and the layer takes the tone fill plus its
+      // hover brightness (theme.css). Tertiary rests transparent and keeps its
+      // own pressed fill (the layer hides on :active so the press shows).
+      { hoverEffect: 'wipe', tone: 'neutral', variant: 'primary', className: 'hover:bg-primary' },
+      {
+        hoverEffect: 'wipe',
+        tone: 'neutral',
+        variant: 'secondary',
+        className: 'hover:bg-[color:var(--component-button-secondary-bg-rest)]',
+      },
+      {
+        hoverEffect: 'wipe',
+        tone: 'neutral',
+        variant: 'tertiary',
+        className: 'hover:bg-transparent',
+      },
+      {
+        iconOnly: true,
+        size: 'sm',
+        className: 'w-[var(--component-button-size-sm-height)] hds-touch-target',
+      },
+      { iconOnly: true, size: 'md', className: 'w-[var(--component-button-size-md-height)]' },
+      { iconOnly: true, size: 'lg', className: 'w-[var(--component-button-size-lg-height)]' },
     ],
     defaultVariants: {
       variant: 'secondary',
       tone: 'neutral',
       size: 'md',
       iconOnly: false,
+      hoverEffect: 'wipe',
+      shadow: 'hard',
     },
   },
 );
@@ -138,9 +186,13 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
-    Omit<ButtonVariantProps, 'iconOnly'> {
-  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (an outline), so pass `primary` for the main action. */
+    Omit<ButtonVariantProps, 'iconOnly' | 'hoverEffect' | 'shadow'> {
+  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (a soft tonal fill), so pass `primary` for the main action. */
   variant?: ButtonVariantProps['variant'];
+  /** `wipe` (default) slides the hover fill in from the pointer's edge; `none` changes it in place. */
+  hoverEffect?: 'none' | 'wipe';
+  /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. Its colour is the button's own fill stepped darker (`--hds-btn-edge` overrides it). */
+  shadow?: 'hard' | 'none';
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */
@@ -198,6 +250,8 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       tone,
       size,
       iconOnly = false,
+      hoverEffect = 'wipe',
+      shadow = 'hard',
       asChild = false,
       label,
       loading = false,
@@ -210,13 +264,22 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       defaultPressed,
       onPressedChange,
       onClick,
+      style,
       ...props
     },
     ref,
   ) {
     const isDisabled = disabled || loading;
-    const content = children ?? label;
-
+    const wipe = hoverEffect === 'wipe';
+    React.useEffect(() => {
+      if (wipe) installWipeListeners();
+    }, [wipe]);
+    // The wipe layer's fill (theme.css `.hds-btn-wipe`) is the variant's own hover fill:
+    // a status tone's fill through its hover brightness (--hds-wipe-f), primary's
+    // component.button.bgHover, secondary's component.button.secondary.bg.hover, or
+    // tertiary's component.button.tertiary.bg.hover; a pressed neutral toggle paints
+    // bg-primary, so it takes primary's hover fill. Inline, so the shipped CSS has no
+    // per-variant rules; a consumer `style` still wins.
     // A toggle (hds#393): any of the three pressed props makes this a toggle
     // button; `pressed` controls it, otherwise it keeps its own state. The
     // state goes out as aria-pressed and data-pressed (data-state is loading's).
@@ -224,6 +287,42 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
     const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
     const isPressed = pressedProp ?? ownPressed;
+    const hasTone = tone != null && tone !== 'neutral';
+    // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#897): the fill it sits under,
+    // stepped darker and precomputed as --hds-edge-<key>; the keys are the tone names plus
+    // primary and secondary (a pressed neutral toggle paints bg-primary, so it takes primary's
+    // edge). --hds-btn-edge still overrides.
+    const edgeKey = hasTone
+      ? tone
+      : variant === 'primary' || (isToggle && isPressed)
+        ? 'primary'
+        : 'secondary';
+    const edge =
+      shadow === 'hard' && variant !== 'tertiary'
+        ? { '--hds-edge': `var(--hds-edge-${edgeKey})` }
+        : null;
+    const wipeProps = wipe
+      ? {
+          'data-hover-effect': 'wipe',
+          style: {
+            ...edge,
+            '--hds-wipe-fill': hasTone
+              ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
+              : edgeKey === 'primary'
+                ? 'var(--component-button-bgHover)'
+                : variant === 'tertiary'
+                  ? 'var(--component-button-tertiary-bg-hover)'
+                  : 'var(--component-button-secondary-bg-hover)',
+            ...(hasTone && {
+              filter: 'none',
+              '--hds-wipe-f': 'brightness(var(--hds-wipe-b, 0.95))',
+            }),
+            ...style,
+          } as React.CSSProperties,
+        }
+      : { style: edge ? ({ ...edge, ...style } as React.CSSProperties) : style };
+    const content = children ?? label;
+
     const toggleProps = isToggle
       ? {
           'aria-pressed': isPressed,
@@ -242,10 +341,16 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // their attribute selector would outrank the tone on specificity; a toned
     // toggle therefore leaves them out, which renders what the old `!` tone
     // did (its important declarations hid them). aria-pressed still reports it.
-    const hasStatusTone = tone != null && tone !== 'neutral';
     const classes = cn(
-      buttonVariants({ variant, tone, size, iconOnly }),
-      isToggle && !hasStatusTone && toggleOnClasses,
+      buttonVariants({
+        variant,
+        tone,
+        size,
+        iconOnly,
+        hoverEffect,
+        shadow: variant === 'tertiary' ? 'none' : shadow,
+      }),
+      isToggle && !hasTone && toggleOnClasses,
       className,
     );
 
@@ -268,6 +373,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           data-variant={variant ?? undefined}
           data-tone={tone ?? undefined}
           data-size={size ?? undefined}
+          {...wipeProps}
           {...(toggleProps as React.HTMLAttributes<HTMLElement>)}
           {...(props as React.HTMLAttributes<HTMLElement>)}
         >
@@ -314,6 +420,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         data-variant={variant ?? undefined}
         data-tone={tone ?? undefined}
         data-size={size ?? undefined}
+        {...wipeProps}
         className={classes}
         {...toggleProps}
         {...props}

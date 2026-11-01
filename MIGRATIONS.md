@@ -88,15 +88,16 @@ the extra one a second import statement in a file that already imports Page.
   `semantic.space.scale.{xs,sm,md,lg,xl}` (8/16/24/32/48px). The old names
   keep computing exactly what they did, at both densities, and carry
   `$deprecated` in `hirobius.tokens.json`.
-- **Removed in:** not yet, and not in 0.20.0. Before 1.0 it may go in a 0.x
-  minor (step 4), but no window is set: steps 2 and 3 come first, and removing
-  the token paths also deletes their Figma variables.
+- **Removed in:** 0.33.0 (hds#625) for the seven token paths below, and
+  `semantic.color.border.subdued` with them. Box `sx`'s `'tight'` to
+  `'spacious'` stay, deprecated, and now read the scale steps.
 - **Warning:** in a development build, Box `sx`'s `'tight'` to `'spacious'`
   each log one `[HDS deprecation]` console warning naming the step to use.
   Production builds stay silent. The token paths cannot warn at runtime.
-- **Codemod:** `scripts/codemod-spacing-vocabulary.mjs` rewrites the token
-  references below, but only inside HDS's own `src/`. A consumer codemod in
-  `codemods/` with `--root`, `--check` and `--dry-run` does not exist yet.
+- **Codemod:** `npx -p @hirobius/design-system@^0.33.0 hds-token-aliases`
+  (`--root`, `--check`, `--dry-run`) rewrites the CSS variables, JS and DTCG
+  paths, Tailwind spacing utilities (`p-layout-tight` to `p-scale-sm`) and
+  Box `sx` `'border.subdued'` below.
 
 | Old                                                  | New                                |
 | ---------------------------------------------------- | ---------------------------------- |
@@ -107,6 +108,7 @@ the extra one a second import statement in a file that already imports Page.
 | `semantic.space.layout.spacious`                     | `semantic.space.scale.xl`          |
 | `semantic.space.component.padding`                   | `semantic.space.surface.padding`   |
 | `semantic.space.layout.gutter`                       | `semantic.space.region.gutter`     |
+| `semantic.color.border.subdued`                      | `semantic.color.border.default`    |
 | Box `sx` `'tight'` `'normal'` `'inset'` `'spacious'` | `'sm'` `'md'` `'lg'` `'xl'`        |
 | Box `sx` integer `2` `4` `6` `8` `12` (4px units)    | `'xs'` `'sm'` `'md'` `'lg'` `'xl'` |
 
@@ -115,20 +117,17 @@ The CSS variables follow the paths (`--semantic-space-layout-tight` becomes
 scale steps: tenants and `theme.css` override them at runtime, always with a
 scale step.
 
-Compact density: each swap in the table is pixel-identical at the default
-density, but not under `data-density="compact"`. `component.gap`,
-`layout.tight|normal|inset|spacious`, Box `sx`'s `'tight'` to `'spacious'` and
-Box `sx` integers are fixed pixels. The `scale.*` steps that replace them
-tighten one step under compact (8, 16, 24, 32, 48px become 6, 12, 20, 24,
-40px). Moving to the scale therefore tightens compact screens, the way Stack's
-gaps already do. To keep the old compact pixels exactly, use the fixed step
-instead: `hds.space.px8|px16|px24|px32|px48`, or
+Each swap in the table computes the same pixels at both densities: by 0.32.0
+the removed aliases already carried the scale's compact values. The one change
+is `border.subdued` in Dark, which was neutral.800 and is now border.default's
+neutral.600; Light is the same graphite.200. Box `sx` integers stay fixed
+pixels; the `scale.*` steps that replace them tighten under compact. To keep
+fixed pixels exactly, use `hds.space.px8|px16|px24|px32|px48` or
 `--primitive-space-2|4|6|8|12`.
 
 Stack's `gap` keeps its old names for now, because its `'xs'` is the 2px
 subgrid step, not `scale.xs`. Its `'tight'` to `'spacious'` read the scale
-steps, so unlike Box `sx`'s same four names they tighten under compact. That
-difference stays until both sets of names are removed. Stack's numbers (raw px)
+steps, as Box `sx`'s same four names now do. Stack's numbers (raw px)
 and anything else untyped callers pass render what they did before.
 
 Upgrade first: Box `sx` takes `'xs'` to `'xl'` only from the first release after
@@ -188,6 +187,33 @@ tile 2px larger and move its content 1px in.
 | `trailing`       | `Card.Row`'s `trailing`                                                       |
 | `tone`           | nothing: drop it (it set only a `data-hds-metrics` attribute)                 |
 | `StatusTileTone` | your own union, or `BadgeProps['tone']` when it feeds a Badge's tone          |
+
+## Before 0.16.0: what the upgrade command now covers (hds#462)
+
+The upgrade command upgrades from 0.9.0 on. The 0.10.0 to 0.16.0 releases
+shipped before the cycle above existed, so their breaking changes had no
+deprecation window and no codemod. Their ledgers were written afterwards from
+each CHANGELOG entry and its commit (`upgrade/releases/0.10.0.json` to
+`0.16.0.json`), and the command reports each change your code meets:
+
+| Release | Change                                                                                                          | What to do                                                                            |
+| ------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| 0.10.0  | `@hirobius/design-system/protocol` is removed                                                                   | copy the envelope module from the `archive/figma-bridge` branch                       |
+| 0.12.0  | `Stat` and `Field` drop `tone="default"`; `StatTone` and `FieldTone` are removed                                | pass `tone="neutral"`; use `StatProps['tone']`, `FieldProps['tone']`                  |
+| 0.12.0  | `Card`'s `tone` splits into `variant` and `tone`; `Card.Progress` and `Card.Metric` drop `default` and `accent` | `tone="default"`/`"accent"` on Card becomes `variant`; on the parts, `tone="neutral"` |
+| 0.12.0  | 12 component families lose the `Hds` prefix (`HdsAlertDialog` becomes `AlertDialog`)                            | import the bare name                                                                  |
+| 0.12.0  | `InfoPage` is removed                                                                                           | delete the code that uses it                                                          |
+| 0.14.0  | `TenantProvider` takes the tenant as a `slug` prop                                                              | pass `slug`                                                                           |
+| 0.16.0  | six unused primitive typography tokens are removed                                                              | replace each `var()` with your own value                                              |
+
+The 0.12.0 CHANGELOG entry for the `Hds` prefix rename says
+the families had "zero external consumers". Nobody checked that against the
+fleet: when hds#462 was filed, several hirobius repos still pinned ranges from
+`^0.9` to `^0.15`. The published tarballs settle the rename itself: none of
+them exports an `Hds`-prefixed name of those families, so it reaches only code
+built against unpublished HDS. A consumer claim is checked with `pnpm
+upgrade:consumers` ([Who is a consumer](https://github.com/hirobius/hds/blob/main/upgrade/README.md#who-is-a-consumer))
+before it justifies a break.
 
 ## 0.20.0 removals (2026-10-01)
 
@@ -364,7 +390,7 @@ HoverCard also leave the curated core set; with Menu, Popover, Tooltip and HdsRo
 | `cmdkDescriptionVariants`   | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `cmdkKindBadgeVariants`     | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `cmdkRowVariants`           | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
-| `CommandPalette`            | `/patterns` | No replacement; the command palette is dropped.                                                                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
+| `CommandPalette`            | `/patterns` | No replacement in 0.20.0. A new root `CommandPalette` (hds#638) takes `items` and `onSelect`; it is not a drop-in.                              | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `CommandPaletteProps`       | `/patterns` | No replacement; dropped with `CommandPalette`.                                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `ContextMenu`               | root        | No replacement; the right-click menu is dropped. `Menu` covers a menu behind a visible trigger.                                                 | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |
 | `DateInput`                 | root        | The date picker is dropped (ADR-034). Use `Input type="date"`.                                                                                  | none: no consumer imports it; `hds-patterns-subpath --check` reports an import |

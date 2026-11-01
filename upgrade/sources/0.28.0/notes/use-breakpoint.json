@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "If you read HDS breakpoints through your own matchMedia hook, swap it for useAtLeast or useBreakpoint from the package root."
+}

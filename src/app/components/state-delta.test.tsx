@@ -20,14 +20,6 @@ const MODES = ['Light', 'Dark'] as const;
 // 1.05:1 is well past a 1/255 step (~1.01) and below the smallest step the
 // system ships today; raise it, never lower it.
 const MIN_RATIO = 1.05;
-// Known pairs under the floor, tracked in hds#769. Each must still be under it:
-// once one is fixed this fails, so the entry gets removed (a ratchet, not a skip).
-const KNOWN_UNDER = new Set([
-  'semantic.color.surface.pressed Light',
-  'component.button.secondary.bg.pressed Light',
-  'component.button.secondary.border.pressed Light',
-  'component.button.secondary.border.pressed Dark',
-]);
 
 const at = (path: string): Node => {
   let node: unknown = tokens;
@@ -100,11 +92,9 @@ describe('interactive state tokens differ step to step', () => {
   for (const { steps } of sets) {
     for (let i = 1; i < steps.length; i++) {
       for (const mode of MODES) {
-        const known = KNOWN_UNDER.has(`${steps[i]} ${mode}`);
-        it(`${steps[i - 1]} → ${steps[i]} (${mode}) is at least ${MIN_RATIO}:1 apart${known ? ' (known under, hds#769)' : ''}`, () => {
+        it(`${steps[i - 1]} → ${steps[i]} (${mode}) is at least ${MIN_RATIO}:1 apart`, () => {
           const r = ratio(resolve(steps[i - 1], mode), resolve(steps[i], mode));
-          if (known) expect(r, 'fixed: remove it from KNOWN_UNDER').toBeLessThan(MIN_RATIO);
-          else expect(r).toBeGreaterThanOrEqual(MIN_RATIO);
+          expect(r).toBeGreaterThanOrEqual(MIN_RATIO);
         });
       }
     }
@@ -120,7 +110,13 @@ describe('Button pressed fill differs from its hover fill', () => {
 
   for (const variant of VARIANTS) {
     it(`${variant}: a hover fill token implies a distinct pressed fill token in both themes`, () => {
-      const { getByRole } = render(<Button variant={variant}>Go</Button>);
+      // hoverEffect="none": the instant hover fill this pairs with the pressed fill (the default
+      // wipe holds the rest fill on hover and paints bg.hover on its layer instead).
+      const { getByRole } = render(
+        <Button variant={variant} hoverEffect="none">
+          Go
+        </Button>,
+      );
       const classes = getByRole('button').className.split(/\s+/);
       const hover = fillVar(classes, 'hover');
       if (!hover) return; // hover is a utility class, not a bound token

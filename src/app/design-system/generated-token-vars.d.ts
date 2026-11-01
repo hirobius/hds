@@ -19,9 +19,13 @@ declare module 'react' {
     '--primitive-color-neutral-400'?: string | undefined;
     '--primitive-color-neutral-450'?: string | undefined;
     '--primitive-color-neutral-500'?: string | undefined;
+    '--primitive-color-neutral-550'?: string | undefined;
     '--primitive-color-neutral-600'?: string | undefined;
     '--primitive-color-neutral-700'?: string | undefined;
+    '--primitive-color-neutral-725'?: string | undefined;
+    '--primitive-color-neutral-750'?: string | undefined;
     '--primitive-color-neutral-800'?: string | undefined;
+    '--primitive-color-neutral-825'?: string | undefined;
     '--primitive-color-neutral-850'?: string | undefined;
     '--primitive-color-neutral-900'?: string | undefined;
     '--primitive-color-neutral-950'?: string | undefined;
@@ -67,12 +71,19 @@ declare module 'react' {
     '--primitive-color-cobalt-700'?: string | undefined;
     '--primitive-color-cobalt-800'?: string | undefined;
     '--primitive-color-cobalt-900'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-50'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-100'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-200'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-300'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-400'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-600'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--primitive-color-lime-800'?: string | undefined;
     '--primitive-color-mauve-50'?: string | undefined;
     '--primitive-color-mauve-100'?: string | undefined;
@@ -115,6 +126,7 @@ declare module 'react' {
     '--primitive-color-projectBrand-microsoftGameDev-100'?: string | undefined;
     '--primitive-color-projectBrand-microsoftGameDev-500'?: string | undefined;
     '--primitive-color-projectBrand-microsoftGameDev-900'?: string | undefined;
+    '--primitive-color-shadow-ink'?: string | undefined;
     '--primitive-space-0'?: string | undefined;
     '--primitive-space-1'?: string | undefined;
     '--primitive-space-2'?: string | undefined;
@@ -139,27 +151,36 @@ declare module 'react' {
     '--primitive-radius-0'?: string | undefined;
     '--primitive-radius-2'?: string | undefined;
     '--primitive-radius-4'?: string | undefined;
+    '--primitive-radius-6'?: string | undefined;
     '--primitive-radius-8'?: string | undefined;
     '--primitive-radius-12'?: string | undefined;
+    '--primitive-radius-16'?: string | undefined;
+    '--primitive-radius-24'?: string | undefined;
     '--primitive-radius-full'?: string | undefined;
     '--primitive-typography-family-primary'?: string | undefined;
     '--primitive-typography-family-display'?: string | undefined;
     '--primitive-typography-family-mono'?: string | undefined;
     '--primitive-typography-size-xs'?: string | undefined;
+    '--primitive-typography-size-compactCaption'?: string | undefined;
     '--primitive-typography-size-sm'?: string | undefined;
     '--primitive-typography-size-base'?: string | undefined;
+    '--primitive-typography-size-compactBody'?: string | undefined;
     '--primitive-typography-size-lg'?: string | undefined;
     '--primitive-typography-size-xl'?: string | undefined;
     '--primitive-typography-size-2xl'?: string | undefined;
+    '--primitive-typography-size-title'?: string | undefined;
     '--primitive-typography-size-3xl'?: string | undefined;
     '--primitive-typography-size-4xl'?: string | undefined;
     '--primitive-typography-size-5xl'?: string | undefined;
+    '--primitive-typography-size-display'?: string | undefined;
     '--primitive-typography-size-6xl'?: string | undefined;
     '--primitive-typography-size-code'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;
     '--primitive-typography-weight-medium'?: string | undefined;
+    '--primitive-typography-weight-semibold'?: string | undefined;
     '--primitive-typography-weight-bold'?: string | undefined;
     '--primitive-typography-weight-display'?: string | undefined;
+    '--primitive-typography-weight-mono'?: string | undefined;
     '--primitive-typography-lineHeight-compact'?: string | undefined;
     '--primitive-typography-lineHeight-none'?: string | undefined;
     '--primitive-typography-lineHeight-tight'?: string | undefined;
@@ -189,10 +210,14 @@ declare module 'react' {
     '--primitive-size-12'?: string | undefined;
     '--primitive-size-16'?: string | undefined;
     '--primitive-size-20'?: string | undefined;
+    '--primitive-size-22'?: string | undefined;
     '--primitive-size-24'?: string | undefined;
     '--primitive-size-32'?: string | undefined;
+    '--primitive-size-36'?: string | undefined;
     '--primitive-size-40'?: string | undefined;
+    '--primitive-size-44'?: string | undefined;
     '--primitive-size-48'?: string | undefined;
+    '--primitive-size-52'?: string | undefined;
     '--primitive-size-64'?: string | undefined;
     '--primitive-size-80'?: string | undefined;
     '--primitive-size-96'?: string | undefined;
@@ -211,6 +236,7 @@ declare module 'react' {
     '--primitive-zIndex-10'?: string | undefined;
     '--primitive-zIndex-100'?: string | undefined;
     '--primitive-zIndex-1000'?: string | undefined;
+    '--primitive-underline-offset'?: string | undefined;
     '--primitive-borderWidth-xs'?: string | undefined;
     '--primitive-borderWidth-sm'?: string | undefined;
     '--primitive-borderWidth-md'?: string | undefined;
@@ -226,6 +252,7 @@ declare module 'react' {
     '--semantic-color-surface-page'?: string | undefined;
     '--semantic-color-surface-raised'?: string | undefined;
     '--semantic-color-surface-overlay'?: string | undefined;
+    '--semantic-color-surface-floating'?: string | undefined;
     '--semantic-color-surface-scrim'?: string | undefined;
     '--semantic-color-surface-inverse'?: string | undefined;
     '--semantic-color-surface-accent'?: string | undefined;
@@ -235,6 +262,8 @@ declare module 'react' {
     '--semantic-color-surface-selected'?: string | undefined;
     '--semantic-color-surface-muted'?: string | undefined;
     '--semantic-color-surface-sunken'?: string | undefined;
+    '--semantic-color-surface-soft'?: string | undefined;
+    '--semantic-color-surface-softHover'?: string | undefined;
     '--semantic-color-content-primary'?: string | undefined;
     '--semantic-color-content-secondary'?: string | undefined;
     '--semantic-color-content-tertiary'?: string | undefined;
@@ -247,12 +276,12 @@ declare module 'react' {
     '--semantic-color-content-danger'?: string | undefined;
     '--semantic-color-border-default'?: string | undefined;
     '--semantic-color-border-interactive'?: string | undefined;
-    '--semantic-color-border-subdued'?: string | undefined;
     '--semantic-color-border-subtle'?: string | undefined;
     '--semantic-color-border-strong'?: string | undefined;
     '--semantic-color-border-accent'?: string | undefined;
     '--semantic-color-border-success'?: string | undefined;
     '--semantic-color-border-warning'?: string | undefined;
+    '--semantic-color-shadow-hard'?: string | undefined;
     '--semantic-color-feedback-error'?: string | undefined;
     '--semantic-color-feedback-success'?: string | undefined;
     '--semantic-color-feedback-warning'?: string | undefined;
@@ -264,32 +293,32 @@ declare module 'react' {
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
     '--semantic-color-state-pressed-overlay'?: string | undefined;
+    '--semantic-space-scale-2xs'?: string | undefined;
     '--semantic-space-scale-xs'?: string | undefined;
     '--semantic-space-scale-sm'?: string | undefined;
     '--semantic-space-scale-md'?: string | undefined;
     '--semantic-space-scale-lg'?: string | undefined;
     '--semantic-space-scale-xl'?: string | undefined;
+    '--semantic-space-fixed-2xs'?: string | undefined;
+    '--semantic-space-fixed-xs'?: string | undefined;
+    '--semantic-space-fixed-sm'?: string | undefined;
+    '--semantic-space-fixed-md'?: string | undefined;
+    '--semantic-space-fixed-lg'?: string | undefined;
+    '--semantic-space-fixed-xl'?: string | undefined;
     '--semantic-space-surface-padding'?: string | undefined;
     '--semantic-space-region-gutter'?: string | undefined;
     '--semantic-space-subgrid-hairline'?: string | undefined;
     '--semantic-space-subgrid-xs'?: string | undefined;
     '--semantic-space-subgrid-gap'?: string | undefined;
-    '--semantic-space-component-gap'?: string | undefined;
     '--semantic-space-component-medium'?: string | undefined;
-    '--semantic-space-component-padding'?: string | undefined;
-    '--semantic-space-layout-tight'?: string | undefined;
-    '--semantic-space-layout-normal'?: string | undefined;
-    '--semantic-space-layout-gutter'?: string | undefined;
-    '--semantic-space-layout-inset'?: string | undefined;
-    '--semantic-space-layout-spacious'?: string | undefined;
     '--semantic-space-section-stack'?: string | undefined;
     '--semantic-space-section-inset'?: string | undefined;
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) @removeIn 1.0.0 */
     '--semantic-space-section-heroMax'?: string | undefined;
     '--semantic-space-sidebar-indent'?: string | undefined;
     '--semantic-space-sidebar-gap'?: string | undefined;
     '--semantic-space-sidebar-sectionGap'?: string | undefined;
     '--semantic-space-sidebar-railPadding'?: string | undefined;
-    '--semantic-space-sidebar-railWidth'?: string | undefined;
     '--semantic-layout-width-content'?: string | undefined;
     '--semantic-layout-width-max'?: string | undefined;
     '--semantic-layout-container-maxWidth'?: string | undefined;
@@ -338,29 +367,51 @@ declare module 'react' {
     '--semantic-typography-mono-letter-spacing'?: string | undefined;
     '--semantic-typography-mono-line-height'?: string | undefined;
     '--semantic-typography-mono-max-width'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-family'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-size'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-font-weight'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h1-line-height'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-family'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-size'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-font-weight'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h2-line-height'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-family'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-size'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-font-weight'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
     '--semantic-typography-h3-line-height'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-family'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-size'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-font-weight'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-letter-spacing'?: string | undefined;
+    /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-line-height'?: string | undefined;
     '--semantic-typography-lineHeight-none'?: string | undefined;
     '--semantic-docs-space-section'?: string | undefined;
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) @removeIn 1.0.0 */
     '--semantic-docs-space-paragraph'?: string | undefined;
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0 */
     '--semantic-docs-space-inline'?: string | undefined;
     '--semantic-accent-rest'?: string | undefined;
     '--semantic-accent-hover'?: string | undefined;
@@ -370,14 +421,25 @@ declare module 'react' {
     '--semantic-accent-content'?: string | undefined;
     '--semantic-accent-contentHover'?: string | undefined;
     '--semantic-accent-subtle'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-base'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-deep'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-pale'?: string | undefined;
+    /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
     '--semantic-accent-delight-onDelight'?: string | undefined;
     '--semantic-radius-action'?: string | undefined;
     '--semantic-radius-control'?: string | undefined;
+    '--semantic-radius-scale-sm'?: string | undefined;
+    '--semantic-radius-scale-md'?: string | undefined;
+    '--semantic-radius-scale-lg'?: string | undefined;
+    '--semantic-radius-scale-xl'?: string | undefined;
+    '--semantic-radius-scale-pill'?: string | undefined;
     '--semantic-borderWidth-default'?: string | undefined;
     '--semantic-borderWidth-emphasis'?: string | undefined;
+    '--semantic-link-underlineThickness'?: string | undefined;
+    '--semantic-link-underlineOffset'?: string | undefined;
     '--semantic-shadow-subtle'?: string | undefined;
     '--semantic-shadow-floating'?: string | undefined;
     '--semantic-shadow-overlay'?: string | undefined;
@@ -400,18 +462,12 @@ declare module 'react' {
     '--semantic-size-icon-md'?: string | undefined;
     '--semantic-size-icon-lg'?: string | undefined;
     '--semantic-size-avatar'?: string | undefined;
+    '--semantic-size-touchTarget'?: string | undefined;
     '--semantic-size-tile'?: string | undefined;
     '--semantic-size-row-compact'?: string | undefined;
     '--semantic-size-row-comfortable'?: string | undefined;
     '--semantic-zIndex-control'?: string | undefined;
     '--semantic-zIndex-sticky'?: string | undefined;
-    '--component-nav-bg'?: string | undefined;
-    '--component-nav-bgActive'?: string | undefined;
-    '--component-nav-borderActive'?: string | undefined;
-    '--component-nav-text'?: string | undefined;
-    '--component-nav-textActive'?: string | undefined;
-    '--component-nav-height'?: string | undefined;
-    '--component-nav-paddingX'?: string | undefined;
     '--component-nav-paddingY'?: string | undefined;
     '--component-tag-background'?: string | undefined;
     '--component-tag-text'?: string | undefined;
@@ -430,7 +486,9 @@ declare module 'react' {
     '--component-tag-activeHover'?: string | undefined;
     '--component-badge-fontSize'?: string | undefined;
     '--component-badge-fontWeight'?: string | undefined;
+    /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
     '--component-badge-text'?: string | undefined;
+    /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
     '--component-badge-bg'?: string | undefined;
     '--component-badge-neutral-bg'?: string | undefined;
     '--component-badge-neutral-text'?: string | undefined;
@@ -448,6 +506,7 @@ declare module 'react' {
     '--component-badge-height'?: string | undefined;
     '--component-badge-minWidth'?: string | undefined;
     '--component-badge-paddingY'?: string | undefined;
+    '--component-badge-paddingShift'?: string | undefined;
     '--component-badge-paddingX'?: string | undefined;
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;
@@ -456,6 +515,7 @@ declare module 'react' {
     '--component-button-radius'?: string | undefined;
     '--component-button-paddingX'?: string | undefined;
     '--component-button-paddingY'?: string | undefined;
+    '--component-button-fontWeight'?: string | undefined;
     '--component-button-size-sm-paddingX'?: string | undefined;
     '--component-button-size-sm-paddingY'?: string | undefined;
     '--component-button-size-sm-fontSize'?: string | undefined;
@@ -479,11 +539,14 @@ declare module 'react' {
     '--component-button-secondary-bg-rest'?: string | undefined;
     '--component-button-secondary-bg-hover'?: string | undefined;
     '--component-button-secondary-bg-pressed'?: string | undefined;
+    /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
     '--component-button-secondary-border-rest'?: string | undefined;
     '--component-button-secondary-border-hover'?: string | undefined;
-    '--component-button-secondary-border-pressed'?: string | undefined;
+    /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
     '--component-button-secondary-border-disabled'?: string | undefined;
     '--component-button-secondary-text'?: string | undefined;
+    '--component-button-tertiary-bg-hover'?: string | undefined;
+    '--component-button-tertiary-bg-pressed'?: string | undefined;
     '--component-input-bg'?: string | undefined;
     '--component-input-text'?: string | undefined;
     '--component-input-border'?: string | undefined;
@@ -497,7 +560,6 @@ declare module 'react' {
     '--component-card-padding'?: string | undefined;
     '--component-card-gap'?: string | undefined;
     '--component-inlineCode-bg'?: string | undefined;
-    '--component-lightbox-backdrop-blur'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;
     '--role-card'?: string | undefined;

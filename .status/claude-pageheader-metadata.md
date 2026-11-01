@@ -1,0 +1,1 @@
+- PageHeader `metadata` slot (hds#870, epic #863): Badge row above the title; `status` stays the single state. Figma lane follow-up: add a Metadata slot to the PageHeader component (not edited here).

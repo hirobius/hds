@@ -1,0 +1,1 @@
+Pagination: `variant="compact"` ("‹ 1 of 4 ›") for Roleforge item paging (#867, epic #863). Figma follow-up: add a Variant=Compact to the Pagination component (Figma lane, see #540); the Figma file is untouched.

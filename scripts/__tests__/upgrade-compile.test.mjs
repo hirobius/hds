@@ -11,6 +11,7 @@
  * hand from the fixture ledgers, not recomputed the way the compiler does.
  */
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import { NO_BACKPORTS, rollbackLines } from '../upgrade/rollback.mjs';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -185,6 +186,7 @@ const STATUS = { updatedAt: '2026-10-01T00:00:00Z', phase: 'active', headline: '
 function historyRepo({
   command = false,
   ledgers = [LEDGER_0_11, LEDGER_0_12, LEDGER_0_12_1],
+  kept = null,
 } = {}) {
   const root = mkdtempSync(join(tmpdir(), 'hds-compile-'));
   temps.push(root);
@@ -197,6 +199,7 @@ function historyRepo({
     write(root, `docs/api/releases/${ledger.version}.json`, '{}\n');
     write(root, `upgrade/releases/${ledger.version}.json`, json(ledger));
   }
+  if (kept) write(root, 'upgrade/kept.json', json({ kept }));
   write(root, 'status.json', json(STATUS));
   return root;
 }
@@ -260,6 +263,14 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
         '3. Then work through its Do by hand list.',
         '',
         'This file covers every release after 0.10.0; from an older version, first reach 0.10.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.',
+        '',
+        '## If a release is bad',
+        '',
+        'A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` points back at the last good version. If you took it:',
+        '',
+        ...rollbackLines(),
+        '',
+        NO_BACKPORTS,
         '',
         '## 0.12.1',
         '',
@@ -398,7 +409,15 @@ describe('the list a step lands in: kind, impact and auto alone', () => {
       'exports',
       'tenant',
     ];
-    const lookToHand = ['removed', 'moved', 'renamed', 'folded', 'manual'];
+    const lookToHand = [
+      'removed',
+      'moved',
+      'renamed',
+      'folded',
+      'prop-renamed',
+      'prop-value-mapped',
+      'manual',
+    ];
     expect([...lookKeepsNames, ...lookToHand, 'deprecated'].sort()).toEqual([...STEP_KINDS].sort());
     for (const kind of STEP_KINDS) {
       for (const impact of IMPACTS) {
@@ -505,6 +524,61 @@ describe('a deprecation a later release takes away completely', () => {
         '',
       ].join('\n'),
     );
+  });
+});
+
+describe('a deprecation its removeIn release keeps', () => {
+  // 0.12.0 ships, but takes none of old-space away: the removal was cancelled.
+  const deprecations = {
+    ...LEDGER_0_11,
+    steps: [
+      {
+        id: '0.11.0/deprecated/old-space',
+        kind: 'deprecated',
+        impact: 'none',
+        plain: 'The --old-space variable still works but is deprecated; use --space-md.',
+        detect: { cssVars: ['--old-space'] },
+        removeIn: '0.12.0',
+        source: 'x',
+      },
+    ],
+  };
+  const KEPT = {
+    '0.11.0/deprecated/old-space': {
+      in: '0.12.0',
+      plain:
+        'The --old-space variable was deprecated in 0.11.0; its removal in 0.12.0 was cancelled, so it stays.',
+    },
+  };
+  const repo = () => historyRepo({ ledgers: [deprecations, LEDGER_0_12], kept: KEPT });
+
+  it('leaves it out of upgrade/index.json', () => {
+    const { index } = compileOutputs({ repo: repo() });
+    expect(JSON.parse(index).deprecated.map((d) => d.step)).not.toContain(
+      '0.11.0/deprecated/old-space',
+    );
+  });
+
+  it('says in Coming next that the removal was cancelled, in the words upgrade/kept.json gives', () => {
+    expect(compileOutputs({ repo: repo() }).upgrading).toContain(
+      '- The --old-space variable was deprecated in 0.11.0; its removal in 0.12.0 was cancelled, so it stays.',
+    );
+  });
+
+  it('does not infer a keep from a release that merely left it: only the record keeps it', () => {
+    const { index } = compileOutputs({
+      repo: historyRepo({ ledgers: [deprecations, LEDGER_0_12] }),
+    });
+    expect(JSON.parse(index).deprecated.map((d) => d.step)).toContain(
+      '0.11.0/deprecated/old-space',
+    );
+  });
+
+  it('is still Coming next while its removeIn has not shipped', () => {
+    const { index } = compileOutputs({ repo: historyRepo({ ledgers: [deprecations] }) });
+    expect(JSON.parse(index).deprecated.map((d) => d.step)).toEqual([
+      '0.11.0/deprecated/old-space',
+    ]);
   });
 });
 
@@ -1178,6 +1252,35 @@ describe('compile.mjs --release, right after changeset version', () => {
       css: contract,
     });
   });
+
+  // hds#449: the utilities a release shipped stay emitted after it.
+  it('rewrites the utility safelist from the snapshot it records, when the tree has one', () => {
+    const root = versionedRepo();
+    const contract = {
+      format: 1,
+      bundles: {
+        './styles.css': {
+          classes: ['hds-focus', 'pt-1'],
+          fontFaces: [],
+          layers: [],
+          variables: {},
+        },
+      },
+      publicClasses: [],
+    };
+    write(root, 'dist/css-contract.json', `${JSON.stringify(contract)}\n`);
+    write(root, 'src/styles/utility-safelist.generated.css', '/* before the release */\n');
+    const res = run(['--release', '--date', '2026-10-08', '--repo', root]);
+    expect(res.status, res.stderr).toBe(0);
+    const safelist = read(root, 'src/styles/utility-safelist.generated.css');
+    expect(safelist).toContain('docs/api/releases/0.21.0.json');
+    expect(safelist).toContain('@source inline("pt-1");');
+    expect(safelist).not.toContain('hds-focus');
+
+    const without = versionedRepo();
+    expect(run(['--release', '--date', '2026-10-08', '--repo', without]).status).toBe(0);
+    expect(existsSync(join(without, 'src/styles/utility-safelist.generated.css'))).toBe(false);
+  }, 30_000);
 
   it('refuses a note listing a CSS fact when dist/css-contract.json is missing, naming pnpm build:lib', () => {
     const root = versionedRepo();

@@ -30,6 +30,11 @@
  *     const { toast } = useToast();
  *     return <Button onClick={() => toast({ title: 'Saved', tone: 'success' })}>Save</Button>;
  *   }
+ *
+ * Actions: `toast({ title: 'Saved', actions: [{ label: 'Undo', onSelect: undo }] })` puts up to two
+ * small buttons under the message; choosing one runs `onSelect` and closes the toast. Each needs an
+ * `altText` (defaults to its label) that screen readers hear instead, since a toast never takes
+ * focus: say how else to do it ("Undo from Recently removed") when the label alone is not enough.
  */
 // motion-ok: Radix Toast manages enter/exit/swipe mounting and the auto-dismiss
 // lifecycle; this module renders its themed surface + live region only.
@@ -40,6 +45,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Info, CircleCheck, TriangleAlert, CircleX, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
+import { Button } from './button';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Non-interactive — tone only drives the leading icon's color (via
@@ -82,6 +88,18 @@ export interface ToastOptions {
   tone?: ToastTone;
   /** Auto-dismiss in ms. Falls back to the provider default. */
   duration?: number;
+  /** One or two buttons under the message (Open, Undo). Choosing one closes the toast. */
+  actions?: readonly [ToastAction] | readonly [ToastAction, ToastAction];
+}
+
+/** @public */
+export interface ToastAction {
+  /** Button label, one or two words. */
+  label: string;
+  /** Runs when the action is chosen; the toast closes after it. */
+  onSelect: () => void;
+  /** What screen readers hear instead of the button (Radix `altText`); defaults to `label`. */
+  altText?: string;
 }
 
 interface ToastEntry extends ToastOptions {
@@ -162,11 +180,11 @@ export function ToastProvider({
                 if (!open) remove(t.id);
               }}
               className={cn(
-                'pointer-events-auto relative flex w-full items-start gap-3',
+                'pointer-events-auto relative flex w-full items-start gap-fixed-xs',
                 // Not `p-4 pr-8`: utilities.css ships an unlayered .p-4 that beat pr-8, so the text ran under
                 // the X at every width. Below sm the dismiss button grows to its 44px touch target
                 // (right-2 + 44px = 52px), so the text column steps in to 64px there (on the spacing grid).
-                'rounded-md border border-border bg-popover py-4 pl-4 pr-8 max-sm:pr-16',
+                'rounded-md border border-border bg-popover py-fixed-sm pl-fixed-sm pr-fixed-lg max-sm:pr-16',
                 'text-popover-foreground shadow-overlay hds-focus',
               )}
             >
@@ -177,12 +195,23 @@ export function ToastProvider({
                 className={toastIconVariants({ tone })}
                 aria-hidden
               />
-              <div className="flex min-w-0 flex-col gap-1">
+              <div className="flex min-w-0 flex-col gap-fixed-2xs">
                 <ToastPrimitive.Title className="hds-type-ui">{t.title}</ToastPrimitive.Title>
                 {t.description ? (
                   <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
                     {t.description}
                   </ToastPrimitive.Description>
+                ) : null}
+                {t.actions?.length ? (
+                  <div className="flex flex-wrap gap-scale-xs pt-fixed-2xs">
+                    {t.actions.map((a, i) => (
+                      <ToastPrimitive.Action key={i} altText={a.altText ?? a.label} asChild>
+                        <Button size="sm" variant="secondary" onClick={a.onSelect}>
+                          {a.label}
+                        </Button>
+                      </ToastPrimitive.Action>
+                    ))}
+                  </div>
                 ) : null}
               </div>
               <ToastPrimitive.Close
@@ -199,7 +228,7 @@ export function ToastProvider({
         })}
         <ToastPrimitive.Viewport
           className={cn(
-            'fixed bottom-0 right-0 z-50 m-0 flex w-full list-none flex-col gap-2 p-4',
+            'fixed bottom-0 right-0 z-50 m-0 flex w-full list-none flex-col gap-scale-xs p-fixed-sm',
             'sm:max-w-sm',
           )}
         />

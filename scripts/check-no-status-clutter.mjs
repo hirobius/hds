@@ -28,15 +28,21 @@
 import { readFileSync } from 'node:fs';
 import { join, dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, findMarker, maskComments, isSpecFile } from './lib/source-scan.mjs';
+import { hasJsonFlag } from './lib/gate-output.mjs';
+import {
+  scanSources,
+  findMarker,
+  maskComments,
+  isSpecFile,
+  isFixtureRun,
+  reportLineViolations,
+} from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
+const isFixtureMode = isFixtureRun(process.argv);
 const fixtureFile = process.env.FIXTURE_FILE;
 
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'templates', 'tenants'];
@@ -135,7 +141,7 @@ export function findViolationsInText(text, file) {
   return out;
 }
 
-function defaultFiles() {
+export function defaultFiles() {
   return scanSources({
     root: ROOT,
     gate: 'check-no-status-clutter',
@@ -154,36 +160,14 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
   }
 
-  if (jsonMode) {
-    emitResult(
-      {
-        violations: violations.map((v) => ({
-          file: v.file,
-          line: v.line,
-          rule: v.rule,
-          severity: 'error',
-          message: v.message,
-          sample: v.sample,
-        })),
-        summary: { total: violations.length },
-        ok: violations.length === 0,
-      },
-      true,
-    );
-    process.exit(violations.length === 0 ? 0 : 1);
-  }
-
-  if (violations.length === 0) {
-    console.log('[ok] check-no-status-clutter: no status dots or coloured accent bars');
-    process.exit(0);
-  }
-  console.error(`\n✗ check-no-status-clutter: ${violations.length} status dot or accent bar:\n`);
-  for (const v of violations) {
-    console.error(`  ${v.file}:${v.line}  [${v.rule}] ${v.message}`);
-    console.error(`    ${v.sample}`);
-  }
-  console.error(
-    '\nFix: remove it; show status in the content (a text Badge). Exempt a line with // status-clutter-ok: <reason>.\n',
+  process.exit(
+    reportLineViolations(violations, jsonMode, {
+      gate: 'check-no-status-clutter',
+      ok: 'no status dots or coloured accent bars',
+      noun: () => 'status dot or accent bar:',
+      fix: [
+        '\nFix: remove it; show status in the content (a text Badge). Exempt a line with // status-clutter-ok: <reason>.\n',
+      ],
+    }),
   );
-  process.exit(1);
 }

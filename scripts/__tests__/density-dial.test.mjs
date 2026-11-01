@@ -16,7 +16,7 @@ const theme = read('src/styles/theme.css');
 const generated = read('src/styles/tokens.generated.css');
 
 const SCALE = ['xs', 'sm', 'md', 'lg', 'xl'];
-const ALIASES = ['surface-padding', 'component-padding', 'region-gutter', 'layout-gutter'];
+const ALIASES = ['surface-padding', 'region-gutter'];
 
 /** Every top-level `selector { body }` rule (or rule inside one @media) as {selector, body, media}. */
 function rules(css) {
@@ -55,10 +55,18 @@ const comfortableScale = (step) => {
   return px(generated, prim);
 };
 
-describe('compact scope remaps the scale components consume', () => {
-  const scaleBlock = compactRules.map((r) => r.body).join('\n');
+/** The generated [data-density="compact"] block (built from the tokens' Compact modes). */
+const generatedCompact = rules(generated)
+  .filter((r) => r.selector === '[data-density="compact"]')
+  .map((r) => r.body)
+  .join('\n');
 
-  for (const step of SCALE) {
+describe('compact scope remaps the scale components consume', () => {
+  const scaleBlock = generatedCompact;
+
+  // xs is the control-internal step (icon-label gaps, chip padding): it tracks the
+  // type, not the density, so it is the same 8px in both modes.
+  for (const step of SCALE.filter((s) => s !== 'xs')) {
     it(`redeclares --semantic-space-scale-${step} on a primitive step smaller than comfortable`, () => {
       const ref = declOf(scaleBlock, `--semantic-space-scale-${step}`);
       expect(ref, `compact block must redeclare scale-${step}`).toMatch(/^--primitive-space-/);
@@ -68,59 +76,81 @@ describe('compact scope remaps the scale components consume', () => {
     });
   }
 
-  it('lands on the documented compact steps (6/12/20/24/40px)', () => {
-    const got = SCALE.map((s) => px(generated, declOf(scaleBlock, `--semantic-space-scale-${s}`)));
-    expect(got).toEqual([6, 12, 20, 24, 40]);
+  it('comfortable (the default) is the roomier 2026-10 scale (8/20/28/40/64px)', () => {
+    expect(SCALE.map(comfortableScale)).toEqual([8, 20, 28, 40, 64]);
+  });
+
+  it('compact is the app rhythm (8/12/16/24/32px)', () => {
+    const got = SCALE.map(
+      (s) =>
+        px(generated, declOf(scaleBlock, `--semantic-space-scale-${s}`)) ?? comfortableScale(s),
+    );
+    expect(got).toEqual([8, 12, 16, 24, 32]);
+  });
+
+  it('every compact step is on the 4px grid', () => {
+    for (const s of SCALE) {
+      const ref = declOf(scaleBlock, `--semantic-space-scale-${s}`);
+      if (ref) expect(px(generated, ref) % 4).toBe(0);
+    }
+  });
+
+  it('theme.css does not hand-write the scale: the generated block is the one source', () => {
+    expect(compactRules.map((r) => r.body).join('\n')).not.toMatch(
+      /--semantic-space-scale-[\w-]+\s*:/,
+    );
   });
 
   it('keeps the legacy --hds-space-* bridge, documented as legacy', () => {
-    expect(scaleBlock).toContain('--hds-space-xs');
+    expect(compactRules.map((r) => r.body).join('\n')).toContain('--hds-space-xs');
     expect(theme).toMatch(/legacy bridge/i);
   });
 });
 
 describe('compact scope re-declares the aliases so nested scopes resolve against the remap', () => {
-  const aliasRules = compactRules.filter((r) =>
-    ALIASES.some((a) => r.body.includes(`--semantic-space-${a}`)),
-  );
-
   for (const alias of ALIASES) {
-    it(`redeclares --semantic-space-${alias}`, () => {
-      expect(
-        aliasRules.some((r) => !r.media && r.body.includes(`--semantic-space-${alias}:`)),
-      ).toBe(true);
+    it(`the generated block redeclares --semantic-space-${alias}`, () => {
+      expect(generatedCompact).toContain(`--semantic-space-${alias}:`);
     });
   }
 
-  it('redeclares region-gutter (and layout-gutter) under 640px on scale-sm', () => {
-    const mobile = aliasRules.filter((r) => r.media && /max-width:\s*639px/.test(r.media));
+  it('redeclares region-gutter under 640px on scale-sm', () => {
+    const mobile = compactRules.filter((r) => r.media && /max-width:\s*639px/.test(r.media));
     expect(
       mobile.some(
         (r) => declOf(r.body, '--semantic-space-region-gutter') === '--semantic-space-scale-sm',
       ),
     ).toBe(true);
-    expect(mobile.some((r) => r.body.includes('--semantic-space-layout-gutter:'))).toBe(true);
+  });
+
+  it('holds section.stack at 48px under 640px instead of the comfortable 64px', () => {
+    const mobile = compactRules.filter((r) => r.media && /max-width:\s*639px/.test(r.media));
+    const ref = mobile.map((r) => declOf(r.body, '--semantic-space-section-stack')).find(Boolean);
+    expect(px(generated, ref)).toBe(48);
   });
 
   it('desktop region-gutter is scale-lg and surface-padding is scale-md', () => {
-    const desk = aliasRules
+    expect(declOf(generatedCompact, '--semantic-space-region-gutter')).toBe(
+      '--semantic-space-scale-lg',
+    );
+    expect(declOf(generatedCompact, '--semantic-space-surface-padding')).toBe(
+      '--semantic-space-scale-md',
+    );
+  });
+
+  it('grid-gap (generated, its Compact mode) and layout-gap (theme.css) sit on scale-md', () => {
+    const desk = compactRules
       .filter((r) => !r.media)
       .map((r) => r.body)
       .join('\n');
-    expect(declOf(desk, '--semantic-space-region-gutter')).toBe('--semantic-space-scale-lg');
-    expect(declOf(desk, '--semantic-space-surface-padding')).toBe('--semantic-space-scale-md');
-  });
-
-  it('alias rules have zero specificity (:where) so a [data-brand] tenant rule wins', () => {
-    expect(aliasRules.length).toBeGreaterThan(0);
-    for (const r of aliasRules) {
-      expect(r.selector).toMatch(/^:where\(/);
-      expect(r.selector.replace(/:where\([^)]*\)/g, '')).toBe('');
-    }
+    expect(declOf(generatedCompact, '--semantic-layout-grid-gap')).toBe(
+      '--semantic-space-scale-md',
+    );
+    expect(declOf(desk, '--semantic-space-layout-gap')).toBe('--semantic-space-scale-md');
   });
 
   it('leaves --semantic-space-component-medium alone', () => {
-    expect(compactRules.map((r) => r.body).join('\n')).not.toContain(
+    expect(generatedCompact + compactRules.map((r) => r.body).join('\n')).not.toContain(
       '--semantic-space-component-medium',
     );
   });
@@ -154,7 +184,7 @@ describe('hds.density is deprecated in favour of semantic.space.scale (hds#206)'
     .filter((r) => !r.media && !/data-density|data-brand|data-tenant/.test(r.selector))
     .map((r) => r.body)
     .join('\n');
-  const compactBody = compactRules.map((r) => r.body).join('\n');
+  const compactBody = compactRules.map((r) => r.body).join('\n') + '\n' + generatedCompact;
   const pxOf = (body, cssVar) => px(generated, declOf(body, cssVar));
 
   it('carries @deprecated and @removeIn on the density group', () => {
@@ -178,7 +208,10 @@ describe('hds.density is deprecated in favour of semantic.space.scale (hds#206)'
       expect(pxOf(comfortableBody, hdsVar)).not.toBeNull();
       expect(pxOf(comfortableBody, hdsVar)).toBe(comfortableScale(step));
       expect(pxOf(compactBody, hdsVar)).not.toBeNull();
-      expect(pxOf(compactBody, hdsVar)).toBe(pxOf(compactBody, `--semantic-space-scale-${step}`));
+      // xs is not redeclared under compact: it is 8px in both densities.
+      expect(pxOf(compactBody, hdsVar)).toBe(
+        pxOf(compactBody, `--semantic-space-scale-${step}`) ?? comfortableScale(step),
+      );
     },
   );
 });

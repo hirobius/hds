@@ -161,41 +161,41 @@ const TYPES_WITHOUT_CLEAR: ReadonlySet<InputFieldType> = new Set<InputFieldType>
 
 const ADORNMENT_BY_SIZE = {
   sm: {
-    restPadL: 'pl-2',
-    restPadR: 'pr-2',
+    restPadL: 'pl-scale-xs',
+    restPadR: 'pr-scale-xs',
     leadPad: 'pl-7',
     trailPad: 'pr-7',
-    inset: 'inset-y-0 px-2',
+    inset: 'inset-y-0 px-scale-xs',
     iconClass: 'size-3.5',
     iconWrap: '[&_svg]:size-3.5',
-    prefixPad: 'pl-2',
-    suffixPad: 'pr-2',
+    prefixPad: 'pl-scale-xs',
+    suffixPad: 'pr-scale-xs',
     prefixGap: 'pl-1.5',
     suffixGap: 'pr-1.5',
   },
   md: {
-    restPadL: 'pl-3',
-    restPadR: 'pr-3',
+    restPadL: 'pl-fixed-xs',
+    restPadR: 'pr-fixed-xs',
     leadPad: 'pl-9',
     trailPad: 'pr-9',
     inset: 'inset-y-0 px-2.5',
     iconClass: 'size-4',
     iconWrap: '[&_svg]:size-4',
-    prefixPad: 'pl-3',
-    suffixPad: 'pr-3',
-    prefixGap: 'pl-2',
-    suffixGap: 'pr-2',
+    prefixPad: 'pl-fixed-xs',
+    suffixPad: 'pr-fixed-xs',
+    prefixGap: 'pl-scale-xs',
+    suffixGap: 'pr-scale-xs',
   },
   lg: {
-    restPadL: 'pl-4',
-    restPadR: 'pr-4',
+    restPadL: 'pl-fixed-sm',
+    restPadR: 'pr-fixed-sm',
     leadPad: 'pl-11',
     trailPad: 'pr-11',
-    inset: 'inset-y-0 px-3',
+    inset: 'inset-y-0 px-fixed-xs',
     iconClass: 'size-5',
     iconWrap: '[&_svg]:size-5',
-    prefixPad: 'pl-4',
-    suffixPad: 'pr-4',
+    prefixPad: 'pl-fixed-sm',
+    suffixPad: 'pr-fixed-sm',
     prefixGap: 'pl-2.5',
     suffixGap: 'pr-2.5',
   },
@@ -417,7 +417,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   );
 
   return (
-    <div className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH, className)}>
+    <div className={cn('flex flex-col gap-scale-xs', FORM_CONTROL_WIDTH, className)}>
       {label && (
         <label htmlFor={id} className="hds-type-ui text-foreground">
           {label}

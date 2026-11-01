@@ -75,6 +75,7 @@
     "Badge": {
       "source": "src/app/components/badge.tsx",
       "evidence": "hds#73",
+      "note": "Code adds a count mode (count, max, label; hds#865) that the Figma Badge master (31:15) does not draw yet: Figma-lane follow-up, so Code Connect maps the text badge only.",
       "properties": {
         "Tone": {
           "type": "VARIANT",
@@ -92,7 +93,7 @@
     "Button": {
       "source": "src/app/components/button.tsx",
       "evidence": "hds#73",
-      "note": "Figma defaults Variant to Primary; code defaults to secondary (open decision, docs/architecture/variant-contract.md). The template emits variant whenever it differs from the code default, so either ruling renders correctly.",
+      "note": "Figma defaults Variant to Primary; code defaults to secondary (open decision, docs/architecture/variant-contract.md). The template emits variant whenever it differs from the code default, so either ruling renders correctly. Code also adds an opt-in hoverEffect=\"wipe\" (a CSS fill layer sliding in from the pointer's edge) that the Figma Button master does not draw: Figma-lane follow-up, so Code Connect maps the default (none) button only.",
       "properties": {
         "Variant": {
           "type": "VARIANT",
@@ -312,6 +313,14 @@
     }
   },
   "exempt": {
+    "src/app/components/tabs.tsx": {
+      "kind": "queued",
+      "reason": "Tabs exists in the Figma library (node 86-89). TabsContent gained a cva variant (hds#819); its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/menu.tsx": {
+      "kind": "queued",
+      "reason": "Menu is an overlay compound. Its item tone (neutral, danger) has no Figma property yet. The template waits for a verified property read (hds#822)."
+    },
     "src/app/components/callout.tsx": {
       "kind": "queued",
       "reason": "Callout exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
@@ -400,13 +409,25 @@
       "kind": "queued",
       "reason": "Breadcrumb exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
     },
+    "src/app/components/nav-list.tsx": {
+      "kind": "no-figma-component",
+      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
+    },
     "src/app/components/disclosure.tsx": {
       "kind": "queued",
-      "reason": "Disclosure exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+      "reason": "Disclosure exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set. Code adds variant row (hds#873); the Figma Variant=Row is a Figma-lane follow-up."
     },
     "src/app/components/toast.tsx": {
       "kind": "queued",
       "reason": "Toast exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+    },
+    "src/app/components/pagination.tsx": {
+      "kind": "queued",
+      "reason": "Pagination exists in the Figma library (node 86-194). Its compact variant (hds#867) has no Figma Variant=Compact yet (Figma-lane follow-up, hds#540); the template waits for that property read."
+    },
+    "src/app/components/sheet.tsx": {
+      "kind": "no-figma-component",
+      "reason": "Sheet (hds#690) has no Figma component yet. Its action tone (neutral, danger) gets a template once one is drawn."
     }
   }
 }

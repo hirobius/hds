@@ -1,14 +1,12 @@
 /**
  * Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
  *
- * Underline pattern math:
- *   - TabsList carries `border-b border-border/40` (the divider, half-strength
- *     so it anchors the strip without competing with content).
- *   - TabsTrigger has `border-b-2 border-transparent -mb-px` at rest.
- *     The `-mb-px` offsets the trigger DOWN by 1px so the trigger sits
- *     on top of the list divider; the active 2px bottom border visually
- *     REPLACES that 1px segment instead of stacking on it.
- *   - Active state pairs the underline with a soft `bg-accent/5` tint that
+ * Underline pattern (hds#891 soft surfaces):
+ *   - TabsList draws no divider at rest: space below it (mb-6) separates the
+ *     strip from its panel.
+ *   - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px
+ *     underline takes no extra height when it appears.
+ *   - Active state pairs the underline with a `surface.selected` fill that
  *     extends down into TabsContent — the active tab visually "claims" its
  *     content panel (folder-tab affordance, modern-soft).
  *
@@ -16,7 +14,8 @@
  *   TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`)
  *   for cases like /ops/atlas with 8 tabs at narrow viewports. Scrollbar
  *   chrome is hidden cross-browser (-webkit / firefox / IE); a mask fades the
- *   edge that has hidden tabs (`data-overflow`). The trigger's
+ *   edge that has hidden tabs (`data-overflow`), and the selected tab is
+ *   scrolled into view on mount and on change (Radix does not; hds#823). The trigger's
  *   focus ring is `ring-inset` because `overflow-x-auto` clips anything drawn
  *   outside the list box (an outer ring was cut on the first/last tab).
  *
@@ -26,12 +25,9 @@
 
 import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import {
-  measureScrollEdges,
-  scrollEdgeFadeStyle,
-  type ScrollEdgeOverflow,
-} from './scroll-edge-fade';
+import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
 
 /**
  * The tab set itself. Tagged here rather than in the file block because
@@ -58,13 +54,15 @@ export const Tabs = TabsPrimitive.Root;
  * The tab strip. When tabs scroll out of view it fades the hidden edge
  * (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look
  * absent. The fade is a mask, so it needs no colour and holds in light and dark.
+ * The selected tab is kept in view: on mount, and on change (smooth unless the
+ * user prefers reduced motion), so a selected tab is never left past the edge.
  */
 export const TabsList = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentProps<typeof TabsPrimitive.List>
 >(function TabsList({ className, onScroll, style, ...props }, forwardedRef) {
-  const innerRef = React.useRef<HTMLDivElement | null>(null);
-  const [overflow, setOverflow] = React.useState<ScrollEdgeOverflow>(undefined);
+  const { ref: innerRef, overflow, update } = useScrollEdgeFade<HTMLDivElement>();
+  useKeepSelectedInView(innerRef, '[role="tab"][data-state="active"]');
 
   const setRefs = React.useCallback(
     (node: HTMLDivElement | null) => {
@@ -72,21 +70,8 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
       if (typeof forwardedRef === 'function') forwardedRef(node);
       else if (forwardedRef) forwardedRef.current = node;
     },
-    [forwardedRef],
+    [forwardedRef, innerRef],
   );
-
-  const update = React.useCallback(() => {
-    if (innerRef.current) setOverflow(measureScrollEdges(innerRef.current));
-  }, []);
-
-  React.useEffect(() => {
-    update();
-    const el = innerRef.current;
-    if (!el || typeof ResizeObserver === 'undefined') return;
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [update]);
 
   return (
     <TabsPrimitive.List
@@ -98,8 +83,8 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
         onScroll?.(event);
       }}
       className={cn(
-        'flex h-10 items-center gap-6 overflow-x-auto whitespace-nowrap',
-        'border-b border-border/40 mb-6',
+        'flex h-10 items-center gap-fixed-md overflow-x-auto whitespace-nowrap',
+        'mb-fixed-md',
         '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
         className,
       )}
@@ -115,10 +100,10 @@ export function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'relative -mb-px inline-flex items-center px-3 py-2 hds-type-ui hds-touch-row transition-colors',
+        'relative inline-flex items-center px-fixed-xs py-scale-xs hds-type-ui hds-touch-row transition-colors',
         // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
         'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
-        'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-accent/5',
+        'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-[var(--semantic-color-surface-selected)]',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,
@@ -128,14 +113,25 @@ export function TabsTrigger({
   );
 }
 
-export function TabsContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+// `panel` is the tinted surface pulled up under the strip (in-page tabs); `bare` sits on the page,
+// for tabs that are an app's top-level nav or a page's sections (hds#819).
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface.selected has no Tailwind-theme utility; the old bg-accent/5 tint was near-invisible (hds#522)
+const tabsContentVariants = /* @__PURE__ */ cva('hds-tabs-content', {
+  variants: {
+    variant: {
+      panel: 'bg-[var(--semantic-color-surface-selected)] rounded-b-md p-fixed-md -mt-fixed-md',
+      bare: '',
+    },
+  },
+  defaultVariants: { variant: 'panel' },
+});
+
+/** @public */
+export type TabsContentProps = React.ComponentProps<typeof TabsPrimitive.Content> &
+  VariantProps<typeof tabsContentVariants>;
+
+export function TabsContent({ className, variant, ...props }: TabsContentProps) {
   return (
-    <TabsPrimitive.Content
-      className={cn('bg-accent/5 rounded-b-md p-6 -mt-6', className)}
-      {...props}
-    />
+    <TabsPrimitive.Content className={cn(tabsContentVariants({ variant }), className)} {...props} />
   );
 }

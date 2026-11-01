@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Tabs and SegmentedControl now scroll the selected item into view and fade their hidden edge, so you can delete any local wrapper that did this."
+}

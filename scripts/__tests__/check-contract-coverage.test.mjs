@@ -24,9 +24,9 @@ const run = (...args) =>
   });
 
 describe('core component list', () => {
-  it('has the 44 core names: the 43 of the hds#254 table adjusted by hds#394 and hds#393, plus MetaLine (hds#758)', () => {
-    expect(CORE_COMPONENTS).toHaveLength(44);
-    expect(new Set(CORE_COMPONENTS).size).toBe(44);
+  it('has the 46 core names: the 43 of the hds#254 table adjusted by hds#394 and hds#393, plus MetaLine (hds#758), NavList (hds#817), CommandPalette (hds#638) and Timeline (hds#637)', () => {
+    expect(CORE_COMPONENTS).toHaveLength(47);
+    expect(new Set(CORE_COMPONENTS).size).toBe(47);
   });
 
   it('the guardrail registry entry states no core count other than the list length', () => {
@@ -64,7 +64,7 @@ describe('core component list', () => {
     for (const name of CORE_COMPONENTS) {
       const spec = manifest.componentSpecs[name];
       expect(spec, name).toBeDefined();
-      expect(spec.hidden, name).toBe(false);
+      expect(spec.hidden, name).toBeUndefined();
     }
   });
 });
@@ -94,10 +94,10 @@ describe('check-contract-coverage CLI', () => {
     expect(findContractGaps(CORE_COMPONENTS, manifest.componentSpecs)).toEqual([]);
   });
 
-  it('--enforce exits 0 and reports 44/44 core components covered', () => {
+  it('--enforce exits 0 and reports 47/47 core components covered', () => {
     const out = run('--enforce');
     expect(out.status).toBe(0);
-    expect(out.stdout).toContain('44/44');
+    expect(out.stdout).toContain('47/47');
   });
 
   it('defaults to --report and exits 0', () => {
@@ -157,8 +157,9 @@ describe('llms.txt "Which one when"', () => {
 });
 
 describe('keyboard contract tags on core overlays', () => {
-  // The hds#393 overlays, plus Select: its listbox popup has the same contract.
-  const overlays = ['Combobox', 'Dialog', 'Menu', 'Popover', 'Select', 'Tooltip'];
+  // The hds#393 overlays, plus Select (its listbox popup has the same contract)
+  // and CommandPalette (hds#638).
+  const overlays = ['Combobox', 'CommandPalette', 'Dialog', 'Menu', 'Popover', 'Select', 'Tooltip'];
 
   it.each(overlays)('%s is core and declares keyboard', (name) => {
     expect(CORE_COMPONENTS).toContain(name);

@@ -1,0 +1,1 @@
+Drop the build-tokens.mjs re-exports (hds#933): every importer (14 files) now imports scripts/lib/token-tree, token-validate, token-emit/_ directly; build-tokens.mjs exports only its buildManifest CLI wrapper. Generated files and dist/hds-tokens._ byte-identical. Refactor only, nothing ships. skip-changeset

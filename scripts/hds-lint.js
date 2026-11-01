@@ -16,7 +16,7 @@
  *   1. Hardcoded numeric or px values passed to layout props:
  *      gap="12px", padding="10px", mt={15}, padding: '10px'
  *      Use semantic/token values instead: gap="px16", gap="space.4",
- *      padding={hds.space.px20}, or padding={hds.semantic.space.component.padding}.
+ *      padding={hds.space.px20}, or padding={hds.semantic.space.surface.padding}.
  *   2. Any JSX usage of <Divider>.
  *   3. Technical tone on <Badge>.
  *   4. Native DOM elements in pages/layouts with direct HDS equivalents,

@@ -19,9 +19,9 @@ import hds from '../design-system/tokens';
 const metadataListVariants = /* @__PURE__ */ cva('', {
   variants: {
     orientation: {
-      vertical: 'flex flex-col gap-3',
+      vertical: 'flex flex-col gap-fixed-xs',
       // The term column hugs its longest term; it was half the list (146px at 1280, hds#522).
-      horizontal: 'grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2',
+      horizontal: 'grid grid-cols-[max-content_minmax(0,1fr)] gap-x-scale-sm gap-y-scale-xs',
     },
   },
   defaultVariants: { orientation: 'vertical' },
@@ -83,12 +83,12 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
             <div
               key={index}
               // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing token has no Tailwind-theme utility; var()-based so still token-driven
-              className="flex flex-col gap-2 py-[var(--semantic-space-scale-sm)] first:pt-0 last:pb-0"
+              className="flex flex-col gap-scale-xs py-[var(--semantic-space-scale-sm)] first:pt-0 last:pb-0"
               style={
                 index === 0
                   ? undefined
                   : {
-                      borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-subtle)`,
+                      borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
                     }
               }
             >
@@ -106,7 +106,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
               // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing token has no Tailwind-theme utility; var()-based so still token-driven
               className="py-[var(--semantic-space-scale-sm)] pb-0 hds-type-ui"
               style={{
-                borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-subtle)`,
+                borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
                 color: 'var(--semantic-color-content-secondary)',
               }}
             >
@@ -144,7 +144,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
         {...rest}
       >
         {items.map((item, index) => (
-          <div key={index} className="flex flex-col gap-0.5">
+          <div key={index} className="flex flex-col gap-subgrid-xs">
             <dt className="hds-type-ui text-muted-foreground">{item.term}</dt>
             <dd className={cn('m-0 text-foreground')}>{item.description}</dd>
           </div>

@@ -13,17 +13,8 @@
  * ingest and drift commands as functions on that root. Nothing here reaches a
  * network or Figma.
  */
-import { describe, it, expect, afterEach } from 'vitest';
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} from 'fs';
-import { tmpdir } from 'os';
+import { describe, it, expect } from 'vitest';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import vm from 'vm';
 import { gunzipSync } from 'zlib';
@@ -37,38 +28,20 @@ import { planAgainstSnapshot, writePushArtifacts, writeSyncBundle } from '../fig
 import { ingestReceipt } from '../figma-snapshot.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
-import { FIXTURE_TOKENS_PATH, fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
+import { fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
 import { runSyncPlugin, serve } from './helpers/sync-plugin.mjs';
+import {
+  LINKS,
+  COMMIT,
+  NOTHING_LINE,
+  RETIRED_KEY,
+  STAGING_KEY,
+  useTempRoots,
+} from './helpers/figma-temp-root.mjs';
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
-const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
-const STAGING_KEY = LINKS.stagingFileKey;
-const COMMIT = '0123456789abcdef0123456789abcdef01234567';
-const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 const PAGE_CHARS = 15000;
 
-let dirs = [];
-afterEach(() => {
-  dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
-  dirs = [];
-});
-
-const tempRoot = () => {
-  const root = mkdtempSync(join(tmpdir(), 'hds-receipt-'));
-  dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
-  mkdirSync(join(root, 'figma'), { recursive: true });
-  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(LINKS, null, 2));
-  return root;
-};
+const tempRoot = useTempRoots('hds-receipt-');
 const libraryFile = () => {
   const figma = newFixtureFile({ fileName: LINKS.libraryFileName });
   figma.fileKey = LINKS.libraryFileKey;

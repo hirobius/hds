@@ -691,6 +691,7 @@ describe('pnpm figma:native-import', () => {
     dirs.push(root);
     copyFileSync(join(REPO, 'hirobius.tokens.json'), join(root, 'hirobius.tokens.json'));
     const { files } = writeNativeImport({ root, outDir: join(root, 'out') });
-    expect(files).toHaveLength(5);
+    // Five tier files plus Hirobius/Density's Comfortable and Compact (compact density for apps).
+    expect(files).toHaveLength(7);
   });
 });

@@ -53,26 +53,31 @@ describe('colorGalleries accent themes', () => {
   const value = (title: string, token: string) =>
     group(title).swatches.find((s) => s.token === token)!;
 
-  it('shows graphite, cobalt and the lime delight swatches side by side', () => {
-    expect(themes.groups.map((g) => g.title.split(' ')[0])).toEqual([
-      'Graphite',
-      'Cobalt',
-      'Delight',
-    ]);
+  it('shows graphite and cobalt side by side; lime delight is hidden for now (hds#857)', () => {
+    expect(themes.groups.map((g) => g.title.split(' ')[0])).toEqual(['Graphite', 'Cobalt']);
+  });
+
+  it('shows no lime or delight swatch anywhere on the Color page (hds#857)', () => {
+    const all = galleries.flatMap((g) => g.groups);
+    expect(all.some((g) => /delight|lime/i.test(g.title))).toBe(false);
+    expect(
+      all
+        .flatMap((g) => g.swatches)
+        .some((s) => /\.delight\.|primitive\.color\.lime\./.test(s.token)),
+    ).toBe(false);
   });
 
   it('resolves cobalt from its overlay, in light and dark', () => {
     const rest = value('Cobalt', 'semantic.accent.rest');
     expect(rest.value).toBe('#112de8');
     expect(rest.darkValue).toBe('#8a97f8');
-    expect(value('Graphite', 'semantic.accent.rest').value).toBe('#4a4146');
+    expect(value('Graphite', 'semantic.accent.rest').value).toBe('#0f1726');
   });
 
   it('keeps delight out of the semantic Accent group', () => {
     const semantic = galleries.find((g) => g.title === 'Semantic & state')!;
     const accent = semantic.groups.find((g) => g.title === 'Accent')!;
     expect(accent.swatches.some((s) => s.token.includes('.delight.'))).toBe(false);
-    expect(value('Delight', 'semantic.accent.delight.base').value).toBe('#b8e62e');
   });
 });
 
@@ -95,23 +100,25 @@ describe('typeSpecimens', () => {
     const display = specimens[0]!;
     expect(display.family).toBe('Sora');
     expect(display.fontSize).toMatch(/px$/);
-    expect(display.fontWeight).toBe('800');
+    expect(display.fontWeight).toBe('700');
     expect(display.letterSpacing).toMatch(/em$/);
   });
 });
 
 describe('dimension scales', () => {
   it('draws the semantic spacing scale in source order and primitives by size', () => {
-    const [scale, primitive] = spaceScales(tokens);
-    expect(scale!.steps.map((s) => s.name)).toEqual(['xs', 'sm', 'md', 'lg', 'xl']);
+    const [scale, fixed, primitive] = spaceScales(tokens);
+    expect(scale!.steps.map((s) => s.name)).toEqual(['2xs', 'xs', 'sm', 'md', 'lg', 'xl']);
+    expect(fixed!.steps.map((s) => s.px)).toEqual([4, 12, 16, 24, 32, 48]);
     const px = primitive!.steps.map((s) => s.px);
     expect(px).toEqual([...px].sort((a, b) => a - b));
-    expect(scale!.steps[0]!.cssVar).toBe('--semantic-space-scale-xs');
+    expect(scale!.steps[0]!.cssVar).toBe('--semantic-space-scale-2xs');
   });
 
   it('draws radius roles and primitive steps', () => {
-    const [roles, primitive] = radiusScales(tokens);
+    const [roles, scale, primitive] = radiusScales(tokens);
     expect(roles!.steps.map((s) => s.name)).toEqual(['action', 'control']);
+    expect(scale!.steps.map((s) => s.name)).toEqual(['sm', 'md', 'lg', 'xl', 'pill']);
     expect(primitive!.steps.at(-1)!.name).toBe('full');
   });
 });
@@ -134,5 +141,33 @@ describe('motionTokens', () => {
     for (const m of motion) expect(m.easing).toMatch(/^cubic-bezier\(/);
     expect(motion[0]!.durationVar).toBe('--primitive-duration-short');
     expect(motion[0]!.duration).toBe('150ms');
+  });
+});
+
+describe('colorGalleries swatch fills (hds#846)', () => {
+  const cobalt = JSON.parse(readFileSync('accents/cobalt/tokens.json', 'utf8'));
+  const shipped = readFileSync('src/styles/tokens.generated.css', 'utf8');
+  const swatches = colorGalleries(tokens, { cobalt }).flatMap((g) =>
+    g.groups.flatMap((group) => group.swatches),
+  );
+  const varName = (fill: string | null) => /^var\((--[\w-]+)\)$/.exec(fill ?? '')?.[1];
+
+  it('fills every swatch from a shipped --primitive-color-* variable, not a copied value', () => {
+    expect(swatches.length).toBeGreaterThan(50);
+    for (const s of swatches) {
+      for (const fill of s.darkFill === null ? [s.fill] : [s.fill, s.darkFill]) {
+        const name = varName(fill);
+        expect(name, `${s.token} fill ${fill}`).toMatch(/^--primitive-color-/);
+        expect(shipped, `${name} is not in tokens.generated.css`).toContain(`${name}:`);
+      }
+    }
+  });
+
+  it('fills a primitive from its own variable and a semantic token from what it aliases', () => {
+    const find = (token: string) => swatches.find((s) => s.token === token)!;
+    expect(find('primitive.color.blue.500').fill).toBe('var(--primitive-color-blue-500)');
+    const page = find('semantic.color.surface.page');
+    expect(page.fill).toBe('var(--primitive-color-neutral-white)');
+    expect(page.darkFill).toBe('var(--primitive-color-neutral-black)');
   });
 });

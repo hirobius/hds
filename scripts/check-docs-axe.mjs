@@ -3,15 +3,19 @@
 /**
  * check-docs-axe.mjs
  *
- * Scans the live demo of every /docs/components/* and /docs/patterns/* page, and the
- * /tour product screen (hds#795), of
+ * Scans the live demo of every /docs/components/* and /docs/patterns/* page, the full
+ * <main> of every other /docs page (guides, engineering, section landings; hds#710),
+ * and the /tour product screen (hds#795), of
  * the built docs site (docs-site/out) in light and dark with axe-core
  * (wcag2a, wcag2aa, wcag21aa, wcag22aa), scoped to the demo frame
- * (.hds-demo-frame) so Fumadocs chrome does not count. Fails on
+ * (.hds-demo-frame) on demo pages so Fumadocs chrome does not count there. Fails on
  * serious/critical violations not in scripts/docs-axe-allowlist.json (entries
  * are { storyId: "<route>", ruleId, reason, addedOn }); an allowlist entry that
- * matches nothing also fails. A page with no demo frame is reported as rule
- * "no-demo" and fails unless allowlisted under that rule id.
+ * matches nothing also fails. A demo page with no demo frame is reported as rule
+ * "no-demo" (a page with no <main> as "no-main") and fails unless allowlisted under that rule id.
+ *
+ * The /docs home also fails as rule "site-name-repeated" when its visible text says
+ * "Hirobius Design System" more than once (hds#845).
  *
  * Run `pnpm docs:publish` first. Chromium comes from PLAYWRIGHT_BROWSERS_PATH
  * (/opt/pw-browsers in remote sessions). Writes reports/axe/docs-latest.json.
@@ -22,9 +26,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
+import { launchChromium } from './lib/browser-host.mjs';
 import { AXE_TAGS, evaluateScan, loadAxeSource, validateAllowlist } from './lib/axe-gate.mjs';
-import { discoverAxeRoutes, selectorFor, serveStatic } from './lib/docs-axe.mjs';
+import {
+  DEMO_SELECTOR,
+  discoverAxeRoutes,
+  selectorFor,
+  serveStatic,
+  siteNameRepeats,
+} from './lib/docs-axe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AXE_SOURCE = loadAxeSource(ROOT);
@@ -35,26 +45,6 @@ const FREEZE_CSS =
 function arg(name, fallback) {
   const i = process.argv.indexOf(`--${name}`);
   return i > -1 ? process.argv[i + 1] : fallback;
-}
-
-async function launch() {
-  try {
-    return await chromium.launch();
-  } catch (err) {
-    const base = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
-    const dirs = fs.existsSync(base)
-      ? fs
-          .readdirSync(base)
-          .filter((d) => /^chromium-\d+$/.test(d))
-          .sort()
-          .reverse()
-      : [];
-    for (const d of dirs) {
-      const exe = path.join(base, d, 'chrome-linux', 'chrome');
-      if (fs.existsSync(exe)) return chromium.launch({ executablePath: exe });
-    }
-    throw err;
-  }
 }
 
 async function scanOne(browser, base, route, theme) {
@@ -91,7 +81,9 @@ async function scanOne(browser, base, route, theme) {
       .then(() => true)
       .catch(() => false);
     if (!hasDemo) {
-      rec.violations = [{ id: 'no-demo', impact: 'serious', nodes: 0 }];
+      rec.violations = [
+        { id: selector === DEMO_SELECTOR ? 'no-demo' : 'no-main', impact: 'serious', nodes: 0 },
+      ];
       return rec;
     }
     await page.evaluate(async () => {
@@ -119,6 +111,9 @@ async function scanOne(browser, base, route, theme) {
       help: v.help,
       sample: v.nodes.slice(0, 2).map((n) => n.html.slice(0, 160)),
     }));
+    // Not an axe rule: the home page names the system once (hds#845), checked in the same browser pass.
+    const repeated = siteNameRepeats(route, await page.evaluate(() => document.body.innerText));
+    if (repeated) rec.violations.push(repeated);
   } catch (e) {
     rec.error = String(e.message || e)
       .split('\n')[0]
@@ -136,7 +131,7 @@ async function main() {
   let routes = fs.existsSync(dir) ? discoverAxeRoutes(dir) : [];
   if (!routes.length) {
     console.error(
-      `No /docs/components or /docs/patterns pages in ${path.relative(ROOT, dir)}. Run \`pnpm docs:publish\` first.`,
+      `No /docs pages in ${path.relative(ROOT, dir)}. Run \`pnpm docs:publish\` first.`,
     );
     process.exit(2);
   }
@@ -152,7 +147,7 @@ async function main() {
   const started = Date.now();
   const { server, port } = await serveStatic(dir);
   const base = `http://127.0.0.1:${port}`;
-  const browser = await launch();
+  const browser = await launchChromium();
 
   const jobs = routes.flatMap((route) => THEMES.map((theme) => ({ route, theme })));
   const scans = [];

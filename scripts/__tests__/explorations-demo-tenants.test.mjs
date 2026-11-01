@@ -30,13 +30,10 @@ import { createRequire } from 'module';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
-import {
-  buildTenantCSS,
-  pathToCSSVar,
-  validateTenantOverlay,
-  walkTokens,
-} from '../build-tokens.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
+import { walkTokens } from '../lib/token-tree.mjs';
+import { pathToCSSVar } from '../lib/token-emit/css.mjs';
+import { buildTenantCSS, validateTenantOverlay } from '../lib/token-emit/tenant.mjs';
 import { readTokenSource } from '../lib/token-source.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -143,8 +140,8 @@ describe('accent-pair-demo: the supporting accent is an overlay, not a token', (
 
 // ── The computed values, in Chromium ─────────────────────────────────────────
 
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 // theme.css pulls in Tailwind first; the browser skips what it cannot parse and
 // the custom properties this reads are plain CSS. The overlay is loaded the way
@@ -188,7 +185,6 @@ const PROBES = {
   ],
   radiusNested: [`border-radius:${tailwind.theme.extend.borderRadius.sm}`, 'borderTopLeftRadius'],
   surfacePadding: ['padding-top:var(--semantic-space-surface-padding)', 'paddingTop'],
-  surfacePaddingAlias: ['padding-top:var(--semantic-space-component-padding)', 'paddingTop'],
   raised: ['background-color:var(--semantic-color-surface-raised)', 'backgroundColor'],
   roleCard: ['background-color:var(--role-card)', 'backgroundColor'],
   page: ['background-color:var(--semantic-color-surface-page)', 'backgroundColor'],
@@ -281,22 +277,22 @@ describe.skipIf(!hasBrowser)('soft-demo: computed, light and dark, on <html> and
     async ({ scope, theme }) => {
       const soft = await measure({ brand: 'soft-demo', theme, scope });
       const dflt = await measure({ theme, scope });
-      const expected = theme === 'light' ? rgb('neutral.100') : rgb('neutral.850');
+      const expected = theme === 'light' ? rgb('neutral.100') : rgb('neutral.825');
 
       expect(soft.raised).toBe(expected);
       expect(soft.roleCard).toBe(expected); // the role alias follows the override, nested too
-      // Light gets the visible fill (neutral.100, was neutral.50); dark is already a fill and is left alone.
-      expect(dflt.raised).toBe(theme === 'light' ? rgb('neutral.50') : rgb('neutral.850'));
+      // Light gets the visible fill (neutral.100, was neutral.50); dark is already a fill (neutral.825 since hds#755) and is left alone.
+      expect(dflt.raised).toBe(theme === 'light' ? rgb('neutral.50') : rgb('neutral.825'));
       expect(soft.raised).not.toBe(soft.page);
     },
   );
 
-  it.each(SCOPES)('surfaces get room: 32px comfortable, 20px compact (%s)', async (scope) => {
+  it.each(SCOPES)('surfaces get room: 40px comfortable, 16px compact (%s)', async (scope) => {
     const comfortable = await measure({ brand: 'soft-demo', scope });
     const compact = await measure({ brand: 'soft-demo', scope, density: 'compact' });
-    expect([comfortable.surfacePadding, comfortable.surfacePaddingAlias]).toEqual(['32px', '32px']);
-    expect([compact.surfacePadding, compact.surfacePaddingAlias]).toEqual(['20px', '20px']);
-    expect((await measure({ scope })).surfacePadding).toBe('24px'); // default, unchanged
+    expect(comfortable.surfacePadding).toBe('40px');
+    expect(compact.surfacePadding).toBe('16px');
+    expect((await measure({ scope })).surfacePadding).toBe('28px'); // default (scale.md)
   });
 
   it.each(cells)('does not touch the accent ($scope, $theme)', async ({ scope, theme }) => {

@@ -68,4 +68,17 @@ describe('InlineLink', () => {
     expect(a.className).toContain('hds-focus');
     expect(a.className).toContain('hds-link');
   });
+
+  it('standalone opts a link out of running text into a 24px hit area; inline links stay as they are', () => {
+    render(
+      <>
+        <InlineLink href="/companies" standalone>
+          Back to companies
+        </InlineLink>
+        <InlineLink href="/docs">Docs</InlineLink>
+      </>,
+    );
+    expect(link('Back to companies').className).toContain('hds-link-standalone');
+    expect(link('Docs').className).not.toContain('hds-link-standalone');
+  });
 });

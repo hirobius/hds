@@ -288,22 +288,69 @@ describe('installed version from each lockfile format', () => {
   });
 });
 
+// hds#462: the floor is 0.9.0, so a consumer that pinned ^0.9 is walked
+// through the backfilled 0.10.0 to 0.16.0 ledgers instead of being refused.
+describe('old-app fixture (lockfile at 0.9.0, the floor)', () => {
+  const OLD_APP = () =>
+    makeProject({
+      'package.json': pkgJson('old-app', { [PKG]: '^0.9.0', react: '^18.3.1' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.9.0' }),
+      'src/bridge.ts': `import { createEnvelope } from '${PKG}/protocol';\nexport const e = createEnvelope;\n`,
+      'src/Shell.tsx': [
+        `import { TenantProvider } from '${PKG}/contexts';`,
+        `import { Card, Stat, HdsAlertDialog } from '${PKG}';`,
+        '',
+        'export function Shell() {',
+        '  return (',
+        '    <TenantProvider>',
+        '      <Card tone="accent" />',
+        '      <Stat label="Users" value="12" tone="default" />',
+        '      <HdsAlertDialog />',
+        '    </TenantProvider>',
+        '  );',
+        '}',
+        '',
+      ].join('\n'),
+    });
+
+  it('lists the ./protocol, tone, Hds-prefix and TenantProvider steps, and is not refused', () => {
+    const { code, report } = json(OLD_APP(), '--check');
+    expect(report.refused).toBeNull();
+    expect(report.importers[0]).toMatchObject({ from: '0.9.0', source: 'lockfile' });
+    const listed = ids([...report.doByHand, ...report.fixedForYou, ...report.looksDifferent]);
+    expect(listed).toEqual(
+      expect.arrayContaining([
+        '0.10.0/exports/protocol',
+        '0.12.0/prop-value-mapped/Stat-tone',
+        '0.12.0/manual/Card-tone-variant',
+        '0.12.0/renamed/Hds-prefix',
+        '0.14.0/tenant/TenantProvider-slug',
+      ]),
+    );
+    // Only what the code uses.
+    expect(listed).not.toContain('0.12.0/prop-value-mapped/Field-tone');
+    expect(listed).not.toContain('0.12.0/removed/InfoPage');
+    expect(code).toBe(1);
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+  });
+});
+
 describe('refusals change nothing', () => {
   const floorMessage =
-    'Installed 0.9.0 is older than the oldest release this tool can upgrade from (0.16.0). Follow MIGRATIONS.md by hand up to 0.16.0, or ask in hirobius/hds.';
+    'Installed 0.8.1 is older than the oldest release this tool can upgrade from (0.9.0). Follow MIGRATIONS.md by hand up to 0.9.0, or ask in hirobius/hds.';
 
   it('below the floor: exit 2, the exact floor message, no file changed, never done', () => {
     const root = makeProject({
-      'package.json': pkgJson('old-app', { [PKG]: '^0.9.0' }),
+      'package.json': pkgJson('old-app', { [PKG]: '^0.8.1' }),
       'src/a.tsx': `import { HdsCheckbox } from '${PKG}';\n`,
     });
     const before = snapshotTree(root);
-    const res = run(root, '--from', '0.9.0');
+    const res = run(root, '--from', '0.8.1');
     expect(res.code).toBe(2);
     expect(res.stdout + res.stderr).toContain(floorMessage);
     expect(res.stdout + res.stderr).not.toMatch(/^Done/m);
     expect(snapshotTree(root)).toEqual(before);
-    const asJson = json(root, '--from', '0.9.0');
+    const asJson = json(root, '--from', '0.8.1');
     expect(asJson.code).toBe(2);
     expect(asJson.report.refused).toBe(floorMessage);
     expect(UpgradeReport.safeParse(asJson.report).success).toBe(true);
@@ -505,12 +552,12 @@ describe('already bumped by hand', () => {
 
   it('history below the floor: checks from the floor with a note, never the floor refusal', () => {
     const root = makeProject({
-      'package.json': pkgJson('app-pnpm', { [PKG]: '^0.15.0' }),
-      'pnpm-lock.yaml': pnpmLock({ '.': '0.15.0' }),
+      'package.json': pkgJson('app-pnpm', { [PKG]: '^0.8.1' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.8.1' }),
     });
     git(root, 'init', '-q');
     git(root, 'add', '-A');
-    git(root, 'commit', '-qm', 'on 0.15.0');
+    git(root, 'commit', '-qm', 'on 0.8.1');
     writeFiles(root, {
       'package.json': pkgJson('app-pnpm', { [PKG]: `^${TO}` }),
       'pnpm-lock.yaml': pnpmLock({ '.': TO }),
@@ -518,10 +565,10 @@ describe('already bumped by hand', () => {
     git(root, 'commit', '-qam', `to ${TO}`);
     const { code, report } = json(root, '--check');
     expect(report.refused).toBeNull();
-    expect(report.importers[0]).toMatchObject({ from: '0.16.0', source: 'git-log' });
+    expect(report.importers[0]).toMatchObject({ from: '0.9.0', source: 'git-log' });
     const note = report.doByHand.find((i) => i.id === 'tool/below-floor');
     expect(note).toMatchObject({ blocking: false });
-    expect(note.plain).toContain('0.15.0');
+    expect(note.plain).toContain('0.8.1');
     expect(note.plain).toContain('MIGRATIONS.md');
     expect(code).toBe(0);
     expect(UpgradeReport.safeParse(report).success).toBe(true);
@@ -650,13 +697,13 @@ describe('workspaces', () => {
     const root = makeProject({
       'package.json': { name: 'mono', private: true },
       'pnpm-workspace.yaml': "packages:\n  - 'apps/*'\n",
-      'pnpm-lock.yaml': pnpmLock({ 'apps/old': '0.15.0' }),
-      'apps/old/package.json': pkgJson('old', { [PKG]: '^0.15.0' }),
+      'pnpm-lock.yaml': pnpmLock({ 'apps/old': '0.8.1' }),
+      'apps/old/package.json': pkgJson('old', { [PKG]: '^0.8.1' }),
     });
     const res = run(root, '--check');
     expect(res.code).toBe(2);
     expect(res.stderr).toContain(
-      'Installed 0.15.0 is older than the oldest release this tool can upgrade from (0.16.0).',
+      'Installed 0.8.1 is older than the oldest release this tool can upgrade from (0.9.0).',
     );
     expect(res.stderr).toContain('In apps/old.');
   });
@@ -1148,5 +1195,118 @@ describe('the bins', () => {
     ]) {
       expect(res.stdout).toContain(flag);
     }
+  });
+});
+
+describe('a deprecation whose removal was kept (upgrade/kept.json)', () => {
+  const STEP = '0.29.0/deprecated/primitive.space.px6-px10';
+  const SOURCES = {
+    'src/App.tsx': "export const a = 'gap-px6 p-px10';\nexport const t = hds.space.px6;\n",
+    'src/app.css': '.a { gap: var(--primitive-space-px10); }\n',
+  };
+  const project = () =>
+    makeProject({
+      'package.json': pkgJson('kept', { [PKG]: '^0.28.0' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.28.0' }),
+      ...SOURCES,
+    });
+
+  it('leaves px6 and px10 as written going to the latest release, and says they were kept', () => {
+    const root = project();
+    const res = runCli(['upgrade', '--root', root, '--to', '0.30.0', ...QUIET, '--json']);
+    const report = JSON.parse(res.stdout);
+    for (const [file, text] of Object.entries(SOURCES)) {
+      expect(readFileSync(join(root, file), 'utf8')).toBe(text);
+    }
+    expect(report.changedFiles).not.toContain('src/App.tsx');
+    const kept = report.doByHand.find((item) => item.id === `${STEP}/kept`);
+    expect(kept).toMatchObject({ blocking: false });
+    expect(kept.plain).toMatch(/cancelled/);
+    expect(ids(report.comingNext)).not.toContain(STEP);
+  });
+});
+
+// hds#466: ops vendored tailwind.config.tokens.cjs (60 lines against 139), so its
+// utilities and lint vocabulary drifted from the preset the package installs.
+describe('a vendored copy of the Tailwind preset', () => {
+  const PRESET = readFileSync(join(REPO, 'tailwind.config.tokens.cjs'), 'utf8');
+  /** ops-shaped: a pnpm app at 0.20.0 that compiles its own Tailwind from a copied preset. */
+  const OPS_SHAPED = (preset) =>
+    makeProject({
+      'package.json': pkgJson('ops-shaped', { [PKG]: '^0.20.0', react: '^18.3.1' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.20.0' }),
+      'tailwind.config.tokens.cjs': preset,
+      'tailwind.config.ts':
+        "import tokens from './tailwind.config.tokens.cjs';\nexport default { theme: { extend: tokens.theme.extend } };\n",
+      'src/main.tsx': `import '${PKG}/styles.css';\nexport const App = () => null;\n`,
+    });
+
+  it('reports a copy whose keys differ from the installed preset as stale, naming the export to import', () => {
+    const stale = PRESET.replace(/\n\s*card: \{[^}]*\},/, '').replace(
+      "ring: 'var(--role-ring)',",
+      "ring: 'var(--role-ring)',\n        legacy: 'var(--legacy)',",
+    );
+    expect(stale).not.toBe(PRESET);
+    const { report } = json(OPS_SHAPED(stale));
+    const item = report.doByHand.find((i) => i.id === 'tool/vendored-preset');
+    expect(item).toMatchObject({ files: ['tailwind.config.tokens.cjs'], blocking: false });
+    expect(item.plain).toContain(`${PKG}/tailwind-preset`);
+    expect(item.plain).toContain('colors.card.DEFAULT');
+    expect(item.plain).toContain('colors.legacy');
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+  });
+
+  it('says nothing about a copy that matches the installed preset', () => {
+    const { report } = json(OPS_SHAPED(PRESET));
+    expect(ids(report.doByHand)).not.toContain('tool/vendored-preset');
+  });
+});
+
+describe('a version deprecated on npm (hds#472)', () => {
+  const project = () =>
+    makeProject({
+      'package.json': pkgJson('yanked', { [PKG]: '^0.28.0' }),
+      'pnpm-lock.yaml': pnpmLock({ '.': '0.28.0' }),
+      'src/App.tsx': `import { Button } from '${PKG}';\nexport const A = () => <Button>Go</Button>;\n`,
+    });
+  const registry = (deprecated) => {
+    const dir = makeProject({
+      'packument.json': JSON.stringify({
+        versions: Object.fromEntries(
+          Object.entries(deprecated).map(([v, deprecatedMessage]) => [
+            v,
+            { deprecated: deprecatedMessage },
+          ]),
+        ),
+      }),
+    });
+    return { ...process.env, HDS_UPGRADE_REGISTRY: join(dir, 'packument.json') };
+  };
+  const tool = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')).version;
+  const known = JSON.parse(readFileSync(join(REPO, 'upgrade/index.json'), 'utf8')).versions.map(
+    (v) => v.version,
+  );
+  const before = known[known.indexOf(tool) - 1];
+
+  it('the default target skips a deprecated version and upgrades to the newest good one', () => {
+    const root = project();
+    const res = runCli(['upgrade', '--root', root, ...QUIET, '--dry-run', '--json'], {
+      env: registry({ [tool]: `Broken: use ${before}` }),
+    });
+    const report = JSON.parse(res.stdout);
+    expect(UpgradeReport.safeParse(report).success).toBe(true);
+    expect(report.target).toBe(before);
+    expect(report.skipped).toEqual([{ version: tool, reason: `Broken: use ${before}` }]);
+  });
+
+  it('--to a deprecated version refuses, changing nothing, and names the message', () => {
+    const root = project();
+    const tree = snapshotTree(root);
+    const res = runCli(['upgrade', '--root', root, '--to', '0.30.0', ...QUIET], {
+      env: registry({ '0.30.0': 'Broken: use 0.29.0' }),
+    });
+    expect(res.code).toBe(2);
+    expect(res.stderr).toContain('0.30.0 is deprecated on npm (Broken: use 0.29.0)');
+    expect(snapshotTree(root)).toEqual(tree);
   });
 });

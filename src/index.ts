@@ -40,7 +40,7 @@
 // Side-effect import: design system base styles (tokens + theme + utilities)
 import './styles/index.css';
 
-// ── primitives (39) ──
+// ── primitives (40) ──
 export * from './app/components/alert';
 export * from './app/components/avatar';
 export * from './app/components/badge';
@@ -65,6 +65,7 @@ export * from './app/components/inline-link';
 export * from './app/components/input';
 export * from './app/components/textarea';
 export * from './app/components/composer';
+export * from './app/components/command-palette';
 export * from './app/components/theme-toggle';
 export * from './app/components/checkbox';
 export * from './app/components/radio';
@@ -86,11 +87,14 @@ export * from './app/components/kbd';
 export * from './app/components/timestamp';
 export * from './app/components/blockquote';
 export * from './app/components/meta-line';
+export * from './app/components/nav-list';
+export * from './app/components/token-field';
 export * from './app/components/visually-hidden';
 export * from './app/components/avatar-group';
 
 // ── Astryx-gap coverage — Tier 1 Radix skins (0.12.0) ──
 export * from './app/components/alert-dialog';
+export * from './app/components/sheet';
 
 // ── Astryx-gap coverage — Tier 2 pattern layer (0.13.0) ──
 export * from './app/components/metadata-list';
@@ -137,6 +141,10 @@ export const tokens = tokensJson;
 
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
+
+// ── Responsive hooks (hds#824): read an HDS breakpoint in JS, narrow by default ──
+// `Breakpoint` (the key type) ships from Box with the `sx` types.
+export { useAtLeast, useBreakpoint } from './app/hooks/useBreakpoint';
 
 // ── Theming contract (framework-agnostic data-* dials; zero-JS compatible) ──
 export { HdsThemeProvider, useHdsTheme } from './app/context/hds-theme';

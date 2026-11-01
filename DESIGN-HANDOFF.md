@@ -14,7 +14,7 @@
 
 | Attribute         | Value                                                        |
 | ----------------- | ------------------------------------------------------------ |
-| Brand accent      | `#4A4146` (`semantic.accent.rest`)                           |
+| Brand accent      | `#0F1726` (`semantic.accent.rest`)                           |
 | Font              | Plus Jakarta Sans (self-hosted) + IBM Plex Mono (monospace)  |
 | Neutral scale     | True monochromatic — equal RGB channels, no warm/cool tint   |
 | Spacing base      | 4px                                                          |
@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 498 tokens, aliases, and TS refs in one shot.
+Checks all 522 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -81,112 +81,117 @@ Checks all 498 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:start:primitives-color -->
 
-| Token                                               | Value                       | Notes                                                                                                                         |
-| --------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `primitive.color.neutral.50`                        | `#fafafa`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.100`                       | `#f5f5f5`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.200`                       | `#e5e5e5`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.300`                       | `#d4d4d4`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.350`                       | `#b4b4b4`                   | Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary). |
-| `primitive.color.neutral.400`                       | `#a3a3a3`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.450`                       | `#909090`                   | Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).               |
-| `primitive.color.neutral.500`                       | `#737373`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.600`                       | `#525252`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.700`                       | `#404040`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.800`                       | `#262626`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.850`                       | `#1a1a1a`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.900`                       | `#111111`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.950`                       | `#0a0a0a`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.white`                     | `#ffffff`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.neutral.black`                     | `#000000`                   | Specific value within the neutral range at a defined lightness step.                                                          |
-| `primitive.color.blue.50`                           | `oklch(0.96 0.03 266.54)`   | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.100`                          | `oklch(0.92 0.04 266.54)`   | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.200`                          | `oklch(0.88 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.300`                          | `oklch(0.70 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.400`                          | `oklch(0.65 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.450`                          | `oklch(0.56 0.29 266.60)`   | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.500`                          | `#1E2EFD`                   | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.600`                          | `oklch(0.45 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.700`                          | `oklch(0.44 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.800`                          | `oklch(0.30 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.blue.900`                          | `oklch(0.22 0.05 266.54)`   | Specific value within the blue range at a defined lightness step.                                                             |
-| `primitive.color.red.50`                            | `#fef2f2`                   | Specific value within the red range at a defined lightness step.                                                              |
-| `primitive.color.red.400`                           | `#f87171`                   | Specific value within the red range at a defined lightness step.                                                              |
-| `primitive.color.red.700`                           | `#b91c1c`                   | Specific value within the red range at a defined lightness step.                                                              |
-| `primitive.color.red.950`                           | `#450a0a`                   | Specific value within the red range at a defined lightness step.                                                              |
-| `primitive.color.green.50`                          | `#ecfdf5`                   | Specific value within the green range at a defined lightness step.                                                            |
-| `primitive.color.green.400`                         | `#34d399`                   | Specific value within the green range at a defined lightness step.                                                            |
-| `primitive.color.green.700`                         | `#047857`                   | Specific value within the green range at a defined lightness step.                                                            |
-| `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.                                                            |
-| `primitive.color.graphite.50`                       | `#f5f4f4`                   | Graphite accent tint — faintest step.                                                                                         |
-| `primitive.color.graphite.100`                      | `#e9e7e8`                   | Graphite accent — very light warm tint.                                                                                       |
-| `primitive.color.graphite.200`                      | `#cbc6c9`                   | Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.                                     |
-| `primitive.color.graphite.300`                      | `#b2abae`                   | Graphite accent — soft mid-light step; dark-mode hover/link.                                                                  |
-| `primitive.color.graphite.400`                      | `#8b8488`                   | Graphite accent — mid warm-grey step.                                                                                         |
-| `primitive.color.graphite.500`                      | `#655e62`                   | Graphite accent — mid step.                                                                                                   |
-| `primitive.color.graphite.600`                      | `#544d51`                   | Graphite accent — mid-dark step.                                                                                              |
-| `primitive.color.graphite.700`                      | `#4a4146`                   | Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).                |
-| `primitive.color.graphite.800`                      | `#352e32`                   | Graphite accent — deep step; light-mode hover.                                                                                |
-| `primitive.color.graphite.900`                      | `#2a2428`                   | Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.                                          |
-| `primitive.color.graphite.950`                      | `#19161a`                   | Graphite accent — near-black warm substrate.                                                                                  |
-| `primitive.color.cobalt.50`                         | `#eef0fe`                   | Cobalt accent (opt-in, data-accent="cobalt") — faintest step; selected and subtle accent background.                          |
-| `primitive.color.cobalt.100`                        | `#dce1fd`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 100.                                                                 |
-| `primitive.color.cobalt.200`                        | `#b4bbf4`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 200.                                                                 |
-| `primitive.color.cobalt.300`                        | `#8a97f8`                   | Cobalt accent (opt-in, data-accent="cobalt") — dark-mode accent fill and accent text (7.86:1 on black).                       |
-| `primitive.color.cobalt.400`                        | `#5b71fa`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 400.                                                                 |
-| `primitive.color.cobalt.500`                        | `#2a5bf8`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 500.                                                                 |
-| `primitive.color.cobalt.600`                        | `#112de8`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode accent fill and accent text (white text 8.19:1).                    |
-| `primitive.color.cobalt.700`                        | `#1f17c4`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode hover and pressed accent fill.                                      |
-| `primitive.color.cobalt.800`                        | `#191c7d`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 800.                                                                 |
-| `primitive.color.cobalt.900`                        | `#0b0658`                   | Cobalt accent (opt-in, data-accent="cobalt") — darkest step; dark-mode subtle accent background.                              |
-| `primitive.color.lime.50`                           | `#f2fbd6`                   | Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.                     |
-| `primitive.color.lime.100`                          | `#e3f6a8`                   | Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.                                     |
-| `primitive.color.lime.200`                          | `#cdee6a`                   | Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.                                     |
-| `primitive.color.lime.300`                          | `#b8e62e`                   | Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.                   |
-| `primitive.color.lime.400`                          | `#93ba1c`                   | Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.                                     |
-| `primitive.color.lime.600`                          | `#6e8f0b`                   | Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.   |
-| `primitive.color.lime.800`                          | `#445807`                   | Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.                                     |
-| `primitive.color.mauve.50`                          | `#fff0f6`                   | Mauve tint, faintest step.                                                                                                    |
-| `primitive.color.mauve.100`                         | `#f4e2ea`                   | Mauve step 100, lightness-matched to graphite 100.                                                                            |
-| `primitive.color.mauve.200`                         | `#e1cad4`                   | Mauve step 200, lightness-matched to graphite 200.                                                                            |
-| `primitive.color.mauve.300`                         | `#c0a4b1`                   | Mauve step 300, lightness-matched to graphite 300.                                                                            |
-| `primitive.color.mauve.400`                         | `#9d7b8a`                   | Mauve step 400, lightness-matched to graphite 400.                                                                            |
-| `primitive.color.mauve.500`                         | `#734b5e`                   | Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet.                                                       |
-| `primitive.color.mauve.600`                         | `#674254`                   | Mauve step 600, lightness-matched to graphite 600.                                                                            |
-| `primitive.color.mauve.700`                         | `#523141`                   | Mauve step 700, lightness-matched to graphite 700.                                                                            |
-| `primitive.color.mauve.800`                         | `#432634`                   | Mauve step 800, lightness-matched to graphite 800.                                                                            |
-| `primitive.color.mauve.900`                         | `#361d29`                   | Mauve step 900, lightness-matched to graphite 900.                                                                            |
-| `primitive.color.mauve.950`                         | `#240f1a`                   | Mauve, near-black substrate.                                                                                                  |
-| `primitive.color.violet.50`                         | `#f5f3ff`                   | Specific value within the violet range at a defined lightness step.                                                           |
-| `primitive.color.violet.400`                        | `#a78bfa`                   | Specific value within the violet range at a defined lightness step.                                                           |
-| `primitive.color.violet.700`                        | `#6d28d9`                   | Specific value within the violet range at a defined lightness step.                                                           |
-| `primitive.color.violet.950`                        | `#2e1065`                   | Specific value within the violet range at a defined lightness step.                                                           |
-| `primitive.color.lilac.50`                          | `#f7f4fe`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.100`                         | `#efe9fd`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.200`                         | `#ddd0fb`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.300`                         | `#c3aef6`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.400`                         | `#a585ee`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.450`                         | `#9a6fe8`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac accent rest — AA for white text on page and card surfaces.                                                              |
-| `primitive.color.lilac.600`                         | `#5f33c0`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.700`                         | `#4f2aa3`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.800`                         | `#3a1f78`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.lilac.900`                         | `#2a1659`                   | Specific value within the lilac range at a defined lightness step.                                                            |
-| `primitive.color.amber.50`                          | `#fffbeb`                   | Specific value within the amber range at a defined lightness step.                                                            |
-| `primitive.color.amber.400`                         | `#fbbf24`                   | Specific value within the amber range at a defined lightness step.                                                            |
-| `primitive.color.amber.800`                         | `#92400e`                   | Specific value within the amber range at a defined lightness step.                                                            |
-| `primitive.color.amber.950`                         | `#451a03`                   | Specific value within the amber range at a defined lightness step.                                                            |
-| `primitive.color.stone.100`                         | `#F5EFE7`                   | Stone 100 — near-white warm tint; accent-subtle surface.                                                                      |
-| `primitive.color.stone.400`                         | `#D0B492`                   | Stone 400 — light warm tone; dark-mode pressed accent.                                                                        |
-| `primitive.color.stone.450`                         | `#BC9D7E`                   | Stone 450 — medium warm tone; dark-mode hover accent.                                                                         |
-| `primitive.color.stone.500`                         | `#A8896A`                   | Stone 500 — mid warm tone; dark-mode rest accent.                                                                             |
-| `primitive.color.stone.600`                         | `#8B6F47`                   | Stone 600 — primary warm stone; light-mode rest accent and CTA surface.                                                       |
-| `primitive.color.stone.700`                         | `#75593A`                   | Stone 700 — darker warm stone; light-mode hover accent.                                                                       |
-| `primitive.color.stone.800`                         | `#5C432A`                   | Stone 800 — deep warm stone; light-mode pressed accent.                                                                       |
-| `primitive.color.stone.950`                         | `#3A2E1F`                   | Stone 950 — near-black warm tone; dark-mode subtle accent surface.                                                            |
-| `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC`                   | Light support tone for the Microsoft Game Dev project brand.                                                                  |
-| `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb`                   | Primary accent tone for the Microsoft Game Dev project brand.                                                                 |
-| `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)`      | Dark support tone for the Microsoft Game Dev project brand.                                                                   |
+| Token                                               | Value                       | Notes                                                                                                                                    |
+| --------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `primitive.color.neutral.50`                        | `#f9fafc`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.100`                       | `#f4f5f7`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.200`                       | `#e4e5e7`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.300`                       | `#d3d4d6`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.350`                       | `#b2b4b8`                   | Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).            |
+| `primitive.color.neutral.400`                       | `#a0a3a8`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.450`                       | `#8d9096`                   | Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).                          |
+| `primitive.color.neutral.500`                       | `#6f737b`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.550`                       | `#5e626a`                   | Dark surface.softHover (C2).                                                                                                             |
+| `primitive.color.neutral.600`                       | `#4d525b`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.700`                       | `#3b404a`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.725`                       | `#272c36`                   | Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).        |
+| `primitive.color.neutral.750`                       | `#252a34`                   | Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).                     |
+| `primitive.color.neutral.800`                       | `#212630`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.825`                       | `#1b202a`                   | Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755). |
+| `primitive.color.neutral.850`                       | `#151a24`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.900`                       | `#0c111b`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.950`                       | `#060a13`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.white`                     | `#ffffff`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.neutral.black`                     | `#060a13`                   | Specific value within the neutral range at a defined lightness step.                                                                     |
+| `primitive.color.blue.50`                           | `oklch(0.96 0.03 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.100`                          | `oklch(0.92 0.04 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.200`                          | `oklch(0.88 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.300`                          | `oklch(0.70 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.400`                          | `oklch(0.65 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.450`                          | `oklch(0.56 0.29 266.60)`   | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.500`                          | `#1E2EFD`                   | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.600`                          | `oklch(0.45 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.700`                          | `oklch(0.44 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.800`                          | `oklch(0.30 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.blue.900`                          | `oklch(0.22 0.05 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                        |
+| `primitive.color.red.50`                            | `#fef2f2`                   | Specific value within the red range at a defined lightness step.                                                                         |
+| `primitive.color.red.400`                           | `#f87171`                   | Specific value within the red range at a defined lightness step.                                                                         |
+| `primitive.color.red.700`                           | `#b91c1c`                   | Specific value within the red range at a defined lightness step.                                                                         |
+| `primitive.color.red.950`                           | `#450a0a`                   | Specific value within the red range at a defined lightness step.                                                                         |
+| `primitive.color.green.50`                          | `#ecfdf5`                   | Specific value within the green range at a defined lightness step.                                                                       |
+| `primitive.color.green.400`                         | `#34d399`                   | Specific value within the green range at a defined lightness step.                                                                       |
+| `primitive.color.green.700`                         | `#047857`                   | Specific value within the green range at a defined lightness step.                                                                       |
+| `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.                                                                       |
+| `primitive.color.graphite.50`                       | `#f2f4f8`                   | Graphite accent tint — faintest step; dark rest fill.                                                                                    |
+| `primitive.color.graphite.100`                      | `#e5e8ed`                   | Graphite accent — very light midnight tint.                                                                                              |
+| `primitive.color.graphite.200`                      | `#c4c8cf`                   | Graphite accent — light midnight grey.                                                                                                   |
+| `primitive.color.graphite.300`                      | `#a8aeb8`                   | Graphite accent — soft mid-light step; dark-mode hover/link.                                                                             |
+| `primitive.color.graphite.400`                      | `#7f8794`                   | Graphite accent — mid midnight-grey step.                                                                                                |
+| `primitive.color.graphite.500`                      | `#586170`                   | Graphite accent — mid step.                                                                                                              |
+| `primitive.color.graphite.600`                      | `#465061`                   | Graphite accent — mid-dark step.                                                                                                         |
+| `primitive.color.graphite.700`                      | `#3a4457`                   | Graphite accent — midnight charcoal; light-mode accent text.                                                                             |
+| `primitive.color.graphite.800`                      | `#263043`                   | Graphite accent — deep step; light-mode hover.                                                                                           |
+| `primitive.color.graphite.900`                      | `#1c2638`                   | Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.                                                     |
+| `primitive.color.graphite.950`                      | `#0f1726`                   | Graphite accent — near-black; light rest fill.                                                                                           |
+| `primitive.color.cobalt.50`                         | `#eef0fe`                   | Cobalt accent (opt-in, data-accent="cobalt") — faintest step; selected and subtle accent background.                                     |
+| `primitive.color.cobalt.100`                        | `#dce1fd`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 100.                                                                            |
+| `primitive.color.cobalt.200`                        | `#b4bbf4`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 200.                                                                            |
+| `primitive.color.cobalt.300`                        | `#8a97f8`                   | Cobalt accent (opt-in, data-accent="cobalt") — dark-mode accent fill and accent text (7.41:1 on black).                                  |
+| `primitive.color.cobalt.400`                        | `#5b71fa`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 400.                                                                            |
+| `primitive.color.cobalt.500`                        | `#2a5bf8`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 500.                                                                            |
+| `primitive.color.cobalt.600`                        | `#112de8`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode accent fill and accent text (white text 8.19:1).                               |
+| `primitive.color.cobalt.700`                        | `#1f17c4`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode hover and pressed accent fill.                                                 |
+| `primitive.color.cobalt.800`                        | `#191c7d`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 800.                                                                            |
+| `primitive.color.cobalt.900`                        | `#0b0658`                   | Cobalt accent (opt-in, data-accent="cobalt") — darkest step; dark-mode subtle accent background.                                         |
+| `primitive.color.lime.50`                           | `#f2fbd6`                   | Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.                                |
+| `primitive.color.lime.100`                          | `#e3f6a8`                   | Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.                                                |
+| `primitive.color.lime.200`                          | `#cdee6a`                   | Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.                                                |
+| `primitive.color.lime.300`                          | `#b8e62e`                   | Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.                              |
+| `primitive.color.lime.400`                          | `#93ba1c`                   | Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.                                                |
+| `primitive.color.lime.600`                          | `#6e8f0b`                   | Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.              |
+| `primitive.color.lime.800`                          | `#445807`                   | Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.                                                |
+| `primitive.color.mauve.50`                          | `#fff0f6`                   | Mauve tint, faintest step.                                                                                                               |
+| `primitive.color.mauve.100`                         | `#f4e2ea`                   | Mauve step 100, lightness-matched to graphite 100.                                                                                       |
+| `primitive.color.mauve.200`                         | `#e1cad4`                   | Mauve step 200, lightness-matched to graphite 200.                                                                                       |
+| `primitive.color.mauve.300`                         | `#c0a4b1`                   | Mauve step 300, lightness-matched to graphite 300.                                                                                       |
+| `primitive.color.mauve.400`                         | `#9d7b8a`                   | Mauve step 400, lightness-matched to graphite 400.                                                                                       |
+| `primitive.color.mauve.500`                         | `#734b5e`                   | Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet.                                                                  |
+| `primitive.color.mauve.600`                         | `#674254`                   | Mauve step 600, lightness-matched to graphite 600.                                                                                       |
+| `primitive.color.mauve.700`                         | `#523141`                   | Mauve step 700, lightness-matched to graphite 700.                                                                                       |
+| `primitive.color.mauve.800`                         | `#432634`                   | Mauve step 800, lightness-matched to graphite 800.                                                                                       |
+| `primitive.color.mauve.900`                         | `#361d29`                   | Mauve step 900, lightness-matched to graphite 900.                                                                                       |
+| `primitive.color.mauve.950`                         | `#240f1a`                   | Mauve, near-black substrate.                                                                                                             |
+| `primitive.color.violet.50`                         | `#f5f3ff`                   | Specific value within the violet range at a defined lightness step.                                                                      |
+| `primitive.color.violet.400`                        | `#a78bfa`                   | Specific value within the violet range at a defined lightness step.                                                                      |
+| `primitive.color.violet.700`                        | `#6d28d9`                   | Specific value within the violet range at a defined lightness step.                                                                      |
+| `primitive.color.violet.950`                        | `#2e1065`                   | Specific value within the violet range at a defined lightness step.                                                                      |
+| `primitive.color.lilac.50`                          | `#f7f4fe`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.100`                         | `#efe9fd`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.200`                         | `#ddd0fb`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.300`                         | `#c3aef6`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.400`                         | `#a585ee`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.450`                         | `#9a6fe8`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac accent rest — AA for white text on page and card surfaces.                                                                         |
+| `primitive.color.lilac.600`                         | `#5f33c0`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.700`                         | `#4f2aa3`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.800`                         | `#3a1f78`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.lilac.900`                         | `#2a1659`                   | Specific value within the lilac range at a defined lightness step.                                                                       |
+| `primitive.color.amber.50`                          | `#fffbeb`                   | Specific value within the amber range at a defined lightness step.                                                                       |
+| `primitive.color.amber.400`                         | `#fbbf24`                   | Specific value within the amber range at a defined lightness step.                                                                       |
+| `primitive.color.amber.800`                         | `#92400e`                   | Specific value within the amber range at a defined lightness step.                                                                       |
+| `primitive.color.amber.950`                         | `#451a03`                   | Specific value within the amber range at a defined lightness step.                                                                       |
+| `primitive.color.stone.100`                         | `#F5EFE7`                   | Stone 100 — near-white warm tint; accent-subtle surface.                                                                                 |
+| `primitive.color.stone.400`                         | `#D0B492`                   | Stone 400 — light warm tone; dark-mode pressed accent.                                                                                   |
+| `primitive.color.stone.450`                         | `#BC9D7E`                   | Stone 450 — medium warm tone; dark-mode hover accent.                                                                                    |
+| `primitive.color.stone.500`                         | `#A8896A`                   | Stone 500 — mid warm tone; dark-mode rest accent.                                                                                        |
+| `primitive.color.stone.600`                         | `#8B6F47`                   | Stone 600 — primary warm stone; light-mode rest accent and CTA surface.                                                                  |
+| `primitive.color.stone.700`                         | `#75593A`                   | Stone 700 — darker warm stone; light-mode hover accent.                                                                                  |
+| `primitive.color.stone.800`                         | `#5C432A`                   | Stone 800 — deep warm stone; light-mode pressed accent.                                                                                  |
+| `primitive.color.stone.950`                         | `#3A2E1F`                   | Stone 950 — near-black warm tone; dark-mode subtle accent surface.                                                                       |
+| `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC`                   | Light support tone for the Microsoft Game Dev project brand.                                                                             |
+| `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb`                   | Primary accent tone for the Microsoft Game Dev project brand.                                                                            |
+| `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)`      | Dark support tone for the Microsoft Game Dev project brand.                                                                              |
+| `primitive.color.shadow.ink`                        | `#282c34`                   | Shadow ink: hsl(220 13% 18%) as one solid colour.                                                                                        |
 
 <!-- auto:end:primitives-color -->
 
@@ -194,20 +199,20 @@ Checks all 498 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:start:semantic-accent -->
 
-| Token                               | Light                            | Dark                             | Role                                                                                                                                                                                                                                                       |
-| ----------------------------------- | -------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.accent.rest`              | `{primitive.color.graphite.700}` | `{primitive.color.graphite.200}` | Default accent fill for interactive elements at rest                                                                                                                                                                                                       |
-| `semantic.accent.hover`             | `{primitive.color.graphite.800}` | `{primitive.color.graphite.100}` | Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).                                                                                                                                      |
-| `semantic.accent.pressed`           | `{primitive.color.graphite.900}` | `{primitive.color.graphite.50}`  | Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).                                                                                                                                   |
-| `semantic.accent.inactive`          | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                                                                                                                                                                                                    |
-| `semantic.accent.disabled`          | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                                                                                                                                                                                                  |
-| `semantic.accent.content`           | `{primitive.color.graphite.700}` | `{primitive.color.graphite.300}` | Accent-intent text/icon color on neutral surfaces (graphite)                                                                                                                                                                                               |
-| `semantic.accent.contentHover`      | `{primitive.color.graphite.800}` | `{primitive.color.graphite.200}` | Accent content color on pointer hover.                                                                                                                                                                                                                     |
-| `semantic.accent.subtle`            | `{primitive.color.graphite.50}`  | `{primitive.color.graphite.800}` | Low-emphasis accent tint for hover backgrounds and selection highlights.                                                                                                                                                                                   |
-| `semantic.accent.delight.base`      | `{primitive.color.lime.300}`     | `{primitive.color.lime.300}`     | Delight accent fill (lime) for delight moments only: a streak or win badge, a "new" tag, a best-fit highlight, confetti and illustration. Never buttons, links or focus. Text on it is always accent.delight.onDelight (ink, 12.95:1). Same in both modes. |
-| `semantic.accent.delight.deep`      | `{primitive.color.lime.600}`     | `{primitive.color.lime.600}`     | Deep lime for delight line art, illustration strokes and confetti. Decorative only; never text on a surface, never buttons, links or focus.                                                                                                                |
-| `semantic.accent.delight.pale`      | `{primitive.color.lime.50}`      | `{primitive.color.lime.50}`      | Pale lime tint behind a delight moment (a best-fit highlight row). Text on it is ink. Never buttons, links or focus.                                                                                                                                       |
-| `semantic.accent.delight.onDelight` | `{primitive.color.neutral.900}`  | `{primitive.color.neutral.900}`  | Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.                                                                                                                                                              |
+| Token                               | Light                            | Dark                             | Role                                                                                                                                |
+| ----------------------------------- | -------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.accent.rest`              | `{primitive.color.graphite.950}` | `{primitive.color.graphite.50}`  | Accent fill at rest                                                                                                                 |
+| `semantic.accent.hover`             | `{primitive.color.graphite.800}` | `{primitive.color.graphite.100}` | Accent fill on hover, one step from rest (graphite.800 / 100).                                                                      |
+| `semantic.accent.pressed`           | `{primitive.color.graphite.900}` | `{primitive.color.graphite.200}` | Accent fill on press (graphite.900 / 200).                                                                                          |
+| `semantic.accent.inactive`          | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                                                                             |
+| `semantic.accent.disabled`          | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                                                                           |
+| `semantic.accent.content`           | `{primitive.color.graphite.700}` | `{primitive.color.graphite.300}` | Accent-intent text/icon color on neutral surfaces (graphite)                                                                        |
+| `semantic.accent.contentHover`      | `{primitive.color.graphite.800}` | `{primitive.color.graphite.200}` | Accent content color on pointer hover.                                                                                              |
+| `semantic.accent.subtle`            | `{primitive.color.graphite.50}`  | `{primitive.color.graphite.800}` | Low-emphasis accent tint for hover backgrounds and selection highlights.                                                            |
+| `semantic.accent.delight.base`      | `{primitive.color.lime.300}`     | `{primitive.color.lime.300}`     | Lime fill for delight moments only (win badge, "new" tag, confetti). Never buttons, links or focus. Text: accent.delight.onDelight. |
+| `semantic.accent.delight.deep`      | `{primitive.color.lime.600}`     | `{primitive.color.lime.600}`     | Deep lime for delight line art and confetti. Decorative only: never text, buttons, links or focus.                                  |
+| `semantic.accent.delight.pale`      | `{primitive.color.lime.50}`      | `{primitive.color.lime.50}`      | Pale lime tint behind a delight moment, such as a best-fit row. Text is ink. Never buttons, links, focus.                           |
+| `semantic.accent.delight.onDelight` | `{primitive.color.neutral.900}`  | `{primitive.color.neutral.900}`  | Ink text and icons on any delight fill, in both modes (12.95:1 on delight.base). Never white.                                       |
 
 <!-- auto:end:semantic-accent -->
 
@@ -217,49 +222,52 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 
 <!-- auto:start:semantic-color -->
 
-| Token                                   | Light                           | Dark                            | Notes                                                                                                                                       |
-| --------------------------------------- | ------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                                                                                        |
-| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.850}   | Subtle elevated surface (cards, sections)                                                                                                   |
-| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Deeper surface layer                                                                                                                        |
-| `semantic.color.surface.scrim`          | {primitive.color.neutral.900}   | {primitive.color.neutral.black} | Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.                                         |
-| `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                                                                                   |
-| `semantic.color.surface.accent`         | {primitive.color.graphite.700}  | {primitive.color.graphite.200}  | Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.                                   |
-| `semantic.color.surface.accentSubtle`   | {primitive.color.graphite.50}   | {primitive.color.graphite.800}  | Faint accent tint for hover states or highlights.                                                                                           |
-| `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                         |
-| `semantic.color.surface.pressed`        | {primitive.color.neutral.50}    | {primitive.color.neutral.black} | Background for an actively pressed interactive surface.                                                                                     |
-| `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Background for a persistently selected item (active tab, checked row).                                                                      |
-| `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Muted background for low-emphasis content blocks.                                                                                           |
-| `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                                   |
-| `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                                                                             |
-| `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.350}   |                                                                                                                                             |
-| `semantic.color.content.tertiary`       | {primitive.color.neutral.500}   | {primitive.color.neutral.450}   | Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.                           |
-| `semantic.color.content.disabled`       | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                             |
-| `semantic.color.content.inverse`        | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   |                                                                                                                                             |
-| `semantic.color.content.accent`         | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.                |
-| `semantic.color.content.onAccent`       | {primitive.color.neutral.50}    | {primitive.color.graphite.900}  | Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.                                                       |
-| `semantic.color.content.success`        | {primitive.color.green.700}     | {primitive.color.green.400}     | Success-toned text/icon color, independent of feedback banners.                                                                             |
-| `semantic.color.content.warning`        | {primitive.color.amber.800}     | {primitive.color.amber.400}     | Warning-toned text/icon color, independent of feedback banners.                                                                             |
-| `semantic.color.content.danger`         | {primitive.color.red.700}       | {primitive.color.red.400}       | Danger-toned text/icon color, independent of feedback banners.                                                                              |
-| `semantic.color.border.default`         | {primitive.color.neutral.200}   | {primitive.color.neutral.600}   |                                                                                                                                             |
-| `semantic.color.border.interactive`     | {primitive.color.neutral.500}   | {primitive.color.neutral.500}   | Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.          |
-| `semantic.color.border.subdued`         | {primitive.color.neutral.200}   | {primitive.color.neutral.800}   | Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark. |
-| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Lowest-contrast border for resting hairline edges on flat surfaces.                                                                         |
-| `semantic.color.border.strong`          | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                             |
-| `semantic.color.border.accent`          | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent border — graphite, dark enough to read as a boundary on page and card surfaces.                                                      |
-| `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                          |
-| `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                                          |
-| `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                                             |
-| `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                                             |
-| `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                                                                                             |
-| `semantic.color.feedback.info`          | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                                                                                             |
-| `semantic.color.feedback.inProgress`    | {primitive.color.violet.700}    | {primitive.color.violet.400}    |                                                                                                                                             |
-| `semantic.color.feedback.bg.error`      | {primitive.color.red.50}        | {primitive.color.red.950}       |                                                                                                                                             |
-| `semantic.color.feedback.bg.success`    | {primitive.color.green.50}      | {primitive.color.green.950}     |                                                                                                                                             |
-| `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.950}     |                                                                                                                                             |
-| `semantic.color.feedback.bg.info`       | {primitive.color.blue.50}       | {primitive.color.blue.900}      |                                                                                                                                             |
-| `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.950}    |                                                                                                                                             |
-| `semantic.color.state.pressed.overlay`  | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).          |
+| Token                                   | Light                           | Dark                            | Notes                                                                                                                                |
+| --------------------------------------- | ------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `semantic.color.surface.page`           | {primitive.color.neutral.white} | {primitive.color.neutral.black} | Main page background                                                                                                                 |
+| `semantic.color.surface.raised`         | {primitive.color.neutral.50}    | {primitive.color.neutral.825}   | Subtle elevated surface (cards, sections)                                                                                            |
+| `semantic.color.surface.overlay`        | {primitive.color.neutral.100}   | {primitive.color.neutral.800}   | Deeper surface layer                                                                                                                 |
+| `semantic.color.surface.floating`       | {primitive.color.neutral.white} | {primitive.color.neutral.800}   | Overlay fill (menus, popovers, listboxes, toasts, dialogs). Pair with a border.default hairline to separate from surface.muted.      |
+| `semantic.color.surface.scrim`          | {primitive.color.neutral.900}   | {primitive.color.neutral.black} | Opaque modal backdrop, near-black in both themes. Apply alpha in the class (bg-scrim/60), not here.                                  |
+| `semantic.color.surface.inverse`        | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Inverted background for contrast sections                                                                                            |
+| `semantic.color.surface.accent`         | {primitive.color.graphite.950}  | {primitive.color.graphite.50}   | Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.                       |
+| `semantic.color.surface.accentSubtle`   | {primitive.color.graphite.50}   | {primitive.color.graphite.800}  | Faint accent tint for hover states or highlights.                                                                                    |
+| `semantic.color.surface.hover`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Background for a hovered interactive surface (menu items, chips, tertiary buttons).                                                  |
+| `semantic.color.surface.pressed`        | {primitive.color.neutral.200}   | {primitive.color.neutral.black} | Background for an actively pressed interactive surface.                                                                              |
+| `semantic.color.surface.selected`       | {primitive.color.neutral.200}   | {primitive.color.neutral.725}   | Background for a persistently selected item (active tab, checked row).                                                               |
+| `semantic.color.surface.muted`          | {primitive.color.neutral.100}   | {primitive.color.neutral.750}   | Muted background for low-emphasis content blocks.                                                                                    |
+| `semantic.color.surface.sunken`         | {primitive.color.neutral.200}   | {primitive.color.neutral.700}   | Recessed background for inset wells (inputs, code blocks, nested panels).                                                            |
+| `semantic.color.surface.soft`           | {primitive.color.neutral.200}   | {primitive.color.neutral.600}   | Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary. |
+| `semantic.color.surface.softHover`      | {primitive.color.neutral.300}   | {primitive.color.neutral.550}   | Hovered or pressed soft (tonal) control fill, one step past surface.soft.                                                            |
+| `semantic.color.content.primary`        | {primitive.color.neutral.900}   | {primitive.color.neutral.100}   |                                                                                                                                      |
+| `semantic.color.content.secondary`      | {primitive.color.neutral.600}   | {primitive.color.neutral.350}   |                                                                                                                                      |
+| `semantic.color.content.tertiary`       | {primitive.color.neutral.500}   | {primitive.color.neutral.450}   | Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.                    |
+| `semantic.color.content.disabled`       | {primitive.color.neutral.300}   | {primitive.color.neutral.600}   |                                                                                                                                      |
+| `semantic.color.content.inverse`        | {primitive.color.neutral.100}   | {primitive.color.neutral.900}   |                                                                                                                                      |
+| `semantic.color.content.accent`         | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.         |
+| `semantic.color.content.onAccent`       | {primitive.color.neutral.50}    | {primitive.color.graphite.900}  | Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.                                                |
+| `semantic.color.content.success`        | {primitive.color.green.700}     | {primitive.color.green.400}     | Success-toned text/icon color, independent of feedback banners.                                                                      |
+| `semantic.color.content.warning`        | {primitive.color.amber.800}     | {primitive.color.amber.400}     | Warning-toned text/icon color, independent of feedback banners.                                                                      |
+| `semantic.color.content.danger`         | {primitive.color.red.700}       | {primitive.color.red.400}       | Danger-toned text/icon color, independent of feedback banners.                                                                       |
+| `semantic.color.border.default`         | {primitive.color.graphite.200}  | {primitive.color.neutral.600}   | Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).    |
+| `semantic.color.border.interactive`     | {primitive.color.neutral.500}   | {primitive.color.neutral.500}   | Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.   |
+| `semantic.color.border.subtle`          | {primitive.color.neutral.100}   | {primitive.color.neutral.700}   | Lowest-contrast border for resting hairline edges on flat surfaces.                                                                  |
+| `semantic.color.border.strong`          | {primitive.color.graphite.300}  | {primitive.color.neutral.600}   |                                                                                                                                      |
+| `semantic.color.border.accent`          | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent border — graphite, dark enough to read as a boundary on page and card surfaces.                                               |
+| `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                   |
+| `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                                   |
+| `semantic.color.shadow.hard`            | {primitive.color.shadow.ink}    | {primitive.color.neutral.500}   | Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).                 |
+| `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                                      |
+| `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                                      |
+| `semantic.color.feedback.warning`       | {primitive.color.amber.800}     | {primitive.color.amber.400}     |                                                                                                                                      |
+| `semantic.color.feedback.info`          | {primitive.color.blue.500}      | {primitive.color.blue.300}      |                                                                                                                                      |
+| `semantic.color.feedback.inProgress`    | {primitive.color.violet.700}    | {primitive.color.violet.400}    |                                                                                                                                      |
+| `semantic.color.feedback.bg.error`      | {primitive.color.red.50}        | {primitive.color.red.950}       |                                                                                                                                      |
+| `semantic.color.feedback.bg.success`    | {primitive.color.green.50}      | {primitive.color.green.950}     |                                                                                                                                      |
+| `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.950}     |                                                                                                                                      |
+| `semantic.color.feedback.bg.info`       | {primitive.color.blue.50}       | {primitive.color.blue.900}      |                                                                                                                                      |
+| `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.950}    |                                                                                                                                      |
+| `semantic.color.state.pressed.overlay`  | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).   |
 
 <!-- auto:end:semantic-color -->
 
@@ -277,34 +285,38 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 <!-- auto:start:typography -->
 
-| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                                                                     |
-| ----------------- | ---------- | ------ | ----------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `display`         | 48px       | 800    | 1.05        | -0.01em        | One per page, hero only. 48px / 1.05 / 700. Role 1 of 6.                                                                                        |
-| `title`           | 24px       | 800    | 1.25        | -0.01em        | Section and card headings. 24px / 1.25 / 700. Role 2 of 6.                                                                                      |
-| `titleSm`         | 18px       | 800    | 1.375       | 0em            | Small heading inside a card or section band. 18px / 1.375 / 700.                                                                                |
-| `body`            | 18px       | 450    | 1.6         | 0em            | Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.                                                                                             |
-| `ui`              | 16px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.                                                                               |
-| `caption`         | 14px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.                                                                |
-| `mono`            | 15px       | 450    | 1.5         | 0em            | Code and ids. 15px / 1.5 / 400. IBM Plex Mono ships 400 only, so it renders at 400 whatever weight.regular is. The mono companion, role 6 of 6. |
-| `h1`              | 24px       | 800    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                                                                       |
-| `h2`              | 24px       | 800    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                                                                       |
-| `h3`              | 24px       | 800    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                                                                       |
-| `eyebrow`         | 14px       | 500    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                                                                                     |
-| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                                                              |
+| Style             | Size (max) | Weight | Line Height | Letter Spacing | Description                                                                                   |
+| ----------------- | ---------- | ------ | ----------- | -------------- | --------------------------------------------------------------------------------------------- |
+| `display`         | 56px       | 700    | 1.05        | -0.01em        | One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.                                      |
+| `title`           | 28px       | 700    | 1.25        | -0.01em        | Section and card headings. 28px / 1.25 / 700. Role 2 of 6.                                    |
+| `titleSm`         | 20px       | 700    | 1.375       | 0em            | Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.         |
+| `body`            | 18px       | 400    | 1.6         | 0em            | Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.                                           |
+| `ui`              | 16px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.                             |
+| `caption`         | 14px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.              |
+| `mono`            | 15px       | 400    | 1.5         | 0em            | Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6. |
+| `h1`              | 28px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                     |
+| `h2`              | 28px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                     |
+| `h3`              | 28px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                     |
+| `eyebrow`         | 14px       | 500    | 1.5         | 0em            | deprecated: use semantic.typography.caption                                                   |
+| `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                            |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
 
 ### Primitive font sizes
 
 - `primitive.typography.size.xs` = **12px**
+- `primitive.typography.size.compactCaption` = **13px**
 - `primitive.typography.size.sm` = **14px**
 - `primitive.typography.size.base` = **16px**
+- `primitive.typography.size.compactBody` = **15px**
 - `primitive.typography.size.lg` = **18px**
 - `primitive.typography.size.xl` = **20px**
 - `primitive.typography.size.2xl` = **24px**
+- `primitive.typography.size.title` = **28px**
 - `primitive.typography.size.3xl` = **30px**
 - `primitive.typography.size.4xl` = **36px**
 - `primitive.typography.size.5xl` = **48px**
+- `primitive.typography.size.display` = **56px**
 - `primitive.typography.size.6xl` = **60px**
 - `primitive.typography.size.code` = **15px**
 <!-- auto:end:typography -->
@@ -335,27 +347,27 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 
 <!-- auto:start:spacing -->
 
-| Token                  | Value   | Notes |
-| ---------------------- | ------- | ----- |
-| `primitive.space.0`    | `0px`   |       |
-| `primitive.space.1`    | `4px`   |       |
-| `primitive.space.2`    | `8px`   |       |
-| `primitive.space.3`    | `12px`  |       |
-| `primitive.space.4`    | `16px`  |       |
-| `primitive.space.5`    | `20px`  |       |
-| `primitive.space.6`    | `24px`  |       |
-| `primitive.space.7`    | `28px`  |       |
-| `primitive.space.8`    | `32px`  |       |
-| `primitive.space.10`   | `40px`  |       |
-| `primitive.space.12`   | `48px`  |       |
-| `primitive.space.16`   | `64px`  |       |
-| `primitive.space.20`   | `80px`  |       |
-| `primitive.space.24`   | `96px`  |       |
-| `primitive.space.32`   | `128px` |       |
-| `primitive.space.px1`  | `1px`   |       |
-| `primitive.space.px2`  | `2px`   |       |
-| `primitive.space.px6`  | `6px`   |       |
-| `primitive.space.px10` | `10px`  |       |
+| Token                  | Value   | Notes                                                                                           |
+| ---------------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `primitive.space.0`    | `0px`   |                                                                                                 |
+| `primitive.space.1`    | `4px`   |                                                                                                 |
+| `primitive.space.2`    | `8px`   |                                                                                                 |
+| `primitive.space.3`    | `12px`  |                                                                                                 |
+| `primitive.space.4`    | `16px`  |                                                                                                 |
+| `primitive.space.5`    | `20px`  |                                                                                                 |
+| `primitive.space.6`    | `24px`  |                                                                                                 |
+| `primitive.space.7`    | `28px`  |                                                                                                 |
+| `primitive.space.8`    | `32px`  |                                                                                                 |
+| `primitive.space.10`   | `40px`  |                                                                                                 |
+| `primitive.space.12`   | `48px`  |                                                                                                 |
+| `primitive.space.16`   | `64px`  |                                                                                                 |
+| `primitive.space.20`   | `80px`  |                                                                                                 |
+| `primitive.space.24`   | `96px`  |                                                                                                 |
+| `primitive.space.32`   | `128px` |                                                                                                 |
+| `primitive.space.px1`  | `1px`   |                                                                                                 |
+| `primitive.space.px2`  | `2px`   |                                                                                                 |
+| `primitive.space.px6`  | `6px`   | 6px, off the 4px grid: a tight gap (pill, chip, title to description) the 4px steps cannot hit. |
+| `primitive.space.px10` | `10px`  | 10px, off the 4px grid: a label or row gap the 4px steps cannot hit.                            |
 
 <!-- auto:end:spacing -->
 
@@ -365,34 +377,33 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 
 <!-- auto:start:semantic-space -->
 
-| Token                                | Value                       | Notes                                                                                                                                               |
-| ------------------------------------ | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.space.scale.xs`            | `8px`                       | 8px — smallest step. Same value as component.gap (deprecated alias).                                                                                |
-| `semantic.space.scale.sm`            | `16px`                      | 16px — same value as layout.tight (deprecated alias).                                                                                               |
-| `semantic.space.scale.md`            | `24px`                      | 24px. Default of the overridable roles surface.padding and region.gutter. The deprecated layout.normal has the same value.                          |
-| `semantic.space.scale.lg`            | `32px`                      | 32px — same value as layout.inset (deprecated alias).                                                                                               |
-| `semantic.space.scale.xl`            | `48px`                      | 48px — same value as layout.spacious (deprecated alias).                                                                                            |
-| `semantic.space.surface.padding`     | `{primitive.space.6}`       | 24px (scale.md) inset for cards, forms and panels. Tenants override it per brand and density. Replaces component.padding.                           |
-| `semantic.space.region.gutter`       | `{primitive.space.6}`       | 24px (scale.md) column and region gutters; theme.css sets scale.lg (32px), and scale.sm (16px) below 640px. Replaces layout.gutter.                 |
-| `semantic.space.subgrid.hairline`    | `1px`                       | 1px border offset and hairline spacing.                                                                                                             |
-| `semantic.space.subgrid.xs`          | `2px`                       | 2px vertical rhythm nudge and baseline adjustment.                                                                                                  |
-| `semantic.space.subgrid.gap`         | `4px`                       | 4px cap-height and inline cluster spacing.                                                                                                          |
-| `semantic.space.component.gap`       | `8px`                       | 8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.    |
-| `semantic.space.component.medium`    | `12px`                      | 12px adjacent form fields and medium intra-component gaps.                                                                                          |
-| `semantic.space.component.padding`   | `{semantic.space.scale.md}` | 24px inset for cards, forms and panels. DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.                 |
-| `semantic.space.layout.tight`        | `16px`                      | 16px default HdsStack gap and inter-component spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.sm; kept live, no removal yet.         |
-| `semantic.space.layout.normal`       | `24px`                      | 24px column gutters and sidebar gutter spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.md; kept live, no removal yet.                |
-| `semantic.space.layout.gutter`       | `{semantic.space.scale.md}` | 24px column and region gutters. DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet. |
-| `semantic.space.layout.inset`        | `32px`                      | 32px major block separation and inset inter-component gaps. DEPRECATED alias (hds#206) — use semantic.space.scale.lg; kept live, no removal yet.    |
-| `semantic.space.layout.spacious`     | `48px`                      | 48px break between major content blocks. DEPRECATED alias (hds#206) — use semantic.space.scale.xl; kept live, no removal yet.                       |
-| `semantic.space.section.stack`       | `80px`                      | 80px vertical rhythm between page sections and major editorial blocks.                                                                              |
-| `semantic.space.section.inset`       | `96px`                      | 96px hero and landing-page inset padding.                                                                                                           |
-| `semantic.space.section.heroMax`     | `128px`                     | 128px maximum hero region padding for extra-large displays.                                                                                         |
-| `semantic.space.sidebar.indent`      | `12px`                      | 12px indent level for nested sidebar and TOC groups.                                                                                                |
-| `semantic.space.sidebar.gap`         | `16px`                      | 16px vertical spacing between items in sidebar and TOC stacks.                                                                                      |
-| `semantic.space.sidebar.sectionGap`  | `12px`                      | 12px spacing between sidebar sections and grouped rail blocks.                                                                                      |
-| `semantic.space.sidebar.railPadding` | `20px`                      | 20px outer padding for sidebar and TOC rails.                                                                                                       |
-| `semantic.space.sidebar.railWidth`   | `280px`                     | Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).                                 |
+| Token                                | Value                  | Notes                                                                                                                                       |
+| ------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.space.scale.2xs`           | `4px`                  | 4px in both densities: hairline gaps inside a control (icon to its badge, stacked meta lines).                                              |
+| `semantic.space.scale.xs`            | `8px`                  | 8px in both densities: control-internal gap (icon to label, chip padding).                                                                  |
+| `semantic.space.scale.sm`            | `20px`                 | 20px (12px compact). List-row padding and stacked-field gaps. layout.tight (deprecated) aliases it.                                         |
+| `semantic.space.scale.md`            | `28px`                 | 28px (16px compact). Default of surface.padding: card, dialog and panel insets. layout.normal (deprecated) aliases it.                      |
+| `semantic.space.scale.lg`            | `40px`                 | 40px (24px compact). Desktop page gutter and the gap between grouped blocks.                                                                |
+| `semantic.space.scale.xl`            | `64px`                 | 64px (32px compact). The gap between sections inside a page. layout.spacious (deprecated) aliases it.                                       |
+| `semantic.space.fixed.2xs`           | `4px`                  | 4px: hairline gaps inside a control (icon to its badge, stacked meta lines).                                                                |
+| `semantic.space.fixed.xs`            | `12px`                 | 12px: adjacent form fields and medium gaps inside a component.                                                                              |
+| `semantic.space.fixed.sm`            | `16px`                 | 16px: list-item padding and toolbar gaps that must not move with density.                                                                   |
+| `semantic.space.fixed.md`            | `24px`                 | 24px: panel padding and grouped-field gaps that must not move with density.                                                                 |
+| `semantic.space.fixed.lg`            | `32px`                 | 32px: gap between grouped blocks that must not move with density.                                                                           |
+| `semantic.space.fixed.xl`            | `48px`                 | 48px: gap between page bands that must not move with density.                                                                               |
+| `semantic.space.surface.padding`     | `{primitive.space.7}`  | Card, dialog and panel inset: scale.md (28px, 16px compact). Tenants override it. Replaces component.padding.                               |
+| `semantic.space.region.gutter`       | `{primitive.space.10}` | Page and region gutter: scale.lg (40px comfortable, 24px compact); theme.css sets scale.sm below 640px. Replaces layout.gutter.             |
+| `semantic.space.subgrid.hairline`    | `1px`                  | 1px border offset and hairline spacing.                                                                                                     |
+| `semantic.space.subgrid.xs`          | `2px`                  | 2px vertical rhythm nudge and baseline adjustment.                                                                                          |
+| `semantic.space.subgrid.gap`         | `4px`                  | 4px cap-height and inline cluster spacing.                                                                                                  |
+| `semantic.space.component.medium`    | `12px`                 | 12px adjacent form fields and medium intra-component gaps.                                                                                  |
+| `semantic.space.section.stack`       | `96px`                 | 96px vertical rhythm between page sections and major editorial blocks (80px before 2026-10; 48px compact); theme.css sets 64px below 640px. |
+| `semantic.space.section.inset`       | `96px`                 | 96px hero and landing-page inset padding.                                                                                                   |
+| `semantic.space.section.heroMax`     | `128px`                | 128px maximum hero region padding for extra-large displays.                                                                                 |
+| `semantic.space.sidebar.indent`      | `12px`                 | 12px indent level for nested sidebar and TOC groups.                                                                                        |
+| `semantic.space.sidebar.gap`         | `16px`                 | 16px vertical spacing between items in sidebar and TOC stacks.                                                                              |
+| `semantic.space.sidebar.sectionGap`  | `12px`                 | 12px spacing between sidebar sections and grouped rail blocks.                                                                              |
+| `semantic.space.sidebar.railPadding` | `20px`                 | 20px outer padding for sidebar and TOC rails.                                                                                               |
 
 <!-- auto:end:semantic-space -->
 
@@ -413,10 +424,14 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `primitive.size.12`              | `12px`  | 12px size step.                            |
 | `primitive.size.16`              | `16px`  | 16px size step.                            |
 | `primitive.size.20`              | `20px`  | 20px size step.                            |
+| `primitive.size.22`              | `22px`  | 22px size step.                            |
 | `primitive.size.24`              | `24px`  | 24px size step.                            |
 | `primitive.size.32`              | `32px`  | 32px size step.                            |
+| `primitive.size.36`              | `36px`  | 36px size step.                            |
 | `primitive.size.40`              | `40px`  | 40px size step.                            |
+| `primitive.size.44`              | `44px`  | 44px size step.                            |
 | `primitive.size.48`              | `48px`  | 48px size step.                            |
+| `primitive.size.52`              | `52px`  | 52px size step.                            |
 | `primitive.size.64`              | `64px`  | 64px size step.                            |
 | `primitive.size.80`              | `80px`  | 80px size step.                            |
 | `primitive.size.96`              | `96px`  | 96px size step.                            |
@@ -451,7 +466,7 @@ Comfortable (default) vs compact - toggled via `data-density` attribute or `useT
 | `--semantic-space-scale-lg` | 32px        | 24px    | Region gutter, between card groups            |
 | `--semantic-space-scale-xl` | 48px        | 40px    | Between page sections                         |
 
-`[data-density="compact"]` remaps `--semantic-space-scale-*` and re-declares `surface.padding` and `region.gutter` (with their deprecated aliases). `Table` follows it unless given a `density` prop.
+`[data-density="compact"]` (generated from the tokens' Compact modes) remaps `--semantic-space-scale-*`, the deprecated `layout.*` steps, `section.stack` and the body, ui, caption and title type sizes, and re-declares every alias of them (`surface.padding`, `region.gutter`, `grid.gap` and the rest). `Table` follows it unless given a `density` prop.
 The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; do not treat them as the dial.
 
 Toggle: `document.documentElement.dataset.density = 'compact'`
@@ -470,8 +485,11 @@ Or via `useTheme().setDensity('compact')`
 | `primitive.radius.0`    | `0px`    |            |
 | `primitive.radius.2`    | `2px`    |            |
 | `primitive.radius.4`    | `4px`    |            |
+| `primitive.radius.6`    | `6px`    |            |
 | `primitive.radius.8`    | `8px`    |            |
 | `primitive.radius.12`   | `12px`   |            |
+| `primitive.radius.16`   | `16px`   |            |
+| `primitive.radius.24`   | `24px`   |            |
 | `primitive.radius.full` | `9999px` | Pills only |
 
 <!-- auto:end:radius -->
@@ -484,16 +502,16 @@ Or via `useTheme().setDensity('compact')`
 
 ### Primitive motion base
 
-| Token                         | Value                          | Use                                                                    |
-| ----------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
-| `primitive.duration.instant`  | `100ms`                        | Immediate state changes and rapid dismissals                           |
-| `primitive.duration.short`    | `150ms`                        | Productive micro-interactions                                          |
-| `primitive.duration.medium`   | `250ms`                        | Expressive entrances and teaching moments                              |
-| `primitive.duration.long`     | `400ms`                        | Spatial movement and page travel                                       |
-| `primitive.easing.emphasized` | `cubic-bezier(0.4, 0, 0.2, 1)` | Cubic bezier with balanced input and output tangents.                  |
-| `primitive.easing.decelerate` | `cubic-bezier(0, 0, 0.2, 1)`   | Cubic bezier with steep initial gain and constrained tail velocity.    |
-| `primitive.easing.accelerate` | `cubic-bezier(0.4, 0, 1, 1)`   | Cubic bezier with restrained initial gain and steep terminal velocity. |
-| `primitive.easing.elastic`    | `spring(300, 20, 1)`           | Spring response defined by stiffness, damping, and mass parameters.    |
+| Token                         | Value                                                                                              | Use                                                                    |
+| ----------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `primitive.duration.instant`  | `100ms`                                                                                            | Immediate state changes and rapid dismissals                           |
+| `primitive.duration.short`    | `150ms`                                                                                            | Productive micro-interactions                                          |
+| `primitive.duration.medium`   | `250ms`                                                                                            | Expressive entrances and teaching moments                              |
+| `primitive.duration.long`     | `400ms`                                                                                            | Spatial movement and page travel                                       |
+| `primitive.easing.emphasized` | `cubic-bezier(0.4, 0, 0.2, 1)`                                                                     | Cubic bezier with balanced input and output tangents.                  |
+| `primitive.easing.decelerate` | `cubic-bezier(0, 0, 0.2, 1)`                                                                       | Cubic bezier with steep initial gain and constrained tail velocity.    |
+| `primitive.easing.accelerate` | `cubic-bezier(0.4, 0, 1, 1)`                                                                       | Cubic bezier with restrained initial gain and steep terminal velocity. |
+| `primitive.easing.elastic`    | `linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)` | Spring response defined by stiffness, damping, and mass parameters.    |
 
 ### Semantic motion intents
 
@@ -599,8 +617,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 
 <!-- auto:start:agent-constraints -->
 
-- **One accent color:** `#4A4146` (`semantic.accent.rest`) only — no other hues
-- **Delight is not an accent:** lime `semantic.accent.delight.*` only for badges, "new" tags, best-fit highlights and illustration — never buttons, links or focus; ink text on it
+- **One accent color:** `#0F1726` (`semantic.accent.rest`) only — no other hues
 - **Body / UI typeface:** Plus Jakarta Sans — use Sora Bold (700) for display and title headings and IBM Plex Mono for code; no other faces
 - **Action radius:** `8px` for interactive controls; `12px` containers (`rounded-lg`, one step above the action radius)
 - **4px spacing grid:** All spacing snaps to `primitive.space.*` scale

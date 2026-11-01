@@ -14,7 +14,8 @@
  *
  * Rules per `@deprecated` JSDoc block:
  *   1. must include `@removeIn <semver>` (e.g. `@removeIn 1.0.0`)
- *   2. that semver must be GREATER than the current package.json version
+ *   2. that semver must be GREATER than the version the pending changesets
+ *      release (package.json's version when none are pending; hds#469)
  *      (a past-due deprecation is a failure — remove it, with its codemod)
  *
  * A tag counts only at the start of a JSDoc line, the way the manifest reads
@@ -28,6 +29,8 @@
  *   - src/index.ts and src/patterns.ts
  *   - every JS entry of package.json#exports (read from package.json, not
  *     listed here), following its relative `export … from './x'` re-exports
+ *   - every `$deprecated` token in hirobius.tokens.json (hds#469): its note
+ *     must say "removed in <semver>", and that version must be in the future
  * Exempt: add `// deprecation-ok: <reason>` anywhere in the file.
  *
  * Runs in `pretest` (registry firingChannel `pnpm-meta`; it was `manual` after
@@ -43,6 +46,8 @@ import { fileURLToPath } from 'url';
 import { gt, isVersion } from '../codemods/lib/semver.mjs';
 import { parseDeprecation } from './lib/jsdoc-contract.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
+import { collectDeprecations } from './lib/token-deprecations.mjs';
+import { nextVersion, readPendingBumps } from './lib/next-version.mjs';
 
 const ROOT = process.cwd();
 const SOURCE_DIRS = ['src/app/components', 'src/app/layouts'];
@@ -55,7 +60,14 @@ const isFixtureMode =
 const fixtureFile = process.env.FIXTURE_FILE;
 // In fixture mode, override the "current version" so fixtures are deterministic
 // regardless of the real package version.
-const COMPARE_VERSION = isFixtureMode ? '1.0.0' : CURRENT_VERSION;
+// Otherwise compare against the version the pending changesets release
+// (hds#469), so the PR whose changeset makes a @removeIn due fails itself.
+const NEXT_VERSION = nextVersion(CURRENT_VERSION, readPendingBumps(ROOT, PKG.name));
+const COMPARE_VERSION = isFixtureMode ? '1.0.0' : NEXT_VERSION;
+const COMPARE_LABEL =
+  !isFixtureMode && NEXT_VERSION !== CURRENT_VERSION
+    ? `next ${NEXT_VERSION}, from pending changesets`
+    : `current ${COMPARE_VERSION}`;
 
 const JSDOC_RE = /\/\*\*[\s\S]*?\*\//g;
 
@@ -76,7 +88,28 @@ function findViolations(content) {
     }
     if (isVersion(COMPARE_VERSION) && !gt(deprecation.removeIn, COMPARE_VERSION)) {
       out.push(
-        `@removeIn ${deprecation.removeIn} is past-due (<= current ${COMPARE_VERSION}) — remove the API + ship its codemod`,
+        `@removeIn ${deprecation.removeIn} is past-due (<= ${COMPARE_LABEL}) — remove the API + ship its codemod`,
+      );
+    }
+  }
+  return out;
+}
+
+/**
+ * The `$deprecated` tokens of `tree` that name no removal version, or one that
+ * is no longer in the future (hds#469). removeInOf reads only X.Y.Z, so a note
+ * either names a valid version or names none.
+ */
+function findTokenViolations(tree) {
+  const out = [];
+  for (const { path, removeIn } of collectDeprecations(tree)) {
+    if (!removeIn) {
+      out.push(
+        `${path}: $deprecated note missing "removed in <semver>" — every deprecation needs a removal plan`,
+      );
+    } else if (isVersion(COMPARE_VERSION) && !gt(removeIn, COMPARE_VERSION)) {
+      out.push(
+        `${path}: removed in ${removeIn} is past-due (<= ${COMPARE_LABEL}) — remove the token + ship its codemod`,
       );
     }
   }
@@ -153,6 +186,14 @@ function main() {
     }
   }
 
+  const tokensFile = join(ROOT, 'hirobius.tokens.json');
+  if (!isFixtureMode && existsSync(tokensFile)) {
+    const tree = JSON.parse(readFileSync(tokensFile, 'utf-8'));
+    for (const detail of findTokenViolations(tree)) {
+      violations.push({ file: 'hirobius.tokens.json', detail });
+    }
+  }
+
   if (violations.length === 0) {
     console.log(
       `✓ check-deprecations — every @deprecated has a future @removeIn target (${entries.length} files).`,
@@ -168,6 +209,7 @@ function main() {
     console.error('');
   }
   console.error('  Fix: add `@removeIn <semver>` (a future version) to the @deprecated JSDoc, or');
+  console.error('       "removed in <semver>" to a token\'s $deprecated note, or');
   console.error('       if past-due, remove the API and ship its codemod (codemods/).');
   console.error('  Exempt: // deprecation-ok: <reason>');
   process.exit(1);

@@ -2,10 +2,10 @@
 
 [![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Docs](https://img.shields.io/badge/Docs-live-000000)](https://hirobius-hds-components.vercel.app)
 
-**A governed, token-first React design system.** Components plus the system
-around them: a DTCG token pipeline (CSS variables + TypeScript constants),
+HDS is a governed, token-first React design system. It ships components and the
+system around them: a DTCG token pipeline (CSS variables + TypeScript constants),
 quality gates in git hooks and CI, one-way Figma sync, and WCAG-checked contrast
-and focus. Live docs: **<https://hirobius-hds-components.vercel.app>**
+and focus. Live docs: <https://hirobius-hds-components.vercel.app>
 
 ```bash
 pnpm add @hirobius/design-system
@@ -17,8 +17,8 @@ Upgrading: [UPGRADING.md](UPGRADING.md) lists what each release asks of you. Fro
 
 <!-- auto:start:front-door-counts -->
 
-- **58** public component modules, exported from `src/index.ts`
-- **450** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **62** public component modules, exported from `src/index.ts`
+- **474** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 
@@ -28,11 +28,11 @@ What the system includes:
 - **Gates with proof-of-firing.** Typecheck, zero-warning ESLint, token validity and contrast, Vitest unit and contract tests, and a consumer smoke build run in git hooks and CI; bundle budgets and a docs-site accessibility (axe) gate run in CI. Many gates carry a passing and a violating fixture that demonstrate the gate catches what it describes.
 - **Upgrade path.** A release ledger and one consumer command: `npx @hirobius/design-system@latest upgrade`.
 - **One-way Figma sync.** Code is the source of truth; tokens project into Figma, and `pnpm check:figma-drift` compares a committed snapshot against the model.
-- **Theming without JavaScript.** Four root attributes — theme, density, brand, font — re-skin HDS descendants through CSS variables.
+- **Theming without JavaScript.** Four root attributes (theme, density, brand, font) re-skin HDS descendants through CSS variables.
 
 The counts are generated from source by `pnpm readme:counts`, which `pnpm tokens` also runs. `scripts/__tests__/front-door.test.mjs` fails if this README claims more than the source has.
 
-**How it's built:** [How HDS is engineered](docs/ENGINEERING.md) walks the token pipeline, the quality gates (and how they're proven to fire), testing, release and upgrade, and Figma sync.
+[How HDS is engineered](docs/ENGINEERING.md) walks the token pipeline, the quality gates (and how they're proven to fire), testing, release and upgrade, and Figma sync.
 
 Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds-consumer` (see `docs/CONSUMING.md`, "Agent skill").
 
@@ -40,14 +40,14 @@ Agents: install the consumer skill with `npx skills add hirobius/hds --skill hds
 
 <!-- auto:start:consumer-usage -->
 
-An internal operations dashboard is one of 2 product apps that use components: **33** of its source files import from `@hirobius/design-system`, using **25** distinct components. The two screenshots below are pages of that app, rendered from its `main` branch.
+An internal operations dashboard is one of 2 product apps that use components: **33** of its source files import from `@hirobius/design-system`, using **24** distinct components. The screenshot below is a page of that app, rendered from its `main` branch.
 
 | Consumer kind     | Count | How it uses HDS                           |
 | ----------------- | ----- | ----------------------------------------- |
 | Product apps      | 2     | Components and tokens                     |
 | Token-level sites | 4     | Tokens and CSS only, no component imports |
 
-[![Library page of the product app](docs/images/product-app-library.png)](docs/images/product-app-library.png)
+Month-by-month adoption in each product app, one row per measured commit: [docs/ADOPTION.md](docs/ADOPTION.md).
 
 [![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)
 
@@ -59,22 +59,22 @@ The numbers come from `pnpm consumer:usage --root <consumer checkout>`, which me
 
 <!-- auto:start:core-set -->
 
-**44** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries `core: true` in `public/hds-manifest.json`.
+**47** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries `core: true` in `public/hds-manifest.json`.
 
 - **Actions:** `Button`
-- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`
+- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`, `Timeline`
 - **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
-- **Navigation:** `Breadcrumb`, `InlineLink`, `Pagination`, `Tabs`
-- **Overlays:** `Dialog`, `Menu`, `Popover`, `Tooltip`
+- **Navigation:** `Breadcrumb`, `InlineLink`, `NavList`, `Pagination`, `Tabs`
+- **Overlays:** `CommandPalette`, `Dialog`, `Menu`, `Popover`, `Tooltip`
 - **Theming:** `HdsRouterProvider`, `HdsThemeProvider`
 - **Typography:** `MetaLine`, `Text`
 - **Utility:** `VisuallyHidden`
 
-**12** pattern modules ship from `@hirobius/design-system/patterns`, and only from there: composed surfaces that assume a product (page shells, forms, code blocks, page sections), built from the core set. One name per module; its parts and props types come with it.
+**14** pattern modules ship from `@hirobius/design-system/patterns`, and only from there: composed surfaces that assume a product (page shells, forms, code blocks, page sections), built from the core set. One name per module; its parts and props types come with it.
 
-`AssetImg`, `CodeBlock`, `DataTableSection`, `DestructiveSection`, `ErrorPattern`, `Form`, `FormActions`, `MetricTiles`, `Page`, `PageHeader`, `Reveal`, `StatusTile`
+`AppShell`, `AssetImg`, `AsyncState`, `CodeBlock`, `DataTableSection`, `DestructiveSection`, `ErrorPattern`, `Form`, `FormActions`, `MetricTiles`, `Page`, `PageHeader`, `Reveal`, `StatusTile`
 
 The package root also exports the rest of the allow-list (compound parts, and the components outside the core set; the [consumer skill](skills/hds-consumer/SKILL.md) lists them by category): reach for the core set first. 0.20.0 removed the root re-exports of the pattern modules, the docs internals and 13 components that fold into a survivor ([MIGRATIONS.md](MIGRATIONS.md#0200-removals-2026-10-01)). Deprecated, exported only until removed: `CardMetric` (removed in 1.0.0), `MetricTile` (removed in 1.0.0), `MetricTiles` (removed in 1.0.0), `Stat` (removed in 1.0.0), `StatusTile` (removed in 1.0.0).
 
@@ -86,14 +86,14 @@ This section is generated by `pnpm readme:counts` (which `pnpm tokens` also runs
 
 ## Using the published package
 
-Installing HDS in another project? It ships to the **public npm registry** as
-`@hirobius/design-system` (ESM) — no `.npmrc`, no token, no registry config. Full
-guide: **[docs/CONSUMING.md](docs/CONSUMING.md)**.
+HDS ships to the public npm registry as `@hirobius/design-system` (ESM). It needs
+no `.npmrc`, token or registry config. Full guide:
+[docs/CONSUMING.md](docs/CONSUMING.md).
 
 > **Not on GitHub Packages.** This repo's **Packages** sidebar still shows an old
 > `@hirobius/design-system` entry under GitHub Packages
-> (`/pkgs/npm/design-system`). That listing is **frozen and no longer updated** —
-> publishing moved to the public npm registry in
+> (`/pkgs/npm/design-system`). That listing is frozen and no longer updated.
+> Publishing moved to the public npm registry in
 > [#39](https://github.com/hirobius/hds/pull/39). Always
 > install from npm:
 > **[npmjs.com/package/@hirobius/design-system](https://www.npmjs.com/package/@hirobius/design-system)**.
@@ -121,13 +121,13 @@ export const App = () => (
 
 No router, Tailwind config, or font files needed. With a router, inject it once
 via `<HdsRouterProvider>`. See **[docs/CONSUMING.md](docs/CONSUMING.md)** for the
-router seam, `data-hds` scoping, and MUI coexistence.
+router seam, `data-hds` scoping and MUI coexistence.
 
 ### Theming: the four dials
 
-HDS theming is driven by root attributes + CSS variables, so it works with **zero
-JavaScript** — set them on any element (React, Astro, plain HTML) and every HDS
-descendant re-skins:
+HDS theming runs on root attributes and CSS variables, so it needs no JavaScript.
+Set them on any element (React, Astro, plain HTML) and every HDS descendant
+re-skins:
 
 | Dial    | Attribute / var                                | Values          | Default                           |
 | ------- | ---------------------------------------------- | --------------- | --------------------------------- |
@@ -151,7 +151,7 @@ descendant re-skins:
 
 React apps can set the same contract declaratively with the typed
 `<HdsThemeProvider>` (renders the `data-hds` scope wrapper) and read it back with
-`useHdsTheme()` — it is a convenience, not a requirement:
+`useHdsTheme()`. The provider is optional:
 
 ```tsx
 import { HdsThemeProvider } from '@hirobius/design-system';
@@ -165,8 +165,8 @@ import { HdsThemeProvider } from '@hirobius/design-system';
 
 Code is the source of truth, and sync runs one way, from code to Figma. What exists today:
 
-- **Tokens → Figma model:** `pnpm figma:model` projects `hirobius.tokens.json` into `figma/model.json` — the Primitives, Semantic (Light/Dark), Component, Role, Brand and Density collections, plus text and effect styles. Light and Dark keep their own values.
-- **Model → Figma file:** `pnpm figma:push` writes the upsert scripts that apply that model to a Figma file, and `pnpm figma:native-import` writes DTCG files for Figma's own Variables ▸ Import. Both are run by hand — no workflow pushes to Figma. The runbook is [`figma/README.md`](figma/README.md).
+- **Tokens → Figma model:** `pnpm figma:model` projects `hirobius.tokens.json` into `figma/model.json`: the Primitives, Semantic (Light/Dark), Component, Role, Brand and Density collections, plus text and effect styles. Light and Dark keep their own values.
+- **Model → Figma file:** `pnpm figma:push` writes the upsert scripts that apply that model to a Figma file, and `pnpm figma:native-import` writes DTCG files for Figma's own Variables ▸ Import. Both are run by hand; no workflow pushes to Figma. The runbook is [`figma/README.md`](figma/README.md).
 - **Figma → repo:** `pnpm figma:snapshot --ingest` records the file's state in `figma/snapshot.json`, and `pnpm check:figma-drift` compares the model against that committed snapshot. A hand edit in Figma is drift, not a source change.
 - **Legacy export:** `pnpm figma-variables` still writes the older plugin and REST export files, now projected from the same model.
 - **Components → Code Connect:** the v2 templates live in the repo, but no Code Connect mapping is published, so Dev Mode shows no snippets. Publishing Code Connect needs a Figma Organization plan.
@@ -197,17 +197,17 @@ pnpm docs:publish      # docs-site build, then: node scripts/check-docs-axe.mjs
 
 HDS is built around three structural rules:
 
-- **Strict semantics** — public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `Text` instead of raw layout divs or ad hoc CSS.
-- **Polymorphism** — primitives preserve semantic HTML while staying composable through governed APIs such as `forwardRef`, `as`, and layout slots.
-- **12-column grid** — page structure follows a consistent editorial grid: readable center columns, intentional breakout zones, and explicit `gap` ownership rather than one-off spacing math.
+- **Strict semantics:** public surfaces prefer system primitives such as `Stack`, `Grid`, `Surface`, and `Text` instead of raw layout divs or ad hoc CSS.
+- **Polymorphism:** primitives preserve semantic HTML while staying composable through governed APIs such as `forwardRef`, `as`, and layout slots.
+- **12-column grid:** page structure follows a consistent editorial grid: readable center columns, intentional breakout zones, and explicit `gap` ownership rather than one-off spacing math.
 
 Source-of-truth files:
 
-- `hirobius.tokens.json` — token values and alias chain.
-- `public/hds-manifest.json` — machine-readable system inventory, metadata, and docs linkage.
-- `src/app/data/component-api.json` — generated prop tables and reflected component API.
-- `DESIGN.md` — lean visual spec for agents and engineers.
-- `DESIGN-HANDOFF.md` — verbose visual mirror for handoff and review.
+- `hirobius.tokens.json`: token values and alias chain.
+- `public/hds-manifest.json`: machine-readable system inventory, metadata, and docs linkage.
+- `src/app/data/component-api.json`: generated prop tables and reflected component API.
+- `DESIGN.md`: lean visual spec for agents and engineers.
+- `DESIGN-HANDOFF.md`: verbose visual mirror for handoff and review.
 
 Which components belong in the system, and what happens to the rest, is decided in the [architecture doc](docs/hds-architecture-2026-09-18.html): every component is core, pattern, fold or internal, ratified 2026-09-26 in hds#254 and recorded in [ADR-031](docs/adr/031-core-set-and-dispositions.md). [What belongs in the system](#what-belongs-in-the-system) above lists the result.
 
@@ -226,11 +226,11 @@ Screen-reader output is checked by `tests/primitive-contracts/screen-reader.cont
 
 ## Visual direction: Editorial Enterprise
 
-The governing direction is "Editorial Enterprise" — enterprise rigor with editorial pacing. It favors sharp hierarchy, open whitespace, monochrome neutrals, and a single tenant-set accent. In practice:
+The governing direction is "Editorial Enterprise": enterprise rigor with editorial pacing. It favors sharp hierarchy, open whitespace, monochrome neutrals, and a single tenant-set accent. In practice:
 
-- documentation reads like a designed publication, not a component dump
+- documentation reads like a designed publication
 - cards are used sparingly; whitespace, rails, dividers, and bands carry structure first
-- motion clarifies rather than decorates
+- motion is used only where it clarifies
 - surfaces, spacing, and type are token-governed, so the visual language stays coherent across the docs site and any consuming app
 
 ## Verification workflow
@@ -249,6 +249,14 @@ The gates are deterministic and need no browser or live site:
 Work in progress, shown as it stands. These are questions the system is still
 testing, not features it promises.
 
+### Delight directions
+
+Could HDS be more playful without losing its discipline? A static page renders
+three directions, subtle to bold, on the current tokens with page-scoped
+overrides, and measures token reach and AA contrast for each:
+[`docs/explorations/2026-10-delight/index.html`](docs/explorations/2026-10-delight/index.html).
+No token has changed.
+
 ### Agent consistency
 
 Can the public docs alone make different agents build the same screen? Three
@@ -261,10 +269,10 @@ source only). The screen spec, thresholds and ledger live in
 printed by `pnpm eval:consistency -- --summary`:
 
 ```text
-Agent consistency 2026-10-14 (harness, design-system 0.25.0): FAIL - builds 2/3, violations 0, axe 0, Jaccard min 0.95 (limit >= 0.85), light diff not measured (an app did not build)
+Agent consistency 2026-10-31 (harness, design-system 0.32.0): FAIL - builds 2/3, violations 0, axe 0, Jaccard min 1 (limit >= 0.85), light diff not measured (an app did not build)
 ```
 
-The baseline misses its thresholds, and they stay where they are: the useful
+The latest run still misses a threshold, and they stay where they are: the useful
 output is where the agents diverge, which points at the docs to fix next. The
 eval measures the docs; it does not gate merges or constrain how agents work.
 
@@ -297,14 +305,14 @@ public/             manifest, llms.txt
 
 ## Primary docs
 
-- [`docs/CONSUMING.md`](docs/CONSUMING.md) — installing & using the published package
-- [`docs/ENGINEERING.md`](docs/ENGINEERING.md) — how the system is built (pipeline, gates, release, Figma sync)
-- [`docs/ai/FRONT-DOOR.md`](docs/ai/FRONT-DOOR.md) — the front door for agents working in this repo (read order, where live state is, the docs index); [`AGENTS.md`](AGENTS.md) is the guide for agents building with the package
-- `CLAUDE.md` — agent operating contract
-- `DESIGN.md` — lean visual spec
-- `DESIGN-HANDOFF.md` — verbose visual mirror
-- `TOKEN_GOVERNANCE.md` — token system rules
-- `docs/guardrails/registry.json` — gate registry; `docs/state-surfaces.json` — every file that describes state
+- [`docs/CONSUMING.md`](docs/CONSUMING.md): installing & using the published package
+- [`docs/ENGINEERING.md`](docs/ENGINEERING.md): how the system is built (pipeline, gates, release, Figma sync)
+- [`docs/ai/FRONT-DOOR.md`](docs/ai/FRONT-DOOR.md): the front door for agents working in this repo (read order, where live state is, the docs index); [`AGENTS.md`](AGENTS.md) is the guide for agents building with the package
+- `CLAUDE.md`: agent operating contract
+- `DESIGN.md`: lean visual spec
+- `DESIGN-HANDOFF.md`: verbose visual mirror
+- `TOKEN_GOVERNANCE.md`: token system rules
+- `docs/guardrails/registry.json`: gate registry; `docs/state-surfaces.json`, every file that describes state
 
 ## License
 

@@ -13,6 +13,9 @@
  * @a11y component required a11y:pagination.keyboard Tab reaches every control and Enter and Space change the page.
  * @a11y component required a11y:pagination.focus-kept When activating Previous or Next disables the focused button, focus moves to the current page instead of being stranded.
  * @a11y component required a11y:pagination.target-size Previous and Next are 32px and page buttons lift to the touch target, over the 24px floor (WCAG 2.5.8).
+ * @a11y component required a11y:pagination.compact-position The compact variant shows "n of m" in a polite live region, so a page change is announced.
+ * @a11y component required a11y:pagination.compact-control-names The compact Previous and Next icon-only buttons are named Previous page and Next page.
+ * @a11y component required a11y:pagination.compact-disabled-ends Compact Previous is disabled on the first page and Next on the last; focus moves to the other button instead of being stranded.
  * @a11y consumer recommended After a page change, keep focus on the control or move it to the start of the results, and tell screen-reader users the results changed.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194
  */
@@ -20,6 +23,7 @@
 // motion feedback; Pagination adds no bespoke interactive surface of its own.
 
 import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
@@ -93,8 +97,27 @@ const REACH_CLASS: Record<SlotReach, string | undefined> = {
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
+const paginationListVariants = /* @__PURE__ */ cva('flex items-center gap-fixed-2xs', {
+  variants: {
+    variant: {
+      default: 'flex-wrap',
+      compact: 'justify-between',
+    },
+  },
+  defaultVariants: { variant: 'default' },
+});
+
 /** @public */
-export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
+export interface PaginationProps
+  extends
+    Omit<React.HTMLAttributes<HTMLElement>, 'onChange'>,
+    VariantProps<typeof paginationListVariants> {
+  /**
+   * `default` shows page buttons with truncation. `compact` shows icon-only Previous and Next
+   * around "1 of 4": a pager for one item at a time.
+   * @default "default"
+   */
+  variant?: 'default' | 'compact';
   /** Current page (1-based). */
   page: number;
   /** Total number of pages. */
@@ -109,10 +132,26 @@ export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>,
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
+// The compact arrows are outlined (hds#886): a border-default edge at rest, and a disabled end keeps
+// the outline at reduced emphasis (transparent, the same border-default edge, content-disabled
+// icon) instead of the Button base's muted primary fill, so it reads as "not here" without looking
+// like a different control. Tertiary keeps its own hover and pressed fills.
+const compactArrowClass =
+  'border border-[color:var(--semantic-color-border-default)] disabled:bg-transparent';
+
 /** Paged navigation with first/last anchors, sibling pages, and ellipses. */
 export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, PaginationProps>(
   function Pagination(
-    { page, count, onPageChange, siblingCount = 1, label = 'Pagination', className, ...props },
+    {
+      page,
+      count,
+      onPageChange,
+      variant = 'default',
+      siblingCount = 1,
+      label = 'Pagination',
+      className,
+      ...props
+    },
     ref,
   ) {
     const navRef = React.useRef<HTMLElement | null>(null);
@@ -133,11 +172,52 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
       const nav = navRef.current;
       if (!nav || !(active instanceof HTMLButtonElement) || !active.disabled) return;
       if (!nav.contains(active)) return;
-      nav.querySelector<HTMLButtonElement>('button[aria-current="page"]')?.focus();
+      // The compact variant has no page buttons: hand focus to the other, still-enabled arrow.
+      const target =
+        nav.querySelector<HTMLButtonElement>('button[aria-current="page"]') ??
+        Array.from(nav.querySelectorAll<HTMLButtonElement>('button')).find((b) => !b.disabled);
+      target?.focus();
     });
 
     if (count <= 1) return null;
     const go = (next: number) => onPageChange(Math.max(1, Math.min(count, next)));
+    if (variant === 'compact') {
+      return (
+        <nav ref={setRefs} aria-label={label} className={cn('w-full', className)} {...props}>
+          <ul className={paginationListVariants({ variant })}>
+            <li>
+              <Button
+                iconOnly
+                size="sm"
+                variant="tertiary"
+                className={compactArrowClass}
+                aria-label="Previous page"
+                disabled={page <= 1}
+                onClick={() => go(page - 1)}
+                iconLeft={<Icon icon={ChevronLeft} size="small" />}
+              />
+            </li>
+            <li>
+              <span aria-live="polite" className="hds-type-ui text-foreground tabular-nums">
+                {page} of {count}
+              </span>
+            </li>
+            <li>
+              <Button
+                iconOnly
+                size="sm"
+                variant="tertiary"
+                className={compactArrowClass}
+                aria-label="Next page"
+                disabled={page >= count}
+                onClick={() => go(page + 1)}
+                iconLeft={<Icon icon={ChevronRight} size="small" />}
+              />
+            </li>
+          </ul>
+        </nav>
+      );
+    }
     // Below 640px the 44px touch targets leave room for about seven slots, so the sibling pages step aside
     // (kept at sm and up) and the first, current and last pages stay: no wrapped second row (item 15).
     // Every run of pages a row skips keeps its ellipsis in that row.
@@ -145,7 +225,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
 
     return (
       <nav ref={setRefs} aria-label={label} className={cn('w-full', className)} {...props}>
-        <ul className="flex flex-wrap items-center gap-1">
+        <ul className={paginationListVariants({ variant })}>
           <li>
             <Button
               iconOnly
@@ -162,7 +242,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
               <li
                 key={`ellipsis-${index}`}
                 aria-hidden="true"
-                className={cn('px-2 text-muted-foreground select-none', REACH_CLASS[reach])}
+                className={cn('px-scale-xs text-muted-foreground select-none', REACH_CLASS[reach])}
               >
                 …
               </li>
@@ -171,6 +251,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
                 <Button
                   variant={token === page ? 'secondary' : 'tertiary'}
                   size="sm"
+                  shadow="none"
                   className="hds-touch-target"
                   aria-label={`Page ${token}`}
                   aria-current={token === page ? 'page' : undefined}

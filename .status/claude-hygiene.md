@@ -1,0 +1,1 @@
+Hygiene: `pnpm size-limit` builds the Button probe itself, main-bundle budget 200 → 60 kB (measured 50.39 kB), `check:fast` green and run on pre-push (plus route links), docs site follows the OS theme, demo frames open with a hidden h2, Table demo Summary floors at two tiles, render + axe tests for Slider, Field, CreatableCombobox, Callout and Surface.

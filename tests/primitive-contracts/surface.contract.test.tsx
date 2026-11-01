@@ -53,10 +53,10 @@ describe('Surface contract', () => {
     expect(el.classList.contains('p-0')).toBe(true);
   });
 
-  it('padding="px16" applies the 16px primitive-space-4 class', () => {
+  it('padding="px16" applies the fixed 16px class', () => {
     const { container } = render(<Surface padding="px16">Content</Surface>);
     const el = container.firstChild as HTMLElement;
-    expect(el.classList.contains('p-[var(--primitive-space-4)]')).toBe(true);
+    expect(el.classList.contains('p-fixed-sm')).toBe(true);
   });
 
   it('as prop changes the rendered element', () => {

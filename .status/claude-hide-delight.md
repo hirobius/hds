@@ -1,0 +1,1 @@
+Lime / delight hidden (hds#857): semantic.accent.delight._ and primitive.color.lime._ are $deprecated (kept, CSS still ships), left out of the Color page, manifest (HIDDEN_TOKEN_PREFIXES in build-tokens), llms.txt, DESIGN.md and DESIGN-HANDOFF.md; patch changeset + upgrade note.

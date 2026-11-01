@@ -3,7 +3,7 @@
  *
  * Ships the design-token CSS custom properties (`src/styles/tokens.generated.css`)
  * with NO Tailwind preflight, NO @layer base reset, NO utilities — only
- * `:root` / `[data-theme]` / `.dark` custom-property declarations. Importing it
+ * `:root` / `[data-theme]` / `[data-density]` / `.dark` custom-property declarations. Importing it
  * cannot restyle a host app's elements, so it is the safe path for embedding HDS
  * tokens inside another design system (e.g. MUI). See docs/CONSUMING.md.
  *
@@ -24,12 +24,12 @@ const banner =
 
 const css = readFileSync(SRC, 'utf8');
 
-// Guard: this file must stay host-safe — only :root / [data-theme] / .dark
+// Guard: this file must stay host-safe — only :root / [data-theme] / [data-density] / .dark
 // selectors are permitted (no bare element/`*` selectors that could reach host).
 const offending = css
   .split('\n')
   .filter((line) => /^[^\s/}@][^{]*\{/.test(line))
-  .filter((line) => !/(:root|\[data-theme|\.dark)/.test(line));
+  .filter((line) => !/(:root|\[data-theme|\[data-density|\.dark)/.test(line));
 if (offending.length > 0) {
   console.error('build-vars-css: refusing to emit — non-vars selectors found:');
   for (const l of offending.slice(0, 5)) console.error('  ' + l.trim());

@@ -65,4 +65,31 @@ describe('PageHeader', () => {
       heading.compareDocumentPosition(actions) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
+
+  it('renders the metadata row before the heading without changing its level', () => {
+    const { container } = render(
+      <PageHeader
+        title="Acme"
+        level={2}
+        metadata={
+          <>
+            <span>Source: Referral</span>
+            <span>Stage: Pitch</span>
+          </>
+        }
+      />,
+    );
+    const heading = screen.getByRole('heading', { level: 2, name: 'Acme' });
+    const metadata = container.querySelector('[data-slot="metadata"]') as HTMLElement;
+    expect(metadata.textContent).toBe('Source: ReferralStage: Pitch');
+    expect(
+      metadata.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(heading.textContent).toBe('Acme');
+  });
+
+  it('omits the metadata slot when empty', () => {
+    const { container } = render(<PageHeader title="Acme" />);
+    expect(container.querySelector('[data-slot="metadata"]')).toBeNull();
+  });
 });

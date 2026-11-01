@@ -17,10 +17,14 @@
  */
 
 import * as React from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { Icon } from './icon';
 
 /** @public */
 export interface EmptyStateProps {
+  /** Optional Lucide icon shown above the title. Decorative: hidden from assistive tech. */
+  icon?: LucideIcon;
   /** Primary message. Sentence-case, no trailing period required. */
   title: React.ReactNode;
   /** Optional supporting line. */
@@ -33,13 +37,17 @@ export interface EmptyStateProps {
 
 /** @public */
 export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, EmptyStateProps>(
-  function EmptyState({ title, description, action, className }, ref) {
+  function EmptyState({ icon, title, description, action, className }, ref) {
     return (
       <div
         ref={ref}
         data-hds-component="EmptyState"
-        className={cn('flex flex-col gap-1 hds-type-ui italic text-muted-foreground', className)}
+        className={cn(
+          'flex flex-col gap-fixed-2xs hds-type-ui italic text-muted-foreground',
+          className,
+        )}
       >
+        {icon && <Icon icon={icon} size="medium" />}
         <p className="m-0">{title}</p>
         {description && <p className="m-0 not-italic hds-type-caption">{description}</p>}
         {/* not-italic: the root is italic for the message; the action opts back

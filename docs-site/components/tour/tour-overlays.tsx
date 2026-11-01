@@ -3,18 +3,22 @@
 import {
   AlertDialog,
   Button,
+  CommandPalette,
   Dialog,
   Menu,
   Popover,
+  Sheet,
   Stack,
   Text,
   Tooltip,
   useToast,
 } from '@hirobius/design-system';
+import { useState } from 'react';
 
-/** Everything that opens on top of the page: a menu, a popover, a tooltip, a dialog and an alert dialog. */
+/** Everything that opens on top of the page: a menu, a popover, a tooltip, a dialog, an alert dialog, a sheet and a command palette. */
 export function TourOverlays() {
   const { toast } = useToast();
+  const [paletteOpen, setPaletteOpen] = useState(false);
   return (
     <Stack direction="row" gap="normal" wrap="wrap">
       <Menu>
@@ -91,6 +95,40 @@ export function TourOverlays() {
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog>
+      <Sheet>
+        <Sheet.Trigger asChild>
+          <Button variant="secondary">Sort</Button>
+        </Sheet.Trigger>
+        <Sheet.Content>
+          <Sheet.Header>
+            <Sheet.Title>Sort consoles</Sheet.Title>
+            <Sheet.Description>A bottom sheet on a phone.</Sheet.Description>
+          </Sheet.Header>
+          <Sheet.Actions aria-label="Sort order">
+            <Sheet.Action current>Newest</Sheet.Action>
+            <Sheet.Action>Name</Sheet.Action>
+          </Sheet.Actions>
+          <Sheet.Footer>
+            <Sheet.Close asChild>
+              <Button variant="secondary">Done</Button>
+            </Sheet.Close>
+          </Sheet.Footer>
+        </Sheet.Content>
+      </Sheet>
+      <Button variant="secondary" onClick={() => setPaletteOpen(true)}>
+        Search commands
+      </Button>
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        hotkey={false}
+        items={[
+          { id: 'export', label: 'Export tokens', group: 'Console' },
+          { id: 'copy', label: 'Copy link', group: 'Console' },
+          { id: 'releases', label: 'Go to releases', group: 'Navigation', shortcut: ['G', 'R'] },
+        ]}
+        onSelect={(item) => toast({ title: item.label, tone: 'info' })}
+      />
     </Stack>
   );
 }

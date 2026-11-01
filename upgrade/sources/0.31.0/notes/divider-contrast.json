@@ -1,0 +1,39 @@
+{
+  "impact": "look",
+  "plain": "Light-mode dividers and hairlines are darker warm graphite (border.default #cbc6c9, border.strong #b2abae) so they read on soft surfaces; no code change needed.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-color-border-default",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-color-border-default (role.border, border-border) is now graphite.200 #cbc6c9 in light, up from #e5e5e5; if you override it, keep it at 1.45:1 or more on your surfaces.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-default"],
+        "cssVarWrites": ["--semantic-color-border-default"]
+      },
+      "facts": ["css-var-changed:--semantic-color-border-default::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-border-strong",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-color-border-strong is now graphite.300 #b2abae in light, up from #d4d4d4, so strong dividers and Kbd edges stay firmer than border.default.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-strong"],
+        "cssVarWrites": ["--semantic-color-border-strong"]
+      },
+      "facts": ["css-var-changed:--semantic-color-border-strong::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-border-subdued",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-color-border-subdued (deprecated) follows border.default in light at #cbc6c9; move to border.default.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-subdued"],
+        "cssVarWrites": ["--semantic-color-border-subdued"]
+      },
+      "facts": ["css-var-changed:--semantic-color-border-subdued::root"]
+    }
+  ]
+}

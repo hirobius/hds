@@ -198,6 +198,26 @@
       "license": "MIT",
       "hashNote": "Installed under the id/dir vercel-composition-patterns (its SKILL.md name:); upstream directory is skills/composition-patterns/. rules/_sections.md, _template.md, README.md and metadata.json are authoring scaffolding and not vendored."
     },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "hashAlgorithm": "sha256",
+      "computedHash": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f",
+      "license": "MIT",
+      "hashNote": "hds#764. Review skill, not a check: SKILL.md fetches its rules at run time from vercel-labs/web-interface-guidelines (main, unpinned), so only the wrapper is pinned."
+    },
+    "humanizer": {
+      "source": "blader/humanizer",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "pinnedCommit": "8c307f367c91bd974002f10f2be2965d642c13df",
+      "hashAlgorithm": "sha256",
+      "computedHash": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad",
+      "license": "MIT",
+      "hashNote": "hds#765. SKILL.md only; agents/openai.yaml and scripts/validate-package.py are upstream packaging and not vendored."
+    },
     "wayfinder": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -460,6 +480,35 @@
       "computedHash": "456537d294667cf312033670d9bf8fb1e25312a08d128fecaaac7b5713b7b1a4",
       "paths": ["../../references/definition-of-done.md"],
       "license": "MIT"
+    },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/impeccable/SKILL.md",
+      "pinnedCommit": "630fc2682a5bd39b25a8e61f74b6b3f14f2b1e21",
+      "hashAlgorithm": "sha256",
+      "computedHash": "e2f13298d387ca1412cb645fb2628b0f96fb49bfbee3bfe6f12e8c9ec7fb8e9d",
+      "hashNote": "Reconciled 2026-10-12: `paths` were repo-root-relative (.claude/skills/impeccable/...), so verifyInstalled looked for .claude/skills/impeccable/.claude/skills/impeccable/... and reported the skill missing; computedHash was a SKILL.md-only hash that never covered the paths. Paths are now skill-dir-relative and computedHash is the multi-file hash over the 18 files, each byte-verified against pbakaus/impeccable at pinnedCommit.",
+      "paths": [
+        "reference/critique.md",
+        "reference/polish.md",
+        "reference/audit.md",
+        "reference/harden.md",
+        "reference/typeset.md",
+        "reference/layout.md",
+        "reference/brand.md",
+        "reference/product.md",
+        "reference/init.md",
+        "scripts/context.mjs",
+        "scripts/palette.mjs",
+        "scripts/lib/target-args.mjs",
+        "scripts/lib/provider.mjs",
+        "scripts/lib/impeccable-paths.mjs",
+        "scripts/context-signals.mjs",
+        "scripts/critique-storage.mjs",
+        "scripts/pin.mjs"
+      ],
+      "license": "Apache-2.0"
     }
   }
 }

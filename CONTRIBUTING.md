@@ -24,12 +24,24 @@ pnpm dev          # Vite dev server
 | `public/hds-manifest.json` | Machine-readable component inventory — generated                 |
 | `docs/state-surfaces.json` | Every file that describes state: generated, checked or editorial |
 
+### Merging main into a branch
+
+Generated files (the manifest, sync map, README counts, stats, `DESIGN.md`,
+`DESIGN-HANDOFF.md`, `llms-full.txt`, the types baseline) never stop a merge.
+`.gitattributes` gives them the `hds-generated` driver, which `pnpm install`
+registers. Where both sides changed the same lines it keeps your side, and
+`.husky/post-merge` then runs `pnpm regen` to rebuild them from source. Commit
+what it rebuilt. Run `pnpm regen` yourself after a merge made without the hooks
+(hds#977).
+
 ---
 
 ## Gates
 
-Three places run gates: `.husky/pre-commit`, `.husky/pre-push` and
-`.github/workflows/ci.yml`. The table below mirrors them step for step;
+Two places run gates: `.husky/pre-commit` and `.husky/pre-push`. GitHub Actions
+is disabled on this repo (2026-10-30), so `.github/workflows/ci.yml` never runs;
+its `ci` rows below stay for reference and as the list to run by hand before a
+push. Merges need an independent `Reviewed: PASS — <sha>` PR comment. The table below mirrors them step for step;
 `scripts/__tests__/contributing-gates.test.mjs` fails when it drifts, so edit the
 hook or workflow and this table together. CI steps that only check out, set up
 tooling, or restore the cache are omitted because they are not gates.
@@ -49,10 +61,12 @@ tooling, or restore the cache are omitted because they are not gates.
 | pre-commit | Layout-gap vocabulary (one name map, in box-sx.ts)                                   | `node scripts/check-layout-gap-vocabulary.mjs`                                                                                                                                             |
 | pre-commit | Type ramp (src/ uses the seven roles only)                                           | `node scripts/check-type-ramp.mjs`                                                                                                                                                         |
 | pre-commit | No ALL CAPS (nothing transforms text to uppercase)                                   | `node scripts/check-no-uppercase.mjs`                                                                                                                                                      |
+| pre-commit | No hand-set letter-spacing                                                           | `node scripts/check-no-custom-tracking.mjs`                                                                                                                                                |
 | pre-commit | Ralph kit drift (vendored kit files match ralph/kit.lock.json)                       | `node scripts/check-ralph-kit-drift.mjs --staged`                                                                                                                                          |
 | pre-commit | Lessons copy (vendored .claude/lessons matches its lock)                             | `node .claude/lessons/check-drift.mjs`                                                                                                                                                     |
 | pre-push   | Record freshness (status.json + changeset presence)                                  | `node scripts/check-record-freshness.mjs`                                                                                                                                                  |
 | pre-push   | TDD gate (source changes ship with a test)                                           | `node scripts/check-tests-with-code.mjs`                                                                                                                                                   |
+| pre-push   | Fast gates (pnpm check:fast)                                                         | `pnpm check:fast`                                                                                                                                                                          |
 | pre-push   | Unit + contract tests (pnpm test: pretest gates + vitest)                            | `pnpm test`                                                                                                                                                                                |
 | pre-push   | Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)       | `pnpm smoke:consumer`                                                                                                                                                                      |
 | ci         | Install dependencies                                                                 | `pnpm install --frozen-lockfile`                                                                                                                                                           |
@@ -71,6 +85,16 @@ tooling, or restore the cache are omitted because they are not gates.
 | ci         | Docs axe gate fires (fixtures)                                                       | `node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/passing.example.d && (node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/violating.example.d \|\| [ $? -eq 1 ])` |
 
 Never use `--no-verify`. When a gate fails, fix the cause.
+
+### Visual baselines (local, before a visual PR)
+
+`pnpm docs:publish && pnpm test:visual-baselines` compares every docs demo,
+light and dark, with the PNGs committed under `tests/visual/*-snapshots/`
+(hirobius/ops#726). After an intended visual change, run
+`pnpm test:visual-baselines:update`, look at the changed PNGs, and commit them
+with the change. Baselines are Linux Chromium (the remote container).
+The same run covers six primitives under each demo tenant × density × theme
+(hds#126); the axes and how to add one are in `tests/visual/tenant-matrix.ts`.
 
 ---
 

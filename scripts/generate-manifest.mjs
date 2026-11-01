@@ -18,6 +18,7 @@ import { compactContract, mergeSlots } from './lib/jsdoc-contract.mjs';
 import { figmaLinkCoverage, resolveFigmaLink } from './lib/figma-link.mjs';
 import { applyCoreFlag } from './lib/core-set.mjs';
 import { publicClasses } from './lib/public-classes.mjs';
+import { PUBLIC_DATA_ATTRIBUTES } from './lib/public-data-attributes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -111,9 +112,14 @@ function findConsumers(componentName, filePath, sourceFiles) {
       .filter((candidate) => candidate !== filePath)
       .filter((candidate) => !candidate.startsWith(DOCS_PAGE_SEGMENT))
       .filter((candidate) => !/\.figma\.tsx?$/.test(candidate))
+      // generated-* files are build output (token descriptions etc.); their prose
+      // can name a component without using it, and regen must stay idempotent.
+      .filter((candidate) => !/(^|\/)generated-[^/]*$/.test(candidate))
       // src/icons.ts is a bare re-export; its doc comment and Lucide names
       // (Calendar, Menu) are not component usage.
       .filter((candidate) => candidate !== 'src/icons.ts')
+      // Tests exercise a component; they are not consumers that ship with it.
+      .filter((candidate) => !/\.(test|spec)\.[cm]?[jt]sx?$/.test(candidate))
       .filter((candidate) => {
         const content = readFileSync(join(ROOT, candidate), 'utf8');
         return pattern.test(content);
@@ -235,8 +241,10 @@ for (const entry of activeDiscoveredComponents) {
     category,
     categorySource,
     governedCategory: categorySource === 'jsdoc' || categorySource === 'internal-jsdoc',
-    hidden,
-    docExempt: entry.docExempt,
+    // Written only when true (hds#784): `false` on every spec cost ~95 B of
+    // the manifest's gzip budget, and every reader treats a missing flag as false.
+    hidden: hidden || undefined,
+    docExempt: entry.docExempt || undefined,
     filePath: entry.filePath,
     description: entry.description || current.description,
     ...(contract.usage ? { usage: contract.usage } : {}),
@@ -306,6 +314,13 @@ for (const spec of Object.values(manifest.componentSpecs)) {
   }
 }
 
+// Specs carried over without rediscovery (compound parts) may still hold the
+// old `false` flags; drop them so every spec follows the write-only-when-true rule.
+for (const spec of Object.values(manifest.componentSpecs)) {
+  if (spec?.hidden === false) delete spec.hidden;
+  if (spec?.docExempt === false) delete spec.docExempt;
+}
+
 const utilities = {};
 for (const [name, spec] of Object.entries(manifest.componentSpecs)) {
   if (SECTION_BY_TIER[spec.tier] === 'utilities') {
@@ -341,6 +356,15 @@ manifest.inventory.namespaceViolations = namespaceViolations;
 // hds#449: the classes consumers may write themselves (hds-focus, the
 // static.css set); removing one is a breaking CSS fact (scripts/check-upgrade-css.mjs).
 manifest.publicClasses = publicClasses(ROOT);
+
+// hds#960: the data-* attributes each component promises consumers may select
+// on; scripts/lib/public-data-attributes.mjs holds the list and its check.
+for (const [name, spec] of [
+  ...Object.entries(manifest.componentSpecs),
+  ...Object.entries(manifest.utilities),
+]) {
+  spec.publicDataAttributes = PUBLIC_DATA_ATTRIBUTES[name] ?? [];
+}
 
 writeJson(MANIFEST_PATH, manifest);
 

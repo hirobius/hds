@@ -1,13 +1,13 @@
 /**
  * Contract test: accessibility rules of the navigation primitives (hds#520):
- * InlineLink, Breadcrumb, Pagination and Tabs.
+ * InlineLink, Breadcrumb, NavList, Pagination and Tabs.
  *
  * Each `it` title carries the `a11y:<id>` the component's `@a11y component` tags
  * point at, so check-a11y-contracts can prove every rule has a test. Keyboard
  * cases drive a real keyboard (user-event). Class assertions are used only where
  * jsdom has no layout (focus ring, target size).
  *
- * @primitive InlineLink Breadcrumb Pagination Tabs
+ * @primitive InlineLink Breadcrumb NavList Pagination Tabs
  */
 import { useState } from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
@@ -17,6 +17,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { InlineLink } from '@/app/components/inline-link';
 import { Breadcrumb } from '@/app/components/breadcrumb';
+import { NavList } from '@/app/components/nav-list';
 import { Pagination } from '@/app/components/pagination';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/app/components/tabs';
 
@@ -130,6 +131,98 @@ describe('Breadcrumb accessibility contract', () => {
   });
 });
 
+// ── NavList ───────────────────────────────────────────────────────────────────
+
+describe('NavList accessibility contract', () => {
+  it('a11y:nav-list.list-of-links - the rows are links in an unordered list', () => {
+    render(
+      <NavList aria-label="Jobs">
+        <NavList.Item href="/a">A</NavList.Item>
+        <NavList.Item href="/b">B</NavList.Item>
+      </NavList>,
+    );
+    const list = screen.getByRole('list', { name: 'Jobs' });
+    expect(list.tagName).toBe('UL');
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2);
+    expect(within(list).getAllByRole('link')).toHaveLength(2);
+  });
+
+  it('a11y:nav-list.current-page - only the current item is aria-current=page', () => {
+    render(
+      <NavList>
+        <NavList.Item href="/a">A</NavList.Item>
+        <NavList.Item href="/b" current>
+          B
+        </NavList.Item>
+      </NavList>,
+    );
+    expect(screen.getByRole('link', { name: 'B' }).getAttribute('aria-current')).toBe('page');
+    expect(screen.getByRole('link', { name: 'A' }).hasAttribute('aria-current')).toBe(false);
+  });
+
+  it('a11y:nav-list.keyboard-focus - Tab visits each link in order and each draws the focus ring', async () => {
+    const user = userEvent.setup();
+    render(
+      <NavList>
+        <NavList.Item href="/a">A</NavList.Item>
+        <NavList.Item href="/b">B</NavList.Item>
+      </NavList>,
+    );
+    await user.tab();
+    expect(document.activeElement?.textContent).toBe('A');
+    expect(document.activeElement?.className).toContain('hds-focus');
+    await user.tab();
+    expect(document.activeElement?.textContent).toBe('B');
+    expect(document.activeElement?.className).toContain('hds-focus');
+  });
+});
+
+describe('NavList select mode accessibility contract', () => {
+  it('a11y:nav-list.select-button - a selecting row is a button in the list, not a link', () => {
+    render(
+      <NavList aria-label="Jobs">
+        <NavList.Item onSelect={() => {}}>A</NavList.Item>
+        <NavList.Item onSelect={() => {}}>B</NavList.Item>
+      </NavList>,
+    );
+    const list = screen.getByRole('list', { name: 'Jobs' });
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2);
+    expect(within(list).getAllByRole('button')).toHaveLength(2);
+    expect(within(list).queryAllByRole('link')).toHaveLength(0);
+  });
+
+  it('a11y:nav-list.select-current - only the selected row is aria-current=true', () => {
+    render(
+      <NavList>
+        <NavList.Item onSelect={() => {}}>A</NavList.Item>
+        <NavList.Item onSelect={() => {}} selected>
+          B
+        </NavList.Item>
+      </NavList>,
+    );
+    expect(screen.getByRole('button', { name: 'B' }).getAttribute('aria-current')).toBe('true');
+    expect(screen.getByRole('button', { name: 'A' }).hasAttribute('aria-current')).toBe(false);
+  });
+
+  it('a11y:nav-list.select-keyboard - Tab visits each row, Enter and Space select, each draws the focus ring', async () => {
+    const user = userEvent.setup();
+    const picked: string[] = [];
+    render(
+      <NavList>
+        <NavList.Item onSelect={() => picked.push('A')}>A</NavList.Item>
+        <NavList.Item onSelect={() => picked.push('B')}>B</NavList.Item>
+      </NavList>,
+    );
+    await user.tab();
+    expect(document.activeElement?.className).toContain('hds-focus');
+    await user.keyboard('{Enter}');
+    await user.tab();
+    expect(document.activeElement?.className).toContain('hds-focus');
+    await user.keyboard(' ');
+    expect(picked).toEqual(['A', 'B']);
+  });
+});
+
 // ── Pagination ────────────────────────────────────────────────────────────────
 
 function PagedFixture({ start = 3, count = 10 }: { start?: number; count?: number }) {
@@ -230,17 +323,43 @@ describe('Pagination accessibility contract', () => {
     expect(document.activeElement?.getAttribute('aria-current')).toBe('page');
   });
 
+  it('a11y:pagination.compact-position - the compact variant shows "n of m" as a polite live region', () => {
+    render(<Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />);
+    const status = screen.getByText('2 of 4');
+    expect(status.getAttribute('aria-live')).toBe('polite');
+    expect(screen.getByRole('navigation', { name: 'Pagination' })).not.toBeNull();
+  });
+
+  it('a11y:pagination.compact-control-names - the compact icon-only buttons are named Previous page and Next page', () => {
+    render(<Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />);
+    expect(screen.getByRole('button', { name: 'Previous page' })).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Next page' })).not.toBeNull();
+  });
+
+  it('a11y:pagination.compact-disabled-ends - compact Previous is disabled on the first page and Next on the last', () => {
+    const { rerender } = render(
+      <Pagination variant="compact" page={1} count={4} onPageChange={() => {}} />,
+    );
+    expect(
+      (screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled,
+    ).toBe(true);
+    rerender(<Pagination variant="compact" page={4} count={4} onPageChange={() => {}} />);
+    expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+  });
+
   it('a11y:pagination.target-size - page buttons lift to the touch target and Previous/Next are at least 24px', () => {
     render(<Pagination page={3} count={10} onPageChange={() => {}} />);
     expect(screen.getByRole('button', { name: 'Page 3' }).className).toContain('hds-touch-target');
     for (const name of ['Previous page', 'Next page']) {
       const cls = screen.getByRole('button', { name }).className.split(/\s+/);
-      // size sm: h-8 w-8 = 32px, over the 24px floor (WCAG 2.5.8)
-      expect(cls).toContain('h-8');
-      expect(cls).toContain('w-8');
+      // size sm: a 36px square bound to the sm height token, over the 24px floor (WCAG 2.5.8)
+      expect(cls).toContain('h-[var(--component-button-size-sm-height)]');
+      expect(cls).toContain('w-[var(--component-button-size-sm-height)]');
     }
     expect(themeCss).toMatch(
-      /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--primitive-size-interactive-min\)/,
+      /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--semantic-size-touchTarget\)/,
     );
   });
 });

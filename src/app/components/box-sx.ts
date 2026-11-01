@@ -102,6 +102,29 @@ export const SPACE_SCALE = {
 } as const;
 
 /**
+ * The fixed steps between the scale rungs, `semantic.space.fixed.*`: 4, 12,
+ * 16, 24, 32 and 48px. Compact density does not remap them. Box `sx` takes
+ * them as `'fixed-<step>'`, the Tailwind key spelling (`p-fixed-sm`).
+ */
+export const SPACE_FIXED = {
+  'fixed-2xs': 'var(--semantic-space-fixed-2xs)',
+  'fixed-xs': 'var(--semantic-space-fixed-xs)',
+  'fixed-sm': 'var(--semantic-space-fixed-sm)',
+  'fixed-md': 'var(--semantic-space-fixed-md)',
+  'fixed-lg': 'var(--semantic-space-fixed-lg)',
+  'fixed-xl': 'var(--semantic-space-fixed-xl)',
+} as const;
+
+/** Box `sx` `borderRadius` steps, `semantic.radius.scale.*`; any other value passes through. */
+export const RADIUS_SCALE = {
+  sm: 'var(--semantic-radius-scale-sm)',
+  md: 'var(--semantic-radius-scale-md)',
+  lg: 'var(--semantic-radius-scale-lg)',
+  xl: 'var(--semantic-radius-scale-xl)',
+  pill: 'var(--semantic-radius-scale-pill)',
+} as const;
+
+/**
  * The names a spacing prop accepts, and what any other value means there.
  *
  * An open vocabulary passes any other string through ('auto', '1rem', a
@@ -132,8 +155,8 @@ type ClosedSpacingVocabulary = Extract<SpacingVocabulary, { readonly closed: tru
  *   spacious → var(--semantic-space-scale-xl)
  *
  * They read the scale steps, so compact density tightens them. Box `sx`'s
- * deprecated names of the same spelling read the fixed layout vars instead
- * (BOX_SX_SPACING below). scripts/check-layout-gap-vocabulary.mjs fails a
+ * deprecated names of the same spelling read them too (BOX_SX_SPACING
+ * below). scripts/check-layout-gap-vocabulary.mjs fails a
  * second copy anywhere else in src/.
  */
 export const LAYOUT_GAP_NAMES = {
@@ -163,20 +186,15 @@ export const LAYOUT_GAP = {
 
 /**
  * Box `sx`: the t-shirt scale, plus the deprecated 'tight' | 'normal' |
- * 'inset' | 'spacious' at the vars they read before hds#206. Those are
- * `semantic.space.layout.*`, fixed pixels that compact density does not
- * remap, unlike the scale steps (and unlike Stack's same four names), so
- * they keep their layout var until they are removed in 1.0. The internal
- * spacing codemod skips this file, so it cannot rewrite them to scale steps
- * and change compact pixels. Each warns once in dev (ADR-014 step 1).
+ * 'inset' | 'spacious'. They read the scale steps, like Stack's same four
+ * names, since the `semantic.space.layout.*` vars they read before went
+ * (hds#625). Each warns once in dev (ADR-014 step 1) until removed in 1.0.
  */
 const BOX_SX_SPACING = {
   names: {
     ...SPACE_SCALE,
-    tight: 'var(--semantic-space-layout-tight)',
-    normal: 'var(--semantic-space-layout-normal)',
-    inset: 'var(--semantic-space-layout-inset)',
-    spacious: 'var(--semantic-space-layout-spacious)',
+    ...SPACE_FIXED,
+    ...LAYOUT_GAP_NAMES,
   },
   numbers: 'units',
 } satisfies SpacingVocabulary;
@@ -266,7 +284,7 @@ const COLOR_PROP_MAP: Record<string, string> = {
 
 const CONTENT_KEYS = new Set(['primary', 'secondary', 'disabled', 'inverse', 'accent']);
 const SURFACE_KEYS = new Set(['page', 'raised', 'overlay', 'accent']);
-const BORDER_KEYS = new Set(['default', 'subtle', 'subdued', 'strong', 'accent']);
+const BORDER_KEYS = new Set(['default', 'subtle', 'strong', 'accent']);
 const FEEDBACK_KEYS = new Set(['success', 'warning', 'error', 'info']);
 const ACCENT_KEYS = new Set(['hover', 'pressed', 'subtle', 'content']);
 
@@ -301,12 +319,16 @@ function buildDeclarations(key: string, value: SxValue): string[] {
     if (step) {
       warnOnce(
         `box-sx-spacing-${value}`,
-        `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}': same pixels at the default density, tighter under compact (MIGRATIONS.md).`,
+        `Box sx spacing name '${value}' is deprecated (hds#206) and is removed in 1.0.0. Use '${step}', which it now reads (MIGRATIONS.md).`,
       );
     }
     // Typed so a closed vocabulary here, which can resolve to undefined, fails typecheck.
     const resolved: string | number = resolveSpacingValue(value, BOX_SX_SPACING);
     return spacingProps.map((prop) => `${prop}:${resolved}`);
+  }
+
+  if (key === 'borderRadius' && typeof value === 'string') {
+    return [`border-radius:${own(RADIUS_SCALE, value) ?? value}`];
   }
 
   const colorProp = COLOR_PROP_MAP[key];
@@ -326,9 +348,7 @@ function isResponsiveObject(
   value: unknown,
 ): value is Partial<Record<Breakpoint | 'base', SxValue>> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
-  return Object.keys(value).every(
-    (k) => k === 'base' || BREAKPOINT_KEYS.includes(k as Breakpoint),
-  );
+  return Object.keys(value).every((k) => k === 'base' || BREAKPOINT_KEYS.includes(k as Breakpoint));
 }
 
 // ── Resolver ──────────────────────────────────────────────────────────────────

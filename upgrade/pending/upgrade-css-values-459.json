@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The upgrade command now lists HDS variables your CSS reads or sets whose value changed between your installed release and the target; nothing to change."
+}

@@ -1,0 +1,1470 @@
+{
+  "Alert": {
+    "dom": [
+      "div",
+      "  div role=\"status\"",
+      "    svg aria-hidden=\"true\" data-hds-icon",
+      "    span",
+      "      span",
+      "      span",
+      "  div role=\"status\"",
+      "    svg aria-hidden=\"true\" data-hds-icon",
+      "    span",
+      "      span",
+      "      span",
+      "  div role=\"alert\"",
+      "    svg aria-hidden=\"true\" data-hds-icon",
+      "    span",
+      "      span",
+      "      span",
+      "  div role=\"alert\"",
+      "    svg aria-hidden=\"true\" data-hds-icon",
+      "    span",
+      "      span",
+      "      span"
+    ],
+    "reader": [
+      "status",
+      "status",
+      "alert",
+      "alert"
+    ]
+  },
+  "AppShell": {
+    "dom": [
+      "div",
+      "  div data-hds-component=\"AppShell\" data-hds-metrics=\"wide:false,collapsed:false\"",
+      "    header data-hds-component=\"Surface\" data-hds-metrics=\"padding:item\" data-hds-surface=\"true\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        button aria-expanded=\"false\" aria-haspopup=\"dialog\" aria-label=\"Open menu\" data-hover-effect=\"wipe\" data-size=\"sm\" data-state=\"closed\" data-variant=\"tertiary\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "        span aria-hidden=\"true\" data-hds-portal-anchor",
+      "        div",
+      "          p",
+      "    div data-hds-component=\"Grid\" data-hds-grid=\"true\" data-hds-metrics=\"gap:inset\"",
+      "      main data-hds-component=\"Surface\" data-hds-metrics=\"padding:component\" data-hds-surface=\"true\"",
+      "        h2",
+      "        aside aria-label=\"Details\"",
+      "          p"
+    ],
+    "reader": [
+      "banner",
+      "button, Open menu, not expanded, has popup dialog",
+      "paragraph",
+      "main",
+      "heading, Pipeline, level 2",
+      "complementary, Details",
+      "paragraph"
+    ]
+  },
+  "AssetImg": {
+    "dom": [
+      "div",
+      "  img"
+    ],
+    "reader": [
+      "image, Sample artwork"
+    ]
+  },
+  "AsyncState": {
+    "dom": [
+      "div aria-label=\"Open roles\" data-hds-component=\"AsyncState\" data-status=\"error\" role=\"region\"",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "    div role=\"alert\"",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "      span",
+      "        span",
+      "        span",
+      "    button data-hover-effect=\"wipe\" data-size=\"sm\" data-slot=\"retry\" data-variant=\"secondary\""
+    ],
+    "reader": [
+      "region, Open roles",
+      "alert",
+      "button, Retry"
+    ]
+  },
+  "Avatar": {
+    "dom": [
+      "div",
+      "  div",
+      "    span data-size=\"sm\"",
+      "      span",
+      "        span aria-label=\"Ada Lovelace\" role=\"img\"",
+      "    span data-size=\"md\"",
+      "      span",
+      "        span aria-label=\"Grace Hopper\" role=\"img\"",
+      "    span data-size=\"lg\"",
+      "      span",
+      "        span aria-label=\"Alan Kay\" role=\"img\"",
+      "    span data-size=\"md\"",
+      "      span",
+      "        span aria-label=\"Signed out\" role=\"img\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "    span data-size=\"md\"",
+      "      span",
+      "        span aria-label=\"Grace Hopper\" role=\"img\"",
+      "      span aria-label=\"Online\" data-size=\"md\" data-tone=\"success\" role=\"img\"",
+      "    span data-size=\"md\"",
+      "      span",
+      "        span aria-label=\"Alan Kay\" role=\"img\"",
+      "      span aria-label=\"Not synced\" data-size=\"md\" data-tone=\"warning\" role=\"img\"",
+      "  div",
+      "    button aria-expanded=\"false\" aria-haspopup=\"menu\" aria-label=\"Account, Ada Lovelace, not synced\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"tertiary\"",
+      "      span data-size=\"md\"",
+      "        span",
+      "          span aria-label=\"Ada Lovelace\" role=\"img\"",
+      "        span aria-label=\"Not synced\" data-size=\"md\" data-tone=\"warning\" role=\"img\"",
+      "    span aria-hidden=\"true\" data-hds-portal-anchor",
+      "    p"
+    ],
+    "reader": [
+      "image, Ada Lovelace",
+      "image, Grace Hopper",
+      "image, Alan Kay",
+      "image, Signed out",
+      "image, Grace Hopper",
+      "image, Online",
+      "image, Alan Kay",
+      "image, Not synced",
+      "button, Account, Ada Lovelace, not synced, not expanded, has popup menu",
+      "image, Ada Lovelace",
+      "image, Not synced",
+      "paragraph"
+    ]
+  },
+  "Badge": {
+    "dom": [
+      "div",
+      "  span data-tone=\"neutral\"",
+      "  span data-tone=\"info\"",
+      "  span data-tone=\"success\"",
+      "  span data-tone=\"warning\"",
+      "  span data-tone=\"danger\"",
+      "  span aria-label=\"3 roles\" data-tone=\"neutral\" role=\"img\"",
+      "  span aria-label=\"42 roles\" data-tone=\"neutral\" role=\"img\"",
+      "  span aria-label=\"120 roles\" data-tone=\"neutral\" role=\"img\"",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "    h3",
+      "    span aria-label=\"12 roles\" data-tone=\"neutral\" role=\"img\""
+    ],
+    "reader": [
+      "image, 3 roles",
+      "image, 42 roles",
+      "image, 120 roles",
+      "heading, Open roles, level 3",
+      "image, 12 roles"
+    ]
+  },
+  "Board": {
+    "dom": [
+      "div aria-label=\"Lead pipeline\" data-hds-component=\"Board\" role=\"group\"",
+      "  div data-hds-board-track",
+      "    section data-hds-component=\"BoardColumn\"",
+      "      h3",
+      "        span",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "      div",
+      "        div data-bordered=\"false\" data-padding=\"item\" data-tone=\"neutral\" data-variant=\"default\"",
+      "          div",
+      "            div",
+      "              p",
+      "              p",
+      "            div",
+      "              span data-tone=\"danger\"",
+      "        div data-bordered=\"false\" data-padding=\"item\" data-tone=\"neutral\" data-variant=\"default\"",
+      "          div",
+      "            div",
+      "              p",
+      "              p",
+      "    section data-hds-component=\"BoardColumn\"",
+      "      h3",
+      "        span",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "      div",
+      "        div data-bordered=\"false\" data-padding=\"item\" data-tone=\"neutral\" data-variant=\"default\"",
+      "          div",
+      "            div",
+      "              p",
+      "              p",
+      "    section data-hds-component=\"BoardColumn\"",
+      "      h3",
+      "        span",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "      div",
+      "        div data-hds-component=\"EmptyState\"",
+      "          p"
+    ],
+    "reader": [
+      "group, Lead pipeline",
+      "region, On fire, 2 items",
+      "heading, On fire, 2 items, level 3",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "region, Warm, 1 item",
+      "heading, Warm, 1 item, level 3",
+      "paragraph",
+      "paragraph",
+      "region, Won, 0 items",
+      "heading, Won, 0 items, level 3",
+      "paragraph"
+    ]
+  },
+  "Box": {
+    "dom": [
+      "div data-hds-component=\"Box\" data-hds-metrics=\"sx:3\""
+    ],
+    "reader": []
+  },
+  "Breadcrumb": {
+    "dom": [
+      "nav aria-label=\"Breadcrumb\"",
+      "  ol",
+      "    li",
+      "      a",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "    li",
+      "      a",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "    li",
+      "      span aria-current=\"page\""
+    ],
+    "reader": [
+      "navigation, Breadcrumb",
+      "list",
+      "listitem, level 1, position 1, set size 3",
+      "link, Clients",
+      "listitem, level 1, position 2, set size 3",
+      "link, Acme Co",
+      "listitem, level 1, position 3, set size 3",
+      "current page",
+      "end, current page"
+    ]
+  },
+  "Button": {
+    "dom": [
+      "div",
+      "  button data-hover-effect=\"wipe\" data-variant=\"primary\"",
+      "  button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "  button data-hover-effect=\"wipe\" data-variant=\"primary\"",
+      "  button aria-pressed=\"false\" data-hover-effect=\"wipe\" data-pressed=\"false\" data-variant=\"secondary\"",
+      "  button data-hover-effect=\"wipe\" data-variant=\"tertiary\"",
+      "  button data-hover-effect=\"wipe\" data-tone=\"danger\" data-variant=\"secondary\"",
+      "  button data-variant=\"secondary\"",
+      "  button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\""
+    ],
+    "reader": [
+      "button, Primary",
+      "button, Secondary",
+      "button, Disabled, disabled",
+      "button, Toggle, not pressed",
+      "button, Tertiary",
+      "button, Danger",
+      "button, Flat (opt-out)",
+      "button, Small"
+    ]
+  },
+  "Card": {
+    "dom": [
+      "div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "  div data-bordered=\"false\" data-padding=\"none\" data-tone=\"neutral\" data-variant=\"default\"",
+      "    div",
+      "      h3",
+      "      p",
+      "    div",
+      "    div",
+      "      button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "  div data-bordered=\"false\" data-padding=\"item\" data-tone=\"neutral\" data-variant=\"default\"",
+      "    div",
+      "      div",
+      "        p",
+      "        p",
+      "      div",
+      "        span data-tone=\"success\"",
+      "  div data-hds-component=\"Grid\" data-hds-grid=\"true\" data-hds-metrics=\"gap:normal\"",
+      "    div data-bordered=\"false\" data-padding=\"component\" data-tone=\"neutral\" data-variant=\"default\"",
+      "      div data-slot=\"card-source\"",
+      "        span data-size=\"sm\"",
+      "          span",
+      "            span aria-hidden=\"true\"",
+      "        span",
+      "        span",
+      "          time data-format=\"relative\"",
+      "      div",
+      "        h3",
+      "      ul data-slot=\"card-facts\"",
+      "        li",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "        li",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "        li",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "      div",
+      "        button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "  a data-bordered=\"false\" data-interactive=\"true\" data-padding=\"item\" data-tone=\"neutral\" data-variant=\"default\"",
+      "    div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "      svg aria-hidden=\"true\"",
+      "      svg aria-hidden=\"true\"",
+      "    span",
+      "    span"
+    ],
+    "reader": [
+      "heading, Design tokens, level 3",
+      "paragraph",
+      "button, Browse",
+      "paragraph",
+      "paragraph",
+      "time",
+      "heading, Senior product designer, level 3",
+      "list",
+      "listitem, level 1, position 1, set size 3",
+      "listitem, level 1, position 2, set size 3",
+      "listitem, level 1, position 3, set size 3",
+      "button, Save",
+      "link, LeadsFind businesses and build sites"
+    ]
+  },
+  "Checkbox": {
+    "dom": [
+      "div",
+      "  label",
+      "    input aria-checked=\"true\"",
+      "    span aria-hidden=\"true\"",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "    span",
+      "  label",
+      "    input aria-checked=\"false\"",
+      "    span aria-hidden=\"true\"",
+      "    span"
+    ],
+    "reader": [
+      "checkbox, Receive project update emails, checked",
+      "checkbox, Disabled option, not checked, disabled"
+    ]
+  },
+  "CodeBlock": {
+    "dom": [
+      "div",
+      "  div",
+      "    div",
+      "      span",
+      "      span",
+      "  div",
+      "    pre",
+      "      code",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "        span",
+      "    button aria-label=\"Copy code\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "    span role=\"status\""
+    ],
+    "reader": [
+      "code",
+      "button, Copy code",
+      "status"
+    ]
+  },
+  "Combobox": {
+    "dom": [
+      "div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "  button aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-label=\"Component\" role=\"combobox\"",
+      "    span",
+      "    svg aria-hidden=\"true\" data-hds-icon",
+      "  span aria-hidden=\"true\" data-hds-portal-anchor",
+      "  div aria-label=\"Skills\" role=\"group\"",
+      "    button aria-label=\"Remove React\"",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "    input aria-autocomplete=\"list\" aria-expanded=\"false\" aria-haspopup=\"listbox\" aria-label=\"Skills\" role=\"combobox\"",
+      "  span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "combobox, Component, has popup listbox, not expanded",
+      "group, Skills",
+      "button, Remove React",
+      "combobox, Skills, has popup listbox, not expanded, autocomplete in list"
+    ]
+  },
+  "CommandPalette": {
+    "dom": [
+      "div",
+      "  button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "  span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Search commands"
+    ]
+  },
+  "Composer": {
+    "dom": [
+      "div",
+      "  div",
+      "    div",
+      "      textarea aria-label=\"Message\" data-state=\"default\"",
+      "    div",
+      "      span",
+      "        kbd data-size=\"sm\"",
+      "        kbd data-size=\"sm\"",
+      "      button data-hover-effect=\"wipe\" data-variant=\"primary\"",
+      "    span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "textbox, Message, placeholder Drop a thought, or paste something long",
+      "button, Send, disabled"
+    ]
+  },
+  "Container": {
+    "dom": [
+      "div",
+      "  div"
+    ],
+    "reader": []
+  },
+  "DataTableSection": {
+    "dom": [
+      "section data-hds-component=\"DataTableSection\"",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "    div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "      h2",
+      "      div data-slot=\"toolbar\"",
+      "        div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "          button data-hover-effect=\"wipe\" data-variant=\"primary\"",
+      "    div",
+      "      div data-hds-component=\"Surface\" data-hds-metrics=\"padding:none\" data-hds-surface=\"true\"",
+      "        div aria-label=\"Scrollable table content\" role=\"region\"",
+      "          div role=\"table\"",
+      "            div role=\"row\"",
+      "              div role=\"columnheader\"",
+      "              div role=\"columnheader\"",
+      "              div role=\"columnheader\"",
+      "            div role=\"row\"",
+      "              div data-slot=\"custom\" role=\"cell\"",
+      "              div data-slot=\"custom\" role=\"cell\"",
+      "                span data-tone=\"success\"",
+      "              div data-slot=\"action\" role=\"cell\"",
+      "                div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "                  button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "            div role=\"row\"",
+      "              div data-slot=\"custom\" role=\"cell\"",
+      "              div data-slot=\"custom\" role=\"cell\"",
+      "                span data-tone=\"warning\"",
+      "              div data-slot=\"action\" role=\"cell\"",
+      "                div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "                  button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\""
+    ],
+    "reader": [
+      "region, Projects",
+      "heading, Projects, level 2",
+      "button, New project",
+      "region, Projects Scrollable table content",
+      "table, Projects",
+      "row, Project Status Actions",
+      "columnheader, Project",
+      "columnheader, Status",
+      "columnheader, Actions",
+      "row, Portfolio redesign Live Open",
+      "cell, Portfolio redesign",
+      "cell, Live",
+      "cell, Open",
+      "button, Open",
+      "row, Token audit Draft Open",
+      "cell, Token audit",
+      "cell, Draft",
+      "cell, Open",
+      "button, Open"
+    ]
+  },
+  "DestructiveSection": {
+    "dom": [
+      "section data-hds-component=\"DestructiveSection\"",
+      "  div data-tone=\"danger\"",
+      "    div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "      div data-slot=\"copy\"",
+      "        h2",
+      "        p",
+      "      div data-slot=\"action\"",
+      "        button aria-expanded=\"false\" aria-haspopup=\"dialog\" data-hover-effect=\"wipe\" data-state=\"closed\" data-tone=\"danger\" data-variant=\"secondary\"",
+      "        span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "region, Delete project",
+      "heading, Delete project, level 2",
+      "paragraph",
+      "button, Delete project, not expanded, has popup dialog"
+    ]
+  },
+  "Dialog": {
+    "dom": [
+      "button aria-expanded=\"false\" aria-haspopup=\"dialog\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Open dialog, not expanded, has popup dialog"
+    ]
+  },
+  "Disclosure": {
+    "dom": [
+      "div",
+      "  div",
+      "    div data-hds-component=\"Surface\" data-hds-metrics=\"padding:component\" data-hds-surface=\"true\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        button aria-expanded=\"false\" data-state=\"closed\"",
+      "          div",
+      "            span",
+      "          span aria-hidden=\"true\"",
+      "            svg aria-hidden=\"true\" data-hds-icon",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "    div",
+      "      button aria-expanded=\"false\" data-state=\"closed\"",
+      "        div",
+      "          span",
+      "          span",
+      "        span aria-hidden=\"true\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "      div",
+      "        button aria-label=\"Edit Fonts\" data-hover-effect=\"wipe\" data-variant=\"tertiary\"",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "    div",
+      "      button aria-expanded=\"false\" data-state=\"closed\"",
+      "        div",
+      "          span",
+      "          span",
+      "        span aria-hidden=\"true\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "      div",
+      "        button aria-label=\"Edit Tokens\" data-hover-effect=\"wipe\" data-variant=\"tertiary\"",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "    div",
+      "      button aria-expanded=\"false\" data-state=\"closed\"",
+      "        div",
+      "          span",
+      "          span",
+      "        span aria-hidden=\"true\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "      div",
+      "        button aria-label=\"Edit Figma\" data-hover-effect=\"wipe\" data-variant=\"tertiary\""
+    ],
+    "reader": [
+      "button, What ships in fonts.css?, not expanded",
+      "button, FontsWhat ships in fonts.css, not expanded",
+      "button, Edit Fonts",
+      "button, TokensWhere the token files live, not expanded",
+      "button, Edit Tokens",
+      "button, FigmaHow the library stays in sync, not expanded",
+      "button, Edit Figma"
+    ]
+  },
+  "Divider": {
+    "dom": [
+      "div",
+      "  span",
+      "  hr aria-orientation=\"horizontal\" data-variant=\"default\"",
+      "  span",
+      "  hr aria-orientation=\"horizontal\" data-variant=\"strong\"",
+      "  span"
+    ],
+    "reader": [
+      "separator, orientated horizontally, max value 100, min value 0",
+      "separator, orientated horizontally, max value 100, min value 0"
+    ]
+  },
+  "EmptyState": {
+    "dom": [
+      "div data-hds-component=\"EmptyState\"",
+      "  p",
+      "  p"
+    ],
+    "reader": [
+      "paragraph",
+      "paragraph"
+    ]
+  },
+  "ErrorPattern": {
+    "dom": [
+      "div data-role=\"error-recovery\"",
+      "  div data-hds-component=\"Surface\" data-hds-metrics=\"padding:component\" data-hds-surface=\"true\"",
+      "    div",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "        h1",
+      "        p",
+      "        button data-hover-effect=\"wipe\" data-variant=\"primary\""
+    ],
+    "reader": [
+      "heading, 404, level 1",
+      "paragraph",
+      "button, Back"
+    ]
+  },
+  "Field": {
+    "dom": [
+      "div",
+      "  div data-tone=\"neutral\"",
+      "    span",
+      "    span",
+      "  div data-tone=\"success\"",
+      "    span",
+      "    span"
+    ],
+    "reader": []
+  },
+  "Form": {
+    "dom": [
+      "form",
+      "  div",
+      "    label",
+      "      span aria-hidden=\"true\"",
+      "    div",
+      "      div",
+      "        input data-size=\"md\" data-state=\"default\"",
+      "  div",
+      "    label",
+      "    div",
+      "      div",
+      "        input data-size=\"md\" data-state=\"default\"",
+      "    p",
+      "  button data-hover-effect=\"wipe\" data-variant=\"primary\""
+    ],
+    "reader": [
+      "form",
+      "textbox, Full name, placeholder Ada Lovelace, required",
+      "textbox, Email, We only use it for release notes., placeholder ada@example.com",
+      "paragraph",
+      "button, Save"
+    ]
+  },
+  "FormActions": {
+    "dom": [
+      "div data-hds-component=\"FormActions\"",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "    div data-slot=\"destructive\"",
+      "      button data-hover-effect=\"wipe\" data-tone=\"danger\" data-variant=\"secondary\"",
+      "    div data-slot=\"group\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "        button data-hover-effect=\"wipe\" data-variant=\"primary\""
+    ],
+    "reader": [
+      "button, Delete",
+      "button, Cancel",
+      "button, Save changes"
+    ]
+  },
+  "Grid": {
+    "dom": [
+      "div data-hds-component=\"Grid\" data-hds-grid=\"true\" data-hds-metrics=\"gap:normal\"",
+      "  div",
+      "  div",
+      "  div",
+      "  div",
+      "  div",
+      "  div"
+    ],
+    "reader": []
+  },
+  "Icon": {
+    "dom": [
+      "div",
+      "  svg aria-hidden=\"true\" data-hds-icon",
+      "  svg aria-hidden=\"true\" data-hds-icon",
+      "  svg aria-hidden=\"true\" data-hds-icon"
+    ],
+    "reader": []
+  },
+  "InlineLink": {
+    "dom": [
+      "p",
+      "  a"
+    ],
+    "reader": [
+      "paragraph",
+      "link, upgrade guide"
+    ]
+  },
+  "Input": {
+    "dom": [
+      "div",
+      "  div",
+      "    label",
+      "    div",
+      "      input data-size=\"md\" data-state=\"default\"",
+      "  div",
+      "    label",
+      "    div",
+      "      input data-size=\"md\" data-state=\"filled\"",
+      "  div",
+      "    div",
+      "      input aria-label=\"Small input\" data-size=\"sm\" data-state=\"filled\"",
+      "      button aria-label=\"Clear input\"",
+      "        svg aria-hidden=\"true\""
+    ],
+    "reader": [
+      "textbox, Project name, placeholder Portfolio redesign",
+      "Start date, 2026-10-01",
+      "textbox, Small input, Small",
+      "button, Clear input"
+    ]
+  },
+  "Kbd": {
+    "dom": [
+      "p",
+      "  kbd data-size=\"md\"",
+      "  kbd data-size=\"md\""
+    ],
+    "reader": [
+      "paragraph"
+    ]
+  },
+  "Menu": {
+    "dom": [
+      "button aria-expanded=\"false\" aria-haspopup=\"menu\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Actions, not expanded, has popup menu"
+    ]
+  },
+  "MetaLine": {
+    "dom": [
+      "div",
+      "  p",
+      "    span aria-hidden=\"true\" data-meta-separator",
+      "  p"
+    ],
+    "reader": [
+      "paragraph",
+      "paragraph"
+    ]
+  },
+  "MetricTiles": {
+    "dom": [
+      "div data-hds-component=\"MetricTiles\"",
+      "  div data-hds-component=\"Grid\" data-hds-grid=\"true\" data-hds-metrics=\"gap:tight\"",
+      "    div data-hds-component=\"MetricTile\" data-hds-metrics=\"padding:item\" data-hds-surface=\"true\" data-tone=\"neutral\"",
+      "      div",
+      "        p",
+      "        p",
+      "        p",
+      "    div data-hds-component=\"MetricTile\" data-hds-metrics=\"padding:item\" data-hds-surface=\"true\" data-tone=\"success\"",
+      "      div",
+      "        p",
+      "        p",
+      "        p",
+      "    div data-hds-component=\"MetricTile\" data-hds-metrics=\"padding:item\" data-hds-surface=\"true\" data-tone=\"danger\"",
+      "      div",
+      "        p",
+      "        p",
+      "        p"
+    ],
+    "reader": [
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph"
+    ]
+  },
+  "NavList": {
+    "dom": [
+      "div",
+      "  ul aria-label=\"Saved jobs (links)\"",
+      "    li",
+      "      a aria-current=\"page\"",
+      "        p",
+      "          span aria-hidden=\"true\" data-meta-separator",
+      "    li",
+      "      a",
+      "        p",
+      "          span aria-hidden=\"true\" data-meta-separator",
+      "  ul aria-label=\"Saved jobs\"",
+      "    li",
+      "      button aria-current=\"true\"",
+      "        p",
+      "          span aria-hidden=\"true\" data-meta-separator",
+      "    li",
+      "      button",
+      "        p",
+      "          span aria-hidden=\"true\" data-meta-separator",
+      "    li",
+      "      button",
+      "        p",
+      "          span aria-hidden=\"true\" data-meta-separator"
+    ],
+    "reader": [
+      "list, Saved jobs (links)",
+      "listitem, level 1, position 1, set size 2",
+      "link, Design systems lead Acme CloudRemote, current page",
+      "paragraph",
+      "listitem, level 1, position 2, set size 2",
+      "link, Staff front-end engineer NorthwindHybrid",
+      "paragraph",
+      "list, Saved jobs",
+      "listitem, level 1, position 1, set size 3",
+      "button, Design systems lead Acme CloudRemote, current item",
+      "listitem, level 1, position 2, set size 3",
+      "button, Staff front-end engineer NorthwindHybrid",
+      "listitem, level 1, position 3, set size 3",
+      "button, Product designer GlobexOn-site"
+    ]
+  },
+  "Page": {
+    "dom": [
+      "div",
+      "  div data-hds-component=\"Page\" data-hds-metrics=\"paddingY:compact\"",
+      "    div"
+    ],
+    "reader": []
+  },
+  "PageHeader": {
+    "dom": [
+      "header data-hds-component=\"PageHeader\"",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "    div data-slot=\"breadcrumb\"",
+      "      nav aria-label=\"Breadcrumb\"",
+      "        ol",
+      "          li",
+      "            a",
+      "            svg aria-hidden=\"true\" data-hds-icon",
+      "          li",
+      "            span aria-current=\"page\"",
+      "    div data-slot=\"metadata\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        span data-tone=\"neutral\"",
+      "        span data-tone=\"info\"",
+      "    div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        h2",
+      "        div data-slot=\"status\"",
+      "          span data-tone=\"success\"",
+      "      div data-slot=\"actions\"",
+      "        div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "          button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "          button data-hover-effect=\"wipe\" data-variant=\"primary\"",
+      "    p data-slot=\"description\""
+    ],
+    "reader": [
+      "banner",
+      "navigation, Breadcrumb",
+      "list",
+      "listitem, level 1, position 1, set size 2",
+      "link, Clients",
+      "listitem, level 1, position 2, set size 2",
+      "current page",
+      "end, current page",
+      "heading, Acme Co, level 2",
+      "button, Edit",
+      "button, New project",
+      "paragraph"
+    ]
+  },
+  "Pagination": {
+    "dom": [
+      "div",
+      "  nav aria-label=\"Pagination\"",
+      "    ul",
+      "      li",
+      "        button aria-label=\"Previous page\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "      li",
+      "        button aria-label=\"Page 1\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "      li",
+      "        button aria-label=\"Page 2\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "      li aria-hidden=\"true\"",
+      "      li",
+      "        button aria-current=\"page\" aria-label=\"Page 3\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "      li",
+      "        button aria-label=\"Page 4\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "      li",
+      "        button aria-label=\"Page 5\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "      li aria-hidden=\"true\"",
+      "      li",
+      "        button aria-label=\"Page 10\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "      li",
+      "        button aria-label=\"Next page\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "  nav aria-label=\"Item\"",
+      "    ul",
+      "      li",
+      "        button aria-label=\"Previous page\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "      li",
+      "        span aria-live=\"polite\"",
+      "      li",
+      "        button aria-label=\"Next page\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "          svg aria-hidden=\"true\" data-hds-icon"
+    ],
+    "reader": [
+      "navigation, Pagination",
+      "list",
+      "listitem, level 1, position 1, set size 8",
+      "button, Previous page",
+      "listitem, level 1, position 2, set size 8",
+      "button, Page 1",
+      "listitem, level 1, position 3, set size 8",
+      "button, Page 2",
+      "listitem, level 1, position 4, set size 8",
+      "button, Page 3, current page",
+      "listitem, level 1, position 5, set size 8",
+      "button, Page 4",
+      "listitem, level 1, position 6, set size 8",
+      "button, Page 5",
+      "listitem, level 1, position 7, set size 8",
+      "button, Page 10",
+      "listitem, level 1, position 8, set size 8",
+      "button, Next page",
+      "navigation, Item",
+      "list",
+      "listitem, level 1, position 1, set size 3",
+      "button, Previous page, disabled",
+      "listitem, level 1, position 2, set size 3",
+      "listitem, level 1, position 3, set size 3",
+      "button, Next page"
+    ]
+  },
+  "Popover": {
+    "dom": [
+      "button aria-expanded=\"false\" aria-haspopup=\"dialog\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Open popover, not expanded, has popup dialog"
+    ]
+  },
+  "Progress": {
+    "dom": [
+      "div",
+      "  div aria-label=\"Upload\" aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"64\" data-state=\"determinate\" data-tone=\"neutral\" data-variant=\"linear\" role=\"progressbar\"",
+      "    div",
+      "  div aria-label=\"Sync\" aria-valuemax=\"100\" aria-valuemin=\"0\" aria-valuenow=\"100\" data-state=\"determinate\" data-tone=\"success\" data-variant=\"linear\" role=\"progressbar\"",
+      "    div",
+      "  span aria-label=\"Loading\" data-state=\"indeterminate\" data-tone=\"neutral\" data-variant=\"circular\" role=\"progressbar\"",
+      "    svg aria-hidden=\"true\""
+    ],
+    "reader": [
+      "progressbar, Upload, max value 100, min value 0, current value 64%",
+      "progressbar, Sync, max value 100, min value 0, current value 100%",
+      "progressbar, Loading, max value 100, min value 0"
+    ]
+  },
+  "Radio": {
+    "dom": [
+      "div aria-label=\"Plan\" role=\"radiogroup\"",
+      "  label",
+      "    input",
+      "    span aria-hidden=\"true\"",
+      "    span",
+      "  label",
+      "    input",
+      "    span aria-hidden=\"true\"",
+      "      span",
+      "    span",
+      "  label",
+      "    input",
+      "    span aria-hidden=\"true\"",
+      "    span"
+    ],
+    "reader": [
+      "radiogroup, Plan",
+      "radio, Solo, not checked, position 1, set size 3",
+      "radio, Team, checked, position 2, set size 3",
+      "radio, Enterprise, not checked, position 3, set size 3"
+    ]
+  },
+  "Reveal": {
+    "dom": [
+      "div data-hds-component=\"Reveal\" data-hds-metrics=\"animation:fade-up\" data-reveal=\"fade-up\"",
+      "  div"
+    ],
+    "reader": []
+  },
+  "SegmentedControl": {
+    "dom": [
+      "div",
+      "  div",
+      "    span",
+      "    div aria-label=\"View\" role=\"radiogroup\"",
+      "      button aria-checked=\"true\" data-state=\"on\" role=\"radio\"",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "      button aria-checked=\"false\" data-state=\"off\" role=\"radio\"",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "      button aria-checked=\"false\" data-state=\"off\" role=\"radio\"",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "  div",
+      "    span",
+      "    div aria-label=\"Range\" role=\"radiogroup\"",
+      "      button aria-checked=\"false\" data-state=\"off\" role=\"radio\"",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "      button aria-checked=\"true\" data-state=\"on\" role=\"radio\"",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "      button aria-checked=\"false\" data-state=\"off\" role=\"radio\"",
+      "        span aria-hidden=\"true\"",
+      "        span",
+      "  div data-bordered=\"false\" data-padding=\"item\" data-tone=\"neutral\" data-variant=\"default\"",
+      "    div",
+      "      span",
+      "      div aria-label=\"Range on a card\" role=\"radiogroup\"",
+      "        button aria-checked=\"false\" data-state=\"off\" role=\"radio\"",
+      "          span aria-hidden=\"true\"",
+      "          span",
+      "        button aria-checked=\"true\" data-state=\"on\" role=\"radio\"",
+      "          span aria-hidden=\"true\"",
+      "          span",
+      "        button aria-checked=\"false\" data-state=\"off\" role=\"radio\"",
+      "          span aria-hidden=\"true\"",
+      "          span"
+    ],
+    "reader": [
+      "radiogroup, View",
+      "radio, Grid, checked, position 1, set size 3",
+      "radio, List, not checked, position 2, set size 3",
+      "radio, Board, not checked, position 3, set size 3",
+      "radiogroup, Range",
+      "radio, Day, not checked, position 1, set size 3",
+      "radio, Week, checked, position 2, set size 3",
+      "radio, Month, not checked, position 3, set size 3",
+      "radiogroup, Range on a card",
+      "radio, Day, not checked, position 1, set size 3",
+      "radio, Week, checked, position 2, set size 3",
+      "radio, Month, not checked, position 3, set size 3"
+    ]
+  },
+  "Select": {
+    "dom": [
+      "div",
+      "  div",
+      "    label",
+      "    button aria-autocomplete=\"none\" aria-expanded=\"false\" aria-label=\"Discipline: Design\" data-state=\"closed\" role=\"combobox\"",
+      "      span",
+      "      span aria-hidden=\"true\"",
+      "        svg aria-hidden=\"true\" data-hds-icon",
+      "    span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "combobox, Discipline: Design, has popup listbox, not expanded, no autocomplete"
+    ]
+  },
+  "Sheet": {
+    "dom": [
+      "button aria-expanded=\"false\" aria-haspopup=\"dialog\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Sort: Newest, not expanded, has popup dialog"
+    ]
+  },
+  "Skeleton": {
+    "dom": [
+      "div",
+      "  div aria-hidden=\"true\" data-variant=\"circular\"",
+      "  div",
+      "    div aria-hidden=\"true\" data-variant=\"text\"",
+      "    div aria-hidden=\"true\" data-variant=\"text\""
+    ],
+    "reader": []
+  },
+  "Slider": {
+    "dom": [
+      "div",
+      "  div",
+      "    div",
+      "      label",
+      "      span",
+      "    div",
+      "      div aria-hidden=\"true\"",
+      "        div",
+      "      input"
+    ],
+    "reader": [
+      "slider, Volume, 40, orientated horizontally, max value 100, min value 0"
+    ]
+  },
+  "Spinner": {
+    "dom": [
+      "div",
+      "  span aria-label=\"Loading\" data-size=\"sm\" role=\"status\"",
+      "  span aria-label=\"Loading\" data-size=\"md\" role=\"status\"",
+      "  span aria-label=\"Loading\" data-size=\"lg\" role=\"status\""
+    ],
+    "reader": [
+      "status, Loading",
+      "status, Loading",
+      "status, Loading"
+    ]
+  },
+  "Stack": {
+    "dom": [
+      "div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "  button data-hover-effect=\"wipe\" data-variant=\"primary\"",
+      "  button data-hover-effect=\"wipe\" data-variant=\"secondary\""
+    ],
+    "reader": [
+      "button, Save",
+      "button, Cancel"
+    ]
+  },
+  "StatusTile": {
+    "dom": [
+      "div data-hds-component=\"Grid\" data-hds-grid=\"true\" data-hds-metrics=\"gap:normal\"",
+      "  div data-hds-component=\"StatusTile\" data-hds-metrics=\"tone:neutral\"",
+      "    div",
+      "      p",
+      "      p",
+      "    div",
+      "      span data-tone=\"success\"",
+      "  div data-hds-component=\"StatusTile\" data-hds-metrics=\"tone:neutral\"",
+      "    div",
+      "      p",
+      "      p",
+      "    div",
+      "      span data-tone=\"warning\""
+    ],
+    "reader": [
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph"
+    ]
+  },
+  "Surface": {
+    "dom": [
+      "div data-hds-component=\"Surface\" data-hds-metrics=\"padding:component\" data-hds-surface=\"true\""
+    ],
+    "reader": []
+  },
+  "Table": {
+    "dom": [
+      "div",
+      "  div",
+      "    div",
+      "      div",
+      "  div data-hds-component=\"Surface\" data-hds-metrics=\"padding:none\" data-hds-surface=\"true\"",
+      "    div role=\"region\"",
+      "      div role=\"table\"",
+      "        div role=\"row\"",
+      "          div role=\"columnheader\"",
+      "          div role=\"columnheader\"",
+      "          div role=\"columnheader\"",
+      "          div role=\"columnheader\"",
+      "          div role=\"columnheader\"",
+      "        div role=\"row\"",
+      "          div data-slot=\"label\" role=\"cell\"",
+      "            a",
+      "              span",
+      "              svg aria-hidden=\"true\" data-hds-icon",
+      "          div data-slot=\"description\" role=\"cell\"",
+      "          div data-slot=\"badge\" role=\"cell\"",
+      "            span data-tone=\"neutral\"",
+      "          div data-slot=\"value\" role=\"cell\"",
+      "          div data-slot=\"action\" role=\"cell\"",
+      "            button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "        div role=\"row\"",
+      "          div data-slot=\"label\" role=\"cell\"",
+      "            a",
+      "              span",
+      "              svg aria-hidden=\"true\" data-hds-icon",
+      "          div data-slot=\"description\" role=\"cell\"",
+      "          div data-slot=\"badge\" role=\"cell\"",
+      "            span data-tone=\"neutral\"",
+      "          div data-slot=\"value\" role=\"cell\"",
+      "          div data-slot=\"action\" role=\"cell\"",
+      "            button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\""
+    ],
+    "reader": [
+      "region, Recent projects",
+      "table, Recent projects",
+      "row, Project Summary Status Updated Actions",
+      "columnheader, Project",
+      "columnheader, Summary",
+      "columnheader, Status",
+      "columnheader, Updated",
+      "columnheader, Actions",
+      "row, Portfolio redesign(opens in new tab) Case studies, about page and the new design-system section Active 2026-10-05 Open brief",
+      "cell, Portfolio redesign(opens in new tab)",
+      "link, Portfolio redesign(opens in new tab)",
+      "cell, Case studies, about page and the new design-system section",
+      "cell, Active",
+      "cell, 2026-10-05",
+      "cell, Open brief",
+      "button, Open brief",
+      "row, Token audit(opens in new tab) Contrast and naming review across the light and dark themes Review 2026-10-02 Open brief",
+      "cell, Token audit(opens in new tab)",
+      "link, Token audit(opens in new tab)",
+      "cell, Contrast and naming review across the light and dark themes",
+      "cell, Review",
+      "cell, 2026-10-02",
+      "cell, Open brief",
+      "button, Open brief"
+    ]
+  },
+  "Tabs": {
+    "dom": [
+      "div data-orientation=\"horizontal\"",
+      "  div aria-orientation=\"horizontal\" data-orientation=\"horizontal\" role=\"tablist\"",
+      "    button aria-selected=\"true\" data-orientation=\"horizontal\" data-state=\"active\" role=\"tab\"",
+      "    button aria-selected=\"false\" data-orientation=\"horizontal\" data-state=\"inactive\" role=\"tab\"",
+      "    button aria-selected=\"false\" data-orientation=\"horizontal\" data-state=\"inactive\" role=\"tab\"",
+      "  div data-orientation=\"horizontal\" data-state=\"active\" role=\"tabpanel\"",
+      "  div data-orientation=\"horizontal\" data-state=\"inactive\" role=\"tabpanel\"",
+      "  div data-orientation=\"horizontal\" data-state=\"inactive\" role=\"tabpanel\""
+    ],
+    "reader": [
+      "tablist, orientated horizontally",
+      "tab, Overview, selected, 1 control, position 1, set size 3",
+      "tab, Props, not selected, 1 control, position 2, set size 3",
+      "tab, Usage, not selected, 1 control, position 3, set size 3",
+      "tabpanel, Overview"
+    ]
+  },
+  "Tag": {
+    "dom": [
+      "div",
+      "  div",
+      "    button aria-pressed=\"true\" data-active=\"true\"",
+      "      span",
+      "    button aria-pressed=\"false\"",
+      "      span",
+      "    button aria-pressed=\"false\"",
+      "      span",
+      "  div",
+      "    span data-dismissible=\"true\"",
+      "      span",
+      "      button aria-label=\"Remove design systems\"",
+      "        svg aria-hidden=\"true\" data-hds-icon",
+      "    span data-dismissible=\"true\"",
+      "      span",
+      "      button aria-label=\"Remove tokens\"",
+      "        svg aria-hidden=\"true\" data-hds-icon",
+      "    span data-dismissible=\"true\"",
+      "      span",
+      "      button aria-label=\"Remove contract\"",
+      "        svg aria-hidden=\"true\" data-hds-icon"
+    ],
+    "reader": [
+      "button, tokens, pressed",
+      "button, components, not pressed",
+      "button, patterns, not pressed",
+      "button, Remove design systems",
+      "button, Remove tokens",
+      "button, Remove contract"
+    ]
+  },
+  "Text": {
+    "dom": [
+      "div",
+      "  h1",
+      "  h2",
+      "  p",
+      "  p",
+      "  p",
+      "  span",
+      "  div",
+      "    p",
+      "    span data-tone=\"neutral\"",
+      "  p",
+      "  span"
+    ],
+    "reader": [
+      "heading, Display, level 1",
+      "heading, Title, level 2",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph"
+    ]
+  },
+  "Textarea": {
+    "dom": [
+      "div",
+      "  div",
+      "    label",
+      "    textarea data-state=\"default\"",
+      "    span"
+    ],
+    "reader": [
+      "textbox, Notes, Markdown is supported., placeholder Add a note…"
+    ]
+  },
+  "ThemeToggle": {
+    "dom": [
+      "div",
+      "  button aria-label=\"Switch to dark theme\" data-theme-state=\"light\"",
+      "    svg aria-hidden=\"true\"",
+      "  span",
+      "  button aria-label=\"Switch to dark theme\" data-theme-state=\"light\"",
+      "    svg aria-hidden=\"true\"",
+      "  button aria-label=\"Switch to light theme\" data-theme-state=\"dark\"",
+      "    svg aria-hidden=\"true\""
+    ],
+    "reader": [
+      "button, Switch to dark theme",
+      "button, Switch to dark theme",
+      "button, Switch to light theme"
+    ]
+  },
+  "Timeline": {
+    "dom": [
+      "ol aria-label=\"Recent activity\" data-hds-component=\"Timeline\"",
+      "  li",
+      "    div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "      h3",
+      "        time data-format=\"date\"",
+      "      ol data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        li",
+      "          div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span data-timeline-marker data-tone=\"success\"",
+      "                svg aria-hidden=\"true\" data-hds-icon",
+      "              span aria-hidden=\"true\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span",
+      "                time data-format=\"time\"",
+      "              span",
+      "        li",
+      "          div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span data-timeline-marker data-tone=\"neutral\"",
+      "                span aria-hidden=\"true\"",
+      "              span aria-hidden=\"true\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span",
+      "                time data-format=\"time\"",
+      "              div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "                button aria-expanded=\"false\" data-state=\"closed\"",
+      "                  div",
+      "                    span",
+      "                  span aria-hidden=\"true\"",
+      "                    svg aria-hidden=\"true\" data-hds-icon",
+      "  li",
+      "    div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "      h3",
+      "        time data-format=\"date\"",
+      "      ol data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        li",
+      "          div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span data-timeline-marker data-tone=\"neutral\"",
+      "                span aria-hidden=\"true\"",
+      "              span aria-hidden=\"true\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span",
+      "                time data-format=\"time\"",
+      "              span",
+      "        li",
+      "          div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span data-timeline-marker data-tone=\"info\"",
+      "                span aria-hidden=\"true\"",
+      "              span aria-hidden=\"true\"",
+      "            div data-hds-component=\"Stack\" data-hds-metrics=\"gap:xs\"",
+      "              span",
+      "                time data-format=\"time\"",
+      "              span"
+    ],
+    "reader": [
+      "list, Recent activity",
+      "listitem, level 1, position 1, set size 2",
+      "heading, Oct 12, 2026, level 3",
+      "time",
+      "list",
+      "listitem, level 2, position 1, set size 2",
+      "time",
+      "listitem, level 2, position 2, set size 2",
+      "time",
+      "button, Client portal deployed, not expanded",
+      "listitem, level 1, position 2, set size 2",
+      "heading, Oct 11, 2026, level 3",
+      "time",
+      "list",
+      "listitem, level 2, position 1, set size 2",
+      "time",
+      "listitem, level 2, position 2, set size 2",
+      "time"
+    ]
+  },
+  "Toggle": {
+    "dom": [
+      "label",
+      "  input role=\"switch\"",
+      "  span aria-hidden=\"true\"",
+      "    span",
+      "  span"
+    ],
+    "reader": [
+      "switch, Dark mode, checked"
+    ]
+  },
+  "TokenField": {
+    "dom": [
+      "div",
+      "  div",
+      "    label",
+      "    div aria-multiline=\"true\" data-hds-component=\"TokenField\" data-state=\"default\" role=\"textbox\"",
+      "      span aria-label=\"Contact variable\" data-token=\"[Contact]\" role=\"img\"",
+      "      span aria-label=\"Role variable\" data-token=\"[Role]\" role=\"img\"",
+      "      span aria-label=\"Company variable\" data-token=\"[Company]\" role=\"img\"",
+      "    span",
+      "  button aria-expanded=\"false\" aria-haspopup=\"menu\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "  span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "textbox, Message, Each [Variable] is one chip: Backspace removes all of it., not read only",
+      "image, Contact variable",
+      "image, Role variable",
+      "image, Company variable",
+      "button, Insert variable, not expanded, has popup menu"
+    ]
+  },
+  "Tooltip": {
+    "dom": [
+      "button data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Hover or focus me"
+    ]
+  },
+  "VisuallyHidden": {
+    "dom": [
+      "button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "  svg aria-hidden=\"true\" data-hds-icon",
+      "  span"
+    ],
+    "reader": [
+      "button, Search components"
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New `hds-check` bin: run `pnpm exec hds-check .` (or add it as a CI step) to catch all caps, non-HDS fonts, ad-hoc shadows and raw colors in HTML, CSS and JS."
+}

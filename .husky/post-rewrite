@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Post-rewrite (hds#977): a rebase runs merge drivers too; same as post-merge.
+node "$(git rev-parse --show-toplevel)/scripts/regen.mjs" --after-merge

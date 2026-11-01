@@ -11,6 +11,7 @@
  * @keyboard Character Filters the options to those matching the typed text.
  * @keyboard Enter Commits the active option and closes the list; with `multiple`, toggles it and keeps the list open.
  * @keyboard Escape Closes the list.
+ * @keyboard Backspace With `creatable` and an empty field, removes the last chip.
  * @keyboard Tab Stays inside the open list.
  * @a11y component required a11y:combobox.open-keys Enter and Space on the trigger open the list.
  * @a11y component required a11y:combobox.trigger-state The trigger is a combobox with a listbox popup that reports collapsed and expanded.
@@ -32,6 +33,12 @@
  * @a11y component required a11y:combobox.escape-keeps-selection With multiple, Escape closes the list and keeps the selection.
  * @a11y component required a11y:combobox.chips-named With multiple, each chip is a button named "Remove <option>".
  * @a11y component required a11y:combobox.chip-keyboard A chip removes its value from the keyboard and focus stays on the chips.
+ * @a11y component required a11y:combobox.creatable-input-combobox With `creatable` the text input is the combobox: a listbox popup that reports expanded, what it controls and the active option.
+ * @a11y component required a11y:combobox.creatable-enter-adds With `creatable`, Enter adds the typed text through onCreate and clears the field.
+ * @a11y component required a11y:combobox.creatable-add-option With `creatable`, an "Add “text”" option in the listbox offers the typed text when no option matches exactly.
+ * @a11y component required a11y:combobox.creatable-chips-inline With `creatable`, each chip is a "Remove <value>" button placed before the input inside the field group.
+ * @a11y component required a11y:combobox.creatable-backspace-removes With `creatable`, Backspace in an empty input removes the last chip.
+ * @a11y component required a11y:combobox.creatable-result-count-announced With `creatable`, the suggestion count is announced in a polite status as you type.
  * @a11y component required a11y:combobox.form-field-label Inside FormField the field label names the trigger.
  * @a11y component required a11y:combobox.form-field-error Inside FormField an error sets aria-invalid and describes the trigger by the message.
  * @a11y consumer required Pass label or aria-label; it names the trigger, the popover and the listbox.
@@ -41,6 +48,13 @@
  * A select-with-search built on the HDS Popover. The trigger shows the current
  * selection (with `multiple`, a count and a removable chip per value); opening
  * reveals a search field that filters the option list.
+ * `multiple creatable` is a chip input (a tag field): chips sit inline before the
+ * text input, suggestions open as you type, and Enter adds the typed text via
+ * `onCreate`.
+ *
+ *   <Combobox multiple creatable options={skills} value={picked}
+ *     onChange={setPicked} onCreate={(t) => setPicked((p) => [...p, t])} />
+ *
  * Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to
  * close) and listbox/option ARIA. Controlled via `value` + `onChange`.
  *
@@ -60,6 +74,8 @@ import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
+import { CreatableCombobox } from './combobox-creatable';
+import { ACTIVE_OPTION_CLASS, firstEnabledIndex, nextEnabledIndex } from './listbox-nav';
 
 /** @public */
 export interface ComboboxOption {
@@ -113,6 +129,8 @@ export interface ComboboxProps extends ComboboxBaseProps {
 export interface ComboboxMultipleProps extends ComboboxBaseProps {
   /** Pick any number of values. */
   multiple: true;
+  /** Leave unset (or false) for the fixed-list picker; see `ComboboxCreatableProps`. */
+  creatable?: false;
   /** Currently selected values, in the order they were picked. */
   value: readonly string[];
   /** Fired with the next selected values whenever one is added or removed. */
@@ -120,29 +138,31 @@ export interface ComboboxMultipleProps extends ComboboxBaseProps {
 }
 
 /**
- * Either arm: single-select `ComboboxProps` or `ComboboxMultipleProps`.
+ * Chip input (`multiple creatable`): chips sit inline before the text field,
+ * suggestions filter as you type, and Enter adds the typed text.
  * @public
  */
-export type ComboboxAnyProps = ComboboxProps | ComboboxMultipleProps;
-
-/** Index of the first selectable option, or 0 when none is (nothing to land on). */
-function firstEnabledIndex(list: readonly ComboboxOption[]): number {
-  const i = list.findIndex((o) => !o.disabled);
-  return i === -1 ? 0 : i;
+export interface ComboboxCreatableProps extends ComboboxBaseProps {
+  multiple: true;
+  /** Let people add values that are not in `options`. */
+  creatable: true;
+  /**
+   * Fired with the trimmed text when the person adds a value that is not an
+   * option (Enter, or the "Add “text”" row). Append it to `value` yourself; a
+   * value with no matching option shows as a chip labelled with the value.
+   */
+  onCreate: (text: string) => void;
+  /** Currently selected values, in the order they were picked or created. */
+  value: readonly string[];
+  /** Fired with the next selected values whenever one is added or removed. */
+  onChange: (value: string[]) => void;
 }
 
 /**
- * Next selectable index from `from` in `dir`, wrapping at the ends and skipping
- * disabled options. Returns `from` when every option is disabled.
+ * Any arm: `ComboboxProps`, `ComboboxMultipleProps` or `ComboboxCreatableProps`.
+ * @public
  */
-function nextEnabledIndex(list: readonly ComboboxOption[], from: number, dir: 1 | -1): number {
-  const n = list.length;
-  for (let step = 1; step <= n; step++) {
-    const i = (((from + dir * step) % n) + n) % n;
-    if (!list[i].disabled) return i;
-  }
-  return from;
-}
+export type ComboboxAnyProps = ComboboxProps | ComboboxMultipleProps | ComboboxCreatableProps;
 
 /** @public */
 export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ComboboxAnyProps>(
@@ -310,11 +330,11 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             disabled={disabled}
             onClick={() => setOpen((o) => !o)}
             className={cn(
-              'hds-focus flex h-10 items-center justify-between gap-2 rounded-md border',
+              'hds-focus flex h-10 items-center justify-between gap-scale-xs rounded-md border',
               // aria-invalid (set by FormField or the caller) draws the same red border as Input.
               ariaInvalid ? 'border-destructive' : 'border-input',
               FORM_CONTROL_WIDTH,
-              'bg-background px-3 hds-type-ui text-foreground',
+              'bg-background px-fixed-xs hds-type-ui text-foreground',
               'disabled:cursor-not-allowed disabled:text-[var(--semantic-color-content-disabled)]',
               className,
             )}
@@ -375,7 +395,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             }}
             onKeyDown={onInputKeyDown}
             className={cn(
-              'hds-focus h-10 w-full border-b border-border bg-transparent px-3 hds-type-ui text-foreground',
+              'hds-focus h-10 w-full border-b border-border bg-transparent px-fixed-xs hds-type-ui text-foreground',
               'outline-none placeholder:text-muted-foreground',
             )}
           />
@@ -387,7 +407,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             role="listbox"
             aria-label={popupName}
             aria-multiselectable={selection.multiple || undefined}
-            className={cn('max-h-60 overflow-y-auto', filtered.length > 0 && 'p-1')}
+            className={cn('max-h-60 overflow-y-auto', filtered.length > 0 && 'p-fixed-2xs')}
           >
             {filtered.map((option, i) => {
               const isSelected = values.includes(option.value);
@@ -405,9 +425,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                     onMouseEnter={() => setActiveIndex(i)}
                     onClick={() => commit(option)}
                     className={cn(
-                      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hds-type-ui hds-touch-row outline-none',
-                      'data-[active=true]:bg-[var(--semantic-color-surface-sunken)] data-[active=true]:text-[var(--semantic-color-content-primary)]',
-                      'data-[active=true]:ring-2 data-[active=true]:ring-inset data-[active=true]:ring-ring',
+                      'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none',
+                      ACTIVE_OPTION_CLASS,
                       'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                     )}
                   >
@@ -423,10 +442,10 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             })}
           </ul>
           {/* Beside the listbox, not in it: a listbox holding text but no
-              option fails axe aria-required-children (hds#407). m-1 stands in
+              option fails axe aria-required-children (hds#407). m-fixed-2xs stands in
               for the empty listbox's padding, so the box is unchanged. */}
           {filtered.length === 0 ? (
-            <p className="m-1 px-2 py-6 text-center hds-type-ui text-muted-foreground">
+            <p className="m-fixed-2xs px-scale-xs py-fixed-md text-center hds-type-ui text-muted-foreground">
               {emptyMessage}
             </p>
           ) : null}
@@ -439,14 +458,34 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       </Popover>
     );
 
+    if (selection.multiple && selection.creatable) {
+      return (
+        <CreatableCombobox
+          options={options}
+          value={selection.value}
+          onChange={selection.onChange}
+          onCreate={selection.onCreate}
+          placeholder={placeholder}
+          emptyMessage={emptyMessage}
+          ariaLabel={ariaLabel}
+          id={id}
+          ariaDescribedBy={ariaDescribedBy}
+          ariaInvalid={ariaInvalid}
+          className={className}
+          disabled={disabled}
+          // The creatable arm's combobox element is its text input.
+          ref={ref as unknown as React.Ref<HTMLInputElement>}
+        />
+      );
+    }
     if (!selection.multiple) return popover;
 
     // Chips sit beside the trigger, not in it: a button cannot hold buttons.
     return (
-      <div ref={rootRef} className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH)}>
+      <div ref={rootRef} className={cn('flex flex-col gap-scale-xs', FORM_CONTROL_WIDTH)}>
         {popover}
         {chips.length > 0 ? (
-          <ul className="flex flex-wrap gap-1">
+          <ul className="flex flex-wrap gap-fixed-2xs">
             {chips.map((option, i) => (
               <li key={option.value}>
                 <button
@@ -455,8 +494,9 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                   disabled={disabled || option.disabled}
                   onClick={() => remove(option, i)}
                   className={cn(
-                    'hds-focus hds-touch-row inline-flex h-7 items-center gap-1 rounded-sm border border-border bg-muted pl-2 pr-1',
-                    'hds-type-caption text-foreground hover:bg-accent hover:text-accent-foreground',
+                    'hds-focus hds-touch-row inline-flex h-7 items-center gap-fixed-2xs rounded-sm bg-muted pl-scale-xs pr-fixed-2xs',
+                    // Hover steps to surface.sunken: `hover:bg-accent` (accentSubtle) equalled the `bg-muted` rest fill in light (1.01:1, hds#522).
+                    'hds-type-caption text-foreground hover:bg-[var(--semantic-color-surface-sunken)]',
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                   )}
                 >

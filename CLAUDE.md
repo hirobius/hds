@@ -19,6 +19,13 @@ _"North-star drift: park or proceed?"_ — then do what Adrian decides.
 - **NEVER git push from local machines.** Local commits only — with one exception: remote Claude Code sessions (Claude Code on the web / GitHub integration) may push to their designated `claude/*` working branch. Pushing to `main` or any other branch remains forbidden everywhere.
 - **NEVER run `pnpm check:release` or deploy commands.**
 
+## GitHub Actions is OFF (2026-10-30)
+
+No CI, Chromatic, `ralph-gate`, `claude.yml` or Actions release runs: don't wait
+on them or edit `.github/workflows/`. Run checks locally before push; paste them
+in the PR. Merging needs an independent `Reviewed: PASS — <sha>` comment.
+Release: `pnpm release:local`, owner only, npm 2FA (`docs/RELEASING.md`).
+
 ---
 
 ## Autonomy charter — let it drive (Adrian, 2026-10-05)
@@ -43,7 +50,7 @@ This charter outranks the process rules below (not the HARD RULES above).
   follow Adrian's call. Rules here are defaults, not dogma — propose deleting
   any that cost more than they save.
 - **Outcome checks over process rules.** Protect quality with automated checks
-  (typecheck, tests, CI, branch protection), not with more steps for agents to
+  (typecheck, tests, local hooks, branch protection), not with more steps for agents to
   remember. When a failure happens, prefer a check that catches it over a new
   paragraph of instructions.
 - **Veto after, not approve before.** Report what you decided and why in a line
@@ -59,7 +66,7 @@ This charter outranks the process rules below (not the HARD RULES above).
 ## 1. AGENT EXECUTION PROTOCOL (MANDATORY)
 
 1. **PRE-FILTER:** Before writing any code, analyze if the user's request affects UI, Layout, CSS, or Components.
-2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test` after writing your code changes, but BEFORE you generate your final response to the user. (The old `pnpm test:layout` Playwright suite was retired in #161 — the docs site (`docs-site/`, `docsUrl` in `figma/links.json`) is the visual verification surface: `check-docs-axe` gates its accessibility and the Chromatic docs job its visual regression.)
+2. **AUTO-VALIDATE:** If UI/Layout is affected, you MUST autonomously run `pnpm typecheck` and `pnpm test` after writing your code changes, but BEFORE you generate your final response to the user. (Visual surface: the docs site, `docs-site/`; `check-docs-axe` gates its accessibility; Chromatic is off, so attach screenshots.)
 3. **SELF-HEAL:** If your automated tests fail, do not ask the user for help. Read the terminal output, identify your CSS/layout math error, fix the code, and re-run the tests until they pass.
 4. **FINALIZATION:** Only report back to the user when the tests are 100% green. Do not claim a task is complete if the tests are failing.
 
@@ -71,7 +78,7 @@ Message Adrian only when work is done, blocked, or needs his decision. No progre
 
 The repo has a **closed-loop guardrail system** every agent must understand:
 
-- **`docs/guardrails/SCHEMA.md`** — the registry's field reference and what each `firingChannel` means. (The 2026 hardening roadmap is archived at `docs/archive/HARDENING_ROADMAP.md`: history, not a live plan; open work is in GitHub Issues.)
+- **`docs/guardrails/SCHEMA.md`** — the registry's field reference and what each `firingChannel` means.
 - **`docs/state-surfaces.json`** — every file that describes project state: `generated` (names the `check` that proves it fresh, or says `"freshness": "unchecked"`), `checked`, or `editorial` (owner, `reviewedAt`, `maxAgeDays`). `scripts/check-state-surfaces.mjs` fails on a missing file, a doc that names a path that does not exist, or a generated file with no verifiable check; an editorial file past its review age only warns "review due" (`--strict-review` fails). Edit a generated file's source, never the file; after re-reading an editorial one, bump its `reviewedAt` (today or earlier). Index: `docs/ai/DOCS-INDEX.md`.
 - **`docs/guardrails/registry.json`** — every `scripts/check-*.mjs` and `scripts/audit-*.mjs` is registered with `firingChannel` declaring where it fires (pre-commit / pre-push / ci-pr / ci-scheduled / pnpm-meta / manual). Drift is caught by `validate-guardrail-registry` + `check-validator-wiring`, run on demand (neither is wired into a hook).
 - **status.json / CHANGELOG.md staleness is a pre-push gate, not a memory aid** — `scripts/check-record-freshness.mjs` (hds#249) fails the push when a commit touching `src/`, `scripts/` or `docs/adr/` outpaces `status.json`'s `updatedAt` (add a `.status/<branch>.md` note instead of editing it; `pnpm status:fold` folds notes on main), or when a commit that changes what ships has no pending `.changeset/*.md` and no `skip-changeset` marker in its message. Every changeset carries `upgrade/pending/<same name>.json` (`pnpm upgrade:note`); a breaking change needs a minor below 1.0. The gate's registry entry has the exact file lists.
@@ -153,8 +160,7 @@ the answer is sonnet.
 
 ### NEVER bulk-lint:fix
 
-`pnpm lint:fix` over the full codebase has merged unrelated code blocks into syntax
-errors (HDSLayout.tsx, BurnDownPage.tsx, PortfolioDraftPage.tsx); the work was discarded.
+A full-codebase `pnpm lint:fix` once merged unrelated code blocks into syntax errors.
 Fix per rule, with verification:
 
 - `pnpm exec eslint src --fix --rule '{"<rule-name>": "error"}'`, then
@@ -185,9 +191,11 @@ may skip:
 - **Design-touching / new module → `/codebase-design`**; periodic design-debt
   sweep → `/improve-codebase-architecture`.
 - **Board / issue-lifecycle work → `/triage`.**
-- **A perf-budget failure (`pnpm size-limit` / `check:size`, Button probe) → `performance-optimization`** (Osmani; Pocock still owns build/test/review). The failure output now names it. Never raise a budget to get green.
+- **A perf-budget failure (`pnpm size-limit` / `check:size`, Button probe) → `performance-optimization`** (Osmani). Never raise a budget to get green.
 - **Charting a multi-decision lane → `/wayfinder`.**
 - **Design-touching UI → `/design-review`.**
+- **UI polish → `/impeccable`** (`docs/agents/design-quality.md`).
+- **Docs copy → `humanizer`; UI 2nd pass → `web-design-guidelines`** (`.claude/skills/_vendor/anti-slop/ROUTING.md`).
 
 **Tracker config for `/to-tickets` + `/triage`** (they ask for it): the tracker
 is **GitHub Issues in this repo**; label vocabulary `backlog` · `bug` ·
@@ -223,3 +231,12 @@ file; (b) state is derived, not written (ops ADR-010): ops reads release, next
 and blocked from `package.json` and issue labels; set `status.json` `focus` only
 when this repo's direction changes; (c) read the ops HANDOFF before cross-project
 decisions.
+
+## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
+
+Vercel preview builds are OFF (production only). Every PR carries its own preview:
+
+1. Run the production build locally (`pnpm build` / `npm run build`) and serve the built app (`pnpm preview` / `npm run preview`, or the repo's screenshot tooling).
+2. Attach screenshots of the affected routes only: 390x844, light AND dark, plus a desktop shot if the route is used on desktop. At most ~6 images, inline in the PR body or a PR comment. Adrian reviews on his phone: no zips, nothing he has to build.
+3. Backend/infra PRs with no visual change: write "no visual change" instead.
+4. Never re-enable Vercel preview builds (or add `[preview]`) to get screenshots.

@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "The package now ships docs/api/props-baseline.json, listing each component's props with their allowed values and defaults."
+}

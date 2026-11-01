@@ -65,4 +65,10 @@ export const CORE_COMPONENTS = [
   'HdsRouterProvider',
   // hds#758
   'MetaLine',
+  // hds#817
+  'NavList',
+  // hds#638
+  'CommandPalette',
+  // hds#637
+  'Timeline',
 ];

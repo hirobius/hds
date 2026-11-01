@@ -93,7 +93,10 @@ describe('llms-full.txt and slices', () => {
 describe('manifest agent URLs', () => {
   it('points at the current host and the shipped entrypoint', () => {
     const m = JSON.parse(read('public/hds-manifest.json'));
-    expect(m.llmsTxt).toBe('https://hirobius-hds-components.vercel.app/llms.txt');
+    // hds#463: pinned to the release the manifest ships in.
+    expect(m.llmsTxt).toBe(
+      `https://cdn.jsdelivr.net/npm/@hirobius/design-system@${m.packageVersion}/llms.txt`,
+    );
     expect(m.docs).toBe('https://hirobius-hds-components.vercel.app/');
     expect(m.agentEntrypoint).toBe('llms.txt');
     expect(Array.isArray(m.componentInventory)).toBe(true);
