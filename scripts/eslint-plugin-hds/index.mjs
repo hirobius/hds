@@ -16,6 +16,7 @@ import maxTwoMetaItems from './rules/max-two-meta-items.mjs';
 import noCustomTracking from './rules/no-custom-tracking.mjs';
 import noDelightOnActions from './rules/no-delight-on-actions.mjs';
 import noDeprecatedImport from './rules/no-deprecated-import.mjs';
+import noNestedCards from './rules/no-nested-cards.mjs';
 import noDeprecatedToken from './rules/no-deprecated-token.mjs';
 import noPrimitiveSpacing from './rules/no-primitive-spacing.mjs';
 import noRemovedImport from './rules/no-removed-import.mjs';
@@ -41,6 +42,7 @@ const plugin = {
     'no-delight-on-actions': noDelightOnActions,
     'no-deprecated-import': noDeprecatedImport,
     'no-deprecated-token': noDeprecatedToken,
+    'no-nested-cards': noNestedCards,
     'no-primitive-spacing': noPrimitiveSpacing,
     'no-raw-controls': noRawControls,
     'no-removed-import': noRemovedImport,
@@ -63,6 +65,7 @@ plugin.configs = {
         'hds/no-delight-on-actions': 'error',
         'hds/no-deprecated-import': 'warn',
         'hds/no-deprecated-token': 'error',
+        'hds/no-nested-cards': 'error',
         'hds/no-primitive-spacing': 'error',
         'hds/no-raw-controls': 'error',
         'hds/no-removed-import': 'error',
