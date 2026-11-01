@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "CommandPalette items can declare args to collect arguments in-palette before running; existing single-step usage is unchanged, and onSelect gains an optional second argument only for commands that declare args."
+}
