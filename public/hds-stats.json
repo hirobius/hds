@@ -4,7 +4,7 @@
   "components": {
     "publicModules": 62,
     "core": 47,
-    "patterns": 13
+    "patterns": 14
   },
   "tokens": {
     "total": 474
@@ -22,5 +22,5 @@
     "source": "docs/data/consumer-usage.json",
     "confirmedAt": "2026-10-01"
   },
-  "generatedFrom": "bd7eddc5a3ca3e70fc3a3b225b546d2c44c2dfff"
+  "generatedFrom": "9db1fec89087658139209a66dc11164b9d215080"
 }

@@ -81,6 +81,7 @@ import {
   Users,
 } from '@hirobius/design-system/icons';
 import {
+  AppShell,
   AssetImg,
   AsyncState,
   CodeBlock,
@@ -197,6 +198,30 @@ function DialogDemo() {
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog>
+  );
+}
+
+function AppShellDemo() {
+  return (
+    <div style={{ height: '24rem', overflow: 'auto', isolation: 'isolate' }}>
+      <AppShell
+        header={<Text variant="ui">Ops</Text>}
+        sidebar={({ collapsed }) => (
+          <Stack gap="tight">
+            {['Today', 'Jobs', 'Documents'].map((item) => (
+              <InlineLink key={item} href={`#${item.toLowerCase()}`}>
+                {collapsed ? item.slice(0, 1) : item}
+              </InlineLink>
+            ))}
+          </Stack>
+        )}
+        aside={<Text variant="caption">Detail panel</Text>}
+      >
+        <Text variant="title" as="h2">
+          Pipeline
+        </Text>
+      </AppShell>
+    </div>
   );
 }
 
@@ -1331,6 +1356,7 @@ function RevealDemo() {
 }
 
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
+  AppShell: AppShellDemo,
   Button: ButtonDemo,
   Input: InputDemo,
   Select: SelectDemo,

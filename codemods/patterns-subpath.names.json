@@ -1,6 +1,9 @@
 {
   "subpath": "@hirobius/design-system/patterns",
   "names": [
+    "AppShell",
+    "AppShellProps",
+    "AppShellSidebarState",
     "AssetImg",
     "AssetImgProps",
     "AsyncState",
