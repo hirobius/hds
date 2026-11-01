@@ -7,15 +7,17 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AppShell } from './app-shell';
+import { BOX_BREAKPOINTS } from './box-sx';
 
 const user = () => userEvent.setup({ pointerEventsCheck: 0 });
 
-/** Stub matchMedia so `(min-width: 1024px)` (lg) matches when `wide`. */
+/** Stub matchMedia so the lg min-width query matches when `wide`. */
 function stubViewport(wide: boolean) {
   vi.stubGlobal(
     'matchMedia',
     vi.fn((query: string) => ({
-      matches: wide && /min-width:\s*(\d+)px/.test(query) && Number(RegExp.$1) <= 1024,
+      matches:
+        wide && /min-width:\s*(\d+)px/.test(query) && Number(RegExp.$1) <= BOX_BREAKPOINTS.lg,
       media: query,
       addEventListener: () => {},
       removeEventListener: () => {},

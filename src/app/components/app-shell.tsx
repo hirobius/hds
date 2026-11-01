@@ -3,7 +3,7 @@
  * @category Layout
  * @tier pattern
  * @ai-intent One frame for Roleforge, Ops and future apps, so none of them
- * hand-builds its own. Below `lg` (1024px) the sidebar lives in a Sheet opened
+ * hand-builds its own. Below `lg` the sidebar lives in a Sheet opened
  * from a Menu button in the header; from `lg` it is a rail beside main that
  * collapses with a toggle, and the collapsed state can persist per app.
  * @ai-rules Pass the nav as `sidebar` (a node, or a function of `{ collapsed }`
