@@ -51,16 +51,30 @@ const runUseFigma = async (script, figma) => {
 /** The promote plugin and the development plugin it renames, for the fixture links (the library above). */
 const promotePlugin = (options = {}) => buildPromotePlugin(model, { ...options, links: LINKS });
 const devPlugin = (options = {}) => buildDevPlugin(model, { ...options, links: LINKS });
-/** Runs a development plugin's code.js for one menu command and returns the first message it posts. */
-const runPlugin = async (files, command, figma) => {
+/**
+ * Runs a development plugin's code.js for one menu command and returns the
+ * first result it posts. When code.js asks its window for the model, this
+ * answers the way the window does once model.json is picked: with the file's
+ * text (`modelText`, model.json by default).
+ */
+const runPlugin = async (files, command, figma, { modelText = files['model.json'] } = {}) => {
   const posted = [];
+  const asked = [];
   figma.command = command;
   figma.showUI = () => {};
   figma.closePlugin = () => {};
-  figma.ui = { postMessage: (message) => posted.push(message), onmessage: null };
+  figma.ui = {
+    postMessage: (message) => {
+      if (message && message.ask === 'model') {
+        asked.push(message);
+        setTimeout(() => figma.ui.onmessage({ type: 'model', text: modelText }), 0);
+      } else posted.push(message);
+    },
+    onmessage: null,
+  };
   vm.runInNewContext(files['code.js'], { figma, __html__: files['ui.html'] });
-  for (let i = 0; i < 50 && posted.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
-  return JSON.parse(JSON.stringify(posted[0]));
+  for (let i = 0; i < 100 && posted.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
+  return { ...JSON.parse(JSON.stringify(posted[0])), asked: asked.length };
 };
 
 describe('figma-runtime.mjs can be copied into Figma', () => {
@@ -513,6 +527,56 @@ describe('development plugin', () => {
     const snap = await runPlugin(files, 'snapshot', figma);
     expect(snap.fileName).toBe('figma-snapshot.json');
     expect(snap.result.checksum).toBe(hdsChecksum(JSON.stringify(snap.result.snapshot)));
+  });
+
+  it('bakes no model into code.js: the model rides in model.json, so a token change replaces one data file (hds#397)', () => {
+    const files = devPlugin();
+    expect(Object.keys(files).sort()).toEqual([
+      'code.js',
+      'manifest.json',
+      'model.json',
+      'ui.html',
+    ]);
+    const { payload, checksum } = buildPushPayload(model, { prune: false, renames: {} });
+    expect(JSON.parse(files['model.json'])).toEqual({ payload, checksum });
+    expect(files['code.js']).not.toContain(payload.modelHash);
+    expect(files['code.js']).not.toContain(checksum);
+    expect(files['code.js']).not.toContain('const PAYLOAD');
+
+    const changed = structuredClone(model);
+    changed.collections[0].variables[0].description = 'a token change';
+    const next = buildDevPlugin(changed, { links: LINKS });
+    expect(next['model.json']).not.toBe(files['model.json']);
+    for (const name of ['code.js', 'ui.html', 'manifest.json']) {
+      expect(next[name], name).toBe(files[name]);
+    }
+  });
+
+  it('asks its window for model.json before plan and push, never for a snapshot', async () => {
+    const files = devPlugin();
+    expect(files['ui.html']).toMatch(/type="file"/);
+    expect(files['ui.html']).toMatch(/model\.json/);
+    expect((await runPlugin(files, 'plan', inLibrary())).asked).toBe(1);
+    expect((await runPlugin(files, 'snapshot', inLibrary())).asked).toBe(0);
+  });
+
+  it('refuses a model.json that is not JSON, fails its checksum, or prunes against the build, writing nothing', async () => {
+    const files = devPlugin();
+    const good = JSON.parse(files['model.json']);
+    const tampered = structuredClone(good);
+    tampered.payload.modelHash = 'deadbeef';
+    const pruning = buildPushPayload(model, { prune: true, renames: {} });
+    for (const [what, modelText, error] of [
+      ['not JSON', '{nope', /not JSON/],
+      ['tampered', JSON.stringify(tampered), /checksum/],
+      ['prune mismatch', JSON.stringify(pruning), /prune/],
+    ]) {
+      const figma = inLibrary();
+      const result = await runPlugin(files, 'push', figma, { modelText });
+      expect(result.ok, what).toBe(false);
+      expect(result.error, what).toMatch(error);
+      expect(figma.writes, what).toEqual([]);
+    }
   });
 
   it('shows the error instead of throwing when the push is refused', async () => {

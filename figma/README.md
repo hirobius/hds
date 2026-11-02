@@ -515,15 +515,18 @@ would create the local variables staging has none of by design), a retired file
 and any other file, and writes nothing there.
 
 - **HDS tokens promote (baked)** (`figma/push/promote/`, id `hds-tokens-promote-dev`):
-  the earlier development plugin with the model baked in, unchanged except its id
-  and name, and that its Push and Take snapshot clear the Sync receipt
+  the earlier development plugin, unchanged except its id and name, that its
+  model is no longer baked into `code.js` (hds#397: Plan push and Push ask you to
+  pick `figma/push/promote/model.json`, checked against its checksum and the
+  build's prune setting, so a token change replaces that one data file, not the
+  plugin), and that its Push and Take snapshot clear the Sync receipt
   (`syncReceipt` and its pages), so no receipt outlives a write it does not
   describe. It is the deliberate prune (`pnpm figma:push --prune`), the one push
   that deletes, and only Adrian runs it. Its name dates from the staging era
   (before 2026-10-07), when it also promoted staging into the library. Import it
   in Figma desktop with Plugins → Development → Import plugin from manifest…,
   and pick `figma/push/promote/manifest.json` from a fresh `pnpm figma:push`,
-  which bakes the current model. Commands:
+  which writes the current model to `model.json` beside it. Commands:
   - **Plan push (dry run, writes nothing)**: the changes a push would make, and
     anything blocking it.
   - **Push**: applies the plan, re-reads the file, and fails if Figma still
