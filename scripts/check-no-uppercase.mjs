@@ -37,18 +37,12 @@
  */
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, dirname, relative, resolve } from 'node:path';
+import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag } from './lib/gate-output.mjs';
-import { scanSources, isSpecFile, isFixtureRun, reportLineViolations } from './lib/source-scan.mjs';
+import { scanSources, isSpecFile, gateContext, reportLineViolations } from './lib/source-scan.mjs';
 import { findUppercase } from '../bin/lib/visual-rules.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-
-const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode = isFixtureRun(process.argv);
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'tools', 'templates', 'tenants'];
 const SCAN_FILES = ['hirobius.tokens.json', 'figma/model.json', 'figma/snapshot.json'];

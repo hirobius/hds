@@ -37,7 +37,8 @@
 
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
-import { emitResult } from './gate-output.mjs';
+import { fileURLToPath } from 'node:url';
+import { emitResult, hasJsonFlag } from './gate-output.mjs';
 
 // ── Scan roots ───────────────────────────────────────────────────────────────
 
@@ -310,6 +311,20 @@ export function lineOf(text, index) {
  */
 export function isFixtureRun(argv, env = process.env) {
   return argv.includes('--fixture-mode') || env.HDS_FIXTURE_MODE === '1';
+}
+
+/**
+ * The shared preamble of line-scoped gates (hds#1010): the repo root (the
+ * parent of the calling script's directory), `--json`, fixture mode and the
+ * fixture file. Call as `gateContext(import.meta.url)`.
+ */
+export function gateContext(importMetaUrl, argv = process.argv, env = process.env) {
+  return {
+    ROOT: path.join(path.dirname(fileURLToPath(importMetaUrl)), '..'),
+    jsonMode: hasJsonFlag(argv),
+    isFixtureMode: isFixtureRun(argv, env),
+    fixtureFile: env.FIXTURE_FILE,
+  };
 }
 
 /**
