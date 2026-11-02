@@ -1,19 +1,14 @@
 <!--
-  DESIGN.source.md — hand-authored template for DESIGN.md.
+  DESIGN.source.md — the human-maintained source of DESIGN.md.
+  `scripts/build-design-md.mjs` fills the auto-marker blocks from
+  `hirobius.tokens.json` and `public/hds-manifest.json` and writes DESIGN.md;
+  never edit DESIGN.md by hand. Hand-edit narrative (Overview, Elevation,
+  Corner-Radius Policy prose, Do's and Don'ts) here. Token tables are
+  auto-derived; do not put values here.
 
-  This is the human-maintained source. `scripts/build-design-md.mjs` reads
-  this file, fills the auto-marker blocks below from `hirobius.tokens.json`
-  and `public/hds-manifest.json`, and writes the assembled result to DESIGN.md
-  at the repo root.
-
-  Hand-edit narrative (Overview, Elevation, Corner-Radius Policy prose,
-  Do's and Don'ts) directly in this file. Never edit DESIGN.md by hand —
-  it is generated. Token tables are auto-derived; do not put values here.
-
-  Scope: this file describes the shared Hirobius Design System core. It is
-  intentionally product-agnostic so multiple surfaces (portfolio, personal
-  brand, future products) can consume it. Product-specific personality
-  belongs in a per-product overlay when those surfaces come online.
+  Scope: the shared Hirobius Design System core, intentionally
+  product-agnostic. Product-specific personality belongs in a per-product
+  overlay.
 -->
 
 # DESIGN.md
@@ -183,12 +178,12 @@ An expandable list row (one-line preview, actions beside the trigger) is `Disclo
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
 - Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a near-monochrome, midnight-tinted neutral system. The accent is a per-tenant knob and defaults to a midnight graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
 - Don't add other tints to the neutrals; the only one is the faint midnight lean (OKLCH hue 262, hds#755), and greys stay high-contrast.
-- Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (no border, no shadow). Tooltips use `floating`. Menus, popovers, listboxes, toasts and dialogs use `overlay`.
-- Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
+- Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired.
+- Don't transform text to uppercase anywhere; sentence case, per the Casing rule above.
 - Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
-- Don't outline a container to group it; use a surface step or space (soft surfaces, ADR-064). Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
+- Don't outline a container to group it; use a surface step or space (soft surfaces, ADR-064). Don't default repeated groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
 - Don't sticker badges onto the ends of prose lines. Status and progress should live in a predictable metadata slot, rail, header zone, table column, or progress surface; badges are reserved for compact state markers where their placement is intentional.
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
 - Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.

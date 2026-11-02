@@ -1,0 +1,1 @@
+hds#767 docs trim (board ops#989, PR hds#1040): review fixes restoring the NORTH_STAR two-accent clause and the README theming examples in CONSUMING section 4, on top of the README / NORTH_STAR / DESIGN source trim with the writing skill.
