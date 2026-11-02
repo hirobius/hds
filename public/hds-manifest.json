@@ -3729,6 +3729,7 @@
         "src/app/components/sheet.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
+        "src/app/hooks/useHdsMotion.ts",
         "src/form/index.ts",
         "src/index.ts",
         "src/mui/index.ts"
@@ -4020,9 +4021,11 @@
       },
       "docsPage": "/docs/components/button",
       "publicDataAttributes": [
+        "data-crossfade-label",
         "data-hover-effect",
         "data-pressed",
         "data-size",
+        "data-slot",
         "data-tone",
         "data-variant"
       ],
@@ -10234,7 +10237,9 @@
         "exportName": "AsyncState",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/hooks/useHdsMotion.ts"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10296,6 +10301,7 @@
       "requiredProps": [],
       "docsPage": "/docs/patterns/async-state",
       "publicDataAttributes": [
+        "data-crossfade-view",
         "data-slot",
         "data-status"
       ],
