@@ -150,6 +150,47 @@ describe('AssetImg accessibility contract (hds#520)', () => {
     }
   });
 
+  it('every clickable frame (expandable, plain, fallback) activates on Enter and Space only, and Space never scrolls', () => {
+    const frames: Array<[string, (onClick: () => void) => HTMLElement]> = [
+      [
+        'expandable',
+        (onClick) => {
+          render(<AssetImg src="/x.png" alt="Pic" onClick={onClick} />);
+          return screen.getByRole('button', { name: 'Pic' });
+        },
+      ],
+      [
+        'plain',
+        (onClick) => {
+          render(<AssetImg src="/x.png" alt="Pic" expandable={false} onClick={onClick} />);
+          return screen.getByRole('button', { name: 'Pic' });
+        },
+      ],
+      [
+        'fallback',
+        (onClick) => {
+          const { container } = render(<AssetImg src="/x.png" alt="Pic" onClick={onClick} />);
+          fireEvent.error(container.querySelector('img') as HTMLImageElement);
+          return screen.getByRole('button', { name: 'Pic' });
+        },
+      ],
+    ];
+    for (const [name, mount] of frames) {
+      const onClick = vi.fn();
+      const el = mount(onClick);
+      expect(fireEvent.keyDown(el, { key: ' ' }), name).toBe(false);
+      expect(fireEvent.keyDown(el, { key: 'Enter' }), name).toBe(false);
+      expect(fireEvent.keyDown(el, { key: 'Tab' }), name).toBe(true);
+      expect(onClick, name).toHaveBeenCalledTimes(2);
+      cleanup();
+    }
+  });
+
+  it('a non-clickable image takes no keyboard focus', () => {
+    const { container } = render(<AssetImg src="/x.png" alt="Pic" />);
+    expect(container.querySelector('[tabindex]')).toBeNull();
+  });
+
   it('a11y:asset-img.focus-ring - the interactive wrapper keeps the shared focus ring and never sets outline', () => {
     const { container } = render(<AssetImg src="/x.png" alt="Diagram" onClick={() => {}} />);
     const button = container.querySelector('[role="button"]') as HTMLElement;

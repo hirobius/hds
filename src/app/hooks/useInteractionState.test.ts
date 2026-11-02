@@ -3,9 +3,9 @@
  * by Toggle and Radio (ADR-015). Pure state machine: no context, driven
  * entirely by the `disabled` / `frozenState` inputs and the returned handlers.
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import { useInteractionState } from './useInteractionState';
+import { forwardFocusHandlers, useInteractionState } from './useInteractionState';
 
 describe('useInteractionState', () => {
   it('defaults to rest with all flags false', () => {
@@ -140,5 +140,48 @@ describe('useInteractionState', () => {
     const { result } = renderHook(() => useInteractionState({ frozenState: 'disabled' }));
     expect(result.current.isDisabled).toBe(true);
     expect(result.current.visualState).toBe('disabled');
+  });
+});
+
+describe('forwardFocusHandlers', () => {
+  it('runs the machine handler, then the consumer handler, with the event', () => {
+    const calls: string[] = [];
+    const machine = {
+      onFocus: vi.fn(() => calls.push('machine:focus')),
+      onKeyDown: vi.fn(() => calls.push('machine:key')),
+      onBlur: vi.fn(() => calls.push('machine:blur')),
+    };
+    const onFocus = vi.fn(() => calls.push('own:focus'));
+    const onKeyDown = vi.fn(() => calls.push('own:key'));
+    const onBlur = vi.fn(() => calls.push('own:blur'));
+    const target = document.createElement('input');
+    const event = { currentTarget: target } as unknown as React.FocusEvent<HTMLInputElement> &
+      React.KeyboardEvent<HTMLInputElement>;
+
+    const forwarded = forwardFocusHandlers(machine, { onFocus, onKeyDown, onBlur });
+    forwarded.onFocus(event);
+    forwarded.onKeyDown(event);
+    forwarded.onBlur(event);
+
+    expect(machine.onFocus).toHaveBeenCalledWith(target);
+    expect(machine.onKeyDown).toHaveBeenCalledWith(target);
+    expect(onFocus).toHaveBeenCalledWith(event);
+    expect(onBlur).toHaveBeenCalledWith(event);
+    expect(calls).toEqual([
+      'machine:focus',
+      'own:focus',
+      'machine:key',
+      'own:key',
+      'machine:blur',
+      'own:blur',
+    ]);
+  });
+
+  it('works with no consumer handlers', () => {
+    const machine = { onFocus: vi.fn(), onKeyDown: vi.fn(), onBlur: vi.fn() };
+    const event = { currentTarget: null } as unknown as React.FocusEvent<HTMLInputElement>;
+    const forwarded = forwardFocusHandlers(machine, {});
+    expect(() => forwarded.onBlur(event)).not.toThrow();
+    expect(machine.onBlur).toHaveBeenCalledOnce();
   });
 });

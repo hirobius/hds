@@ -25,7 +25,11 @@ import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import {
+  forwardFocusHandlers,
+  useInteractionState,
+  type InteractionVisualState,
+} from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
 
 /** Radio — radio button with animated selection indicator. */
@@ -231,18 +235,7 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
           handlers.onPointerCancel();
           onPointerCancel?.(e);
         }}
-        onFocus={(e) => {
-          handlers.onFocus(e.currentTarget);
-          onFocus?.(e);
-        }}
-        onKeyDown={(e) => {
-          handlers.onKeyDown(e.currentTarget);
-          onKeyDown?.(e);
-        }}
-        onBlur={(e) => {
-          handlers.onBlur();
-          onBlur?.(e);
-        }}
+        {...forwardFocusHandlers(handlers, { onFocus, onKeyDown, onBlur })}
         className={cn('hds-focus', radioInputVariants({ state: visualState }))}
         {...rest}
       />

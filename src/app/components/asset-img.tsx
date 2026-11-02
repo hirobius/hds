@@ -62,6 +62,22 @@ export interface AssetImgProps {
 }
 
 /**
+ * Keyboard activation for a clickable frame (2.1.1): Enter and Space call
+ * onClick, and Space must not scroll the page. No handler without onClick.
+ */
+function activateOnKey(
+  onClick: ((e: React.MouseEvent) => void) | undefined,
+): React.KeyboardEventHandler | undefined {
+  if (!onClick) return undefined;
+  return (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(e as unknown as React.MouseEvent);
+    }
+  };
+}
+
+/**
  * Display asset frame with fallback placeholder handling.
  * @category Display
  */
@@ -125,16 +141,7 @@ export function AssetImg({
           role={onClick ? 'button' : undefined}
           tabIndex={onClick ? 0 : undefined}
           onClick={onClick}
-          onKeyDown={
-            onClick
-              ? (e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    onClick(e as unknown as React.MouseEvent);
-                  }
-                }
-              : undefined
-          }
+          onKeyDown={activateOnKey(onClick)}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
@@ -159,12 +166,7 @@ export function AssetImg({
         tabIndex={0}
         aria-label={alt}
         onClick={onClick}
-        onKeyDown={(e) => {
-          if ((e.key === 'Enter' || e.key === ' ') && onClick) {
-            e.preventDefault();
-            onClick(e as unknown as React.MouseEvent);
-          }
-        }}
+        onKeyDown={activateOnKey(onClick)}
         onMouseEnter={() => setHovered(true)}
         onMouseMove={(e) => {
           setCursorX(e.clientX);
@@ -293,16 +295,7 @@ export function AssetImg({
       aria-hidden={!onClick && !alt ? true : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
-      onKeyDown={
-        onClick
-          ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault(); // Space must not scroll the page
-                onClick(e as unknown as React.MouseEvent);
-              }
-            }
-          : undefined
-      }
+      onKeyDown={activateOnKey(onClick)}
       aria-label={alt || undefined}
     >
       {title && (

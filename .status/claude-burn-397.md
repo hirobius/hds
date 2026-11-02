@@ -1,1 +1,1 @@
-Promote plugin reads its model from model.json instead of baking it into code.js (#397 slice).
+hds#397: promote plugin snapshot receipt; figma:snapshot --ingest reads it from a known path or https URL.

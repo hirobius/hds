@@ -9,7 +9,7 @@ import { describe, it, expect } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync, cpSync, readFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { runReleaseGate } from '../check-figma-release.mjs';
+import { runReleaseGate, componentCoverageGaps } from '../check-figma-release.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import {
   parseSnapshotFile,
@@ -21,11 +21,23 @@ import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
 import { newFixtureFile, FIXTURE_TOKENS_PATH } from './helpers/figma-fixture.mjs';
 
+const NODE = 'https://www.figma.com/design/KEY/HDS?node-id=1-2';
+const LINKED = [
+  { name: 'Button', class: 'library', figmaUrl: NODE },
+  { name: 'CardHeader', class: 'slot', figmaUrl: null },
+];
+
+function writeDisposition(dir, components, overrides = []) {
+  writeFileSync(join(dir, 'figma', 'disposition.json'), JSON.stringify({ components }));
+  writeFileSync(join(dir, 'figma', 'mapping-overrides.json'), JSON.stringify({ overrides }));
+}
+
 /** A mini-root holding the fixture tokens and a snapshot of Figma pushed from them. */
-async function root({ pushed = true, hash = 'current' } = {}) {
+async function root({ pushed = true, hash = 'current', components = LINKED } = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'figma-release-'));
   cpSync(FIXTURE_TOKENS_PATH, join(dir, 'hirobius.tokens.json'));
   mkdirSync(join(dir, 'figma'));
+  writeDisposition(dir, components);
   const { model } = loadFigmaInputs(dir);
   const figma = newFixtureFile();
   if (pushed) {
@@ -73,6 +85,49 @@ describe('runReleaseGate', () => {
     const r = runReleaseGate({ root: dir });
     expect(r.exitCode).toBe(1);
     expect(r.output).toMatch(/Figma is behind code/);
+  });
+});
+
+describe('component coverage (step 3)', () => {
+  it('fails when a library component has no @figma node, naming it and the fix', async () => {
+    const r = runReleaseGate({
+      root: await root({
+        components: [...LINKED, { name: 'Sheet', class: 'library', figmaUrl: null }],
+      }),
+    });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/1 library component\(s\) with no Figma node: Sheet/);
+    expect(r.output).toMatch(/@figma/);
+  });
+
+  it('counts a mapping override (Card.Progress -> CardProgress) as covered', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'figma-cov-'));
+    mkdirSync(join(dir, 'figma'));
+    writeDisposition(
+      dir,
+      [{ name: 'CardProgress', class: 'library', figmaUrl: null }],
+      [{ mapsTo: 'Card.Progress' }],
+    );
+    expect(componentCoverageGaps(dir)).toEqual({ missing: [], table: true });
+  });
+
+  it('ignores slot, layout and internal components', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'figma-cov-'));
+    mkdirSync(join(dir, 'figma'));
+    writeDisposition(dir, [
+      { name: 'Box', class: 'layout', figmaUrl: null },
+      { name: 'CardHeader', class: 'slot', figmaUrl: null },
+    ]);
+    expect(componentCoverageGaps(dir).missing).toEqual([]);
+  });
+
+  it('fails when figma/disposition.json is missing', async () => {
+    const dir = await root();
+    const { rmSync } = await import('fs');
+    rmSync(join(dir, 'figma', 'disposition.json'));
+    const r = runReleaseGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/no figma\/disposition\.json.*pnpm figma:disposition --write/);
   });
 });
 

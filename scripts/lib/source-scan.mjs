@@ -408,3 +408,22 @@ export function groupByRule(violations) {
   }
   return byRule;
 }
+
+/**
+ * The files a line-scoped gate reads (hds#1010): the fixture file alone in
+ * fixture mode, else `scanSources` over `ctx.ROOT` with `opts`.
+ *
+ * @param {{ ROOT: string, isFixtureMode: boolean, fixtureFile?: string }} ctx
+ * @param {Omit<Parameters<typeof scanSources>[0], 'root'>} opts
+ * @returns {string[]}
+ */
+export function gateFiles(ctx, opts) {
+  if (ctx.isFixtureMode && ctx.fixtureFile) return [path.resolve(ctx.fixtureFile)];
+  return scanSources({ root: ctx.ROOT, ...opts });
+}
+
+/** Whether a source line is a `//` or block-comment `*` line (hds#1010). */
+export function isCommentLine(line) {
+  const t = line.trim();
+  return t.startsWith('//') || t.startsWith('*');
+}
