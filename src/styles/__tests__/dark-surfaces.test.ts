@@ -7,7 +7,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
-import { resolveAlias } from '../../../scripts/build-tokens.mjs';
+import { resolveAlias } from '../../../scripts/lib/token-tree.mjs';
 import { contrastRatio, hexToLuminance } from '../../app/utils/colorUtils';
 
 const TOKENS = JSON.parse(
@@ -70,8 +70,8 @@ describe('dark surface ladder', () => {
 
   it('leaves light mode alone', () => {
     expect(hex(PAGE, 'Light')).toBe('#ffffff');
-    expect(hex(RAISED, 'Light')).toBe('#fafafa');
-    expect(hex(OVERLAY, 'Light')).toBe('#f5f5f5');
+    expect(hex(RAISED, 'Light')).toBe('#f9fafc');
+    expect(hex(OVERLAY, 'Light')).toBe('#f4f5f7');
   });
 });
 
@@ -107,10 +107,10 @@ describe('dark state steps on the lighter raised surface', () => {
   });
 
   it('leaves the light steps alone', () => {
-    expect(hex(HOVER, 'Light')).toBe('#f5f5f5');
-    expect(hex(MUTED, 'Light')).toBe('#f5f5f5');
-    expect(hex(PRESSED, 'Light')).toBe('#fafafa');
-    expect(hex(BORDER_SUBTLE, 'Light')).toBe('#f5f5f5');
+    expect(hex(HOVER, 'Light')).toBe('#f4f5f7');
+    expect(hex(MUTED, 'Light')).toBe('#f4f5f7');
+    expect(hex(PRESSED, 'Light')).toBe('#e4e5e7');
+    expect(hex(BORDER_SUBTLE, 'Light')).toBe('#f4f5f7');
   });
 });
 

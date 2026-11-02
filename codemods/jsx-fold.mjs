@@ -4,7 +4,8 @@
  * hds-not-found-pattern (NotFoundPattern -> ErrorPattern) and hds-tile-grid
  * (TileGrid -> Grid). It ships with them as a package bin dependency, so it has
  * no dependencies; codemods/unrewritable.mjs masks the source and lists what a
- * codemod cannot see.
+ * codemod cannot see. hds-prop-map (codemods/prop-map.mjs) reuses its tag
+ * parser and walker.
  *
  * A fold rewrites one named import of the package root and every JSX element of
  * the name it binds:
@@ -21,17 +22,39 @@
  * or when it cannot be read to its end. A re-export, a type-only import, a
  * removed props type, and a namespace or dynamic import that reads the name are
  * listed too. Running a fold twice changes nothing.
+ *
+ * A rule is data where it can be (`foldRule`, hds#956): the attributes it sets,
+ * renames and refuses. A rule whose mapping needs code (hds-tile-grid) gives
+ * `rewrite` instead. The release in its reports comes from the ledger step that
+ * folded the name.
  */
 import { readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable, maskSource } from './unrewritable.mjs';
+import { removedIn, removedText } from './lib/removals.mjs';
 
 export const ROOT_PKG = '@hirobius/design-system';
 export const PATTERNS = `${ROOT_PKG}/patterns`;
 
-const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
+/**
+ * The code files a codemod reads: script files, and the single-file components
+ * whose script block or frontmatter imports HDS (.astro, .vue, .svelte, hds#957).
+ */
+export const CODE_EXTS = new Set([
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.mjs',
+  '.cjs',
+  '.mts',
+  '.cts',
+  '.astro',
+  '.vue',
+  '.svelte',
+]);
 const SKIP_DIRS = new Set([
   'node_modules',
   'dist',
@@ -61,11 +84,17 @@ const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
  *   name: string,
  *   survivor: string,
  *   survivorFrom: string,
+ *   version?: string,
  *   types?: Record<string, string>,
+ *   set?: Record<string, string>,
+ *   rename?: Record<string, string>,
+ *   forbid?: string[],
  *   rewrite: (tag: Tag, source: string) => { edits: Edit[] } | { manual: string },
  * }} FoldRule
  *   `rewrite` maps one opening tag's attributes; `types` names each removed props
- *   type and what replaces it, for the manual report.
+ *   type and what replaces it, for the manual report; `version` is the release
+ *   that folded `name`. `set`, `rename` and `forbid` are a data rule's mapping
+ *   (foldRule).
  */
 
 /** Each named import or re-export of `pkg`, read on the masked `code`. */
@@ -153,7 +182,7 @@ function closeBrace(code, at) {
 }
 
 /** The attributes of the opening tag whose name ends at `from`, up to its `>` or `/>`; null when it does not parse. */
-function parseTag(source, code, from) {
+export function parseTag(source, code, from) {
   const attrs = [];
   let i = from;
   const skip = () => {
@@ -258,7 +287,7 @@ function addSpec(source, st, text) {
  * @param {string} source
  * @param {Edit[]} edits
  */
-function editHunks(source, edits) {
+export function editHunks(source, edits) {
   const clusters = [];
   for (const e of [...edits].sort((a, b) => a.start - b.start || a.end - b.end)) {
     const from = lineStart(source, e.start);
@@ -301,16 +330,18 @@ export function foldComponent(source, rule) {
   for (const st of roots)
     for (const s of st.specs) {
       if (Object.hasOwn(types, s.name))
-        manual.push(`${s.name} from '${ROOT_PKG}' (removed in 0.20.0, use ${types[s.name]})`);
+        manual.push(
+          `${s.name} from '${ROOT_PKG}' (${removedText(rule.version)}, use ${types[s.name]})`,
+        );
       if (s.name !== rule.name) continue;
       if (st.kw === 'export') {
         const where = rule.survivorFrom === ROOT_PKG ? '' : ` from '${rule.survivorFrom}'`;
         manual.push(
-          `export { ${s.name} } from '${ROOT_PKG}' (removed in 0.20.0; re-export ${rule.survivor}${where} by hand)`,
+          `export { ${s.name} } from '${ROOT_PKG}' (${removedText(rule.version)}; re-export ${rule.survivor}${where} by hand)`,
         );
       } else if (st.typeKw || s.typeOnly)
         manual.push(
-          `import type { ${s.name} } from '${ROOT_PKG}' at line ${lineOf(source, st.from)} (removed in 0.20.0; use typeof ${rule.survivor} by hand)`,
+          `import type { ${s.name} } from '${ROOT_PKG}' at line ${lineOf(source, st.from)} (${removedText(rule.version)}; use typeof ${rule.survivor} by hand)`,
         );
       else hits.push({ st, s });
     }
@@ -406,6 +437,51 @@ export function foldComponent(source, rule) {
 }
 
 /**
+ * A fold rule from data (hds#956): every tag gets the attributes in `set`
+ * (written after its name), each attribute in `rename` takes its new name, and
+ * a tag that sets one in `forbid` (an attribute the old component ignored and
+ * the survivor would render), or spreads props that could, is left for a
+ * manual edit. A rule that gives none of the three keeps its own `rewrite`.
+ * `version` defaults to the release whose ledger step folded `name`.
+ * @param {Omit<FoldRule, 'rewrite'> & { rewrite?: FoldRule['rewrite'] }} spec
+ * @returns {FoldRule}
+ */
+export function foldRule(spec) {
+  const { name, survivor, set = {}, rename = {}, forbid = [] } = spec;
+  const isData = !!(spec.set || spec.rename || spec.forbid);
+  const careful = forbid.length > 0 ? forbid : Object.keys(set);
+  return Object.freeze({
+    ...spec,
+    version: spec.version ?? removedIn(name),
+    rewrite: isData
+      ? (tag, source) => {
+          if (careful.length > 0 && tag.attrs.some((a) => a.kind === 'spread'))
+            return { manual: `a spread could carry ${careful.join(' or ')}; rewrite it by hand` };
+          const bad = tag.attrs.find((a) => forbid.includes(a.name));
+          if (bad)
+            return {
+              manual: `${name} ignored ${bad.name}, ${survivor} would render it; rewrite it by hand`,
+            };
+          const edits = [];
+          const add = Object.entries(set);
+          if (add.length > 0) {
+            const { at, sep } = insertionPoint(source, tag, null);
+            edits.push({
+              start: at,
+              end: at,
+              text: add.map(([k, v]) => `${sep}${k}="${v}"`).join(''),
+            });
+          }
+          for (const a of tag.attrs)
+            if (Object.hasOwn(rename, a.name))
+              edits.push({ start: a.start, end: a.start + a.name.length, text: rename[a.name] });
+          return { edits };
+        }
+      : spec.rewrite,
+  });
+}
+
+/**
  * Where to insert attributes in front of `attr`, or after the tag name when
  * `attr` is null: the separator copies the tag's layout (a new line and indent
  * when its attributes sit one per line).
@@ -421,8 +497,11 @@ export function insertionPoint(source, tag, attr) {
   return attr ? { at: attr.start, sep } : { at: tag.nameEnd, sep };
 }
 
-/** `skip`: absolute directories not to enter (the upgrade command's nested importers). */
-function* walk(dir, skip = new Set()) {
+/**
+ * `skip`: absolute directories not to enter (the upgrade command's nested
+ * importers); `exts`: the file extensions to yield.
+ */
+export function* walk(dir, skip = new Set(), exts = CODE_EXTS) {
   let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });
@@ -435,8 +514,8 @@ function* walk(dir, skip = new Set()) {
     if (SKIP_DIRS.has(entry.name)) continue;
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (!skip.has(full)) yield* walk(full, skip);
-    } else if (entry.isFile() && EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+      if (!skip.has(full)) yield* walk(full, skip, exts);
+    } else if (entry.isFile() && exts.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 

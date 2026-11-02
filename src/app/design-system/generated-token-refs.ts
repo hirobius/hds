@@ -23,9 +23,13 @@ export const tokenRefs = {
         "400": "var(--primitive-color-neutral-400)",
         "450": "var(--primitive-color-neutral-450)",
         "500": "var(--primitive-color-neutral-500)",
+        "550": "var(--primitive-color-neutral-550)",
         "600": "var(--primitive-color-neutral-600)",
         "700": "var(--primitive-color-neutral-700)",
+        "725": "var(--primitive-color-neutral-725)",
+        "750": "var(--primitive-color-neutral-750)",
         "800": "var(--primitive-color-neutral-800)",
+        "825": "var(--primitive-color-neutral-825)",
         "850": "var(--primitive-color-neutral-850)",
         "900": "var(--primitive-color-neutral-900)",
         "950": "var(--primitive-color-neutral-950)",
@@ -69,6 +73,34 @@ export const tokenRefs = {
         "800": "var(--primitive-color-graphite-800)",
         "900": "var(--primitive-color-graphite-900)",
         "950": "var(--primitive-color-graphite-950)"
+      },
+      cobalt: {
+        "50": "var(--primitive-color-cobalt-50)",
+        "100": "var(--primitive-color-cobalt-100)",
+        "200": "var(--primitive-color-cobalt-200)",
+        "300": "var(--primitive-color-cobalt-300)",
+        "400": "var(--primitive-color-cobalt-400)",
+        "500": "var(--primitive-color-cobalt-500)",
+        "600": "var(--primitive-color-cobalt-600)",
+        "700": "var(--primitive-color-cobalt-700)",
+        "800": "var(--primitive-color-cobalt-800)",
+        "900": "var(--primitive-color-cobalt-900)"
+      },
+      lime: {
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        "50": "var(--primitive-color-lime-50)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        "100": "var(--primitive-color-lime-100)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        "200": "var(--primitive-color-lime-200)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        "300": "var(--primitive-color-lime-300)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        "400": "var(--primitive-color-lime-400)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        "600": "var(--primitive-color-lime-600)",
+        /** @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        "800": "var(--primitive-color-lime-800)"
       },
       mauve: {
         "50": "var(--primitive-color-mauve-50)",
@@ -124,6 +156,9 @@ export const tokenRefs = {
           "500": "var(--primitive-color-projectBrand-microsoftGameDev-500)",
           "900": "var(--primitive-color-projectBrand-microsoftGameDev-900)"
         }
+      },
+      shadow: {
+        ink: "var(--primitive-color-shadow-ink)"
       }
     },
     space: {
@@ -155,8 +190,11 @@ export const tokenRefs = {
       "0": "var(--primitive-radius-0)",
       "2": "var(--primitive-radius-2)",
       "4": "var(--primitive-radius-4)",
+      "6": "var(--primitive-radius-6)",
       "8": "var(--primitive-radius-8)",
       "12": "var(--primitive-radius-12)",
+      "16": "var(--primitive-radius-16)",
+      "24": "var(--primitive-radius-24)",
       full: "var(--primitive-radius-full)"
     },
     typography: {
@@ -167,21 +205,28 @@ export const tokenRefs = {
       },
       size: {
         xs: "var(--primitive-typography-size-xs)",
+        compactCaption: "var(--primitive-typography-size-compactCaption)",
         sm: "var(--primitive-typography-size-sm)",
         base: "var(--primitive-typography-size-base)",
+        compactBody: "var(--primitive-typography-size-compactBody)",
         lg: "var(--primitive-typography-size-lg)",
         xl: "var(--primitive-typography-size-xl)",
         "2xl": "var(--primitive-typography-size-2xl)",
+        title: "var(--primitive-typography-size-title)",
         "3xl": "var(--primitive-typography-size-3xl)",
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
+        display: "var(--primitive-typography-size-display)",
         "6xl": "var(--primitive-typography-size-6xl)",
         code: "var(--primitive-typography-size-code)"
       },
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
         medium: "var(--primitive-typography-weight-medium)",
-        bold: "var(--primitive-typography-weight-bold)"
+        semibold: "var(--primitive-typography-weight-semibold)",
+        bold: "var(--primitive-typography-weight-bold)",
+        display: "var(--primitive-typography-weight-display)",
+        mono: "var(--primitive-typography-weight-mono)"
       },
       lineHeight: {
         compact: "var(--primitive-typography-lineHeight-compact)",
@@ -226,10 +271,14 @@ export const tokenRefs = {
       "12": "var(--primitive-size-12)",
       "16": "var(--primitive-size-16)",
       "20": "var(--primitive-size-20)",
+      "22": "var(--primitive-size-22)",
       "24": "var(--primitive-size-24)",
       "32": "var(--primitive-size-32)",
+      "36": "var(--primitive-size-36)",
       "40": "var(--primitive-size-40)",
+      "44": "var(--primitive-size-44)",
       "48": "var(--primitive-size-48)",
+      "52": "var(--primitive-size-52)",
       "64": "var(--primitive-size-64)",
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
@@ -258,6 +307,9 @@ export const tokenRefs = {
       "10": "var(--primitive-zIndex-10)",
       "100": "var(--primitive-zIndex-100)",
       "1000": "var(--primitive-zIndex-1000)"
+    },
+    underline: {
+      offset: "var(--primitive-underline-offset)"
     },
     borderWidth: {
       xs: "var(--primitive-borderWidth-xs)",
@@ -290,6 +342,7 @@ export const tokenRefs = {
         page: "var(--semantic-color-surface-page)",
         raised: "var(--semantic-color-surface-raised)",
         overlay: "var(--semantic-color-surface-overlay)",
+        floating: "var(--semantic-color-surface-floating)",
         scrim: "var(--semantic-color-surface-scrim)",
         inverse: "var(--semantic-color-surface-inverse)",
         accent: "var(--semantic-color-surface-accent)",
@@ -298,7 +351,9 @@ export const tokenRefs = {
         pressed: "var(--semantic-color-surface-pressed)",
         selected: "var(--semantic-color-surface-selected)",
         muted: "var(--semantic-color-surface-muted)",
-        sunken: "var(--semantic-color-surface-sunken)"
+        sunken: "var(--semantic-color-surface-sunken)",
+        soft: "var(--semantic-color-surface-soft)",
+        softHover: "var(--semantic-color-surface-softHover)"
       },
       content: {
         primary: "var(--semantic-color-content-primary)",
@@ -315,12 +370,14 @@ export const tokenRefs = {
       border: {
         default: "var(--semantic-color-border-default)",
         interactive: "var(--semantic-color-border-interactive)",
-        subdued: "var(--semantic-color-border-subdued)",
         subtle: "var(--semantic-color-border-subtle)",
         strong: "var(--semantic-color-border-strong)",
         accent: "var(--semantic-color-border-accent)",
         success: "var(--semantic-color-border-success)",
         warning: "var(--semantic-color-border-warning)"
+      },
+      shadow: {
+        hard: "var(--semantic-color-shadow-hard)"
       },
       feedback: {
         error: "var(--semantic-color-feedback-error)",
@@ -344,11 +401,20 @@ export const tokenRefs = {
     },
     space: {
       scale: {
+        "2xs": "var(--semantic-space-scale-2xs)",
         xs: "var(--semantic-space-scale-xs)",
         sm: "var(--semantic-space-scale-sm)",
         md: "var(--semantic-space-scale-md)",
         lg: "var(--semantic-space-scale-lg)",
         xl: "var(--semantic-space-scale-xl)"
+      },
+      fixed: {
+        "2xs": "var(--semantic-space-fixed-2xs)",
+        xs: "var(--semantic-space-fixed-xs)",
+        sm: "var(--semantic-space-fixed-sm)",
+        md: "var(--semantic-space-fixed-md)",
+        lg: "var(--semantic-space-fixed-lg)",
+        xl: "var(--semantic-space-fixed-xl)"
       },
       surface: {
         padding: "var(--semantic-space-surface-padding)"
@@ -362,28 +428,19 @@ export const tokenRefs = {
         gap: "var(--semantic-space-subgrid-gap)"
       },
       component: {
-        gap: "var(--semantic-space-component-gap)",
-        medium: "var(--semantic-space-component-medium)",
-        padding: "var(--semantic-space-component-padding)"
-      },
-      layout: {
-        tight: "var(--semantic-space-layout-tight)",
-        normal: "var(--semantic-space-layout-normal)",
-        gutter: "var(--semantic-space-layout-gutter)",
-        inset: "var(--semantic-space-layout-inset)",
-        spacious: "var(--semantic-space-layout-spacious)"
+        medium: "var(--semantic-space-component-medium)"
       },
       section: {
         stack: "var(--semantic-space-section-stack)",
         inset: "var(--semantic-space-section-inset)",
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) @removeIn 1.0.0 */
         heroMax: "var(--semantic-space-section-heroMax)"
       },
       sidebar: {
         indent: "var(--semantic-space-sidebar-indent)",
         gap: "var(--semantic-space-sidebar-gap)",
         sectionGap: "var(--semantic-space-sidebar-sectionGap)",
-        railPadding: "var(--semantic-space-sidebar-railPadding)",
-        railWidth: "var(--semantic-space-sidebar-railWidth)"
+        railPadding: "var(--semantic-space-sidebar-railPadding)"
       }
     },
     layout: {
@@ -465,6 +522,7 @@ export const tokenRefs = {
         lineHeight: "var(--semantic-typography-mono-line-height)",
         maxWidth: "var(--semantic-typography-mono-max-width)"
       },
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
       h1: {
         fontFamily: "var(--semantic-typography-h1-font-family)",
         fontSize: "var(--semantic-typography-h1-font-size)",
@@ -472,6 +530,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h1-letter-spacing)",
         lineHeight: "var(--semantic-typography-h1-line-height)"
       },
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
       h2: {
         fontFamily: "var(--semantic-typography-h2-font-family)",
         fontSize: "var(--semantic-typography-h2-font-size)",
@@ -479,6 +538,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h2-letter-spacing)",
         lineHeight: "var(--semantic-typography-h2-line-height)"
       },
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title @removeIn 1.0.0 */
       h3: {
         fontFamily: "var(--semantic-typography-h3-font-family)",
         fontSize: "var(--semantic-typography-h3-font-size)",
@@ -486,6 +546,7 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-h3-letter-spacing)",
         lineHeight: "var(--semantic-typography-h3-line-height)"
       },
+      /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
       eyebrow: {
         fontFamily: "var(--semantic-typography-eyebrow-font-family)",
         fontSize: "var(--semantic-typography-eyebrow-font-size)",
@@ -500,7 +561,9 @@ export const tokenRefs = {
     docs: {
       space: {
         section: "var(--semantic-docs-space-section)",
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) @removeIn 1.0.0 */
         paragraph: "var(--semantic-docs-space-paragraph)",
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs @removeIn 1.0.0 */
         inline: "var(--semantic-docs-space-inline)"
       }
     },
@@ -512,15 +575,36 @@ export const tokenRefs = {
       disabled: "var(--semantic-accent-disabled)",
       content: "var(--semantic-accent-content)",
       contentHover: "var(--semantic-accent-contentHover)",
-      subtle: "var(--semantic-accent-subtle)"
+      subtle: "var(--semantic-accent-subtle)",
+      delight: {
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        base: "var(--semantic-accent-delight-base)",
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        deep: "var(--semantic-accent-delight-deep)",
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        pale: "var(--semantic-accent-delight-pale)",
+        /** @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 @removeIn 1.0.0 */
+        onDelight: "var(--semantic-accent-delight-onDelight)"
+      }
     },
     radius: {
       action: "var(--semantic-radius-action)",
-      control: "var(--semantic-radius-control)"
+      control: "var(--semantic-radius-control)",
+      scale: {
+        sm: "var(--semantic-radius-scale-sm)",
+        md: "var(--semantic-radius-scale-md)",
+        lg: "var(--semantic-radius-scale-lg)",
+        xl: "var(--semantic-radius-scale-xl)",
+        pill: "var(--semantic-radius-scale-pill)"
+      }
     },
     borderWidth: {
       default: "var(--semantic-borderWidth-default)",
       emphasis: "var(--semantic-borderWidth-emphasis)"
+    },
+    link: {
+      underlineThickness: "var(--semantic-link-underlineThickness)",
+      underlineOffset: "var(--semantic-link-underlineOffset)"
     },
     shadow: {
       subtle: "var(--semantic-shadow-subtle)",
@@ -561,6 +645,7 @@ export const tokenRefs = {
         lg: "var(--semantic-size-icon-lg)"
       },
       avatar: "var(--semantic-size-avatar)",
+      touchTarget: "var(--semantic-size-touchTarget)",
       tile: "var(--semantic-size-tile)",
       row: {
         compact: "var(--semantic-size-row-compact)",
@@ -574,13 +659,6 @@ export const tokenRefs = {
   },
   component: {
     nav: {
-      bg: "var(--component-nav-bg)",
-      bgActive: "var(--component-nav-bgActive)",
-      borderActive: "var(--component-nav-borderActive)",
-      text: "var(--component-nav-text)",
-      textActive: "var(--component-nav-textActive)",
-      height: "var(--component-nav-height)",
-      paddingX: "var(--component-nav-paddingX)",
       paddingY: "var(--component-nav-paddingY)"
     },
     tag: {
@@ -603,7 +681,9 @@ export const tokenRefs = {
     badge: {
       fontSize: "var(--component-badge-fontSize)",
       fontWeight: "var(--component-badge-fontWeight)",
+      /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone) @removeIn 1.0.0 */
       text: "var(--component-badge-text)",
+      /** @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) @removeIn 1.0.0 */
       bg: "var(--component-badge-bg)",
       neutral: {
         bg: "var(--component-badge-neutral-bg)",
@@ -633,15 +713,18 @@ export const tokenRefs = {
       height: "var(--component-badge-height)",
       minWidth: "var(--component-badge-minWidth)",
       paddingY: "var(--component-badge-paddingY)",
+      paddingShift: "var(--component-badge-paddingShift)",
       paddingX: "var(--component-badge-paddingX)"
     },
     button: {
       bg: "var(--component-button-bg)",
       bgHover: "var(--component-button-bgHover)",
+      bgPressed: "var(--component-button-bgPressed)",
       text: "var(--component-button-text)",
       radius: "var(--component-button-radius)",
       paddingX: "var(--component-button-paddingX)",
       paddingY: "var(--component-button-paddingY)",
+      fontWeight: "var(--component-button-fontWeight)",
       size: {
         sm: {
           paddingX: "var(--component-button-size-sm-paddingX)",
@@ -679,12 +762,19 @@ export const tokenRefs = {
           pressed: "var(--component-button-secondary-bg-pressed)"
         },
         border: {
+          /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
           rest: "var(--component-button-secondary-border-rest)",
           hover: "var(--component-button-secondary-border-hover)",
-          pressed: "var(--component-button-secondary-border-pressed)",
+          /** @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 @removeIn 1.0.0 */
           disabled: "var(--component-button-secondary-border-disabled)"
         },
         text: "var(--component-button-secondary-text)"
+      },
+      tertiary: {
+        bg: {
+          hover: "var(--component-button-tertiary-bg-hover)",
+          pressed: "var(--component-button-tertiary-bg-pressed)"
+        }
       }
     },
     input: {
@@ -705,11 +795,6 @@ export const tokenRefs = {
     },
     inlineCode: {
       bg: "var(--component-inlineCode-bg)"
-    },
-    lightbox: {
-      backdrop: {
-        blur: "var(--component-lightbox-backdrop-blur)"
-      }
     }
   },
   role: {

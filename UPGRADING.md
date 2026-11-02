@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.26.2. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.32.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -8,7 +8,207 @@ This file only knows the releases up to the version you have installed, 0.26.2. 
 npx @hirobius/design-system@latest upgrade
 ```
 
-It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.16.0 on; from an older version, first reach 0.16.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+It finds the version you have, moves you to the newest release, runs each release's codemods (Fixed for you) and lists what is left for you (Do by hand). It works from 0.9.0 on; from an older version, first reach 0.9.0 with the notes in CHANGELOG.md. MIGRATIONS.md has longer guides for the big releases.
+
+## If a release is bad
+
+A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` points back at the last good version. If you took it:
+
+1. Revert the upgrade PR (`git revert -m 1 <merge commit>`), so the code, package.json and lockfile go back together.
+2. Pin the exact last good version, with no `^`: `"@hirobius/design-system": "<last good version>"`, then install.
+3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
+
+There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.32.0
+
+Released 2026-10-24 (minor). 11 that look different.
+
+### Looks different
+
+- Dark each of these now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill: `--hds-edge-danger`, `--hds-edge-info`, `--hds-edge-success` and `--hds-edge-warning`.
+- Dark --hds-edge-kbd now steps darker than the Kbd fill instead of a lighter rim; no change needed.
+- Dark --hds-edge-primary is now darker than the primary fill (about graphite-400 #8b8488) instead of a lighter rim; if you set your own, keep it darker than the fill.
+- Dark --hds-edge-secondary is now about neutral-700 #404040, darker than the secondary fill, so dark buttons no longer glow.
+- Dark --semantic-color-surface-soft is now neutral-600 #525252 (was neutral-700), one step lighter so secondary buttons lift off dark cards.
+- Dark --semantic-color-surface-softHover is now the new neutral.550 #626262 (was neutral-600), the secondary hover and wipe fill.
+- Button tertiary is a ghost (no edge, no movement, surface.hover fill on hover) and every raised Button moves its face over a fixed edge, so remove any custom translate you added to fake a press.
+- The .hds-link text and underline are content.primary and turn content.secondary on hover; if you restyled links to the accent colour, set your own colour on .hds-link.
+
+## 0.31.1
+
+Released 2026-10-23 (patch). 1 that looks different.
+
+### Looks different
+
+- Text link underlines are thicker: 2px, 0.2em below the baseline, where they were the font's hairline default.
+
+## 0.31.0
+
+Released 2026-10-22 (minor). 2 changes to make by hand (2 breaking) and 18 that look different.
+
+### Looks different
+
+- The secondary Button hover fill is now surface.softHover (neutral.300 light, neutral.600 dark); if you set this variable to theme the old outline hover, check it still reads on the soft fill.
+- The secondary Button pressed fill is now surface.soft (the rest fill) while the hard shadow sinks; re-check any override of this variable.
+- The secondary Button rest fill is now surface.soft (neutral.200 light, neutral.700 dark) instead of the page colour; set this variable to var(--semantic-color-surface-page) to get the old flat fill back.
+- The unselected Tag pill is now surface.muted instead of surface.raised; re-check any override of this variable.
+- The unselected Tag border now matches its fill, so the pill shows no resting edge; set this variable to var(--semantic-color-border-default) to bring the outline back.
+- --role-popover (bg-popover) now reads the new semantic.color.surface.floating (white light, neutral.800 dark) instead of surface.overlay; if you set this variable, check your overlays still separate from surface.muted.
+- --semantic-color-border-default (role.border, border-border) is now graphite.200 #cbc6c9 in light, up from #e5e5e5; if you override it, keep it at 1.45:1 or more on your surfaces.
+- --semantic-color-border-strong is now graphite.300 #b2abae in light, up from #d4d4d4, so strong dividers and Kbd edges stay firmer than border.default.
+- --semantic-color-border-subdued (deprecated) follows border.default in light at #cbc6c9; move to border.default.
+- --semantic-elevation-overlay-border is now border.default, not transparent; a surface that binds the overlay elevation bundle should draw it as a 1px border.
+- --semantic-elevation-overlay-surface is now surface.floating (white light, neutral.800 dark); a surface that binds it turns white in light.
+- Every primary and secondary Button now has a straight-down hard shadow (colour: --hds-btn-edge, default shadow.hard) and the hover wipe; pass shadow="none" and/or hoverEffect="none" where a button must stay flat, for example inside a dense toolbar.
+- The default wipe makes every Button relative isolate overflow-hidden, so content you position outside the button box is clipped; pass hoverEffect="none" on that button.
+- The hard edge under Buttons and Kbd is now each item's own fill stepped darker (a lighter rim in dark) instead of semantic.color.shadow.hard; set --hds-btn-edge and --hds-kbd-edge to var(--semantic-color-shadow-hard) to keep the old single-colour edge.
+- In dark mode semantic.color.shadow.hard is now neutral.500 (lighter), so the hard shadow on Button and Kbd reads at 3:1; re-check any surface you drew with it.
+- CodeBlock, Table, Tabs, SegmentedControl, Board, FormActions and Combobox/TokenField chips lose their resting border; add className="border border-border" on an instance that needs the edge.
+- Toggle's thumb is now 12px with an even inset in the track; nothing to change unless a visual snapshot pins the old 16px thumb.
+- HDS no longer ships unused utilities (.border-stroke\*, .bg-gray-100, .bg-fill, .bg-btn-fill, .text-white, .cursor-zoom-in, the --hds-fill/hover/border helpers); without your own Tailwind build, use the token instead.
+
+### Do by hand
+
+- The unused CSS for each of these is gone (Tag has not rendered it since #60); use the Tag component instead: `hds-tag-btn` and `hds-tag-pill`.
+
+## 0.30.0
+
+Released 2026-10-21 (minor). 37 that look different and 2 deprecations.
+
+### Looks different
+
+- Under data-density="compact", each of these is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only: `--component-card-gap`, `--semantic-docs-space-section`, `--semantic-layout-grid-gap`, `--semantic-space-component-padding`, `--semantic-space-layout-gutter`, `--semantic-space-layout-inset`, `--semantic-space-layout-normal`, `--semantic-space-layout-spacious`, `--semantic-space-layout-tight`, `--semantic-space-region-gutter`, `--semantic-space-scale-lg`, `--semantic-space-scale-md`, `--semantic-space-scale-sm`, `--semantic-space-scale-xl`, `--semantic-space-section-stack` and `--semantic-space-surface-padding`.
+- Each of these is a legacy bridge that tracks its scale twin, so under data-density="compact" it is tighter too; move to --semantic-space-scale-\* and check compact screens: `--hds-space-2xl`, `--hds-space-lg`, `--hds-space-md` and `--hds-space-xl`.
+- Under data-density="compact" below 640px, --semantic-space-layout-gap is now scale.sm (12px) instead of following the comfortable rule; check compact screens on phones.
+- --semantic-space-scale-xs is 8px in both densities as before; the compact rule now comes from tokens.css instead of theme.css, so nothing moves.
+- Under data-density="compact", each of these is now smaller (body 15, ui 14, caption 13, title 24px); nothing changes at the default density, so check compact screens only: `--semantic-typography-body-font-size`, `--semantic-typography-caption-font-size`, `--semantic-typography-eyebrow-font-size`, `--semantic-typography-h1-font-size`, `--semantic-typography-h2-font-size`, `--semantic-typography-h3-font-size`, `--semantic-typography-title-font-size` and `--semantic-typography-ui-font-size`.
+- Avatar gains a person-icon fallback and a status dot, and an Avatar with no initials to show now draws the icon instead of an empty circle.
+- Badge gains a count mode: a number in tabular figures that can be capped (for example 99+) and named for screen readers.
+- The CodeBlock copy button is now a 32px icon-only Button in its own column beside the code, so re-take screenshots of pages with code blocks.
+- Disclosure gains a row variant: an expandable list row with a one-line preview and action buttons beside it.
+- PageHeader gains an optional metadata row of badges above the title; screens that do not pass it are unchanged.
+- Pagination gains a compact variant, a small "1 of 4" pager with previous and next arrows; the default pager is unchanged.
+- The secondary SegmentedControl's selected segment now has a darker 1px edge, so re-take screenshots of pages that use it.
+
+### Coming next
+
+- --primitive-color-lime-\* still resolve; the ramp only feeds the hidden delight accent, so add no new uses. Removed in 1.0.0.
+- --semantic-accent-delight-\* still resolve to the same lime; they are hidden while lime is parked (hds#857) and may come back, so keep existing uses and add none. Removed in 1.0.0.
+
+## 0.29.0
+
+Released 2026-10-20 (minor). 12 changes to make by hand (12 breaking), 34 that look different and 1 deprecation.
+
+### Looks different
+
+- Badge horizontal padding is now 8px (was 6px); check badges in tight rows or fixed-width cells.
+- Card padding now follows surface.padding: 28px (24px compact), was a fixed 24px; check fixed-height cards.
+- The deprecated --hds-space-2xl is now 64px (48px compact), tracking scale.xl; move to --semantic-space-scale-xl.
+- The deprecated --hds-space-lg is now 28px (24px compact), tracking scale.md; move to --semantic-space-scale-md.
+- The deprecated --hds-space-md is now 20px (16px compact), tracking scale.sm; move to --semantic-space-scale-sm.
+- The deprecated --hds-space-sm is 8px in both densities now (compact was 6px); move to --semantic-space-scale-xs.
+- The deprecated --hds-space-xl is now 40px (32px compact), tracking scale.lg; move to --semantic-space-scale-lg.
+- weight.display is 700 (was 800); display, title and titleSm read it, so headings are a step lighter.
+- Body weight is 400 (was 450); text that reads this variable renders slightly lighter.
+- Doc paragraph spacing is 28px (was 24px); check long-form pages that read it.
+- Doc section breaks follow scale.xl: 64px (48px compact), was a fixed 48px.
+- The layout grid gap follows scale.md (28px, 20px below 640px; 24/16px compact), was 24px and 16px.
+- Section vertical padding is 96px (64px below 640px), was 80px and 48px; re-take screenshots of long pages.
+- The deprecated component.gap now aliases scale.xs (8px in both densities, as before); move to --semantic-space-scale-xs.
+- The layout gap follows scale.md (28px, 20px below 640px; 24/16px compact), was 24px and 16px.
+- The deprecated layout.inset is now 40px (was 32px), fixed in both densities; move to --semantic-space-scale-lg.
+- The deprecated layout.normal is now 28px (was 24px), fixed in both densities; move to --semantic-space-scale-md.
+- The deprecated layout.spacious is now 64px (was 48px), fixed in both densities; move to --semantic-space-scale-xl.
+- The deprecated layout.tight is now 20px (was 16px), fixed in both densities; move to --semantic-space-scale-sm.
+- The page gutter is 40px on desktop and 20px below 640px (32/16px compact), was 32/16px (24/12px compact); check full-bleed layouts at 390px.
+- scale.lg is 40px (32px compact), was 32px (24px compact); layouts that read it get roomier.
+- scale.md is 28px (24px compact), was 24px (20px compact); card and dialog insets grow with it.
+- scale.sm is 20px (16px compact), was 16px (12px compact); list rows and field stacks grow with it.
+- scale.xl is 64px (48px compact), was 48px (40px compact); gaps between sections grow with it.
+- scale.xs is 8px in both densities now (compact was 6px).
+- Hero inset below 640px is 80px (was 64px); 128px above it is unchanged.
+- Space between page sections is 96px (64px below 640px), was 80px and 48px.
+- The display role is 56px (was 48px); check hero headings for wrapping at 390px.
+- The deprecated h1 style follows title to 28px (was 24px); move to title.
+- The deprecated h2 style follows title to 28px (was 24px); move to title.
+- The deprecated h3 style follows title to 28px (was 24px); move to title.
+- Titles are 28px (was 24px); page and section headings take more room, so check fixed-height headers.
+- Small titles are 20px (was 18px), one step above body; Alert titles now use this role too.
+- fonts.css declares Sora 700 (fonts/sora-700.woff2) in place of Sora 800; import fonts.css again, or load the 700 weight if you host Sora yourself.
+
+### Coming next
+
+- The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind \*-px6/\*-px10) were deprecated in 0.29.0 for removal in 0.31.0; that removal was cancelled, so they stay and nothing is rewritten.
+
+### Do by hand
+
+- Each of these was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it: `--color-blue-500`, `--color-indigo-600`, `--color-purple-500`, `--color-red-500`, `--color-red-700` and `--ease-in-out`.
+- The stray CSS variable each of these is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it: `--color-slate-200`, `--color-slate-900`, `--color-stone-50`, `--container-5xl` and `--font-serif`.
+- The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-\*-letter-spacing tokens, so use a type role instead.
+
+## 0.28.0
+
+Released 2026-10-20 (minor). 1 change to make by hand (1 breaking) and 4 that look different.
+
+### Looks different
+
+- The pressed secondary Button fill is now the pressed surface colour, a clearer step from hover, so re-check any screenshot of a pressed secondary Button.
+- The pressed surface is now a mid light grey (was almost white) in light mode, so re-check pressed states you draw by hand.
+- --semantic-typography-mono-font-weight now reads --primitive-typography-weight-mono (400); if your mono font has a heavier cut you want, set that primitive.
+- Table borders are two steps lighter than before in Dark mode and the Board column gap is 24px in compact density (was 32px; unchanged at 32px by default); re-take Table and Board screenshots.
+
+### Do by hand
+
+- The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed.
+
+## 0.27.0
+
+Released 2026-10-19 (minor). 5 changes to make by hand (3 breaking) and 33 that look different.
+
+### Looks different
+
+- Badge labels are now 14px (were 12px); if you size a Badge container by hand, give it room for the larger label.
+- Large Button labels are now 16px (were 14px); check any fixed-width Button.
+- Medium Button labels are now 16px (were 14px); check any fixed-width Button.
+- Small Button labels are now 14px (were 12px); check any fixed-width small Button.
+- Tag labels are now 14px (were 12px); if you size a Tag container by hand, give it room for the larger label.
+- The dark-mode accent fill (graphite.200) is now #cbc6c9 (was #d4d0d2); its on-accent text is 9.02:1.
+- The light-mode accent fill and accent text (graphite.700) is now #4a4146 (was #433a3f); white text on it is 9.83:1.
+- The display family now leads with Sora, then Plus Jakarta Sans; if you read this variable for your own headings they change face, and if you set it to rebrand headings, set --hds-font-family-display instead.
+- Code and ids (the mono role) are now 15px (were 13px); if you read this variable for your own code styling, expect text two pixels larger.
+- Body weight is now 450 (was 400); if you read this variable for your own text it renders slightly heavier, and Plus Jakarta Sans must load as a variable font (fonts.css does this).
+- Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.
+- Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.
+- Body text is now 18px (was 16px); check where you read this variable for layout, such as fixed-height blocks or character-count widths.
+- Caption text (metadata and help text) is now 14px (was 12px); check tight metadata rows and badges you size by hand.
+- The display role now follows --hds-font-family-display (Sora by default), not the body dial; set that dial to change hero headings.
+- The display role now uses weight 800 in Sora; re-take hero heading screenshots.
+- The deprecated eyebrow style follows caption and is now 14px (was 12px); move to caption.
+- The deprecated h1 style follows title onto Sora; move to title.
+- The deprecated h1 style follows title to weight 800 in Sora; move to title.
+- The deprecated h2 style follows title onto Sora; move to title.
+- The deprecated h2 style follows title to weight 800 in Sora; move to title.
+- The deprecated h3 style follows title onto Sora; move to title.
+- The deprecated h3 style follows title to weight 800 in Sora; move to title.
+- Titles now follow --hds-font-family-display (Sora by default), not the body dial; set that dial to change section headings.
+- Titles now use weight 800 in Sora; re-take heading screenshots.
+- Small titles now follow --hds-font-family-display (Sora by default), not the body dial; set that dial to change them.
+- Small headings are now 18px (were 16px); check where you read this variable for layout.
+- Titles now use weight 800 in Sora; re-take heading screenshots.
+- UI text (controls, nav, table text) is now 16px (was 14px); check where you read this variable for layout, such as fixed-height rows or toolbars.
+- Plus Jakarta Sans now ships as one variable face (weights 200 to 800) in fonts.css; if you pointed at the old 400, 500 or 700 files, import fonts.css again or load your own.
+- This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.
+- This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.
+- Table now has a bordered frame, a tinted header, taller body rows with vertical rules and regular-weight body text, and wide content scrolls inside the table instead of spilling past it; re-take Table screenshots and drop any wrapper you added to stop clipping.
+
+### Do by hand
+
+- Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar.
+- The stray CSS variable --leading-relaxed and the .leading-relaxed class are no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.
+- Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count.
+- Lint now errors on bullet lines with three or more items (new hds/max-two-meta-items rule): use MetaLine for two items, one row per item beyond that, or turn the rule off for that file.
+- New opt-in cobalt accent theme: set data-accent="cobalt" on \<html> (or a wrapper) and the accent, on-accent and accent-bound role and component variables swap to the cobalt ramp; nothing changes unless you set the attribute.
 
 ## 0.26.2
 
@@ -395,5 +595,72 @@ Released 2026-09-30 (minor). Adds /patterns and the standard type ramp; root pat
 - Table now renders role table, row, columnheader and cell, wrapping each row in an element with display: contents, so selectors and tests that query its cells by role or by position in the DOM may need updating.
 - OverflowList puts its +N item in a list item and names it with hidden text instead of aria-label, and MetadataList wraps its footer in a dt and dd pair, so tests that query that markup or the "+N more" label may need updating.
 - Carousel's slide strip and StackedCardRail's scroll areas are now named regions that take keyboard focus, so each adds a Tab stop and tests that count Tab presses past them need one more.
+
+## 0.16.0
+
+Released 2026-09-26 (minor). Six unused typography tokens are removed and five docs-internal components are deprecated; adds HdsSelect at the root.
+
+### Coming next
+
+- Each of these is docs-internal and deprecated: it warns once and will leave the package, so stop importing it: `CinematicLink`, `ComponentInstanceMatrix`, `FoundationSwatch`, `Sketch` and `Token`. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
+
+### Do by hand
+
+- Six unused typography tokens are removed (--primitive-typography-size-2xs, -weight-light, -weight-semibold, -letterSpacing-tighter, -wide and -wider); replace a var() that reads one with your own value.
+
+## 0.15.0
+
+Released 2026-09-23 (minor). Exports every component's props type and marks React bundles 'use client' for the Next.js App Router; nothing to change.
+
+Nothing in this release asks anything of you.
+
+## 0.14.0
+
+Released 2026-09-23 (minor). TenantProvider takes the tenant as a slug prop, dev warnings fire in consumer builds, and types resolve under node16.
+
+### Do by hand
+
+- TenantProvider no longer reads VITE_TENANT_SLUG, which never worked once installed; pass the tenant as its slug prop, or it sets no data-brand or data-tenant attribute.
+
+## 0.13.1
+
+Released 2026-09-20 (patch). Manifest Figma links, package metadata and a tenant overlay CSS fix; nothing for a consumer to change.
+
+Nothing in this release asks anything of you.
+
+## 0.13.0
+
+Released 2026-07-09 (minor). Adds the CSS-only static.css layer and stops Icon logging a console error for token sizes; nothing to change.
+
+Nothing in this release asks anything of you.
+
+## 0.12.0
+
+Released 2026-07-08 (minor). Stat, Field and Card move to the shared tone set and InfoPage is removed; adds dozens of components, /brand and /scroll.
+
+### Do by hand
+
+- InfoPage and InfoPageProps are removed with no replacement; it was portfolio scaffolding, so delete the code that uses it.
+- The StatTone and FieldTone types are removed; use StatProps\["tone"] and FieldProps\["tone"] instead.
+- Twelve component families, such as HdsAlertDialog and HdsDateInput, lost their Hds prefix before any release shipped them, so import each by its bare name (AlertDialog, DateInput).
+- Field no longer takes tone="default"; pass tone="neutral" or leave tone out, which renders the same.
+- Stat no longer takes tone="default"; pass tone="neutral" or leave tone out, which renders the same.
+- Card's tone prop is split in two: change tone="default" to variant="default" and tone="accent" to variant="accent"; tone="success", "warning" and "danger" stay as they are.
+- Card.Progress and Card.Metric no longer take tone="default" or tone="accent"; pass tone="neutral", or leave tone out, for the old default look.
+- lenis is a new optional peer dependency, needed only if you use SmoothScroll from the new @hirobius/design-system/scroll subpath.
+
+## 0.11.0
+
+Released 2026-07-04 (minor). Adds HdsTooltip, HdsThemeProvider with useHdsTheme, Textarea and a caption type style; nothing to change.
+
+Nothing in this release asks anything of you.
+
+## 0.10.0
+
+Released 2026-07-02 (minor). The ./protocol subpath, the signed envelope of the retired Figma bridge, is removed.
+
+### Do by hand
+
+- The @hirobius/design-system/protocol subpath is removed; if your code imports it, copy protocol/envelope.mjs from the archive/figma-bridge branch into your own code.
 
 <!-- Generated by scripts/upgrade/compile.mjs from upgrade/releases/*.json; do not edit. Run node scripts/upgrade/compile.mjs to regenerate. -->

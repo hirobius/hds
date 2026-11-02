@@ -2,8 +2,8 @@
 /**
  * tile-grid codemod (hds#395, hds#389's 2026-10-01 decision update)
  *
- * 0.20.0 removed TileGrid from the package root. Grid renders its recipe since
- * hds#393: `layout="auto-fill"` with `minItemWidth`, and the fixed 12px
+ * The patterns release (hds#389) removed TileGrid from the package root. Grid
+ * renders its recipe since hds#393: `layout="auto-fill"` with `minItemWidth`, and the fixed 12px
  * `medium` gap step. TileGrid defaulted to 260px tiles on a 12px gap; Grid
  * defaults to 280px and 32px, so the rewrite always writes both:
  *
@@ -38,7 +38,15 @@
  *                 name, or a file that cannot be read to its end, included)
  *   --dry-run     write nothing; print each changed line before (-) and after (+), exit 0
  */
-import { ROOT_PKG, foldComponent, insertionPoint, isEntry, main, runFold } from './jsx-fold.mjs';
+import {
+  ROOT_PKG,
+  foldComponent,
+  foldRule,
+  insertionPoint,
+  isEntry,
+  main,
+  runFold,
+} from './jsx-fold.mjs';
 import { maskSource } from './unrewritable.mjs';
 
 /** TileGrid's default width, which Grid does not share. */
@@ -191,7 +199,12 @@ function nullishness(code) {
   const coalesce = ops.filter((o) => o.op === '??').pop();
   if (coalesce) {
     const right = nullishness(m.slice(coalesce.at + 2));
-    return right && { nullish: right.nullish, chain: false };
+    if (!right) return null;
+    if (right.nullish === ALWAYS) {
+      const left = nullishness(m.slice(0, coalesce.at));
+      return left && { nullish: left.nullish, chain: false };
+    }
+    return { nullish: right.nullish, chain: false };
   }
   if (ops.some((o) => o.op === '||')) return { nullish: SOMETIMES, chain: false };
   if (/^(['"])\s*\1$/.test(m)) return { nullish: NEVER, chain: true };
@@ -200,7 +213,7 @@ function nullishness(code) {
 }
 
 /** @type {import('./jsx-fold.mjs').FoldRule} */
-export const RULE = Object.freeze({
+export const RULE = foldRule({
   name: 'TileGrid',
   survivor: 'Grid',
   survivorFrom: ROOT_PKG,
@@ -249,7 +262,11 @@ export const RULE = Object.freeze({
           const first = width.valueStart + 1 + code.search(/\S/);
           const last = width.valueStart + 1 + code.trimEnd().length;
           const fallback = ` ?? '${TILE_WIDTH}'`;
-          if (kind.chain) edits.push({ start: last, end: last, text: fallback });
+          let trimmed = code.trim();
+          const isAlreadyParenthesized =
+            trimmed.startsWith('(') && closing(trimmed, 0) === trimmed.length - 1;
+          if (kind.chain || isAlreadyParenthesized)
+            edits.push({ start: last, end: last, text: fallback });
           else
             edits.push(
               { start: first, end: first, text: '(' },

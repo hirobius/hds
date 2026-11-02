@@ -7,13 +7,17 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {
+  expectCleanRun,
+  expectInPreCommit,
+  expectNoViolations,
+  fixtureRunner,
+  registryEntry,
+  runExemptionsOn,
+  runGate,
+} from './helpers/gate-runner.mjs';
 import { findViolationsInText, isExempt } from '../check-no-uppercase.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const GATE = 'scripts/check-no-uppercase.mjs';
 
 const find = (text, file = 'fake.tsx') => findViolationsInText(text, file);
@@ -89,8 +93,7 @@ describe('findViolationsInText: what stays allowed', () => {
 });
 
 describe('check-no-uppercase: registry, hook, fixtures and the repo', () => {
-  const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
-  const entry = registry.gates.find((g) => g.id === 'check-no-uppercase');
+  const entry = registryEntry('check-no-uppercase');
 
   it('is registered as an error that fires at pre-commit, with its fixtures', () => {
     expect(entry).toMatchObject({
@@ -104,20 +107,10 @@ describe('check-no-uppercase: registry, hook, fixtures and the repo', () => {
   });
 
   it('runs in .husky/pre-commit', () => {
-    const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
-    expect(hook).toMatch(/^node scripts\/check-no-uppercase\.mjs$/m);
+    expectInPreCommit('scripts/check-no-uppercase.mjs');
   });
 
-  const runOn = (fixture) =>
-    spawnSync(process.execPath, [GATE, '--json'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        HDS_FIXTURE_MODE: '1',
-        FIXTURE_FILE: `fixtures/check-no-uppercase/${fixture}`,
-      },
-    });
+  const runOn = fixtureRunner(GATE, 'fixtures/check-no-uppercase');
 
   it('exits 1 on the canary, naming each file:line', () => {
     const run = runOn('violating.example.tsx');
@@ -138,14 +131,12 @@ describe('check-no-uppercase: registry, hook, fixtures and the repo', () => {
 
   it('exits 0 on the passing fixture', () => {
     const run = runOn('passing.example.tsx');
-    expect(JSON.parse(run.stdout).violations).toEqual([]);
-    expect(run.status).toBe(0);
+    expectNoViolations(run);
   });
 
   it('finds nothing in the repo (pnpm test runs this in CI, where the hook does not)', () => {
-    const run = spawnSync(process.execPath, [GATE], { cwd: ROOT, encoding: 'utf8' });
-    expect(run.stderr).toBe('');
-    expect(run.status).toBe(0);
+    const run = runGate(GATE);
+    expectCleanRun(run);
   });
 });
 
@@ -153,11 +144,7 @@ describe('its exemption marker', () => {
   it.each([GATE, 'scripts/__tests__/check-no-uppercase.test.mjs'])(
     'is one check-exemptions knows, so pnpm check does not reject it in %s',
     (file) => {
-      const run = spawnSync(process.execPath, ['scripts/check-exemptions.mjs'], {
-        cwd: ROOT,
-        encoding: 'utf8',
-        env: { ...process.env, HDS_FIXTURE_MODE: '1', FIXTURE_FILE: file },
-      });
+      const run = runExemptionsOn(file);
       expect(run.stderr).not.toMatch(/unknown exemption marker "uppercase-ok"/);
       expect(run.status).toBe(0);
     },

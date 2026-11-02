@@ -1,0 +1,1 @@
+Merged main (build-tokens split, hds#645): the easing conversion and the V6 check now live in scripts/lib/token-emit/css.mjs and scripts/lib/token-validate.mjs; manifest false flags are dropped on every generate.

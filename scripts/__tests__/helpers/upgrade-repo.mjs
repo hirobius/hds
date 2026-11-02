@@ -10,6 +10,8 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { CONTRACT_FILE, buildCssContract, formatContract } from '../../lib/css-contract.mjs';
 import { formatJson } from '../../upgrade/format.mjs';
+import { writePropsBaseline } from '../../upgrade/props.mjs';
+import { writeTypesBaseline } from '../../upgrade/types.mjs';
 import { snapshotFromSource } from '../../upgrade/snapshot.mjs';
 
 export const PACKAGE = '@hirobius/design-system';
@@ -120,5 +122,111 @@ export function cssRepo(css = RELEASED_CSS) {
     'docs/api/releases/0.20.0.json',
     formatJson({ ...snapshotFromSource(root), css: buildCssContract(root) }),
   );
+  return root;
+}
+
+/**
+ * The component-api.json rows of propsRepo()'s 0.20.0 release (hds#461): a
+ * cva Button whose defaults live only in its defaultVariants, as the real
+ * generator writes them (a variant union ends in `| null`).
+ */
+export const RELEASED_API = {
+  components: {
+    Button: {
+      filePath: 'src/button.tsx',
+      props: [
+        { name: 'onClick', type: '() => void', required: false },
+        { name: 'size', type: '"sm" | "md" | "lg" | null', required: false },
+        { name: 'variant', type: '"primary" | "secondary" | "tertiary" | null', required: false },
+      ],
+    },
+  },
+};
+
+/** button.tsx with a cva whose defaultVariants are `defaults`. */
+export function buttonSource(defaults = "size: 'md', variant: 'secondary'") {
+  return [
+    "import { cva } from 'class-variance-authority';",
+    "const buttonVariants = cva('btn', {",
+    "  variants: { size: { sm: '', md: '', lg: '' }, variant: { primary: '', secondary: '', tertiary: '' } },",
+    `  defaultVariants: { ${defaults} },`,
+    '});',
+    'export function Button() { return <button className={buttonVariants()} />; }',
+    '',
+  ].join('\n');
+}
+
+/**
+ * Writes the tree's src/app/data/component-api.json as generate-component-api
+ * would, and docs/api/props-baseline.json from it as `pnpm docs:api` does.
+ */
+export function writeComponentApi(root, api) {
+  write(root, 'src/app/data/component-api.json', JSON.stringify(api, null, 2));
+  writePropsBaseline(root);
+}
+
+/** releasedRepo() whose 0.20.0 snapshot carries the props section of RELEASED_API. */
+export function propsRepo(api = RELEASED_API) {
+  const root = releasedRepo();
+  write(root, 'src/button.tsx', buttonSource());
+  writeComponentApi(root, api);
+  recordRelease(root);
+  return root;
+}
+
+/**
+ * The DOM and accessibility baseline of domRepo()'s 0.20.0 release (hds#468):
+ * one demo's element lines and screen-reader stops, as
+ * tests/dom-a11y-baseline.test.tsx records them.
+ */
+export const RELEASED_DOM = {
+  Table: {
+    dom: ['div role="table"', '  div role="row"', '    div data-slot="label" role="cell"'],
+    reader: ['table, Projects', 'row, Alpha', 'cell, Alpha'],
+  },
+};
+
+export const writeDomBaseline = (root, dom) =>
+  write(root, 'docs/baselines/dom-a11y.json', formatJson(dom));
+
+/** releasedRepo() whose 0.20.0 snapshot carries the dom section of RELEASED_DOM. */
+export function domRepo(dom = RELEASED_DOM) {
+  const root = releasedRepo();
+  writeDomBaseline(root, dom);
+  recordRelease(root);
+  return root;
+}
+
+/**
+ * The source of typesRepo()'s 0.20.0 release (hds#467): a compound Menu, a
+ * hook and a tokens object, each re-exported from the root.
+ */
+export const RELEASED_TYPES_SOURCE = {
+  'src/index.ts': [
+    "export * from './button';",
+    "export * from './callout';",
+    "export * from './menu';",
+    "export * from './hooks';",
+    "export * from './tokens';",
+    '',
+  ].join('\n'),
+  'src/menu.tsx': [
+    'function MenuRoot() { return null; }',
+    'function MenuItem() { return null; }',
+    'function MenuGroup() { return null; }',
+    'export const Menu = Object.assign(MenuRoot, { Item: MenuItem, Group: MenuGroup });',
+    '',
+  ].join('\n'),
+  'src/hooks.ts': 'export function useCount(start: number): number { return start; }\n',
+  'src/tokens.ts':
+    "export const hds = { color: { content: { primary: '#000', secondary: '#666' } }, space: { sm: '4px' } };\n",
+};
+
+/** releasedRepo() whose 0.20.0 snapshot carries the types section of RELEASED_TYPES_SOURCE. */
+export function typesRepo() {
+  const root = releasedRepo();
+  for (const [rel, text] of Object.entries(RELEASED_TYPES_SOURCE)) write(root, rel, text);
+  writeTypesBaseline(root);
+  recordRelease(root);
   return root;
 }

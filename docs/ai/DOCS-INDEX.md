@@ -10,6 +10,7 @@ A script builds it: change its source, never the file. A named check fails when 
 
 - `README.md` (auto:front-door-counts): Front-door counts. Built by `scripts/build-readme-counts.mjs`; fresh when `node scripts/build-readme-counts.mjs --check` passes.
 - `README.md` (auto:consumer-usage): Who uses HDS (consumer usage). Built by `scripts/count-consumer-usage.mjs`; fresh when `node scripts/count-consumer-usage.mjs --check` passes.
+- `docs/ADOPTION.md` (auto:adoption-history): Month-by-month HDS adoption in each product app, one row per commit (adoption ledger). Built by `scripts/count-consumer-usage.mjs`; fresh when `node scripts/count-consumer-usage.mjs --check` passes.
 - `public/hds-stats.json`: The HDS numbers other repos read (component, core, pattern and token counts, contrast pairs, typography styles, the consumer split), each computed from the code. Built by `scripts/build-stats-json.mjs`; fresh when `node scripts/build-stats-json.mjs --check` passes.
 - `README.md` (auto:core-set): The core set of components. Built by `scripts/build-readme-counts.mjs`; fresh when `node scripts/build-readme-counts.mjs --check` passes.
 - `AGENTS.md` (consumer guide): Consumer agent instructions shipped in the package. Built by `scripts/generate-agents-md.mjs`; fresh when `node scripts/generate-agents-md.mjs --check` passes.
@@ -50,7 +51,7 @@ Hand-kept, but a gate compares it with the code.
 Written by a person; the registry carries when it was last re-read. `pnpm check:state-surfaces` warns "review due" past the re-read window and fails under `--strict-review`.
 
 - `status.json` (focus, phase, note): Where the repo is heading: focus, phase and note (v2 shape; ops derives release, next and blocked live). Reviewed 2026-10-12, re-read within 45 days.
-- `README.md` (prose): What HDS is, how to install it and use it (prose). Reviewed 2026-10-12, re-read within 90 days.
+- `README.md` (prose): What HDS is, how to install it and use it (prose). Reviewed 2026-11-02, re-read within 90 days.
 - `DESIGN.source.md`: Narrative rules of the visual spec (the editable source of DESIGN.md). Reviewed 2026-10-12, re-read within 90 days.
 - `DESIGN-HANDOFF.md` (manual sections): Hand-written sections around the generated token tables. Reviewed 2026-10-12, re-read within 90 days.
 - `MIGRATIONS.md`: How HDS deprecates and removes public API, and the removals shipped so far. Reviewed 2026-10-12, re-read within 90 days.
@@ -68,6 +69,7 @@ Written by a person; the registry carries when it was last re-read. `pnpm check:
 - `figma/links.json`: Figma file keys and docs URL the sync reads. Reviewed 2026-10-12, re-read within 120 days.
 - `figma/brand-modes.json`: Demo tenants that are modes of the Hirobius/Brand collection. Reviewed 2026-10-12, re-read within 120 days.
 - `figma/mapping-overrides.json`: Hand-made component to Figma mappings. Reviewed 2026-10-12, re-read within 90 days.
+- `docs/cleanup/DELETE-LIST.md`: The F8 cleanup inventory: knip delete-only batches and jscpd dedupe batches, with both ratchets' current counts (hds#766). Reviewed 2026-10-12, re-read within 90 days.
 - `OPERATING_MAP.md`: Where each kind of information should go. Reviewed 2026-10-12, re-read within 90 days.
 - `DECISIONS.md`: Pointer to docs/adr, where decisions live. Reviewed 2026-10-12, re-read within 180 days.
 - `content-model.md`: Frontmatter schema and page templates for the docs MDX. Reviewed 2026-10-12, re-read within 120 days.

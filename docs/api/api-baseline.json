@@ -13,8 +13,8 @@
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.26.2",
-  "generatedAt": "2026-10-16",
+  "version": "0.32.0",
+  "generatedAt": "2026-10-31",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -31,11 +31,13 @@
       "cn",
       "hds",
       "tokens",
+      "useAtLeast",
+      "useBreakpoint",
       "useHdsRouter",
       "useHdsTheme"
     ],
     "./app/components/alert": ["Alert", "AlertProps"],
-    "./app/components/avatar": ["Avatar", "AvatarProps"],
+    "./app/components/avatar": ["Avatar", "AvatarProps", "AvatarStatus"],
     "./app/components/badge": ["Badge", "BadgeProps"],
     "./app/components/box": [
       "Box",
@@ -46,7 +48,7 @@
       "SxValue"
     ],
     "./app/components/button": ["Button", "ButtonProps"],
-    "./app/components/callout": ["Callout", "CalloutProps", "default"],
+    "./app/components/callout": ["Callout", "CalloutProps"],
     "./app/components/field": ["Field", "FieldProps"],
     "./app/components/stat": ["Stat", "StatProps"],
     "./app/components/status-list-item": [
@@ -58,6 +60,9 @@
       "Card",
       "CardBody",
       "CardDescription",
+      "CardFact",
+      "CardFacts",
+      "CardFactsProps",
       "CardFooter",
       "CardHeader",
       "CardHeaderProps",
@@ -70,6 +75,8 @@
       "CardRowNote",
       "CardRowProps",
       "CardRowTitle",
+      "CardSource",
+      "CardSourceProps",
       "CardTitle",
       "CardTone",
       "CardVariant"
@@ -106,6 +113,11 @@
       "ComposerProps",
       "ComposerSubmission"
     ],
+    "./app/components/command-palette": [
+      "CommandPalette",
+      "CommandPaletteItem",
+      "CommandPaletteProps"
+    ],
     "./app/components/theme-toggle": ["ThemeToggle", "ThemeToggleProps"],
     "./app/components/checkbox": ["Checkbox", "CheckboxProps", "HdsCheckboxDemoState"],
     "./app/components/radio": ["HdsRadioDemoState", "Radio", "RadioProps"],
@@ -129,13 +141,36 @@
       "TableSortDirection"
     ],
     "./app/components/tag": ["Tag", "TagProps"],
-    "./app/components/text": ["Text", "TextProps", "TextTone", "TextVariant"],
+    "./app/components/text": [
+      "Text",
+      "TextLineClamp",
+      "TextProps",
+      "TextTone",
+      "TextVariant",
+      "TextWeight"
+    ],
     "./app/components/kbd": ["Kbd", "KbdProps"],
     "./app/components/timestamp": ["Timestamp", "TimestampFormat", "TimestampProps"],
     "./app/components/blockquote": ["Blockquote", "BlockquoteProps"],
+    "./app/components/meta-line": ["MetaLine", "MetaLineItems", "MetaLineProps"],
+    "./app/components/nav-list": [
+      "NavList",
+      "NavListItem",
+      "NavListItemProps",
+      "NavListLinkItemProps",
+      "NavListProps",
+      "NavListSelectItemProps"
+    ],
+    "./app/components/token-field": [
+      "TokenField",
+      "TokenFieldHandle",
+      "TokenFieldProps",
+      "TokenFieldSelection"
+    ],
     "./app/components/visually-hidden": ["VisuallyHidden", "VisuallyHiddenProps"],
     "./app/components/avatar-group": ["AvatarGroup", "AvatarGroupProps"],
     "./app/components/alert-dialog": ["AlertDialog", "AlertDialogContentProps"],
+    "./app/components/sheet": ["Sheet", "SheetActionProps", "SheetContentProps", "SheetProps"],
     "./app/components/metadata-list": ["MetadataList", "MetadataListItem", "MetadataListProps"],
     "./app/components/sidebar": ["Sidebar", "SidebarProps"],
     "./app/components/switcher": ["Switcher", "SwitcherProps"],
@@ -148,11 +183,12 @@
       "TimelineTone"
     ],
     "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
-    "./app/components/tabs": ["Tabs", "TabsContent", "TabsList", "TabsTrigger"],
+    "./app/components/tabs": ["Tabs", "TabsContent", "TabsContentProps", "TabsList", "TabsTrigger"],
     "./app/components/breadcrumb": ["Breadcrumb", "BreadcrumbItem", "BreadcrumbProps"],
     "./app/components/combobox": [
       "Combobox",
       "ComboboxAnyProps",
+      "ComboboxCreatableProps",
       "ComboboxMultipleProps",
       "ComboboxOption",
       "ComboboxProps"
@@ -160,6 +196,7 @@
     "./app/components/disclosure": ["Disclosure", "DisclosureProps"],
     "./app/components/pagination": ["Pagination", "PaginationProps", "paginationRange"],
     "./app/components/toast": [
+      "ToastAction",
       "ToastOptions",
       "ToastProvider",
       "ToastProviderProps",
@@ -167,7 +204,7 @@
       "useToast"
     ],
     "@subpath/tokens": ["ct", "default", "tokenValues"],
-    "@subpath/cn": ["cn"],
+    "@subpath/cn": ["SPACING_KEYS", "cn"],
     "@subpath/manifest": ["default"],
     "@subpath/contexts": [
       "FontProvider",
@@ -200,7 +237,7 @@
       "HdsFormProps",
       "useHdsForm"
     ],
-    "@subpath/mui": ["HdsMuiPalette", "HdsMuiThemeOptions", "default", "hdsMuiThemeOptions"],
+    "@subpath/mui": ["HdsMuiPalette", "HdsMuiThemeOptions", "hdsMuiThemeOptions"],
     "@subpath/brand": ["BrandPalette", "brandOverlayCss", "brandOverlayStyle", "brandOverlayVars"],
     "@subpath/scroll": [
       "ScrollOffset",
@@ -214,6 +251,9 @@
     "@subpath/patterns": [
       "AssetImg",
       "AssetImgProps",
+      "AsyncState",
+      "AsyncStateProps",
+      "AsyncStatus",
       "CodeBlock",
       "CodeBlockProps",
       "DataTableSection",
@@ -267,6 +307,7 @@
       "ArrowRight",
       "ArrowUp",
       "ArrowUpRight",
+      "Banknote",
       "Bell",
       "Bookmark",
       "Briefcase",
@@ -300,6 +341,7 @@
       "LogOut",
       "LucideIcon",
       "Mail",
+      "MapPin",
       "Menu",
       "Minus",
       "Pencil",

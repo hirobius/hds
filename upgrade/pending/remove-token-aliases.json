@@ -1,0 +1,171 @@
+{
+  "impact": "breaking",
+  "plain": "Eight tokens deprecated since hds#206 and the 2026-10 border consolidation are gone; run the hds-token-aliases codemod to move each to its replacement, the same pixels at both densities except border.subdued in Dark.",
+  "steps": [
+    {
+      "id": "removed/--semantic-color-border-subdued",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-color-border-subdued is removed; use --semantic-color-border-default (Dark is neutral.600, was neutral.800; Light is the same), which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-color-border-subdued"],
+        "cssVarWrites": ["--semantic-color-border-subdued"]
+      },
+      "facts": ["css-var-removed:--semantic-color-border-subdued"]
+    },
+    {
+      "id": "removed/--semantic-space-component-gap",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-component-gap is removed; use --semantic-space-scale-xs, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-space-component-gap"],
+        "cssVarWrites": ["--semantic-space-component-gap"]
+      },
+      "facts": ["css-var-removed:--semantic-space-component-gap"]
+    },
+    {
+      "id": "removed/--semantic-space-component-padding",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-component-padding is removed; use --semantic-space-surface-padding, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-space-component-padding"],
+        "cssVarWrites": ["--semantic-space-component-padding"]
+      },
+      "facts": ["css-var-removed:--semantic-space-component-padding"]
+    },
+    {
+      "id": "removed/--semantic-space-layout-gutter",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-gutter is removed; use --semantic-space-region-gutter, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-space-layout-gutter"],
+        "cssVarWrites": ["--semantic-space-layout-gutter"]
+      },
+      "facts": ["css-var-removed:--semantic-space-layout-gutter"]
+    },
+    {
+      "id": "removed/--semantic-space-layout-inset",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-inset is removed; use --semantic-space-scale-lg, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-space-layout-inset"],
+        "cssVarWrites": ["--semantic-space-layout-inset"]
+      },
+      "facts": ["css-var-removed:--semantic-space-layout-inset"]
+    },
+    {
+      "id": "removed/--semantic-space-layout-normal",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-normal is removed; use --semantic-space-scale-md, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-space-layout-normal"],
+        "cssVarWrites": ["--semantic-space-layout-normal"]
+      },
+      "facts": ["css-var-removed:--semantic-space-layout-normal"]
+    },
+    {
+      "id": "removed/--semantic-space-layout-spacious",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-spacious is removed; use --semantic-space-scale-xl, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-space-layout-spacious"],
+        "cssVarWrites": ["--semantic-space-layout-spacious"]
+      },
+      "facts": ["css-var-removed:--semantic-space-layout-spacious"]
+    },
+    {
+      "id": "removed/--semantic-space-layout-tight",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-tight is removed; use --semantic-space-scale-sm, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": ["--semantic-space-layout-tight"],
+        "cssVarWrites": ["--semantic-space-layout-tight"]
+      },
+      "facts": ["css-var-removed:--semantic-space-layout-tight"]
+    },
+    {
+      "id": "value-changed/--component-button-secondary-border-disabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated --component-button-secondary-border-disabled follows border.default: the same graphite in Light, neutral.600 in Dark (was neutral.800); Button has not drawn it since hds#891.",
+      "detect": {
+        "cssVars": ["--component-button-secondary-border-disabled"],
+        "cssVarWrites": ["--component-button-secondary-border-disabled"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-disabled::root",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "removed/semantic.space-aliases-js-tailwind",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "hds.semantic.space.component and hds.semantic.space.layout.gutter, the Tailwind spacing keys component-gap/padding and layout-* (p-, m-, gap-, w-, inset- and every other spacing utility, and theme(spacing.*)), and Box sx 'border.subdued' are removed; the codemod rewrites them.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "regex": [
+          "\\bsemantic\\.space\\.(?:component\\.(?:gap|padding)|layout\\.(?:gutter|tight|normal|inset|spacious))\\b",
+          "\\bsemantic\\.color\\.border\\.subdued\\b",
+          "[a-z](?:-|\\.)(?:component-(?:gap|padding)|layout-(?:gutter|tight|normal|inset|spacious))(?![\\w-])",
+          "['\"`]border\\.subdued['\"`]"
+        ]
+      }
+    },
+    {
+      "id": "tenant/brutalist-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the brutalist-demo brand (data-brand=\"brutalist-demo\") no longer get its surface padding override, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?brutalist-demo(?![\\w-])"
+        ]
+      },
+      "facts": ["css-var-removed:--semantic-space-component-padding"]
+    }
+  ]
+}

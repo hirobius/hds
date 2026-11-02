@@ -24,13 +24,13 @@
  */
 
 import { describe, it, expect, beforeAll } from 'vitest';
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { chromium } from 'playwright';
-import { chromiumPath } from '../lib/browser-host.mjs';
+import { chromiumForTests } from '../lib/browser-host.mjs';
 import { transformSource } from '../../codemods/tile-grid.mjs';
 import { Grid } from '../../src/app/components/grid.tsx';
 
@@ -142,8 +142,8 @@ function pageHtml(tenant, density) {
   return `<html ${brand} ${dens}><head><style>${PAGE_CSS}</style></head><body>${body}</body></html>`;
 }
 
-const CHROMIUM = chromiumPath() ?? chromium.executablePath();
-const hasBrowser = Boolean(CHROMIUM) && existsSync(CHROMIUM);
+const CHROMIUM = chromiumForTests();
+const hasBrowser = Boolean(CHROMIUM);
 
 describe.skipIf(!hasBrowser)(
   'Grid computes what TileGrid computes, in Chromium (hds#393, hds#395)',

@@ -70,11 +70,9 @@ for (const { name, cmd } of stages) {
   const start = performance.now();
   const r = spawnSync('sh', ['-c', cmd], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`;
+  const ms = performance.now() - start;
   if (logFile)
-    fs.appendFileSync(
-      logFile,
-      `\n===== ${name} :: ${cmd} (${formatDuration(performance.now() - start)}) =====\n${out}`,
-    );
+    fs.appendFileSync(logFile, `\n===== ${name} :: ${cmd} (${formatDuration(ms)}) =====\n${out}`);
   if (r.status !== 0) {
     console.error(`✗ ${hook}: ${name} failed (exit ${r.status ?? 'signal'}) — ${cmd}`);
     console.error(failureExcerpt(out));

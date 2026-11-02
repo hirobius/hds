@@ -6,25 +6,14 @@
  * writes that element in its place, imported from `/patterns`.
  * Seams: `transformSource` (pure) and the CLI (`--root`, `--check`, `--dry-run`).
  */
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import {
-  cpSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-  symlinkSync,
-  writeFileSync,
-} from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFileSync, symlinkSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { codemodPaths, useCodemodFixture, expectShipped } from './helpers/codemod-fixture.mjs';
 import { transformSource } from '../../codemods/not-found-pattern.mjs';
 
-const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
-const CODEMOD = join(REPO, 'codemods/not-found-pattern.mjs');
-const FIXTURES = join(REPO, 'codemods/__fixtures__/not-found-pattern');
+const { CODEMOD, FIXTURES } = codemodPaths('not-found-pattern');
 const ROOT = '@hirobius/design-system';
 const SUB = '@hirobius/design-system/patterns';
 const ELEMENT = 'displayText="404" message="Page not found"';
@@ -200,55 +189,44 @@ describe('the rewrite renders the 404 recovery surface NotFoundPattern rendered'
 
 describe('package', () => {
   it('ships the codemod as the hds-not-found-pattern bin', () => {
-    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    expect(pkg.bin['hds-not-found-pattern']).toBe('codemods/not-found-pattern.mjs');
-    expect(pkg.files).toContain('codemods/not-found-pattern.mjs');
+    expectShipped('not-found-pattern');
   });
 });
 
 describe('CLI', () => {
-  let dir;
-  beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'hds-not-found-'));
-    cpSync(FIXTURES, dir, { recursive: true });
-    // node_modules is gitignored, so the fixture is built here rather than committed.
-    mkdirSync(join(dir, 'clean/node_modules/x'), { recursive: true });
-    writeFileSync(
-      join(dir, 'clean/node_modules/x/index.js'),
-      `import { NotFoundPattern } from '${ROOT}';\n`,
-    );
+  // node_modules is gitignored, so the fixture is built here rather than committed.
+  const fx = useCodemodFixture('not-found-pattern', {
+    nodeModules: `import { NotFoundPattern } from '${ROOT}';\n`,
   });
-  afterEach(() => rmSync(dir, { recursive: true, force: true }));
 
-  const run = (...args) =>
-    spawnSync('node', [CODEMOD, '--root', dir, ...args], { encoding: 'utf8' });
+  const { run } = fx;
 
   it('--check exits 1 before a rewrite and writes nothing', () => {
-    const before = readFileSync(join(dir, 'needs-rewrite/src/NotFoundPage.tsx'), 'utf8');
+    const before = readFileSync(join(fx.dir, 'needs-rewrite/src/NotFoundPage.tsx'), 'utf8');
     const r = run('--check');
     expect(r.status).toBe(1);
     expect(r.stderr).toMatch(/NotFoundPage\.tsx/);
-    expect(readFileSync(join(dir, 'needs-rewrite/src/NotFoundPage.tsx'), 'utf8')).toBe(before);
+    expect(readFileSync(join(fx.dir, 'needs-rewrite/src/NotFoundPage.tsx'), 'utf8')).toBe(before);
   });
 
   it('--dry-run reports counts and the changed lines, exits 0 and writes nothing', () => {
-    const before = readFileSync(join(dir, 'needs-rewrite/src/routes.tsx'), 'utf8');
+    const before = readFileSync(join(fx.dir, 'needs-rewrite/src/routes.tsx'), 'utf8');
     const r = run('--dry-run');
     expect(r.status).toBe(0);
     expect(r.stdout).toMatch(/would rewrite 2 files, 2 sites/);
     const lines = r.stdout.split('\n');
     expect(lines).toContain('-   return <NotFoundPattern />;');
     expect(lines).toContain(`+   return <ErrorPattern ${ELEMENT} />;`);
-    expect(readFileSync(join(dir, 'needs-rewrite/src/routes.tsx'), 'utf8')).toBe(before);
+    expect(readFileSync(join(fx.dir, 'needs-rewrite/src/routes.tsx'), 'utf8')).toBe(before);
   });
 
   it('a real run rewrites, then --check exits 0 and a second run is a no-op; clean files and node_modules are untouched', () => {
-    const clean = readFileSync(join(dir, 'clean/src/migrated.tsx'), 'utf8');
+    const clean = readFileSync(join(fx.dir, 'clean/src/migrated.tsx'), 'utf8');
     expect(run().status).toBe(0);
-    const page = readFileSync(join(dir, 'needs-rewrite/src/NotFoundPage.tsx'), 'utf8');
+    const page = readFileSync(join(fx.dir, 'needs-rewrite/src/NotFoundPage.tsx'), 'utf8');
     expect(page).toContain(`import { ErrorPattern } from '${SUB}';`);
     expect(page).toContain(`return <ErrorPattern ${ELEMENT} />;`);
-    const routes = readFileSync(join(dir, 'needs-rewrite/src/routes.tsx'), 'utf8');
+    const routes = readFileSync(join(fx.dir, 'needs-rewrite/src/routes.tsx'), 'utf8');
     expect(routes).toContain(`import { Page, ErrorPattern as Missing } from '${SUB}';`);
     expect(routes).toContain('// the 404 route');
     expect(routes).toContain(`<Missing ${ELEMENT} key="404" />`);
@@ -256,19 +234,19 @@ describe('CLI', () => {
     expect(check.stderr).toBe('');
     expect(check.status).toBe(0);
     expect(run().stdout).toMatch(/rewrote 0 files/);
-    expect(readFileSync(join(dir, 'needs-rewrite/src/routes.tsx'), 'utf8')).toBe(routes);
-    expect(readFileSync(join(dir, 'clean/src/migrated.tsx'), 'utf8')).toBe(clean);
-    expect(readFileSync(join(dir, 'clean/node_modules/x/index.js'), 'utf8')).toContain(
+    expect(readFileSync(join(fx.dir, 'needs-rewrite/src/routes.tsx'), 'utf8')).toBe(routes);
+    expect(readFileSync(join(fx.dir, 'clean/src/migrated.tsx'), 'utf8')).toBe(clean);
+    expect(readFileSync(join(fx.dir, 'clean/node_modules/x/index.js'), 'utf8')).toContain(
       `{ NotFoundPattern }`,
     );
   });
 
   it('--check exits 1 and lists a site it cannot rewrite, before and after a real run', () => {
     writeFileSync(
-      join(dir, 'clean/src/spread.tsx'),
+      join(fx.dir, 'clean/src/spread.tsx'),
       `import { NotFoundPattern } from '${ROOT}';\nexport const P = (p: object) => <NotFoundPattern {...p} />;\n`,
     );
-    const root = join(dir, 'clean');
+    const root = join(fx.dir, 'clean');
     const r = run('--check', '--root', root);
     expect(r.status).toBe(1);
     expect(r.stderr).toMatch(/spread\.tsx: <NotFoundPattern> at line 2: a spread/);
@@ -277,9 +255,9 @@ describe('CLI', () => {
   });
 
   it('runs through a symlinked bin (npm/yarn .bin style)', () => {
-    const link = join(dir, 'link');
+    const link = join(fx.dir, 'link');
     symlinkSync(CODEMOD, link);
-    const r = spawnSync('node', [link, '--root', join(dir, 'needs-rewrite'), '--check'], {
+    const r = spawnSync('node', [link, '--root', join(fx.dir, 'needs-rewrite'), '--check'], {
       encoding: 'utf8',
     });
     expect(r.status).toBe(1);

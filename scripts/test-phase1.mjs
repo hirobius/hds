@@ -11,8 +11,10 @@
 //   2. Smart placement: two root frames are generated in sequence. "Card 2" should
 //      appear 100px to the right of "Card 1" (Card 1 is 360px wide → Card 2 at x=460).
 
-const BRIDGE_BASE = (process.env.HDS_FIGMA_BRIDGE_URL || 'http://localhost:3005/generate')
-  .replace(/\/generate$/, '');
+const BRIDGE_BASE = (process.env.HDS_FIGMA_BRIDGE_URL || 'http://localhost:3005/generate').replace(
+  /\/generate$/,
+  '',
+);
 const BRIDGE_URL = BRIDGE_BASE + '/generate';
 
 /** Returns true if the bridge is reachable, false otherwise. */
@@ -49,7 +51,9 @@ async function run() {
   // Pre-flight: skip gracefully when bridge is not running
   const bridgeAvailable = await isBridgeUp();
   if (!bridgeAvailable) {
-    console.log('[test:phase1] bridge unavailable — skipping (start bridge with: node scripts/hds-bridge.mjs)');
+    console.log(
+      '[test:phase1] bridge unavailable — skipping (start bridge with: node scripts/hds-bridge.mjs)',
+    );
     process.exit(0);
   }
 
@@ -60,27 +64,42 @@ async function run() {
   // ── Generation 1: card with semantic token fills ──────────────────────────
   console.log('Generation 1 — card with semantic color tokens:');
   await send({
-    action: 'ADD_NODE', id: 'p1-card-1', parentId: 'root', type: 'FRAME',
+    action: 'ADD_NODE',
+    id: 'p1-card-1',
+    parentId: 'root',
+    type: 'FRAME',
     props: {
-      name: 'Phase1 Card 1', width: 360, height: 200,
-      layoutMode: 'VERTICAL', itemSpacing: 16, padding: 24,
+      name: 'Phase1 Card 1',
+      width: 360,
+      height: 200,
+      layoutMode: 'VERTICAL',
+      itemSpacing: 16,
+      padding: 24,
       fill: 'semantic.color.surface.raised',
       stroke: 'semantic.color.border.default',
       radius: 8,
     },
   });
   await send({
-    action: 'ADD_NODE', id: 'p1-heading-1', parentId: 'p1-card-1', type: 'TEXT',
+    action: 'ADD_NODE',
+    id: 'p1-heading-1',
+    parentId: 'p1-card-1',
+    type: 'TEXT',
     props: {
-      name: 'Heading', text: 'Card Title',
+      name: 'Heading',
+      text: 'Card Title',
       typography: 'semantic.typography.h3',
       fill: 'semantic.color.content.primary',
     },
   });
   await send({
-    action: 'ADD_NODE', id: 'p1-body-1', parentId: 'p1-card-1', type: 'TEXT',
+    action: 'ADD_NODE',
+    id: 'p1-body-1',
+    parentId: 'p1-card-1',
+    type: 'TEXT',
     props: {
-      name: 'Body', text: 'This is the card body paragraph.',
+      name: 'Body',
+      text: 'This is the card body paragraph.',
       typography: 'semantic.typography.body',
       fill: 'semantic.color.content.secondary',
     },
@@ -88,24 +107,35 @@ async function run() {
 
   // Small delay so the first frame is committed to the canvas before the
   // second generation scan runs. The plugin is async so we give it 600 ms.
-  await new Promise(r => setTimeout(r, 600));
+  await new Promise((r) => setTimeout(r, 600));
 
   // ── Generation 2: second card — smart placement check ────────────────────
   console.log('\nGeneration 2 — second card (expect x ≈ 460, i.e. 360 + 100 gap):');
   await send({
-    action: 'ADD_NODE', id: 'p1-card-2', parentId: 'root', type: 'FRAME',
+    action: 'ADD_NODE',
+    id: 'p1-card-2',
+    parentId: 'root',
+    type: 'FRAME',
     props: {
-      name: 'Phase1 Card 2', width: 360, height: 200,
-      layoutMode: 'VERTICAL', itemSpacing: 16, padding: 24,
+      name: 'Phase1 Card 2',
+      width: 360,
+      height: 200,
+      layoutMode: 'VERTICAL',
+      itemSpacing: 16,
+      padding: 24,
       fill: 'semantic.color.surface.page',
-      stroke: 'semantic.color.border.subdued',
+      stroke: 'semantic.color.border.default',
       radius: 8,
     },
   });
   await send({
-    action: 'ADD_NODE', id: 'p1-heading-2', parentId: 'p1-card-2', type: 'TEXT',
+    action: 'ADD_NODE',
+    id: 'p1-heading-2',
+    parentId: 'p1-card-2',
+    type: 'TEXT',
     props: {
-      name: 'Heading', text: 'Second Card',
+      name: 'Heading',
+      text: 'Second Card',
       typography: 'semantic.typography.h3',
       fill: 'semantic.color.content.primary',
     },
@@ -113,11 +143,13 @@ async function run() {
 
   console.log('\n✅ Commands sent. Switch to Figma and verify:');
   console.log('   [Variable binding]  Select "Phase1 Card 1" → fills should show variable chips,');
-  console.log('                       not raw hex. (Run Sync Tokens first if variables are missing.)');
+  console.log(
+    '                       not raw hex. (Run Sync Tokens first if variables are missing.)',
+  );
   console.log('   [Smart placement]   "Phase1 Card 2" x position should be ~460 (360 + 100 gap).');
 }
 
-run().catch(err => {
+run().catch((err) => {
   console.error('\n❌ Test error:', err.message);
   process.exit(1);
 });

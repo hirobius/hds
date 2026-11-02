@@ -57,15 +57,15 @@ describe('resolveSx — spacing shorthands', () => {
     },
   );
 
-  // Frozen until the 1.0 removal: layout.* is fixed px, and the scale step
-  // would tighten under compact density (spacing-computed-lock.test.mjs).
+  // hds#625 removed the semantic.space.layout.* vars these read; they now read
+  // the scale step each names (spacing-computed-lock.test.mjs).
   it.each([
-    ['tight', 'var(--semantic-space-layout-tight)'],
-    ['normal', 'var(--semantic-space-layout-normal)'],
-    ['inset', 'var(--semantic-space-layout-inset)'],
-    ['spacious', 'var(--semantic-space-layout-spacious)'],
-  ])('keeps the deprecated step %s on %s, as before hds#206', (name, layoutVar) => {
-    expect(resolveSx({ m: name }, 'cls')).toEqual([`.cls{margin:${layoutVar}}`]);
+    ['tight', 'var(--semantic-space-scale-sm)'],
+    ['normal', 'var(--semantic-space-scale-md)'],
+    ['inset', 'var(--semantic-space-scale-lg)'],
+    ['spacious', 'var(--semantic-space-scale-xl)'],
+  ])('resolves the deprecated step %s to %s', (name, scaleVar) => {
+    expect(resolveSx({ m: name }, 'cls')).toEqual([`.cls{margin:${scaleVar}}`]);
   });
 
   it('takes a t-shirt step inside a responsive map', () => {
@@ -86,6 +86,22 @@ describe('resolveSx — spacing shorthands', () => {
 
   it('does not resolve an inherited object key as a spacing name', () => {
     expect(resolveSx({ p: 'constructor' }, 'cls')).toEqual(['.cls{padding:constructor}']);
+  });
+
+  it('resolves a fixed step (fixed-2xs … fixed-xl) to semantic.space.fixed', () => {
+    expect(resolveSx({ p: 'fixed-sm', gap: 'fixed-2xs' }, 'cls')).toEqual([
+      '.cls{padding:var(--semantic-space-fixed-sm);gap:var(--semantic-space-fixed-2xs)}',
+    ]);
+  });
+
+  it('resolves a borderRadius step to semantic.radius.scale', () => {
+    expect(resolveSx({ borderRadius: 'pill' }, 'cls')).toEqual([
+      '.cls{border-radius:var(--semantic-radius-scale-pill)}',
+    ]);
+    expect(resolveSx({ borderRadius: 'md' }, 'cls')).toEqual([
+      '.cls{border-radius:var(--semantic-radius-scale-md)}',
+    ]);
+    expect(resolveSx({ borderRadius: '50%' }, 'cls')).toEqual(['.cls{border-radius:50%}']);
   });
 
   it('passes a raw string spacing value through unchanged', () => {

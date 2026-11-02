@@ -12,8 +12,12 @@ import { CodeBlock } from './code-block';
 afterEach(cleanup);
 
 const css = (file: string) => readFileSync(resolve(__dirname, '../../styles', file), 'utf8');
-const tokenPx = (name: string) =>
-  Number(css('tokens.generated.css').match(new RegExp(`${name}:\\s*(\\d+)px`))?.[1]);
+/** A token's px value, following var() aliases (`--component-button-size-sm-height` -> 36). */
+const tokenPx = (name: string): number => {
+  const value = css('tokens.generated.css').match(new RegExp(`${name}:\\s*([^;]+);`))?.[1] ?? '';
+  const alias = value.match(/^var\((--[\w-]+)\)$/);
+  return alias ? tokenPx(alias[1]) : Number(value.match(/^(\d+)px$/)?.[1]);
+};
 
 describe('CodeBlock accessibility contract', () => {
   // jsdom does no layout, so fake an overflowing <pre> (scrollWidth past clientWidth).
@@ -103,17 +107,44 @@ describe('CodeBlock accessibility contract', () => {
     }
   });
 
+  it('the block copy button is an HDS icon-only Button, centred by the Button itself (hds#857)', () => {
+    render(<CodeBlock code="npm i" language="bash" />);
+    const copy = screen.getByRole('button', { name: 'Copy code' });
+    expect(copy.getAttribute('data-variant')).toBe('secondary');
+    expect(copy.getAttribute('data-size')).toBe('sm');
+    expect(copy.className).toContain('justify-center');
+    expect(copy.querySelector('svg')).not.toBeNull();
+  });
+
+  it('the block copy button sits beside the scrolling code, never over it, so long lines cannot run under it (hds#857)', () => {
+    render(<CodeBlock code={'x'.repeat(400)} language="ts" />);
+    const copy = screen.getByRole('button', { name: 'Copy code' });
+    const pre = document.querySelector('pre') as HTMLPreElement;
+    expect(pre.contains(copy)).toBe(false);
+    expect(copy.parentElement).toBe(pre.parentElement);
+    expect(copy.className).not.toMatch(/(^|\s)absolute(\s|$)/);
+    expect(pre.className).toContain('flex-1');
+    expect(pre.className).toContain('min-w-0');
+  });
+
   it.each(['block', 'inline'] as const)(
     'a11y:code-block.target-size - the copy button is 24px or more and lifts to the touch target on coarse pointers (%s)',
     (variant) => {
       render(<CodeBlock code="x" variant={variant} />);
       const copy = screen.getByRole('button', { name: 'Copy code' });
       expect(copy.className).toContain('hds-touch-target');
-      // 16px icon + 2 x the subgrid-gap padding (primitive space-1)
-      expect(16 + 2 * tokenPx('--primitive-space-1')).toBeGreaterThanOrEqual(24);
-      expect(copy.className).toContain('py-[var(--semantic-space-subgrid-gap)]');
+      if (variant === 'block') {
+        // the sm icon-only Button is a square bound to the sm height token (36px)
+        expect(tokenPx('--component-button-size-sm-height')).toBeGreaterThanOrEqual(24);
+        expect(copy.className).toContain('h-[var(--component-button-size-sm-height)]');
+        expect(copy.className).toContain('w-[var(--component-button-size-sm-height)]');
+      } else {
+        // 16px icon + 2 x the subgrid-gap padding (primitive space-1)
+        expect(16 + 2 * tokenPx('--primitive-space-1')).toBeGreaterThanOrEqual(24);
+        expect(copy.className).toContain('py-[var(--semantic-space-subgrid-gap)]');
+      }
       expect(css('theme.css')).toMatch(
-        /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--primitive-size-interactive-min\)/,
+        /\.hds-touch-target\s*\{[^}]*min-height:\s*var\(--semantic-size-touchTarget\)/,
       );
     },
   );

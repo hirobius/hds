@@ -1,0 +1,53 @@
+{
+  "impact": "look",
+  "plain": "Buttons are 4px taller at every size with a 600-weight label; re-check toolbars, dense rows and fixed-height containers that hold a Button for overflow.",
+  "steps": [
+    {
+      "id": "value-changed/--component-button-size-lg-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-size-lg-height is now 52px (was 48px); a container or sibling sized to match the lg Button should follow the variable, not a fixed px.",
+      "detect": {
+        "cssVars": ["--component-button-size-lg-height"],
+        "cssVarWrites": ["--component-button-size-lg-height"]
+      },
+      "facts": ["css-var-changed:--component-button-size-lg-height::root"]
+    },
+    {
+      "id": "value-changed/--component-button-size-md-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-size-md-height is now 44px (was 40px); a container or sibling sized to match the md Button should follow the variable, not a fixed px.",
+      "detect": {
+        "cssVars": ["--component-button-size-md-height"],
+        "cssVarWrites": ["--component-button-size-md-height"]
+      },
+      "facts": ["css-var-changed:--component-button-size-md-height::root"]
+    },
+    {
+      "id": "value-changed/--component-button-size-sm-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-size-sm-height is now 36px (was 32px); a container or sibling sized to match the sm Button should follow the variable, not a fixed px.",
+      "detect": {
+        "cssVars": ["--component-button-size-sm-height"],
+        "cssVarWrites": ["--component-button-size-sm-height"]
+      },
+      "facts": ["css-var-changed:--component-button-size-sm-height::root"]
+    },
+    {
+      "id": "look/Button",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Button labels are weight 600 (component.button.fontWeight); if you forced font-weight on a Button, drop it or set it through that variable.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["Button"]
+          }
+        ]
+      }
+    }
+  ]
+}

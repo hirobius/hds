@@ -147,7 +147,7 @@ export function buildDocsIndex(registry) {
 export function buildAgentsMd({ componentApi, patternNames, repoNotes, voice }) {
   const api = componentApi.components;
   const fromPatterns = new Set(patternNames);
-  const needs = needsMarkdown(api);
+  const needs = needsMarkdown(api, patternNames);
   const core = recommendedComponents().filter((n) => api[n]);
   const rootNames = [...core.filter((n) => !fromPatterns.has(n)), ...Object.keys(HOOKS)].sort();
   const patterns = core.filter((n) => fromPatterns.has(n));
@@ -186,6 +186,7 @@ export function buildAgentsMd({ componentApi, patternNames, repoNotes, voice }) 
     '- No raw `<button>`, `<input>`, `<select>`, `<textarea>` or `<form>`: use `Button`, `Input`, `Select`, `Textarea`, `Form`.',
     '- Every control has an accessible name: fields take `label`, a repeated row action takes an `aria-label` naming its row.',
     '- Section headings come from the pattern that owns the section (`title` props). Do not add a `Text` heading the screen does not ask for.',
+    '- The app is type-checked strictly and unannotated code fails the build: give `useState` an explicit type when the value can be `null` (`useState<string | null>(null)`), and annotate handler and callback parameters instead of leaving them implicit `any`.',
     '',
     ...(voice ? ['## Voice', '', voiceMarkdown(voice), ''] : []),
     '## Finish with the lint plugin',

@@ -25,7 +25,12 @@ import { Check, Minus } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import {
+  forwardFocusHandlers,
+  useInteractionState,
+  type InteractionVisualState,
+} from '../hooks/useInteractionState';
+import { CONTROL_COLOR_FADE } from './control-color-fade';
 import { Icon } from './icon';
 
 /** Checkbox — custom-drawn checkbox with check / indeterminate glyph. */
@@ -203,18 +208,7 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
           disabled={isDisabled}
           aria-checked={indeterminate ? 'mixed' : checked}
           onChange={(e) => onChange(e.target.checked)}
-          onFocus={(e) => {
-            handlers.onFocus(e.currentTarget);
-            onFocus?.(e);
-          }}
-          onKeyDown={(e) => {
-            handlers.onKeyDown(e.currentTarget);
-            onKeyDown?.(e);
-          }}
-          onBlur={(e) => {
-            handlers.onBlur();
-            onBlur?.(e);
-          }}
+          {...forwardFocusHandlers(handlers, { onFocus, onKeyDown, onBlur })}
           className={checkboxInputVariants({ state: visualState })}
           {...rest}
         />
@@ -226,11 +220,8 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
             ease: productiveMotion.easing,
           }}
           className={checkboxGlyphVariants({ state: visualState, on: isOn })}
-          // motion-ok: background-color/border-color swap on state change; the CSS
-          // transition (not a framer `animate` target) is left inline so the color
-          // fade keeps working even though the colors themselves now live in cva.
           style={{
-            transition: `background-color ${productiveMotion.duration}s ease, border-color ${productiveMotion.duration}s ease`,
+            transition: CONTROL_COLOR_FADE,
           }}
         >
           {indeterminate ? (
@@ -241,7 +232,7 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
         </motion.span>
         <motion.span
           className="text-muted-foreground"
-          animate={{ x: isPressed ? hds.space.px1 : 0 }}
+          animate={{ x: isPressed ? hds.semantic.space.subgrid.hairline : 0 }}
           transition={{
             duration: productiveMotion.duration,
             ease: productiveMotion.easing,

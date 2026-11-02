@@ -17,6 +17,17 @@
  */
 :root,
 .dark {
+  /* next/font faces (app/layout.tsx) lead the sans and display stacks; the token family stays as
+     the fallback. Mono is not overridden: --primitive-typography-family-mono comes from the package. */
+  --primitive-typography-family-primary:
+    var(--hds-docs-font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --primitive-typography-family-display:
+    var(--hds-docs-font-display), 'Sora', 'Plus Jakarta Sans', system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* The font dial (ADR-023) re-points the type roles inside any HDS subtree (HdsThemeProvider,
+     /tour) at --hds-font-family, which would skip the next/font faces and swap late (CLS). */
+  --hds-font-family: var(--primitive-typography-family-primary);
   /* Fumadocs reads --font-sans / --font-mono for its base typography. */
   --font-sans: var(--primitive-typography-family-primary);
   --font-mono: var(--primitive-typography-family-mono);
@@ -47,6 +58,75 @@ html {
   font-family: var(--primitive-typography-family-primary);
 }
 
+/* Headings take the HDS display face (Sora 700, ADR-063, hds#847), as the
+   display and title roles do; the body face stays on everything else. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--semantic-typography-title-font-family);
+}
+
+/* Docs heading levels step down the type ramp (hds#847 A): the page title is
+   `display`, a section head `title`, a sub-head `titleSm`. Live demos keep
+   their own type. */
+#nd-page h1:not(.hds-demo-frame *),
+#nd-page .prose h2:not(.hds-demo-frame *),
+#nd-page .prose h3:not(.hds-demo-frame *) {
+  font-family: var(--hds-heading-family);
+  font-size: var(--hds-heading-size);
+  font-weight: var(--hds-heading-weight);
+  line-height: var(--hds-heading-line-height);
+  letter-spacing: var(--hds-heading-letter-spacing);
+}
+/* A section head (a grouped page's component name) breaks rather than scrolling a phone
+   sideways; the page title instead steps its size down, below. */
+#nd-page .prose h2:not(.hds-demo-frame *),
+#nd-page .prose h3:not(.hds-demo-frame *) {
+  overflow-wrap: break-word;
+}
+/* The page title never breaks inside a word ("DataTableSe / ction"). The page sets
+   --hds-title-em to the em width of the title's widest word (lib/title-fit.ts); the display
+   size steps down fluidly until that word fits the column, and is the token size wherever it
+   already fits. */
+#nd-page {
+  container-type: inline-size;
+}
+#nd-page h1 {
+  --hds-heading-family: var(--semantic-typography-display-font-family);
+  --hds-heading-size: min(
+    var(--semantic-typography-display-font-size),
+    calc(100cqi / var(--hds-title-em, 1))
+  );
+  overflow-wrap: normal;
+  hyphens: manual;
+  --hds-heading-weight: var(--semantic-typography-display-font-weight);
+  --hds-heading-line-height: var(--semantic-typography-display-line-height);
+  --hds-heading-letter-spacing: var(--semantic-typography-display-letter-spacing);
+}
+#nd-page .prose h2 {
+  --hds-heading-family: var(--semantic-typography-title-font-family);
+  --hds-heading-size: var(--semantic-typography-title-font-size);
+  --hds-heading-weight: var(--semantic-typography-title-font-weight);
+  --hds-heading-line-height: var(--semantic-typography-title-line-height);
+  --hds-heading-letter-spacing: var(--semantic-typography-title-letter-spacing);
+}
+#nd-page .prose h3 {
+  --hds-heading-family: var(--semantic-typography-titleSm-font-family);
+  --hds-heading-size: var(--semantic-typography-titleSm-font-size);
+  --hds-heading-weight: var(--semantic-typography-titleSm-font-weight);
+  --hds-heading-line-height: var(--semantic-typography-titleSm-line-height);
+  --hds-heading-letter-spacing: var(--semantic-typography-titleSm-letter-spacing);
+}
+
+/* Foundation pages: Principle and Best practices fold below the tokens (hds#847 C). */
+.prose .hds-principles {
+  margin-top: var(--semantic-space-scale-lg);
+}
+.prose .hds-principles-body > :first-child {
+  margin-top: var(--semantic-space-scale-sm);
+}
+
 /*
  * Fumadocs sizes its sticky top bar via the --fd-header-height custom
  * property, toggled on by a `:has()` selector keyed to a marker class that
@@ -57,6 +137,25 @@ html {
  */
 #nd-docs-layout {
   --fd-header-height: calc(var(--spacing) * 14) !important;
+}
+
+/*
+ * Fumadocs turns the sidebar column on with `#nd-docs-layout:has(<marker class>)`, which
+ * matches only once the browser has parsed the sidebar. A slow load can paint before that,
+ * so the column animated open from 0 and the page reflowed (CLS ~0.17, hds#770). Set the
+ * width on the layout itself, so the first paint already has it; collapsing still works
+ * through --fd-sidebar-col.
+ */
+@media (width >= 48rem) {
+  #nd-docs-layout {
+    --fd-sidebar-width: 268px;
+  }
+}
+/* Same for the "On this page" rail: Fumadocs keys its column to the rail, which is parsed last. */
+@media (width >= 80rem) {
+  #nd-docs-layout:has([data-hds-toc]) {
+    --fd-toc-width: 268px;
+  }
 }
 
 /*
@@ -72,6 +171,23 @@ html {
   }
 }
 
+/*
+ * Fumadocs' top bar sits in the content column only, so a page with an "On this page" rail
+ * got a header 268px narrower than one without, and the search and sidebar buttons jumped
+ * between pages (hds#770). Run the bar across the rail's column on every page, and start
+ * the rail below it.
+ */
+@media (width >= 80rem) {
+  /* xl only: below it the layout has no rail track to span. */
+  #nd-subnav {
+    /* The content track and the rail track; toc-end would also take the outer gutter track. */
+    grid-column: header-start / span 2;
+  }
+  #nd-toc {
+    padding-top: calc(var(--fd-header-height) + var(--semantic-space-scale-md));
+  }
+}
+
 body {
   background-color: var(--semantic-color-surface-page);
   color: var(--semantic-color-content-primary);
@@ -81,6 +197,35 @@ body {
 #nd-nav a[href='/'] {
   font-weight: 600;
   letter-spacing: -0.01em;
+}
+
+/*
+ * The top bar names the current page; the full site name is only the home H1
+ * (hds#845). Beside the open sidebar its "HDS" mark would repeat the sidebar
+ * header, so it shows only on narrow screens, where the sidebar is a drawer.
+ * Fumadocs renders nav children in the sidebar header too; the title belongs
+ * to the top bar only.
+ */
+.hds-top-bar-title {
+  display: none;
+}
+
+#nd-subnav .hds-top-bar-title {
+  display: inline;
+  font-weight: 600;
+}
+
+@media (width >= 48rem) {
+  #nd-subnav > a[href='/'] {
+    display: none;
+  }
+}
+
+@media (width < 48rem) {
+  .hds-top-bar-title {
+    margin-inline-start: calc(var(--spacing) * 3);
+    color: var(--semantic-color-content-secondary);
+  }
 }
 
 /* Code font: the HDS mono token is IBM Plex Mono, loaded from the package's fonts.css. */
@@ -112,7 +257,7 @@ pre {
 .hds-token-table td {
   text-align: left;
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
+  border-bottom: 1px solid var(--semantic-color-border-default);
   vertical-align: top;
 }
 
@@ -137,7 +282,76 @@ pre {
   min-width: 9.5rem;
 }
 
-.hds-token-same,
+/* A composite reads as text in the UI font ("150 ms · ease-out"); only its raw part (the
+   curve) is code, smaller and secondary under it. */
+.hds-token-composite {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+.hds-token-table .hds-token-detail {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: var(--semantic-color-content-secondary);
+}
+
+/* Below sm a token row stacks: the name on its own line, then each value under its column
+   label, so Light, Dark and Role all fit a phone instead of clipping off the right edge. */
+@media (width < 40rem) {
+  .hds-token-table-scroll {
+    overflow-x: visible;
+  }
+  .hds-token-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .hds-token-table tr {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    column-gap: var(--semantic-space-scale-xs);
+    row-gap: 0.375rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--semantic-color-border-subtle);
+  }
+  .hds-token-table td {
+    display: contents;
+  }
+  .hds-token-table td::before {
+    /* Empty alt text: the column header already names the cell for assistive tech. */
+    content: attr(data-label) / '';
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    color: var(--semantic-color-content-secondary);
+  }
+  .hds-token-table td:first-child::before {
+    content: none;
+  }
+  .hds-token-table td:first-child code {
+    grid-column: 1 / -1;
+    justify-self: start;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .hds-token-table td > * {
+    min-width: 0;
+  }
+  /* The curve wraps at its commas rather than running past a phone's edge. */
+  .hds-token-table .hds-token-detail {
+    white-space: normal;
+  }
+  /* The demo frame draws on the page canvas, so its side inset is empty space on a phone:
+     give the demo (a table, a toolbar row) that width back. */
+  .hds-demo-frame {
+    --hds-demo-frame-padding: var(--semantic-space-scale-md) 0;
+  }
+}
+
 .hds-preview-missing {
   color: var(--semantic-color-content-secondary);
   font-size: 0.8125rem;
@@ -165,26 +379,109 @@ pre {
   overflow-x: auto;
 }
 
-/* Collapsed sections (generated pages and token tables): a hairline row with a
-   chevron, the content one click away. Native <details>, so it works without JS
-   and stays searchable. */
-.hds-fold {
-  border-top: 1px solid var(--semantic-color-border-subtle);
+/* Prose tables (components/mdx-prose.tsx): a raised tonal frame from HDS tokens (no outline,
+   hds#891), so the Corners switch squares it. Fumadocs' own wrapper hard-codes an 8px radius. */
+.hds-docs-table {
+  position: relative;
+  overflow: auto;
+  margin: var(--semantic-space-scale-lg) 0;
+  background: var(--semantic-color-surface-raised);
+  border-radius: var(--semantic-radius-action);
+}
+/* The frame scrolls, so the table inside fills it instead of shrinking to its content. */
+.prose .hds-docs-table > table {
+  display: table;
+  width: 100%;
   margin: 0;
 }
 
-.hds-fold:last-of-type {
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
+/* Search dialog (the Cmd+K one): Fumadocs sets rounded-xl and shadow-2xl on it. Radius and shadow
+   come from HDS tokens, so Corners and Shadow both reach it. Keyed on the result list's id, the
+   one thing only this dialog holds. */
+[role='dialog']:has(#fd-search-list) {
+  border-radius: var(--semantic-radius-action);
+  box-shadow: var(--semantic-shadow-overlay);
 }
 
+/* Search result rows: Fumadocs rounds them (rounded-lg), and the dialog is portalled outside
+   #nd-docs-layout, so the layout-chrome rule below never reaches them — in the default Corners
+   setting they kept Fumadocs' radius and only the Sharp override squared them. The HDS radius
+   token reaches them in every setting (hds#806). */
+#fd-search-list [role='option'] {
+  border-radius: var(--semantic-radius-action);
+}
+
+/* Sidebar search trigger (components/search-trigger.tsx, hds#903): a raised row with the
+   shortcut drawn by the HDS Kbd. Tokens only, so Corners reaches it. */
+.hds-docs-search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--semantic-space-scale-xs);
+  padding: var(--semantic-space-scale-xs) var(--semantic-space-scale-sm);
+  background: var(--semantic-color-surface-raised);
+  border-radius: var(--semantic-radius-action);
+  color: var(--semantic-color-content-secondary);
+  font-family: var(--semantic-typography-ui-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--semantic-typography-ui-font-weight);
+  line-height: var(--semantic-typography-ui-line-height);
+}
+.hds-docs-search:hover {
+  color: var(--semantic-color-content-primary);
+}
+.hds-docs-search:focus-visible {
+  outline: 2px solid var(--semantic-color-border-accent);
+  outline-offset: 2px;
+}
+.hds-docs-search-icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+.hds-docs-search-label {
+  min-width: 0;
+}
+.hds-docs-search-keys {
+  display: inline-flex;
+  justify-content: flex-end;
+  gap: var(--semantic-space-scale-xs);
+  margin-inline-start: auto;
+  /* The hotkey reads "⌘ K" on the server and "Ctrl K" once the client knows the platform:
+     hold the wider one's width so the swap does not shift the trigger (hds#770). */
+  min-inline-size: 4.625rem;
+}
+/* The modifier key itself grows from "⌘" to "Ctrl" after hydration: hold the wider width
+   so its box does not move (CLS on load, hds#806). */
+.hds-docs-search-keys > :first-child {
+  min-inline-size: 2.875rem;
+}
+
+/* Collapsed sections (generated pages and token tables): a soft raised row with a
+   chevron (no hairlines, hds#891), the content one click away. Native <details>, so it
+   works without JS and stays searchable. */
+.hds-fold {
+  margin: 0 0 var(--semantic-space-scale-xs);
+  padding: 0 var(--semantic-space-scale-sm);
+  background: var(--semantic-color-surface-raised);
+  border-radius: var(--semantic-radius-action);
+}
+
+/* One label style for every fold on a docs page (Show code, API, Accessibility, Design tokens,
+   token groups, release notes), the HDS Disclosure's: the ui type role in the primary content
+   colour, the label left and a chevron right that points right closed and down open.
+   tests/docs-site/docs-polish.test.tsx keeps it to this one rule. */
 .hds-fold > summary {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  gap: var(--semantic-space-scale-xs);
   padding: 0.875rem 0;
   cursor: pointer;
   list-style: none;
-  font-weight: 500;
+  font-family: var(--semantic-typography-ui-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--semantic-typography-ui-font-weight);
+  line-height: var(--semantic-typography-ui-line-height);
   color: var(--semantic-color-content-primary);
 }
 
@@ -192,18 +489,19 @@ pre {
   display: none;
 }
 
-.hds-fold > summary::before {
+.hds-fold > summary::after {
   content: '';
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-inline-end: 0.25rem;
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   transform: rotate(-45deg);
-  transition: transform 150ms ease;
+  transition: transform var(--hds-motion-productive-duration, 150ms) ease;
   flex: none;
 }
 
-.hds-fold[open] > summary::before {
+.hds-fold[open] > summary::after {
   transform: rotate(45deg);
 }
 
@@ -218,17 +516,11 @@ pre {
 
 /* "Show code" hangs off the example frame above it, like Geist's. */
 .hds-fold--code {
-  border-top: none;
   margin-top: -0.5rem;
 }
 
-.hds-fold--code > summary {
-  font-size: 0.875rem;
-  color: var(--semantic-color-content-secondary);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .hds-fold > summary::before {
+  .hds-fold > summary::after {
     transition: none;
   }
 }
@@ -254,6 +546,61 @@ pre {
 /* Short values in generated tables (dates, versions) stay on one line. */
 .hds-nowrap {
   white-space: nowrap;
+}
+
+/*
+ * Docs preview switches (hds#794): Corners + Shadow, opened from the display-settings button
+ * beside the theme switcher (components/preview-switches.tsx). Docs-only scope, set on <html>;
+ * not a theming dial (ADR-023) and not in shipped styles.css. Default (attribute unset) is
+ * today's look.
+ */
+.hds-docs-display {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--semantic-space-scale-xs);
+}
+/* Fumadocs wraps the theme-switch slot in a full-width bordered pill that sits empty beside a
+   lone toggle; drop that chrome so the switcher and the settings button sit together, compact. */
+div:has(> .hds-docs-display) {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* Corners: sharp. Every radius token to 0 (tag stays a pill). */
+html[data-docs-corners='sharp'] {
+  --semantic-radius-action: 0px;
+  --semantic-radius-control: 0px;
+  --role-radius: 0px;
+  --component-button-radius: 0px;
+  --component-input-radius: 0px;
+  --component-badge-radius: 0px;
+  --component-card-radius: 0px;
+}
+/* HDS's rounded-lg is calc(--role-radius + 4px) (and .hds-card the same), so Corners=Sharp still
+   leaves 4px on HDS Card, Alert and SegmentedControl; plain `rounded` is the --hds-radius-4
+   primitive (Kbd, Skeleton text). Square just those, docs-only (hds#806). The Fumadocs chrome and
+   every other rounded-* class follow the tokens above. */
+html[data-docs-corners='sharp'] :is(.rounded, .rounded-lg, .hds-card) {
+  border-radius: 0;
+}
+
+/* Shadow: hard. Zero-blur, straight-down offsets (x = 0) in the full-strength shadow colour. */
+html[data-docs-shadow='hard'] {
+  --semantic-shadow-subtle: 0 4px 0 hsl(var(--primitive-shadow-color));
+  --semantic-shadow-floating: 0 5px 0 hsl(var(--primitive-shadow-color));
+  --semantic-shadow-overlay: 0 8px 0 hsl(var(--primitive-shadow-color));
+}
+/* Button and Kbd hard shadows ship in the package now (hds#888, theme.css .hds-btn-hard /
+   .hds-kbd); this preview only re-points the elevation tokens. */
+
+/* MDX code fences (components/mdx-code-block.tsx) are the HDS CodeBlock. It sits outside the
+   prose rules (not-prose), so it takes the spacing a prose <pre> had, and never widens the column. */
+.hds-docs-code {
+  margin-block: var(--semantic-space-scale-md);
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* Foundations galleries (components/foundation-visuals.tsx): every swatch,
@@ -301,14 +648,14 @@ pre {
   text-align: left;
   font: inherit;
   color: inherit;
-  background: var(--semantic-color-surface-page);
-  border: 1px solid var(--semantic-color-border-subtle);
+  background: var(--semantic-color-surface-raised);
+  border: 0;
   border-radius: var(--semantic-radius-action);
   overflow: hidden;
   cursor: copy;
 }
 .hds-swatch:hover {
-  border-color: var(--semantic-color-border-default);
+  background: var(--semantic-color-surface-hover);
 }
 .hds-swatch:focus-visible {
   outline: 2px solid var(--semantic-color-border-accent);
@@ -316,11 +663,15 @@ pre {
 }
 .hds-swatch-block {
   display: flex;
+  align-self: stretch;
   height: 4.5rem;
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
 }
-.hds-swatch-block > span {
-  flex: 1;
+/* An empty span has no intrinsic width: give each half its share explicitly so
+   the fill never collapses to nothing (hds#846). */
+.hds-swatch-fill {
+  display: block;
+  flex: 1 1 0;
+  min-width: 50%;
 }
 .hds-swatch-meta {
   display: flex;
@@ -361,21 +712,24 @@ pre {
   opacity: 0;
 }
 
-/* Type specimens and motion demos: open rows on hairlines, no boxes. */
-.hds-specimens {
-  border-top: 1px solid var(--semantic-color-border-subtle);
-}
+/* Type specimens and motion demos: open rows separated by space, no boxes or hairlines. */
 .hds-specimen {
   padding: var(--semantic-space-scale-sm) 0;
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
   min-width: 0;
 }
 .prose .hds-specimen-meta {
   margin: 0 0 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  line-height: var(--semantic-typography-caption-line-height);
   color: var(--semantic-color-content-secondary);
   overflow-wrap: anywhere;
+}
+/* Only the token values in a spec line are mono (mono = code, token names, token values). */
+.hds-specimen-values {
+  font-family: var(--font-mono);
+  font-weight: 400;
 }
 .prose .hds-specimen-sample {
   margin: 0;
@@ -390,7 +744,6 @@ pre {
   align-items: center;
   gap: var(--semantic-space-scale-xs);
   padding: 0.375rem 0;
-  border-bottom: 1px solid var(--semantic-color-border-subtle);
 }
 .prose .hds-step-name {
   padding: 0;
@@ -497,8 +850,8 @@ pre {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--semantic-color-content-primary);
-  background: var(--semantic-color-surface-page);
-  border: 1px solid var(--semantic-color-border-default);
+  background: var(--semantic-color-surface-soft);
+  border: 0;
   border-radius: var(--semantic-radius-action);
   cursor: pointer;
 }
@@ -516,4 +869,164 @@ pre {
   .hds-swatch-block {
     height: 3.5rem;
   }
+}
+
+/* A linked inline-code chip is inline-flex, so the link's underline does not reach it
+   (text-decoration skips inline-flex children). Draw the cue on the chip itself. */
+a code[data-density] {
+  text-decoration: underline;
+  text-decoration-thickness: min(var(--semantic-link-underlineThickness), 0.125em);
+  text-underline-offset: var(--semantic-link-underlineOffset);
+}
+
+/* In prose table cells a long type union wraps inside the chip (as it did before the HDS chip)
+   instead of overrunning it under the chip's max-width + nowrap. */
+.prose .hds-docs-table td code[data-density],
+.prose .hds-docs-table th code[data-density] {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* MDX images (components/mdx-prose.tsx): the radius is an HDS token, so the Corners switch reaches it. */
+.hds-docs-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--semantic-radius-action);
+}
+
+/* Fumadocs chrome (sidebar items and active item, search trigger, collapse button, nav controls,
+   contents rail) draws its corners with Tailwind rounded-md/lg/xl, which carry Fumadocs' own radii.
+   Inside the layout shell, outside the page body and the HDS controls, they take the HDS radius
+   token, so the Corners switch squares them. */
+#nd-docs-layout
+  :is(.rounded-md, .rounded-lg, .rounded-xl):not(
+    #nd-page *,
+    .hds-docs-display,
+    .hds-docs-display *
+  ) {
+  border-radius: var(--semantic-radius-action);
+}
+/* The collapse button gets its corners from its parent's `*:rounded-md`. */
+#nd-sidebar button[aria-label='Collapse Sidebar'] {
+  border-radius: var(--semantic-radius-action);
+}
+
+/* Fumadocs' Tailwind shadow-lg (collapsed sidebar, its reopen button, open contents popover)
+   takes the floating shadow token; the mobile drawer is an overlay. Both follow the Shadow switch. */
+#nd-docs-layout .shadow-lg:not(#nd-page *, #nd-sidebar-mobile) {
+  box-shadow: var(--semantic-shadow-floating);
+}
+#nd-sidebar-mobile {
+  box-shadow: var(--semantic-shadow-overlay);
+}
+
+/* The gear is a tertiary sm button, whose 12px icon reads too faint without a border. */
+.hds-docs-display [data-docs-switch-trigger] svg {
+  inline-size: var(--semantic-size-icon-sm);
+  block-size: var(--semantic-size-icon-sm);
+}
+
+/* Mobile drawer header (hds#860): theme switch, display settings and the close toggle share one
+   touch height and centre line, with room above the row and before the list. Below 640px HDS lifts
+   each segment to 44px, which grew the rail to 54px; the rail itself is the touch target here, so
+   its segments stretch to fill it instead. The Fumadocs toggle takes the gear's tertiary look. */
+#nd-sidebar-mobile > div:first-child {
+  padding-block: var(--semantic-space-scale-md) var(--semantic-space-scale-sm);
+}
+#nd-sidebar-mobile div:has(> .hds-docs-display) {
+  gap: var(--semantic-space-scale-xs);
+}
+#nd-sidebar-mobile .hds-docs-display [role='radiogroup'] {
+  block-size: var(--primitive-size-interactive-min);
+}
+#nd-sidebar-mobile .hds-docs-display [role='radio'] {
+  min-block-size: 0;
+}
+#nd-sidebar-mobile [data-docs-switch-trigger],
+#nd-sidebar-mobile div:has(> .hds-docs-display) > button {
+  inline-size: var(--primitive-size-interactive-min);
+  block-size: var(--primitive-size-interactive-min);
+  min-inline-size: 0;
+  min-block-size: 0;
+  padding: 0;
+  border-radius: var(--semantic-radius-action);
+  color: var(--semantic-color-content-primary);
+}
+#nd-sidebar-mobile [data-docs-switch-trigger] svg,
+#nd-sidebar-mobile div:has(> .hds-docs-display) > button svg {
+  inline-size: var(--semantic-size-icon-md);
+  block-size: var(--semantic-size-icon-md);
+}
+
+/* Sidebar group labels (components/sidebar-group-label.tsx): section titles, not nav items.
+   The caption role and secondary tone come from Text; this sets the space above each group and
+   lines the label up with the item text. */
+:is(#nd-sidebar, #nd-sidebar-mobile) .hds-docs-nav-label {
+  display: flex;
+  align-items: center;
+  gap: var(--semantic-space-scale-xs);
+  margin: var(--semantic-space-scale-md) 0 var(--semantic-space-scale-xs);
+  padding-inline: var(--semantic-space-scale-xs);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) .hds-docs-nav-label:first-child {
+  margin-block-start: 0;
+}
+
+/* Sidebar nav items (page links and folder toggles) set in the ui role, 16px at 500, so they
+   read at the same size and weight as the theme, Corners and Shadow segmented controls
+   (hds#847). Fumadocs gives them text-sm at the inherited weight; the search trigger and the
+   section labels keep theirs. */
+:is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button).wrap-anywhere {
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--semantic-typography-ui-font-weight);
+}
+
+/* /upgrade/?from=X&to=Y (hds#464): one phone-first column. */
+.hds-upgrade-page {
+  box-sizing: border-box;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--primitive-space-6, 1.5rem) var(--primitive-space-4, 1rem);
+  overflow-wrap: anywhere;
+}
+.hds-upgrade-page pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.hds-upgrade-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitive-space-3, 0.75rem);
+  align-items: end;
+}
+.hds-upgrade-form label {
+  display: grid;
+  gap: var(--primitive-space-1, 0.25rem);
+}
+.hds-upgrade-form select,
+.hds-upgrade-form button {
+  min-height: 2.75rem;
+}
+.hds-upgrade-list {
+  padding-left: var(--primitive-space-5, 1.25rem);
+}
+.hds-upgrade-list li {
+  margin-block: var(--primitive-space-2, 0.5rem);
+}
+/* The build line under the title: which release + main sha these docs were built from. */
+.hds-upgrade-build {
+  margin-block: var(--primitive-space-1, 0.25rem) var(--primitive-space-4, 1rem);
+  color: var(--semantic-color-content-secondary);
+}
+/* The CSS-only toggle sits in the form row but lays out inline, not as a field grid. */
+.hds-upgrade-form .hds-upgrade-css-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-2, 0.5rem);
+  min-height: 2.75rem;
+}
+.hds-upgrade-css-toggle input {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
 }

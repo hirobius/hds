@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "New semantic spacing (semantic.space.fixed.*) and radius (semantic.radius.scale.*) tokens cover every px value; reach for them instead of a primitive step or a typed px."
+}

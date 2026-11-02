@@ -1,0 +1,9 @@
+{
+  "$comment": "Deprecations whose planned removal was cancelled, by step id: `in` is the release that would have removed it, `plain` what a reader is told instead of the deprecation's own line. Hand-kept; read by codemods/lib/record.mjs (the upgrade command skips such a step's codemod) and scripts/upgrade/compile.mjs (UPGRADING.md and upgrade/index.json say Kept).",
+  "kept": {
+    "0.29.0/deprecated/primitive.space.px6-px10": {
+      "in": "0.31.0",
+      "plain": "The off-grid spacing steps 6px and 10px (--primitive-space-px6/px10, hds.space.px6/px10, Tailwind *-px6/*-px10) were deprecated in 0.29.0 for removal in 0.31.0; that removal was cancelled, so they stay and nothing is rewritten."
+    }
+  }
+}

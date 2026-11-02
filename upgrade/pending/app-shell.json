@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New AppShell: a hand-built app frame (top bar, navigation rail that collapses, a menu sheet on phones, optional detail panel) can move onto it."
+}

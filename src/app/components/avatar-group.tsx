@@ -14,8 +14,9 @@ import type { AvatarProps } from './avatar';
 // Non-interactive — no hover/active/focus states. The overflow "+N" bubble is
 // the only element AvatarGroup itself paints; sizing mirrors avatar.tsx's own
 // sm/md/lg ramp so the bubble lines up exactly with the avatars it follows.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface.sunken has no Tailwind-theme utility; var()-based so still token-driven (bg-muted was 1.04:1 on a raised Card, hds#522)
 const overflowBubbleVariants = /* @__PURE__ */ cva(
-  'inline-flex -ml-2 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground ring-2 ring-background',
+  'inline-flex -ml-scale-xs shrink-0 items-center justify-center rounded-full bg-[var(--semantic-color-surface-sunken)] text-muted-foreground ring-2 ring-background',
   {
     variants: {
       size: {
@@ -68,7 +69,7 @@ export const AvatarGroup = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Avat
             size: resolvedSize,
             className: cn(
               'ring-2 ring-background',
-              i > 0 && '-ml-2',
+              i > 0 && '-ml-scale-xs',
               (child.props as { className?: string }).className,
             ),
           }),

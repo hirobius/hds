@@ -7,17 +7,7 @@
  */
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { createHash } from 'crypto';
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'fs';
-import { tmpdir } from 'os';
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import vm from 'vm';
@@ -25,7 +15,6 @@ import { parse } from 'acorn';
 import {
   hdsChecksum,
   hdsPlan,
-  hdsRunPush,
   hdsRunSnapshot,
   hdsSummarize,
   hdsSummaryLine,
@@ -34,51 +23,28 @@ import { buildPushPayload, buildUseFigmaReceiptScript } from '../lib/figma-scrip
 import { DELTA_PRUNE_REFUSAL, buildUseFigmaDeltaScript } from '../lib/figma-agent-sync.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
-import { FIXTURE_TOKENS_PATH, fixtureModel } from './helpers/figma-fixture.mjs';
+import { fixtureModel } from './helpers/figma-fixture.mjs';
 import { ingestReceipt } from '../figma-snapshot.mjs';
 import { formatDeltaRun, runDeltaCommand, writeDeltaScript } from '../figma-push.mjs';
-import { createFakeFigma, textStyleFonts } from './helpers/fake-figma.mjs';
+import {
+  LINKS,
+  COMMIT,
+  NOTHING_LINE,
+  pushedLibrary,
+  useTempRoots,
+} from './helpers/figma-temp-root.mjs';
 
 // Real-model scenarios build and run dozens of scripts; a loaded CI runner needs the room.
 vi.setConfig({ testTimeout: 60000, hookTimeout: 60000 });
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
-const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const copy = (value) => JSON.parse(JSON.stringify(value));
 const variableOf = (model, path) =>
   model.collections.flatMap((c) => c.variables).find((v) => v.path === path);
 
-let dirs = [];
 afterEach(() => {
   vi.useRealTimers();
-  dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
-  dirs = [];
 });
-const tempRoot = () => {
-  const root = mkdtempSync(join(tmpdir(), 'hds-agent-parts-'));
-  dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
-  mkdirSync(join(root, 'figma'), { recursive: true });
-  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(LINKS, null, 2));
-  return root;
-};
-const pushedLibrary = async (model) => {
-  const figma = createFakeFigma({
-    fileName: LINKS.libraryFileName,
-    fonts: textStyleFonts(model.textStyles),
-  });
-  figma.fileKey = LINKS.libraryFileKey;
-  const { payload, checksum } = buildPushPayload(model);
-  await hdsRunPush(figma, payload, checksum);
-  return figma;
-};
+const tempRoot = useTempRoots('hds-agent-parts-');
 /** The library after `base` was pushed, its snapshot committed, and main moved to `edit(base)`. */
 async function pending({ base = fixtureModel(), edit, ...options }) {
   const root = tempRoot();
@@ -103,7 +69,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     vi.setSystemTime(new Date('2026-10-09T00:00:00.000Z'));
   });
 
-  it('builds the same delta.js, byte for byte (golden; re-captured for the transparent no-shadow effect)', async () => {
+  it('builds the same delta.js, byte for byte (golden; re-captured for aliases to a variable an earlier part created)', async () => {
     const s = await pending({
       edit: (model) => {
         variableOf(model, 'primitive.space.2').description = 'Two steps: tight gap and more.';
@@ -113,8 +79,8 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     });
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
-      chars: 31361,
-      sha: '6ac81b96dc6112d151fccaa429ce426169298e4fdf029e255f1eb7779eb212d0',
+      chars: 31842,
+      sha: '55afb2606fa1c281f8f276b0f61cd9727b239c396d00a0b8b96a4a4d95ff2e4d',
     });
   });
 });
@@ -122,7 +88,6 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
 // ── Harness ──────────────────────────────────────────────────────────────────
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const real = loadFigmaInputs(REPO).model;
-const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 
 /** Runs a script the way use_figma does: async, top-level await and return, `figma` in scope. */
 async function run(text, figma) {
@@ -249,7 +214,7 @@ const forged = (text, edit) => {
     );
 };
 
-describe('a type-ramp change too big for one delta.js (48,000 characters; 57,000 before Fix A)', () => {
+describe('a type-ramp change too big for one delta.js (about 53,000 characters with the compact Density variables; 57,000 before Fix A)', () => {
   let s;
   let single;
   beforeEach(async () => {
@@ -259,11 +224,12 @@ describe('a type-ramp change too big for one delta.js (48,000 characters; 57,000
 
   it('is more than one delta.js holds, and becomes ordered parts that each fit', () => {
     expect(single.built.chars, 'the one-script size of the scenario').toBeGreaterThan(45000);
-    expect(single.built.chars).toBeLessThan(50000);
+    expect(single.built.chars).toBeLessThan(54000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
-    // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 now.
-    expect(parts.length).toBe(2);
+    // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 until the
+    // canvas-font retry and weight.mono (2026-10-20) grew the runtime and the ramp; 3 now.
+    expect(parts.length).toBe(3);
     expect(parts.map((p) => p.file)).toEqual(
       parts.map((_, i) => `delta-${i + 1}-of-${parts.length}.js`),
     );
@@ -518,6 +484,32 @@ describe('the parts of a run', () => {
 const collectionOf = (model, key) => model.collections.find((c) => c.key === key);
 const kinds = {
   'created variables with a role aliasing them': { edit: describeAndCreate },
+  // The live 0.26.1 push: part 1 created weight.display and pointed h1 at it;
+  // a later part held h1 only as the anchor of its style, with no id for the
+  // new primitive, and wrote an empty value (Figma: "Required value missing").
+  'a new primitive a style-bound token switches to, the style reworded in a later part': {
+    edit: (model) => {
+      collectionOf(model, 'primitive').variables.push(
+        newVariable(
+          model,
+          'primitive.typography.weight.bold',
+          'primitive.typography.weight.display',
+          'typography/weight/display',
+          {
+            Default: { value: 700 },
+          },
+        ),
+      );
+      const h1 = variableOf(model, 'semantic.typography.h1.font-weight');
+      h1.valuesByMode = {
+        Light: { alias: 'primitive.typography.weight.display' },
+        Dark: { alias: 'primitive.typography.weight.display' },
+      };
+      const style = model.textStyles.find((s) => s.path === 'semantic.typography.h1');
+      style.description = `${style.description} Set in the display weight.`;
+      return model;
+    },
+  },
   'a new mode on a collection': {
     edit: (model) => {
       const semantic = collectionOf(model, 'semantic');

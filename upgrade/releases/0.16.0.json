@@ -1,0 +1,130 @@
+{
+  "version": "0.16.0",
+  "date": "2026-09-26",
+  "bump": "minor",
+  "summary": "Six unused typography tokens are removed and five docs-internal components are deprecated; adds HdsSelect at the root.",
+  "backfilled": true,
+  "steps": [
+    {
+      "id": "0.16.0/removed/primitive-typography-tokens",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Six unused typography tokens are removed (--primitive-typography-size-2xs, -weight-light, -weight-semibold, -letterSpacing-tighter, -wide and -wider); replace a var() that reads one with your own value.",
+      "detect": {
+        "cssVars": [
+          "--primitive-typography-size-2xs",
+          "--primitive-typography-weight-light",
+          "--primitive-typography-weight-semibold",
+          "--primitive-typography-letterSpacing-tighter",
+          "--primitive-typography-letterSpacing-wide",
+          "--primitive-typography-letterSpacing-wider"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-typography-size-2xs",
+        "css-var-removed:--primitive-typography-weight-light",
+        "css-var-removed:--primitive-typography-weight-semibold",
+        "css-var-removed:--primitive-typography-letterSpacing-tighter",
+        "css-var-removed:--primitive-typography-letterSpacing-wide",
+        "css-var-removed:--primitive-typography-letterSpacing-wider"
+      ],
+      "backfilled": true,
+      "source": "CHANGELOG.md:12"
+    },
+    {
+      "id": "0.16.0/deprecated/CinematicLink",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "CinematicLink is docs-internal and deprecated: it warns once and will leave the package, so stop importing it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "CinematicLink"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:10"
+    },
+    {
+      "id": "0.16.0/deprecated/ComponentInstanceMatrix",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "ComponentInstanceMatrix is docs-internal and deprecated: it warns once and will leave the package, so stop importing it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "ComponentInstanceMatrix"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:10"
+    },
+    {
+      "id": "0.16.0/deprecated/FoundationSwatch",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "FoundationSwatch is docs-internal and deprecated: it warns once and will leave the package, so stop importing it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "FoundationSwatch"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:10"
+    },
+    {
+      "id": "0.16.0/deprecated/Sketch",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Sketch is docs-internal and deprecated: it warns once and will leave the package, so stop importing it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Sketch"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:10"
+    },
+    {
+      "id": "0.16.0/deprecated/Token",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Token is docs-internal and deprecated: it warns once and will leave the package, so stop importing it.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Token"
+            ]
+          }
+        ]
+      },
+      "removeIn": "1.0.0",
+      "backfilled": true,
+      "source": "CHANGELOG.md:10"
+    }
+  ]
+}

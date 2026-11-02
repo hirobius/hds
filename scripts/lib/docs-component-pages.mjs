@@ -108,8 +108,11 @@ function bestPractices(spec, isLinkable, section, description) {
   if (u?.when && !readerText(u.when).startsWith(description)) items.push(prose(u.when));
   if (u?.whenNot) {
     const not = prose(u.whenNot);
-    // "Not for navigating…", keeping a leading acronym or code span as written.
-    items.push(`Not for ${/^[A-Z][a-z]/.test(not) ? not[0].toLowerCase() + not.slice(1) : not}`);
+    // "Not for navigating…" / "Not for a chip…": lowercase a leading word, keeping an acronym
+    // (a second capital or digit) or code span as written.
+    items.push(
+      `Not for ${/^[A-Z](?![A-Z0-9])/.test(not) ? not[0].toLowerCase() + not.slice(1) : not}`,
+    );
   }
   for (const i of Array.isArray(u?.useInstead) ? u.useInstead : []) {
     const ref = isLinkable(i.component)
@@ -230,17 +233,14 @@ export function buildComponentPages({
 
     const a11y = accessibilitySection(spec);
     const practices = bestPractices(spec, isLinkable, section, description);
-    const propCount = liveProps(name, api).length;
     const sections = [
       fm,
       // Geist order: the example sits right under the subtitle, its code one click away.
       `{/* preview: ${name} */}`,
       showCode(name, entry),
       ...(practices ? [`## Best practices\n\n${practices}`] : []),
-      fold(
-        propCount ? `API · ${propCount} ${propCount === 1 ? 'prop' : 'props'}` : 'API',
-        propsSection(name, api),
-      ),
+      // The label names the section only; the table under it shows how many props there are.
+      fold('API', propsSection(name, api)),
       ...(a11y ? [fold('Accessibility', a11y)] : []),
       ...(spec.tokenMapping && Object.keys(spec.tokenMapping).length
         ? [fold('Design tokens', '{/* generated: tokens */}')]
@@ -253,14 +253,13 @@ export function buildComponentPages({
       const spec = specs[name] ?? {};
       const description = pageDescription(name, spec);
       const practices = bestPractices(spec, isLinkable, section, description);
-      const propCount = liveProps(name, api).length;
       return [
         `## ${name}`,
         prose(description),
         `{/* preview: ${name} */}`,
         showCode(name, entry),
         ...(practices ? [practices] : []),
-        fold(`API · ${propCount} ${propCount === 1 ? 'prop' : 'props'}`, propsSection(name, api)),
+        fold('API', propsSection(name, api)),
       ].join('\n\n');
     });
     const fm = [

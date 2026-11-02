@@ -16,18 +16,8 @@
  * hdsAgentReadState, the in-sandbox reader; and the ingest and plan commands
  * on a temporary repo root. Nothing here reaches a network or Figma.
  */
-import { describe, it, expect, afterEach } from 'vitest';
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'fs';
-import { tmpdir } from 'os';
+import { describe, it, expect } from 'vitest';
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import vm from 'vm';
@@ -36,7 +26,6 @@ import {
   hdsChecksum,
   hdsPlan,
   hdsReadState,
-  hdsRunPush,
   hdsRunSnapshot,
   hdsSummarize,
   hdsSummaryLine,
@@ -56,37 +45,21 @@ import {
   writeDeltaScript,
 } from '../figma-push.mjs';
 import { ingestReceipt } from '../figma-snapshot.mjs';
-import { FIXTURE_TOKENS_PATH, fixtureModel } from './helpers/figma-fixture.mjs';
-import { createFakeFigma, seededFakeFigma, textStyleFonts } from './helpers/fake-figma.mjs';
+import { fixtureModel } from './helpers/figma-fixture.mjs';
+import { seededFakeFigma } from './helpers/fake-figma.mjs';
 import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
+import {
+  LINKS,
+  COMMIT,
+  NOTHING_LINE,
+  RETIRED_KEY,
+  pushedLibrary,
+  useTempRoots,
+} from './helpers/figma-temp-root.mjs';
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  // HDS Staging, the draft workbench (ADR-026, A4): in links.json, and never a target.
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
-const RETIRED_KEY = LINKS.retiredFiles[0].fileKey;
-const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 
-let dirs = [];
-afterEach(() => {
-  dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
-  dirs = [];
-});
-const tempRoot = () => {
-  const root = mkdtempSync(join(tmpdir(), 'hds-agent-sync-'));
-  dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
-  mkdirSync(join(root, 'figma'), { recursive: true });
-  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(LINKS, null, 2));
-  return root;
-};
+const tempRoot = useTempRoots('hds-agent-sync-');
 const snapshotPath = (root) => join(root, 'figma', 'snapshot.json');
 /** Every character use_figma escapes, plus an entity typed as text (it must come back as typed). */
 const TRICKY = `Use "brand" tones, don't <mix> & match; x&quot;y stays literal.`;
@@ -102,17 +75,6 @@ const trickyModel = () => {
   return model;
 };
 const lineOf = (model, state) => hdsSummaryLine(hdsSummarize(hdsPlan(model, state)));
-/** A library file the Sync plugin pushed `model` into (it writes and reads raw text). */
-const pushedLibrary = async (model) => {
-  const figma = createFakeFigma({
-    fileName: LINKS.libraryFileName,
-    fonts: textStyleFonts(model.textStyles),
-  });
-  figma.fileKey = LINKS.libraryFileKey;
-  const { payload, checksum } = buildPushPayload(model);
-  await hdsRunPush(figma, payload, checksum);
-  return figma;
-};
 
 describe('hdsAgentReadState: the library as use_figma reads it, made comparable with figma/snapshot.json', () => {
   it('decodes the HTML-escaped descriptions: the plan reaches 0 · 0 · 0 only with decoding on', async () => {

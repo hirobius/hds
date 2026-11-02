@@ -5,12 +5,12 @@
   "definition": {
     "id": "typography",
     "category": "foundation",
-    "summary": "Typography is a closed system: one body font, one mono font, and a fixed set of semantic composite tokens."
+    "summary": "Typography is a closed system: one body font, one display font for display and titles, one mono font, and a fixed set of semantic composite tokens."
   },
   "rules": [
     {
       "id": "one-typeface",
-      "rule": "Use Plus Jakarta Sans for body and UI text. Plus Jakarta Sans Bold (700) is used for display, h1, h2, h3 headings.",
+      "rule": "Use Plus Jakarta Sans for body and UI text. Sora Bold (700) is used for the display, title and title-sm roles, which differ by size; body is 400 and ui 500 (ADR-063, hds#847).",
       "enforceable": false,
       "valid": "fontFamily: hds.fontFamily",
       "invalid": "fontFamily: 'Georgia, serif'"

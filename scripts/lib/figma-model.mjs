@@ -209,20 +209,18 @@ export const CH_BASIS = Object.freeze({
   weight: 400,
   zeroAdvanceEm: 0.732,
   measuredFrom:
-    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-400.woff2: hmtx advance of "0" / unitsPerEm = 732/1000 (500 face: 724, 700 face: 708), measured 2026-10-11',
+    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2 instanced at wght 400: hmtx advance of "0" / unitsPerEm = 732/1000, measured 2026-10-20 (hds#847)',
 });
 
 /**
- * The weight of the Plus Jakarta Sans face a requested weight renders on. The 400, 500
- * and 700 faces ship (src/styles/fonts.css); CSS font matching puts a weight
- * with no face of its own on the nearest shipped one.
+ * The weight of the Plus Jakarta Sans face a requested weight renders on. One variable
+ * file ships (src/styles/fonts.css, wght 200-800), so any weight in range renders as
+ * itself and one outside it clamps to the nearest end.
  */
-const BRAND_FACE_WEIGHTS = [400, 500, 700];
+const BRAND_WEIGHT_RANGE = [200, 800];
 function renderedWeight(family, weight) {
   if (family !== 'Plus Jakarta Sans' || typeof weight !== 'number') return weight;
-  if (BRAND_FACE_WEIGHTS.includes(weight)) return weight;
-  if (weight < 400) return 400;
-  return weight <= 500 ? 500 : 700;
+  return Math.min(BRAND_WEIGHT_RANGE[1], Math.max(BRAND_WEIGHT_RANGE[0], weight));
 }
 
 function chToPx(graph, count) {
@@ -334,6 +332,7 @@ const FLOAT_SCOPE_RULES = [
   { all: ['letter', 'spacing'], scopes: ['LETTER_SPACING'] },
   { all: ['line', 'height'], scopes: ['LINE_HEIGHT'] },
   { all: ['border', 'width'], scopes: ['STROKE_FLOAT'] },
+  { any: ['thickness'], scopes: ['STROKE_FLOAT'] },
   { any: ['radius'], scopes: ['CORNER_RADIUS'] },
   { any: ['blur'], scopes: ['EFFECT_FLOAT'] },
   { any: ['width', 'height', 'size'], scopes: ['WIDTH_HEIGHT'] },
@@ -393,6 +392,9 @@ const FONT_STYLE_BY_WEIGHT = {
   800: 'ExtraBold',
   900: 'Black',
 };
+
+/** The named-instance weight a variable-font weight takes in a Figma text style. */
+const FIGMA_STYLE_WEIGHT = { 450: 400, 550: 500, 650: 700 };
 
 /** px value + variable entry for a length CSS may express relative to font size. */
 function typographicLength(graph, ref, where, fontSize) {
@@ -465,7 +467,11 @@ function expandTypography(graph, token) {
     entryFor: () => resolved[key].entry,
   }));
 
-  const fontStyle = FONT_STYLE_BY_WEIGHT[weight];
+  // Figma text styles name a font instance, so the variable-font weight 450
+  // take the Regular / Medium / Bold instance the library's Plus Jakarta Sans ships; the
+  // exact value stays in the variable.
+  const fontStyle =
+    FONT_STYLE_BY_WEIGHT[weight] ?? FONT_STYLE_BY_WEIGHT[FIGMA_STYLE_WEIGHT[weight]];
   const textCase = TEXT_CASE[v.textTransform ?? 'none'];
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);
@@ -663,9 +669,10 @@ function variantRef(source, variant) {
  * Tenant spacing overrides alias the t-shirt scale (hds#206), but Brand
  * imports before Semantic, so a tenant mode aliasing a Semantic variable
  * would be a forward alias the native import cannot keep. Stops at a
- * primitive, a raw value, or a token with its own Light/Dark/Compact modes.
+ * primitive, a raw value, or a token with its own Light/Dark modes; a Compact
+ * mode is followed in the Compact variant.
  */
-function tenantRef(graph, ref) {
+function tenantRef(graph, ref, variant = null) {
   const seen = new Set();
   let current = ref;
   while (isAlias(current)) {
@@ -673,8 +680,9 @@ function tenantRef(graph, ref) {
     if (target.startsWith('primitive.') || seen.has(target)) break;
     seen.add(target);
     const token = graph.byPath.get(target);
-    if (!token || readModes(token.extensions)) break;
-    current = token.value;
+    if (!token || isThemed(token)) break;
+    // A base Compact mode (compact density for apps) is followed in the Compact variant.
+    current = (variant === 'Compact' && readModes(token.extensions)?.Compact) || restValue(token);
   }
   return current;
 }
@@ -788,7 +796,10 @@ function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
             const source = bySlug.get(mode) ?? base;
             const ref = variantRef(source, variant);
             const tenantOwned = mode !== brands.baseMode && bySlug.has(mode);
-            return [mode, modeEntry(graph, tenantOwned ? tenantRef(graph, ref) : ref, base.type)];
+            return [
+              mode,
+              modeEntry(graph, tenantOwned ? tenantRef(graph, ref, variant) : ref, base.type),
+            ];
           }),
         ),
       });
@@ -833,6 +844,47 @@ function buildBrandAxes(graph, brands, { excludedBy, pendingByPath }) {
     });
   }
   return axes;
+}
+
+/**
+ * Base tokens with their own Compact mode (compact density for apps): each gets a
+ * Hirobius/Density variable, Comfortable the rest value and Compact the Compact
+ * value, both followed down to a primitive, and the token variable aliases it.
+ * A path a tenant also overrides already went through buildBrandAxes, whose
+ * Compact variant reads the base Compact mode, so it is skipped here.
+ */
+function addBaseDensityAxis(graph, pending, axes) {
+  const variables = [];
+  for (const item of pending) {
+    if (item.compact === undefined || item.axisNote) continue;
+    const path = item.segments.join('.');
+    variables.push({
+      path: `density.${path}`,
+      name: item.segments.join('/'),
+      resolvedType: FIGMA_TYPE[item.tokenType],
+      unit: item.unit,
+      description: `Density value of ${path}: Comfortable is the rest value, Compact applies under [data-density="compact"].`,
+      scopes: [],
+      hiddenFromPublishing: false,
+      codeSyntax: {},
+      valuesByMode: {
+        Comfortable: modeEntry(graph, tenantRef(graph, item.restRef), item.tokenType),
+        Compact: modeEntry(graph, tenantRef(graph, item.compact, 'Compact'), item.tokenType),
+      },
+    });
+    item.entryFor = () => ({ alias: `density.${path}` });
+    item.axisNote = `Varies by density: its value comes from ${DENSITY_COLLECTION.name}.`;
+  }
+  if (variables.length === 0) return;
+  const existing = axes.find((c) => c.key === DENSITY_COLLECTION.key);
+  if (existing) existing.variables.push(...variables);
+  else
+    axes.push({
+      ...DENSITY_COLLECTION,
+      modes: [...DENSITY_MODES],
+      hiddenFromPublishing: false,
+      variables,
+    });
 }
 
 // ── Build ────────────────────────────────────────────────────────────────────
@@ -886,24 +938,32 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
 
   for (const token of graph.tokens) {
     const path = token.path.join('.');
-    if (readModes(token.extensions)?.Compact !== undefined) {
-      throw new Error(
-        `${path} declares a Compact mode in hirobius.tokens.json, but build-tokens emits [data-density] CSS only for tenant overlays (ADR-022), so Figma would show a value the browser never applies. Move the Compact value into a tenant overlay, or teach build-tokens to emit it first.`,
-      );
-    }
     const exclusion = NOT_IN_FIGMA.find((e) => e.matches?.(token, graph));
     if (exclusion) {
       exclude(exclusion.id, path);
       excludedBy.set(path, exclusion.id);
     } else if (token.type === 'typography') {
       const { variables, textStyle, excluded } = expandTypography(graph, token);
-      pending.push(...variables);
+      // A composite's Compact mode names only the sub-properties that move (fontSize).
+      const compactSize = readModes(token.extensions)?.Compact?.fontSize;
+      for (const item of variables) {
+        if (
+          compactSize !== undefined &&
+          item.segments.at(-1) === TYPOGRAPHY_VARIABLES.fontSize[0]
+        ) {
+          pending.push({ ...item, compact: compactSize, restRef: token.value.fontSize });
+        } else pending.push(item);
+      }
       textStyles.push(textStyle);
       for (const [id, subPath] of excluded) exclude(id, subPath);
     } else if (token.type === 'shadow' || token.type === 'elevation') {
       effectStyles.push(effectStyleFor(graph, token));
     } else if (FIGMA_TYPE[token.type]) {
-      pending.push(tokenVariable(graph, token));
+      pending.push({
+        ...tokenVariable(graph, token),
+        compact: readModes(token.extensions)?.Compact,
+        restRef: restValue(token),
+      });
     } else {
       throw new Error(
         `No Figma mapping for ${path} (type ${token.type}) — map the type in scripts/lib/figma-model.mjs or declare it in NOT_IN_FIGMA with a reason.`,
@@ -919,6 +979,8 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
         ),
       })
     : [];
+
+  addBaseDensityAxis(graph, pending, axes);
 
   const homeOf = (item) => (item.themed ? THEME_TIER : item.segments[0]);
   const tierCollections = TIERS.map(({ key, name }) => {

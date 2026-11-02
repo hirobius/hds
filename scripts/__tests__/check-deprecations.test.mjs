@@ -32,6 +32,7 @@ function withCopy(fn) {
   const dir = mkdtempSync(join(tmpdir(), 'hds-deprecations-'));
   try {
     cpSync(join(ROOT, 'package.json'), join(dir, 'package.json'));
+    cpSync(join(ROOT, 'hirobius.tokens.json'), join(dir, 'hirobius.tokens.json'));
     cpSync(join(ROOT, 'src'), join(dir, 'src'), { recursive: true });
     return fn(dir);
   } finally {
@@ -147,8 +148,14 @@ describe('check-deprecations', () => {
     it('keeps a release ahead of its own pre-release', () => {
       withCopy((dir) => {
         withVersion(dir, '1.0.0-rc.1');
+        // A real deprecation due in a 0.x minor (the 2026-10 spacing prune's
+        // @removeIn 0.30.0) is rightly past-due at 1.0.0-rc.1, so this compares
+        // against the copy without the probe: the probe adds no finding.
+        const before = run(dir);
         edit(dir, 'src/patterns.ts', (src) => src + PROBE);
-        expect(run(dir).status).toBe(0);
+        const after = run(dir);
+        expect(after.output).not.toMatch(/@removeIn 1\.0\.0 is past-due/);
+        expect(after.status).toBe(before.status);
       });
     });
 
@@ -172,6 +179,86 @@ describe('check-deprecations', () => {
         const { status, output } = run(dir);
         expect(output).toMatch(/@removeIn "1\.0" is not a valid semver/);
         expect(status).toBe(1);
+      });
+    });
+  });
+
+  // hds#469: a `$deprecated` token is on the public surface too (./tokens,
+  // variables.css), so its note must name the version it leaves in.
+  describe('$deprecated tokens in hirobius.tokens.json (hds#469)', () => {
+    const LEAF = 'semantic.space.section.heroMax';
+
+    /** Set the `$deprecated` note of `semantic.space.section.heroMax` in the copy. */
+    function setNote(dir, note) {
+      edit(dir, 'hirobius.tokens.json', (src) => {
+        const tree = JSON.parse(src);
+        const leaf = tree.semantic.space.section.heroMax;
+        expect(leaf.$deprecated).toBeTruthy();
+        leaf.$deprecated = note;
+        return JSON.stringify(tree, null, 2);
+      });
+    }
+
+    it('fails on a $deprecated token whose note names no removal version', () => {
+      withCopy((dir) => {
+        setNote(dir, 'probe — use semantic.space.section.inset');
+        const { status, output } = run(dir);
+        expect(output).toContain('hirobius.tokens.json');
+        expect(output).toContain(LEAF);
+        expect(output).toMatch(/removed in <semver>/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('fails on a $deprecated token that is past its removal version', () => {
+      withCopy((dir) => {
+        setNote(dir, 'probe, removed in 0.1.0 — use semantic.space.section.inset');
+        const { status, output } = run(dir);
+        expect(output).toContain(LEAF);
+        expect(output).toMatch(/removed in 0\.1\.0 is past-due/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('fails on a $deprecated: true token, which carries no note at all', () => {
+      withCopy((dir) => {
+        setNote(dir, true);
+        const { status, output } = run(dir);
+        expect(output).toContain(LEAF);
+        expect(status).toBe(1);
+      });
+    });
+  });
+
+  // hds#469: the PR whose changeset makes a @removeIn past due fails on that PR.
+  describe('compares against the version pending changesets release (hds#469)', () => {
+    const PROBE =
+      '\n/**\n * @deprecated Probe.\n * @removeIn 0.100.0\n */\nexport const __p = 1;\n';
+    const changeset = (bump) => `---\n'@hirobius/design-system': ${bump}\n---\n\nProbe.\n`;
+
+    function setup(dir, bump) {
+      edit(dir, 'package.json', (src) =>
+        JSON.stringify({ ...JSON.parse(src), version: '0.99.4' }, null, 2),
+      );
+      edit(dir, 'src/patterns.ts', (src) => src + PROBE);
+      mkdirSync(join(dir, '.changeset'), { recursive: true });
+      writeFileSync(join(dir, '.changeset', 'README.md'), '# Changesets\n');
+      if (bump) writeFileSync(join(dir, '.changeset', 'probe.md'), changeset(bump));
+    }
+
+    it('fails when a pending minor changeset reaches a @removeIn', () => {
+      withCopy((dir) => {
+        setup(dir, 'minor');
+        const { status, output } = run(dir);
+        expect(output).toMatch(/@removeIn 0\.100\.0 is past-due \(<= next 0\.100\.0/);
+        expect(status).toBe(1);
+      });
+    });
+
+    it('passes the same @removeIn with only a patch changeset pending', () => {
+      withCopy((dir) => {
+        setup(dir, 'patch');
+        expect(run(dir).output).not.toMatch(/@removeIn 0\.100\.0 is past-due/);
       });
     });
   });

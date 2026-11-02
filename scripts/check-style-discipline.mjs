@@ -37,7 +37,8 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, extname, relative, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { hasJsonFlag } from './lib/gate-output.mjs';
+import { emitViolationsJson, groupByRule } from './lib/source-scan.mjs';
 import { exemptionContext } from './lib/gate-scope.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -435,17 +436,7 @@ if ((RUN_ALL || CONVERGED_ONLY) && !isFixtureMode) {
 
 // ─── Output ──────────────────────────────────────────────────────────────────
 
-if (jsonMode) {
-  emitResult(
-    {
-      violations: allViolations,
-      summary: { total: allViolations.length },
-      ok: allViolations.length === 0,
-    },
-    true,
-  );
-  process.exit(allViolations.length === 0 ? 0 : 1);
-}
+if (jsonMode) process.exit(emitViolationsJson(allViolations));
 
 if (allViolations.length === 0) {
   const mode = INLINE_ONLY
@@ -460,11 +451,7 @@ if (allViolations.length === 0) {
 }
 
 // Group violations by rule
-const byRule = new Map();
-for (const v of allViolations) {
-  if (!byRule.has(v.rule)) byRule.set(v.rule, []);
-  byRule.get(v.rule).push(v);
-}
+const byRule = groupByRule(allViolations);
 
 for (const [rule, violations] of byRule) {
   console.error(`\n✗ check-style-discipline [${rule}] — ${violations.length} violation(s):`);

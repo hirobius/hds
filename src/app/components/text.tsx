@@ -69,6 +69,31 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
       danger: 'text-[var(--semantic-color-feedback-error)]',
       info: 'text-[var(--semantic-color-feedback-info)]',
     },
+    // hds#825: one step off the role's weight (a name or a section head in
+    // body copy) from the shipped weight tokens. No weight keeps the role's own.
+    // These utilities sit in the utilities layer, so they beat .hds-type-*.
+    weight: {
+      // tier-ok: shipped weight steps (hds#825)
+      regular: '[font-weight:var(--primitive-typography-weight-regular)]',
+      // tier-ok: shipped weight steps (hds#825)
+      medium: '[font-weight:var(--primitive-typography-weight-medium)]',
+      // tier-ok: shipped weight steps, no semantic weight tokens exist (hds#825)
+      bold: '[font-weight:var(--primitive-typography-weight-bold)]',
+    },
+    // hds#916: one line with an ellipsis. `block` lets the ellipsis apply to a
+    // span (mono's default tag); the base `min-w-0` lets it shrink in a flex row.
+    truncate: {
+      true: 'block truncate',
+    },
+    // hds#916: N lines with an ellipsis. Lines break between words; a run too
+    // long for one line (a URL, a query) breaks inside itself only then.
+    // `anywhere`, not `break-word`: it also drops the min-content width, so a
+    // long run cannot widen the flex or grid track the text sits in.
+    lineClamp: {
+      2: 'line-clamp-2 wrap-anywhere',
+      3: 'line-clamp-3 wrap-anywhere',
+      4: 'line-clamp-4 wrap-anywhere',
+    },
   },
 });
 
@@ -145,6 +170,9 @@ export type TextTone =
   | 'danger'
   | 'info';
 
+/** A weight from the shipped weight tokens. Unset, the role's weight applies. */
+export type TextWeight = 'regular' | 'medium' | 'bold';
+
 type TextTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';
 
 const defaultTagMap: Record<TextVariant, TextTag> = {
@@ -167,8 +195,38 @@ const defaultTagMap: Record<TextVariant, TextTag> = {
   docCode: 'span',
 };
 
+/** How many lines `lineClamp` keeps before the ellipsis. */
+export type TextLineClamp = 2 | 3 | 4;
+
+/** `truncate` and `lineClamp` cut overflow two ways; a Text takes one or neither. */
+type TextOverflowProps =
+  | {
+      /**
+       * Cut the text to one line with an ellipsis. The element can shrink below
+       * its content in a flex or grid row, so a long name gives way to its
+       * neighbours instead of pushing them out. A span is made a block for it.
+       * Its parent has to be able to shrink too (`min-width: 0` on a flex or grid
+       * item, `minmax(0, 1fr)` on a grid track), or the row grows to the full line.
+       * Not with `lineClamp`.
+       */
+      truncate?: boolean;
+      lineClamp?: never;
+    }
+  | {
+      truncate?: false;
+      /**
+       * Cut the text to 2, 3 or 4 lines with an ellipsis on the last. Lines
+       * break between words, `mono` included; a single run too long for a line
+       * breaks inside itself only then. In a container sized to its content
+       * (a `fit-content` box, an `auto` grid track) the clamp can get narrow: give
+       * it a width, or `min-width: 0` / `minmax(0, 1fr)` on the parent. Not with
+       * `truncate`.
+       */
+      lineClamp?: TextLineClamp;
+    };
+
 /** @public */
-export type TextProps = {
+export type TextProps = TextOverflowProps & {
   children: ReactNode;
   variant: TextVariant;
   /**
@@ -177,6 +235,11 @@ export type TextProps = {
    * `disabled` is only for the text of an inactive control.
    */
   tone?: TextTone;
+  /**
+   * Font weight from the weight tokens. Omit it to keep the role's weight;
+   * set it for the one word or line that needs a step up, such as a name.
+   */
+  weight?: TextWeight;
   as?: TextTag | ElementType;
   className?: string;
   style?: CSSProperties;
@@ -185,13 +248,29 @@ export type TextProps = {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export const Text = /* @__PURE__ */ forwardRef<HTMLElement, TextProps>(function Text(
-  { children, variant, tone, as: Tag = defaultTagMap[variant], className, style, ...rest },
+  {
+    children,
+    variant,
+    tone,
+    weight,
+    truncate,
+    lineClamp,
+    as: Tag = defaultTagMap[variant],
+    className,
+    style,
+    ...rest
+  },
   ref,
 ) {
+  // The types allow one of the two; a caller that passes both gets the one line.
+  const clamp = truncate ? undefined : lineClamp;
   return (
     <Tag
       ref={ref}
-      className={cn(textVariants({ variant, tone }), className)}
+      className={cn(
+        textVariants({ variant, tone, weight, truncate: truncate || undefined, lineClamp: clamp }),
+        className,
+      )}
       style={style}
       {...rest}
     >

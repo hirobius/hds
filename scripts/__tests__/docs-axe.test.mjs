@@ -4,7 +4,15 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { evaluateScan, validateAllowlist } from '../lib/axe-gate.mjs';
-import { DEMO_SELECTOR, discoverPages } from '../lib/docs-axe.mjs';
+import {
+  DEMO_SELECTOR,
+  TOUR_SELECTOR,
+  MAIN_SELECTOR,
+  discoverAxeRoutes,
+  discoverMainPages,
+  discoverPages,
+  selectorFor,
+} from '../lib/docs-axe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -16,6 +24,56 @@ function site(files) {
   }
   return dir;
 }
+
+describe('docs axe gate: the /tour screen (hds#795)', () => {
+  it('adds /tour to the scanned routes only when the build has it, and scopes it to its own root', () => {
+    const without = site(['docs/components/button.html']);
+    expect(discoverAxeRoutes(without)).toEqual(['/docs/components/button']);
+    const withTour = site(['docs/components/button.html', 'tour.html']);
+    expect(discoverAxeRoutes(withTour)).toEqual(['/docs/components/button', '/tour']);
+    expect(discoverPages(withTour)).toEqual(['/docs/components/button']);
+    expect(selectorFor('/tour')).toBe(TOUR_SELECTOR);
+    expect(selectorFor('/docs/components/button')).toBe(DEMO_SELECTOR);
+  });
+});
+
+describe('docs axe gate: every other /docs page (hds#710)', () => {
+  const files = [
+    'docs.html',
+    'docs/components/index.html',
+    'docs/components/button.html',
+    'docs/patterns/empty-state/index.html',
+    'docs/engineering.html',
+    'docs/guides/index.html',
+    'docs/guides/getting-started/index.html',
+    'docs/foundations/color.html',
+    'docs/foundations/color.txt',
+    'tour.html',
+  ];
+
+  it('discovers every non-demo docs page, section landings included, sorted', () => {
+    expect(discoverMainPages(site(files))).toEqual([
+      '/docs',
+      '/docs/components',
+      '/docs/engineering',
+      '/docs/foundations/color',
+      '/docs/guides',
+      '/docs/guides/getting-started',
+    ]);
+  });
+
+  it('scans demo pages by frame and every other route by <main>', () => {
+    const routes = discoverAxeRoutes(site(files));
+    expect(routes).toContain('/docs/components/button');
+    expect(routes).toContain('/docs/engineering');
+    expect(routes).toContain('/tour');
+    expect(new Set(routes).size).toBe(routes.length);
+    expect(selectorFor('/docs/components/button')).toBe(DEMO_SELECTOR);
+    expect(selectorFor('/docs/components')).toBe(MAIN_SELECTOR);
+    expect(selectorFor('/docs/guides/getting-started')).toBe(MAIN_SELECTOR);
+    expect(MAIN_SELECTOR).toBe('main');
+  });
+});
 
 describe('docs axe gate: page discovery', () => {
   it('finds component and pattern pages in both static layouts, sorted', () => {

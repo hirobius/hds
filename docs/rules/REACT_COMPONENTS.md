@@ -50,7 +50,7 @@ Plus Jakarta Sans ships 400, 500 and 700 faces (no 600, which is why `title` is 
   1. Every component declares `fill` or `hug` on each axis. Leaves hug; Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. Override with the one prop `width="hug|fill"`. Height always hugs; stretching is the parent's job (`align="stretch"`), so no root `h-full`, `height: 100%` or `self-*`.
   2. Only containers pad (Card, Surface, Alert, Callout, Dialog, Page). Compound parts have zero padding; the container's `gap` spaces them. A padded container directly in a padded container is an error unless the inner one has `padding="none"`.
   3. One spacing scale, `xs…xl` (plus `none`), for every `gap` and `padding` prop. Padding is `none | sm | md`, default `md`, density-aware. Every gap defaults to `md`, so declaring it is optional.
-  4. No outer margins on any component, and no raw numeric Tailwind spacing (`gap-2`, `p-5`); use `gap-[var(--semantic-space-scale-md)]`.
+  4. No outer margins on any component, and no raw numeric Tailwind spacing (`gap-2`, `p-5`); use a named key: `gap-scale-md`, `p-surface-padding`, or `px-fixed-sm` (the `fixed-*` steps, 4/12/16/24/32/48px, ignore density) for an inset that must not move. `check-tailwind-spacing-scale --ratchet` holds `src/**` and `docs-site/**` to the baseline (hds#778).
   5. Primitives are Stack, Grid, Page (absorbs Container) and Surface; Box and Pin are escape hatches; Sidebar and Switcher fold into Stack and Grid.
   6. Form controls in a form context have a max width (`40rem`) and siblings share one width.
 - **The Shadow Token Convention**: Any page-specific or one-off layout styling must use the `--hds-local-[Category]-[Property]-[Name]` naming convention so local overrides never pollute `hirobius.tokens.json`. Page-specific shadows must derive from a `semantic.shadow.*` token; never raw rgba.
@@ -117,8 +117,8 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 
 ### Table
 
-- Frame: a `semantic.borderWidth.default` border in `semantic.color.border.subdued`, rounded, no fill. Header band: `semantic.color.surface.raised`.
-- Cell dividers: `semantic.borderWidth.default` in `semantic.color.border.subdued`, under every body row but the last and before every body cell but the first. No zebra fill. Never hardcode a hex or rgb color for dividers.
+- Frame: a `semantic.borderWidth.default` border in `semantic.color.border.default`, rounded, no fill. Header band: `semantic.color.surface.raised`.
+- Cell dividers: `semantic.borderWidth.default` in `semantic.color.border.default`, under every body row but the last and before every body cell but the first. No zebra fill. Never hardcode a hex or rgb color for dividers.
 - Header labels use `hds.typeStyles.ui` (medium, sentence case); body text is the ui size at the body (regular) weight; `emphasizeFirstColumn` sets the first column back to medium. Never bold in a table.
 - A column without a `width` never shrinks below its content (`minmax(min-content, 1fr)`, one `semantic.size.tile` floor); when columns cannot fit, the table scrolls inside its own region with an edge fade. Never clip a cell.
 - Row hover: use `var(--semantic-color-surface-overlay)` as a background tint. No custom colors.
@@ -175,12 +175,12 @@ a selection control and stays controlled-only.
 
 Bind to the role token — never write raw shadow, surface, or border values by hand. The role bundles all three so primitives can't mismatch.
 
-| Surface                                | Role token                    | Background        | Shadow            | Border              |
-| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | ------------------- |
-| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | `border.subtle` 1px |
-| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                |
-| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                |
-| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                |
+| Surface                                   | Role token                    | Background         | Shadow            | Border                                                          |
+| ----------------------------------------- | ----------------------------- | ------------------ | ----------------- | --------------------------------------------------------------- |
+| Card / panel resting                      | `semantic.elevation.flat`     | `surface.page`     | none              | `border.subtle` 1px                                             |
+| Card / panel lifted (interactive only)    | `semantic.elevation.raised`   | `surface.raised`   | `shadow.subtle`   | none                                                            |
+| Tooltip                                   | `semantic.elevation.floating` | `surface.inverse`  | `shadow.floating` | none                                                            |
+| Menu / popover / listbox / toast / dialog | `semantic.elevation.overlay`  | `surface.floating` | `shadow.overlay`  | `border.default` 1px: the edge over `surface.muted` and in dark |
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
@@ -222,7 +222,7 @@ A block that carries `@deprecated <notice>` also gives the spec `deprecated` (th
  */
 ```
 
-`node scripts/check-contract-coverage.mjs` lists the 43 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
+`node scripts/check-contract-coverage.mjs` lists the 44 core components (`scripts/lib/core-components.mjs`) that still lack a `usage.when` of 20+ characters. It runs at pre-commit with `--enforce` (hds#340).
 
 ## Component Inventory & Fallbacks
 

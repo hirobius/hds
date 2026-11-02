@@ -39,6 +39,8 @@ const HDS_PREFIXED_ALLOWLIST = new Set(['HdsThemeProvider', 'HdsRouterProvider']
 /**
  * hds#394 wave 4a: removed in 0.20.0 with no survivor (hds#389). The /patterns
  * ones left the root earlier in the same release and now leave /patterns too.
+ * The /patterns `CommandPalette` (manifest search) is checked against /patterns
+ * only: a new root `CommandPalette` with its own API shipped in hds#638.
  */
 const WAVE_4A_ROOT = [
   'CaseStudyLayout',
@@ -152,7 +154,10 @@ describe('public component export names', () => {
   });
 
   it('no longer exports the hds#394 wave 4a components (removed in 0.20.0)', () => {
-    for (const gone of [...WAVE_4A_ROOT, ...WAVE_4A_PATTERNS]) {
+    for (const gone of [
+      ...WAVE_4A_ROOT,
+      ...WAVE_4A_PATTERNS.filter((n) => n !== 'CommandPalette'),
+    ]) {
       expect(names, `${gone} is still exported from the root`).not.toContain(gone);
     }
   });
@@ -200,7 +205,8 @@ describe('/patterns export names', () => {
   const names = exports.map((s) => s.name);
 
   it('no longer exports the hds#394 wave 4a pattern components (removed in 0.20.0)', () => {
-    for (const gone of WAVE_4A_PATTERNS) {
+    // AppShell is back in /patterns as a new component with its own API (hds#875).
+    for (const gone of WAVE_4A_PATTERNS.filter((n) => n !== 'AppShell')) {
       expect(names, `${gone} is still exported from /patterns`).not.toContain(gone);
     }
   });

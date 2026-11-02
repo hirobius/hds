@@ -18,21 +18,60 @@ const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));
 
 /**
  * @param {string} pkgDir the package root (the directory holding package.json)
- * @returns {{ version: string, index: any, ledgers: any[] }}
+ * @param {{ detects?: Map<string, any> }} [opts] detects: readDetects, given to steps with none
+ * @returns {{ version: string, index: any, ledgers: any[], kept: Map<string, { in: string, plain: string }> }}
  */
-export function loadRecord(pkgDir) {
+export function loadRecord(pkgDir, { detects = readDetects(pkgDir) } = {}) {
   const { version } = readJson(join(pkgDir, 'package.json'));
   const index = readJson(join(pkgDir, 'upgrade/index.json'));
   const ledgers = index.versions
     .map((v) => join(pkgDir, 'upgrade/releases', `${v.version}.json`))
     .filter((file) => existsSync(file))
     .map(readJson)
+    .map((ledger) => ({
+      ...ledger,
+      steps: ledger.steps.map((step) =>
+        !step.detect && detects.has(step.id) ? { ...step, detect: detects.get(step.id) } : step,
+      ),
+    }))
     .sort((a, b) => compareVersions(a.version, b.version));
-  return { version, index, ledgers };
+  return { version, index, ledgers, kept: readKept(pkgDir) };
+}
+
+/**
+ * upgrade/detects.json: detectors for released steps whose frozen note had
+ * none (hds#934), by step id. Without one such a step reached every consumer,
+ * since nothing could tell whether the code uses it. Only the command reads
+ * it: compile.mjs reads a step's detect for deprecations alone, and none is one.
+ * @param {string} root the package root
+ * @returns {Map<string, any>}
+ */
+export function readDetects(root) {
+  const file = join(root, 'upgrade/detects.json');
+  return new Map(existsSync(file) ? Object.entries(readJson(file).detects ?? {}) : []);
+}
+
+/**
+ * upgrade/kept.json: the deprecations whose removal was cancelled, by step id,
+ * each with the release that would have removed it. The one record both the
+ * upgrade command and scripts/upgrade/compile.mjs read.
+ * @param {string} root the package root
+ * @returns {Map<string, { in: string, plain: string }>}
+ */
+export function readKept(root) {
+  const file = join(root, 'upgrade/kept.json');
+  return new Map(existsSync(file) ? Object.entries(readJson(file).kept ?? {}) : []);
 }
 
 /** Step kinds that take something public away. */
-const REMOVING = new Set(['removed', 'moved', 'renamed', 'folded']);
+const REMOVING = new Set([
+  'removed',
+  'moved',
+  'renamed',
+  'folded',
+  'prop-renamed',
+  'prop-value-mapped',
+]);
 
 /**
  * The list a step belongs to, as UPGRADING.md prints it
@@ -62,14 +101,15 @@ const namedUses = (step) => [
  * release up to `target` took away.
  * @param {{ version: string, steps: any[] }[]} ledgers oldest first
  * @param {string} target
+ * @param {Map<string, { in: string, plain: string }>} [kept] readKept: those steps are not deprecated any more
  */
-export function comingNextSteps(ledgers, target) {
+export function comingNextSteps(ledgers, target, kept = new Map()) {
   const upTo = ledgers.filter((l) => compareVersions(l.version, target) <= 0);
   const out = [];
   for (const ledger of upTo) {
     const later = upTo.filter((l) => compareVersions(l.version, ledger.version) > 0);
     for (const step of ledger.steps) {
-      if (step.kind !== 'deprecated') continue;
+      if (step.kind !== 'deprecated' || kept.has(step.id)) continue;
       if (step.removeIn && compareVersions(step.removeIn, target) <= 0) continue;
       const named = namedUses(step);
       const uses = named.length > 0 ? named : [`subject:${subject(step)}`];

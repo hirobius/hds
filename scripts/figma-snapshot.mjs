@@ -10,8 +10,11 @@
  * Usage:
  *   pnpm figma:snapshot                  write the carriers (same as pnpm figma:push)
  *                                        and print how to take a snapshot
- *   pnpm figma:snapshot --ingest <file>  verify a snapshot's checksum and write
- *                                        figma/snapshot.json
+ *   pnpm figma:snapshot --ingest [file|https-url]
+ *                                        verify a snapshot's checksum and write
+ *                                        figma/snapshot.json; with no file, read the
+ *                                        promote plugin's receipt from a known path
+ *                                        (~/Downloads, then figma/push/promote) (hds#397)
  *   pnpm figma:snapshot --from-receipt <files...>
  *                                        rebuild the snapshot a Sync wrote into
  *                                        the library from receipt.js's results, verify
@@ -43,9 +46,11 @@ import { fileURLToPath } from 'url';
 import {
   parseSnapshotFile,
   serializeSnapshotFile,
+  tokensFileHash,
   verifyBindingFallbacks,
 } from './lib/figma-snapshot.mjs';
 import { rebuildFromReceipt } from './lib/figma-receipt.mjs';
+import { readIngestSource, unwrapPromoteReceipt } from './lib/figma-promote-receipt.mjs';
 import { rebuildFromDiff } from './lib/figma-diff-rebuild.mjs';
 import { syncConfigFromLinks } from './lib/figma-scripts.mjs';
 import { readLinks, writePushArtifacts } from './figma-push.mjs';
@@ -58,14 +63,20 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  * `bindingFallbacks` (a receipt, a diff, snapshot.js: none of them sweeps the
  * paints) keeps the committed file's record, which has its own `takenAt`.
  *
+ * It records `tokensHash`, the hash of hirobius.tokens.json at ingest: ingest
+ * after Figma has the token change.
+ *
  * @param {{ root: string, from?: string, text?: string }} options  the file, or its text
  */
 export function ingestSnapshot({ root, from, text = readFileSync(from, 'utf8') }) {
   const parsed = parseSnapshotFile(text);
   const outPath = join(root, 'figma', 'snapshot.json');
-  const verified = parsed.bindingFallbacks
+  const withFallbacks = parsed.bindingFallbacks
     ? parsed
     : { ...parsed, bindingFallbacks: committedFallbacks(outPath) };
+  // The tokens this snapshot matches: the release gate fails when the file
+  // hashes differently (scripts/check-figma-release.mjs, hds#801).
+  const verified = { ...withFallbacks, tokensHash: tokensFileHash(root) };
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, serializeSnapshotFile(verified));
   return { ...verified, outPath };
@@ -187,7 +198,8 @@ export function snapshotSteps(rel) {
     '    then pnpm figma:snapshot --from-receipt <files...>. No download.',
     '  Fallback, when there is no receipt to collect:',
     `    Sync plugin (${rel}/plugin): run Sync, then click Download JSON.`,
-    `    Promote plugin: import ${rel}/promote/manifest.json, run "Take snapshot", click Download JSON.`,
+    `    Promote plugin: import ${rel}/promote/manifest.json, run "Take snapshot", click Download JSON`,
+    '      (saves hds-snapshot-receipt.json), then pnpm figma:snapshot --ingest with no file.',
     `    use_figma: run ${rel}/use-figma/snapshot.js unmodified and save the returned JSON to a file.`,
     '    Then: pnpm figma:snapshot --ingest <file>   (verifies the checksum, writes figma/snapshot.json)',
     `    The library changed outside the repo: ${rel}/use-figma/snapshot-diff.js (one use_figma call, a few KB back),`,
@@ -260,9 +272,15 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       writePushArtifacts({ root: ROOT, outDir });
       console.log(snapshotSteps(relative(ROOT, outDir).replaceAll('\\', '/')).join('\n'));
     } else {
-      const from = args[at + 1];
-      if (!from) throw new Error('--ingest needs the path of the snapshot file.');
-      const { snapshot, outPath } = ingestSnapshot({ root: ROOT, from: resolve(from) });
+      const arg = args[at + 1] && !args[at + 1].startsWith('--') ? args[at + 1] : undefined;
+      const from = arg && !/^[a-z]+:\/\//i.test(arg) ? resolve(arg) : arg;
+      const { text, source } = await readIngestSource({ root: ROOT, from });
+      const sync = syncConfigFromLinks(readLinks(ROOT));
+      const { snapshot, outPath } = ingestSnapshot({
+        root: ROOT,
+        text: unwrapPromoteReceipt(text, sync),
+      });
+      console.log(`  read ${source}`);
       const counts = snapshot.collections.map((c) => `${c.name} ${c.variables.length}`).join(', ');
       console.log(
         `✓ ${relative(ROOT, outPath).replaceAll('\\', '/')} — "${snapshot.file.name}" at ${snapshot.takenAt}: ${counts}; ${snapshot.textStyles.length} text styles, ${snapshot.effectStyles.length} effect styles`,

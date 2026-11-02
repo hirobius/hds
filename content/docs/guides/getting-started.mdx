@@ -15,15 +15,11 @@ HDS ships to the public npm registry as `@hirobius/design-system`. It is ESM, Re
 pnpm add @hirobius/design-system react react-dom
 ```
 
-Some peers are optional and only needed for one entry point:
-
-- `react-router`, if you want HDS links to drive your router;
-- `react-hook-form`, `zod` and `@hookform/resolvers`, for `@hirobius/design-system/form`;
-- `lenis`, for `@hirobius/design-system/scroll`.
+Optional peers: `react-router` (router links), `react-hook-form` + `zod` + `@hookform/resolvers` (`/form`), `lenis` (`/scroll`).
 
 ## Load the CSS once
 
-Import one stylesheet at your app root. Pick it by how much of the page HDS should own:
+Import one stylesheet at your app root:
 
 | Stylesheet      | What it holds                                                                                                 | Use it for                                  |
 | --------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
@@ -38,7 +34,7 @@ import '@hirobius/design-system/fonts.css'; // optional: the HDS typefaces
 
 ## Mark the HDS scope
 
-HDS base styles (the type baseline) apply only inside an element with `data-hds`. With `styles.css`, nothing outside that element changes.
+HDS base styles apply only inside `data-hds`.
 
 ```tsx
 import { Button } from '@hirobius/design-system';
@@ -50,17 +46,13 @@ export const App = () => (
 );
 ```
 
-## Theming
-
-Light and dark mode, density and brand are set with attributes on a root element, so they work without JavaScript. In React, [`HdsThemeProvider`](/docs/guides/providers) sets them for you.
+Theme, density and brand are root attributes; [`HdsThemeProvider`](/docs/guides/providers) sets them in React.
 
 ## Where to go next
 
-- **Components** in the sidebar: every core component, with a live demo, props and the tokens it reads. Start with [Button](/docs/components/button).
-- **Patterns** in the sidebar: page-level pieces such as page headers and forms, imported from `@hirobius/design-system/patterns`.
-- [Tokens](/docs/guides/tokens): where every color, space and type value comes from.
-- [Upgrade](/docs/guides/upgrade): moving to a newer release with one command.
+- Components and Patterns in the sidebar; start with [Button](/docs/components/button).
+- [Tokens](/docs/guides/tokens) and [Upgrade](/docs/guides/upgrade).
 
 ## For agents
 
-The package carries its own agent context: `AGENTS.md` and `llms.txt` at the package root, the component API in `src/app/data/component-api.json`, and `hds-mcp`, an MCP server the package installs as the `hds-mcp` bin (`npx hds-mcp` in a project that depends on it). The full consumer guide is [docs/CONSUMING.md](https://github.com/hirobius/hds/blob/main/docs/CONSUMING.md).
+The package ships `AGENTS.md`, `llms.txt`, `src/app/data/component-api.json` and an MCP server (`npx hds-mcp`). Full guide: [docs/CONSUMING.md](https://github.com/hirobius/hds/blob/main/docs/CONSUMING.md).

@@ -1,6 +1,13 @@
 {
-  "$comment": "State-surface registry (hds#612, spec hirobius/ops#576). Every file or section that describes project state, and what keeps it true: generated (a generator builds it; `check` is the command that proves it fresh, which the gate verifies exists and handles --check, or `\"freshness\": \"unchecked\"` says honestly that nothing does), checked (a named gate compares it with the code), editorial (hand-written; owner, reviewedAt and maxAgeDays; past maxAgeDays the gate warns \"review due\", and fails under --strict-review). Read by scripts/check-state-surfaces.mjs. After re-reading an editorial file, bump its reviewedAt (not into the future), then run pnpm agents:generate: docs/ai/DOCS-INDEX.md prints it. ignoreReferences lists path prefixes that docs name but a clean checkout lacks. registerAll (off by default) lists directories whose markdown must all be registered. alwaysOn lists the files every agent loads first (CLAUDE.md and what it marks read-first); the gate flags derived facts (versions, counts, lists of three or more issues, \"as of\" state) in them, and docs/guardrails/steering-budget.json caps their size.",
+  "$comment": "State-surface registry (hds#612, spec hirobius/ops#576). Every file or section that describes project state, and what keeps it true: generated (a generator builds it; `check` is the command that proves it fresh, which the gate verifies exists and handles --check, or `\"freshness\": \"unchecked\"` says honestly that nothing does), checked (a named gate compares it with the code), editorial (hand-written; owner, reviewedAt and maxAgeDays; past maxAgeDays the gate warns \"review due\", and fails under --strict-review). Read by scripts/check-state-surfaces.mjs. After re-reading an editorial file, bump its reviewedAt (not into the future), then run pnpm agents:generate: docs/ai/DOCS-INDEX.md prints it. ignoreReferences lists path prefixes that docs name but a clean checkout lacks. registerAll (off by default) lists directories whose markdown must all be registered. alwaysOn lists the files every agent loads first (CLAUDE.md and what it marks read-first); the gate flags derived facts (versions, counts, lists of three or more issues, \"as of\" state) in them, and docs/guardrails/steering-budget.json caps their size. gatedFacts exempts one line pattern of an alwaysOn file that a named check keeps true (the package version stamp of llms.txt, hds#463).",
   "alwaysOn": ["CLAUDE.md", "docs/ai/FRONT-DOOR.md", "docs/ai/NORTH_STAR.md", "public/llms.txt"],
+  "gatedFacts": [
+    {
+      "path": "public/llms.txt",
+      "line": "^Version: \\d+\\.\\d+\\.\\d+$",
+      "check": "node scripts/check-version-stamps.mjs"
+    }
+  ],
   "ignoreReferences": [],
   "surfaces": [
     {
@@ -49,6 +56,14 @@
       "check": "node scripts/count-consumer-usage.mjs --check"
     },
     {
+      "path": "docs/ADOPTION.md",
+      "describes": "Month-by-month HDS adoption in each product app, one row per commit (adoption ledger)",
+      "kind": "generated",
+      "by": "scripts/count-consumer-usage.mjs",
+      "section": "auto:adoption-history",
+      "check": "node scripts/count-consumer-usage.mjs --check"
+    },
+    {
       "path": "public/hds-stats.json",
       "describes": "The HDS numbers other repos read (component, core, pattern and token counts, contrast pairs, typography styles, the consumer split), each computed from the code",
       "kind": "generated",
@@ -75,7 +90,7 @@
       "describes": "What HDS is, how to install it and use it (prose)",
       "kind": "editorial",
       "owner": "Adrian",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-11-02",
       "maxAgeDays": 90,
       "section": "prose"
     },
@@ -356,6 +371,14 @@
       "kind": "generated",
       "by": "scripts/figma-links.mjs",
       "check": "node scripts/figma-links.mjs --check"
+    },
+    {
+      "path": "docs/cleanup/DELETE-LIST.md",
+      "describes": "The F8 cleanup inventory: knip delete-only batches and jscpd dedupe batches, with both ratchets' current counts (hds#766)",
+      "kind": "editorial",
+      "owner": "Adrian",
+      "reviewedAt": "2026-10-12",
+      "maxAgeDays": 90
     },
     {
       "path": "docs/guardrails/registry.json",

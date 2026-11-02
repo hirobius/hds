@@ -10,7 +10,7 @@
  * (Dialog, Menu, Select) portal into the nearest [data-hds] scope, which
  * <DemoFrame> provides so they inherit the page theme.
  */
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
   Avatar,
@@ -23,6 +23,7 @@ import {
   Card,
   Checkbox,
   Combobox,
+  CommandPalette,
   Composer,
   Container,
   Dialog,
@@ -35,13 +36,16 @@ import {
   InlineLink,
   Input,
   Kbd,
+  MetaLine,
   Menu,
+  NavList,
   Pagination,
   Popover,
   Progress,
   Radio,
   SegmentedControl,
   Select,
+  Sheet,
   Skeleton,
   Slider,
   Spinner,
@@ -58,13 +62,28 @@ import {
   Textarea,
   Timeline,
   TimelineItem,
+  Timestamp,
   Toggle,
+  TokenField,
+  type TokenFieldHandle,
   Tooltip,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { ArrowRight, CircleCheck, Copy, Search, Star, Users } from '@hirobius/design-system/icons';
 import {
+  ArrowRight,
+  Banknote,
+  Briefcase,
+  CircleCheck,
+  Copy,
+  MapPin,
+  Search,
+  Star,
+  Users,
+} from '@hirobius/design-system/icons';
+import {
+  AppShell,
   AssetImg,
+  AsyncState,
   CodeBlock,
   DataTableSection,
   DestructiveSection,
@@ -87,9 +106,10 @@ const XS = 'var(--semantic-space-scale-xs)';
 const demoRow = { display: 'flex', gap: SM, flexWrap: 'wrap', alignItems: 'center' } as const;
 const demoStack = { display: 'grid', gap: SM } as const;
 const demoColumn = { ...demoStack, width: 'min(100%, 360px)' } as const;
+// A soft raised tile, no outline (hds#891).
 const demoTile = {
   padding: SM,
-  border: '1px solid var(--semantic-color-border-default)',
+  background: 'var(--semantic-color-surface-raised)',
   borderRadius: 'var(--semantic-radius-action)',
 } as const;
 
@@ -105,6 +125,16 @@ function ButtonDemo() {
       <Button variant="secondary" pressed={pressed} onClick={() => setPressed((p) => !p)}>
         {pressed ? 'Pressed' : 'Toggle'}
       </Button>
+      <Button variant="tertiary">Tertiary</Button>
+      <Button variant="secondary" tone="danger">
+        Danger
+      </Button>
+      <Button variant="secondary" shadow="none" hoverEffect="none">
+        Flat (opt-out)
+      </Button>
+      <Button variant="secondary" size="sm">
+        Small
+      </Button>
     </div>
   );
 }
@@ -114,7 +144,7 @@ function InputDemo() {
     <div style={{ display: 'grid', gap: SM, width: 'min(100%, 320px)' }}>
       <Input label="Project name" placeholder="Portfolio redesign" />
       <Input label="Start date" type="date" defaultValue="2026-10-01" />
-      <Input size="sm" placeholder="Small" aria-label="Small input" />
+      <Input size="sm" defaultValue="Small" aria-label="Small input" />
     </div>
   );
 }
@@ -171,6 +201,64 @@ function DialogDemo() {
   );
 }
 
+function AppShellDemo() {
+  // AppShell reads the viewport (lg) on the client only, so its server render is the narrow
+  // layout and hydration reflows it. Mount it after hydration inside the fixed-height frame
+  // so the page does not shift on load (check:docs-layout-shift, hds#806).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return (
+    <div style={{ height: '24rem', overflow: 'auto', isolation: 'isolate' }}>
+      {mounted && (
+        <AppShell
+          header={<Text variant="ui">Ops</Text>}
+          sidebar={({ collapsed }) => (
+            <Stack gap="tight">
+              {['Today', 'Jobs', 'Documents'].map((item) => (
+                <InlineLink key={item} href={`#${item.toLowerCase()}`}>
+                  {collapsed ? item.slice(0, 1) : item}
+                </InlineLink>
+              ))}
+            </Stack>
+          )}
+          aside={<Text variant="caption">Detail panel</Text>}
+        >
+          <Text variant="title" as="h2">
+            Pipeline
+          </Text>
+        </AppShell>
+      )}
+    </div>
+  );
+}
+
+function SheetDemo() {
+  const [sort, setSort] = useState('Newest');
+  return (
+    <Sheet>
+      <Sheet.Trigger asChild>
+        <Button variant="secondary">Sort: {sort}</Button>
+      </Sheet.Trigger>
+      <Sheet.Content>
+        <Sheet.Header>
+          <Sheet.Title>Sort by</Sheet.Title>
+          <Sheet.Description>
+            A bottom sheet on a phone, a centred panel on wider screens.
+          </Sheet.Description>
+        </Sheet.Header>
+        <Sheet.Actions aria-label="Sort order">
+          {['Newest', 'Company', 'Best fit'].map((option) => (
+            <Sheet.Action key={option} current={sort === option} onClick={() => setSort(option)}>
+              {option}
+            </Sheet.Action>
+          ))}
+          <Sheet.Action tone="danger">Remove filters</Sheet.Action>
+        </Sheet.Actions>
+      </Sheet.Content>
+    </Sheet>
+  );
+}
+
 function MenuDemo() {
   return (
     <Menu>
@@ -193,7 +281,8 @@ function MenuDemo() {
 
 // A link, prose and an action row are what used to shear a table on desktop
 // (tests/visual/table-clipping.spec.ts guards it). The literal columns (status, date,
-// actions) size to their content, so Summary takes the spare width.
+// actions) size to their content, so Summary takes the spare width. Summary floors at
+// two tiles: on a 390px phone the frame scrolls instead of squeezing it to ~100px.
 const TABLE_DEMO_ROWS = [
   {
     key: 'portfolio',
@@ -220,7 +309,11 @@ function TableDemo() {
       emphasizeFirstColumn
       columns={[
         { key: 'name', label: 'Project' },
-        { key: 'summary', label: 'Summary' },
+        {
+          key: 'summary',
+          label: 'Summary',
+          width: 'minmax(calc(var(--semantic-size-tile) * 2), 1fr)',
+        },
         { key: 'status', label: 'Status', width: 'max-content' },
         { key: 'updated', label: 'Updated', align: 'right', width: 'max-content' },
         { key: 'actions', label: 'Actions', align: 'right', width: 'max-content' },
@@ -308,12 +401,62 @@ function AlertDemo() {
   );
 }
 
+// The account button: initials when signed in, a person icon when signed out,
+// and a warning dot while changes are not synced. The Button label carries the
+// status, since it replaces the avatar's own name.
 function AvatarDemo() {
+  const [signedIn, setSignedIn] = useState(true);
+  const [synced, setSynced] = useState(false);
+  const accountLabel = signedIn
+    ? `Account, Ada Lovelace${synced ? '' : ', not synced'}`
+    : 'Sign in';
   return (
-    <div style={demoRow}>
-      <Avatar alt="Ada Lovelace" initials="AL" size="sm" />
-      <Avatar alt="Grace Hopper" initials="GH" size="md" />
-      <Avatar alt="Alan Kay" initials="AK" size="lg" />
+    <div style={demoStack}>
+      <div style={demoRow}>
+        <Avatar alt="Ada Lovelace" initials="AL" size="sm" />
+        <Avatar alt="Grace Hopper" initials="GH" size="md" />
+        <Avatar alt="Alan Kay" initials="AK" size="lg" />
+        <Avatar alt="Signed out" fallback="icon" />
+        <Avatar alt="Grace Hopper" status="success" statusLabel="Online" />
+        <Avatar alt="Alan Kay" status="warning" statusLabel="Not synced" />
+      </div>
+      <div style={demoRow}>
+        <Menu>
+          <Menu.Trigger asChild>
+            <Button
+              variant="tertiary"
+              iconOnly
+              label={accountLabel}
+              className="rounded-full"
+              iconLeft={
+                signedIn ? (
+                  <Avatar
+                    alt="Ada Lovelace"
+                    status={synced ? undefined : 'warning'}
+                    statusLabel={synced ? undefined : 'Not synced'}
+                  />
+                ) : (
+                  <Avatar alt="Signed out" fallback="icon" />
+                )
+              }
+            />
+          </Menu.Trigger>
+          <Menu.Content>
+            <Menu.Label>{signedIn ? 'Ada Lovelace' : 'Not signed in'}</Menu.Label>
+            {signedIn && (
+              <Menu.Item onSelect={() => setSynced((s) => !s)}>
+                {synced ? 'Mark as not synced' : 'Sync now'}
+              </Menu.Item>
+            )}
+            <Menu.Item onSelect={() => setSignedIn((s) => !s)}>
+              {signedIn ? 'Sign out' : 'Sign in'}
+            </Menu.Item>
+          </Menu.Content>
+        </Menu>
+        <Text variant="caption" tone="secondary">
+          Account button: open it to sign in or out, or to sync.
+        </Text>
+      </div>
     </div>
   );
 }
@@ -326,6 +469,15 @@ function BadgeDemo() {
       <Badge tone="success">Active</Badge>
       <Badge tone="warning">At risk</Badge>
       <Badge tone="danger">Blocked</Badge>
+      <Badge count={3} label="3 roles" />
+      <Badge count={42} label="42 roles" />
+      <Badge count={120} max={99} label="120 roles" />
+      <Stack direction="row" gap="xs" align="center">
+        <Text as="h3" variant="titleSm">
+          Open roles
+        </Text>
+        <Badge count={12} label="12 roles" />
+      </Stack>
     </div>
   );
 }
@@ -378,6 +530,33 @@ function CardDemo() {
           <Card.RowNote>Last run 2 hours ago</Card.RowNote>
         </Card.Row>
       </Card>
+      {/* The entity card: source row, title, facts row, actions (hds#872). */}
+      <Grid columns={1} gap="normal">
+        <Card>
+          <Card.Source
+            avatar={<Avatar size="sm" initials="NR" alt="" />}
+            name="Northwind Robotics"
+            time={
+              <Timestamp date="2026-10-21T10:00:00Z" now="2026-10-21T12:00:00Z" format="relative" />
+            }
+          />
+          <Card.Header>
+            <Card.Title>Senior product designer</Card.Title>
+          </Card.Header>
+          <Card.Facts
+            items={[
+              { icon: MapPin, label: 'Remote' },
+              { icon: Banknote, label: '$120k to $150k' },
+              { icon: Briefcase, label: 'Full time' },
+            ]}
+          />
+          <Card.Footer>
+            <Button variant="secondary" size="sm">
+              Save
+            </Button>
+          </Card.Footer>
+        </Card>
+      </Grid>
       {/* asChild: the whole card is one link, with the interactive hover. */}
       <Card asChild padding="item">
         <a href="#card">
@@ -404,10 +583,18 @@ const COMPONENT_OPTIONS = [
   { value: 'table', label: 'Table' },
 ];
 
+const SKILL_OPTIONS = [
+  { value: 'react', label: 'React' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'figma', label: 'Figma' },
+  { value: 'sql', label: 'SQL' },
+];
+
 function ComboboxDemo() {
   const [value, setValue] = useState<string | null>(null);
+  const [skills, setSkills] = useState<string[]>(['react']);
   return (
-    <div style={{ width: 'min(100%, 280px)' }}>
+    <Stack gap="normal" style={{ width: 'min(100%, 360px)' }}>
       <Combobox
         options={COMPONENT_OPTIONS}
         value={value}
@@ -415,14 +602,25 @@ function ComboboxDemo() {
         placeholder="Select a component…"
         aria-label="Component"
       />
-    </div>
+      {/* Chip input: suggestions as you type; Enter adds free text. */}
+      <Combobox
+        multiple
+        creatable
+        options={SKILL_OPTIONS}
+        value={skills}
+        onChange={setSkills}
+        onCreate={(text) => setSkills((prev) => [...prev, text])}
+        placeholder="Add a skill…"
+        aria-label="Skills"
+      />
+    </Stack>
   );
 }
 
 function ContainerDemo() {
   return (
     <Container maxWidth="content" padding="0">
-      <div style={{ ...demoTile, borderStyle: 'dashed' }}>
+      <div style={{ ...demoTile, border: '1px dashed var(--semantic-color-border-default)' }}>
         Content is centred and capped at the reading width.
       </div>
     </Container>
@@ -430,10 +628,46 @@ function ContainerDemo() {
 }
 
 function DisclosureDemo() {
+  const rows = [
+    [
+      'Fonts',
+      'What ships in fonts.css',
+      'Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.',
+    ],
+    [
+      'Tokens',
+      'Where the token files live',
+      'hirobius.tokens.json is the source; build output is generated from it.',
+    ],
+    [
+      'Figma',
+      'How the library stays in sync',
+      'Sync runs one way, from code to the Figma library.',
+    ],
+  ] as const;
   return (
-    <Disclosure label="What ships in fonts.css?">
-      Plus Jakarta Sans 400, 500 and 700, plus IBM Plex Mono 400.
-    </Disclosure>
+    <div>
+      <div style={{ marginBottom: 16 }}>
+        <Disclosure label="What ships in fonts.css?">
+          Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.
+        </Disclosure>
+      </div>
+      {rows.map(([label, preview, body]) => (
+        <Disclosure
+          key={label}
+          variant="row"
+          label={label}
+          preview={preview}
+          actions={
+            <Button variant="tertiary" aria-label={`Edit ${label}`}>
+              Edit
+            </Button>
+          }
+        >
+          {body}
+        </Disclosure>
+      ))}
+    </div>
   );
 }
 
@@ -513,6 +747,60 @@ function ComposerDemo() {
   );
 }
 
+const PALETTE_ITEMS = [
+  { id: 'new-issue', label: 'New issue', group: 'Actions', shortcut: ['C'] },
+  { id: 'invite', label: 'Invite a teammate', group: 'Actions', keywords: ['member', 'user'] },
+  {
+    id: 'move-issue',
+    label: 'Move issue',
+    group: 'Actions',
+    args: [
+      {
+        id: 'project',
+        label: 'Project',
+        options: [
+          { id: 'website', label: 'Website' },
+          { id: 'mobile', label: 'Mobile app' },
+        ],
+      },
+      { id: 'note', label: 'Note' },
+    ],
+  },
+  { id: 'archive', label: 'Archive project', group: 'Actions', disabled: true },
+  { id: 'inbox', label: 'Go to inbox', group: 'Navigation', shortcut: ['G', 'I'] },
+  { id: 'settings', label: 'Open settings', group: 'Navigation', keywords: ['preferences'] },
+  { id: 'theme', label: 'Switch theme', group: 'Preferences', shortcut: ['⌘', 'J'] },
+];
+
+function CommandPaletteDemo() {
+  const [open, setOpen] = useState(false);
+  const [ran, setRan] = useState<string | null>(null);
+  return (
+    <div style={demoRow}>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Search commands
+      </Button>
+      {ran && <span>Ran: {ran}</span>}
+      <CommandPalette
+        open={open}
+        onOpenChange={setOpen}
+        items={PALETTE_ITEMS}
+        onSelect={(item, args) =>
+          setRan(
+            args
+              ? `${item.label} (${Object.entries(args)
+                  .map(([name, value]) => `${name}: ${value}`)
+                  .join(', ')})`
+              : item.label,
+          )
+        }
+        // ⌘K already opens the docs search here, so the demo opens from its button only.
+        hotkey={false}
+      />
+    </div>
+  );
+}
+
 function ThemeToggleDemo() {
   // Local state only: the demo shows the morph without switching the docs theme.
   const [dark, setDark] = useState(false);
@@ -534,9 +822,70 @@ function KbdDemo() {
   );
 }
 
+function MetaLineDemo() {
+  return (
+    <div style={{ display: 'grid', gap: 4 }}>
+      <MetaLine items={['Acme Cloud', 'Remote']} />
+      <MetaLine items={['Posted 3 days ago']} />
+    </div>
+  );
+}
+
+function NavListDemo() {
+  const jobs = [
+    { title: 'Design systems lead', meta: ['Acme Cloud', 'Remote'] as [string, string] },
+    { title: 'Staff front-end engineer', meta: ['Northwind', 'Hybrid'] as [string, string] },
+    { title: 'Product designer', meta: ['Globex', 'On-site'] as [string, string] },
+  ];
+  const [selected, setSelected] = useState(0);
+  return (
+    <div style={{ maxWidth: 320, display: 'grid', gap: 24 }}>
+      <NavList aria-label="Saved jobs (links)">
+        <NavList.Item href="#" current>
+          Design systems lead
+          <MetaLine items={['Acme Cloud', 'Remote']} />
+        </NavList.Item>
+        <NavList.Item
+          href="#"
+          action={
+            <Button
+              variant="tertiary"
+              iconOnly
+              label="Star Staff front-end engineer"
+              iconLeft={<Icon icon={Star} size="small" />}
+            />
+          }
+        >
+          Staff front-end engineer
+          <MetaLine items={['Northwind', 'Hybrid']} />
+        </NavList.Item>
+      </NavList>
+      <NavList aria-label="Saved jobs">
+        {jobs.map((job, index) => (
+          <NavList.Item
+            key={job.title}
+            selected={index === selected}
+            onSelect={() => setSelected(index)}
+          >
+            {job.title}
+            <MetaLine items={job.meta} />
+          </NavList.Item>
+        ))}
+      </NavList>
+    </div>
+  );
+}
+
 function PaginationDemo() {
   const [page, setPage] = useState(3);
-  return <Pagination count={10} page={page} onPageChange={setPage} />;
+  const [item, setItem] = useState(1);
+  return (
+    <div className="flex flex-col gap-fixed-md">
+      <Pagination count={10} page={page} onPageChange={setPage} />
+      {/* Compact Previous and Next are outlined; the end you are on stays outlined, faded (hds#886). */}
+      <Pagination variant="compact" label="Item" count={4} page={item} onPageChange={setItem} />
+    </div>
+  );
 }
 
 function PopoverDemo() {
@@ -584,17 +933,42 @@ function RadioDemo() {
 
 function SegmentedControlDemo() {
   const [value, setValue] = useState('grid');
+  const [range, setRange] = useState('week');
+  const ranges = [
+    { value: 'day', label: 'Day' },
+    { value: 'week', label: 'Week' },
+    { value: 'month', label: 'Month' },
+  ];
   return (
-    <SegmentedControl
-      label="View"
-      value={value}
-      onChange={setValue}
-      options={[
-        { value: 'grid', label: 'Grid' },
-        { value: 'list', label: 'List' },
-        { value: 'board', label: 'Board' },
-      ]}
-    />
+    <div style={demoStack}>
+      <SegmentedControl
+        label="View"
+        value={value}
+        onChange={setValue}
+        options={[
+          { value: 'grid', label: 'Grid' },
+          { value: 'list', label: 'List' },
+          { value: 'board', label: 'Board' },
+        ]}
+      />
+      <SegmentedControl
+        label="Range"
+        variant="secondary"
+        value={range}
+        onChange={setRange}
+        options={ranges}
+      />
+      {/* The secondary selected segment must read on a raised surface too (hds#866). */}
+      <Card padding="item">
+        <SegmentedControl
+          label="Range on a card"
+          variant="secondary"
+          value={range}
+          onChange={setRange}
+          options={ranges}
+        />
+      </Card>
+    </div>
   );
 }
 
@@ -663,26 +1037,58 @@ function TabsDemo() {
 
 function TagDemo() {
   const [active, setActive] = useState('tokens');
+  const [terms, setTerms] = useState(['design systems', 'tokens', 'contract']);
   return (
-    <div style={demoRow}>
-      {['tokens', 'components', 'patterns'].map((tag) => (
-        <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
-          {tag}
-        </Tag>
-      ))}
+    <div style={{ display: 'grid', gap: XS }}>
+      <div style={demoRow}>
+        {['tokens', 'components', 'patterns'].map((tag) => (
+          <Tag key={tag} active={active === tag} onClick={() => setActive(tag)}>
+            {tag}
+          </Tag>
+        ))}
+      </div>
+      {/* Dismissible: a static label; only the X (40px hit area) removes it. */}
+      <div style={demoRow}>
+        {terms.map((term) => (
+          <Tag key={term} onDismiss={() => setTerms((t) => t.filter((x) => x !== term))}>
+            {term}
+          </Tag>
+        ))}
+      </div>
     </div>
   );
 }
 
 function TextDemo() {
+  // minmax(0, 1fr): a grid track sized to its content would grow to the full
+  // one-line width of the truncated row, so the track has to be allowed to shrink.
   return (
-    <div style={{ display: 'grid', gap: XS }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: XS }}>
       <Text variant="display">Display</Text>
       <Text variant="title">Title</Text>
       <Text variant="body">Body for flowing prose and paragraph copy.</Text>
       <Text variant="ui">UI for labels and control text.</Text>
       <Text variant="caption">Caption for supporting metadata.</Text>
       <Text variant="mono">semantic.typography.mono</Text>
+      {/* hds#916: truncate gives way to a neighbour in a flex row; lineClamp breaks between words. */}
+      <div style={{ display: 'flex', gap: SM, alignItems: 'center' }}>
+        <Text variant="ui" truncate>
+          Senior Design Systems Engineer, Component Platform and Tooling, Remote across the Americas
+        </Text>
+        <Badge>New</Badge>
+      </div>
+      <Text variant="body" lineClamp={2}>
+        A note under a card&apos;s facts stays at two lines at most: the rest of this sentence runs
+        on past the second line so the clamp has something to cut, and the last visible word ends in
+        an ellipsis instead of a half-cut letter.
+      </Text>
+      <Text variant="mono" lineClamp={4}>
+        (&quot;design system&quot; OR &quot;design systems&quot; OR &quot;component library&quot;)
+        AND (engineer OR technologist OR lead) site:boards.greenhouse.io OR site:jobs.lever.co OR
+        site:jobs.ashbyhq.com -intern -internship -contract -agency -recruiter -&quot;staffing&quot;
+        -&quot;talent partner&quot;
+        semantic.typography.mono.font-family.fallback-stack.with-no-spaces-anywhere-in-it
+      </Text>
     </div>
   );
 }
@@ -691,6 +1097,34 @@ function TextareaDemo() {
   return (
     <div style={demoColumn}>
       <Textarea label="Notes" helperText="Markdown is supported." placeholder="Add a note…" />
+    </div>
+  );
+}
+
+function TokenFieldDemo() {
+  const [value, setValue] = useState('Hi [Contact],\n\nI saw the [Role] opening at [Company].');
+  const field = useRef<TokenFieldHandle>(null);
+  return (
+    <div style={demoColumn}>
+      <TokenField
+        ref={field}
+        label="Message"
+        helperText="Each [Variable] is one chip: Backspace removes all of it."
+        value={value}
+        onChange={setValue}
+      />
+      <Menu modal={false}>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Insert variable</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          {['[Company]', '[Role]', '[Contact]'].map((token) => (
+            <Menu.Item key={token} onSelect={() => field.current?.insertAt(token)}>
+              {token.slice(1, -1)}
+            </Menu.Item>
+          ))}
+        </Menu.Content>
+      </Menu>
     </div>
   );
 }
@@ -758,6 +1192,12 @@ function PageHeaderDemo() {
       // The docs page owns the one h1; a demo heading sits below it.
       level={2}
       breadcrumb={<Breadcrumb items={[{ label: 'Clients', href: '#' }, { label: 'Acme Co' }]} />}
+      metadata={
+        <>
+          <Badge tone="neutral">Referral</Badge>
+          <Badge tone="info">Pitch</Badge>
+        </>
+      }
       title="Acme Co"
       description="Brand refresh and the spring campaign site."
       status={<Badge tone="success">Active</Badge>}
@@ -825,7 +1265,9 @@ function DataTableSectionDemo() {
       toolbar={<Button variant="primary">New project</Button>}
       columns={[
         { key: 'name', label: 'Project' },
-        { key: 'status', label: 'Status' },
+        // A status badge is a short literal: it sizes to itself. One-word statuses keep all three
+        // columns inside a 390px phone (tests/visual/docs-phone-fit.spec.ts).
+        { key: 'status', label: 'Status', width: 'max-content' },
       ]}
       rows={[
         {
@@ -833,7 +1275,7 @@ function DataTableSectionDemo() {
           cells: [
             'Portfolio redesign',
             <Badge key="s" tone="success">
-              Active
+              Live
             </Badge>,
           ],
           actions: (
@@ -847,7 +1289,7 @@ function DataTableSectionDemo() {
           cells: [
             'Token audit',
             <Badge key="s" tone="warning">
-              Review
+              Draft
             </Badge>,
           ],
           actions: (
@@ -870,6 +1312,17 @@ function DestructiveSectionDemo() {
       confirmLabel="Delete"
       confirmBody="This cannot be undone."
       onConfirm={() => {}}
+    />
+  );
+}
+
+function AsyncStateDemo() {
+  return (
+    <AsyncState
+      status="error"
+      label="Open roles"
+      error="The job board did not answer in time."
+      onRetry={() => {}}
     />
   );
 }
@@ -898,8 +1351,15 @@ const SAMPLE_IMAGE =
 
 function AssetImgDemo() {
   return (
-    <div style={{ width: 'min(100%, 360px)' }}>
-      <AssetImg src={SAMPLE_IMAGE} alt="Sample artwork" naturalWidth={640} naturalHeight={360} />
+    // The frame holds the image's ratio, so the page does not reflow when it decodes (hds#770).
+    <div style={{ width: 'min(100%, 360px)', aspectRatio: '640 / 360' }}>
+      <AssetImg
+        src={SAMPLE_IMAGE}
+        alt="Sample artwork"
+        naturalWidth={640}
+        naturalHeight={360}
+        style={{ display: 'block', width: '100%', height: '100%' }}
+      />
     </div>
   );
 }
@@ -913,6 +1373,7 @@ function RevealDemo() {
 }
 
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
+  AppShell: AppShellDemo,
   Button: ButtonDemo,
   Input: InputDemo,
   Select: SelectDemo,
@@ -938,12 +1399,16 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Icon: IconDemo,
   InlineLink: InlineLinkDemo,
   Composer: ComposerDemo,
+  CommandPalette: CommandPaletteDemo,
   Kbd: KbdDemo,
+  MetaLine: MetaLineDemo,
+  NavList: NavListDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,
   Progress: ProgressDemo,
   Radio: RadioDemo,
   SegmentedControl: SegmentedControlDemo,
+  Sheet: SheetDemo,
   Skeleton: SkeletonDemo,
   Slider: SliderDemo,
   Spinner: SpinnerDemo,
@@ -954,6 +1419,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Tag: TagDemo,
   Text: TextDemo,
   Textarea: TextareaDemo,
+  TokenField: TokenFieldDemo,
   Timeline: TimelineDemo,
   Toggle: ToggleDemo,
   Tooltip: TooltipDemo,
@@ -965,6 +1431,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   FormActions: FormActionsDemo,
   DataTableSection: DataTableSectionDemo,
   DestructiveSection: DestructiveSectionDemo,
+  AsyncState: AsyncStateDemo,
   ErrorPattern: ErrorPatternDemo,
   CodeBlock: CodeBlockDemo,
   AssetImg: AssetImgDemo,
@@ -977,8 +1444,12 @@ export function DemoFrame({ children }: { children: ReactNode }) {
       data-hds
       className="hds-demo-frame not-prose"
       style={{
-        padding: 'var(--semantic-space-scale-md)',
-        border: '1px solid var(--semantic-color-border-default)',
+        // The page canvas, no outline (hds#891): the surface components sit on in apps.
+        // Not surface.muted (muted Tags and SegmentedControl tracks vanish into it) and not
+        // surface.raised (borderless Cards vanish into it). Pinned by
+        // tests/docs-site/demo-frame-contrast.test.ts.
+        // Narrower below sm (globals.css), where the frame's empty inset costs a phone's width.
+        padding: 'var(--hds-demo-frame-padding, var(--semantic-space-scale-md))',
         borderRadius: 'var(--semantic-radius-action)',
         background: 'var(--semantic-color-surface-page)',
         color: 'var(--semantic-color-content-primary)',

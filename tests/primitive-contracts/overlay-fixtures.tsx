@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import userEvent from '@testing-library/user-event';
 import { Dialog } from '@/app/components/dialog';
+import { AlertDialog } from '@/app/components/alert-dialog';
 import { Menu } from '@/app/components/menu';
 import { Select } from '@/app/components/select';
 import { Combobox } from '@/app/components/combobox';
@@ -59,4 +60,22 @@ export function SelectFixture({ showLabel }: { showLabel?: boolean } = {}) {
 export function ComboboxFixture() {
   const [value, setValue] = useState<string | null>(null);
   return <Combobox aria-label="Fruit" options={FRUIT} value={value} onChange={setValue} />;
+}
+
+export function AlertDialogFixture() {
+  return (
+    <AlertDialog>
+      <AlertDialog.Trigger>Delete</AlertDialog.Trigger>
+      <AlertDialog.Content>
+        <AlertDialog.Header>
+          <AlertDialog.Title>Delete project?</AlertDialog.Title>
+          <AlertDialog.Description>This cannot be undone.</AlertDialog.Description>
+        </AlertDialog.Header>
+        <AlertDialog.Footer>
+          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+          <AlertDialog.Action>Confirm</AlertDialog.Action>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
+  );
 }

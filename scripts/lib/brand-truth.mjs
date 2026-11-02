@@ -81,6 +81,16 @@ const HUE_ACCENT =
 const TENANT_SCOPED = /\btenants?\b|\bexemplar\b|\baccent-[a-z]+\b|\bper-tenant\b/i;
 
 /**
+ * An opt-in accent theme, switched on with `data-accent="<name>"`.
+ *
+ * DESIGN.md documents the Cobalt theme ("opt-in swap of the accent tokens
+ * only ... graphite stays the default"). Its hex is the theme's accent, not
+ * the brand default, so the line is correct prose. The `data-accent=` attribute
+ * is the marker: a theme can only be opted into through it.
+ */
+const OPT_IN_THEME = /\bdata-accent=/;
+
+/**
  * A markdown table row whose FIRST cell is a token path — a reference entry.
  *
  * The primitive reference table in DESIGN-HANDOFF.md documents each primitive
@@ -153,6 +163,7 @@ export function violationsInSource(source, file, accent) {
     if (!BRAND_CLAIM.test(text)) return;
     if (HISTORICAL.some((p) => p.test(text))) return;
     if (REFERENCE_ROW.test(text)) return;
+    if (OPT_IN_THEME.test(text)) return;
 
     const hue = TENANT_SCOPED.test(text) ? null : HUE_ACCENT.exec(text);
     if (hue) {

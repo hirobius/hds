@@ -21,14 +21,15 @@ type CalloutTone = 'accent' | 'info' | 'success' | 'warning' | 'danger';
 // opposite ways (Alert fill vs Callout stripe) read as two systems. Callout stays
 // distinct by role, not by mechanism: no icon, no aria role, and an `italic`
 // option (quote/pull-quote), vs Alert's icon + status role. `accent` is not a
-// feedback state, so it takes a neutral muted fill rather than a tinted one.
+// feedback state, so it takes a neutral fill rather than a tinted one: surface.sunken,
+// because bg-muted was 1.04:1 on a raised Card (hds#522).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding/radius; var()-based, no Tailwind-theme utility
 const calloutVariants = /* @__PURE__ */ cva(
   'rounded-md p-[var(--semantic-space-surface-padding)]', // rounded-md = the action radius, as on Alert
   {
     variants: {
       tone: {
-        accent: 'bg-muted',
+        accent: 'bg-[var(--semantic-color-surface-sunken)]',
         info: 'bg-feedback-bg-info',
         success: 'bg-feedback-bg-success',
         warning: 'bg-feedback-bg-warning',
@@ -71,5 +72,3 @@ export const Callout = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CalloutP
     );
   },
 );
-
-export default Callout;

@@ -1,4 +1,3 @@
-// motion-ok: input field — focus ring + transition via Tailwind utilities (gate accepts only hds.duration refs)
 /**
  * Input — text field primitive with label, helper, and error slots.
  * @category Inputs
@@ -32,7 +31,7 @@ import { FORM_CONTROL_WIDTH } from './form-control';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-disabled has no named Tailwind-theme utility; var()-based so still token-driven (matches button/segmented disabled)
 const inputVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-background text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
+  'flex w-full rounded-md border bg-background text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       size: {
@@ -61,8 +60,9 @@ const inputVariants = /* @__PURE__ */ cva(
 // moves from the <input> to this shell, so the slots sit in flow inside one
 // frame. The ring follows keyboard focus on the input only, as it does without
 // slots; a focused clear button keeps its own ring.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- productive motion token duration/easing (var()-based, no named utility)
 const inputShellVariants = /* @__PURE__ */ cva(
-  'relative flex w-full items-center rounded-md border bg-background text-foreground ring-offset-background transition-colors has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted',
+  'relative flex w-full items-center rounded-md border bg-background text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted',
   {
     variants: {
       size: {
@@ -161,41 +161,41 @@ const TYPES_WITHOUT_CLEAR: ReadonlySet<InputFieldType> = new Set<InputFieldType>
 
 const ADORNMENT_BY_SIZE = {
   sm: {
-    restPadL: 'pl-2',
-    restPadR: 'pr-2',
+    restPadL: 'pl-scale-xs',
+    restPadR: 'pr-scale-xs',
     leadPad: 'pl-7',
     trailPad: 'pr-7',
-    inset: 'inset-y-0 px-2',
+    inset: 'inset-y-0 px-scale-xs',
     iconClass: 'size-3.5',
     iconWrap: '[&_svg]:size-3.5',
-    prefixPad: 'pl-2',
-    suffixPad: 'pr-2',
+    prefixPad: 'pl-scale-xs',
+    suffixPad: 'pr-scale-xs',
     prefixGap: 'pl-1.5',
     suffixGap: 'pr-1.5',
   },
   md: {
-    restPadL: 'pl-3',
-    restPadR: 'pr-3',
+    restPadL: 'pl-fixed-xs',
+    restPadR: 'pr-fixed-xs',
     leadPad: 'pl-9',
     trailPad: 'pr-9',
     inset: 'inset-y-0 px-2.5',
     iconClass: 'size-4',
     iconWrap: '[&_svg]:size-4',
-    prefixPad: 'pl-3',
-    suffixPad: 'pr-3',
-    prefixGap: 'pl-2',
-    suffixGap: 'pr-2',
+    prefixPad: 'pl-fixed-xs',
+    suffixPad: 'pr-fixed-xs',
+    prefixGap: 'pl-scale-xs',
+    suffixGap: 'pr-scale-xs',
   },
   lg: {
-    restPadL: 'pl-4',
-    restPadR: 'pr-4',
+    restPadL: 'pl-fixed-sm',
+    restPadR: 'pr-fixed-sm',
     leadPad: 'pl-11',
     trailPad: 'pr-11',
-    inset: 'inset-y-0 px-3',
+    inset: 'inset-y-0 px-fixed-xs',
     iconClass: 'size-5',
     iconWrap: '[&_svg]:size-5',
-    prefixPad: 'pl-4',
-    suffixPad: 'pr-4',
+    prefixPad: 'pl-fixed-sm',
+    suffixPad: 'pr-fixed-sm',
     prefixGap: 'pl-2.5',
     suffixGap: 'pr-2.5',
   },
@@ -406,7 +406,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onClick={handleClear}
           aria-label={type === 'search' ? 'Clear search' : 'Clear input'}
           className={cn(
-            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
+            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
             padCfg.inset,
           )}
         >
@@ -417,7 +417,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   );
 
   return (
-    <div className={cn('flex flex-col gap-2', FORM_CONTROL_WIDTH, className)}>
+    <div className={cn('flex flex-col gap-scale-xs', FORM_CONTROL_WIDTH, className)}>
       {label && (
         <label htmlFor={id} className="hds-type-ui text-foreground">
           {label}

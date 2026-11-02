@@ -74,11 +74,17 @@ export function buildColors(raw) {
   const amber = resolveRef(fb.warning?.$value, raw);
   const info = resolveRef(fb.info?.$value, raw);
 
+  const prim = raw.primitive?.color ?? {};
+  const cobalt = String(resolveRef(prim.cobalt?.['600']?.$value, raw)).toUpperCase();
+
   const lines = [];
   lines.push('**One accent — one neutral system.**');
   lines.push('');
   lines.push(
-    `- **Accent** (\`${accent}\`): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
+    `- **Accent** (\`${accent}\`, graphite): CTAs, active states, selected focus rings, and the single brand accent. \`semantic.accent.rest\` — a per-tenant knob, not a fixed hue (#208).`,
+  );
+  lines.push(
+    `- **Accent theme — Cobalt** (\`${cobalt}\`): opt-in swap of the accent tokens only. Set \`data-accent="cobalt"\` on \`<html>\` (source \`accents/cobalt/tokens.json\`); graphite stays the default. Still one accent per screen.`,
   );
   lines.push(
     '- **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.',
@@ -168,14 +174,18 @@ export function buildTypography(raw) {
   // directly above a token-derived table it contradicted (headings were
   // claimed 500 while the ramp resolved 700). Read the weights off the same
   // tokens the table uses so the two cannot drift apart again.
+  // Name each role's weight by the token it references, not by its value: two
+  // weight tokens can share a value (regular and mono are both 400, hds#847).
   const weightOf = (role) => {
     const node = semanticTypography?.[role];
-    const val = node?.$value?.fontWeight ?? node?.fontWeight;
-    return val === undefined ? undefined : lookup(val, weightMap);
+    const ref = node?.$value?.fontWeight ?? node?.fontWeight;
+    if (ref === undefined) return undefined;
+    const name = String(ref).match(/^\{primitive\.typography\.weight\.([\w-]+)\}$/)?.[1];
+    return { name: name ?? String(ref), value: String(lookup(ref, weightMap)) };
   };
-  const nameOfWeight = (w) =>
-    Object.keys(weightMap).find((k) => String(weightMap[k]) === String(w)) ?? String(w);
-  const uniq = (arr) => [...new Set(arr.filter((v) => v !== undefined).map(String))];
+  const uniq = (arr) => [
+    ...new Map(arr.filter((w) => w !== undefined).map((w) => [w.name, w])).values(),
+  ];
 
   const declared = Object.keys(weightMap)
     .sort((a, b) => Number(weightMap[a]) - Number(weightMap[b]))
@@ -183,16 +193,15 @@ export function buildTypography(raw) {
     .join(', ');
   const headingW = uniq(['display', 'title'].map(weightOf));
   const bodyW = uniq(['body', 'ui', 'caption'].map(weightOf));
-  const phrase = (ws) =>
-    ws.length === 1
-      ? `\`${ws[0]}\` ${nameOfWeight(ws[0])}`
-      : ws.map((w) => `\`${w}\` ${nameOfWeight(w)}`).join(' / ');
-  const usedWeights = new Set([...headingW, ...bodyW]);
-  const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(String(weightMap[k])));
+  const phrase = (ws) => ws.map((w) => `\`${w.value}\` ${w.name}`).join(' / ');
+  const monoW = uniq([weightOf('mono')]);
+  const usedWeights = new Set([...headingW, ...bodyW, ...monoW].map((w) => w.name));
+  const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(k));
 
   lines.push(
     `Weights declared: ${declared}. Heading styles (display · title) use ` +
-      `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}.` +
+      `${phrase(headingW)}; body, UI, and caption use ${phrase(bodyW)}` +
+      (monoW.length ? `; mono uses ${phrase(monoW)}.` : '.') +
       (unused.length
         ? ` Declared but unused by any semantic role: ${unused
             .map((k) => `\`${weightMap[k]}\` ${k}`)
@@ -202,20 +211,23 @@ export function buildTypography(raw) {
   lines.push('');
   lines.push('### Type ramp');
   lines.push('');
-  lines.push(header('Role', 'Size (desktop max)', 'Weight', 'Use'));
+  lines.push(header('Role', 'Size (desktop max)', 'Compact', 'Weight', 'Use'));
 
   for (const { path, node: t } of collect(semanticTypography)) {
+    if (t?.$deprecated) continue; // agent docs teach live roles only
     const v = t?.$value ?? {};
     const raw = t?.$description ?? '';
     const afterDash = raw.split(' — ')[1];
     const desc = ((afterDash ?? raw).split(/\.(?:\s|$)/)[0] ?? '').trim();
     const size = lookup(v.fontSize, sizeMap);
+    const compactSize = t?.$extensions?.['com.figma.variables']?.modes?.Compact?.fontSize;
+    const compact = compactSize ? lookup(compactSize, sizeMap) : 'same';
     const wgt = lookup(v.fontWeight, weightMap);
-    lines.push(row(`\`semantic.typography.${path.join('.')}\``, size, wgt, desc || '—'));
+    lines.push(row(`\`semantic.typography.${path.join('.')}\``, size, compact, wgt, desc || '—'));
   }
   lines.push('');
   lines.push(
-    '> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.',
+    '> The ramp is static: tokens store the value every surface renders. **Compact** is the size under `data-density="compact"` (dense apps). Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.',
   );
   return lines.join('\n');
 }
@@ -230,6 +242,7 @@ export function buildSpacing(raw) {
   const keys = Object.keys(space).filter((k) => !k.startsWith('$'));
 
   const scale = keys
+    .filter((k) => !space[k].$deprecated)
     .map((k) => ({ key: k, val: resolveRef(space[k].$value, raw) }))
     .filter(({ val }) => /^\d+px$/.test(val))
     .sort((a, b) => parseInt(a.val, 10) - parseInt(b.val, 10))
@@ -242,9 +255,31 @@ export function buildSpacing(raw) {
   );
   lines.push('');
   lines.push(`Scale: ${scale}`);
+  const steps = raw.semantic?.space?.scale ?? {};
+  const stepKeys = Object.keys(steps).filter((k) => !k.startsWith('$'));
+  if (stepKeys.length) {
+    lines.push('');
+    lines.push(
+      `Semantic scale (comfortable, the default): ${stepKeys.map((k) => `\`${k}\` ${resolveRef(steps[k].$value, raw)}`).join(' · ')}.`,
+    );
+    const compactOf = (k) =>
+      steps[k].$extensions?.['com.figma.variables']?.modes?.Compact ?? steps[k].$value;
+    lines.push('');
+    lines.push(
+      `Compact (\`data-density="compact"\`, for dense apps): ${stepKeys.map((k) => `\`${k}\` ${resolveRef(compactOf(k), raw)}`).join(' · ')}.`,
+    );
+  }
+  const fixed = raw.semantic?.space?.fixed ?? {};
+  const fixedKeys = Object.keys(fixed).filter((k) => !k.startsWith('$') && !fixed[k].$deprecated);
+  if (fixedKeys.length) {
+    lines.push('');
+    lines.push(
+      `Fixed steps between the rungs (density does not move them): ${fixedKeys.map((k) => `\`fixed.${k}\` ${resolveRef(fixed[k].$value, raw)}`).join(' · ')}. Every spacing value has a semantic token; never type a px value.`,
+    );
+  }
   lines.push('');
   lines.push(
-    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
+    'Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it remaps `semantic.space.scale.sm…xl` to the app rhythm above (`2xs` and `xs` stay 4px and 8px), the deprecated `layout.*` steps and `section.stack` (48px) with it, and sets the compact type sizes in the ramp table; `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.',
   );
   return lines.join('\n');
 }
@@ -292,6 +327,17 @@ export function buildRadius(raw) {
       'Outer canvas / substrate boundaries only — never on everyday UI controls',
     ),
   );
+  const scale = raw.semantic?.radius?.scale ?? {};
+  for (const k of Object.keys(scale).filter((k) => !k.startsWith('$') && !scale[k].$deprecated)) {
+    lines.push(
+      row(
+        `Scale ${k}`,
+        `\`${resolveRef(scale[k].$value, raw)}\``,
+        `\`semantic.radius.scale.${k}\` (\`rounded-scale-${k}\`)`,
+        (scale[k].$description ?? '').replace(/^[^:]*:\s*/, ''),
+      ),
+    );
+  }
   return lines.join('\n');
 }
 
@@ -344,7 +390,7 @@ export function buildMotion(raw) {
     '',
     intentLines.join('\n'),
     '',
-    'Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.',
+    'Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.',
   ];
   if (otherLines.length > 1) {
     sections.push('', '### Other semantic motion tokens', '', otherLines.join('\n'));
@@ -413,7 +459,7 @@ export function buildComponents(raw, manifest) {
       radius: `\`${actionRad}\` (\`hds.borderRadius.action\`)`,
       states: 'collapsed · expanded · hover · focus',
       notes:
-        'Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`.',
+        'Accordion primitive. Expansion uses `semantic.motion.productive` by default; a spring is fine where it adds delight. Dividers follow `semantic.color.border.subtle`.',
     },
     {
       name: 'Toggles',

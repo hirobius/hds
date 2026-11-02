@@ -22,8 +22,20 @@ const FIRST_SHIPPED: Record<string, [number, number]> = {
   'hds-prefix': [0, 20],
   'hds-not-found-pattern': [0, 20],
   'hds-tile-grid': [0, 20],
+  'hds-spacing-steps': [0, 27],
+  'hds-token-aliases': [0, 33],
+  // Ledger-driven prop renames and value maps (hds#460).
+  'hds-prop-map': [0, 33],
+  // Ledger-driven hds.a.b token path rewrites (hds#955).
+  'hds-token-keys': [0, 33],
+  'hds-css-vars': [0, 33],
   // Not a codemod, but a bin all the same: the hds MCP server (hds#515).
   'hds-mcp': [0, 21],
+  // Visual-rules CLI (hds#664). Lands in a 0.32.x patch; this table has no patch
+  // field, so docs pinning it must say 0.33 or later.
+  'hds-check': [0, 33],
+  // Token-name lookup (hds#477), same patch-field caveat.
+  'hds-tokens': [0, 33],
   // The upgrade command (hds#452): `design-system` is the bin npx runs for
   // `npx @hirobius/design-system@latest upgrade`; `hds-upgrade` is the same file.
   'design-system': [0, 22],

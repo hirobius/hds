@@ -35,8 +35,8 @@ type MaxWidth = 'content' | 'max';
 type PaddingY = 'default' | 'compact' | 'none';
 
 const PADDING_Y: Record<PaddingY, { top: string; bottom: string }> = {
-  default: { top: hds.space.px48, bottom: hds.space.px64 },
-  compact: { top: hds.space.px24, bottom: hds.space.px32 },
+  default: { top: hds.semantic.space.scale.xl, bottom: hds.semantic.space.scale.xl },
+  compact: { top: hds.semantic.space.scale.md, bottom: hds.semantic.space.scale.lg },
   none: { top: '0', bottom: '0' },
 };
 
@@ -44,7 +44,7 @@ export interface PageProps {
   children: ReactNode;
   /** Max width: 'content' (760px for prose) | 'max' (1200px). Defaults to 'max'. */
   maxWidth?: MaxWidth;
-  /** Vertical padding token: 'default' (48/64) | 'compact' (24/32) | 'none'. Defaults to 'default'. */
+  /** Vertical padding: 'default' (scale.xl top and bottom, 64px / 48px compact) | 'compact' (scale.md / scale.lg) | 'none'. Defaults to 'default'. */
   paddingY?: PaddingY;
   /** Escape hatch for narrow page-specific adjustments. */
   style?: CSSProperties;

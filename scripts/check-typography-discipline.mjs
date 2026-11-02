@@ -26,7 +26,7 @@
  *
  * 3. typography-overrides (from audit-typography-overrides.mjs):
  *    Enforces single-weight + casing-via-eyebrow policy:
- *    - Plus Jakarta Sans 500 / Plus Jakarta Sans 700 (Bold) / IBM Plex Mono 400 are the only weights.
+ *    - Plus Jakarta Sans (variable: 400 body, 500 / 700 elsewhere), Sora 700 and IBM Plex Mono 400 are the only weights.
  *    - textTransform overrides must use hds.typeStyles.eyebrow composite.
  *    Escape hatch: add "// eyebrow-ok: <reason>" or "audit-ok: typography" comments.
  *
@@ -40,6 +40,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path, { join, dirname, extname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { emitViolationsJson, groupByRule } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -80,6 +81,8 @@ if (RUN_ALL || FONTS_ONLY) {
     'scripts',
     'src/styles',
     'test-results',
+    '.next', // Next.js build cache (docs-site/.next)
+    'docs-site/out', // built docs site, needed by the visual suite
     'fixtures',
     'tools', // standalone tools not governed by HDS token system
   ]);
@@ -330,17 +333,7 @@ if (RUN_ALL || OVERRIDES_ONLY) {
 
 // ─── Output ──────────────────────────────────────────────────────────────────
 
-if (jsonMode) {
-  emitResult(
-    {
-      violations: allViolations,
-      summary: { total: allViolations.length },
-      ok: allViolations.length === 0,
-    },
-    true,
-  );
-  process.exit(allViolations.length === 0 ? 0 : 1);
-}
+if (jsonMode) process.exit(emitViolationsJson(allViolations));
 
 if (allViolations.length === 0) {
   const mode = FONTS_ONLY
@@ -355,11 +348,7 @@ if (allViolations.length === 0) {
 }
 
 // Group violations by rule for clear reporting
-const byRule = new Map();
-for (const v of allViolations) {
-  if (!byRule.has(v.rule)) byRule.set(v.rule, []);
-  byRule.get(v.rule).push(v);
-}
+const byRule = groupByRule(allViolations);
 
 for (const [rule, violations] of byRule) {
   console.error(`\n✗ check-typography-discipline [${rule}] — ${violations.length} violation(s):`);

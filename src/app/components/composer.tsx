@@ -2,6 +2,7 @@
  * Composer — prompt and capture box that grows with its text and folds long pastes into cards.
  * @category Inputs
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277
  * @usage Capture a prompt or a quick note where a long paste should not flood the field.
  * @whenNot A plain multi-line field with no submit action, or a form with several fields.
  * @useInstead Textarea a plain multi-line field
@@ -23,6 +24,7 @@
  * @a11y consumer required Pass a label that names the purpose when more than one Composer is on a page; the default "Message" is the same on each.
  */
 
+// motion-ok: no motion of its own; Button, Tag, Textarea and Dialog carry their feedback.
 import * as React from 'react';
 import { cn } from '../../lib/utils';
 import { Badge } from './badge';

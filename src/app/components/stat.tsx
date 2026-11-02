@@ -52,7 +52,7 @@ export const Stat = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatProps>(
     <div
       ref={ref}
       data-tone={tone ?? 'neutral'}
-      className={cn('flex flex-col gap-1 self-start', className)}
+      className={cn('flex flex-col gap-fixed-2xs self-start', className)}
       {...props}
     >
       <p className={statVariants({ tone })}>{value}</p>

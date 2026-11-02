@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Menu content now scrolls within the available height, and Menu.Item takes tone=\"danger\" for destructive items, so you can drop any inline danger colour or max-height rule you added to a Menu."
+}

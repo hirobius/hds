@@ -24,7 +24,7 @@
  * STRUCTURAL_COMPONENTS / TEXT_BEARING_COMPONENTS sets need updating.
  */
 
-import { parse } from './parse-jsx.mjs';
+import { walkJsx, parseOrError } from './lib/jsx.mjs';
 import {
   ON_GRID_SPACING,
   STRUCTURAL_COMPONENTS,
@@ -141,34 +141,17 @@ function colorFamily(value) {
   return v.toLowerCase();
 }
 
-function walkJsx(node, visitor) {
-  if (!node || typeof node !== 'object') return;
-  if (node.type === 'JSXElement') visitor(node);
-  for (const key of Object.keys(node)) {
-    const child = node[key];
-    if (Array.isArray(child)) child.forEach((c) => walkJsx(c, visitor));
-    else if (child && typeof child === 'object') walkJsx(child, visitor);
-  }
-}
-
 /**
  * @param {string} jsxString
  * @returns {Promise<{ ok: boolean, errors: Array<{path, code, message, suggestion}> }>}
  */
 export default async function validate(jsxString) {
-  const parsed = parse(jsxString);
-  if (!parsed.ok) {
-    return {
-      ok: false,
-      errors: [
-        { path: '', code: 'PARSE_ERROR', message: parsed.error, suggestion: 'Fix JSX syntax' },
-      ],
-    };
-  }
+  const { ast, result } = parseOrError(jsxString);
+  if (result) return result;
 
   const errors = [];
 
-  walkJsx(parsed.ast, (element) => {
+  walkJsx(ast, (element) => {
     const tagName = element.openingElement?.name?.name;
     if (!tagName) return;
     const attrs = element.openingElement?.attributes || [];

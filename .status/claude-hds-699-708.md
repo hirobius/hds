@@ -1,0 +1,1 @@
+tools/intake on vite 6 with a fresh lockfile, so Dependabot security fixes resolve (esbuild 0.25, postcss 8.5.32) (hds#699); README "In use" drops the Library screenshot, a page ops removed (hds#708).

@@ -349,9 +349,11 @@ describe('package', () => {
   it('ships every codemods/ module a codemod bin imports', () => {
     const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
     for (const file of reached(pkg)) {
-      // A bin outside codemods/ (mcp/hds-mcp.mjs) ships its whole directory.
+      // A module outside codemods/ (mcp/hds-mcp.mjs, the ESLint plugin's
+      // rules/spacing.mjs) ships through a directory entry that covers it.
       if (!file.startsWith('codemods/')) {
-        expect(pkg.files, file).toContain(`${dirname(file).split('/')[0]}/`);
+        const covered = pkg.files.some((f) => f.endsWith('/') && file.startsWith(f));
+        expect(covered, `${file} is covered by a files/ directory entry`).toBe(true);
         continue;
       }
       expect(pkg.files, `a bin imports ${file}`).toContain(file);

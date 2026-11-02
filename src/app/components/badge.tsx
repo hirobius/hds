@@ -2,7 +2,7 @@
  * Badge - compact feedback badge for neutral and semantic states.
  * @category Feedback
  * @tier primitive
- * @usage Label a status, state or count with a compact neutral or semantic chip, or a dot.
+ * @usage Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).
  * @whenNot A chip people can toggle, or a message that needs a sentence.
  * @useInstead Tag an interactive filter or category chip
  * @useInstead Alert a message that needs a sentence
@@ -22,8 +22,11 @@ import { isProduction } from '../../lib/env';
 // (it was a 4% black/white wash; the solid token is a few percent lighter in light mode).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing and per-tone color tokens have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (14px).
 const badgeVariants = /* @__PURE__ */ cva(
-  // rounded-md is the action radius (role.radius), so a tenant that reshapes the system reshapes Badge too.
-  'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-md',
+  // rounded-sm is role.radius - 2px (component.badge.radius, 6px): a step under the action
+  // radius that still follows a tenant's role.radius (hds#757, bug bash 24). paddingShift moves
+  // paddingY from the top to the bottom so the label sits optically centred, not line-box centred.
+  // binding-ok: badge.radius rounded-sm is role.radius - 2px, so a tenant reshapes Badge
+  'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))] pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))] rounded-sm',
   {
     variants: {
       tone: {
@@ -64,7 +67,7 @@ const badgeDotVariants = /* @__PURE__ */ cva('inline-block shrink-0 rounded-full
 // The dot diameter is a lookup, not a cva `size` axis: a cva contract axis must
 // be a Size property on the Figma Badge (check-figma-mapping), and that master
 // (31:15) has no dot yet. When the dot lands in Figma, move this into cva and
-// add `size` to Badge's variantAxes in scripts/build-tokens.mjs.
+// add `size` to Badge's variantAxes in scripts/lib/token-manifest.mjs.
 const BADGE_DOT_SIZE: Record<'sm' | 'md' | 'lg', string> = {
   sm: 'size-1.5',
   md: 'size-2',
@@ -84,7 +87,11 @@ export interface BadgeProps
   dot?: boolean;
   /** Dot diameter; used only with `dot`. */
   size?: 'sm' | 'md' | 'lg';
-  /** Names a `dot` badge: role="img" with this aria-label. Without it the dot is aria-hidden. A text badge ignores it: put the text in `children`. */
+  /** A number shown in tabular numerals, neutral by default. Exclusive with `children` (children are ignored when `count` is set). Pair it with `max` to cap it. */
+  count?: number;
+  /** Cap for `count`: a count above it shows as `<max>+` (`max={99}` turns 120 into `99+`). Used only with `count`. */
+  max?: number;
+  /** Names a `dot` or `count` badge: role="img" with this aria-label ("12 roles"). Without it a dot is aria-hidden and a count is plain text. A text badge ignores it: put the text in `children`. */
   label?: string;
 }
 
@@ -104,10 +111,12 @@ function warnLabelWithoutDot() {
 
 /** Compact metadata/status chip. Tone is the only styling input. */
 export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { className, tone, as: Tag = 'span', dot = false, size, label, children, ...props },
+  { className, tone, as: Tag = 'span', dot = false, size, label, count, max, children, ...props },
   ref,
 ) {
-  if (label && !dot) {
+  const isCount = count !== undefined && !dot;
+
+  if (label && !dot && !isCount) {
     warnLabelWithoutDot();
   }
 
@@ -121,6 +130,21 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
         {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
         {...props}
       />
+    );
+  }
+
+  if (isCount) {
+    const shown = max !== undefined && count > max ? `${max}+` : String(count);
+    return (
+      <Tag
+        ref={ref}
+        data-tone={tone ?? 'neutral'}
+        className={cn(badgeVariants({ tone }), 'tabular-nums', className)}
+        {...(label ? { role: 'img', 'aria-label': label } : {})}
+        {...props}
+      >
+        {shown}
+      </Tag>
     );
   }
 

@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "A new hds-css-vars codemod renames the CSS variables the upgrade ledger lists in your stylesheets and code, and lists removed ones to fix by hand."
+}

@@ -95,6 +95,8 @@ describe('buildTokenSections', () => {
       cssVar: '--semantic-color-surface-page',
       value: '#ffffff',
       darkValue: '#171717',
+      fill: 'var(--primitive-color-neutral-white)',
+      darkFill: 'var(--primitive-color-neutral-900)',
       description: 'Page background.',
       swatch: true,
     });
@@ -147,7 +149,7 @@ describe('against the real hirobius.tokens.json', () => {
     const rows = buildTokenSections(real, 'color').flatMap((s) => s.rows);
     const page = rows.find((r) => r.token === 'semantic.color.surface.page');
     expect(page?.value).toBe('#ffffff');
-    expect(page?.darkValue).toBe('#000000');
+    expect(page?.darkValue).toBe('#060a13');
   });
 
   it('never leaves a dark value unresolved', () => {

@@ -78,12 +78,16 @@ describe('pattern name list', () => {
   it('holds every name the root exported from the 21 removed modules, types and parts included', () => {
     // 15 of the 21 modules were then deleted in 0.20.0 (hds#394 wave 4a): their
     // names are in codemods/removed-0.20.json, which the codemod reports instead.
-    const { modules: removedModules } = JSON.parse(
+    const { modules: removedModules, reintroduced = {} } = JSON.parse(
       readFileSync(join(REPO, 'codemods/removed-0.20.json'), 'utf8'),
     );
+    // A deleted module whose path a later component reused (command-palette.tsx,
+    // hds#638) is still a removal: its new exports are not the old ones.
+    const reused = (file) => (removedModules[file] ?? []).some((n) => n in reintroduced);
     const exported = ROOT_REMOVED_MODULES.flatMap((m) => {
       const file = `src/app/components/${m}.tsx`;
-      if (existsSync(join(REPO, file))) return collectModuleSymbols(join(REPO, file));
+      if (existsSync(join(REPO, file)) && !reused(file))
+        return collectModuleSymbols(join(REPO, file));
       expect(removedModules[file], `${file} is gone but not in removed-0.20.json`).toBeDefined();
       return [];
     });
@@ -114,6 +118,23 @@ describe('transformSource', () => {
       `import { Button, Badge } from '${ROOT}';\nimport { Page, TopNav } from '${SUB}';\n`,
     );
     expect(out.moved).toEqual(['Page', 'TopNav']);
+  });
+
+  it('handles ES2022 string specifiers correctly', () => {
+    const src = `import { "Page" as P, "Button" as B } from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.changed).toBe(true);
+    expect(out.source).toBe(
+      `import { "Button" as B } from '${ROOT}';\nimport { "Page" as P } from '${SUB}';\n`,
+    );
+    expect(out.moved).toEqual(['Page']);
+  });
+
+  it('leaves string specifier that is not a pattern name alone', () => {
+    const src = `import { "Button" as B } from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.changed).toBe(false);
+    expect(out.moved).toEqual([]);
   });
 
   it('drops the root import when nothing else is left, preserving aliases and multi-line layout', () => {
@@ -156,6 +177,11 @@ describe('transformSource: other import forms', () => {
   it('keeps only the default on the root when every named import moves', () => {
     const out = transformSource(`import HDS, { Page } from '${ROOT}';\n`, NAMES);
     expect(out.source).toBe(`import HDS from '${ROOT}';\nimport { Page } from '${SUB}';\n`);
+  });
+
+  it('keeps a valid default-only root when a comment sits before the moved braces', () => {
+    const out = transformSource(`import HDS, /* y */ { Page } from '${ROOT}';\n`, NAMES);
+    expect(out.source).toBe(`import HDS /* y */ from '${ROOT}';\nimport { Page } from '${SUB}';\n`);
   });
 
   it('rewrites re-exports', () => {
@@ -285,6 +311,24 @@ describe('findUnrewritable', () => {
 // the statement, or a second statement on the line, left a pattern name on the
 // root import, and --check passed because a second run saw nothing to move.
 describe('transformSource: comments and same-line statements (hds#434)', () => {
+  it('preserves comments outside braces when statement moves entirely', () => {
+    const src1 = `import /* x */ { Page } from '@hirobius/design-system';\n`;
+    const out1 = transformSource(src1, NAMES);
+    expect(out1.source).toBe(`import /* x */ { Page } from '@hirobius/design-system/patterns';\n`);
+
+    const src2 = `import { Page } from /* x */ '@hirobius/design-system';\n`;
+    const out2 = transformSource(src2, NAMES);
+    expect(out2.source).toBe(`import { Page } from /* x */ '@hirobius/design-system/patterns';\n`);
+  });
+
+  it('keeps comments outside braces on root statement when statement splits', () => {
+    const src = `import /* x */ { Page, Button } from /* y */ '@hirobius/design-system';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.source).toBe(
+      `import /* x */ { Button } from /* y */ '@hirobius/design-system';\nimport { Page } from '@hirobius/design-system/patterns';\n`,
+    );
+  });
+
   it.each([
     [
       'a block comment after a specifier, before its comma',
@@ -326,6 +370,14 @@ describe('transformSource: comments and same-line statements (hds#434)', () => {
     expect(out.source).toBe(want);
     expect(out.moved).toEqual(['Page']);
     expect(transformSource(out.source, NAMES).changed).toBe(false);
+  });
+
+  it('reads indentation correctly when preceding line is inside a multi-line block comment', () => {
+    const src = `/* a\n b */ import { Page, Button } from '${ROOT}';\n`;
+    const out = transformSource(src, NAMES);
+    expect(out.source).toBe(
+      `/* a\n b */ import { Button } from '${ROOT}';\nimport { Page } from '${SUB}';\n`,
+    );
   });
 
   it('moves every pattern name of the hds#434 repro and keeps the group comments', () => {
@@ -383,7 +435,9 @@ describe('transformSource: comments and same-line statements (hds#434)', () => {
   it('moves a trailing comment to /patterns with the last specifier when multiple specifiers move', () => {
     const src = `import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${ROOT}';\n`;
     const out = transformSource(src, NAMES);
-    expect(out.source).toBe(`import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${SUB}';\n`);
+    expect(out.source).toBe(
+      `import {\n  TopNav,\n  Page,\n  // trailing comment\n} from '${SUB}';\n`,
+    );
     expect(out.moved).toEqual(['TopNav', 'Page']);
   });
 });

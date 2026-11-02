@@ -1,5 +1,238 @@
 # Changelog
 
+## 0.32.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Dark each of these now steps darker than its fill instead of a lighter rim; if you set your own edge, keep it darker than the fill: `--hds-edge-danger`, `--hds-edge-info`, `--hds-edge-success` and `--hds-edge-warning`.
+- Looks different: Dark --hds-edge-kbd now steps darker than the Kbd fill instead of a lighter rim; no change needed.
+- Looks different: Dark --hds-edge-primary is now darker than the primary fill (about graphite-400 #8b8488) instead of a lighter rim; if you set your own, keep it darker than the fill.
+- Looks different: Dark --hds-edge-secondary is now about neutral-700 #404040, darker than the secondary fill, so dark buttons no longer glow.
+- And 4 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0320).
+
+### Minor Changes
+
+- a13f3ce: C2 button depth: every Button now has one fixed base. The face rises 1px on hover (edge 3px → 4px) and sinks 2px on press (edge → 1px), so the bottom of the hard edge never moves; the motion uses the productive token and stops under reduced motion. Dark edges now always step darker than their fill (the "lighter rim" that made dark buttons glow is gone): dark `--hds-edge-secondary` ≈ neutral-700, `--hds-edge-primary` ≈ graphite-400. Dark `surface.soft` moves to neutral-600 and `surface.softHover` to the new primitive `neutral.550` (#626262). Tertiary is the ghost: no edge and no movement, `component.button.tertiary.bg.hover` (surface.hover) on hover and `.pressed` (surface.soft) on press. Selected states (pressed toggle, primary SegmentedControl segment, active Tag) take the primary fill and the primary edge. `.hds-link` text and underline are content.primary at rest and turn content.secondary together on hover (a real text-decoration underline, skip-ink kept). New `InlineLink standalone` prop: a link outside running text gets a 24px hit area (44px tall on touch) without moving the layout. The wipe layer now clips itself (clip-path + the button radius) instead of relying on `overflow-hidden` on the button.
+
+## 0.31.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Text link underlines are thicker: 2px, 0.2em below the baseline, where they were the font's hairline default.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0311).
+
+### Patch Changes
+
+- 6eaee9a: Text links: a thicker underline. `.hds-link` (InlineLink and anything that composes it) now draws a 2px underline 0.2em below the baseline, from the new `semantic.link.underlineThickness` and `semantic.link.underlineOffset` tokens, instead of the font's hairline default. Small text caps the line at 0.125em, and the underline still breaks around descenders.
+- a3e807a: MetricTiles: the phone column cap now applies after hydration. It read the viewport width in its initial state, so a server-rendered page kept the desktop column count on a phone and the row ran wider than the screen.
+
+## 0.31.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The unused CSS for each of these is gone (Tag has not rendered it since #60); use the Tag component instead: `hds-tag-btn` and `hds-tag-pill`.
+- Looks different: The secondary Button hover fill is now surface.softHover (neutral.300 light, neutral.600 dark); if you set this variable to theme the old outline hover, check it still reads on the soft fill.
+- Looks different: The secondary Button pressed fill is now surface.soft (the rest fill) while the hard shadow sinks; re-check any override of this variable.
+- Looks different: The secondary Button rest fill is now surface.soft (neutral.200 light, neutral.700 dark) instead of the page colour; set this variable to var(--semantic-color-surface-page) to get the old flat fill back.
+- And 15 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0310).
+
+### Minor Changes
+
+- 7b73bfb: Button: opt-in `hoverEffect="wipe"` (default `none`, existing buttons unchanged). The variant's own hover fill slides in from the edge the pointer enters and out the edge it leaves, hard-edged; keyboard focus fills left to right. A status `tone` wipes in its own hover colour, and pressing hides the fill so the pressed state shows. Hover-capable pointers only, instant under `prefers-reduced-motion`, nothing on a disabled button. Kbd: its key edge now reads the `--semantic-shadow-key` custom property (unset by default, falling back to the same 2px `border.strong` drop as before), so a hard-shadow theme can follow the Button light source in one place. New token `semantic.color.shadow.hard` (`--semantic-color-shadow-hard`, on new primitive `primitive.color.shadow.ink`): the colour for hard-edged offset shadows, the shadow ink (hsl 220 13% 18%) in Light and the `border.strong` stroke (neutral.600, #525252) in Dark so the shadow stays visible on dark surfaces. The docs hard-shadow preview uses it for Button (3px rest, 5px hover, 1px press) and Kbd (2px).
+- 8e2afa8: Overlays get a guaranteed edge (#893 review). Looks different, no code change needed.
+  - **Menu, Popover (and Combobox's listbox), Select listbox, Toast, Dialog, AlertDialog** draw a 1px `border.default` hairline (`border border-border`) on top of their shadow. Without it they had no edge over `surface.muted` (Tags, chips, the SegmentedControl track): the popover fill was the same colour (1.00:1) and a shadow cannot darken near-black in dark.
+  - **New `semantic.color.surface.floating`** (white in light, `neutral.800` in dark) is the overlay fill; `role.popover` (`bg-popover`, `--role-popover`) now points at it instead of `surface.overlay`, so overlays are white in light. `surface.overlay` itself is unchanged (badges, inline code, `bg-muted`).
+  - **Select listbox** uses `shadow-overlay` like Menu and Popover, not Tailwind's `shadow-md`.
+  - Separation floors, pinned by `overlay-edge.test.ts`: fill or hairline at least 1.15:1 against page, raised, muted and overlay surfaces in light (the soft shadow does the rest there) and 1.5:1 in dark (where the shadow cannot help).
+  - **`semantic.elevation.floating`** is described as tooltip and hover elevation; menus, popovers, listboxes, toasts and dialogs use `semantic.elevation.overlay`.
+
+- 0075992: Raised edges take their own colour (#897). The hard "raised" edge under a Button or Kbd is now the item's own fill stepped two OKLCH steps darker (lightness −0.12, chroma ×0.7225, same hue), instead of one `semantic.color.shadow.hard` for everything. In dark, where a darker edge would fall under 1.5:1 on the page, raised, overlay or muted surface, the fill steps lighter instead (a lighter rim) until it clears 1.5:1. Geometry is unchanged (`0 3px 0` / `0 5px 0` / `0 1px 0`, Kbd `0 2px 0`). Looks different, no code change needed.
+  - The edges are precomputed at token build time as new CSS variables `--hds-edge-primary`, `-secondary`, `-danger`, `-success`, `-warning`, `-info` and `-kbd` (accent themes and tenants that move the accent re-derive `--hds-edge-primary`). Button picks its variant's or tone's edge; `--hds-btn-edge` / `--hds-kbd-edge` still override it.
+  - `semantic.color.shadow.hard` stays exported but is no longer the default edge colour; set `--hds-btn-edge: var(--semantic-color-shadow-hard)` (and `--hds-kbd-edge`) to get the old single-colour edge back.
+
+- 37ad22d: Soft surfaces by default (#891) and the hard shadow + wipe by default (#888). Looks different, no code change needed.
+  - **Button**: `hoverEffect` now defaults to `"wipe"` and a new `shadow` prop defaults to `"hard"` (a zero-blur shadow straight down, no x offset, in `semantic.color.shadow.hard`: 3px at rest, 5px on hover, 1px on press, the box never moves; primary and secondary only, tertiary stays quiet, never on disabled or loading). The wipe adds `relative isolate overflow-hidden` to every Button, so anything a consumer positions outside the button box (a badge, a dot) is clipped; pass `hoverEffect="none"` there. Pagination's current page and CodeBlock's copy button opt out of the shadow. Opt out per button with `hoverEffect="none"` and/or `shadow="none"`. Secondary is now a soft tonal fill with no border (`component.button.secondary.bg.rest` → new `semantic.color.surface.soft`, hover → new `semantic.color.surface.softHover`, pressed → `surface.soft`); its 3:1 boundary is the hard shadow. The three `component.button.secondary.border.*` tokens stay defined but Button no longer draws them (`rest` and `disabled` are deprecated).
+  - **Kbd**: defaults to the same light source, a 2px straight-down hard key shadow in `semantic.color.shadow.hard` with a `border.strong` edge (`--semantic-shadow-key` still overrides it).
+  - **`semantic.color.shadow.hard`** in Dark is now `neutral.500` (`border.interactive`), not `neutral.600`, so the button boundary reaches 3:1 on page, raised and overlay surfaces.
+  - **No resting outline** on CodeBlock (raised fill; the header is a muted band), Table frame (row and column dividers stay), Tabs list divider, SegmentedControl track (now a `surface.muted` fill), Board column header, FormActions sticky bar (a raised band, now with horizontal `surface.padding`) and the selected chips of Combobox, ComboboxCreatable and TokenField (`surface.muted` fill).
+  - **Tag**: unselected pill is a soft `surface.muted` fill with no visible edge (`component.tag.background` and `component.tag.border` → `semantic.color.surface.muted`); hover, pressed and selected borders are unchanged.
+  - Card was already borderless by default; `<Card bordered>` still brings the 1px `border.default` edge back. Inputs, focus rings, selected states, feedback tones and table dividers keep their borders.
+  - Removed dead CSS: the unused `.hds-tag-btn` / `.hds-tag-pill` rules, and hand-written utilities nothing in HDS used: `.border-stroke`, `.border-stroke-accent`, `.bg-gray-100`, `.bg-fill`, `.bg-btn-fill`, `.text-white`, `.cursor-zoom-in`, `.grid-cols-[120px_1fr_1fr_1fr_1fr]`, and the `--hds-fill` / `--hds-hover` / `--hds-border` helpers (`border-[color:var(--hds-border)]`, `bg-[var(--hds-fill)]`, `hover:bg-[var(--hds-fill)]`, `hover:bg-[var(--hds-hover)]`, `active:bg-[var(--hds-border)]`, `active:bg-[var(--hds-hover)]`), which read variables HDS never defines. A consumer with Tailwind generates any of these itself.
+  - **Hard shadow drops straight down** (`0 3px 0` / `0 5px 0` / `0 1px 0`, Kbd `0 2px 0`), not at an angle. Its colour reads `--hds-btn-edge` on Button and `--hds-kbd-edge` on Kbd, both defaulting to `semantic.color.shadow.hard`; set either to recolour the edge.
+
+### Patch Changes
+
+- 08bad10: Light-mode dividers read again (Adrian, 2026-10-22). Looks different, no code change needed.
+  - **`semantic.color.border.default`** (and `role.border`, `border-border`) Light: `neutral.200` #e5e5e5 → `graphite.200` #cbc6c9, warm graphite at 1.54–1.69:1 on page, raised, overlay, muted, floating and accentSubtle (was 1.15–1.26:1). Divider, `.hds-divider`, Table rows, MenuSeparator and overlay hairlines all draw it.
+  - **`semantic.color.border.strong`** Light: `neutral.300` #d4d4d4 → `graphite.300` #b2abae (2.05–2.25:1), so `Divider variant="strong"` and Kbd stay firmer than the default rule.
+  - **`semantic.color.border.subdued`** (deprecated) Light follows `border.default`, as its description promises.
+  - **MetadataList** row dividers use `border.default` instead of `border.subtle` (1.00:1 on muted).
+  - **Also darker in light, by the same token:** overlay hairlines (Menu, Popover, Select, Toast, Dialog), `Card bordered`, the SegmentedControl secondary outline, disabled Checkbox/Radio/Toggle borders, and the Slider and Card progress tracks. No new outlines are added.
+  - Dark mode unchanged (already 1.9:1 or more). Input borders (`border.interactive`) unchanged.
+  - Floor pinned by `divider-contrast.test.ts`: 1.45:1 light, 1.4:1 dark, on every surface a divider sits on.
+
+- 98e0b22: Token descriptions: shortened `semantic.typography.mono` and the three `semantic.accent.delight.*` descriptions to 20 words or fewer. Values are unchanged.
+- 2811a6e: Spacing: the 6px and 10px steps stay. `primitive.space.px6` / `px10` (`--primitive-space-px6` / `-px10`, `hds.space.px6` / `px10`, Tailwind `*-px6` / `*-px10`) are no longer deprecated and are not removed in 0.31.0, as 0.29.0 announced: open layouts need 6px and 10px gaps the 4px grid cannot hit. `hds/no-primitive-spacing` now reports them like any other primitive step (use a semantic token in components) instead of as a removed step, and `hds/no-deprecated-token` no longer lists them.
+- c298767: Toggle: the "on" thumb no longer runs past the track's right end. The thumb's travel now counts the track's border, and the thumb is 12px so it sits with an equal inset on every side in both states.
+
+## 0.30.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Under data-density="compact", each of these is now tighter (the scale is 12/16/24/32px there); nothing changes at the default density, so check compact screens only: `--component-card-gap`, `--semantic-docs-space-section`, `--semantic-layout-grid-gap`, `--semantic-space-component-padding`, `--semantic-space-layout-gutter`, `--semantic-space-layout-inset`, `--semantic-space-layout-normal`, `--semantic-space-layout-spacious`, `--semantic-space-layout-tight`, `--semantic-space-region-gutter`, `--semantic-space-scale-lg`, `--semantic-space-scale-md`, `--semantic-space-scale-sm`, `--semantic-space-scale-xl`, `--semantic-space-section-stack` and `--semantic-space-surface-padding`.
+- Looks different: Each of these is a legacy bridge that tracks its scale twin, so under data-density="compact" it is tighter too; move to --semantic-space-scale-\* and check compact screens: `--hds-space-2xl`, `--hds-space-lg`, `--hds-space-md` and `--hds-space-xl`.
+- Looks different: Under data-density="compact" below 640px, --semantic-space-layout-gap is now scale.sm (12px) instead of following the comfortable rule; check compact screens on phones.
+- Looks different: --semantic-space-scale-xs is 8px in both densities as before; the compact rule now comes from tokens.css instead of theme.css, so nothing moves.
+- And 10 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0300).
+
+### Minor Changes
+
+- 335aa9b: Avatar: `fallback="icon"` shows a neutral person icon (for a signed-out account), and `status` plus `statusLabel` put a Badge dot on the rim (for example `status="warning" statusLabel="Not synced"`). With no initials to derive, the icon now shows instead of an empty circle. The image is now clipped by an inner span, so the root no longer has `overflow-hidden`. The docs page shows the account-button recipe: Avatar as the `iconLeft` of a tertiary icon-only Button.
+- 1b15155: Badge: `count` shows a number in tabular numerals, neutral by default, with `max` to cap it (`max={99}` turns 120 into `99+`) and `label` to name it for screen readers ("12 roles"). `count` and `children` are exclusive; children are ignored when `count` is set. The docs page shows a heading plus count Badge row.
+- 6a60cf0: Card gains the entity card parts: `Card.Source` (an `Avatar` size `sm`, a name and a `Timestamp` on one row) and `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list). Use them with `Card.Header`, `Card.Title` and `Card.Footer` for a job, lead or listing card. `MapPin` and `Banknote` join `@hirobius/design-system/icons`.
+
+  Avatar: an empty `alt` now hides its initials from assistive tech (as its icon already did), so an avatar beside a visible name, as in `Card.Source`, is decorative instead of an unnamed image.
+
+- 6a60cf0: Combobox: `<Combobox multiple creatable onCreate={(text) => …} />` is a chip input. Chips sit inline in the field before the text input, suggestions filter as you type, Enter adds the typed text through `onCreate`, an "Add “text”" option offers it when nothing matches exactly, and Backspace in an empty field removes the last chip. A value with no matching option shows as a chip labelled with the value. `ComboboxMultipleProps` gains `creatable?: false` and the new `ComboboxCreatableProps` joins `ComboboxAnyProps`; `multiple` without `creatable` is unchanged.
+- 7825b6d: feat: compact density for apps. 0.29 loosened the default rhythm for sites; dense apps now opt back into a tighter one with `data-density="compact"` on `<html>` or any ancestor. The compact values are a `Compact` mode in `hirobius.tokens.json`, emitted by the token build into a `[data-density="compact"]` block in `tokens.css` (it was hand-written in `theme.css`): `semantic.space.scale` sm/md/lg/xl 12/16/24/32px (was 16/24/32/48px under compact), the deprecated `layout.*` steps 12/16/24/32px, `section.stack` 48px, and type body 15 · ui 14 · caption 13 · title 24px (display stays 56px). Adds `semantic.space.scale.2xs` (4px in both densities) and the `compactBody` / `compactCaption` type primitives. Figma gets the same values as Hirobius/Density variables. The docs display settings gain a Density switch.
+- 6a60cf0: Disclosure: `variant="row"` makes an expandable list row. `preview` shows one clamped line under the label while collapsed and is hidden once open; `actions` render beside the trigger, outside the button, so no control nests inside it. Docs page gains a three-row list with actions.
+- 6a60cf0: NavList select mode (hds#868): `<NavList.Item selected onSelect={…}>` renders a button marked `aria-current="true"` for a master-detail rail that selects in place with no routing. Same hover and selected fills as a link row; rich children unchanged. `href` and `onSelect` are exclusive. `NavListItemProps` is now a union of `NavListLinkItemProps` and `NavListSelectItemProps`.
+- 6a60cf0: PageHeader: new `metadata` slot, a wrapping row of facts (source, stage) as Badges above the title, mirroring `Card.Header`. The single state stays in `status`.
+- bf64e87: Pagination: `variant="compact"` shows icon-only Previous and Next around "1 of 4" (a polite live region) for a pager that moves one item at a time. Previous and Next disable at the ends and focus moves to the other arrow. The default variant is unchanged.
+
+### Patch Changes
+
+- af3e730: CodeBlock: the block copy button is now an icon-only HDS `Button` (secondary, sm), so its icon is centred, and it sits in its own column beside the code instead of over it, so long lines scroll under nothing (hds#857).
+- 56b9868: Lime / delight is hidden for now (hds#857): `semantic.accent.delight.*` and the `primitive.color.lime.*` ramp are `$deprecated` and left out of the docs, the manifest, llms.txt and DESIGN.md. The tokens and their CSS variables still ship, so they can come back; new code should not use them.
+- 70efe9f: SegmentedControl: the secondary selected segment now reads on the page and on a raised Card in light and dark. It uses the page fill with a 1px `border.interactive` edge, so its edge is 4.7:1 (light) and 4.4:1 (dark) against the track, up from 1.3:1 and 2.7:1. The primary variant is unchanged (hds#866).
+
+## 0.29.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Each of these was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it: `--color-blue-500`, `--color-indigo-600`, `--color-purple-500`, `--color-red-500`, `--color-red-700` and `--ease-in-out`.
+- Do by hand: The stray CSS variable each of these is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it: `--color-slate-200`, `--color-slate-900`, `--color-stone-50`, `--container-5xl` and `--font-serif`.
+- Do by hand: The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-\*-letter-spacing tokens, so use a type role instead.
+- Looks different: Badge horizontal padding is now 8px (was 6px); check badges in tight rows or fixed-width cells.
+- And 34 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0290).
+
+### Minor Changes
+
+- 8330e2a: Letter-spacing now comes from the type tokens only. The `.tracking-wider` and `.tracking-widest` utility classes are removed from `styles.css`, along with the stray Tailwind variables `--tracking-wider`, `--font-serif`, `--container-5xl`, `--color-slate-200`, `--color-slate-900` and `--color-stone-50` (generated as a side effect of scanning repo docs, never documented tokens). The ESLint plugin gains `hds/no-custom-tracking` (on in `recommended`, error): it flags Tailwind `tracking-*` classes, `[letter-spacing:...]` and inline `letterSpacing` that is not a `var(--semantic-typography-*)`. Use `<Text variant="...">` or a `.hds-type-<role>` class, which already set tracking.
+- dd58913: Roomier spacing, in rhythm with the 2026-10-15 type ramp bump (Adrian, 2026-10-17). The semantic scale's comfortable default moves one rung up: `xs` 8px (unchanged), `sm` 16→20px, `md` 24→28px, `lg` 32→40px, `xl` 48→64px. Compact stays the one opt-in tighter mode and moves up too, to the old comfortable values (8/16/24/32/48px; it was 6/12/20/24/40px). So `surface.padding` (Card, Dialog, panels) is 28px (24px compact), `region.gutter` (page gutter) is 40px on desktop and 20px below 640px (32/16px compact), `section.stack` 96px (64px below 640px), Card `padding="item"` list rows 20px, and the Card parts, Dialog, AlertDialog, Popover, StatusTile, Form, MetadataList, Tooltip and Page now read semantic steps instead of fixed pixels. Control heights are unchanged, so touch targets stay 40px. The deprecated `layout.*` aliases stay density-fixed at the new comfortable values.
+
+  The primitive scale drops its two off-grid steps: `primitive.space.px6` (6px) and `primitive.space.px10` (10px), with `hds.space.px6`/`px10` and the Tailwind `*-px6`/`*-px10` keys, are deprecated aliases for this minor and are removed in 0.30.0. `npx @hirobius/design-system upgrade` runs the new `hds-spacing-steps` codemod, which rewrites them to 8px and 12px. New guardrail: `hds/no-primitive-spacing` in `hds/recommended` fails a `--primitive-space-*` var, `hds.space.px*`, a numeric Tailwind spacing class or a deprecated step in consumer code.
+
+  The published CSS no longer carries utilities that only the repo's own script and lint-rule tests named (`bg-[#ff0000]`, `bg-purple-500`, `from-blue-500`, ...), and with them six Tailwind theme variables: `--color-blue-500`, `--color-indigo-600`, `--color-purple-500`, `--color-red-500`, `--color-red-700` and `--ease-in-out`. No HDS component used them; declare them in your own CSS if you read one.
+
+- dd58913: Every spacing and radius value now has a semantic token, so no design needs a typed px value or a primitive step. New `semantic.space.fixed.*` steps fill the gaps between the comfortable scale rungs and do not move with density: `2xs` 4px, `xs` 12px, `sm` 16px, `md` 24px, `lg` 32px, `xl` 48px (sm–xl equal the compact scale rungs of the same name). New `semantic.radius.scale.*`: `sm` 8px, `md` 12px, `lg` 16px, `xl` 24px, `pill` (fully round), on two new primitives `primitive.radius.16` and `primitive.radius.24`. Each ships as a CSS var (`--semantic-space-fixed-sm`, `--semantic-radius-scale-md`), in `hds.semantic.*`, as Tailwind keys (`p-fixed-sm`, `rounded-scale-md`), as Figma variables, and as Box `sx` values (`p: 'fixed-sm'`, `borderRadius: 'pill'`).
+
+  Deprecated tokens now stop tempting agents. The build tags each `$deprecated` token: a `/* @deprecated … */` comment in the CSS, `@deprecated … @removeIn` JSDoc in `hds.*`, `tokenRefs` and the `CSSProperties` var types (editors strike them through), a comment in the Tailwind preset, and they stay hidden from Figma publishing. They are left out of `llms.txt`, `llms-full.txt`, `public/llms/*` and the consumer skill. New `hds/no-deprecated-token` in `hds/recommended` fails a deprecated token as a CSS var, an `hds.*` member or a Tailwind key, and names its replacement. From a 2026-10-17 zero-use audit of `src/`, `semantic.space.section.heroMax`, `semantic.space.sidebar.railWidth`, `semantic.docs.space.paragraph` and `semantic.docs.space.inline` are deprecated. **Removal date:** these, along with the hds#206 `layout.*` / `component.gap` / `component.padding` aliases, are removed in 1.0.0. `primitive.space.px6` / `px10` are still removed in 0.30.0, and now point at `semantic.space.scale.xs` / `semantic.space.fixed.xs`.
+
+- b7c235e: Two-weight type ramp (Adrian, 2026-10-20, hds#847). Headings (`display`, `title`, `titleSm`, and the deprecated `h1`-`h3`) set in Sora 700, down from 800, and heading levels now differ by size: `display` 48→56px, `title` 24→28px, `titleSm` 18→20px. Two new size primitives carry them: `primitive.typography.size.display` (56px) and `primitive.typography.size.title` (28px); `titleSm` reads `size.xl`. `primitive.typography.weight.display` is 700. Body text goes from 450 to 400 (`primitive.typography.weight.regular`); ui, captions and labels stay at 500 and bold at 700.
+
+  The opt-in `fonts.css` now ships `fonts/sora-700.woff2` in place of `fonts/sora-800.woff2` (SIL OFL 1.1, licence alongside, overlaps flattened like before). If you load Sora yourself, load the 700 weight.
+
+  Alert titles now use the `titleSm` role (Sora 20px / 700) instead of `ui`, so they read as headings; the message stays in `caption`.
+
+### Patch Changes
+
+- e4eb607: AsyncState, NavList and TokenField are now in the Figma library, and the manifest links each one (`figmaUrl`). NavListItem maps to its own set through `figma/mapping-overrides.json`, as TimelineItem does.
+
+## 0.28.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed.
+- Looks different: The pressed secondary Button fill is now the pressed surface colour, a clearer step from hover, so re-check any screenshot of a pressed secondary Button.
+- Looks different: The pressed surface is now a mid light grey (was almost white) in light mode, so re-check pressed states you draw by hand.
+- Looks different: --semantic-typography-mono-font-weight now reads --primitive-typography-weight-mono (400); if your mono font has a heavier cut you want, set that primitive.
+- And 1 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0280).
+
+### Minor Changes
+
+- d53c25c: New `AsyncState` pattern (from `@hirobius/design-system/patterns`): one wrapper for the four states of async content. Loading shows skeleton rows (`rows`, default 3) with a polite status line that becomes "Still trying…" after `slowAfterMs` (default 10 s); error shows a danger `Alert` with the `error` message and a Retry `Button` (`onRetry`), worded as offline when the browser is offline; empty shows your `empty` node; ready shows the children. The wrapper is a labelled region with aria-busy while loading. Replaces the hand-rolled loading, error and empty panels in consumers (hds#818).
+- b5c4172: `EmptyState` takes an optional `icon` (a Lucide icon), shown above the title at the medium icon size and hidden from assistive tech. `Text` takes an optional `weight` (`regular`, `medium` or `bold`) that maps to the weight tokens; unset, the role's own weight applies as before (hds#825).
+- 6c61314: Menu: the content now caps its height to the room Radix measures (`max-height: var(--radix-dropdown-menu-content-available-height)`) and scrolls (`overflow-y: auto`), so a long menu of 44px phone rows no longer runs off a 390px screen while the page is scroll-locked (hds#821). New `Menu.Item tone="danger"` for destructive items: the feedback danger content colour at rest, hover and focus, with the danger tint as the highlight fill; the tone vocabulary is `neutral | danger | success | warning | info`, default `neutral`, and only `danger` changes the item (hds#822). Contrast is pinned for the danger text on the overlay and on the danger tint in light and dark.
+- 6eda923: New `NavList` pattern: a vertical list of links (`NavList.Item`, also exported as `NavListItem`) with one row marked current (`aria-current="page"`). Rows hold rich content, links route through the HDS router seam, and hover and the current row share the raised surface fill.
+- db79c31: Light-mode pressed states now read as a step from hover (hds#769). `semantic.color.surface.pressed` is `neutral.200` (was `neutral.50`, 1.04:1 from hover) and the secondary button pressed fill uses it (was `surface.overlay`, 1.007:1 from hover). The secondary button no longer has a pressed border: the fill alone carries the press and the hover border stays, so `--component-button-secondary-border-pressed` is removed.
+- 0583ca4: TabsList and SegmentedControl now keep the selected item in view: when the strip scrolls, the selected tab or segment is scrolled into view on mount and whenever the selection changes (only the strip scrolls, never the page; smooth, or instant under prefers-reduced-motion). SegmentedControl's rail also fades its hidden edge with the same `data-overflow` mask as TabsList. Consumers can drop local overflow-fade and scroll-into-view wrappers (hds#823).
+- 8a415f4: `TabsContent` takes `variant="bare"` for tabs that are an app's top-level nav or a page's sections: no tinted fill, no padding, no radius and no pull-up under the strip, so the panel sits on the page. The default `variant="panel"` is unchanged (hds#819). Replaces the inline style job-hunt put on every top-level panel.
+- b03746c: Toast takes one or two `actions` (a tuple type, so a third is a type error) (`{ label, onSelect, altText? }`): small secondary buttons under the message, such as Open and Undo. Choosing one runs `onSelect` and closes the toast. Each is a Radix `Toast.Action`, so screen readers hear its `altText` (defaults to the label) since a toast never takes focus. A toast without `actions` renders as before. Replaces the hand-built action toast job-hunt kept for "Saved to Pipeline · Open · Undo".
+- 177bd6f: New `TokenField`: a multi-line text field in which each token, such as `[Name]`, is an atomic chip, announced as one unit ("Name variable") and stepped over and deleted whole. The value stays a plain string (`value`, `onChange`). `tokenPattern`, `getTokenLabel` and `tokenNoun` set what a token is and how it reads. A ref handle (`insertAt`, `getSelection`, `setSelection`, `focus`) inserts at the caret. Same label, helper, error and disabled shell as `Textarea`, with its own undo (hds#826).
+- f93cec8: New `useAtLeast(bp)` and `useBreakpoint()` hooks read an HDS breakpoint in JS, for screens that render different markup per width (a Table at desktop, rows on a phone). They use the same values `sx` compiles (xs 375, sm 640, md 768, lg 1024, xl 1280), so a consumer writes no pixel width of its own. Narrow by default: on the server, in jsdom or without `matchMedia`, `useAtLeast` returns `false` and `useBreakpoint` returns `'base'`; both update live as the viewport crosses a breakpoint.
+
+### Patch Changes
+
+- ace0565: ThemeToggle, Timeline, Composer and MetaLine are now in the Figma library, and the manifest links each one (`figmaUrl`). TimelineItem maps through `figma/mapping-overrides.json`, as a slot of Timeline.
+- ace0565: New `--primitive-typography-weight-mono` (400). The mono role's font weight now follows it instead of `weight.regular` (450). With the shipped IBM Plex Mono (400 only) nothing renders differently. If you set `--hds-font-family-mono` to a mono font that has a 450 weight, mono text now renders at 400; set `--primitive-typography-weight-mono` to change it.
+- 3cd841f: Sora 800 (`fonts.css`, display and titles) now ships with its overlapping contours flattened. The Google Fonts static cut kept the variable master's overlaps, which macOS draws as a notch at the apex of the capital "A" (and seams in other glyphs). Glyph shapes and metrics are unchanged; the file is about 2 kB larger.
+- a689d32: Table dividers and borders now read `border.default` instead of the deprecated `border.subdued` (same in Light; two steps lighter than before in Dark: neutral.600 vs 800). Board columns gap now reads `scale.lg` instead of the deprecated `layout.inset` (24px in compact density, was 32px; unchanged at 32px by default). A new test fails if `src/` reads any token marked `$deprecated`.
+- 14e34b3: Tag's unselected background, border and text now read `--component-tag-background`, `--component-tag-border` and `--component-tag-text` instead of the semantic tokens they alias, in `tag.tsx` and the `.hds-tag__pill` mirror in `static.css`. The values are unchanged, so nothing looks different; Figma and code now follow the same token (hds#595).
+- 4a8f75d: DESIGN.md now says what each type role is never for (display, title, titleSm, body, ui, caption, mono), so the ramp stops drifting. Refs #483, closes #488.
+
+## 0.27.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar.
+- Do by hand: The stray CSS variable --leading-relaxed and the .leading-relaxed class are no longer shipped; use --semantic-typography-body-line-height or set your own line-height instead.
+- Do by hand: Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count.
+- Do by hand: Lint now errors on bullet lines with three or more items (new hds/max-two-meta-items rule): use MetaLine for two items, one row per item beyond that, or turn the rule off for that file.
+- And 34 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0270).
+
+### Minor Changes
+
+- 6de7585: Display and title type now set in Sora 800 (SIL OFL 1.1, ADR-063), and body text moves to weight 450. `primitive.typography.family.display` leads with `Sora`, then falls back to Plus Jakarta Sans and the system sans stack, so the `display`, `title` and `titleSm` roles (and the deprecated `h1`-`h3`) change face. A new `primitive.typography.weight.display` (800) carries their weight. Plus Jakarta Sans body weight steps up: `regular` 400 to 450 (body, mono), `medium` and `bold` stay at 500 and 700 (ui, caption, controls, bold). Sizes, line heights and letter spacing are unchanged. The opt-in `fonts.css` now declares three faces: one variable Plus Jakarta Sans file (replacing the three static ones), `fonts/sora-800.woff2` and IBM Plex Mono, each with its licence beside it. A new display dial, `--hds-font-family-display` (`fontFamilyDisplay` on `HdsThemeProvider`), sets the heading face; headings no longer follow `--hds-font-family`, so a consumer that set only the body dial and wants its headings to match should set the display dial too.
+- 1057427: New `MetaLine` primitive: one or two items joined by a bullet (a third is a type error). New `hds/max-two-meta-items` ESLint rule, in `hds.configs.recommended`, flags `A · B · C` chains. Max two items per bullet line, so translations never wrap mid-line; more facts get their own row.
+- b8ff404: Removes `BoardColumn`'s `tone` prop and its status dot, and the `--hds-accent-bar` CSS variable; adds the `hds/no-status-clutter` ESLint rule (flags `<Badge dot>` and coloured left-border accent bars). Status is implied by content: a column's title and count carry it. The `Badge` `dot` prop is removed in a separate change.
+- 1df70db: Table no longer shears its content on desktop, and its default look is restyled.
+
+  **Fix.** Every column used to be `minmax(0, 1fr)`, so a long link, a date or a row of buttons could not widen its column: it spilled out of its cell, under the next column, and past the table's edge where nothing could scroll to it. A column without its own `width` is now `minmax(min-content, 1fr)` with a one-tile floor (`semantic.size.tile`): text wraps between words, an `action` cell (a bare link) wraps anywhere, a `value` or `token` cell (a date, a number, a token name) never wraps, and when the columns cannot fit, the table scrolls inside its own frame with a faded edge on the side that has more columns.
+
+  **Restyle (before → after).** Before: a raised surface fill behind the whole table, a `surface.overlay` header in the 12px caption style, horizontal rules only, body text at medium weight. After: a thin `border.subdued` frame with rounded corners and no fill, a softly tinted `surface.raised` header in the ui style (medium weight, sentence case), taller body rows (`space.scale.sm` vertical padding), thin horizontal rules between rows and vertical rules between columns (header included), no zebra stripes, and body text at the regular weight. New opt-in `emphasizeFirstColumn` sets the first column in the medium weight for a row-label column.
+
+- 208706a: `--leading-relaxed` and the `.leading-relaxed` utility class are no longer in `styles.css` or `tokens.css`. It was never a documented token: a Tailwind scan of the unused `hds-registry.json` generated it as a side effect, and deleting that file drops it. No fleet repo reads it; if you do, set your own `line-height` or use the semantic body line-height token.
+- 78ad409: Bumps the small end of the type ramp (Adrian, 2026-10-15). `body` goes 16px to 18px (line height 1.6, so 25.6px to 28.8px), `ui` 14px to 16px (21px to 24px), `caption` 12px to 14px (18px to 21px), `titleSm` 16px to 18px and `mono` 13px to 15px (the `primitive.typography.size.code` value). `display` and `title` are unchanged. The deprecated `eyebrow` follows `caption`, and the Button (sm 14px, md and lg 16px), Badge and Tag label sizes follow their roles. Only values move: no token is added or removed, and the spacing scale and density modes are untouched. Text-bearing components get taller by the extra line height, so check fixed-width layouts and wrapping.
+
+### Patch Changes
+
+- 4f44dab: Accent options (Adrian, 2026-10-17). Graphite stays the default accent but is a touch lighter in light mode (`graphite.700` #433a3f → #4a4146, white text 9.83:1) and a touch softer in dark mode (`graphite.200` #d4d0d2 → #cbc6c9, on-accent text 9.02:1). New opt-in **cobalt** accent theme: set `data-accent="cobalt"` on `<html>` (or a wrapper) and only the accent tokens swap (accent `cobalt.600` #112de8 with white text 8.19:1, hover and pressed `cobalt.700`, subtle background `cobalt.50`, dark-mode accent `cobalt.300` #8a97f8 at 7.86:1 on black); the CSS ships in `accents.css`, already pulled in by the stylesheet. New **lime delight** accent `semantic.accent.delight.{base,deep,pale,onDelight}` (base #b8e62e, ink text 12.95:1) for delight moments only (streak or win badge, "new" tag, best-fit highlight, confetti), never buttons, links or focus. New primitives `primitive.color.cobalt.50–900` and `primitive.color.lime.*`.
+- eb2df80: `AGENTS.md` and `public/llms-full.txt` pick-by-need recipes now include explicit import lines for components that live on `@hirobius/design-system/patterns`.
+- 268be30: Fix codemod edge cases in patterns-subpath and tile-grid: preserve comments outside braces, handle ES2022 string specifiers, strip block comment indents, avoid doubling parentheses on expression widths, and fix nullishness classification for expressions like `w ?? undefined`.
+- 1f7cf54: Dark accent states now lighten step by step: `--semantic-accent-hover` moves from graphite-300 to graphite-100 and `--semantic-accent-pressed` from graphite-400 to graphite-50 (rest stays graphite-200). `content-onAccent` contrast is 10.0 rest, 12.3 hover, 13.8 pressed (pressed was 4.17:1, under AA). Primary Button pressed now binds a new `component.button.bgPressed` token (`--component-button-bgPressed` → `semantic.accent.pressed`) instead of a 5% wash on the hover fill, which sat 1/255 off hover in dark; light pressed is now graphite-900 (was graphite-800 plus a 5% black wash, about the same). A new test fails if any rest/hover/pressed step, or a Button's hover vs pressed fill, comes within 1.05:1. Contrast gate now covers onAccent on accent rest, hover and pressed. Consumers can drop any held floor on this pair (hds#748).
+- a623113: `HdsFieldRenderProps` types `ref` as `React.Ref<never>` and `value` as `any` (were `Ref<unknown>` and `unknown`), so the render props spread onto `<input>`, `<select>` and `<textarea>` as docs/CONSUMING.md section 8.5 shows, instead of failing `tsc` with TS2322.
+- 25fef7f: `src/styles/utilities.css` now sits inside `@layer utilities`. Its rules were unlayered, so they outranked Tailwind state variants of the same property (`cursor-pointer` beat `disabled:cursor-not-allowed` on Tag; `.flex` beat `empty:hidden`, so empty flex rows still took up their gap). The mono typography for `code`/`pre`/`kbd`/`samp` and `.font-mono` (plus `.font-normal`, `.tracking-wider`, `.tracking-widest`) moves to `mono-type.css` and stays unlayered, so code text keeps its HDS size over host-app layered styles. Consumers who override these classes with unlayered CSS keep winning.
+- 4645fbc: DESIGN.md drops the "no playful or bouncy motion" and "no `whileTap` scale" rules: spring or expressive motion and a small press transform are allowed where they add delight, and must respect `prefers-reduced-motion`. Docs only; no component changes.
+
 ## 0.26.2
 
 ### Upgrade

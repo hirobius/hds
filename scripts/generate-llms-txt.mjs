@@ -13,7 +13,10 @@
  *   - public/llms.txt (an llms.txt index: H1, > summary, absolute links; no body)
  *   - llms.txt (repo-root mirror of the index)
  *   - public/llms-full.txt (the body + full DESIGN.md + props digest)
- *   - public/llms/{layout,tokens,scroll,components}.txt (topic slices)
+ *   - public/llms/{layout,tokens,scroll,components,upgrade}.txt (topic slices)
+ *
+ * Every output carries a `Version: <package.json version>` line (hds#463,
+ * scripts/lib/version-stamp.mjs); the upgrade text comes from upgrade/.
  *
  * Every section is written once (as a `## ` block of the body template) and
  * the slices pick blocks by heading, so llms-full.txt and the slices share
@@ -37,6 +40,8 @@ import { coreByCategory, renderCoreSetLines } from './lib/core-set.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 import { buildLlmsIndex } from './lib/llms-index.mjs';
 import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
+import { versionLine } from './lib/version-stamp.mjs';
+import { upgradeMarkdown } from './lib/upgrade-digest.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // `--root <dir>` reads and writes under <dir> (tests).
@@ -67,6 +72,7 @@ const tokenRules = [
   'Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.',
   'Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).',
   "Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.",
+  'Accent: graphite by default; `data-accent="cobalt"` on `<html>` swaps the accent tokens to cobalt.',
   'Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.',
 ];
 
@@ -75,6 +81,7 @@ const SLICES = [
   { name: 'tokens', blurb: 'token rules and the quick token reference' },
   { name: 'scroll', blurb: 'scroll-driven section recipe' },
   { name: 'components', blurb: 'component inventory pointer, API pointer, props digest' },
+  { name: 'upgrade', blurb: 'upgrade steps, removals, deprecations' },
 ];
 
 /** Split generated text into `## ` sections (heading line + body). */
@@ -134,6 +141,9 @@ export function generateLlmsTxt({ write = true } = {}) {
   const componentApi = stripObservedTokens(
     write ? writeComponentApiManifest() : buildComponentApi(),
   );
+  const patternNames = JSON.parse(
+    readFileSync(join(ROOT, 'codemods', 'patterns-subpath.names.json'), 'utf8'),
+  ).names;
 
   const tokensPath = join(ROOT, 'hirobius.tokens.json');
   const quickTokenReference = buildTokenQuickReference(tokensPath);
@@ -190,7 +200,10 @@ Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> 
     '\n',
   );
 
+  const version = versionLine(pkg.version);
   const body = `# Hirobius Design System
+
+${version}
 
 Primary sources: \`public/hds-manifest.json\`, \`src/app/data/component-api.json\`, \`hirobius.tokens.json\`
 
@@ -208,7 +221,7 @@ ${voiceMarkdown(readVoice(ROOT))}
 
 ${NEEDS_INTRO} Generated from \`mcp/guide.mjs\`, the same list as \`AGENTS.md\`.
 
-${needsMarkdown(componentApi.components ?? {})}
+${needsMarkdown(componentApi.components ?? {}, patternNames)}
 
 ## System Architecture
 
@@ -254,7 +267,7 @@ Negative rules (apply everywhere, checked by \`scripts/audit-tokens.mjs --full\`
 
 ${layoutNegativeRules.map((rule) => `- ${rule}`).join('\n')}
 
-Density: put \`data-density="compact"\` on the same \`[data-hds]\` scope element (or \`<html>\`) to tighten \`semantic.space.scale.*\`, surface padding and region gutter; \`Table\` follows it unless given a \`density\` prop.
+Density: the default rhythm is roomy, for sites. Dense apps put \`data-density="compact"\` on the same \`[data-hds]\` scope element (or \`<html>\`): \`semantic.space.scale\` sm/md/lg/xl become 12/16/24/32px, \`section.stack\` 48px, and type body 15 · ui 14 · caption 13 · title 24px (display stays 56px). Surface padding, region gutter and grid gap follow the scale; \`Table\` follows it unless given a \`density\` prop.
 
 Reference: \`docs/architecture/variant-contract.md\` for structural/semantic/size/density variance; \`src/app/data/component-api.json\` for every layout primitive's full prop table and \`@ai-rules\` guidance.
 
@@ -293,10 +306,10 @@ When building any card component or card-like surface, ALL of the following rule
 | --- | --- | --- | --- | --- |
 | Card / panel resting | \`semantic.elevation.flat\` | \`surface.page\` | none | \`border.subtle\` 1px |
 | Card / panel lifted (interactive only) | \`semantic.elevation.raised\` | \`surface.raised\` | \`shadow.subtle\` | none |
-| Popover / dropdown / tooltip | \`semantic.elevation.floating\` | \`surface.raised\` | \`shadow.floating\` | none |
-| Dialog / sheet / modal | \`semantic.elevation.overlay\` | \`surface.overlay\` | \`shadow.overlay\` | none |
+| Tooltip | \`semantic.elevation.floating\` | \`surface.inverse\` | \`shadow.floating\` | none |
+| Menu / popover / listbox / toast / dialog | \`semantic.elevation.overlay\` | \`surface.floating\` | \`shadow.overlay\` | \`border.default\` 1px |
 
-Cards default to \`elevation.flat\`. Popovers/tooltips/dropdowns use \`elevation.floating\`. Dialogs/sheets use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
+Cards default to \`elevation.flat\`. Tooltips use \`elevation.floating\`. Menus, popovers, listboxes, toasts and dialogs use \`elevation.overlay\`. Interactive cards lift to \`elevation.raised\` on hover. Never combine \`raised\` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
 Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest \`data-hds\` scope, so they inherit its theme (for example \`<div data-hds data-theme="dark">\`); pass \`container\` on the Content part to override.
 
@@ -337,6 +350,7 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
 4. Use \`hirobius.tokens.json\` (and generated CSS vars) for styling decisions, never raw hex or ad hoc values.
 5. Run \`pnpm tokens:audit\` or \`pnpm build\` after changes that affect docs, tokens, or manifests.
 
+${upgradeMarkdown(ROOT, pkg.version)}
 ## Key Files
 
 - \`public/hds-manifest.json\` - canonical machine-readable system inventory, metadata, and token snapshot
@@ -368,14 +382,16 @@ ${tokenRules.map((rule) => `- ${rule}`).join('\n')}
     tokens: pick(['Tokens (', 'Quick Token Reference', 'Token Rules']),
     scroll: pick(['How To Build A Scroll-Driven Section']),
     components: `${pick(['Component Inventory', 'Component API'])}\n\n${digestSection.trimEnd()}`,
+    upgrade: pick(['Upgrading', 'Deprecated: do not use in new code']),
   };
 
   const sliceHeader = (name) =>
-    `# Hirobius Design System - ${name} slice\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms-full.txt.\n\n`;
+    `# Hirobius Design System - ${name} slice\n\n${version}\n\nSee \`public/llms.txt\` for the index. Generated from the same sections as llms-full.txt.\n\n`;
   const index = buildLlmsIndex({
     summary:
       'Token-first React design system for product UIs, with machine-readable context for AI agents: which component to use for each screen need, the tokens, and the rules.',
     slices: SLICES,
+    version: pkg.version,
   });
   const outputs = {
     'public/llms.txt': index,

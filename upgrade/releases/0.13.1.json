@@ -1,0 +1,8 @@
+{
+  "version": "0.13.1",
+  "date": "2026-09-20",
+  "bump": "patch",
+  "summary": "Manifest Figma links, package metadata and a tenant overlay CSS fix; nothing for a consumer to change.",
+  "backfilled": true,
+  "steps": []
+}

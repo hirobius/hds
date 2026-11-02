@@ -32,6 +32,8 @@
  *   ralph-gate       runs from ralph/gate.sh, the fail-closed gate Ralph
  *                    (the autonomous agent) must pass before opening a PR
  *                    (gating). See #181/#188.
+ *   post-merge       runs after a merge or rebase via .husky/post-merge
+ *                    (non-gating: it never fails the merge; hds#977)
  *   manual           operator-only CLI tool, never auto-fires
  *
  * A gate that fires from more than one real channel (e.g. wired into both
@@ -65,6 +67,7 @@ import { fileURLToPath } from 'node:url';
 import { hashPrecommit } from './lib/precommit-canonical.mjs';
 
 import { reachableScripts } from './lib/script-reachability.mjs';
+import { expandPrePushHook } from './lib/gate-tier.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -78,6 +81,7 @@ const REGISTRY = path.join(INPUT_ROOT, 'docs/guardrails/registry.json');
 const PRECOMMIT = path.join(INPUT_ROOT, '.husky/pre-commit');
 const PREPUSH = path.join(INPUT_ROOT, '.husky/pre-push');
 const COMMITMSG = path.join(INPUT_ROOT, '.husky/commit-msg');
+const POSTMERGE = path.join(INPUT_ROOT, '.husky/post-merge');
 const PKG = path.join(INPUT_ROOT, 'package.json');
 const GH_DIR = path.join(INPUT_ROOT, '.github/workflows');
 const RALPH_GATE = path.join(INPUT_ROOT, 'ralph/gate.sh');
@@ -91,6 +95,7 @@ const VALID_CHANNELS = new Set([
   'pnpm-meta',
   'on-demand',
   'ralph-gate',
+  'post-merge',
   'manual',
 ]);
 
@@ -430,6 +435,8 @@ function isChannelWired(channel, entry, ctx) {
     }
     case 'ralph-gate':
       return hasRalphGateWiring(gateScript, pkgObj, ralphGateContent);
+    case 'post-merge':
+      return readSafe(POSTMERGE).includes(gateScript);
     case 'manual':
       // No automatic invocation is required for 'manual' — a human running
       // the script on demand is the whole point of the channel.
@@ -460,7 +467,8 @@ function runWiringCheck(
 
   const precommitContent = readSafe(precommitPath);
   const parsedPrecommit = parseHookLines(precommitContent);
-  const prepushContent = prepushPath ? readSafe(prepushPath) : '';
+  // The tiered gate (pre-push-gate.mjs) is read as its full tier, which runs `pnpm test`.
+  const prepushContent = prepushPath ? expandPrePushHook(readSafe(prepushPath)) : '';
   const commitmsgContent = commitmsgPath ? readSafe(commitmsgPath) : '';
   const ralphGateContent = ralphGatePath ? readSafe(ralphGatePath) : '';
 
@@ -488,6 +496,8 @@ function runWiringCheck(
     if (precommitContent.includes(gateScript)) return 'pre-commit';
     if (prepushContent.includes(gateScript)) return 'pre-push';
     if (commitmsgContent.includes(gateScript)) return 'commit-msg';
+    if (declaredChannel === 'post-merge' && readSafe(POSTMERGE).includes(gateScript))
+      return 'post-merge';
 
     // ralph-gate: checked before the unified-runner/CI/pnpm-meta fallbacks so
     // a gate solely declared `"firingChannel": "ralph-gate"` (no

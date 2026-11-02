@@ -4,14 +4,14 @@
  *
  * Rewrites `import { Page } from '@hirobius/design-system'` to
  * `import { Page } from '@hirobius/design-system/patterns'` for every name the
- * root stopped exporting in 0.20.0 (hds#389 R1): the 21 pattern components and
+ * root stopped exporting when the patterns moved (hds#389 R1): the 21 pattern components and
  * their props types, parts, hooks and `*Variants`. The list also holds the five
  * modules that were only ever on `/patterns` (PageHeader, MetricTiles,
  * FormActions, DestructiveSection, DataTableSection); no root import of those
  * ever resolved, so including them changes nothing. StatusTile (with
  * StatusTileProps and StatusTileTone) left the root for `/patterns` in the same
- * release (hds#389 D5, hds#395), so it moves the same way. Names removed outright in
- * 0.20.0 are in removed-0.20.json and are reported, not moved. Other named imports
+ * release (hds#389 D5, hds#395), so it moves the same way. Names that release
+ * removed outright are reported, not moved. Other named imports
  * stay on the root. Aliases, `type` modifiers and multi-line layout
  * are preserved; an existing `/patterns` import of the same kind is extended
  * instead of duplicated. Imports are read with comments, strings and templates
@@ -33,24 +33,34 @@
  * `@hirobius/design-system/patterns` exports and the root does not, generated
  * by `pnpm codemod:names` (scripts/build-codemod-pattern-names.mjs).
  *
- * A name 0.20.0 removed with no replacement (codemods/removed-0.20.json, hds#394)
- * has nowhere to move: an import of one from the root or `/patterns` is reported
- * for a manual edit ("removed in 0.20.0, no replacement") and `--check` exits 1.
- * A removed name that folded into a survivor (`replaced` in that file, hds#394
- * wave 4b) is reported the same way, naming the survivor instead
- * ("removed in 0.20.0, use Button iconOnly"). NotFoundPattern and TileGrid
- * (hds#395) have codemods of their own: hds-not-found-pattern and hds-tile-grid.
+ * A name removed with no replacement in a release this codemod works on (a
+ * `removed` or `folded` step in the same ledger as its `moved` steps, hds#394,
+ * hds#956) has nowhere to move: an import of one from any entry those steps
+ * touch (the root and `/patterns`) is reported for a manual edit ("removed in
+ * <release>, no replacement", the release read from the step) and `--check`
+ * exits 1, and so is a namespace import or module-loading call of one of those
+ * entries that reads it (`import * as P from '…/patterns'; P.Calendar`). A
+ * removed name that folded into a survivor (`replaced` in
+ * codemods/removed-0.20.json, hds#394 wave 4b) is reported the same way,
+ * naming the survivor instead ("use Button iconOnly"). NotFoundPattern and
+ * TileGrid (hds#395) have codemods of their own: hds-not-found-pattern and
+ * hds-tile-grid.
+ *
+ * The move itself takes any from/to entry (`transformSource(source, names,
+ * { from, to })`); the bin moves the root's names to `/patterns`.
  */
 import { readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { writeFileAtomic } from './lib/atomic-write.mjs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findUnrewritable as findHidden, maskSource } from './unrewritable.mjs';
+import { CODE_EXTS } from './jsx-fold.mjs';
+import { removalsFor, removedText } from './lib/removals.mjs';
 
 const ROOT_PKG = '@hirobius/design-system';
 const SUBPATH = `${ROOT_PKG}/patterns`;
 const HERE = dirname(fileURLToPath(import.meta.url));
-const EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
+const BIN = 'hds-patterns-subpath';
 const SKIP_DIRS = new Set([
   'node_modules',
   'dist',
@@ -66,7 +76,11 @@ export function loadPatternNames() {
   return new Set(names);
 }
 
-/** Names 0.20.0 removed (codemods/removed-0.20.json `modules` and `replaced`): reported, never moved. */
+/**
+ * The names the patterns release removed (codemods/removed-0.20.json `modules`
+ * and `replaced`, held equal to that release's ledger by a test): reported,
+ * never moved.
+ */
 export function loadRemovedNames() {
   const { modules, replaced = {} } = JSON.parse(
     readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'),
@@ -77,10 +91,19 @@ export function loadRemovedNames() {
   ]);
 }
 
-/** What replaces a removed name that has a survivor (removed-0.20.json `replaced`), by name. */
+/**
+ * What replaces a removed name that has a survivor (removed-0.20.json `replaced`),
+ * or a name a later release reused for a new component (`reintroduced`), by name.
+ */
 export function loadReplacements() {
-  const { replaced = {} } = JSON.parse(readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'));
-  return new Map(Object.values(replaced).flatMap((names) => Object.entries(names)));
+  const { replaced = {}, reintroduced = {} } = JSON.parse(
+    readFileSync(join(HERE, 'removed-0.20.json'), 'utf8'),
+  );
+  const { $comment: _comment, ...reused } = reintroduced;
+  return new Map([
+    ...Object.values(replaced).flatMap((names) => Object.entries(names)),
+    ...Object.entries(reused),
+  ]);
 }
 
 const ID = '[A-Za-z_$][\\w$]*';
@@ -93,11 +116,17 @@ const namedRe = (pkg) =>
     `(?:^|(?<=;))([ \\t]*)(import|export)(\\s+type)?\\s*(?:(${ID})\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*(['"]) {${pkg.length}}\\6(;?)`,
     'gm',
   );
-const specName = (spec) =>
-  spec
+const specName = (spec) => {
+  const clean = spec.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+  const raw = clean
     .replace(/^type\s+/, '')
     .split(/\s+as\s+/)[0]
     .trim();
+  if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) {
+    return raw.slice(1, -1);
+  }
+  return raw;
+};
 
 /**
  * The specifiers of one `{ … }` body. The masked body (comments blank) says where
@@ -128,11 +157,12 @@ function parseSpecs(source, code, from, to) {
       const specStart = segStart + a;
       const specEnd = segStart + seg.trimEnd().length;
       const masked = code.slice(specStart, specEnd);
+      const unmaskedText = source.slice(specStart, specEnd);
       specs.push({
-        name: specName(masked),
+        name: specName(unmaskedText),
         key: masked.replace(/\s+/g, ' '),
         lead: source.slice(leadFrom, specStart).trim(),
-        text: source.slice(specStart, specEnd),
+        text: unmaskedText,
         tail: source.slice(specEnd, k).trim(),
       });
     }
@@ -146,7 +176,12 @@ function* statements(source, code, pkg) {
   for (const m of code.matchAll(namedRe(pkg))) {
     const to = m.index + m[0].length;
     if (!source.startsWith(pkg, to - m[7].length - pkg.length - 1)) continue;
-    const bodyAt = m.index + m[0].indexOf('{') + 1;
+    const openBrace = m[0].indexOf('{');
+    const bodyAt = m.index + openBrace + 1;
+    const closeBrace = openBrace + 1 + m[5].length;
+    const quoteIndex = m[0].indexOf(m[6], closeBrace + 1);
+    const quoteAt = m.index + quoteIndex;
+
     yield {
       from: m.index + m[1].length,
       to,
@@ -156,6 +191,8 @@ function* statements(source, code, pkg) {
       quote: m[6],
       semi: m[7],
       multiline: m[5].includes('\n'),
+      headMid: source.slice(m.index + m[1].length, bodyAt - 1),
+      tailMid: source.slice(m.index + closeBrace + 1, quoteAt),
       ...parseSpecs(source, code, bodyAt, bodyAt + m[5].length),
     };
   }
@@ -164,7 +201,8 @@ function* statements(source, code, pkg) {
 /** The leading whitespace of the line `at` is on. */
 function indentOf(source, at) {
   const lineStart = source.lastIndexOf('\n', at - 1) + 1;
-  return /^[ \t]*/.exec(source.slice(lineStart, at).replace(BOM, ''))[0];
+  const linePrefix = source.slice(lineStart, at).replace(BOM, '');
+  return /^[ \t]*$/.test(linePrefix) ? linePrefix : '';
 }
 
 /**
@@ -198,17 +236,77 @@ export function findUnrewritable(source, names = loadPatternNames()) {
   return findHidden(source, ROOT_PKG, names);
 }
 
-/** Each named import or re-export of a removed name from the root or `/patterns`, in source order. */
-export function findRemoved(source, removed = loadRemovedNames(), use = loadReplacements()) {
+/**
+ * The unrewritable scan for every entry the steps touch (hds#956): a read of a
+ * moved name off the root is a move by hand, as findUnrewritable says; a read
+ * of a removed name off any entry is reported as a removal, with its release.
+ * Each item is `{ stmt, gone? }`: `gone` marks a removal read. It is not
+ * `removed`, which the upgrade command leaves to the ledger's removed step:
+ * that step's `detect` sees named imports only, so a read through a namespace
+ * would be lost. A line two entries share is listed once.
+ */
+export function findHiddenUses(
+  source,
+  names = loadPatternNames(),
+  removed = loadRemovedNames(),
+  use = loadReplacements(),
+  { versions, entries } = loadRemovals(),
+) {
+  const out = new Map();
+  for (const pkg of entries) {
+    const moving = pkg === ROOT_PKG ? names : new Set();
+    for (const stmt of findHidden(source, pkg, [...moving, ...removed])) {
+      const m = /^(.*) \(uses ([^)]*)\)$/.exec(stmt);
+      if (!m) {
+        out.set(stmt, { stmt });
+        continue;
+      }
+      const read = m[2].split(', ');
+      const moved = read.filter((n) => moving.has(n));
+      const gone = read.filter((n) => removed.has(n) && !moving.has(n));
+      if (moved.length > 0) {
+        const line = `${m[1]} (uses ${moved.join(', ')})`;
+        out.set(line, { stmt: line });
+      }
+      if (gone.length > 0) {
+        const line = `${m[1]} (uses ${gone.map((n) => `${n}: ${removedNote(n, versions, use)}`).join('; ')})`;
+        out.set(line, { stmt: line, gone: true });
+      }
+    }
+  }
+  return [...out.values()];
+}
+
+/**
+ * The release each removed name went in, from the ledger steps (hds#956), and
+ * every entry those steps and the codemod's own touch.
+ * @param {object[]} [steps] ledger steps (default: every shipped step)
+ */
+export function loadRemovals(steps) {
+  const { names, entries } = removalsFor(BIN, steps);
+  return { versions: names, entries };
+}
+
+/** How the report names a removed name: its release, then its survivor or "no replacement". */
+const removedNote = (name, versions, use) =>
+  `${removedText(versions.get(name))}, ${use.has(name) ? `use ${use.get(name)}` : 'no replacement'}`;
+
+/** Each named import or re-export of a removed name from an entry the steps touch, in source order. */
+export function findRemoved(
+  source,
+  removed = loadRemovedNames(),
+  use = loadReplacements(),
+  { versions, entries } = loadRemovals(),
+) {
   const { code } = maskSource(source);
   const found = [];
-  for (const pkg of [ROOT_PKG, SUBPATH])
+  for (const pkg of entries)
     for (const st of statements(source, code, pkg))
       for (const { name } of st.specs)
         if (removed.has(name))
           found.push({
             at: st.from,
-            text: `${name} from '${pkg}' (removed in 0.20.0, ${use.has(name) ? `use ${use.get(name)}` : 'no replacement'})`,
+            text: `${name} from '${pkg}' (${removedNote(name, versions, use)})`,
           });
   return found.sort((a, b) => a.at - b.at).map((f) => f.text);
 }
@@ -218,11 +316,22 @@ export function findRemoved(source, removed = loadRemovedNames(), use = loadRepl
  * `indent`. A list goes on one line when its source did and no comment in it
  * needs a line break.
  */
-function render({ kw, typeKw, def, quote, semi }, { specs, endComment, multiline, pkg, indent }) {
-  const head = `${kw}${typeKw ? ' type' : ''} `;
-  const tail = ` from ${quote}${pkg}${quote}${semi}`;
-  if (specs.length === 0) return `${head}${def}${tail}`;
-  const d = def ? `${def}, ` : '';
+function render(
+  { kw, typeKw, def, quote, semi },
+  { specs, endComment, multiline, pkg, indent, headMid, tailMid },
+) {
+  let head = headMid;
+  if (!head) {
+    head = `${kw}${typeKw ? ' type' : ''} `;
+    if (def) head += `${def}, `;
+  }
+  const tail = `${tailMid ?? ' from '}${quote}${pkg}${quote}${semi}`;
+  if (specs.length === 0) {
+    const h = headMid
+      ? headMid.replace(/\s*,(\s*(?:\/\*[\s\S]*?\*\/\s*)*)$/, '$1').trimEnd()
+      : `${kw}${typeKw ? ' type' : ''} ${def}`;
+    return `${h}${tail}`;
+  }
   const parts = [endComment, ...specs.flatMap((s) => [s.lead, s.text, s.tail])];
   if (multiline || parts.some((part) => /\n|\/\//.test(part))) {
     const pad = `${indent}  `;
@@ -231,10 +340,10 @@ function render({ kw, typeKw, def, quote, semi }, { specs, endComment, multiline
       `${pad}${s.text},${s.tail ? ` ${s.tail}` : ''}`,
     ]);
     if (endComment) lines.push(`${pad}${endComment}`);
-    return `${head}${d}{\n${lines.join('\n')}\n${indent}}${tail}`;
+    return `${head}{\n${lines.join('\n')}\n${indent}}${tail}`;
   }
   const items = specs.map((s) => [s.lead, s.text, s.tail].filter(Boolean).join(' '));
-  return `${head}${d}{ ${items.join(', ')}${endComment ? ` ${endComment}` : ''} }${tail}`;
+  return `${head}{ ${items.join(', ')}${endComment ? ` ${endComment}` : ''} }${tail}`;
 }
 
 /**
@@ -242,20 +351,20 @@ function render({ kw, typeKw, def, quote, semi }, { specs, endComment, multiline
  * @returns {{ source: string, changed: boolean, sites: number, moved: string[],
  *   edits: {before: string, after: string}[] }}
  */
-export function transformSource(source, names) {
+export function transformSource(source, names, { from = ROOT_PKG, to = SUBPATH } = {}) {
   const { code } = maskSource(source);
   const moved = [];
   const edits = [];
 
   // An existing `import { … } from '/patterns'` of each kind absorbs moved names.
   const targets = {};
-  for (const st of statements(source, code, SUBPATH)) {
+  for (const st of statements(source, code, to)) {
     if (st.kw !== 'import' || st.def) continue;
     targets[st.typeKw ? 'type' : 'value'] ??= { st, add: [], endComments: [] };
   }
 
   const replacements = [];
-  for (const st of statements(source, code, ROOT_PKG)) {
+  for (const st of statements(source, code, from)) {
     const go = st.specs.filter((s) => names.has(s.name));
     if (go.length === 0) continue;
     moved.push(...go.map((s) => s.name));
@@ -265,14 +374,35 @@ export function transformSource(source, names) {
     // A comment before the closing brace stays with the root list while it has names.
     const endComment = keep.length > 0 ? '' : st.endComment;
     const lines = [];
+    const movesEntirely = keep.length === 0 && !st.def;
     if (keep.length > 0 || st.def)
-      lines.push(render(st, { ...st, specs: keep, pkg: ROOT_PKG, indent }));
+      lines.push(
+        render(st, {
+          ...st,
+          specs: keep,
+          pkg: from,
+          indent,
+          headMid: st.headMid,
+          tailMid: st.tailMid,
+        }),
+      );
     if (target) {
       target.add.push(...go);
       if (endComment) target.endComments.push(endComment);
     } else
       lines.push(
-        render({ ...st, def: undefined }, { ...st, specs: go, endComment, pkg: SUBPATH, indent }),
+        render(
+          { ...st, def: undefined },
+          {
+            ...st,
+            specs: go,
+            endComment,
+            pkg: to,
+            indent,
+            headMid: movesEntirely ? st.headMid : undefined,
+            tailMid: movesEntirely ? st.tailMid : undefined,
+          },
+        ),
       );
     replacements.push({ from: st.from, to: st.to, indent, lines });
   }
@@ -290,9 +420,7 @@ export function transformSource(source, names) {
       from: st.from,
       to: st.to,
       indent,
-      lines: [
-        render({ ...st, def: undefined }, { ...st, specs, endComment, pkg: SUBPATH, indent }),
-      ],
+      lines: [render({ ...st, def: undefined }, { ...st, specs, endComment, pkg: to, indent })],
     });
   }
 
@@ -327,7 +455,7 @@ function* walk(dir, skip = new Set()) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
       if (!skip.has(full)) yield* walk(full, skip);
-    } else if (entry.isFile() && EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
+    } else if (entry.isFile() && CODE_EXTS.has(full.slice(full.lastIndexOf('.')))) yield full;
   }
 }
 
@@ -338,8 +466,13 @@ export function runCodemod({
   names = loadPatternNames(),
   removed = loadRemovedNames(),
   replacements = loadReplacements(),
+  versions,
   skip = [],
 }) {
+  // Removals come from every shipped step: the steps the upgrade command passes
+  // are only the ones naming this codemod, which hold no removals.
+  const removals = loadRemovals();
+  if (versions) removals.versions = versions;
   const files = [];
   const manual = [];
   const moved = new Set();
@@ -352,9 +485,9 @@ export function runCodemod({
       continue; // unreadable: nothing to rewrite
     }
     if (!src.includes(ROOT_PKG)) continue;
-    for (const stmt of findUnrewritable(src, names))
-      manual.push({ file: relative(root, file), stmt });
-    for (const stmt of findRemoved(src, removed, replacements))
+    for (const hidden of findHiddenUses(src, names, removed, replacements, removals))
+      manual.push({ file: relative(root, file), ...hidden });
+    for (const stmt of findRemoved(src, removed, replacements, removals))
       manual.push({ file: relative(root, file), stmt, removed: true });
     const r = transformSource(src, names);
     if (!r.changed) continue;
@@ -385,7 +518,7 @@ function main(argv) {
   // An unreadable file names its own fix; the rest need the names moved by hand.
   const manualLines = res.manual.map(
     (m) =>
-      `  ${m.file}: ${m.stmt}${m.removed || m.stmt.startsWith('unreadable ') ? '' : ` (move pattern names to '${SUBPATH}' by hand)`}`,
+      `  ${m.file}: ${m.stmt}${m.removed || m.gone || m.stmt.startsWith('unreadable ') ? '' : ` (move pattern names to '${SUBPATH}' by hand)`}`,
   );
   if (args.check) {
     if (res.sites > 0 || res.manual.length > 0) {

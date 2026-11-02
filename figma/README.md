@@ -8,15 +8,16 @@ variables API is Enterprise-only), so every Figma step is a local command that a
 person, or an agent with Figma access, runs on purpose. Drift detection compares
 the model against a committed snapshot of the file, not the live file.
 
-| Command                      | What it does                                                                                                                                                               | Talks to Figma?        |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `pnpm figma:model`           | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles, plus Brand and Density from `figma/brand-modes.json`                               | No                     |
-| `pnpm figma:push`            | Writes the code that upserts the model into a file, to `figma/push/`; `--bundle <out>` writes the sync bundle the Sync plugin fetches; `--delta` writes `delta.js` (below) | No (you run it)        |
-| `pnpm figma:snapshot`        | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`; `--from-receipt <files...>` rebuilds it from a Sync's receipt              | No (you run it)        |
-| `pnpm check:figma-drift`     | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                                                          | No                     |
-| `pnpm check:figma-fallbacks` | Fails when `figma/snapshot.json` records a colour binding whose raw fallback colour is not the variable's value ([below](#bound-colour-fallbacks)); runs in `pretest`      | No                     |
-| `pnpm figma:native-import`   | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                                                         | No                     |
-| `pnpm figma:links`           | Writes `docs/DESIGN_LINKS.md`, and to `figma/links/` the steps that add dev resources and component descriptions in Figma                                                  | Only `--dev-resources` |
+| Command                      | What it does                                                                                                                                                                                                                                                                                            | Talks to Figma?        |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `pnpm figma:model`           | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles, plus Brand and Density from `figma/brand-modes.json`                                                                                                                                                            | No                     |
+| `pnpm figma:push`            | Writes the code that upserts the model into a file, to `figma/push/`; `--bundle <out>` writes the sync bundle the Sync plugin fetches; `--delta` writes `delta.js` (below)                                                                                                                              | No (you run it)        |
+| `pnpm figma:snapshot`        | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`; `--from-receipt <files...>` rebuilds it from a Sync's receipt                                                                                                                                           | No (you run it)        |
+| `pnpm check:figma-drift`     | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                                                                                                                                                                                       | No                     |
+| `pnpm check:figma-release`   | The release gate (hds#801): `pnpm release` runs it first. Fails on any drift, or when `hirobius.tokens.json` no longer matches the snapshot's `tokensHash` (its sha256 at `--ingest`; no git history needed, so squash merges are fine). An older snapshot without it fails until you re-run `--ingest` | No                     |
+| `pnpm check:figma-fallbacks` | Fails when `figma/snapshot.json` records a colour binding whose raw fallback colour is not the variable's value ([below](#bound-colour-fallbacks)); runs in `pretest`                                                                                                                                   | No                     |
+| `pnpm figma:native-import`   | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                                                                                                                                                                                      | No                     |
+| `pnpm figma:links`           | Writes `docs/DESIGN_LINKS.md`, and to `figma/links/` the steps that add dev resources and component descriptions in Figma                                                                                                                                                                               | Only `--dev-resources` |
 
 `figma/model.json`, `figma/push/` and `figma/native-import/` are generated and
 gitignored, and the sync bundle is generated by the Vercel build, never
@@ -514,15 +515,18 @@ would create the local variables staging has none of by design), a retired file
 and any other file, and writes nothing there.
 
 - **HDS tokens promote (baked)** (`figma/push/promote/`, id `hds-tokens-promote-dev`):
-  the earlier development plugin with the model baked in, unchanged except its id
-  and name, and that its Push and Take snapshot clear the Sync receipt
+  the earlier development plugin, unchanged except its id and name, that its
+  model is no longer baked into `code.js` (hds#397: Plan push and Push ask you to
+  pick `figma/push/promote/model.json`, checked against its checksum and the
+  build's prune setting, so a token change replaces that one data file, not the
+  plugin), and that its Push and Take snapshot clear the Sync receipt
   (`syncReceipt` and its pages), so no receipt outlives a write it does not
   describe. It is the deliberate prune (`pnpm figma:push --prune`), the one push
   that deletes, and only Adrian runs it. Its name dates from the staging era
   (before 2026-10-07), when it also promoted staging into the library. Import it
   in Figma desktop with Plugins → Development → Import plugin from manifest…,
   and pick `figma/push/promote/manifest.json` from a fresh `pnpm figma:push`,
-  which bakes the current model. Commands:
+  which writes the current model to `model.json` beside it. Commands:
   - **Plan push (dry run, writes nothing)**: the changes a push would make, and
     anything blocking it.
   - **Push**: applies the plan, re-reads the file, and fails if Figma still

@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "92571c87f415927db488422dc69ac4fd2a7de71e8949f473ed455a083d8b7876",
-  "precommitStructureHashUpdatedAt": "2026-10-14T04:31:42.037Z",
+  "precommitStructureHash": "063089a0075516f9faca521ccb3b4d00661f19719135030f5de298073b5857b3",
+  "precommitStructureHashUpdatedAt": "2026-10-16T12:42:38.942Z",
   "gates": [
     {
       "id": "audit-bundle",
@@ -76,6 +76,16 @@
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
     {
+      "id": "check-behaviour-detectors",
+      "description": "Behaviour detectors (hds#468): one local gate (pnpm check:behaviour) running the DOM and accessibility baseline (docs/baselines/dom-a11y.json), the SSR hydration-mismatch gate and the console budget (docs/guardrails/baselines/console-allowlist.json), each with its fixture proof. The baselines are ratchets: a diff needs an upgrade step. The same tests also run in pnpm test, so pre-push fires them.",
+      "severity": "error",
+      "gateScript": "scripts/check-behaviour-detectors.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-binding-drift",
       "description": "Soft gate that catches the failure mode where a component starts referencing a component-tier CSS variable that the masters pipeline doesn't know to bind.",
       "severity": "warn",
@@ -96,7 +106,7 @@
       "fixturePath": "fixtures/check-brand",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-code-connect",
@@ -138,7 +148,7 @@
       "fixturePath": "fixtures/check-css-integrity",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -155,7 +165,7 @@
     },
     {
       "id": "check-deprecations",
-      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc on the public surface (src/app/components, src/app/layouts, src/index.ts, src/patterns.ts and every package.json#exports JS entry with its re-exports) must carry a future @removeIn <semver>; fails when a deprecation goes past-due (removeIn <= current package version). Runs in pretest since hds#389 D6.",
+      "description": "Deprecation-lifecycle gate: every @deprecated JSDoc on the public surface (src/app/components, src/app/layouts, src/index.ts, src/patterns.ts and every package.json#exports JS entry with its re-exports) must carry a future @removeIn <semver>, and every $deprecated token in hirobius.tokens.json must say \"removed in <semver>\" (hds#469); fails when a deprecation goes past-due (removeIn <= current package version). Runs in pretest since hds#389 D6.",
       "severity": "warn",
       "gateScript": "scripts/check-deprecations.mjs",
       "fixturePath": "fixtures/check-deprecations",
@@ -173,7 +183,7 @@
       "fixturePath": "fixtures/check-dimensions",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -188,6 +198,16 @@
       "firingChannel": "ci-pr"
     },
     {
+      "id": "check-docs-coverage",
+      "description": "Docs coverage gate (hds#762): every component in public/hds-manifest.json (not hidden; docExempt only when it has no page, since the tag is file-level and can go stale; a part such as CardHeader is covered by its file's paged component) has a docs page (scripts/lib/docs-routing.mjs), a live demo (DEMOS ∩ PREVIEWED_COMPONENTS) and a Figma link shown in its page header (manifest figmaUrl from the @figma tag, a real Figma URL; not asked of components on a shared page, the utilities page or providers guide, which has no header slot per component). Today's gaps sit in docs/guardrails/baselines/check-docs-coverage.json, a ratchet that only shrinks: a new gap or a stale entry fails. --list prints the gap list. Logic proven by scripts/__tests__/docs-coverage.test.mjs. Runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-coverage.mjs",
+      "fixturePath": "fixtures/check-docs-coverage",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
+    },
+    {
       "id": "check-docs.selftest",
       "description": "Self-test for check-docs (hds#497): plants each rule violation in a temp tree and asserts check-docs fails on it, so a rule cannot silently stop firing. Runs in the Docs guardrails workflow and in pretest.",
       "severity": "error",
@@ -196,6 +216,17 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "ci-pr"
+    },
+    {
+      "id": "check-dupes",
+      "description": "Duplication ratchet (hds#766): runs jscpd over src, scripts, tests and validators via scripts/check-dupes.mjs and fails when the duplicated-line percentage rises above the threshold in .jscpd.json, set to the count measured the day the gate landed (1.883% on 2026-10-31, threshold 1.89) and lowered only in the PR that removes clones. Generated files, fixtures and golden files are ignored. On-demand channel: run by hand during cleanup sweeps (pnpm check:dupes), not wired into a hook — the registry taxonomy's name for a hand-run gate (check-validator-wiring reserves 'manual' for tools with no package.json alias).",
+      "severity": "warn",
+      "gateScript": "scripts/check-dupes.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "on-demand",
+      "supportsJson": true
     },
     {
       "id": "check-exemptions",
@@ -254,6 +285,16 @@
       "supportsJson": true
     },
     {
+      "id": "check-figma-release",
+      "description": "Release gate (hds#801): `pnpm release` (the script release.yml publishes through) refuses to publish while Figma is behind code. Fails on any drift between the model built from hirobius.tokens.json and figma/snapshot.json (unlike check-figma-drift --ci, which only fails on drift a push cannot explain), on a snapshot with no tokensHash (the sha256 of hirobius.tokens.json when it was ingested, recorded by `pnpm figma:snapshot --ingest`; a hash, not a commit, because squash merges leave branch commits unreachable from main), and when hirobius.tokens.json no longer hashes to tokensHash. The message names the drift and the fix: run figma/push delta.js through use_figma, take a snapshot, then pnpm figma:snapshot --ingest. Step 3 (component coverage, folds in #762): also fails when a component figma/disposition.json classes `library` has no Figma node (no @figma figmaUrl and no figma/mapping-overrides.json entry), naming each and the fix; slot/layout/internal components never count, and a missing disposition table fails. scripts/__tests__/check-figma-release.test.mjs covers pass and each failure. Not in pretest: it is meant to block a publish, not a branch.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-release.mjs",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": false
+    },
+    {
       "id": "check-figma-retired-keys",
       "description": "Rejects every link from code to a Figma file that is not the HDS library (ADR-026, amended 2026-10-07): a retired file (figma/links.json retiredFiles: the old library, retired 2026-10-07 when its duplicate became the one HDS library) or HDS Staging (stagingFileKey, the draft workbench of amendment A4: a shipped component links its library node, never its staging draft). Scans src (@figma tags, Code Connect templates), public (the manifest figmaUrl), docs data (sync-map, DESIGN_LINKS.md, the shipped docs/CONSUMING.md), figma data (disposition, inventory, Code Connect registry), mcp/ and content/docs, and the files the package ships from the repo root (README.md, llms.txt, DESIGN.md, AGENTS.md, CONSUMING.md). ERROR on any finding, naming file, line and kind (retired or staging) with the fix for each; figma/links.json and prose (ADRs, figma/*.md, where the drawing recipe names the workbench) are not scanned, and a missing scan root, shipped root file or retiredFiles list, or a staging key that is the library's, fails loudly. FIXTURE_DIR runs it on fixtures/check-figma-retired-keys. Also runs in pnpm test through scripts/__tests__/check-figma-retired-keys.test.mjs, whose real-tree case gates the repo.",
       "severity": "error",
@@ -283,7 +324,7 @@
       "fixturePath": "fixtures/check-hardcoded-breakpoints",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -311,11 +352,22 @@
       "fixturePath": "fixtures/check-hardcoded-spacing",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+    },
+    {
+      "id": "check-impeccable-detect",
+      "description": "Design anti-pattern detector wrapping `npx impeccable detect` (pbakaus/impeccable, Apache-2.0): deterministic typography / color / layout rules, no LLM, no API key. Exits 78 (skip) when npx or the network is unavailable. Restored for hds#553.",
+      "severity": "warn",
+      "gateScript": "scripts/check-impeccable-detect.mjs",
+      "fixturePath": "fixtures/check-impeccable-detect",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand",
+      "supportsJson": true
     },
     {
       "id": "check-layout-discipline",
@@ -351,7 +403,7 @@
       "fixturePath": "fixtures/check-link-integrity",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "subModes": [
         {
           "flag": "--doc-refs-only",
@@ -498,6 +550,18 @@
       "supportsJson": true
     },
     {
+      "id": "check-no-custom-tracking",
+      "description": "hds#756 -- letter-spacing comes from the type tokens only (Adrian, 2026-10-16). Fails, in src/**/*.css, a `letter-spacing:` whose value is not var(--semantic-typography-*) (or the primitive letterSpacing scale), inherit, unset or initial, and `@apply tracking-*`. Skips src/styles/tokens.generated.css (the token output), comments, tests and fixtures. A line is exempt with /* tracking-ok: <reason> */ on the same line or either line above; the reason is required. The JSX side ships to consumers as the ESLint rule hds/no-custom-tracking. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-custom-tracking.mjs",
+      "fixturePath": "fixtures/check-no-custom-tracking",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
       "id": "check-type-ramp",
       "description": "hds#486 -- keeps src/ on the type ramp of 5 roles plus mono (display, title, body, ui, caption, mono; epic hds#483). Fails a font size, weight or line height outside the roles: any Tailwind text-<size>, font-<weight> or leading-* utility, a text-[12px] arbitrary size, an inline or CSS font-size/font-weight/line-height whose value is a literal, and a raw rung of the primitive scale (--primitive-typography-size-*); and fails a deprecated composite (typeStyles.h1/heading1-3/technical/eyebrow/..., --semantic-typography-h1..h3/eyebrow, semantic.typography.h1..h3/eyebrow, Text variants heading1-3/technical/eyebrow/badge/doc*). A role var, inherit, unset and initial are fine. Also reads hirobius.tokens.json: exactly six live semantic.typography composites, and each deprecated alias (h1, h2, h3 to title; eyebrow to caption) equal to its role. Exempts tokens.ts and text.tsx (they define the deprecated names), generated CSS/TS, fonts.css and tests; a line is exempt with // type-ramp-ok: <reason> on the same line or either line above. Known limit: a value reached through an identifier or a class name assembled at runtime is not followed. Error severity, run by .husky/pre-commit, and its vitest suite runs it over src/ in pnpm test.",
       "severity": "error",
@@ -596,13 +660,13 @@
     },
     {
       "id": "check-tailwind-spacing-scale",
-      "description": "Flags raw numeric Tailwind spacing utilities (gap-2, p-5, px-3, mb-6, -mt-6, space-y-1.5) in src/app/components/**, which ignore density and sit outside the xs..xl scale and the gates that read only style and sx. WARN mode (exit 0); --strict exits 1. Companion to check-layout-contract.",
-      "severity": "warn",
+      "description": "Flags primitive and raw spacing in src/** and docs-site/** (minus the token layer, src/app/design-system): numeric Tailwind spacing utilities (gap-2, p-5, px-3, -mt-6, space-y-1.5), --primitive-space-* vars and hds.space.px* members, which ignore density and sit outside the semantic scale. pretest runs --ratchet: per-file counts may not grow past scripts/tailwind-spacing-scale.baseline.json, a file not in it may have none, and a stale (lower) count fails until --update-baseline lowers it. --strict exits 1 on any finding. Consumers get the same policy from hds/no-primitive-spacing in hds/recommended.",
+      "severity": "error",
       "gateScript": "scripts/check-tailwind-spacing-scale.mjs",
       "fixturePath": "fixtures/check-tailwind-spacing-scale",
       "owner": "Adrian",
       "source": "agent",
-      "firingChannel": "on-demand"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-docs-axe",
@@ -615,11 +679,42 @@
       "firingChannel": "ci-pr"
     },
     {
+      "id": "check-docs-layout-shift",
+      "description": "Loads every built docs-site route (discovered from docs-site/out, not a hand list) and fails when cumulative layout shift on load exceeds 0.01 or when the header, sidebar or nav box differs by any px from the first route of its layout (`/` alone; `/docs/**` against the first docs route) (hds#761). Needs `pnpm docs:publish` first. Fixtures: fixtures/check-docs-layout-shift/{passing,violating}.example.d, each a tiny built site passed with --dir (the violating one has a late-loading banner); tests/check-docs-layout-shift.test.ts proves the gate bites. Known failures are baselined in scripts/docs-layout-shift-allowlist.json (hds#770). CI wiring is a human-only follow-up (workflow edit).",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-layout-shift.mjs",
+      "fixturePath": "fixtures/check-docs-layout-shift",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand"
+    },
+    {
+      "id": "check-docs-touch-targets",
+      "description": "Loads the built docs-site pages of the small controls (sm Button, Tabs and SegmentedControl triggers, Tag, Disclosure trigger, Input clear) on a 390x844 touch phone and a 1024x768 touch tablet (only `pointer: coarse` lifts it there) and fails when a matched control is under --semantic-size-touchTarget (44px) in either axis, or a selector matches nothing (hds#750). Targets: scripts/docs-touch-targets.json. Needs `pnpm docs:publish` first. Fixtures: fixtures/check-docs-touch-targets/{passing,violating}.example.d with targets.json, passed with --dir and --targets; tests/check-docs-touch-targets.test.ts proves the gate bites. CI wiring is a human-only follow-up (workflow edit).",
+      "severity": "error",
+      "gateScript": "scripts/check-docs-touch-targets.mjs",
+      "fixturePath": "fixtures/check-docs-touch-targets",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand"
+    },
+    {
       "id": "check-llms-txt",
       "description": "Keeps public/llms.txt (and the package-root llms.txt mirror) a conformant llms.txt index (hds#592): an H1, a one-line '> ' summary, every link absolute and under the one LLMS_BASE_URL in scripts/lib/llms-index.mjs, pointing at a file that exists and ships in package.json#files, and no timestamp. The body (voice, recipes, card anatomy) lives in public/llms-full.txt. Runs in pretest. Fixtures: fixtures/check-llms-txt/{passing,violating}.example.txt, a file passed through FIXTURE_FILE.",
       "severity": "error",
       "gateScript": "scripts/check-llms-txt.mjs",
       "fixturePath": "fixtures/check-llms-txt",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-version-stamps",
+      "description": "Fails when an agent doc does not name package.json's version (hds#463): the Version: line of llms.txt, public/llms.txt, public/llms-full.txt and every public/llms/*.txt slice, metadata.hds-version in skills/hds-consumer/SKILL.md, and packageVersion in public/hds-manifest.json. They ship in the tarball as committed, so drift here is a tarball that lies about its version. pnpm changeset:version regenerates them; --root checks another tree, such as an unpacked tarball. Runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-version-stamps.mjs",
+      "fixturePath": null,
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pnpm-meta",
@@ -653,19 +748,17 @@
       "fixturePath": "fixtures/check-reduced-motion",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
-      "archivedFrom": "pre-commit",
-      "archivedBy": "#52 guardrail lean (ADR-018 §5)"
+      "firingChannel": "on-demand"
     },
     {
       "id": "check-ref-forwarding",
-      "description": "Verifies that HDS components rendering native form controls forward their ref to the underlying DOM element.",
-      "severity": "warn",
+      "description": "Verifies that HDS components rendering native form controls forward their ref to the underlying DOM element. Runs in pretest since hds#467, so pre-push and CI fail a form control that drops its ref (it used to fire only from check:fast, check:full and check:refs).",
+      "severity": "error",
       "gateScript": "scripts/check-ref-forwarding.mjs",
       "fixturePath": "fixtures/check-ref-forwarding",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
     },
@@ -725,7 +818,7 @@
       "fixturePath": "fixtures/check-style-discipline",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "supportsJson": true
     },
     {
@@ -747,7 +840,7 @@
       "fixturePath": "fixtures/check-template-source-of-truth",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "scope": "full-tree",
       "archivedFrom": "pre-commit",
       "archivedBy": "#52 guardrail lean (ADR-018 §5)"
@@ -772,7 +865,7 @@
       "fixturePath": "fixtures/check-tier-bypass",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand"
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-token-descriptions",
@@ -783,7 +876,7 @@
       "fixturePath": "fixtures/check-token-descriptions",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "qualityFlag": "--quality"
     },
     {
@@ -843,7 +936,7 @@
       "fixturePath": "fixtures/check-typography-discipline",
       "owner": "Adrian",
       "source": "human",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "glob": "src/**/*.{ts,tsx,jsx,js,css,scss}",
       "supportsJson": true,
       "archivedFrom": "pre-commit",
@@ -935,7 +1028,7 @@
     },
     {
       "id": "check-upgrade-ledger",
-      "description": "Upgrade-ledger gate (hds#448): compares the working tree, read from source with no build (scripts/upgrade/snapshot.mjs snapshotFromSource), with the newest docs/api/releases/<v>.json at or below package.json's version, and fails when a fact that takes something away (an export removed or moved, an exports key, dependency or bin gone, a narrowed peer, raised engines) has no step in upgrade/pending/*.json; when a .changeset/*.md has no upgrade/pending/<same name>.json stating its impact (and, unless none, a plain line with no TODO left); when a breaking change (a breaking fact, a note that says breaking, or a step that removes, moves, renames or folds something public, such as a CSS variable the diff cannot see yet) rides a changeset smaller than minor below 1.0 (major from 1.0), or, on the Version PR, a real bump that small; and when a major changeset or version would cut 1.0 without upgrade/ALLOW_1_0. Every message names pnpm upgrade:note. Runs in pretest, so pre-push, CI and the Ralph gate run it; adds about 0.9s (0.86-0.97s over five runs on the 0.21.0 tree, no network, no build).",
+      "description": "Upgrade-ledger gate (hds#448): compares the working tree, read from source with no build (scripts/upgrade/snapshot.mjs snapshotFromSource), with the newest docs/api/releases/<v>.json at or below package.json's version, and fails when a fact that takes something away (an export removed or moved, an exports key, dependency or bin gone, a narrowed peer, raised engines) has no step in upgrade/pending/*.json; when a .changeset/*.md has no upgrade/pending/<same name>.json stating its impact (and, unless none, a plain line with no TODO left); when a breaking change (a breaking fact, a note that says breaking, or a step that removes, moves, renames or folds something public, such as a CSS variable the diff cannot see yet) rides a changeset smaller than minor below 1.0 (major from 1.0), or, on the Version PR, a real bump that small; when a major changeset or version would cut 1.0 without upgrade/ALLOW_1_0; and (hds#461) when docs/api/props-baseline.json is not the one component-api.json gives. Once the release snapshot has a props section, a prop removed or renamed, a prop now required or an allowed value removed is a breaking fact and a changed default (cva defaultVariants included) a look fact. Once it has a dom section (docs/baselines/dom-a11y.json, hds#468), a demo whose roles, accessible names, states or data-* attributes changed is a behavior fact, whose step must be a behavior step with detect.regex; tests/dom-a11y-baseline.test.tsx keeps that baseline fresh. Every message names pnpm upgrade:note. Runs in pretest, so pre-push, CI and the Ralph gate run it; adds about 0.9s (0.86-0.97s over five runs on the 0.21.0 tree, no network, no build).",
       "severity": "error",
       "gateScript": "scripts/check-upgrade-ledger.mjs",
       "fixturePath": "fixtures/check-upgrade-ledger",
@@ -1010,6 +1103,16 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "scope": "full-tree"
+    },
+    {
+      "id": "regen",
+      "description": "Rebuilds every committed generated file in dependency order (pnpm regen). As `--after-merge` from .husky/post-merge, post-rewrite and post-commit it runs only when the hds-generated merge driver (scripts/merge-generated.mjs, .gitattributes) kept one side of a generated file, and never fails the merge (hds#977).",
+      "severity": "warn",
+      "gateScript": "scripts/regen.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "post-merge"
     }
   ]
 }

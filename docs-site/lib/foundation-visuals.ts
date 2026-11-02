@@ -52,13 +52,35 @@ export interface SwatchGroup {
   swatches: TokenRow[];
 }
 
+/** The accent roles an accent theme swaps, shown for each theme. */
+const ACCENT_ROLES = [
+  'semantic.accent.rest',
+  'semantic.accent.hover',
+  'semantic.accent.pressed',
+  'semantic.accent.subtle',
+  'semantic.color.content.accent',
+  'semantic.color.content.onAccent',
+];
+
+/** `base` with each `overlay` leaf laid over it (an accent theme is a token overlay). */
+function overlay(base: Json, layer: Json): Json {
+  if (!isNode(base) || !isNode(layer) || '$value' in layer) return layer;
+  const out: Node = { ...base };
+  for (const [k, v] of Object.entries(layer)) out[k] = k in base ? overlay(base[k], v) : v;
+  return out;
+}
+
 /**
- * Colour gallery: primitive ramps (one group per hue), then the semantic and
- * accent tokens (one group per role). Tenant brand ramps (`projectBrand`) are
- * left out: they belong to one client, not the shared system.
+ * Colour gallery: primitive ramps (one group per hue), the semantic and accent
+ * tokens (one group per role), then the accent themes side by side: graphite
+ * (the default) and each opt-in theme in `accentThemes` (`accents/<name>/tokens.json`,
+ * set with `data-accent`). Lime / delight is `$deprecated` while hidden (hds#857), so
+ * `children` leaves it out like every deprecated token. Tenant brand ramps
+ * (`projectBrand`) are left out: they belong to one client, not the shared system.
  */
 export function colorGalleries(
   tokens: Json,
+  accentThemes: Record<string, Json> = {},
 ): { title: string; dense: boolean; groups: SwatchGroup[] }[] {
   const groupsUnder = (path: string, skip: string[] = []): SwatchGroup[] => {
     const node = lookup(tokens, path);
@@ -75,6 +97,15 @@ export function colorGalleries(
     title: 'Accent',
     swatches: leafRows(tokens, 'semantic.accent').filter((r) => isColor(r.value)),
   };
+  const roles = (source: Json) =>
+    ACCENT_ROLES.map((path) => tokenRow(source, path)).filter((r): r is TokenRow => r !== null);
+  const themes: SwatchGroup[] = [
+    { title: 'Graphite (default)', swatches: roles(tokens) },
+    ...Object.entries(accentThemes).map(([name, layer]) => ({
+      title: `${titleCase(name)} (data-accent="${name}")`,
+      swatches: roles(overlay(tokens, layer)),
+    })),
+  ];
   return [
     { title: 'Primitives', dense: true, groups: groupsUnder('primitive.color', ['projectBrand']) },
     {
@@ -82,6 +113,7 @@ export function colorGalleries(
       dense: false,
       groups: [...groupsUnder('semantic.color'), accent].filter((g) => g.swatches.length),
     },
+    { title: 'Accent themes', dense: false, groups: themes.filter((g) => g.swatches.length) },
   ];
 }
 
@@ -144,15 +176,20 @@ function dimensionSteps(tokens: Json, path: string, sort: boolean): DimensionSte
   return sort ? steps.sort((a, b) => a.px - b.px) : steps;
 }
 
-/** Spacing: the semantic t-shirt scale, then every primitive step by size. */
+/** Spacing: the semantic t-shirt scale, the fixed steps between it, then every primitive step by size. */
 export const spaceScales = (tokens: Json) => [
   { title: 'Scale', steps: dimensionSteps(tokens, 'semantic.space.scale', false) },
+  { title: 'Fixed', steps: dimensionSteps(tokens, 'semantic.space.fixed', false) },
   { title: 'Primitive steps', steps: dimensionSteps(tokens, 'primitive.space', true) },
 ];
 
-/** Radius: the semantic roles, then the primitive steps by size. */
+/** Radius: the semantic roles, the fixed scale, then the primitive steps by size. */
 export const radiusScales = (tokens: Json) => [
-  { title: 'Roles', steps: dimensionSteps(tokens, 'semantic.radius', false) },
+  {
+    title: 'Roles',
+    steps: dimensionSteps(tokens, 'semantic.radius', false).filter((s) => !s.name.includes('.')),
+  },
+  { title: 'Scale', steps: dimensionSteps(tokens, 'semantic.radius.scale', false) },
   { title: 'Primitive steps', steps: dimensionSteps(tokens, 'primitive.radius', true) },
 ];
 

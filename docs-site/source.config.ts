@@ -17,5 +17,8 @@ export default defineConfig({
     // <RepoDoc path /> splices a repo doc in before Fumadocs' own plugins run,
     // so its headings get ids, the contents rail and search like any page.
     remarkPlugins: (defaults) => [remarkRepoDoc as never, ...defaults, remarkTokenTables as never],
+    // No Shiki: code fences reach MDX as raw text and render through the HDS
+    // CodeBlock (components/mdx-code-block.tsx), which colours them from HDS tokens.
+    rehypeCodeOptions: false,
   },
 });

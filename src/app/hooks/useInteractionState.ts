@@ -17,12 +17,12 @@
  * `useFrozenState()`) so the hook stays a pure, context-free state machine that
  * is unit-tested directly with `renderHook` (ADR-011).
  */
-import { useState } from 'react';
+import { useState, type FocusEvent, type KeyboardEvent } from 'react';
 
 export type InteractionVisualState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
 /** Event-less setters; consumers compose their own forwarded handlers around these. */
-export interface InteractionHandlers {
+interface InteractionHandlers {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   onPointerDown: () => void;
@@ -38,7 +38,7 @@ export interface InteractionHandlers {
   onBlur: () => void;
 }
 
-export interface InteractionState {
+interface InteractionState {
   /** Resolved visual state — the frozen demo state wins when present. */
   visualState: InteractionVisualState;
   isHover: boolean;
@@ -48,7 +48,7 @@ export interface InteractionState {
   handlers: InteractionHandlers;
 }
 
-export interface UseInteractionStateOptions {
+interface UseInteractionStateOptions {
   /** The genuine `disabled` prop — forces `disabled` regardless of pointer/focus. */
   disabled?: boolean;
   /** Frozen demo state from `useFrozenState()`; when set it overrides live state. */
@@ -117,6 +117,35 @@ export function useInteractionState({
         setFocused(false);
         setPressed(false);
       },
+    },
+  };
+}
+
+/**
+ * The focus / key / blur trio every native-input control forwards: the
+ * machine handler runs first (with `e.currentTarget` for `:focus-visible`),
+ * then the consumer's own handler with the event (hds#1009).
+ */
+export function forwardFocusHandlers<E extends Element>(
+  handlers: Pick<InteractionHandlers, 'onFocus' | 'onKeyDown' | 'onBlur'>,
+  own: {
+    onFocus?: (e: FocusEvent<E>) => void;
+    onKeyDown?: (e: KeyboardEvent<E>) => void;
+    onBlur?: (e: FocusEvent<E>) => void;
+  },
+) {
+  return {
+    onFocus: (e: FocusEvent<E>) => {
+      handlers.onFocus(e.currentTarget);
+      own.onFocus?.(e);
+    },
+    onKeyDown: (e: KeyboardEvent<E>) => {
+      handlers.onKeyDown(e.currentTarget);
+      own.onKeyDown?.(e);
+    },
+    onBlur: (e: FocusEvent<E>) => {
+      handlers.onBlur();
+      own.onBlur?.(e);
     },
   };
 }

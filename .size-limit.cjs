@@ -94,9 +94,22 @@
  * headroom convention over 55.71 kB. Raised by the wave-2 merge train;
  * Adrian to confirm or tighten.
  *
- * Known redundancy, not yet acted on: `figmaUrl` and `figmaLink` are
- * byte-identical on all 44 linked components. Dropping one would shrink this
- * entry, but it is a breaking change for manifest consumers.
+ * Measured again 2026-10-27 (hds#413), budget unchanged: 64.41 kB gzip on
+ * main -> 60.19 kB. dist/manifest.js now leaves out three fields
+ * public/hds-manifest.json keeps (scripts/lib/manifest-bundle.mjs): the
+ * duplicate `figmaLink` (same URL as `figmaUrl`), `consumers` (HDS repo
+ * importer paths) and `a11yRules[].testId` (HDS's own test ids).
+ *
+ * Re-baselined 2026-10-27, manifest entry only: main measured 64,995 B
+ * against the 65 kB budget (5 B of headroom), so any new component broke it.
+ * hds#690 adds Sheet and its compound parts (~1.7 kB gzip, 66.73 kB total).
+ * Content, not bloat: a documented public component. New budget 70 kB
+ * (~5% headroom, deliberately under the ~17% convention so the next real
+ * trim is still forced soon; the figmaUrl/figmaLink redundancy below is the
+ * obvious first cut). Adrian to confirm or tighten.
+ *
+ * The figmaUrl/figmaLink redundancy named above is now cut from the bundle
+ * (hds#413, see the note before this one); the 70 kB budget is unchanged.
  *
  * Button-only root import (hds#315, 2026-09-29): `import { Button } from
  * '@hirobius/design-system'`, tree-shaken and minified with react/react-dom
@@ -139,6 +152,11 @@
  *   fonts.css + 4 woff2: 132.16 kB raw (130.27 kB woff2 + 1.88 kB css), budget 146 kB
  * Approved by Adrian 2026-10-07.
  *
+ * Tightened 2026-10-22, main entry only: measured 50.39 kB gzip, far under the
+ * 200 kB budget set before the observedTokens removal and the PURE/compound
+ * work above. A budget 4x the real size cannot catch a regression, so the new
+ * budget is 60 kB (~19% headroom, in line with the other entries).
+ *
  * Entries NOT tracked here (sub-1.5 kB gzip, trivial): cn.js, mui.js,
  * form.js, contexts.js. Add a budget for one of these if it grows to carry
  * real weight.
@@ -154,13 +172,13 @@ module.exports = [
   {
     name: 'main entry (hirobius-ui.js)',
     path: 'dist/hirobius-ui.js',
-    limit: '200 kB',
+    limit: '60 kB',
     gzip: true,
   },
   {
     name: 'manifest (hds-manifest.json ESM)',
     path: 'dist/manifest.js',
-    limit: '65 kB',
+    limit: '70 kB',
     gzip: true,
   },
   {

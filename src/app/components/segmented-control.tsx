@@ -18,6 +18,10 @@
  * hover/focus tracking (per-segment `string | null` cardinality) rather than
  * the shared `useInteractionState` single-element machine; only the class
  * composition changed, not the state machine feeding it.
+ *
+ * When the segments outgrow the rail (a phone), the rail scrolls: it fades the
+ * hidden edge (`data-overflow`, the same mask as the tab list) and keeps the selected
+ * segment in view on mount and on change (hds#823).
  * @a11y component required a11y:segmented-control.roving-focus The control is one Tab stop; arrow keys move focus between segments and select, like a native radio group.
  * @a11y component required a11y:segmented-control.group-and-radio-roles It is a radiogroup named by label or aria-label, and each segment is a radio with aria-checked.
  * @a11y component required a11y:segmented-control.sr-group A screen reader speaks the group name and each radio with its state, position and set size.
@@ -35,6 +39,7 @@ import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
+import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -54,12 +59,12 @@ const segmentedControlWrapperVariants = /* @__PURE__ */ cva(
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- rail border/radius/gap are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlRailVariants = /* @__PURE__ */ cva(
-  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[var(--semantic-color-border-default)] [scrollbar-width:thin]',
+  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[color:transparent] [scrollbar-width:thin]',
   {
     variants: {
       variant: {
-        primary: 'bg-[var(--semantic-color-surface-raised)]',
-        secondary: 'bg-[var(--semantic-color-surface-page)]',
+        primary: 'bg-[var(--semantic-color-surface-muted)]',
+        secondary: 'bg-[var(--semantic-color-surface-muted)]',
       },
       fullWidth: {
         true: 'w-full',
@@ -79,7 +84,7 @@ const segmentedControlRailVariants = /* @__PURE__ */ cva(
 // …` short-circuit.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- segment button color/spacing/motion tokens have no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlItemVariants = /* @__PURE__ */ cva(
-  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center hds-touch-row transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center hds-touch-target transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
   {
     variants: {
       size: {
@@ -178,10 +183,14 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
     },
     compoundVariants: [
       // Background.
+      // Secondary selected: the page fill with a 1px border.interactive edge, which reads
+      // at 3:1+ against the track and a raised Card in light and dark (hds#866). Not
+      // border.strong (2.3:1 on white), and no raised shadow on top of the edge: depth is
+      // one mechanism, border or shadow (REACT_COMPONENTS.md, Elevation roles).
       {
         active: true,
         variant: 'secondary',
-        className: 'bg-[var(--semantic-color-surface-raised)]',
+        className: 'bg-[var(--semantic-color-surface-page)]',
       },
       {
         active: true,
@@ -218,12 +227,14 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
       {
         active: true,
         variant: 'secondary',
-        className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-default)]',
+        className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive)]',
       },
+      // Primary selected (C2): the primary fill with the primary hard edge, drawn inset at
+      // the bottom because the scrolling rail clips anything below the segment.
       {
         active: true,
         variant: 'primary',
-        className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-accent)]',
+        className: 'shadow-[inset_0_-3px_0_var(--hds-edge-primary)]',
       },
       {
         active: false,
@@ -372,6 +383,10 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
     // Arrow/Home/End focus moves select, like a native radio group (WAI-ARIA radio pattern); Tab does not.
     // Radix moves focus in a timeout after the key, so remember when the navigation key was pressed.
     const lastNavKeyAt = useRef(-Infinity);
+    // The rail scrolls when segments outgrow it (a phone): fade the hidden edge like
+    // the tab list (hds#723) and keep the selected segment in view (hds#823).
+    const { ref: railRef, overflow, update: updateOverflow } = useScrollEdgeFade<HTMLDivElement>();
+    useKeepSelectedInView(railRef, '[role="radio"][aria-checked="true"]');
 
     return (
       <div ref={ref} className={segmentedControlWrapperVariants({ fullWidth })}>
@@ -386,6 +401,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           </span>
         )}
         <ToggleGroup.Root
+          ref={railRef}
           type="single"
           // Radix emits role="radio" + aria-checked on items (canonical
           // mutually-exclusive semantics, upgrading the prior aria-pressed
@@ -406,9 +422,11 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
               lastNavKeyAt.current = performance.now();
             }
           }}
+          onScroll={updateOverflow}
+          data-overflow={overflow}
           className={segmentedControlRailVariants({ variant, fullWidth })}
-          // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
-          style={{ padding: railPadding ?? '4px' }}
+          // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class; the edge-fade mask is runtime too (scroll position)
+          style={{ padding: railPadding ?? '4px', ...scrollEdgeFadeStyle(overflow) }}
         >
           {options.map((option) => {
             const active = option.value === value;

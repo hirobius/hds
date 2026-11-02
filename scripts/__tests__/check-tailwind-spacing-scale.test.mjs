@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scanSource } from '../check-tailwind-spacing-scale.mjs';
+import { scanSource, ratchet, scanFiles } from '../check-tailwind-spacing-scale.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -16,7 +16,7 @@ describe('tailwind spacing scale: scanSource', () => {
   it('classifies off-scale px values apart from raw on-scale ones', () => {
     const f = scanSource(`x("p-5 gap-2 space-y-1.5 gap-3")`);
     expect(f.map((x) => [x.token, x.kind])).toEqual([
-      ['p-5', 'off-scale'],
+      ['p-5', 'raw-numeric'], // 20px is scale.sm since the 2026-10 bump
       ['gap-2', 'raw-numeric'],
       ['space-y-1.5', 'off-scale'],
       ['gap-3', 'off-scale'],
@@ -87,5 +87,82 @@ describe('check-tailwind-spacing-scale: fixture mode (proof-of-firing)', () => {
 
   it('exits 0 on the passing fixture (no false positive)', () => {
     expect(runFixture('passing.example.tsx').status).toBe(0);
+  });
+});
+
+describe('tailwind spacing scale: primitive and off-grid px6/px10 steps (2026-10 spacing prune)', () => {
+  it('flags primitive spacing vars and hds.space members, not semantic ones', () => {
+    const src = `x("p-[var(--primitive-space-4)]", hds.space.px16, hds.semantic.space.scale.md, "var(--semantic-space-scale-sm)")`;
+    expect(scanSource(src).map((f) => [f.token, f.kind])).toEqual([
+      ['--primitive-space-4', 'primitive-var'],
+      ['hds.space.px16', 'primitive-member'],
+    ]);
+  });
+
+  it('treats the off-grid px6/px10 steps (kept in 0.31.0) like any primitive step', () => {
+    const src = `x("p-px6 md:-mt-px10", "var(--primitive-space-px6)", hds.space.px10)`;
+    expect(scanSource(src).map((f) => [f.token, f.kind])).toEqual([
+      ['p-px6', 'off-scale'],
+      ['md:-mt-px10', 'off-scale'],
+      ['--primitive-space-px6', 'primitive-var'],
+      ['hds.space.px10', 'primitive-member'],
+    ]);
+  });
+
+  it('leaves the subgrid primitives px1/px2 (hairlines) to the primitive-var kind', () => {
+    expect(scanSource(`"var(--primitive-space-px1)"`).map((f) => f.kind)).toEqual([
+      'primitive-var',
+    ]);
+  });
+});
+
+describe('tailwind spacing scale: ratchet', () => {
+  const f = (file, kind) => ({ file, kind });
+  it('passes when every file matches its baseline exactly', () => {
+    const r = ratchet([f('a.tsx', 'off-scale'), f('a.tsx', 'raw-numeric')], { 'a.tsx': 2 });
+    expect(r.failures).toEqual([]);
+  });
+  it('fails a file that grew past its baseline, or a new file with findings', () => {
+    const r = ratchet(
+      [f('a.tsx', 'off-scale'), f('a.tsx', 'off-scale'), f('b.tsx', 'raw-numeric')],
+      {
+        'a.tsx': 1,
+      },
+    );
+    expect(r.failures.map((x) => x.file)).toEqual(['a.tsx', 'b.tsx']);
+  });
+  it('fails a stale baseline (a file that dropped below it) so the ratchet only tightens', () => {
+    const r = ratchet([], { 'a.tsx': 3 });
+    expect(r.failures).toEqual([{ file: 'a.tsx', baseline: 3, count: 0, reason: 'stale' }]);
+  });
+});
+
+describe('check-tailwind-spacing-scale scope (hds#778)', () => {
+  const files = scanFiles().map((f) => path.relative(ROOT, f));
+
+  it('covers all of src/ and docs-site/, not just src/app/components', () => {
+    expect(files).toContain('src/app/components/button.tsx');
+    expect(files.some((f) => f.startsWith('src/form/'))).toBe(true);
+    expect(files.some((f) => f.startsWith('docs-site/components/'))).toBe(true);
+  });
+
+  it('skips the token layer that defines the primitives, and build output', () => {
+    expect(files.filter((f) => f.startsWith('src/app/design-system/'))).toEqual([]);
+    expect(files.filter((f) => /(^|\/)(node_modules|\.next|\.source)\//.test(f))).toEqual([]);
+  });
+});
+
+describe('check-tailwind-spacing-scale --ratchet on the real tree', () => {
+  it('src and docs-site match the committed baseline (pretest runs this)', () => {
+    const r = spawnSync(
+      process.execPath,
+      ['scripts/check-tailwind-spacing-scale.mjs', '--ratchet'],
+      {
+        cwd: ROOT,
+        encoding: 'utf8',
+      },
+    );
+    expect(r.stdout + r.stderr).toMatch(/ratchet ok/);
+    expect(r.status).toBe(0);
   });
 });

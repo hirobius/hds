@@ -5,6 +5,7 @@
  *
  * Three-tier architecture: primitive → semantic → component
  * Dark mode via [data-theme="dark"] selector (Figma SDS convention).
+ * Compact density via [data-density="compact"] (the tokens' Compact mode).
  * The var() reference chain is preserved so dark-mode overrides cascade
  * automatically — no JavaScript re-renders needed for theme switching.
  */
@@ -12,22 +13,26 @@
 :root {
 
   /* ── Primitives ────────────────────────────────────────────────────────── */
-  --primitive-color-neutral-50: #fafafa;
-  --primitive-color-neutral-100: #f5f5f5;
-  --primitive-color-neutral-200: #e5e5e5;
-  --primitive-color-neutral-300: #d4d4d4;
-  --primitive-color-neutral-350: #b4b4b4;
-  --primitive-color-neutral-400: #a3a3a3;
-  --primitive-color-neutral-450: #909090;
-  --primitive-color-neutral-500: #737373;
-  --primitive-color-neutral-600: #525252;
-  --primitive-color-neutral-700: #404040;
-  --primitive-color-neutral-800: #262626;
-  --primitive-color-neutral-850: #1a1a1a;
-  --primitive-color-neutral-900: #111111;
-  --primitive-color-neutral-950: #0a0a0a;
+  --primitive-color-neutral-50: #f9fafc;
+  --primitive-color-neutral-100: #f4f5f7;
+  --primitive-color-neutral-200: #e4e5e7;
+  --primitive-color-neutral-300: #d3d4d6;
+  --primitive-color-neutral-350: #b2b4b8;
+  --primitive-color-neutral-400: #a0a3a8;
+  --primitive-color-neutral-450: #8d9096;
+  --primitive-color-neutral-500: #6f737b;
+  --primitive-color-neutral-550: #5e626a;
+  --primitive-color-neutral-600: #4d525b;
+  --primitive-color-neutral-700: #3b404a;
+  --primitive-color-neutral-725: #272c36;
+  --primitive-color-neutral-750: #252a34;
+  --primitive-color-neutral-800: #212630;
+  --primitive-color-neutral-825: #1b202a;
+  --primitive-color-neutral-850: #151a24;
+  --primitive-color-neutral-900: #0c111b;
+  --primitive-color-neutral-950: #060a13;
   --primitive-color-neutral-white: #ffffff;
-  --primitive-color-neutral-black: #000000;
+  --primitive-color-neutral-black: #060a13;
   --primitive-color-blue-50: oklch(0.96 0.03 266.54);
   --primitive-color-blue-100: oklch(0.92 0.04 266.54);
   --primitive-color-blue-200: oklch(0.88 0.07 266.54);
@@ -47,17 +52,41 @@
   --primitive-color-green-400: #34d399;
   --primitive-color-green-700: #047857;
   --primitive-color-green-950: #022c22;
-  --primitive-color-graphite-50: #f5f4f4;
-  --primitive-color-graphite-100: #e9e7e8;
-  --primitive-color-graphite-200: #d4d0d2;
-  --primitive-color-graphite-300: #b2abae;
-  --primitive-color-graphite-400: #8b8488;
-  --primitive-color-graphite-500: #655e62;
-  --primitive-color-graphite-600: #544d51;
-  --primitive-color-graphite-700: #433a3f;
-  --primitive-color-graphite-800: #352e32;
-  --primitive-color-graphite-900: #2a2428;
-  --primitive-color-graphite-950: #19161a;
+  --primitive-color-graphite-50: #f2f4f8;
+  --primitive-color-graphite-100: #e5e8ed;
+  --primitive-color-graphite-200: #c4c8cf;
+  --primitive-color-graphite-300: #a8aeb8;
+  --primitive-color-graphite-400: #7f8794;
+  --primitive-color-graphite-500: #586170;
+  --primitive-color-graphite-600: #465061;
+  --primitive-color-graphite-700: #3a4457;
+  --primitive-color-graphite-800: #263043;
+  --primitive-color-graphite-900: #1c2638;
+  --primitive-color-graphite-950: #0f1726;
+  --primitive-color-cobalt-50: #eef0fe;
+  --primitive-color-cobalt-100: #dce1fd;
+  --primitive-color-cobalt-200: #b4bbf4;
+  --primitive-color-cobalt-300: #8a97f8;
+  --primitive-color-cobalt-400: #5b71fa;
+  --primitive-color-cobalt-500: #2a5bf8;
+  --primitive-color-cobalt-600: #112de8;
+  --primitive-color-cobalt-700: #1f17c4;
+  --primitive-color-cobalt-800: #191c7d;
+  --primitive-color-cobalt-900: #0b0658;
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
+  --primitive-color-lime-50: #f2fbd6;
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
+  --primitive-color-lime-100: #e3f6a8;
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
+  --primitive-color-lime-200: #cdee6a;
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
+  --primitive-color-lime-300: #b8e62e;
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
+  --primitive-color-lime-400: #93ba1c;
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
+  --primitive-color-lime-600: #6e8f0b;
+  /* @deprecated hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0 */
+  --primitive-color-lime-800: #445807;
   --primitive-color-mauve-50: #fff0f6;
   --primitive-color-mauve-100: #f4e2ea;
   --primitive-color-mauve-200: #e1cad4;
@@ -99,6 +128,7 @@
   --primitive-color-projectBrand-microsoftGameDev-100: #E5E5FC;
   --primitive-color-projectBrand-microsoftGameDev-500: #6d31fb;
   --primitive-color-projectBrand-microsoftGameDev-900: oklch(0.22 0.16 304);
+  --primitive-color-shadow-ink: #282c34;
   --primitive-space-0: 0px;
   --primitive-space-1: 4px;
   --primitive-space-2: 8px;
@@ -123,26 +153,36 @@
   --primitive-radius-0: 0px;
   --primitive-radius-2: 2px;
   --primitive-radius-4: 4px;
+  --primitive-radius-6: 6px;
   --primitive-radius-8: 8px;
   --primitive-radius-12: 12px;
+  --primitive-radius-16: 16px;
+  --primitive-radius-24: 24px;
   --primitive-radius-full: 9999px;
   --primitive-typography-family-primary: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --primitive-typography-family-display: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --primitive-typography-family-display: Sora, "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-mono: "IBM Plex Mono", "Courier New", monospace;
   --primitive-typography-size-xs: 12px;
+  --primitive-typography-size-compactCaption: 13px;
   --primitive-typography-size-sm: 14px;
   --primitive-typography-size-base: 16px;
+  --primitive-typography-size-compactBody: 15px;
   --primitive-typography-size-lg: 18px;
   --primitive-typography-size-xl: 20px;
   --primitive-typography-size-2xl: 24px;
+  --primitive-typography-size-title: 28px;
   --primitive-typography-size-3xl: 30px;
   --primitive-typography-size-4xl: 36px;
   --primitive-typography-size-5xl: 48px;
+  --primitive-typography-size-display: 56px;
   --primitive-typography-size-6xl: 60px;
   --primitive-typography-size-code: 15px;
   --primitive-typography-weight-regular: 400;
   --primitive-typography-weight-medium: 500;
+  --primitive-typography-weight-semibold: 600;
   --primitive-typography-weight-bold: 700;
+  --primitive-typography-weight-display: 700;
+  --primitive-typography-weight-mono: 400;
   --primitive-typography-lineHeight-compact: 0.95;
   --primitive-typography-lineHeight-none: 1;
   --primitive-typography-lineHeight-tight: 1.25;
@@ -160,7 +200,7 @@
   --primitive-easing-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
   --primitive-easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
   --primitive-easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
-  --primitive-easing-elastic: spring(300, 20, 1);
+  --primitive-easing-elastic: linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1);
   --primitive-shadow-color: 220 13% 18%;
   --primitive-breakpoint-xs: 375px;
   --primitive-breakpoint-sm: 640px;
@@ -172,10 +212,14 @@
   --primitive-size-12: 12px;
   --primitive-size-16: 16px;
   --primitive-size-20: 20px;
+  --primitive-size-22: 22px;
   --primitive-size-24: 24px;
   --primitive-size-32: 32px;
+  --primitive-size-36: 36px;
   --primitive-size-40: 40px;
+  --primitive-size-44: 44px;
   --primitive-size-48: 48px;
+  --primitive-size-52: 52px;
   --primitive-size-64: 64px;
   --primitive-size-80: 80px;
   --primitive-size-96: 96px;
@@ -194,6 +238,7 @@
   --primitive-zIndex-10: 10;
   --primitive-zIndex-100: 100;
   --primitive-zIndex-1000: 1000;
+  --primitive-underline-offset: 0.2em;
   --primitive-borderWidth-xs: 1px;
   --primitive-borderWidth-sm: 2px;
   --primitive-borderWidth-md: 4px;
@@ -215,15 +260,18 @@
   --semantic-color-surface-page: var(--primitive-color-neutral-white);
   --semantic-color-surface-raised: var(--primitive-color-neutral-50);
   --semantic-color-surface-overlay: var(--primitive-color-neutral-100);
+  --semantic-color-surface-floating: var(--primitive-color-neutral-white);
   --semantic-color-surface-scrim: var(--primitive-color-neutral-900);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-black);
-  --semantic-color-surface-accent: var(--primitive-color-graphite-700);
+  --semantic-color-surface-accent: var(--primitive-color-graphite-950);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-50);
   --semantic-color-surface-hover: var(--primitive-color-neutral-100);
-  --semantic-color-surface-pressed: var(--primitive-color-neutral-50);
+  --semantic-color-surface-pressed: var(--primitive-color-neutral-200);
   --semantic-color-surface-selected: var(--primitive-color-neutral-200);
   --semantic-color-surface-muted: var(--primitive-color-neutral-100);
   --semantic-color-surface-sunken: var(--primitive-color-neutral-200);
+  --semantic-color-surface-soft: var(--primitive-color-neutral-200);
+  --semantic-color-surface-softHover: var(--primitive-color-neutral-300);
   --semantic-color-content-primary: var(--primitive-color-neutral-900);
   --semantic-color-content-secondary: var(--primitive-color-neutral-600);
   --semantic-color-content-tertiary: var(--primitive-color-neutral-500);
@@ -234,14 +282,14 @@
   --semantic-color-content-success: var(--primitive-color-green-700);
   --semantic-color-content-warning: var(--primitive-color-amber-800);
   --semantic-color-content-danger: var(--primitive-color-red-700);
-  --semantic-color-border-default: var(--primitive-color-neutral-200);
+  --semantic-color-border-default: var(--primitive-color-graphite-200);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
-  --semantic-color-border-subdued: var(--primitive-color-neutral-200);
   --semantic-color-border-subtle: var(--primitive-color-neutral-100);
-  --semantic-color-border-strong: var(--primitive-color-neutral-300);
+  --semantic-color-border-strong: var(--primitive-color-graphite-300);
   --semantic-color-border-accent: var(--primitive-color-graphite-700);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
+  --semantic-color-shadow-hard: var(--primitive-color-shadow-ink);
   --semantic-color-feedback-error: var(--primitive-color-red-700);
   --semantic-color-feedback-success: var(--primitive-color-green-700);
   --semantic-color-feedback-warning: var(--primitive-color-amber-800);
@@ -253,58 +301,58 @@
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-50);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-black);
+  --semantic-space-scale-2xs: var(--primitive-space-1);
   --semantic-space-scale-xs: var(--primitive-space-2);
-  --semantic-space-scale-sm: var(--primitive-space-4);
-  --semantic-space-scale-md: var(--primitive-space-6);
-  --semantic-space-scale-lg: var(--primitive-space-8);
-  --semantic-space-scale-xl: var(--primitive-space-12);
+  --semantic-space-scale-sm: var(--primitive-space-5);
+  --semantic-space-scale-md: var(--primitive-space-7);
+  --semantic-space-scale-lg: var(--primitive-space-10);
+  --semantic-space-scale-xl: var(--primitive-space-16);
+  --semantic-space-fixed-2xs: var(--primitive-space-1);
+  --semantic-space-fixed-xs: var(--primitive-space-3);
+  --semantic-space-fixed-sm: var(--primitive-space-4);
+  --semantic-space-fixed-md: var(--primitive-space-6);
+  --semantic-space-fixed-lg: var(--primitive-space-8);
+  --semantic-space-fixed-xl: var(--primitive-space-12);
   --semantic-space-surface-padding: var(--semantic-space-scale-md);
-  --semantic-space-region-gutter: var(--semantic-space-scale-md);
+  --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-space-subgrid-hairline: var(--primitive-space-px1);
   --semantic-space-subgrid-xs: var(--primitive-space-px2);
   --semantic-space-subgrid-gap: var(--primitive-space-1);
-  --semantic-space-component-gap: var(--primitive-space-2);
   --semantic-space-component-medium: var(--primitive-space-3);
-  --semantic-space-component-padding: var(--semantic-space-surface-padding);
-  --semantic-space-layout-tight: var(--primitive-space-4);
-  --semantic-space-layout-normal: var(--primitive-space-6);
-  --semantic-space-layout-gutter: var(--semantic-space-region-gutter);
-  --semantic-space-layout-inset: var(--primitive-space-8);
-  --semantic-space-layout-spacious: var(--primitive-space-12);
-  --semantic-space-section-stack: var(--primitive-space-20);
+  --semantic-space-section-stack: var(--primitive-space-24);
   --semantic-space-section-inset: var(--primitive-space-24);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) */
   --semantic-space-section-heroMax: var(--primitive-space-32);
   --semantic-space-sidebar-indent: var(--primitive-space-3);
   --semantic-space-sidebar-gap: var(--primitive-space-4);
   --semantic-space-sidebar-sectionGap: var(--primitive-space-3);
   --semantic-space-sidebar-railPadding: var(--primitive-space-5);
-  --semantic-space-sidebar-railWidth: var(--primitive-size-width-280);
   --semantic-layout-width-content: var(--primitive-size-width-760);
   --semantic-layout-width-max: var(--primitive-size-width-1200);
   --semantic-layout-container-maxWidth: var(--primitive-size-width-1200);
   --semantic-layout-content-maxWidth: var(--primitive-size-width-760);
   --semantic-layout-prose-maxWidth: var(--primitive-size-width-50ch);
-  --semantic-layout-section-paddingY: var(--primitive-space-20);
-  --semantic-layout-grid-gap: var(--primitive-space-8);
+  --semantic-layout-section-paddingY: var(--primitive-space-24);
+  --semantic-layout-grid-gap: var(--semantic-space-scale-lg);
   --semantic-layout-grid-columns-mobile: var(--primitive-grid-columns-1);
   --semantic-layout-grid-columns-tablet: var(--primitive-grid-columns-2);
   --semantic-layout-grid-columns-desktop: var(--primitive-grid-columns-3);
   /* semantic.typography.display */
   --semantic-typography-display-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-display-font-size: var(--primitive-typography-size-5xl);
-  --semantic-typography-display-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-display-font-size: var(--primitive-typography-size-display);
+  --semantic-typography-display-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-display-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-display-line-height: var(--primitive-typography-lineHeight-display);
   /* semantic.typography.title */
   --semantic-typography-title-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-title-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-title-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-title-font-size: var(--primitive-typography-size-title);
+  --semantic-typography-title-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-title-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-title-line-height: var(--primitive-typography-lineHeight-tight);
   /* semantic.typography.titleSm */
   --semantic-typography-titleSm-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-titleSm-font-size: var(--primitive-typography-size-lg);
-  --semantic-typography-titleSm-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-titleSm-font-size: var(--primitive-typography-size-xl);
+  --semantic-typography-titleSm-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-titleSm-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-titleSm-line-height: var(--primitive-typography-lineHeight-snug);
   /* semantic.typography.body */
@@ -330,28 +378,32 @@
   /* semantic.typography.mono */
   --semantic-typography-mono-font-family: var(--primitive-typography-family-mono);
   --semantic-typography-mono-font-size: var(--primitive-typography-size-code);
-  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-regular);
+  --semantic-typography-mono-font-weight: var(--primitive-typography-weight-mono);
   --semantic-typography-mono-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-mono-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-mono-max-width: 60ch;
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   /* semantic.typography.h1 */
   --semantic-typography-h1-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-h1-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h1-font-size: var(--primitive-typography-size-title);
+  --semantic-typography-h1-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h1-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h1-line-height: var(--primitive-typography-lineHeight-tight);
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   /* semantic.typography.h2 */
   --semantic-typography-h2-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h2-font-size: var(--primitive-typography-size-title);
+  --semantic-typography-h2-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h2-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h2-line-height: var(--primitive-typography-lineHeight-tight);
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */
   /* semantic.typography.h3 */
   --semantic-typography-h3-font-family: var(--primitive-typography-family-display);
-  --semantic-typography-h3-font-size: var(--primitive-typography-size-2xl);
-  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-bold);
+  --semantic-typography-h3-font-size: var(--primitive-typography-size-title);
+  --semantic-typography-h3-font-weight: var(--primitive-typography-weight-display);
   --semantic-typography-h3-letter-spacing: var(--primitive-typography-letterSpacing-tight);
   --semantic-typography-h3-line-height: var(--primitive-typography-lineHeight-tight);
+  /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption */
   /* semantic.typography.eyebrow */
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-sm);
@@ -359,10 +411,12 @@
   --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-lineHeight-none: var(--primitive-typography-lineHeight-none);
-  --semantic-docs-space-section: var(--primitive-space-12);
-  --semantic-docs-space-paragraph: var(--primitive-space-6);
+  --semantic-docs-space-section: var(--semantic-space-scale-xl);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) */
+  --semantic-docs-space-paragraph: var(--primitive-space-7);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs */
   --semantic-docs-space-inline: var(--primitive-space-2);
-  --semantic-accent-rest: var(--primitive-color-graphite-700);
+  --semantic-accent-rest: var(--primitive-color-graphite-950);
   --semantic-accent-hover: var(--primitive-color-graphite-800);
   --semantic-accent-pressed: var(--primitive-color-graphite-900);
   --semantic-accent-inactive: var(--primitive-color-neutral-400);
@@ -370,10 +424,25 @@
   --semantic-accent-content: var(--primitive-color-graphite-700);
   --semantic-accent-contentHover: var(--primitive-color-graphite-800);
   --semantic-accent-subtle: var(--primitive-color-graphite-50);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
+  --semantic-accent-delight-base: var(--primitive-color-lime-300);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
+  --semantic-accent-delight-deep: var(--primitive-color-lime-600);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
+  --semantic-accent-delight-pale: var(--primitive-color-lime-50);
+  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
+  --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   --semantic-radius-action: var(--primitive-radius-8);
   --semantic-radius-control: var(--primitive-radius-4);
+  --semantic-radius-scale-sm: var(--primitive-radius-8);
+  --semantic-radius-scale-md: var(--primitive-radius-12);
+  --semantic-radius-scale-lg: var(--primitive-radius-16);
+  --semantic-radius-scale-xl: var(--primitive-radius-24);
+  --semantic-radius-scale-pill: var(--primitive-radius-full);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
+  --semantic-link-underlineThickness: var(--primitive-borderWidth-sm);
+  --semantic-link-underlineOffset: var(--primitive-underline-offset);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);
   --semantic-shadow-floating: 0 4px 6px hsl(var(--primitive-shadow-color) / 0.05), 0 10px 15px hsl(var(--primitive-shadow-color) / 0.08);
   --semantic-shadow-overlay: 0 10px 15px hsl(var(--primitive-shadow-color) / 0.08), 0 25px 50px hsl(var(--primitive-shadow-color) / 0.12);
@@ -390,9 +459,9 @@
   --semantic-elevation-floating-shadow: var(--semantic-shadow-floating);
   --semantic-elevation-floating-border: transparent;
   /* semantic.elevation.overlay */
-  --semantic-elevation-overlay-surface: var(--semantic-color-surface-overlay);
+  --semantic-elevation-overlay-surface: var(--semantic-color-surface-floating);
   --semantic-elevation-overlay-shadow: var(--semantic-shadow-overlay);
-  --semantic-elevation-overlay-border: transparent;
+  --semantic-elevation-overlay-border: var(--semantic-color-border-default);
   --semantic-size-control-sm: var(--primitive-size-8);
   --semantic-size-control-md: var(--primitive-size-20);
   --semantic-size-control-lg: var(--primitive-size-32);
@@ -400,6 +469,7 @@
   --semantic-size-icon-md: var(--primitive-size-20);
   --semantic-size-icon-lg: var(--primitive-size-24);
   --semantic-size-avatar: var(--primitive-size-40);
+  --semantic-size-touchTarget: var(--primitive-size-interactive-min);
   --semantic-size-tile: var(--primitive-size-120);
   --semantic-size-row-compact: var(--primitive-size-40);
   --semantic-size-row-comfortable: var(--primitive-size-48);
@@ -407,17 +477,10 @@
   --semantic-zIndex-sticky: var(--primitive-zIndex-100);
 
   /* ── Component ─────────────────────────────────────────────────────────── */
-  --component-nav-bg: var(--semantic-color-surface-page);
-  --component-nav-bgActive: var(--semantic-accent-subtle);
-  --component-nav-borderActive: var(--semantic-color-surface-accent);
-  --component-nav-text: var(--semantic-color-content-secondary);
-  --component-nav-textActive: var(--semantic-color-content-primary);
-  --component-nav-height: var(--primitive-space-16);
-  --component-nav-paddingX: var(--primitive-space-6);
   --component-nav-paddingY: var(--primitive-space-2);
-  --component-tag-background: var(--semantic-color-surface-raised);
+  --component-tag-background: var(--semantic-color-surface-muted);
   --component-tag-text: var(--semantic-color-content-secondary);
-  --component-tag-border: var(--semantic-color-border-default);
+  --component-tag-border: var(--semantic-color-surface-muted);
   --component-tag-radius: var(--primitive-radius-full);
   --component-tag-fontSize: var(--primitive-typography-size-sm);
   --component-tag-fontWeight: var(--primitive-typography-weight-medium);
@@ -432,7 +495,9 @@
   --component-tag-activeHover: var(--semantic-accent-hover);
   --component-badge-fontSize: var(--primitive-typography-size-sm);
   --component-badge-fontWeight: var(--primitive-typography-weight-medium);
+  /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone) */
   --component-badge-text: var(--semantic-color-content-primary);
+  /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
   --component-badge-neutral-bg: var(--semantic-color-surface-overlay);
   --component-badge-neutral-text: var(--semantic-color-content-secondary);
@@ -446,45 +511,51 @@
   --component-badge-warning-text: var(--semantic-color-feedback-warning);
   --component-badge-inProgress-bg: var(--semantic-color-feedback-bg-inProgress);
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
-  --component-badge-radius: var(--semantic-radius-action);
-  --component-badge-height: var(--primitive-size-20);
-  --component-badge-minWidth: var(--primitive-size-20);
+  --component-badge-radius: var(--primitive-radius-6);
+  --component-badge-height: var(--primitive-size-22);
+  --component-badge-minWidth: var(--primitive-size-22);
   --component-badge-paddingY: var(--primitive-space-px2);
-  --component-badge-paddingX: var(--primitive-space-px6);
+  --component-badge-paddingShift: var(--primitive-space-px1);
+  --component-badge-paddingX: var(--primitive-space-2);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-radius: var(--semantic-radius-action);
   --component-button-paddingX: var(--primitive-space-4);
   --component-button-paddingY: var(--primitive-space-2);
+  --component-button-fontWeight: var(--primitive-typography-weight-semibold);
   --component-button-size-sm-paddingX: var(--primitive-space-3);
   --component-button-size-sm-paddingY: var(--primitive-space-1);
   --component-button-size-sm-fontSize: var(--primitive-typography-size-sm);
   --component-button-size-sm-iconSize: var(--primitive-size-12);
-  --component-button-size-sm-height: var(--primitive-size-32);
+  --component-button-size-sm-height: var(--primitive-size-36);
   --component-button-size-sm-itemSpacing: var(--primitive-space-2);
   --component-button-size-md-paddingX: var(--primitive-space-4);
   --component-button-size-md-paddingY: var(--primitive-space-2);
   --component-button-size-md-fontSize: var(--primitive-typography-size-base);
   --component-button-size-md-iconSize: var(--primitive-size-16);
-  --component-button-size-md-height: var(--primitive-size-40);
+  --component-button-size-md-height: var(--primitive-size-44);
   --component-button-size-md-itemSpacing: var(--primitive-space-2);
   --component-button-size-lg-paddingX: var(--primitive-space-6);
   --component-button-size-lg-paddingY: var(--primitive-space-4);
   --component-button-size-lg-fontSize: var(--primitive-typography-size-base);
   --component-button-size-lg-iconSize: var(--primitive-size-20);
-  --component-button-size-lg-height: var(--primitive-size-48);
+  --component-button-size-lg-height: var(--primitive-size-52);
   --component-button-size-lg-itemSpacing: var(--primitive-space-2);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
-  --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
-  --component-button-secondary-bg-hover: var(--semantic-color-surface-accentSubtle);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
+  --component-button-secondary-bg-rest: var(--semantic-color-surface-soft);
+  --component-button-secondary-bg-hover: var(--semantic-color-surface-softHover);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-soft);
+  /* @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 */
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
-  --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
-  --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
+  /* @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 */
+  --component-button-secondary-border-disabled: var(--semantic-color-border-default);
   --component-button-secondary-text: var(--semantic-color-content-primary);
+  --component-button-tertiary-bg-hover: var(--semantic-color-surface-hover);
+  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-soft);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
   --component-input-border: var(--semantic-color-border-interactive);
@@ -495,17 +566,16 @@
   --component-card-bg: var(--semantic-color-surface-raised);
   --component-card-border: var(--semantic-color-border-default);
   --component-card-radius: var(--primitive-radius-12);
-  --component-card-padding: var(--primitive-space-6);
+  --component-card-padding: var(--primitive-space-7);
   --component-card-gap: var(--semantic-space-scale-sm);
   --component-inlineCode-bg: var(--semantic-color-surface-overlay);
-  --component-lightbox-backdrop-blur: var(--primitive-blur-16);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
   --role-background: var(--semantic-color-surface-page);
   --role-foreground: var(--semantic-color-content-primary);
   --role-card: var(--semantic-color-surface-raised);
   --role-card-foreground: var(--semantic-color-content-primary);
-  --role-popover: var(--semantic-color-surface-overlay);
+  --role-popover: var(--semantic-color-surface-floating);
   --role-scrim: var(--semantic-color-surface-scrim);
   --role-pressed-overlay: var(--semantic-color-state-pressed-overlay);
   --role-popover-foreground: var(--semantic-color-content-primary);
@@ -529,17 +599,20 @@
 [data-theme="dark"] {
   --primitive-shadow-color: 0 0% 0%;
   --semantic-color-surface-page: var(--primitive-color-neutral-black);
-  --semantic-color-surface-raised: var(--primitive-color-neutral-850);
+  --semantic-color-surface-raised: var(--primitive-color-neutral-825);
   --semantic-color-surface-overlay: var(--primitive-color-neutral-800);
+  --semantic-color-surface-floating: var(--primitive-color-neutral-800);
   --semantic-color-surface-scrim: var(--primitive-color-neutral-black);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-white);
-  --semantic-color-surface-accent: var(--primitive-color-graphite-200);
+  --semantic-color-surface-accent: var(--primitive-color-graphite-50);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-800);
   --semantic-color-surface-hover: var(--primitive-color-neutral-700);
   --semantic-color-surface-pressed: var(--primitive-color-neutral-black);
-  --semantic-color-surface-selected: var(--primitive-color-neutral-800);
-  --semantic-color-surface-muted: var(--primitive-color-neutral-800);
+  --semantic-color-surface-selected: var(--primitive-color-neutral-725);
+  --semantic-color-surface-muted: var(--primitive-color-neutral-750);
   --semantic-color-surface-sunken: var(--primitive-color-neutral-700);
+  --semantic-color-surface-soft: var(--primitive-color-neutral-600);
+  --semantic-color-surface-softHover: var(--primitive-color-neutral-550);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
   --semantic-color-content-secondary: var(--primitive-color-neutral-350);
   --semantic-color-content-tertiary: var(--primitive-color-neutral-450);
@@ -552,12 +625,12 @@
   --semantic-color-content-danger: var(--primitive-color-red-400);
   --semantic-color-border-default: var(--primitive-color-neutral-600);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
-  --semantic-color-border-subdued: var(--primitive-color-neutral-800);
   --semantic-color-border-subtle: var(--primitive-color-neutral-700);
   --semantic-color-border-strong: var(--primitive-color-neutral-600);
   --semantic-color-border-accent: var(--primitive-color-graphite-300);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
+  --semantic-color-shadow-hard: var(--primitive-color-neutral-500);
   --semantic-color-feedback-error: var(--primitive-color-red-400);
   --semantic-color-feedback-success: var(--primitive-color-green-400);
   --semantic-color-feedback-warning: var(--primitive-color-amber-400);
@@ -569,28 +642,28 @@
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-900);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-950);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
-  --semantic-accent-rest: var(--primitive-color-graphite-200);
-  --semantic-accent-hover: var(--primitive-color-graphite-300);
-  --semantic-accent-pressed: var(--primitive-color-graphite-400);
+  --semantic-accent-rest: var(--primitive-color-graphite-50);
+  --semantic-accent-hover: var(--primitive-color-graphite-100);
+  --semantic-accent-pressed: var(--primitive-color-graphite-200);
   --semantic-accent-inactive: var(--primitive-color-neutral-600);
   --semantic-accent-disabled: var(--primitive-color-neutral-700);
   --semantic-accent-content: var(--primitive-color-graphite-300);
   --semantic-accent-contentHover: var(--primitive-color-graphite-200);
   --semantic-accent-subtle: var(--primitive-color-graphite-800);
+  --semantic-accent-delight-base: var(--primitive-color-lime-300);
+  --semantic-accent-delight-deep: var(--primitive-color-lime-600);
+  --semantic-accent-delight-pale: var(--primitive-color-lime-50);
+  --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
   --semantic-elevation-raised-surface: var(--semantic-color-surface-raised);
   --semantic-elevation-floating-surface: var(--semantic-color-surface-raised);
-  --semantic-elevation-overlay-surface: var(--semantic-color-surface-overlay);
-  --component-nav-bg: var(--semantic-color-surface-page);
-  --component-nav-bgActive: var(--semantic-accent-subtle);
-  --component-nav-borderActive: var(--semantic-color-surface-accent);
-  --component-nav-text: var(--semantic-color-content-secondary);
-  --component-nav-textActive: var(--semantic-color-content-primary);
-  --component-tag-background: var(--semantic-color-surface-raised);
+  --semantic-elevation-overlay-surface: var(--semantic-color-surface-floating);
+  --semantic-elevation-overlay-border: var(--semantic-color-border-default);
+  --component-tag-background: var(--semantic-color-surface-muted);
   --component-tag-text: var(--semantic-color-content-secondary);
-  --component-tag-border: var(--semantic-color-border-default);
+  --component-tag-border: var(--semantic-color-surface-muted);
   --component-tag-activeText: var(--semantic-color-content-onAccent);
   --component-tag-activeBackground: var(--semantic-accent-rest);
   --component-tag-activeBorder: var(--semantic-accent-rest);
@@ -610,17 +683,19 @@
   --component-badge-inProgress-text: var(--semantic-color-feedback-inProgress);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
+  --component-button-bgPressed: var(--semantic-accent-pressed);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
-  --component-button-secondary-bg-rest: var(--semantic-color-surface-page);
-  --component-button-secondary-bg-hover: var(--semantic-color-surface-accentSubtle);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-overlay);
+  --component-button-secondary-bg-rest: var(--semantic-color-surface-soft);
+  --component-button-secondary-bg-hover: var(--semantic-color-surface-softHover);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-soft);
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
-  --component-button-secondary-border-pressed: var(--semantic-color-border-accent);
-  --component-button-secondary-border-disabled: var(--semantic-color-border-subdued);
+  --component-button-secondary-border-disabled: var(--semantic-color-border-default);
   --component-button-secondary-text: var(--semantic-color-content-primary);
+  --component-button-tertiary-bg-hover: var(--semantic-color-surface-hover);
+  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-soft);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
   --component-input-border: var(--semantic-color-border-interactive);
@@ -632,7 +707,7 @@
   --role-foreground: var(--semantic-color-content-primary);
   --role-card: var(--semantic-color-surface-raised);
   --role-card-foreground: var(--semantic-color-content-primary);
-  --role-popover: var(--semantic-color-surface-overlay);
+  --role-popover: var(--semantic-color-surface-floating);
   --role-scrim: var(--semantic-color-surface-scrim);
   --role-pressed-overlay: var(--semantic-color-state-pressed-overlay);
   --role-popover-foreground: var(--semantic-color-content-primary);
@@ -650,3 +725,28 @@
   --role-input: var(--semantic-color-border-interactive);
   --role-ring: var(--semantic-color-border-accent);
 }
+
+/* ── Compact density (apps) ─────────────────────────────────────────────────── */
+[data-density="compact"] {
+  --semantic-space-scale-sm: var(--primitive-space-3);
+  --semantic-space-scale-md: var(--primitive-space-4);
+  --semantic-space-scale-lg: var(--primitive-space-6);
+  --semantic-space-scale-xl: var(--primitive-space-8);
+  --semantic-space-section-stack: var(--primitive-space-12);
+  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
+  --semantic-typography-title-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-body-font-size: var(--primitive-typography-size-compactBody);
+  --semantic-typography-ui-font-size: var(--primitive-typography-size-sm);
+  --semantic-typography-caption-font-size: var(--primitive-typography-size-compactCaption);
+  --semantic-typography-h1-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-h2-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-h3-font-size: var(--primitive-typography-size-2xl);
+  --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-compactCaption);
+  --semantic-space-surface-padding: var(--semantic-space-scale-md);
+  --semantic-space-region-gutter: var(--semantic-space-scale-lg);
+  --semantic-docs-space-section: var(--semantic-space-scale-xl);
+  --component-card-gap: var(--semantic-space-scale-sm);
+}
+/* Raised edges (hds#897): each fill stepped darker in both themes (C2). scripts/lib/raised-edge.mjs */
+:root{--hds-edge-primary:#010207;--hds-edge-secondary:#bdbec0;--hds-edge-danger:#d4cccc;--hds-edge-success:#c8d4ce;--hds-edge-warning:#d6d3c8;--hds-edge-info:#c4cbd9;--hds-edge-kbd:#cdcecf;}
+[data-theme="dark"]{--hds-edge-primary:#a5a6a9;--hds-edge-secondary:#3d4147;--hds-edge-danger:#350d0b;--hds-edge-success:#08231c;--hds-edge-warning:#361809;--hds-edge-info:#0c1324;--hds-edge-kbd:#1b1f26;}

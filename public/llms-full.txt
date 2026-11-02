@@ -1,5 +1,7 @@
 # Hirobius Design System
 
+Version: 0.32.0
+
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
 ## Agents Using The Package: Start Here
@@ -24,18 +26,23 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 
 - **Outermost wrapper of a screen** → `Page`, `Stack`. Not: `Container`, `Box`, a bare Stack as the root.
   `<Page><Stack gap="spacious">…one child per section…</Stack></Page>`. `Container` is for a full-bleed surface that is not a page.
+  Import: `import { Page } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
   Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
+  Import: `import { PageHeader } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
   `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).
+  Import: `import { MetricTiles, MetricTile } from '@hirobius/design-system/patterns';`
 - **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
+  Import: `import { DataTableSection } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Switch between panels of related content** → `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`. Not: `SegmentedControl`, Button rows.
   `<Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">…</TabsContent></Tabs>`.
 - **Status label in a header or table cell** → `Badge`. Not: `Tag`, `Text`.
   `<Badge tone="success|info|warning|danger|neutral|inProgress">…</Badge>`; tone is the only styling input.
 - **Form with fields and a submit button** → `Form`, `Textarea`, `Input`, `FormActions`, `Button`. Not: a raw `<form>`, a Stack of Buttons as the footer.
   `<Form onSubmit={…}><Textarea label="Notes" … /><FormActions primary={<Button type="submit">Save note</Button>} /></Form>`; every field takes its own `label`.
+  Import: `import { Form, FormActions } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
 - **Confirm a destructive or irreversible action (delete, archive, remove)** → `AlertDialog`, `Button`. Not: `Dialog`, `window.confirm`.
   Trigger, title, description, Cancel and Action parts: `<AlertDialog><AlertDialog.Trigger asChild><Button …>Archive</Button></AlertDialog.Trigger><AlertDialog.Content><AlertDialog.Header><AlertDialog.Title>…</AlertDialog.Title><AlertDialog.Description>…</AlertDialog.Description></AlertDialog.Header><AlertDialog.Footer><AlertDialog.Cancel asChild><Button variant="secondary">Cancel</Button></AlertDialog.Cancel><AlertDialog.Action asChild><Button tone="danger" onClick={…}>Archive</Button></AlertDialog.Action></AlertDialog.Footer></AlertDialog.Content></AlertDialog>`. Focus moves in and returns to the trigger for you.
 - **Brief confirmation after an action (saved, archived, sent)** → `ToastProvider`, `useToast`. Not: `Badge`, `Alert`, `Text`.
@@ -56,6 +63,7 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
   `DataTableSection` shows its own through `emptyTitle`; use `EmptyState` elsewhere.
 - **The one irreversible action of a screen (delete the client, close the account)** → `DestructiveSection`. Not: a danger Button that acts without a confirm.
   Last on the screen: `<DestructiveSection title="Delete client" description="…" actionLabel="Delete" onConfirm={…} />`; it opens its own AlertDialog. A per-row destructive action uses AlertDialog directly.
+  Import: `import { DestructiveSection } from '@hirobius/design-system/patterns';`
 - **Read-only details as label and value pairs** → `MetadataList`, `Field`. Not: a Table with two columns, Text pairs in a Stack.
   `<MetadataList items={[{ term: "Owner", description: "Ada" }]} />` for a set; `Field` for one pair.
 - **A person, or a group of people** → `Avatar`, `AvatarGroup`. Not: an image in a rounded Box.
@@ -97,7 +105,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 43 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 47 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -107,6 +115,7 @@ The 43 components of the ratified core set: brand-neutral, composable, imported 
 - Icon (Display)
 - Kbd (Display)
 - Table (Display)
+- Timeline (Display)
 - Alert (Feedback)
 - Badge (Feedback)
 - Progress (Feedback)
@@ -132,14 +141,17 @@ The 43 components of the ratified core set: brand-neutral, composable, imported 
 - Surface (Layout)
 - Breadcrumb (Navigation)
 - InlineLink (Navigation)
+- NavList (Navigation)
 - Pagination (Navigation)
 - Tabs (Navigation)
+- CommandPalette (Overlays)
 - Dialog (Overlays)
 - Menu (Overlays)
 - Popover (Overlays)
 - Tooltip (Overlays)
 - HdsRouterProvider (Theming)
 - HdsThemeProvider (Theming)
+- MetaLine (Typography)
 - Text (Typography)
 - VisuallyHidden (Utility)
 
@@ -149,25 +161,30 @@ One line per component that declares when to use it (`@usage` / `@useInstead` in
 
 Alert: [core] Show a persistent inline message with a severity, next to the content it concerns. Use instead: ToastProvider, Badge
 AlertDialog: Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons. Use instead: Dialog, ToastProvider
+AppShell: The outer frame of a web app: a top bar, a navigation rail or sheet, the page, and an optional detail panel. Use instead: Page, Sidebar
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
-Avatar: [core] Show a person or entity as an image with an initials fallback. Use instead: Icon, Badge
-Badge: [core] Label a status, state or count with a compact neutral or semantic chip, or a dot. Use instead: Tag, Alert
+AsyncState: Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content. Use instead: Skeleton, Alert, EmptyState
+Avatar: [core] Show a person or entity as an image with an initials fallback, or a neutral person icon when nobody is signed in; add a status dot for a state such as unsynced. As an account button, pass it as the iconLeft of a tertiary iconOnly Button. Use instead: Icon, Badge
+Badge: [core] Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`). Use instead: Tag, Alert
 Board: Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage. Use instead: Table, Grid
 BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
 Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
 Card: [core] Group related content on a raised surface with header, body, footer and row slots, or as one selectable option. Use instead: Surface
+CardFacts: Show an entity's quick facts (location, salary, type) under its title.
 CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.
+CardSource: Open an entity card (a job, a lead, a listing) with where it came from and when, above Card.Header.
 Checkbox: [core] Let people tick one or more independent options, or a parent choice that is partly selected. Use instead: Toggle, Radio
 CodeBlock: Show a code sample with a copy button, optionally collapsed.
 Combobox: [core] Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type. Use instead: Select, Menu
+CommandPalette: [core] Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K. Use instead: Combobox, Menu
 Composer: Capture a prompt or a quick note where a long paste should not flood the field. Use instead: Textarea
 Container: [core] Constrain a page region to the content or maximum width and centre it. Use instead: Stack, Grid, Box
 DataTableSection: Put a heading and toolbar above a Table.
 DestructiveSection: Put a dangerous action, such as delete, in its own section with a warning and a confirm step.
 Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
-Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. Use instead: Tabs
+Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant="row". Use instead: Tabs
 Divider: [core] Separate two blocks of content with a thin line. Use instead: Stack, Surface
 EmptyState: [core] Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. Use instead: Skeleton, Alert
 ErrorPattern: Show an error with a short message and a Back button, in place or as a full page.
@@ -182,6 +199,9 @@ InlineLink: [core] Link to a route or external URL from inside body copy. Use in
 Input: [core] Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
+MetaLine: [core] Show one or two secondary facts on a single line, joined by a bullet ("Acme Cloud · Remote"). Use instead: A
+NavList: [core] List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
+NavListItem: List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
 Page: Wrap a screen in the standard width and padding.
 PageHeader: Open a screen with its title, plus optional breadcrumb, status and actions.
 Pagination: [core] Move between pages of a long result set, with truncated page numbers. Use instead: Breadcrumb
@@ -191,6 +211,7 @@ Radio: [core] Choose exactly one option from a small set that should stay visibl
 Reveal: Fade content in as it scrolls into view.
 SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
 Select: [core] Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
+Sheet: Open a short menu or form from the bottom edge on a phone (sort, row actions, status, a quick edit), centred like a Dialog on wider screens. Use instead: Dialog, AlertDialog, Menu
 Skeleton: [core] Reserve the shape of content that is still loading, so the layout does not jump. Use instead: Progress, Spinner
 Slider: [core] Pick a number within a known range by dragging, when the exact value matters less than the position. Use instead: Input
 Spinner: [core] Show that something is loading when the wait is short or has no measurable end. Use instead: Progress, Skeleton
@@ -202,9 +223,10 @@ Tag: [core] Show an interactive filter or category chip that people can toggle. 
 Text: [core] Set any text on the type ramp, with the element chosen by `as`. Use instead: InlineLink, Kbd
 Textarea: [core] Collect multi-line free text such as a message, note or description. Use instead: Input
 ThemeToggle: A single header or menu control to switch between the light and dark theme. Use instead: SegmentedControl
-Timeline: Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
+Timeline: [core] Show a dated history of events, such as shipped releases or client activity, grouped under day headings. Use instead: MetadataList, StatusListItem
 ToastProvider: [core] Confirm an action with a brief message that appears and dismisses itself, through useToast. Use instead: Alert, Dialog
 Toggle: [core] Switch one setting on or off, with the effect applying immediately. Use instead: Checkbox, Radio
+TokenField: Edit a template or message in which placeholders such as [Name] must stay whole: each one is a chip that is stepped over and deleted as one unit. Use instead: Textarea, Input
 Tooltip: [core] Name an icon-only control, or add a short hint that appears on hover and keyboard focus. Use instead: Popover, Text
 VisuallyHidden: [core] Give assistive technology a label or description that sighted people do not need to see. Use instead: Text
 
@@ -222,10 +244,10 @@ VisuallyHidden: [core] Give assistive technology a label or description that sig
 | Text/content colors | `semantic.color.content.primary`, `semantic.color.content.secondary` | `--semantic-color-content-primary`, `--semantic-color-content-secondary` |
 | Borders/dividers | `semantic.color.border.default`, `semantic.color.border.interactive` | `--semantic-color-border-default`, `--semantic-color-border-interactive` |
 | Feedback states | `semantic.color.feedback.error`, `semantic.color.feedback.success` | `--semantic-color-feedback-error`, `--semantic-color-feedback-success` |
-| Spacing (semantic tiers) | `semantic.space.scale.xs`, `semantic.space.surface.padding`, `semantic.space.region.gutter` | use semantic tokens or `--hds-space-px12` style vars |
+| Spacing (semantic tiers) | `semantic.space.scale.2xs`, `semantic.space.fixed.2xs`, `semantic.space.surface.padding` | use semantic tokens or `--hds-space-px12` style vars |
 | Radius | `semantic.radius.action` | `--semantic-radius-action` |
 | Motion | `semantic.motion.productive`, `semantic.motion.expressive`, `semantic.motion.exit` | use token refs; values are structured (duration/easing) |
-| Typography | `semantic.typography.body`, `semantic.typography.h2`, `semantic.typography.caption` | use token refs; values are structured (family/size/weight/etc) |
+| Typography | `semantic.typography.body`, `semantic.typography.title`, `semantic.typography.caption` | use token refs; values are structured (family/size/weight/etc) |
 
 ## How To Lay Out A Screen
 
@@ -243,8 +265,10 @@ Negative rules (apply everywhere, checked by `scripts/audit-tokens.mjs --full`, 
 - No inline margins on children to fake spacing between siblings — gap/spacing on the parent (Stack/Grid/Switcher/Sidebar) owns rhythm, not margin on the child.
 - No raw px or hex values in any layout or color prop — every spacing value comes from the semantic gap scale (`tight | normal | inset | spacious`, or a component/subgrid step) and every color comes from a `semantic.color.*` token.
 - No repeated outlined cards as the default structure for roadmap/status/process/overview UI — use open bands, dividers, rails, disclosures, and whitespace instead.
+- No primitive spacing: never a `primitive.space.*` step, `--primitive-space-*` var, `hds.space.px*` or numeric Tailwind spacing class (`p-4`, `gap-2`) — use `semantic.space.*` (`p-surface-padding`, `gap-scale-md`, `var(--semantic-space-scale-*)`) or the `xs…xl` keys. `hds/no-primitive-spacing` enforces it.
+- Spacing rhythm: inner padding ≤ outer gap; a nested surface steps down one level (surface.padding → `sm` → `xs`) or takes `padding="none"`; sibling cards share one padding.
 
-Density: put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`) to tighten `semantic.space.scale.*`, surface padding and region gutter; `Table` follows it unless given a `density` prop.
+Density: the default rhythm is roomy, for sites. Dense apps put `data-density="compact"` on the same `[data-hds]` scope element (or `<html>`): `semantic.space.scale` sm/md/lg/xl become 12/16/24/32px, `section.stack` 48px, and type body 15 · ui 14 · caption 13 · title 24px (display stays 56px). Surface padding, region gutter and grid gap follow the scale; `Table` follows it unless given a `density` prop.
 
 Reference: `docs/architecture/variant-contract.md` for structural/semantic/size/density variance; `src/app/data/component-api.json` for every layout primitive's full prop table and `@ai-rules` guidance.
 
@@ -290,10 +314,10 @@ When building any card component or card-like surface, ALL of the following rule
 | --- | --- | --- | --- | --- |
 | Card / panel resting | `semantic.elevation.flat` | `surface.page` | none | `border.subtle` 1px |
 | Card / panel lifted (interactive only) | `semantic.elevation.raised` | `surface.raised` | `shadow.subtle` | none |
-| Popover / dropdown / tooltip | `semantic.elevation.floating` | `surface.raised` | `shadow.floating` | none |
-| Dialog / sheet / modal | `semantic.elevation.overlay` | `surface.overlay` | `shadow.overlay` | none |
+| Tooltip | `semantic.elevation.floating` | `surface.inverse` | `shadow.floating` | none |
+| Menu / popover / listbox / toast / dialog | `semantic.elevation.overlay` | `surface.floating` | `shadow.overlay` | `border.default` 1px |
 
-Cards default to `elevation.flat`. Popovers/tooltips/dropdowns use `elevation.floating`. Dialogs/sheets use `elevation.overlay`. Interactive cards lift to `elevation.raised` on hover. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
+Cards default to `elevation.flat`. Tooltips use `elevation.floating`. Menus, popovers, listboxes, toasts and dialogs use `elevation.overlay`. Interactive cards lift to `elevation.raised` on hover. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked.
 
 Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
 
@@ -305,6 +329,7 @@ Load only what the task needs. Same text as this file (`public/llms-full.txt`), 
 - `public/llms/tokens.txt` - token rules and the quick token reference
 - `public/llms/scroll.txt` - scroll-driven section recipe
 - `public/llms/components.txt` - component inventory pointer, API pointer, props digest
+- `public/llms/upgrade.txt` - upgrade steps, removals, deprecations
 
 - `public/llms-full.txt` - the full bundle: this text + the full `DESIGN.md` + a compact props digest for every component.
 
@@ -346,7 +371,7 @@ import { Ellipsis } from '@hirobius/design-system/icons';
 
 Rule: icon-only actions (row menus, close, edit) use `Button iconOnly` with a `label` and an `Icon` in `iconLeft`; do not hand-roll a button with a glyph or text "...".
 
-Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
+Names: Archive, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Banknote, Bell, Bookmark, Briefcase, Calendar, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, CircleAlert, CircleCheck, CircleHelp, Clock, Copy, Download, Ellipsis, EllipsisVertical, ExternalLink, Eye, EyeOff, FileText, Funnel, Heart, House, Image, Images, Info, Link, Lock, LogIn, LogOut, Mail, MapPin, Menu, Minus, Pencil, Phone, Plus, RefreshCw, Save, Search, Settings, Share, Star, Trash2, TriangleAlert, Upload, User, Users, Wrench, X
 
 Legacy names map to canonical ones: MoreHorizontal -> Ellipsis, MoreVertical -> EllipsisVertical, AlertTriangle -> TriangleAlert, Home -> House, Filter -> Funnel.
 
@@ -361,6 +386,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 - Docs: use `DESIGN.md` as the default lean visual spec. Load `DESIGN-HANDOFF.md` only on-demand.
 - Load `TOKEN_GOVERNANCE.md` only on-demand (when explicitly requested or required by the task).
 - Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). Enforced by `scripts/check-no-uppercase.mjs`.
+- Accent: graphite by default; `data-accent="cobalt"` on `<html>` swaps the accent tokens to cobalt.
 - Read `public/llms.txt` before touching code so AI workflows start from the same system map as humans.
 
 ## Agent Workflow
@@ -370,6 +396,277 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 3. Check `src/app/data/component-api.json` for prop names, unions, defaults, and descriptions.
 4. Use `hirobius.tokens.json` (and generated CSS vars) for styling decisions, never raw hex or ad hoc values.
 5. Run `pnpm tokens:audit` or `pnpm build` after changes that affect docs, tokens, or manifests.
+
+## Upgrading
+
+This text describes @hirobius/design-system 0.32.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+
+Every name a release removed, moved or renamed, and what to use instead:
+
+| Old name | Use instead | Release |
+| --- | --- | --- |
+| `Hds-prefix` | Twelve component families, such as HdsAlertDialog and HdsDateInput, lost their Hds prefix before any release shipped them, so import each by its bare name (AlertDialog, DateInput). | 0.12.0 |
+| `InfoPage` | InfoPage and InfoPageProps are removed with no replacement; it was portfolio scaffolding, so delete the code that uses it. | 0.12.0 |
+| `StatTone-FieldTone` | StatProps["tone"] and FieldProps["tone"] | 0.12.0 |
+| `primitive-typography-tokens` | Six unused typography tokens are removed (--primitive-typography-size-2xs, -weight-light, -weight-semibold, -letterSpacing-tighter, -wide and -wider); replace a var() that reads one with your own value. | 0.16.0 |
+| `ActivityEvent` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityFeed` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityFeedProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityStatus` | nothing: rewrite or delete the code | 0.20.0 |
+| `ActivityTone` | nothing: rewrite or delete the code | 0.20.0 |
+| `AppShell` | nothing: rewrite or delete the code | 0.20.0 |
+| `AppShellProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `AspectRatio` | Box style={{ aspectRatio: '16 / 9' }} | 0.20.0 |
+| `AspectRatioProps` | BoxProps | 0.20.0 |
+| `AssetImg` | `AssetImg` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `AssetImgProps` | `AssetImgProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Bleed` | Box style={{ marginInline: 'calc(-1 * var(--semantic-space-scale-md))' }} | 0.20.0 |
+| `BleedProps` | BoxProps | 0.20.0 |
+| `ButtonGroup` | nothing: rewrite or delete the code | 0.20.0 |
+| `ButtonGroupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Calendar` | nothing: rewrite or delete the code | 0.20.0 |
+| `CalendarProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Carousel` | nothing: rewrite or delete the code | 0.20.0 |
+| `CarouselProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `CaseStudyLayout` | nothing: rewrite or delete the code | 0.20.0 |
+| `CaseStudyLayoutProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Center` | Container maxWidth="content", with a Box style={{ paddingInline }} inside for the gutter | 0.20.0 |
+| `CenterProps` | ContainerProps | 0.20.0 |
+| `CinematicLink` | nothing: rewrite or delete the code | 0.20.0 |
+| `CinematicLinkProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `CircularProgress` | Progress variant="circular" | 0.20.0 |
+| `CircularProgressProps` | ProgressProps | 0.20.0 |
+| `Cluster` | Stack direction="row" wrap="wrap" align="center" | 0.20.0 |
+| `ClusterProps` | StackProps | 0.20.0 |
+| `CodeBlock` | `CodeBlock` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `CodeBlockProps` | `CodeBlockProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `CommandPalette` | nothing: rewrite or delete the code | 0.20.0 |
+| `CommandPaletteProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ComponentInstanceMatrix` | nothing: rewrite or delete the code | 0.20.0 |
+| `ContextMenu` | nothing: rewrite or delete the code | 0.20.0 |
+| `Cover` | Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }} around a Box style={{ marginBlock: 'auto' }} | 0.20.0 |
+| `CoverProps` | BoxProps | 0.20.0 |
+| `DateInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateRangeInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateRangeInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateTimeInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `DateTimeInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `DocLinkCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `DocLinkCardProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorBoundary` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorBoundaryProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `ErrorPattern` | `ErrorPattern` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `ErrorPatternProps` | `ErrorPatternProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FieldWiring` | `FieldWiring` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FieldWiringInput` | `FieldWiringInput` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FileInput` | nothing: rewrite or delete the code | 0.20.0 |
+| `FileInputProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Form` | `Form` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormField` | `FormField` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldProps` | `FormFieldProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldShell` | `FormFieldShell` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormFieldShellProps` | `FormFieldShellProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FormProps` | `FormProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `FoundationSwatch` | nothing: rewrite or delete the code | 0.20.0 |
+| `FoundationSwatchProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Frame` | Box style={{ aspectRatio: '16 / 9', overflow: 'hidden', borderRadius: hds.borderRadius.md }} | 0.20.0 |
+| `FrameProps` | BoxProps | 0.20.0 |
+| `HdsCheckbox` | Checkbox | 0.20.0 |
+| `HdsDocsShell` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsDocsShellProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsRadio` | Radio | 0.20.0 |
+| `HdsSelect` | Select | 0.20.0 |
+| `HdsSlider` | Slider | 0.20.0 |
+| `HdsSystemDocLayout` | nothing: rewrite or delete the code | 0.20.0 |
+| `HdsToggle` | Toggle | 0.20.0 |
+| `HdsTooltip` | Tooltip | 0.20.0 |
+| `HeadingStack` | nothing: rewrite or delete the code | 0.20.0 |
+| `HeadingStackProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCardCommit` | nothing: rewrite or delete the code | 0.20.0 |
+| `HistoryCardProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `HoverCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `IconButton` | Button iconOnly label="…" iconLeft={<Icon icon={…} />} | 0.20.0 |
+| `IconButtonProps` | ButtonProps | 0.20.0 |
+| `InputGroup` | Input prefix / suffix | 0.20.0 |
+| `InputGroupProps` | InputProps | 0.20.0 |
+| `Lightbox` | nothing: rewrite or delete the code | 0.20.0 |
+| `LightboxProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `MultiSelector` | Combobox multiple | 0.20.0 |
+| `MultiSelectorOption` | ComboboxOption | 0.20.0 |
+| `MultiSelectorProps` | ComboboxMultipleProps | 0.20.0 |
+| `NavGroup` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavGroupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavItem` | nothing: rewrite or delete the code | 0.20.0 |
+| `NavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `NotFoundPattern` | ErrorPattern displayText="404" message="Page not found" from @hirobius/design-system/patterns (hds-not-found-pattern rewrites it) | 0.20.0 |
+| `OverflowList` | nothing: rewrite or delete the code | 0.20.0 |
+| `OverflowListProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Page` | `Page` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `PageProps` | `PageProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Reveal` | `Reveal` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `RevealAnimation` | `RevealAnimation` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `RevealProps` | `RevealProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `SelectableCard` | Card selectable selected onSelectedChange | 0.20.0 |
+| `SelectableCardProps` | CardProps | 0.20.0 |
+| `SideNav` | nothing: rewrite or delete the code | 0.20.0 |
+| `SideNavLevel` | nothing: rewrite or delete the code | 0.20.0 |
+| `SideNavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Sketch` | nothing: rewrite or delete the code | 0.20.0 |
+| `SketchProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRail` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRailCard` | nothing: rewrite or delete the code | 0.20.0 |
+| `StackedCardRailProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StatusTile` | `StatusTile` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `StatusTileProps` | `StatusTileProps` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `StatusTileTone` | `StatusTileTone` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `Step` | nothing: rewrite or delete the code | 0.20.0 |
+| `Stepper` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperField` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperFieldProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `StepperProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TextLockup` | nothing: rewrite or delete the code | 0.20.0 |
+| `TextLockupProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TileGrid` | Grid layout="auto-fill" minItemWidth="…" gap="medium" (hds-tile-grid rewrites it) | 0.20.0 |
+| `TileGridProps` | GridProps (minTileWidth is minItemWidth, gap 'sm' is 'medium') | 0.20.0 |
+| `TimeInput` | Input type="time" | 0.20.0 |
+| `TimeInputProps` | InputProps | 0.20.0 |
+| `ToggleButton` | Button pressed onPressedChange (variant="ghost" is variant="tertiary") | 0.20.0 |
+| `ToggleButtonProps` | ButtonProps | 0.20.0 |
+| `Token` | nothing: rewrite or delete the code | 0.20.0 |
+| `TokenProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Tokenizer` | nothing: rewrite or delete the code | 0.20.0 |
+| `TokenizerProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `Toolbar` | nothing: rewrite or delete the code | 0.20.0 |
+| `ToolbarComponent` | nothing: rewrite or delete the code | 0.20.0 |
+| `TopNav` | nothing: rewrite or delete the code | 0.20.0 |
+| `TopNavProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeList` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeListProps` | nothing: rewrite or delete the code | 0.20.0 |
+| `TreeNode` | nothing: rewrite or delete the code | 0.20.0 |
+| `activityAvatarVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `activityToneVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `appShellVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `badgeVariants` | badgeVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `blockCodeTextVariants` | `blockCodeTextVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockContainerVariants` | `blockContainerVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockHeaderVariants` | `blockHeaderVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `blockquoteVariants` | blockquoteVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `buttonGroupVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `buttonVariants` | buttonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `cardVariants` | cardVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `carouselControlVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `chevronVariants` | `chevronVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `circularProgressVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkDescriptionVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkKindBadgeVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `cmdkRowVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `collapsibleToggleVariants` | `collapsibleToggleVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `copyButtonVariants` | `copyButtonVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `crumbLabelVariants` | crumbLabelVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `defaultActivityEvents` | nothing: rewrite or delete the code | 0.20.0 |
+| `disclosureTriggerVariants` | disclosureTriggerVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `docLinkCardVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `fieldValueVariants` | fieldValueVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `fileInputVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `hdsTimeInputVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `hdsToggleButtonVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `headingStackLevelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `headingStackVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `inlineCodeTextVariants` | `inlineCodeTextVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `inlineCodeVariants` | inlineCodeVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `inlineWrapperVariants` | `inlineWrapperVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `inputVariants` | inputVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `kbdVariants` | kbdVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `metadataListVariants` | metadataListVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `navGroupLabelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `navIndicatorVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `navItemVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `overflowBubbleVariants` | overflowBubbleVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `prePanelVariants` | `prePanelVariants` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `progressTrackVariants` | progressTrackVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlDescriptionVariants` | segmentedControlDescriptionVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlFocusRingVariants` | segmentedControlFocusRingVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlIndicatorVariants` | segmentedControlIndicatorVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlItemVariants` | segmentedControlItemVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlLabelVariants` | segmentedControlLabelVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlRailVariants` | segmentedControlRailVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `segmentedControlWrapperVariants` | segmentedControlWrapperVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `selectableCardVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `sideNavVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `skeletonVariants` | skeletonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `spinnerVariants` | spinnerVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statVariants` | statVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statusDotVariants` | statusDotVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `statusListItemDotVariants` | statusListItemDotVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `stepMarkerVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `surfaceVariants` | surfaceVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableDataCellVariants` | tableDataCellVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableHeaderCellVariants` | tableHeaderCellVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tableSortButtonVariants` | tableSortButtonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tagButtonVariants` | tagButtonVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tagPillVariants` | tagPillVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `textVariants` | textVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `textareaVariants` | textareaVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `toastIconVariants` | toastIconVariants is no longer exported, so style its component through the component's props instead. | 0.20.0 |
+| `tokenLabelVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `tokenNodeInlineVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `tokenShellVariants` | nothing: rewrite or delete the code | 0.20.0 |
+| `useFieldWiring` | `useFieldWiring` from `@hirobius/design-system/patterns` | 0.20.0 |
+| `--semantic-typography-eyebrow-text-transform` | The CSS variable --semantic-typography-eyebrow-text-transform is gone, so set text-transform: uppercase yourself where a label must stay uppercase. | 0.21.0 |
+| `StatusDot` | StatusDot and StatusDotProps are removed, so replace each <StatusDot tone size label> with <Badge dot tone size label> (BadgeProps for the type), moving any style to a wrapper element or a className first. | 0.21.0 |
+| `--primitive-color-apple-100` | --primitive-color-graphite-100 | 0.24.0 |
+| `--primitive-color-apple-200` | --primitive-color-graphite-200 | 0.24.0 |
+| `--primitive-color-apple-300` | --primitive-color-graphite-300 | 0.24.0 |
+| `--primitive-color-apple-400` | --primitive-color-graphite-400 | 0.24.0 |
+| `--primitive-color-apple-50` | --primitive-color-graphite-50 | 0.24.0 |
+| `--primitive-color-apple-500` | --primitive-color-graphite-500 (or a semantic accent token) | 0.24.0 |
+| `--primitive-color-apple-600` | --primitive-color-graphite-600 | 0.24.0 |
+| `--primitive-color-apple-700` | --primitive-color-graphite-700 | 0.24.0 |
+| `--primitive-color-apple-800` | --primitive-color-graphite-800 | 0.24.0 |
+| `--primitive-color-apple-900` | --primitive-color-graphite-900 | 0.24.0 |
+| `--primitive-color-apple-950` | --primitive-color-graphite-950 | 0.24.0 |
+| `--primitive-typography-letterSpacing-caps` | The CSS variable --primitive-typography-letterSpacing-caps and the tracking-caps class are gone because the system is sentence case, so delete them from your styles. | 0.25.0 |
+| `--hds-accent-bar` | Delete every var(--hds-accent-bar); status is shown in the content, not a coloured bar. | 0.27.0 |
+| `--leading-relaxed` | --semantic-typography-body-line-height or set your own line-height | 0.27.0 |
+| `BoardColumnTone` | Delete the BoardColumnTone import and the tone prop from every BoardColumn, and drop any var(--hds-accent-bar); status lives in the column title and count. | 0.27.0 |
+| `--component-button-secondary-border-pressed` | The secondary Button pressed border variable is gone, so delete any override of it, since the hover border now holds while pressed. | 0.28.0 |
+| `--color-blue-500` | --color-blue-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-indigo-600` | --color-indigo-600 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-purple-500` | --color-purple-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-red-500` | --color-red-500 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-red-700` | --color-red-700 was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--color-slate-200` | The stray CSS variable --color-slate-200 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--color-slate-900` | The stray CSS variable --color-slate-900 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--color-stone-50` | The stray CSS variable --color-stone-50 is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--container-5xl` | The stray CSS variable --container-5xl is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--ease-in-out` | --ease-in-out was a Tailwind theme variable that shipped only because a repo test named a utility using it; declare it in your own CSS (or use an HDS token) if you read it. | 0.29.0 |
+| `--font-serif` | The stray CSS variable --font-serif is no longer shipped (a Tailwind scan of repo docs generated it as a side effect, never a documented token); set your own value if you read it. | 0.29.0 |
+| `--tracking-wider` | The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-*-letter-spacing tokens, so use a type role instead. | 0.29.0 |
+| `hds-tag-btn` | the Tag component | 0.31.0 |
+| `hds-tag-pill` | the Tag component | 0.31.0 |
+
+## Deprecated: do not use in new code
+
+Still exported, but on the way out: do not write new code with them.
+
+- `Blockquote.size` (removed in 1.0.0): Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.
+- `Box-sx-layout-names` (removed in 1.0.0): Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.
+- `CardMetric` (removed in 1.0.0): Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `Divider.strong` (removed in 1.0.0): Divider's strong prop, deprecated since before 0.16.0, still works; use variant="strong" instead.
+- `InlineCode.compact` (removed in 1.0.0): InlineCode's compact prop, deprecated since before 0.16.0, still works; use density="compact" instead.
+- `MetricTile` (removed in 1.0.0): MetricTile is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `MetricTiles` (removed in 1.0.0): MetricTiles is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `Stack-gap-layout-names` (removed in 1.0.0): Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then.
+- `Stat` (removed in 1.0.0): Stat is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
+- `StatusTile` (removed in 1.0.0): StatusTile still works until 1.0.0; replace it with <Card padding="item" className="border-0"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle> plus one <Card.RowNote> per note, and drop tone, which StatusTile never painted.
+- `Text-variants` (removed in 1.0.0): The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead.
+- `bg-[color:var(--semantic-color-feedback-bg-warning)]`, `border-[color:var(--semantic-color-feedback-warning)]/40`, `data-[highlighted]:text-foreground`, `data-[state=checked]:text-foreground`, `group-hover:opacity-100`, `h-3.5`, `max-w-2xl`, `p-16`, `pb-8`, `pt-1`, `sm:inline-block`, `sm:text-4xl`, `text-[color:var(--semantic-color-feedback-warning)]`, `text-muted-foreground/70`, `transition-[transform,opacity]`, `w-3.5` (removed in 1.0.0): Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind.
+- `hds.density` (removed in 1.0.0): hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs.
+- `typeStyles-aliases` (removed in 1.0.0): The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead.
+
+Deprecated design tokens are not listed: the `hds/no-deprecated-token` lint rule flags each use and names its replacement.
 
 ## Key Files
 
@@ -392,14 +689,15 @@ A machine- and human-readable specification of the Hirobius Design System for AI
 
 ## Overview
 
-Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast monochromatic neutral palette and a single accent that each tenant sets — a warm graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
+Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast near-monochrome neutral palette tinted toward midnight (OKLCH hue 262) and a single accent that each tenant sets — a midnight graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
 
 ## Colors
 
 <!-- auto:start:colors -->
 **One accent — one neutral system.**
 
-- **Accent** (`#433A3F`): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#0F1726`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only. Set `data-accent="cobalt"` on `<html>` (source `accents/cobalt/tokens.json`); graphite stays the default. Still one accent per screen.
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
 - **Feedback — Success** (`#047857`): positive confirmations, completed states. `semantic.color.feedback.success`.
@@ -412,34 +710,43 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 ## Typography
 
 <!-- auto:start:typography -->
-HDS ships two typefaces:
+HDS ships three typefaces — each with a distinct role:
 
-- **Text font**: Plus Jakarta Sans. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
+- **Display / Heading font**: Sora. Bound to the `display` and `title` styles.
+- **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (display · title) use `700` bold; body, UI, and caption use `400` regular / `500` medium.
+Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `600` semibold, `700` bold.
 
 ### Type ramp
 
-| Role | Size (desktop max) | Weight | Use |
-| --- | --- | --- | --- |
-| `semantic.typography.display` | 48px | 700 | One per page, hero only |
-| `semantic.typography.title` | 24px | 700 | Section and card headings |
-| `semantic.typography.titleSm` | 18px | 700 | Small heading inside a card or section band |
-| `semantic.typography.body` | 18px | 400 | Prose |
-| `semantic.typography.ui` | 16px | 500 | Controls, nav, table text, values |
-| `semantic.typography.caption` | 14px | 500 | Metadata, help text and labels, in sentence case |
-| `semantic.typography.mono` | 15px | 400 | Code and ids |
-| `semantic.typography.h1` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h2` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.h3` | 24px | 700 | deprecated: use semantic.typography.title |
-| `semantic.typography.eyebrow` | 14px | 500 | deprecated: use semantic.typography.caption |
-| `semantic.typography.lineHeight.none` |  |  | Semantic alias for leading-none (1) |
+| Role | Size (desktop max) | Compact | Weight | Use |
+| --- | --- | --- | --- | --- |
+| `semantic.typography.display` | 56px | same | 700 | One per page, hero only |
+| `semantic.typography.title` | 28px | 24px | 700 | Section and card headings |
+| `semantic.typography.titleSm` | 20px | same | 700 | Small heading inside a card or section band, and the Alert title |
+| `semantic.typography.body` | 18px | 15px | 400 | Prose |
+| `semantic.typography.ui` | 16px | 14px | 500 | Controls, nav, table text, values |
+| `semantic.typography.caption` | 14px | 13px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.mono` | 15px | same | 400 | Code and ids, 15px / 1.5 / 400 |
+| `semantic.typography.lineHeight.none` |  | same |  | Semantic alias for leading-none (1) |
 
-> The ramp is static: tokens store the value every surface renders. `h1`, `h2`, `h3` and `eyebrow` are deprecated aliases and go in 1.0.0.
+> The ramp is static: tokens store the value every surface renders. **Compact** is the size under `data-density="compact"` (dense apps). Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.
 <!-- auto:end:typography -->
 
+**Never for.** Each role has one job; reaching past it is how the ramp drifts.
+
+- `display`: never for a section heading, a card or anything twice on a page. It is the hero line only.
+- `title`: never for body copy or a label, and never skip a level to make a heading smaller; use `titleSm` for a heading inside a card or band.
+- `titleSm`: never for page-level headings, and never for emphasis inside prose (bold the words instead).
+- `body`: never for controls, table cells or metadata (those are `ui` and `caption`). A lead paragraph is `body` plus a quieter colour, not a bigger size.
+- `ui`: never for long prose, and never for a heading. It is the size of things you act on or scan.
+- `caption`: never for the only copy a user needs to act on, never uppercase, and never below the `caption` size to fit more in.
+- `mono`: never for ordinary emphasis or for whole paragraphs. Code, ids and metric readouts only.
+
 **Casing.** Never transform text to uppercase; sentence case for all UI text, including eyebrows, pre-titles, labels, captions and table headers. Raw content keeps its own case (an acronym, a user's string). No `text-transform: uppercase`, Tailwind `uppercase`, `textCase: UPPER` or `.toUpperCase()` for display; `scripts/check-no-uppercase.mjs` fails the commit. Tracking never exists to support caps.
+
+**Meta lines.** A bullet-separated line holds at most two text items ("Acme Cloud · Remote"), because long translated strings wrap mid-line. More facts get one row each. Use `MetaLine` (`items` is a one- or two-item tuple, a third is a type error); `hds/max-two-meta-items` flags hand-rolled `A · B · C` chains.
 
 ## Spacing
 
@@ -448,12 +755,25 @@ Weights declared: `400` regular, `500` medium, `700` bold. Heading styles (displ
 
 Scale: `0px` (`primitive.space.0`) · `1px` (`primitive.space.px1`) · `2px` (`primitive.space.px2`) · `4px` (`primitive.space.1`) · `6px` (`primitive.space.px6`) · `8px` (`primitive.space.2`) · `10px` (`primitive.space.px10`) · `12px` (`primitive.space.3`) · `16px` (`primitive.space.4`) · `20px` (`primitive.space.5`) · `24px` (`primitive.space.6`) · `28px` (`primitive.space.7`) · `32px` (`primitive.space.8`) · `40px` (`primitive.space.10`) · `48px` (`primitive.space.12`) · `64px` (`primitive.space.16`) · `80px` (`primitive.space.20`) · `96px` (`primitive.space.24`) · `128px` (`primitive.space.32`)
 
-Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) remaps `semantic.space.scale.*`, `semantic.space.surface.padding` and `semantic.space.region.gutter` one step down the scale, and `Table` follows it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
+Semantic scale (comfortable, the default): `2xs` 4px · `xs` 8px · `sm` 20px · `md` 28px · `lg` 40px · `xl` 64px.
+
+Compact (`data-density="compact"`, for dense apps): `2xs` 4px · `xs` 8px · `sm` 12px · `md` 16px · `lg` 24px · `xl` 32px.
+
+Fixed steps between the rungs (density does not move them): `fixed.2xs` 4px · `fixed.xs` 12px · `fixed.sm` 16px · `fixed.md` 24px · `fixed.lg` 32px · `fixed.xl` 48px. Every spacing value has a semantic token; never type a px value.
+
+Layout rhythm, padding, and gaps use the `semantic.space.scale.{xs…xl}` steps (and `none`), never a raw `primitive.space.*` value or a numeric Tailwind class; `primitive.space.*` is the ramp behind the scale. Use `semantic.space.*` aliases (e.g. `semantic.space.surface.padding`) when the purpose is established. `data-density="compact"` (on `<html>` or the `[data-hds]` scope element) is the one opt-in tighter mode: it remaps `semantic.space.scale.sm…xl` to the app rhythm above (`2xs` and `xs` stay 4px and 8px), the deprecated `layout.*` steps and `section.stack` (48px) with it, and sets the compact type sizes in the ramp table; `semantic.space.surface.padding`, `semantic.space.region.gutter` and `Table` follow it. The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads.
 <!-- auto:end:spacing -->
+
+**Spacing rules of thumb** (2026-10, raised with the type ramp so padding, gaps and line height stay in rhythm):
+
+- **Inner padding ≤ outer gap.** A surface's padding is never larger than the gap around it: a 28px card sits in a grid gap of 28px or more, never 20px.
+- **Nested surfaces step down one level.** A surface inside a surface takes the next smaller step (surface.padding → `sm` → `xs`), or `padding="none"`.
+- **Never mix two paddings on sibling cards.** Cards in one row or list share one padding step.
+- **Semantic tokens only.** Components and consumers use `semantic.space.*` (or the `xs…xl` keys); never a `primitive.space.*` step, a numeric Tailwind class or raw px. `hds/no-primitive-spacing` (in `hds/recommended`) and `check-tailwind-spacing-scale --ratchet` (pretest) fail on them.
 
 ## Layout contract (v1)
 
-Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` and `pnpm check:spacing-scale` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`).
+Approved 2026-10-07 as the **target**; adoption is in progress, so some components below (Container, Sidebar, Switcher) still ship until they fold in. Data: `docs/guardrails/layout-contract.json`; gates: `pnpm check:layout-contract` (warn mode; baseline in `docs/audits/layout-contract-baseline.md`) and `check-tailwind-spacing-scale --ratchet` (pretest; per-file baseline in `scripts/tailwind-spacing-scale.baseline.json`).
 
 1. **Sizing.** Every component declares `fill` or `hug` on each axis. Leaves hug. Input, Textarea, Select, Combobox, Table, Progress and Divider fill width. One override prop, `width="hug|fill"`, on every component. Height always hugs; stretching is the parent's job (`align="stretch"`). No component sets `h-full`, `height: 100%` or `self-*` on its root.
 2. **Padding.** Only containers pad: Card, Surface, Alert, Callout, Dialog, Page. Compound parts (`Card.Header`, `Body`, `Footer`, `Metric`) have zero padding and the container's `gap` spaces them. Padding is `none | sm | md`, default `md`, density-aware. A padded container directly inside a padded container is an error unless the inner one is `padding="none"`.
@@ -472,6 +792,11 @@ Shape is one knob. `semantic.radius.action` is the system's single shape value �
 | Container | `12px` | `role.radius` + 4px (`rounded-lg`) | Cards, surfaces, segmented control surface, modal/sheet containers |
 | Full | `9999px` | `primitive.radius.full` | Pills, avatars, indicator dots, any intentionally circular form |
 | Zero | `0px` | `primitive.radius.0` | Outer canvas / substrate boundaries only — never on everyday UI controls |
+| Scale sm | `8px` | `semantic.radius.scale.sm` (`rounded-scale-sm`) | chips, menu items and small surfaces. |
+| Scale md | `12px` | `semantic.radius.scale.md` (`rounded-scale-md`) | cards, popovers and panels. |
+| Scale lg | `16px` | `semantic.radius.scale.lg` (`rounded-scale-lg`) | dialogs, sheets and large media frames. |
+| Scale xl | `24px` | `semantic.radius.scale.xl` (`rounded-scale-xl`) | hero media and feature panels. |
+| Scale pill | `9999px` | `semantic.radius.scale.pill` (`rounded-scale-pill`) | pills, tags and avatar chips. |
 <!-- auto:end:radius -->
 
 ## Elevation
@@ -480,14 +805,18 @@ Depth is communicated through 4 elevation roles bundled by `semantic.elevation.*
 
 ### Elevation roles
 
-| Surface                                | Role token                    | Background        | Shadow            | Border                                                   |
-| -------------------------------------- | ----------------------------- | ----------------- | ----------------- | -------------------------------------------------------- |
-| Card / panel resting                   | `semantic.elevation.flat`     | `surface.page`    | none              | none by default; opt-in 1px (`bordered`/`tone`/`accent`) |
-| Card / panel lifted (interactive only) | `semantic.elevation.raised`   | `surface.raised`  | `shadow.subtle`   | none                                                     |
-| Popover / dropdown / tooltip           | `semantic.elevation.floating` | `surface.raised`  | `shadow.floating` | none                                                     |
-| Dialog / sheet / modal                 | `semantic.elevation.overlay`  | `surface.overlay` | `shadow.overlay`  | none                                                     |
+| Surface                                   | Role token                    | Background         | Shadow            | Border                                                          |
+| ----------------------------------------- | ----------------------------- | ------------------ | ----------------- | --------------------------------------------------------------- |
+| Card / panel resting                      | `semantic.elevation.flat`     | `surface.page`     | none              | none by default; opt-in 1px (`bordered`/`tone`/`accent`)        |
+| Card / panel lifted (interactive only)    | `semantic.elevation.raised`   | `surface.raised`   | `shadow.subtle`   | none                                                            |
+| Tooltip                                   | `semantic.elevation.floating` | `surface.inverse`  | `shadow.floating` | none                                                            |
+| Menu / popover / listbox / toast / dialog | `semantic.elevation.overlay`  | `surface.floating` | `shadow.overlay`  | `border.default` 1px: the edge over `surface.muted` and in dark |
 
 Cards default to `flat`. They lift to `raised` only on interactive hover or when explicitly elevated above siblings. Never combine `raised` with a border — depth is one mechanism (border OR shadow), not both stacked. The default `Card` variant is **borderless** (12d-3 outline rule: repeated outlined cards crowd a layout, so the edge is not the default) — a resting 1px border is **opt-in** via `bordered`, a feedback `tone`, or the `accent` variant (`border.default` / feedback color / `border.accent` respectively). Rely on whitespace, dividers, and rails for grouping; reach for `bordered` only for a genuinely discrete standalone object.
+
+### Soft surfaces (ADR-064, hds#891)
+
+Separate by **tone and space, not outlines**. Containers (Card, panels, Dialog, Menu, Popover, Select, Toast, CodeBlock, the Table frame, the Tabs list, the SegmentedControl track, Tag pills and chips) have no resting border: they sit on a surface step (`surface.page` → `raised` → `muted`/`overlay`). Borders stay only where they carry meaning: inputs, focus rings, selected or active states, feedback tones and the accent highlight, dividers inside dense tables, Divider and the Kbd edge. Controls are soft filled: the secondary Button is `surface.soft` with no border, and primary and secondary Buttons carry the **hard shadow** (zero blur, straight down on a fixed base: rest 3px, hover lifts 1px onto 4px, press sinks 2px onto 1px, so the bottom of the edge never moves; its colour is the button's own fill stepped darker in both themes, hds#897 and C2) and the directional **wipe** hover by default; opt out per button with `shadow="none"` / `hoverEffect="none"`. Kbd follows the same light source (2px). Each edge is precomputed as `--hds-edge-*` (override per component with `--hds-btn-edge` / `--hds-kbd-edge`); `semantic.color.shadow.hard` stays exported but is no longer the default.
 
 Overlays (Dialog, AlertDialog, Menu, Popover, Select, Tooltip) portal into the nearest `data-hds` scope, so they inherit its theme (for example `<div data-hds data-theme="dark">`); pass `container` on the Content part to override.
 
@@ -514,7 +843,7 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `semantic.motion.spatial` | `400ms` | For elements traveling long distances across the viewport. |
 | `semantic.motion.exit` | `100ms` | For elements being removed from the DOM. |
 
-Default most interactive feedback to `productive` (150ms, decelerate). Reserve `expressive` (250ms, spring) for teaching moments where the motion itself carries meaning. `spatial` (400ms) is for travel, not decoration.
+Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.
 
 ### Other semantic motion tokens
 
@@ -533,14 +862,20 @@ Default most interactive feedback to `productive` (150ms, decelerate). Reserve `
 | **Cards** (`Card`) | `12px` (`rounded-lg`, role radius + 4px) | default · hover (optional parallax) · pressed (when interactive) | Cards default to `elevation.flat` (borderless by default; an opt-in 1px border via `bordered`/`tone`/`accent`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows. |
 | **Badges** (`Badge`) | `8px` (`primitive.radius.4`) | neutral · accent · feedback (error/success/warning/info) | Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome. |
 | **Alerts** (`Alert`) | `8px` (via `hds.borderRadius.4`) | info · success · warning · error | Inline banner pattern with icon + message + optional action. Tone is carried by a tinted feedback fill (`bg-feedback-bg-*`, matching Badge), NOT a left-border stripe. Callout shares this fill language and differs only by role (no icon, no status role, optional italic). |
-| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive`; no spring bounce. Dividers follow `semantic.color.border.subtle`. |
+| **Disclosures** (`Disclosure`) | `8px` (`hds.borderRadius.action`) | collapsed · expanded · hover · focus | Accordion primitive. Expansion uses `semantic.motion.productive` by default; a spring is fine where it adds delight. Dividers follow `semantic.color.border.subtle`. |
 | **Toggles** (`Toggle`) | `full` (pill track + circular thumb) | off · on · focus · disabled | Accent-filled track in the on state; neutral track otherwise. Track + thumb transitions share `semantic.motion.productive`. |
 | **Segmented Control** (`SegmentedControl`) | Outer `12px` · inner segments `8px` | rest · hover · selected · disabled | Selected segment fills with the accent; unselected segments are transparent. Use for 2–5 mutually exclusive options; beyond that, prefer `Select`. |
 
 See `public/hds-manifest.json` and `src/app/data/component-api.json` for the full inventory and prop tables.
 <!-- auto:end:components -->
 
+A tag input is a creatable Combobox (`<Combobox multiple creatable>`): chips inline in the field, suggestions as you type, Enter adds the typed value. Do not build a second chip-input component.
+
 When a component or pattern needs visual inspiration, look at [21st.dev](https://21st.dev) first; it is inspiration only, so take ideas, never code (its gradients, glow and glass break the rules above), and HDS tokens and rules always win.
+
+### Touch size (hds#750)
+
+On a coarse pointer (any phone or tablet) or a viewport under 640px, small controls lift to `semantic.size.touchTarget` (`--semantic-size-touchTarget`, 44px): sm Button (icon-only sm in both axes), Tabs trigger, SegmentedControl option, Tag and its dismiss X, Disclosure trigger, Input clear, Combobox chips, Checkbox/Radio/Toggle rows and Pagination. It is on by default, with no prop; a fine pointer on a wide viewport keeps desktop density. A custom control opts in with the `hds-touch-row` class (height) or `hds-touch-target` (height and width). Hosts can delete their own touch-size overrides. `pnpm check:docs-touch-targets` measures the docs demos on a 390px phone and a 1024px touch tablet.
 
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
@@ -551,11 +886,15 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Background               | `var(--semantic-color-surface-raised)`                                                                                                                                                    | Any gradient, tinted fill, or custom color                                                  |
 | Border                   | Default variant: **borderless**. Opt-in (`bordered`/`tone`/`accent`): 1px solid the matching token (`border.default` / feedback color / `border.accent`). Never border + shadow together. | `box-shadow` as an elevation substitute; a border on the default variant (use `bordered`)   |
 | Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                                                                                                 | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
-| Padding                  | `var(--semantic-space-component-padding)` or `<HdsSurface padding="component">`                                                                                                           | Raw pixel values or ad hoc insets                                                           |
+| Padding                  | `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`                                                                                                             | Raw pixel values or ad hoc insets                                                           |
 | Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`                                                                                  | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                                                                                                         | Any other type style for the primary card heading                                           |
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
+
+An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
+
+**No cards within cards, ever (hds#1046).** A `Card` or section surface (`Surface`, `Callout`, or any raised or bordered wrapper) never contains another `Card` or surface. This covers the **section surface wrapping a card list**: a "Review new" section drawn as a card holding a list of job cards is wrong. Declare the group with type hierarchy instead (a section title, a count, surrounding metadata) on a plain region, and separate list items with spacing or dividers. `hds/no-nested-cards` (in `hds/recommended`) fails on it; list your own wrappers that draw a card or a surface in its `cards` / `surfaces` options.
 
 Never use on any card surface: gradient backgrounds, glow effects, frosted glass (`backdrop-filter: blur`), decorative overlays, gradient borders, colored or tinted backgrounds, inner shadows, patterned fills, shimmer or noise effects.
 
@@ -565,7 +904,7 @@ Five patterns sit above the primitives so that every screen is composed the same
 
 ### Page title rule
 
-Every screen has exactly one `PageHeader`. The page title is `title` (24px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, one status `Badge` in `status`, screen-level actions in `actions`.
+Every screen has exactly one `PageHeader`. The page title is `title` (28px), a fixed size with no size prop; `level` changes only the DOM heading element. `display` is reserved for marketing and landing surfaces and is never a screen title. Breadcrumb goes in the `breadcrumb` slot, facts (source, stage) as a `Badge` row in `metadata` above the title, the one state `Badge` in `status`, screen-level actions in `actions`.
 
 ### Which one, when
 
@@ -582,11 +921,13 @@ Pick by what the thing is. The first four rows are for a headline number or a st
 | `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
 | `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
 
-Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state.
+Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A count beside a heading is a count `Badge`: `count`, `max` for a `99+` cap and a `label` such as "12 roles", in a `Stack direction="row" gap="xs"` with the heading. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state. An account button is an `Avatar` as the `iconLeft` of a `tertiary` `iconOnly` `Button` (`rounded-full`): initials when signed in, `fallback="icon"` when signed out, and `status="warning"` with a `statusLabel` while unsynced; the Button `label` names the account and its status. Never a hand-drawn icon in a bordered box. A rail that selects in place (master-detail, no routing) is `NavList` with `onSelect` and `selected` on each `NavList.Item`, a button marked `aria-current="true"`; a rail that routes keeps `href` and `current`. The two are exclusive. A second control on a rail row (a posting link, a row menu) is the item's `action`: it renders beside the row's link or button, never inside it. A button whose hover fill should slide in from the edge the pointer enters is a `Button` with `hoverEffect="wipe"` (opt-in, hover-capable pointers only, instant under reduced motion); never hand-roll a hover overlay. The `Kbd` key edge is `--semantic-shadow-key`, a 2px drop in `border.strong`; by default it is the same straight-down hard shadow as the Button (`0 2px 0`, colour `--hds-kbd-edge`, default its own fill stepped darker, `--hds-edge-kbd`).
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 4 px under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the tenant.
 
 `MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `title`, the label in `caption` and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
+
+A pager for one item at a time ("‹ 1 of 4 ›") is `Pagination` with `variant="compact"`; the default variant is for pages of a long result set.
 
 ### Destructive and table sections
 
@@ -596,21 +937,22 @@ Three more needs are props on an existing component, not components of their own
 
 `FormActions` puts the primary submit last in DOM order and right-most, with the secondary or cancel action immediately to its left. A destructive action goes on the far left, apart from the other two, and never to the right of the primary. The row is not sticky unless `sticky` is set.
 
+An expandable list row (one-line preview, actions beside the trigger) is `Disclosure variant="row"`; do not build one from `Card.Row` plus custom state.
+
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a true monochromatic neutral system. The accent is a per-tenant knob and defaults to a warm graphite — read the token, never assume a hue.
-- Don't tint neutrals warm or cool; greys should remain genuinely neutral and high-contrast.
-- Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired. Cards default to `flat` (border, no shadow). Popovers/tooltips/dropdowns use `floating`. Dialogs/sheets use `overlay`.
-- Don't transform text to uppercase anywhere (eyebrows, labels, captions, table headers included); write it in sentence case. Raw content keeps its own case.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a near-monochrome, midnight-tinted neutral system. The accent is a per-tenant knob and defaults to a midnight graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
+- Don't add other tints to the neutrals; the only one is the faint midnight lean (OKLCH hue 262, hds#755), and greys stay high-contrast.
+- Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired.
+- Don't transform text to uppercase anywhere; sentence case, per the Casing rule above.
 - Don't paint status dots or coloured left accent bars on cards and tiles; status is implied by content. Don't put a heading over a card of supporting meta (a "Status" heading far from its "Applied" badge); keep label and value together.
 - Don't hardcode colors, spacing, radius, or typography values when governed tokens already exist.
 - Don't crowd the canvas; if a layout feels compressed, remove complexity before removing breathing room.
-- Don't default repeated roadmap, status, process, or overview groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
+- Don't outline a container to group it; use a surface step or space (soft surfaces, ADR-064). Don't default repeated groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
 - Don't sticker badges onto the ends of prose lines. Status and progress should live in a predictable metadata slot, rail, header zone, table column, or progress surface; badges are reserved for compact state markers where their placement is intentional.
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
-- Don't make motion playful or bouncy by default; movement should feel controlled, precise, and intentional, with expressive motion used sparingly and only when it teaches or clarifies.
-- Don't add `whileTap` scale transforms for press feedback; use color, border, and state-contrast changes instead — transforms are reserved for spatial motion, not interaction acknowledgment.
+- Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
 
 ## Open Questions
@@ -620,7 +962,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (427 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (474 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -643,6 +985,20 @@ AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled 
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### AppShell
+AppShell — the app frame for web apps: header, sidebar, main and an optional aside (hds#875).
+  - aside: ReactNode
+  - asideLabel: string = Details
+  - children: ReactNode
+  - className: string
+  - collapsed: boolean
+  - defaultCollapsed: boolean = false
+  - header: ReactNode
+  - onCollapsedChange: ((collapsed: boolean) => void)
+  - persistKey: string
+  - sidebar: ReactNode | ((state: AppShellSidebarState) => ReactNode)
+  - sidebarLabel: string = Main
+
 ### AssetImg
 AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.
   - alt: string
@@ -664,12 +1020,29 @@ AssetImg - responsive asset frame with fallback placeholder handling. Contexts: 
   - style: CSSProperties = {}
   - title: string
 
+### AsyncState
+One wrapper for the four states of async content: `loading` (skeleton rows plus a polite status line that turns into "Still trying…" after `slowAfterMs`), `err…
+  - children: ReactNode
+  - empty: ReactNode
+  - error: string
+  - errorTitle: string = Something went wrong
+  - label: string = Content
+  - loadingLabel: string = Loading
+  - onRetry: (() => void)
+  - rows: number = 3
+  - slowAfterMs: number = 10000
+  - slowNote: string = Still trying…
+  - status: 'loading' | 'error' | 'empty' | 'ready'
+
 ### Avatar
-Circular avatar. Renders the image when available, else initials from `alt`.
+Circular avatar. Renders the image when available, else initials from `alt` or a person icon, with an optional status dot.
   - alt: string
+  - fallback: "initials" | "icon" = initials
   - initials: string
   - size: "sm" | "md" | "lg" | null
   - src: string
+  - status: 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+  - statusLabel: string
 
 ### AvatarGroup
 Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
@@ -680,8 +1053,10 @@ Renders up to `max` overlapping avatars followed by a `+N` overflow chip.
 ### Badge
 Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
+  - count: number
   - dot: boolean = false
   - label: string
+  - max: number
   - size: "sm" | "md" | "lg"
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | "inProgress" | null
 
@@ -716,6 +1091,7 @@ Triggers an action when activated.
   - asChild: boolean = false
   - defaultPressed: boolean
   - disabled: boolean
+  - hoverEffect: "none" | "wipe" = wipe
   - iconLeft: ReactNode
   - iconOnly: boolean = false
   - iconRight: ReactNode
@@ -723,6 +1099,7 @@ Triggers an action when activated.
   - loading: boolean = false
   - onPressedChange: ((pressed: boolean) => void)
   - pressed: boolean
+  - shadow: "none" | "hard" = hard
   - size: "sm" | "md" | "lg" | null
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - variant: "primary" | "secondary" | "tertiary" | null
@@ -747,20 +1124,24 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - variant: 'default' | 'accent' = default
 
 ### CardBody
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardDescription
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
+
+### CardFacts
+Card.Facts — a wrapping caption row of icon + label facts, as a list.
+  - items: CardFact[]
 
 ### CardFooter
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardHeader
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - metadata: ReactNode
 
 ### CardProgress
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
   - label: ReactNode
   - max: number = 100
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -776,8 +1157,14 @@ Card.RowNote — one muted caption line under the row's title; repeat it for mor
 ### CardRowTitle
 Card.RowTitle — the row's title, at the ui role.
 
+### CardSource
+Card.Source — the entity's origin on one row: avatar, name and time.
+  - avatar: ReactNode
+  - name: ReactNode
+  - time: ReactNode
+
 ### CardTitle
-Card — surface container with slot anatomy (12d-card-anatomy). Slot anatomy (DESIGN.md §"Card Anatomy"). Status, progress, and metadata are layout-bearing — th…
+Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### Checkbox
 Checkbox — custom-drawn checkbox with check / indeterminate glyph.
@@ -803,15 +1190,29 @@ Combobox — searchable single- or multi-select (Popover + filtered listbox). A 
   - aria-invalid: boolean
   - aria-label: string
   - className: string
+  - creatable: boolean
   - disabled: boolean = false
   - emptyMessage: string = No results
   - id: string
   - multiple: boolean
-  - onChange: ((value: string) => void) | ((value: string[]) => void)
+  - onChange: ((value: string) => void) | ((value: string[]) => void) | ((value: string[]) =>…
+  - onCreate: (text: string) => void
   - options: ComboboxOption[]
   - placeholder: string = Select…
   - searchPlaceholder: string = Search…
   - value: string | readonly string[] | null
+
+### CommandPalette
+CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain…
+  - className: string
+  - emptyMessage: string = No results
+  - hotkey: boolean = true
+  - items: readonly CommandPaletteItem[]
+  - label: string = Command palette
+  - onOpenChange: (open: boolean) => void
+  - onSelect: (item: CommandPaletteItem, args?: Readonly<Record<string, string>> | undefined)…
+  - open: boolean
+  - placeholder: string = Type a command or search…
 
 ### Composer
 Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer t…
@@ -843,7 +1244,7 @@ Section heading and toolbar over a `Table`. Row actions are consumer nodes in a 
   - columns: TableColumn[]
   - emptyDescription: ReactNode
   - emptyTitle: ReactNode = Nothing here yet
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - rows: DataTableSectionRow[]
   - title: ReactNode
   - toolbar: ReactNode
@@ -855,7 +1256,7 @@ Titled danger zone, a danger `Callout` (the shared feedback fill, no border of i
   - confirmBody: ReactNode
   - confirmLabel: string
   - description: ReactNode
-  - level: 6 | 3 | 4 | 2 | 5 = 2
+  - level: 3 | 6 | 4 | 2 | 5 = 2
   - onConfirm: () => void
   - title: ReactNode
 
@@ -868,11 +1269,11 @@ Tagged per-export, not on the file block: this module exports ten components and
   - open: boolean
 
 ### DialogClose
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogContent
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - container: HTMLElement | null
   - forceMount: true
@@ -885,37 +1286,38 @@ Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline imple
   - onPointerDownOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)
 
 ### DialogDescription
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogFooter
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogHeader
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
 
 ### DialogOverlay
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - forceMount: true
 
 ### DialogPortal
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - children: React.ReactNode
   - container: Element | DocumentFragment | null
   - forceMount: true
 
 ### DialogTitle
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### DialogTrigger
-Dialog — modal dialog (shadcn baseline, compound parts). shadcn-baseline implementation (8s-7): Radix Dialog primitive (@radix-ui/react-dialog) themed with rol…
+Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
 
 ### Disclosure
 Disclosure - compact disclosure surface for optional explanatory content.
   - accent: boolean = false
+  - actions: ReactNode
   - children: ReactNode
   - className: string
   - contentStyle: CSSProperties
@@ -923,8 +1325,9 @@ Disclosure - compact disclosure surface for optional explanatory content.
   - label: ReactNode
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
+  - preview: ReactNode
   - triggerStyle: CSSProperties
-  - variant: 'panel' | 'nav' | 'card' = panel
+  - variant: 'panel' | 'nav' | 'card' | 'row' = panel
 
 ### Divider
 Divider — semantic separator between content regions.
@@ -938,6 +1341,8 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - action: ReactNode
   - className: string
   - description: ReactNode
+  - icon: LucideIcon
+  - italic: boolean = true
   - title: ReactNode
 
 ### Field
@@ -1004,6 +1409,7 @@ Renders a `data-hds` scope wrapper that carries the four theming dials as root a
   - className: string
   - density: 'comfortable' | 'compact'
   - fontFamily: string
+  - fontFamilyDisplay: string
   - fontFamilyMono: string
   - style: CSSProperties
   - theme: 'light' | 'dark'
@@ -1031,6 +1437,7 @@ InlineLink ” inline navigation and external-link primitive for body copy.
   - children: ReactNode
   - externalIcon: boolean = true
   - href: string
+  - standalone: boolean = false
 
 ### Input
 Input — text field primitive with label, helper, and error slots.
@@ -1063,12 +1470,29 @@ Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `d
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### MetaLine
+Secondary facts on one line ("Acme Cloud · Remote"). Max two items per line so long strings in other languages never wrap mid-line; more facts go in more rows.…
+  - items: MetaLineItems
+
 ### MetadataList
 Renders object metadata as a semantic `<dl>` of term/description pairs.
   - footer: ReactNode
   - items: MetadataListItem[]
   - orientation: "horizontal" | "vertical" | null = vertical
   - variant: "plain" | "divided" = plain
+
+### NavList
+A vertical list of rows (links, or buttons that select in place), one marked current. Rows hold rich content; hover fills with surface.hover; the current row h…
+  - children: ReactNode
+
+### NavListItem
+One row of a NavList. With `href` it is a link routed through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`. …
+  - action: ReactNode
+  - children: ReactNode
+  - current: boolean
+  - href: string
+  - onSelect: (() => void)
+  - selected: boolean
 
 ### Page
 Page — standard page shell. Wraps page content in Container (width constraint) and applies the canonical vertical padding so content breathes against the viewp…
@@ -1079,11 +1503,12 @@ Page — standard page shell. Wraps page content in Container (width constraint)
   - style: CSSProperties
 
 ### PageHeader
-Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a status slot and an actions slot. Every screen has exactly one. `…
+Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot.…
   - actions: ReactNode
   - breadcrumb: ReactNode
   - description: ReactNode
   - level: PageHeaderLevel = 1
+  - metadata: ReactNode
   - status: ReactNode
   - title: ReactNode
 
@@ -1094,6 +1519,7 @@ Paged navigation with first/last anchors, sibling pages, and ellipses.
   - onPageChange: (page: number) => void
   - page: number
   - siblingCount: number = 1
+  - variant: "default" | "compact" = default
 
 ### Pin
 Pin — sticky-pin an element within its scroll region.
@@ -1160,6 +1586,14 @@ Select — dropdown selector built on Radix Select (ADR-001 Radix convention). R
   - showLabel: boolean = true
   - value: string
 
+### Sheet
+Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
+  - children: ReactNode
+  - defaultOpen: boolean
+  - modal: boolean
+  - onOpenChange: ((open: boolean) => void)
+  - open: boolean
+
 ### Sidebar
 Sidebar — fixed-width rail beside fluid content, no media query. Every Layout reference: https://every-layout.dev/layouts/sidebar/
   - as: ElementType<any, keyof IntrinsicElements> = div
@@ -1213,7 +1647,7 @@ Status dot + title row with optional muted notes and trailing slot (e.g. badge).
   - trailing: ReactNode
 
 ### Surface
-Surface — governed inset surface primitive. Enforces the "Surface Inset" rule: backgrounds MUST have internal padding. - Default padding: px24 (cards) | px16 (…
+Surface — governed inset surface primitive. Enforces the "Surface Inset" rule: backgrounds MUST have internal padding. - Default padding: surface.padding (card…
   - as: ElementType<any, keyof IntrinsicElements> = div
   - children: ReactNode
   - className: string
@@ -1258,10 +1692,11 @@ The tab set itself. Tagged here rather than in the file block because TabsList a
   - value: string
 
 ### TabsContent
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - forceMount: true
   - value: string
+  - variant: "panel" | "bare" | null
 
 ### TabsList
 The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look absent. The …
@@ -1269,23 +1704,28 @@ The tab strip. When tabs scroll out of view it fades the hidden edge (`data-over
   - loop: boolean
 
 ### TabsTrigger
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content). Underline pattern math: - TabsList carries `border-b border-border/40` (the divider, half-st…
+Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. The outer <button> carries the hit target (48px wide, as tall as the 24px pill) while the inner pill keeps the visi…
+Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.
   - active: boolean = false
   - children: ReactNode
+  - dismissLabel: string
+  - onDismiss: (() => void)
 
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.
   - as: "symbol" | "object" | "title" | "a" | "button" | "div" | "form" | "h2" | "h3" |… = defaultTagMap[variant]
   - children: ReactNode
   - className: string
+  - lineClamp: TextLineClamp
   - style: CSSProperties
   - tone: 'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'dang…
+  - truncate: boolean
   - variant: "display" | "title" | "titleSm" | "body" | "ui" | "caption" | "mono" | "heading…
+  - weight: 'regular' | 'medium' | 'bold'
 
 ### Textarea
 Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the …
@@ -1340,6 +1780,25 @@ Toggle — boolean on/off toggle with animated thumb.
   - checked: boolean
   - label: string
   - onChange: (v: boolean) => void
+
+### TokenField
+TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips. The value stays a plain string. The field is a contenteditable textbox t…
+  - className: string
+  - disabled: boolean
+  - error: boolean
+  - errorMessage: string
+  - fieldClassName: string
+  - getTokenLabel: ((token: string) => string)
+  - helperText: string
+  - label: string
+  - name: string
+  - onChange: (value: string) => void
+  - placeholder: string
+  - required: boolean
+  - rows: number = 4
+  - tokenNoun: string = variable
+  - tokenPattern: RegExp = /\[([^[\]\n]{1,40})\]/g
+  - value: string
 
 ### Tooltip
 Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or …

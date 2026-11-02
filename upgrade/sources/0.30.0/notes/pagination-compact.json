@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Pagination gains a compact variant, a small \"1 of 4\" pager with previous and next arrows; the default pager is unchanged."
+}

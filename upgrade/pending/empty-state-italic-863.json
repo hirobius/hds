@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "EmptyState takes italic={false} to set its message upright; drop any not-italic className override."
+}

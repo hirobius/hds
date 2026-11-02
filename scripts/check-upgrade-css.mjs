@@ -24,6 +24,12 @@
  *      context (:root, dark, compact, a [data-brand], an @media), and no step
  *      in upgrade/pending/*.json lists the fact (a Tailwind utility that left
  *      is reported, not failed: no consumer should rely on HDS shipping one);
+ *   3b. a variable fact a tenant sees (a change under its `[data-brand=<slug>]`,
+ *      or to a variable it overrides, hds#449) has no tenant/<slug> step
+ *      listing it: a pilot tenant's site re-themes, and only a consumer
+ *      themed with that tenant should read about it;
+ *   3c. a theme key of the Tailwind preset (./tailwind-preset, hds#466) left
+ *      and no step lists it; it is breaking like a removed variable;
  *   4. a removed variable or public class is covered only by a step that is
  *      not breaking (kind removed, moved, renamed or folded, or impact
  *      breaking), or the pending changesets bump by less than minor below
@@ -35,6 +41,13 @@
  *      an older release declared, comes back with a different value in a
  *      context both declare: the name means something else now, and a
  *      consumer's old override would apply to it. Pick a new name.
+ *   7. the release package.json names (upgrade/releases/<version>.json) lists
+ *      a variable or class as removed, and dist/*.css still carries it:
+ *      something the build scans (UPGRADING.md named a removed utility in
+ *      0.27.0) compiled the removed name back in, so the tarball would
+ *      contradict its own notes. Tailwind reads only the .ts/.tsx files in src/
+ *      (hds#936): drop the name from that file, or exclude it with
+ *      `@source not` in src/styles/theme.css.
  *
  * The fix it names is `pnpm upgrade:note`, which pre-fills a removed step for
  * a removal and a value-changed step (impact look) for a value change, each
@@ -103,6 +116,8 @@ function describeCssFact(fact) {
       return `${fact.name} in ${fact.context} went from ${shown(fact.from)} to ${shown(fact.to)} (${where(fact)}). ${NOTE} adds a value-changed step (impact look); say what looks different in its plain line.`;
     case 'font-face-removed':
       return `the @font-face ${fact.family} ${fact.weight} ${fact.style} is no longer in ${where(fact)}. Run ${NOTE}: it adds a look step.`;
+    case 'preset-key-removed':
+      return `the Tailwind preset (./tailwind-preset) no longer has the theme key ${fact.name}, so a consumer's own Tailwind build loses its utilities. Run ${NOTE}: it adds a removed step (breaking, so the changeset is minor below 1.0).`;
     default:
       return fact.id;
   }
@@ -178,6 +193,35 @@ function reusedNames(root, state, contract) {
   return out;
 }
 
+/** Rule 7: names the release's own `removed` facts list that the built CSS still has. */
+function stillShipped(root, version, contract) {
+  const file = join(root, 'upgrade/releases', `${version}.json`);
+  if (!existsSync(file)) return [];
+  const steps = JSON.parse(readFileSync(file, 'utf8')).steps ?? [];
+  const removed = steps
+    .flatMap((step) => (Array.isArray(step.facts) ? step.facts : []))
+    .map((id) => /^(css-var-removed|class-removed|utility-removed):(.+)$/.exec(id))
+    .filter(Boolean);
+  const bundles = Object.values(contract?.bundles ?? {});
+  const out = [];
+  for (const [, kind, name] of removed) {
+    const found =
+      kind === 'css-var-removed'
+        ? bundles.some((b) => name in (b.variables ?? {}))
+        : bundles.some((b) => (b.classes ?? []).includes(name));
+    if (!found) continue;
+    out.push(
+      violation(
+        CONTRACT_FILE,
+        'removed-still-shipped',
+        `${kind === 'css-var-removed' ? name : `.${name}`} is listed as removed in upgrade/releases/${version}.json but dist/*.css still carries it. Tailwind compiles any name it finds in a scanned file, so a file under src/ that names it is being scanned (Tailwind reads src/**/*.{ts,tsx}): drop the name, or exclude the file with an @source not line in src/styles/theme.css, then run ${BUILD}.`,
+        { name },
+      ),
+    );
+  }
+  return out;
+}
+
 /** The violations of rules 3 to 5 for the CSS facts since the last release. */
 function factViolations(state) {
   const steps = state.notes.flatMap(noteSteps);
@@ -210,6 +254,21 @@ function factViolations(state) {
         ),
       );
     }
+  }
+  for (const fact of facts.filter((f) => needsStep(f) && (coveredBy.get(f.id) ?? []).length > 0)) {
+    const covering = coveredBy.get(fact.id);
+    const missing = (fact.tenants ?? []).filter(
+      (slug) => !covering.some((step) => step.kind === 'tenant' && step.id === `tenant/${slug}`),
+    );
+    if (missing.length === 0) continue;
+    out.push(
+      violation(
+        `${PENDING_DIR}/`,
+        'css-tenant-without-step',
+        `${fact.id} re-themes the ${missing.join(', ')} tenant${missing.length === 1 ? '' : 's'} (${fact.kind === 'css-var-removed' ? 'it overrode the variable' : 'it overrides the variable, or the change is under its [data-brand]'}), so add ${missing.map((slug) => `tenant/${slug}`).join(', ')} listing it: ${NOTE} writes ${missing.length === 1 ? 'it' : 'them'}.`,
+        { fact: fact.id },
+      ),
+    );
   }
   const known = new Set(facts.map((fact) => fact.id));
   for (const note of state.notes) {
@@ -326,6 +385,7 @@ export function checkUpgradeCss(root = REPO) {
     ...out,
     ...bumpViolations(state, facts),
     ...reusedNames(root, state, contract),
+    ...stillShipped(root, state.version, contract),
   ];
   return {
     violations,

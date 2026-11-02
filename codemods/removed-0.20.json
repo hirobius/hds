@@ -129,6 +129,13 @@
     "src/app/layouts/HdsDocsShell.tsx": ["HdsDocsShell", "HdsDocsShellProps"],
     "src/app/layouts/HdsSystemDocLayout.tsx": ["HdsSystemDocLayout"]
   },
+  "reintroduced": {
+    "$comment": "Names 0.20.0 removed that a later release reused for a new component with its own API. Still removals for a 0.19 consumer, so they stay in `modules`; the codemod report names the new component instead of \"no replacement\".",
+    "CommandPalette": "the root CommandPalette added in hds#638 (items + onSelect; not a drop-in)",
+    "CommandPaletteProps": "CommandPaletteProps from the root (hds#638; a new shape)",
+    "AppShell": "the /patterns AppShell added in hds#875 (header, sidebar, aside, children; not a drop-in)",
+    "AppShellProps": "AppShellProps from /patterns (hds#875; a new shape)"
+  },
   "replaced": {
     "src/app/components/aspect-ratio.tsx": {
       "AspectRatio": "Box style={{ aspectRatio: '16 / 9' }}",

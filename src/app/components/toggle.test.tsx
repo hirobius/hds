@@ -2,6 +2,8 @@
  * Tests for Toggle — checked/onChange (boolean), disabled, ref forwarding.
  * Plain-DOM assertions (no jest-dom matchers).
  */
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { createRef } from 'react';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
@@ -31,5 +33,62 @@ describe('Toggle', () => {
     const ref = createRef<HTMLInputElement>();
     render(<Toggle ref={ref} label="Wi-Fi" checked={false} onChange={() => {}} />);
     expect(ref.current?.tagName).toBe('INPUT');
+  });
+});
+
+// Pins the thumb's travel to the tokens the track and thumb are painted with, so the
+// two can't drift apart again (the track's border was once left out of the travel
+// math and the "on" thumb ran 2px past the track's right edge).
+describe('Toggle geometry', () => {
+  const css = readFileSync(resolve(__dirname, '../../styles/tokens.generated.css'), 'utf8');
+  const rootBlock = css.slice(css.indexOf(':root'), css.indexOf('}', css.indexOf(':root')));
+  const vars = new Map(
+    [...rootBlock.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(([, k, v]) => [k, v.trim()]),
+  );
+  const tokenPx = (name: string): number => {
+    const v = vars.get(name);
+    if (v === undefined) throw new Error(`unknown token ${name}`);
+    const ref = /^var\((--[\w-]+)\)$/.exec(v);
+    return ref ? tokenPx(ref[1]) : parseFloat(v);
+  };
+  /** Token behind a `prefix-[var(--x)]`, `prefix-[length:var(--x)]` or `prefix-[calc(var(--x)*N)]` class. */
+  const classToken = (el: Element, prefix: string): number => {
+    const m = new RegExp(
+      `(?:^|\\s)${prefix}-\\[(?:length:)?(?:calc\\()?var\\((--[\\w-]+)\\)(?:\\*(\\d+)\\))?\\]`,
+    ).exec(el.className);
+    if (!m) throw new Error(`no ${prefix}-[var(...)] class on ${el.className}`);
+    return tokenPx(m[1]) * Number(m[2] ?? 1);
+  };
+
+  const parts = (checked: boolean) => {
+    const { container } = render(<Toggle label="Wi-Fi" checked={checked} onChange={() => {}} />);
+    const track = container.querySelector('label > span[aria-hidden]')!;
+    const thumb = track.firstElementChild as HTMLElement;
+    const g = {
+      width: classToken(track, 'w'),
+      height: classToken(track, 'h'),
+      border: classToken(track, 'border'),
+      pad: classToken(track, 'p'),
+    };
+    // The thumb has no size of its own: it fills the track's padded rail (h-full, square).
+    const thumbFillsRail =
+      /(?:^|\s)h-full(?:\s|$)/.test(thumb.className) && /\baspect-square\b/.test(thumb.className);
+    const thumbW = g.height - 2 * (g.pad + g.border);
+    const x = parseFloat(/translateX\((-?[\d.]+)px\)/.exec(thumb.style.transform)?.[1] ?? '0');
+    return { g: { ...g, thumbW, thumbFillsRail }, x };
+  };
+
+  it('sizes the thumb to the padded rail (equal top/bottom inset)', () => {
+    const { g } = parts(false);
+    expect(g.thumbFillsRail).toBe(true);
+    expect(g.thumbW).toBe(12);
+    expect(g.width).toBe(2 * g.height);
+  });
+
+  it('slides the thumb so the on-state right inset equals the off-state left inset', () => {
+    const { g, x } = parts(true);
+    const rail = g.width - 2 * (g.border + g.pad);
+    expect(x).toBe(rail - g.thumbW);
+    expect(parts(false).x).toBe(0);
   });
 });

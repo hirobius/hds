@@ -506,6 +506,23 @@ describe('derived facts in always-on agent files', () => {
     expect(checkStateSurfaces({ root, today: TODAY }).violations).toEqual([]);
   });
 
+  it('allows a line a gate keeps true (gatedFacts, hds#463), and only that line', () => {
+    const gated = {
+      gatedFacts: [{ path: 'CLAUDE.md', line: '^Version: ', check: 'node scripts/gen.mjs' }],
+    };
+    const root = always('Version: 0.32.0\n\nHDS is at 0.24.1 today.\n', gated);
+    const violations = checkStateSurfaces({ root, today: TODAY }).violations;
+    expect(violations.map((v) => [v.rule, v.line])).toEqual([['DERIVED_FACT', 3]]);
+  });
+
+  it('fails a gatedFacts entry whose check script does not exist', () => {
+    const root = always('Version: 0.32.0\n', {
+      gatedFacts: [{ path: 'CLAUDE.md', line: '^Version: ', check: 'node scripts/nope.mjs' }],
+    });
+    // The bad entry exempts nothing, so the version is flagged too.
+    expect(rules(root)).toEqual(['REGISTRY_INVALID', 'DERIVED_FACT']);
+  });
+
   it('fails an alwaysOn file that does not exist', () => {
     const root = repo({}, [], { alwaysOn: ['CLAUDE.md'] });
     expect(rules(root)).toEqual(['SURFACE_MISSING']);
@@ -615,9 +632,15 @@ describe('CLI', () => {
 
 describe('this repo', () => {
   it('registers a state surface per kind and the committed tree passes the gate', () => {
-    // Pinned: the review ages are measured against a fixed day, so this test
-    // does not start failing when the calendar moves past a maxAgeDays.
-    const result = checkStateSurfaces({ root: ROOT, today: TODAY, strictReview: true });
+    // Pinned to the newest reviewedAt in the registry, not the clock: the test
+    // does not fail when the calendar moves past a maxAgeDays, and a fresh
+    // review bump is never "in the future".
+    const registry = JSON.parse(readFileSync(join(ROOT, 'docs/state-surfaces.json'), 'utf8'));
+    const today = registry.surfaces
+      .map((s) => s.reviewedAt)
+      .filter(Boolean)
+      .reduce((a, b) => (b > a ? b : a), TODAY);
+    const result = checkStateSurfaces({ root: ROOT, today, strictReview: true });
     expect(result.violations).toEqual([]);
     expect(Object.keys(result.summary.byKind).sort()).toEqual([
       'checked',
@@ -659,7 +682,6 @@ describe("this repo: a generated surface's check actually runs somewhere", () =>
 // shrink; a script leaves it the day it uses the runner.
 const NOT_YET_ON_RUNNER = {
   'scripts/build-readme-counts.mjs': 'checks through runCheck, but writes on its own path',
-  'scripts/count-consumer-usage.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/generate-agents-md.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/generate-llms-txt.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/build-design-md.mjs': 'checks through runCheck, but writes on its own path',

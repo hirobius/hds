@@ -1,0 +1,72 @@
+{
+  "impact": "look",
+  "plain": "The default graphite accent is a touch lighter in light mode and a touch softer in dark mode; re-take accent screenshots, and opt into the new cobalt accent with data-accent=\"cobalt\" on <html> if you want it.",
+  "steps": [
+    {
+      "id": "value-changed/--primitive-color-graphite-700",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The light-mode accent fill and accent text (graphite.700) is now #4a4146 (was #433a3f); white text on it is 9.83:1.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-700"],
+        "cssVarWrites": ["--primitive-color-graphite-700"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-700::root"]
+    },
+    {
+      "id": "value-changed/--primitive-color-graphite-200",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark-mode accent fill (graphite.200) is now #cbc6c9 (was #d4d0d2); its on-accent text is 9.02:1.",
+      "detect": {
+        "cssVars": ["--primitive-color-graphite-200"],
+        "cssVarWrites": ["--primitive-color-graphite-200"]
+      },
+      "facts": ["css-var-changed:--primitive-color-graphite-200::root"]
+    },
+    {
+      "id": "tenant/data-accent-cobalt",
+      "kind": "tenant",
+      "impact": "additive",
+      "plain": "New opt-in cobalt accent theme: set data-accent=\"cobalt\" on <html> (or a wrapper) and the accent, on-accent and accent-bound role and component variables swap to the cobalt ramp; nothing changes unless you set the attribute.",
+      "facts": [
+        "css-var-changed:--component-button-bg:[data-accent=cobalt]",
+        "css-var-changed:--component-button-bgHover:[data-accent=cobalt]",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-accent=cobalt]",
+        "css-var-changed:--component-button-secondary-border-hover:[data-accent=cobalt]",
+        "css-var-changed:--component-button-secondary-border-pressed:[data-accent=cobalt]",
+        "css-var-changed:--component-nav-bgActive:[data-accent=cobalt]",
+        "css-var-changed:--component-nav-borderActive:[data-accent=cobalt]",
+        "css-var-changed:--component-tag-activeBackground:[data-accent=cobalt]",
+        "css-var-changed:--component-tag-activeBorder:[data-accent=cobalt]",
+        "css-var-changed:--component-tag-activeHover:[data-accent=cobalt]",
+        "css-var-changed:--role-accent-foreground:[data-accent=cobalt]",
+        "css-var-changed:--role-accent:[data-accent=cobalt]",
+        "css-var-changed:--role-primary:[data-accent=cobalt]",
+        "css-var-changed:--role-ring:[data-accent=cobalt]",
+        "css-var-changed:--semantic-accent-content:[data-accent=cobalt]",
+        "css-var-changed:--semantic-accent-content:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-accent-contentHover:[data-accent=cobalt]",
+        "css-var-changed:--semantic-accent-contentHover:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-accent-hover:[data-accent=cobalt]",
+        "css-var-changed:--semantic-accent-hover:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-accent=cobalt]",
+        "css-var-changed:--semantic-accent-pressed:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest:[data-accent=cobalt]",
+        "css-var-changed:--semantic-accent-rest:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-accent-subtle:[data-accent=cobalt]",
+        "css-var-changed:--semantic-accent-subtle:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-color-border-accent:[data-accent=cobalt]",
+        "css-var-changed:--semantic-color-border-accent:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-color-content-accent:[data-accent=cobalt]",
+        "css-var-changed:--semantic-color-content-accent:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-color-content-onAccent:[data-accent=cobalt]",
+        "css-var-changed:--semantic-color-content-onAccent:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent:[data-accent=cobalt]",
+        "css-var-changed:--semantic-color-surface-accent:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-accent=cobalt]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-accent=cobalt][data-theme=dark]"
+      ]
+    }
+  ]
+}

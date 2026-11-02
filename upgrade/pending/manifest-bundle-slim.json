@@ -1,0 +1,18 @@
+{
+  "impact": "breaking",
+  "plain": "If you read figmaLink, consumers or a11yRules testId from @hirobius/design-system/manifest, switch figmaLink to figmaUrl; the other two are HDS-internal and gone.",
+  "steps": [
+    {
+      "id": "removed/manifest-figmaLink",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The bundled manifest no longer carries componentSpecs figmaLink; read figmaUrl, which holds the same URL."
+    },
+    {
+      "id": "removed/manifest-consumers-testId",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The bundled manifest no longer carries componentSpecs consumers (HDS repo file paths) or a11yRules testId (HDS test ids)."
+    }
+  ]
+}

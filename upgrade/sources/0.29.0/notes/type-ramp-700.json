@@ -1,0 +1,104 @@
+{
+  "impact": "look",
+  "plain": "Headings are Sora 700 (was 800) and larger (display 56px, title 28px, titleSm 20px; were 48/24/18px), body text is 400 (was 450), and fonts.css ships sora-700.woff2 instead of sora-800.woff2, so re-take screenshots of headed pages and load Sora 700 if you host fonts yourself.",
+  "steps": [
+    {
+      "id": "value-changed/--primitive-typography-weight-display",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "weight.display is 700 (was 800); display, title and titleSm read it, so headings are a step lighter.",
+      "detect": {
+        "cssVars": ["--primitive-typography-weight-display"],
+        "cssVarWrites": ["--primitive-typography-weight-display"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-weight-display::root"]
+    },
+    {
+      "id": "value-changed/--primitive-typography-weight-regular",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Body weight is 400 (was 450); text that reads this variable renders slightly lighter.",
+      "detect": {
+        "cssVars": ["--primitive-typography-weight-regular"],
+        "cssVarWrites": ["--primitive-typography-weight-regular"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-weight-regular::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-display-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The display role is 56px (was 48px); check hero headings for wrapping at 390px.",
+      "detect": {
+        "cssVars": ["--semantic-typography-display-font-size"],
+        "cssVarWrites": ["--semantic-typography-display-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-display-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h1-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated h1 style follows title to 28px (was 24px); move to title.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h1-font-size"],
+        "cssVarWrites": ["--semantic-typography-h1-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-h1-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h2-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated h2 style follows title to 28px (was 24px); move to title.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h2-font-size"],
+        "cssVarWrites": ["--semantic-typography-h2-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-h2-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-h3-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated h3 style follows title to 28px (was 24px); move to title.",
+      "detect": {
+        "cssVars": ["--semantic-typography-h3-font-size"],
+        "cssVarWrites": ["--semantic-typography-h3-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-h3-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-title-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Titles are 28px (was 24px); page and section headings take more room, so check fixed-height headers.",
+      "detect": {
+        "cssVars": ["--semantic-typography-title-font-size"],
+        "cssVarWrites": ["--semantic-typography-title-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-title-font-size::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-titleSm-font-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Small titles are 20px (was 18px), one step above body; Alert titles now use this role too.",
+      "detect": {
+        "cssVars": ["--semantic-typography-titleSm-font-size"],
+        "cssVarWrites": ["--semantic-typography-titleSm-font-size"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-titleSm-font-size::root"]
+    },
+    {
+      "id": "look/font-face-Sora-800-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "fonts.css declares Sora 700 (fonts/sora-700.woff2) in place of Sora 800; import fonts.css again, or load the 700 weight if you host Sora yourself.",
+      "detect": {
+        "regex": ["Sora"]
+      },
+      "facts": ["font-face-removed:Sora/800/normal"]
+    }
+  ]
+}

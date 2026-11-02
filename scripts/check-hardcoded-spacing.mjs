@@ -39,18 +39,16 @@
  */
 
 import { readFileSync } from 'fs';
-import { join, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, suppressionFor } from './lib/source-scan.mjs';
+import {
+  gateFiles,
+  isCommentLine,
+  suppressionFor,
+  gateContext,
+  reportLineViolations,
+} from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-const jsonMode = hasJsonFlag(process.argv);
-
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const ctx = gateContext(import.meta.url);
+const { ROOT, jsonMode } = ctx;
 
 // ── Properties that carry spacing (not dimensions/visual sizes) ──────────────
 const SPACING_PROPS = new Set([
@@ -110,17 +108,13 @@ const BARE_NUM = /(\w+)\s*:\s*(\d+)\s*[,\n}]/g;
 
 const violations = [];
 
-const filesToScan =
-  isFixtureMode && fixtureFile
-    ? [resolve(fixtureFile)]
-    : scanSources({
-        root: ROOT,
-        gate: 'check-hardcoded-spacing',
-        roots: ['src/app'],
-        exts: ['.ts', '.tsx'],
-        skipDirs: ['data', 'node_modules'],
-        includeSpecs: true,
-      });
+const filesToScan = gateFiles(ctx, {
+  gate: 'check-hardcoded-spacing',
+  roots: ['src/app'],
+  exts: ['.ts', '.tsx'],
+  skipDirs: ['data', 'node_modules'],
+  includeSpecs: true,
+});
 
 for (const file of filesToScan) {
   const rel = file.replace(ROOT + '\\', '').replace(ROOT + '/', '');
@@ -128,7 +122,7 @@ for (const file of filesToScan) {
 
   lines.forEach((line, i) => {
     // Skip comments and lines already using token vars
-    if (line.trim().startsWith('//') || line.trim().startsWith('*')) return;
+    if (isCommentLine(line)) return;
     if (
       line.includes('hds.space.') ||
       line.includes('hds.density.') ||
@@ -174,39 +168,21 @@ for (const file of filesToScan) {
 }
 
 // ── Report ────────────────────────────────────────────────────────────────────
-if (jsonMode) {
-  const canonical = violations.map((v) => ({
-    file: v.file,
-    line: v.line,
-    rule: 'hardcoded-spacing',
-    severity: 'error',
-    message: `${v.prop}: ${v.val}`,
-    prop: v.prop,
-    value: v.val,
-    sample: v.raw,
-  }));
-  emitResult(
-    {
-      violations: canonical,
-      summary: { total: violations.length },
-      ok: violations.length === 0,
-    },
-    true,
-  );
-  process.exit(violations.length === 0 ? 0 : 1);
-}
-
-if (violations.length === 0) {
-  console.log('\n✓ Hardcoded spacing check passed — all spacing uses token vars.\n');
-  process.exit(0);
-} else {
-  console.log(`\n✗ ${violations.length} hardcoded spacing value(s) found:\n`);
-  violations.forEach((v) => {
-    console.log(`  ${v.file}:${v.line}  [${v.prop}: ${v.val}]`);
-    console.log(`    ${v.raw}`);
-    console.log(
-      `    Fix: use hds.semantic.space.scale.* (density-aware) or hds.space.px${v.val.replace('px', '')}, or add // spacing-ok: <reason>\n`,
-    );
-  });
-  process.exit(1);
-}
+const report = violations.map((v) => ({
+  file: v.file,
+  line: v.line,
+  rule: 'hardcoded-spacing',
+  message: `${v.prop}: ${v.val}`,
+  extra: { prop: v.prop, value: v.val },
+  sample: v.raw,
+}));
+process.exit(
+  reportLineViolations(report, jsonMode, {
+    gate: 'check-hardcoded-spacing',
+    ok: 'all spacing uses token vars.',
+    noun: (n) => `hardcoded spacing value${n === 1 ? '' : 's'} found:`,
+    fix: [
+      '\nFix: use hds.semantic.space.scale.* (density-aware) or hds.space.px<N>, or add // spacing-ok: <reason>\n',
+    ],
+  }),
+);

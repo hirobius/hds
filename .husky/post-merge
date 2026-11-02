@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Post-merge (hds#977): when the hds-generated driver kept one side of a
+# generated file, rebuild them all from source and say what to commit.
+# Never fails the merge it follows.
+node "$(git rev-parse --show-toplevel)/scripts/regen.mjs" --after-merge

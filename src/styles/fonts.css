@@ -1,38 +1,38 @@
 /* Hirobius Design System — font-face declarations.
  *
  * Faces (type ramp, Adrian 2026-10-07, hds#483):
- *   - Plus Jakarta Sans 400 — body
- *   - Plus Jakarta Sans 500 — ui, caption
- *   - Plus Jakarta Sans 700 — display, title, title-sm
+ *   - Plus Jakarta Sans variable (200-800) — body 400, ui and labels 500, bold 700
+ *   - Sora 700 — display, title, title-sm (ADR-063, hds#847)
  *   - IBM Plex Mono 400 — mono
  *
  * Audit gate: scripts/audit-typography-overrides.mjs fails on inline
  * fontWeight / textTransform outside the sketches lab and a small allowlist.
  */
 
-/* Plus Jakarta Sans — Tokotype, SIL Open Font License 1.1 (LICENSE.txt alongside). */
-/* Plus Jakarta Sans Regular — body (400), hds#483 type ramp. */
+/* Plus Jakarta Sans — Tokotype, SIL Open Font License 1.1 (LICENSE.txt alongside).
+ * One variable file (wght 200-800, Latin subset): body 400, medium 500, bold 700
+ * (Adrian, 2026-10-20, hds#847). */
 @font-face {
   font-family: 'Plus Jakarta Sans';
-  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-400.woff2') format('woff2');
-  font-weight: 400;
+  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2') format('woff2');
+  font-weight: 200 800;
   font-style: normal;
   font-display: swap;
 }
 
-/* Plus Jakarta Sans Medium — ui and caption (500). */
+/* Sora — Sora Project Authors, SIL Open Font License 1.1 (LICENSE.txt alongside).
+ * Display and title face (ADR-063): the 700 weight only (hds#847), Latin subset, from
+ * @fontsource/sora 5.3.0 (files/sora-latin-700-normal.woff2).
+ * The Google Fonts static cut keeps the variable master's overlapping contours,
+ * which Core Text on macOS draws as a notch in the capital A. The shipped file has
+ * them flattened and glyf left untransformed so font-outlines.test.ts can read it:
+ *   python3 -c "from fontTools.ttLib import TTFont; from fontTools.ttLib.woff2 import WOFF2FlavorData; \
+ *     from fontTools.ttLib.removeOverlaps import removeOverlaps; f = TTFont('sora-700.woff2'); \
+ *     removeOverlaps(f); f.flavorData = WOFF2FlavorData(transformedTables=()); f.save('sora-700.woff2')"
+ * (needs fonttools, brotli and skia-pathops). */
 @font-face {
-  font-family: 'Plus Jakarta Sans';
-  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-500.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Plus Jakarta Sans Bold — display/heading weight (700), replaces Clash Display (#48). */
-@font-face {
-  font-family: 'Plus Jakarta Sans';
-  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-700.woff2') format('woff2');
+  font-family: 'Sora';
+  src: url('/fonts/sora/sora-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

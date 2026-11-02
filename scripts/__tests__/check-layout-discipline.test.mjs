@@ -6,12 +6,9 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+import { join } from 'node:path';
+import { ROOT, runGate } from './helpers/gate-runner.mjs';
 const GATE = 'scripts/check-layout-discipline.mjs';
 const header = readFileSync(join(ROOT, GATE), 'utf8').split('*/')[1];
 
@@ -51,14 +48,8 @@ describe('the header examples', () => {
 });
 
 describe('the fix line', () => {
-  const run = spawnSync(process.execPath, [GATE], {
-    cwd: ROOT,
-    encoding: 'utf8',
-    env: {
-      ...process.env,
-      HDS_FIXTURE_MODE: '1',
-      FIXTURE_FILE: 'fixtures/check-layout-discipline/violating.example.tsx',
-    },
+  const run = runGate(GATE, [], {
+    fixtureFile: 'fixtures/check-layout-discipline/violating.example.tsx',
   });
 
   it('still fails the violating fixture', () => {

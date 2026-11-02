@@ -47,10 +47,30 @@ const BREAKING_FACTS = new Set([
   // hds#449: a custom property or public class a consumer reads stops existing.
   'css-var-removed',
   'class-removed',
+  // hds#466: a utility a consumer's own Tailwind build derives from the preset stops existing.
+  'preset-key-removed',
+  // hds#461: a prop, or a value of one, a consumer passes stops existing, or
+  // one a consumer leaves out is now required.
+  'prop-removed',
+  'prop-required',
+  'prop-value-removed',
+  // hds#467: an export a consumer uses at runtime, a compound part or an
+  // object key stops existing, or a callable takes or returns something else.
+  'export-type-only',
+  'signature-changed',
+  'member-removed',
+  'key-removed',
 ]);
 
 /** CSS facts that change how a page looks while every name still resolves. */
-const LOOK_FACTS = new Set(['css-var-changed', 'font-face-removed']);
+const LOOK_FACTS = new Set(['css-var-changed', 'font-face-removed', 'prop-default-changed']);
+
+/**
+ * Facts that change what a consumer's selectors, tests or assistive technology
+ * meet while every name still resolves (hds#468: a demo's roles, names, states
+ * or data-* attributes).
+ */
+const BEHAVIOR_FACTS = new Set(['dom-changed']);
 
 /**
  * What a fact does to a consumer that does nothing: breaking when it removes
@@ -58,15 +78,17 @@ const LOOK_FACTS = new Set(['css-var-changed', 'font-face-removed']);
  * required, or adds or drops a required one, which npm and pnpm install for
  * the consumer) or raises engines; additive when it only adds or widens.
  * A CSS value change or a removed font face is look; a removed utility is
- * none. scripts/check-upgrade-ledger.mjs and scripts/check-upgrade-css.mjs
+ * none; a changed DOM and accessibility outline is behavior.
+ * scripts/check-upgrade-ledger.mjs and scripts/check-upgrade-css.mjs
  * bump by it; `pnpm upgrade:note` guesses a step's impact from it.
  * @param {{ kind: string, from?: any, to?: any }} fact
- * @returns {'none' | 'additive' | 'look' | 'breaking'}
+ * @returns {'none' | 'additive' | 'look' | 'behavior' | 'breaking'}
  */
 export function factImpact(fact) {
   if (ADDITIVE_FACTS.has(fact.kind)) return 'additive';
   if (BREAKING_FACTS.has(fact.kind)) return 'breaking';
   if (LOOK_FACTS.has(fact.kind)) return 'look';
+  if (BEHAVIOR_FACTS.has(fact.kind)) return 'behavior';
   if (INFO_FACTS.has(fact.kind)) return 'none';
   const { from, to } = fact;
   if (fact.kind === 'peer-changed') {
@@ -90,7 +112,14 @@ export function factImpact(fact) {
  * forces the breaking bump whatever its impact says, because a consumer that
  * used the thing has to change.
  */
-const REMOVING_STEP_KINDS = new Set(['removed', 'moved', 'renamed', 'folded']);
+const REMOVING_STEP_KINDS = new Set([
+  'removed',
+  'moved',
+  'renamed',
+  'folded',
+  'prop-renamed',
+  'prop-value-mapped',
+]);
 
 /**
  * True when a step needs the breaking bump: its impact is breaking, or its

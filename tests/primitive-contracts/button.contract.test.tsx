@@ -28,10 +28,11 @@ describe('Button contract', () => {
     expect(el?.className).toContain('bg-primary');
   });
 
-  it('variant=secondary emits border class', () => {
+  it('variant=secondary is a soft fill with no border class (hds#891)', () => {
     const { container } = render(<Button variant="secondary">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('border');
+    expect(el?.className.split(' ')).not.toContain('border');
+    expect(el?.className).toContain('bg-[color:var(--component-button-secondary-bg-rest)]');
   });
 
   it('variant=tertiary does not emit bg-primary', () => {
@@ -40,22 +41,22 @@ describe('Button contract', () => {
     expect(el?.className).not.toContain('bg-primary');
   });
 
-  it('size=sm emits h-8 class', () => {
+  it('size=sm binds its height token', () => {
     const { container } = render(<Button size="sm">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('h-8');
+    expect(el?.className).toContain('h-[var(--component-button-size-sm-height)]');
   });
 
-  it('size=md emits h-10 class', () => {
+  it('size=md binds its height token', () => {
     const { container } = render(<Button size="md">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('h-10');
+    expect(el?.className).toContain('h-[var(--component-button-size-md-height)]');
   });
 
-  it('size=lg emits h-12 class', () => {
+  it('size=lg binds its height token', () => {
     const { container } = render(<Button size="lg">Label</Button>);
     const el = container.querySelector('button');
-    expect(el?.className).toContain('h-12');
+    expect(el?.className).toContain('h-[var(--component-button-size-lg-height)]');
   });
 
   it('data-variant attribute reflects the variant prop', () => {
@@ -212,8 +213,9 @@ describe('Button tone over variant', () => {
     expect(el?.getAttribute('data-pressed')).toBe('true');
   });
 
-  it('secondary keeps its 1px border width under a tone, so the box does not shift', () => {
-    expect(classesOf(renderButton('secondary', 'danger'))).toContain('border');
+  it('secondary has no border width with or without a tone, so the box never shifts (hds#891)', () => {
+    expect(classesOf(renderButton('secondary', 'danger'))).not.toContain('border');
+    expect(classesOf(renderButton('secondary', 'neutral'))).not.toContain('border');
   });
 
   it('tone=neutral keeps the variant colours (bg-primary for variant=primary)', () => {

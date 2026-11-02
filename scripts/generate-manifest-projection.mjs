@@ -8,7 +8,7 @@
  *
  * Strips: consumers, description, slots, tokenMapping, componentProperties,
  *   propConstraints, preview, sourcePath, filePath, figmaPropertyMapping,
- *   states, figmaId, figmaUrl, categorySource, governedCategory,
+ *   states, figmaUrl, categorySource, governedCategory,
  *   hidden, docExempt, compoundMembers, sourceExport, figmaLink (figma-only)
  *
  * Keeps: category, tier, core (hds#374), props, allowedChildren, variantAxes,
@@ -45,7 +45,6 @@ const SPEC_STRIP = new Set([
   'filePath',
   'figmaPropertyMapping',
   'states',
-  'figmaId',
   'figmaUrl',
   'categorySource',
   'governedCategory',

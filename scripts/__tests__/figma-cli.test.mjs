@@ -89,15 +89,24 @@ describe('pnpm figma:push', () => {
     const outDir = join(root, 'figma', 'push');
     const result = writePushArtifacts({ root, outDir });
 
+    expect(readdirSync(join(outDir, 'plugin')).sort()).toEqual([
+      'code.js',
+      'manifest.json',
+      'ui.html',
+    ]);
+    // hds#397: the promote plugin's model is a data file beside it, never baked into code.js.
+    expect(readdirSync(join(outDir, 'promote')).sort()).toEqual([
+      'code.js',
+      'manifest.json',
+      'model.json',
+      'ui.html',
+    ]);
     for (const plugin of ['plugin', 'promote']) {
-      expect(readdirSync(join(outDir, plugin)).sort()).toEqual([
-        'code.js',
-        'manifest.json',
-        'ui.html',
-      ]);
+      expect(readFileSync(join(outDir, plugin, 'code.js'), 'utf8')).not.toContain('const PAYLOAD');
     }
-    expect(readFileSync(join(outDir, 'plugin', 'code.js'), 'utf8')).not.toContain('const PAYLOAD');
-    expect(readFileSync(join(outDir, 'promote', 'code.js'), 'utf8')).toContain('const PAYLOAD');
+    const promoteModel = JSON.parse(readFileSync(join(outDir, 'promote', 'model.json'), 'utf8'));
+    expect(promoteModel.payload.modelHash).toMatch(/^[0-9a-f]{8}$/);
+    expect(typeof promoteModel.checksum).toBe('string');
     expect(JSON.parse(readFileSync(join(outDir, 'promote', 'manifest.json'), 'utf8')).id).toBe(
       'hds-tokens-promote-dev',
     );
@@ -168,7 +177,7 @@ describe('pnpm figma:push', () => {
     );
     const outDir = join(root, 'figma', 'push');
     writePushArtifacts({ root, outDir });
-    expect(readFileSync(join(outDir, 'promote', 'code.js'), 'utf8')).toContain(
+    expect(readFileSync(join(outDir, 'promote', 'model.json'), 'utf8')).toContain(
       '"renames":{"semantic.typography.caption":"semantic.typography.eyebrow"}',
     );
     const { bundle } = writeSyncBundle({ root, out: join(root, 'b.json'), commit: 'abcdef1' });
@@ -691,6 +700,7 @@ describe('pnpm figma:native-import', () => {
     dirs.push(root);
     copyFileSync(join(REPO, 'hirobius.tokens.json'), join(root, 'hirobius.tokens.json'));
     const { files } = writeNativeImport({ root, outDir: join(root, 'out') });
-    expect(files).toHaveLength(5);
+    // Five tier files plus Hirobius/Density's Comfortable and Compact (compact density for apps).
+    expect(files).toHaveLength(7);
   });
 });

@@ -10,9 +10,14 @@ export interface LedgerStep {
   kind: string;
   impact: string;
   plain: string;
-  auto?: string;
+  /** The codemod bin that applies the step (upgrade/schema.json#/$defs/auto). */
+  auto?: { codemod: string; args: string[] };
   removeIn?: string;
 }
+
+/** The codemod as the command a consumer would type: bin, then its args. */
+const codemodCommand = (auto: LedgerStep['auto']) =>
+  auto ? [auto.codemod, ...auto.args].join(' ') : undefined;
 
 export interface LedgerRelease {
   version: string;
@@ -41,7 +46,7 @@ export interface DeprecationRow {
   names: string[];
   removeIn: string;
   plain: string;
-  /** Codemod bin that applies the change, when there is one. */
+  /** Codemod command (bin plus args) that applies the change, when there is one. */
   auto?: string;
 }
 
@@ -61,7 +66,7 @@ export function deprecationRows(index: LedgerIndex, releases: LedgerRelease[]): 
       names: [],
       removeIn: d.removeIn,
       plain: step.plain,
-      auto: step.auto,
+      auto: codemodCommand(step.auto),
     };
     row.names.push(d.name);
     rows.set(d.step, row);

@@ -2,6 +2,7 @@
  * ThemeToggle — one button that switches light and dark, with a sun that morphs into a moon (Actions).
  * @category Actions
  * @tier primitive
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51
  * @usage A single header or menu control to switch between the light and dark theme.
  * @whenNot Choosing between three or more modes, or a setting that belongs in a form.
  * @useInstead SegmentedControl for a labelled choice of several modes
@@ -23,6 +24,7 @@
  * @a11y consumer required Place it where a keyboard user finds it early (the header), and keep one per page; the name already says the next theme, so do not add a visible label that contradicts it.
  */
 
+// motion-ok: the sun-to-moon morph is CSS in theme.css (.hds-theme-toggle), timed on --primitive-duration-long.
 import * as React from 'react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';

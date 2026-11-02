@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "NavList.Item can now be a button that selects in place (onSelect and selected); link rows with href are unchanged."
+}

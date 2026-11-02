@@ -65,6 +65,8 @@ export {
   Phone,
   Users,
   Briefcase,
+  MapPin,
+  Banknote,
   Wrench,
 } from 'lucide-react';
 export type { LucideIcon } from 'lucide-react';

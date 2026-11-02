@@ -27,6 +27,7 @@ import { SegmentedControl } from '@/app/components/segmented-control';
 import { Tag } from '@/app/components/tag';
 import { Input } from '@/app/components/input';
 import { Textarea } from '@/app/components/textarea';
+import { TokenField } from '@/app/components/token-field';
 import { user } from './overlay-fixtures';
 
 afterEach(async () => {
@@ -48,11 +49,11 @@ function block(css: string, from: number): string {
   throw new Error('unbalanced block');
 }
 
-/** The declarations of `selector` inside theme.css's phone-width (<= 639px) block. */
+/** The declarations of `selector` inside theme.css's touch block (phone width or coarse pointer). */
 function phoneRule(selector: string): string {
-  const media = block(theme, theme.indexOf('@media (max-width: 639px)'));
+  const media = block(theme, theme.indexOf('@media (max-width: 639px), (pointer: coarse)'));
   const at = media.indexOf(`${selector} {`);
-  expect(at, `${selector} inside @media (max-width: 639px)`).toBeGreaterThan(-1);
+  expect(at, `${selector} inside @media (max-width: 639px), (pointer: coarse)`).toBeGreaterThan(-1);
   return block(media, at);
 }
 
@@ -120,9 +121,7 @@ describe('Checkbox accessibility contract', () => {
     render(<Checkbox label="Accept" checked={false} onChange={noop} />);
     const row = screen.getByRole('checkbox').parentElement as HTMLElement;
     expect(row.className).toContain('hds-touch-row');
-    expect(phoneRule('.hds-touch-row')).toMatch(
-      /min-height:\s*var\(--primitive-size-interactive-min\)/,
-    );
+    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
@@ -186,9 +185,7 @@ describe('Radio accessibility contract', () => {
     expect((screen.getByRole('radio').parentElement as HTMLElement).className).toContain(
       'hds-touch-row',
     );
-    expect(phoneRule('.hds-touch-row')).toMatch(
-      /min-height:\s*var\(--primitive-size-interactive-min\)/,
-    );
+    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
@@ -231,9 +228,7 @@ describe('Toggle accessibility contract', () => {
     expect((screen.getByRole('switch').parentElement as HTMLElement).className).toContain(
       'hds-touch-row',
     );
-    expect(phoneRule('.hds-touch-row')).toMatch(
-      /min-height:\s*var\(--primitive-size-interactive-min\)/,
-    );
+    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
@@ -405,6 +400,78 @@ describe('Tag accessibility contract', () => {
     expect(tokens).toMatch(/--component-tag-minHeight:\s*var\(--primitive-space-6\)/);
     expect(tokens).toMatch(/--primitive-space-6:\s*24px/);
   });
+
+  it('a11y:tag.dismiss-named a dismissible tag is a static label whose X is a button named "Remove <label>"', () => {
+    render(<Tag onDismiss={noop}>systems</Tag>);
+    const buttons = screen.getAllByRole('button');
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0].getAttribute('aria-label')).toBe('Remove systems');
+    expect(buttons[0].hasAttribute('aria-pressed')).toBe(false);
+    expect(screen.getByText('systems').closest('button')).toBeNull();
+  });
+
+  it('a11y:tag.dismiss-named dismissLabel names the X when the label is not plain text', () => {
+    render(
+      <Tag onDismiss={noop} dismissLabel="Remove design systems">
+        <span>design systems</span>
+      </Tag>,
+    );
+    expect(screen.getByRole('button', { name: 'Remove design systems' })).not.toBeNull();
+  });
+
+  it('a11y:tag.dismiss-keyboard the X is in the tab order and Enter or Space dismisses', async () => {
+    let n = 0;
+    render(
+      <>
+        <Tag onDismiss={() => n++}>systems</Tag>
+        <Tag onDismiss={noop}>tokens</Tag>
+      </>,
+    );
+    await user().tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove systems' }));
+    await user().keyboard('{Enter}');
+    await user().keyboard(' ');
+    expect(n).toBe(2);
+    fireEvent.click(screen.getByRole('button', { name: 'Remove systems' }));
+    expect(n).toBe(3);
+    await user().tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove tokens' }));
+  });
+
+  it('a dismissible tag: a screen reader speaks the label, then the Remove button', async () => {
+    const { container } = render(<Tag onDismiss={noop}>systems</Tag>);
+    const log = await readAll(container);
+    expect(log).toContain('systems');
+    expect(log).toContain('button, Remove systems');
+    expect(log.join(' ')).not.toMatch(/pressed/);
+  });
+
+  it('a11y:tag.dismiss-target-size the X has a 40px hit area that does not grow the pill', () => {
+    render(<Tag onDismiss={noop}>systems</Tag>);
+    const x = screen.getByRole('button', { name: 'Remove systems' });
+    expect(x.className).toContain('size-[var(--semantic-size-row-compact)]');
+    // The hit area overhangs the pill: it adds one line box of height, not 40px.
+    expect(x.className).toContain('my-[calc((1lh_-_var(--semantic-size-row-compact))/2)]');
+    const tokens = readFileSync(
+      resolve(__dirname, '../../src/styles/tokens.generated.css'),
+      'utf8',
+    );
+    expect(tokens).toMatch(/--semantic-size-row-compact:\s*var\(--primitive-size-40\)/);
+    expect(tokens).toMatch(/--primitive-size-40:\s*40px/);
+  });
+
+  it('a11y:tag.dismiss-keyboard a disabled dismissible tag is skipped by Tab', async () => {
+    render(
+      <>
+        <Tag onDismiss={noop} disabled>
+          off
+        </Tag>
+        <Tag onDismiss={noop}>on</Tag>
+      </>,
+    );
+    await user().tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Remove on' }));
+  });
 });
 
 describe('Input accessibility contract', () => {
@@ -439,9 +506,9 @@ describe('Input accessibility contract', () => {
   it('a11y:input.clear-target-size the clear button spans the field height and is 24px or wider', () => {
     render(<Input label="Search" type="search" defaultValue="abc" size="sm" />);
     const clear = screen.getByRole('button', { name: 'Clear search' });
-    // inset-y-0 = the whole field height (>= 32px); px-2 + a 14px glyph = 30px wide.
+    // inset-y-0 = the whole field height (>= 32px); px-scale-xs (8px) + a 14px glyph = 30px wide.
     expect(clear.className).toContain('inset-y-0');
-    expect(clear.className).toContain('px-2');
+    expect(clear.className).toContain('px-scale-xs');
   });
 });
 
@@ -459,5 +526,61 @@ describe('Textarea accessibility contract', () => {
     const log = await readAll(container);
     expect(log.some((p) => p.startsWith('textbox, Message') && p.includes('invalid'))).toBe(true);
     expect(log.some((p) => p.includes('Required'))).toBe(true);
+  });
+});
+
+describe('TokenField accessibility contract', () => {
+  it('a11y:token-field.textbox the field is a multi-line textbox named by its label', () => {
+    render(<TokenField label="Message" value="" onChange={() => {}} />);
+    const field = screen.getByRole('textbox', { name: 'Message' });
+    expect(field.getAttribute('aria-multiline')).toBe('true');
+  });
+
+  it('a11y:token-field.chip-unit a chip is announced as one unit: its label and the token noun', async () => {
+    const { container } = render(
+      <TokenField label="Message" value="Hi [Name]" onChange={() => {}} />,
+    );
+    expect(screen.getByRole('img', { name: 'Name variable' })).not.toBeNull();
+    const log = await readAll(container);
+    expect(log.some((p) => p.includes('Name variable'))).toBe(true);
+    expect(log.some((p) => p.includes('[Name]'))).toBe(false);
+  });
+
+  it('a11y:token-field.error-wiring an error sets aria-invalid, is described by the message, and is announced', () => {
+    render(
+      <TokenField label="Message" value="" onChange={() => {}} error errorMessage="Required" />,
+    );
+    const field = screen.getByRole('textbox', { name: 'Message' });
+    expect(field.getAttribute('aria-invalid')).toBe('true');
+    const alert = screen.getByRole('alert');
+    expect(field.getAttribute('aria-describedby')).toContain(alert.id);
+  });
+
+  it('a11y:token-field.keyboard Tab enters and leaves the field, and Backspace takes a chip whole', async () => {
+    function Harness() {
+      const [value, setValue] = useState('Hi [Name]');
+      return (
+        <>
+          <TokenField label="Message" value={value} onChange={setValue} />
+          <button type="button">After</button>
+        </>
+      );
+    }
+    const u = user();
+    render(<Harness />);
+    const field = screen.getByRole('textbox', { name: 'Message' });
+    await u.tab();
+    expect(document.activeElement).toBe(field);
+    await u.tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'After' }));
+    field.focus();
+    const r = document.createRange();
+    r.selectNodeContents(field);
+    r.collapse(false);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(r);
+    fireEvent.keyDown(field, { key: 'Backspace' });
+    expect(screen.queryByRole('img', { name: 'Name variable' })).toBeNull();
+    expect(field.textContent).toBe('Hi ');
   });
 });

@@ -8,6 +8,8 @@
  * @primitive Button
  */
 import { describe, it, expect, vi, afterEach } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Search } from 'lucide-react';
@@ -16,10 +18,25 @@ import { Icon } from '@/app/components/icon';
 
 afterEach(cleanup);
 
-/** Tailwind spacing class (`h-8`) to px, at the 4px scale. */
+const tokensCss = readFileSync(resolve(__dirname, '../../src/styles/tokens.generated.css'), 'utf8');
+
+/** A token's px value, following var() aliases. */
+function tokenPx(name: string): number | undefined {
+  const value = tokensCss.match(new RegExp(`${name}:\\s*([^;]+);`))?.[1] ?? '';
+  const alias = value.match(/^var\((--[\w-]+)\)$/);
+  if (alias) return tokenPx(alias[1]);
+  const px = value.match(/^(\d+)px$/);
+  return px ? Number(px[1]) : undefined;
+}
+
+/** A height/width class to px: `h-8` at the 4px scale, or `h-[var(--token)]` through the token (hds#760). */
 function px(className: string, axis: 'h' | 'w'): number | undefined {
-  const match = className.split(/\s+/).find((c) => new RegExp(`^${axis}-\\d+$`).test(c));
-  return match ? Number(match.slice(2)) * 4 : undefined;
+  for (const c of className.split(/\s+/)) {
+    if (new RegExp(`^${axis}-\\d+$`).test(c)) return Number(c.slice(2)) * 4;
+    const bound = c.match(new RegExp(`^${axis}-\\[var\\((--[\\w-]+)\\)\\]$`));
+    if (bound) return tokenPx(bound[1]);
+  }
+  return undefined;
 }
 
 describe('Button accessibility contract', () => {

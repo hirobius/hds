@@ -176,7 +176,7 @@ describe('drift: every core component has a generated page', () => {
       'utilities',
     ].sort();
     expect([...pages.keys()].sort()).toEqual(expected);
-    expect(expected).toHaveLength(38);
+    expect(expected).toHaveLength(42);
     const utilities = (pages as Map<string, string>).get('utilities')!;
     for (const n of UTILITIES) {
       expect(utilities).toContain(`## ${n}`);
@@ -202,7 +202,7 @@ describe('drift: every core component has a generated page', () => {
     for (const [slug, mdx] of pages as Map<string, string>) {
       writeFileSync(join(root, 'content/docs/components', `${slug}.mdx`), mdx);
     }
-    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(38);
+    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(42);
     expect(() =>
       execFileSync('node', ['scripts/check-docs.mjs', '--root', root], {
         cwd: ROOT,
@@ -384,6 +384,16 @@ describe('page trimming', () => {
     expect(md).toContain('- Not for other things.');
   });
 
+  it('lowercases a whenNot that opens with an article, keeps an acronym (Not for A chip…)', () => {
+    const notFor = (whenNot: string) =>
+      page({}, { description: 'X.', usage: { when: 'Y.', whenNot } });
+    expect(notFor('A chip people can toggle, or a message.')).toContain(
+      '- Not for a chip people can toggle, or a message.',
+    );
+    expect(notFor('An inline note.')).toContain('- Not for an inline note.');
+    expect(notFor('API keys or `code`.')).toContain('- Not for API keys or `code`.');
+  });
+
   it('leaves out deprecated props and an all-empty Default column', () => {
     const p = page({
       components: {
@@ -420,9 +430,44 @@ describe('page trimming', () => {
     const body = p.slice(p.indexOf('---', 3) + 3).trim();
     expect(body.startsWith('{/* preview: Thing */}')).toBe(true);
     expect(p).toContain('<summary>Show code</summary>');
-    expect(p).toContain('<summary>API · 1 prop</summary>');
+    expect(p).toContain('<summary>API</summary>');
     expect(p).not.toContain('## Live Preview');
     expect(p).not.toContain('## Related Components');
+  });
+});
+
+describe('fold labels (Adrian, 2026-10-22)', () => {
+  const api = {
+    components: {
+      Thing: {
+        props: [
+          { name: 'a', type: 'string', required: false, description: 'A.' },
+          { name: 'b', type: 'string', required: false, description: 'B.' },
+        ],
+      },
+    },
+  };
+  const manifest = { componentSpecs: { Thing: { tokenMapping: { Fill: 'primitive.radius.4' } } } };
+
+  it('labels the API fold "API", with no prop count', () => {
+    for (const p of [
+      buildComponentPages({ manifest, api, core: ['Thing'] }).get('thing') as string,
+      buildComponentPages({ manifest, api, core: ['Thing'], utilities: ['Thing'] }).get(
+        'utilities',
+      ) as string,
+    ]) {
+      expect(p).toContain('<summary>API</summary>');
+      expect(p).not.toMatch(/API ·|\d+ props?\b/);
+    }
+  });
+
+  it('gives every fold the one hds-fold summary: no per-fold label class or markup', () => {
+    const p = buildComponentPages({ manifest, api, core: ['Thing'] }).get('thing') as string;
+    const summaries = [...p.matchAll(/<summary([^>]*)>([^<]*)<\/summary>/g)];
+    expect(summaries.map((m) => m[2])).toEqual(['Show code', 'API', 'Design tokens']);
+    expect(summaries.every((m) => m[1] === '')).toBe(true);
+    for (const m of p.matchAll(/<details className="([^"]*)">/g))
+      expect(m[1]!.split(' ')[0]).toBe('hds-fold');
   });
 });
 

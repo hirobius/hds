@@ -1,5 +1,6 @@
 {
   "pages": [
+    "---Docs---",
     "index",
     "foundations",
     "components",
@@ -7,6 +8,8 @@
     "guides",
     "engineering",
     "voice",
+    "---Explore---",
+    "[System tour](/tour)",
     "..."
   ]
 }
