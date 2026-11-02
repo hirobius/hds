@@ -11,15 +11,21 @@
  * @a11y component required a11y:async-state.slow-note A long load adds a polite status note and never goes silent or spins forever.
  * @a11y component required a11y:async-state.error-announced The error is a danger alert, announced as soon as it appears.
  * @a11y component required a11y:async-state.retry-keyboard Retry is a native button, reachable and operable by keyboard; when it unmounts, focus moves to the region instead of falling to the page.
+ * @a11y component required a11y:async-state.crossfade-exit-hidden During a status crossfade the exiting block is aria-hidden and inert, and only the live block carries aria-busy, so assistive technology never reads the old state.
+ * @a11y component required gate:check-reduced-motion The status crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the swap renders only the new block with no overlap.
  * @a11y consumer required Give the region a label that names what is loading ("Open roles"), not "Loading".
  * @a11y consumer required Make `empty` say what to do next, for example an EmptyState with an action.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-96
  */
-// motion-ok: composition only. The Skeleton owns its shimmer (and zeroes it under
-// prefers-reduced-motion), the Alert owns its entrance and the Button its press
-// transition. The wrapper has no hover, press or open state of its own.
+// Status changes are true crossfades (hds#938): the old and new blocks stay
+// mounted, stacked in one grid cell, while the old fades out and the new fades
+// in, timed through useHdsMotion. Under prefers-reduced-motion there is no
+// overlap at all — the swap is instant and only the live block renders.
 
 import * as React from 'react';
+import { AnimatePresence, motion, useIsPresent } from 'motion/react';
+import { useHdsMotion } from '../hooks/useHdsMotion';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { Alert } from './alert';
 import { Button } from './button';
 import { Skeleton } from './skeleton';
@@ -130,6 +136,47 @@ function ErrorView({
 }
 
 /**
+ * One status block inside the crossfade stack. While AnimatePresence keeps an
+ * exiting block mounted, useIsPresent reports false for it: the block is then
+ * aria-hidden and inert, and any aria-busy inside it is dropped, so only the
+ * live block is reachable or announced.
+ */
+function CrossfadeBlock({
+  statusKey,
+  children,
+}: {
+  statusKey: AsyncStatus;
+  children: React.ReactNode;
+}) {
+  const isPresent = useIsPresent();
+  const productiveMotion = useHdsMotion('productive');
+  const blockRef = React.useRef<HTMLDivElement | null>(null);
+  React.useEffect(() => {
+    const node = blockRef.current;
+    if (!node) return;
+    node.inert = !isPresent;
+    if (!isPresent) {
+      node.querySelectorAll('[aria-busy="true"]').forEach((el) => el.removeAttribute('aria-busy'));
+    }
+  }, [isPresent]);
+  return (
+    <motion.div
+      ref={blockRef}
+      className="col-start-1 row-start-1"
+      data-crossfade-view={statusKey}
+      data-exiting={!isPresent || undefined}
+      aria-hidden={!isPresent || undefined}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/**
  * One wrapper for the four states of async content: `loading` (skeleton rows plus
  * a polite status line that turns into "Still trying…" after `slowAfterMs`),
  * `error` (a danger `Alert` and a Retry `Button`, with offline wording when the
@@ -176,10 +223,46 @@ export const AsyncState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Async
       if (!retried.current) return;
       retried.current = false;
       const active = document.activeElement;
-      // Only rescue focus that fell to the page; never pull it from elsewhere.
-      if (active && active !== document.body) return;
+      if (active && active !== document.body) {
+        // Only rescue focus that fell to the page or sits inside the exiting
+        // crossfade block (which is leaving and inert); never pull focus from
+        // the live block or from elsewhere on the page.
+        const view = (active as HTMLElement).closest?.('[data-crossfade-view]');
+        if (view && view.getAttribute('data-crossfade-view') === status) return;
+        if (!view && regionRef.current?.contains(active)) return;
+        if (!view && !regionRef.current?.contains(active)) return;
+      }
       regionRef.current?.focus();
     }, [status]);
+    const reducedMotion = useReducedMotion();
+    // Each entry into a status gets its own crossfade key: if a status is
+    // re-entered while its previous block is still exiting (loading -> ready
+    // -> loading inside one fade), AnimatePresence would otherwise resurrect
+    // the exiting block with its state intact — a returning Loading would
+    // keep its old slow-note timer instead of starting a fresh load.
+    const [fade, setFade] = React.useState({ status, cycle: 0 });
+    if (fade.status !== status) {
+      setFade({ status, cycle: fade.cycle + 1 });
+    }
+    const view =
+      status === 'loading' ? (
+        <Loading
+          rows={rows}
+          slowAfterMs={slowAfterMs}
+          loadingLabel={loadingLabel}
+          slowNote={slowNote}
+        />
+      ) : status === 'error' ? (
+        <ErrorView
+          error={error}
+          errorTitle={errorTitle}
+          onRetry={onRetry ? handleRetry : undefined}
+        />
+      ) : status === 'empty' ? (
+        empty
+      ) : (
+        children
+      );
     return (
       <div
         ref={setRef}
@@ -190,23 +273,17 @@ export const AsyncState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Async
         aria-label={label}
         {...props}
       >
-        {status === 'loading' && (
-          <Loading
-            rows={rows}
-            slowAfterMs={slowAfterMs}
-            loadingLabel={loadingLabel}
-            slowNote={slowNote}
-          />
+        {reducedMotion ? (
+          view
+        ) : (
+          <div className="grid">
+            <AnimatePresence initial={false}>
+              <CrossfadeBlock key={`${status}-${fade.cycle}`} statusKey={status}>
+                {view}
+              </CrossfadeBlock>
+            </AnimatePresence>
+          </div>
         )}
-        {status === 'error' && (
-          <ErrorView
-            error={error}
-            errorTitle={errorTitle}
-            onRetry={onRetry ? handleRetry : undefined}
-          />
-        )}
-        {status === 'empty' && empty}
-        {status === 'ready' && children}
       </div>
     );
   },

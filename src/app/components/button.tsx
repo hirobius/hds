@@ -1,4 +1,4 @@
-// motion-ok: motion delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs
+// motion-ok: motion delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs. The toggle label crossfade below is the one motion/react piece, timed through useHdsMotion.
 /**
  * @category Actions
  * @tier primitive
@@ -11,8 +11,12 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';
+import { AnimatePresence, motion, useIsPresent } from 'motion/react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';
+import { warnOncePlain } from '../../lib/deprecation';
+import { useHdsMotion } from '../hooks/useHdsMotion';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { installWipeListeners } from './button-wipe';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -215,16 +219,41 @@ export interface ButtonProps
   onPressedChange?: (pressed: boolean) => void;
 }
 
+/**
+ * One label inside a toggle Button's crossfade stack (hds#938). The labels
+ * stack in a single grid cell, so while the old and new labels overlap the
+ * button is as wide as the wider of the two and nothing around it shifts;
+ * once the exit finishes the old label unmounts and the width releases to
+ * the new label. While AnimatePresence keeps an exiting label mounted,
+ * useIsPresent reports false for it: the label is then aria-hidden, so the
+ * button's accessible name is the new label from the moment it changes.
+ */
+function CrossfadeLabel({ children }: { children: React.ReactNode }) {
+  const isPresent = useIsPresent();
+  const productiveMotion = useHdsMotion('productive');
+  return (
+    <motion.span
+      className="col-start-1 row-start-1"
+      data-crossfade-label={isPresent ? 'live' : 'exiting'}
+      aria-hidden={!isPresent || undefined}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
 // ── Component ──────────────────────────────────────────────────────────────────
 
 // Warn once per module load: `iconOnly` renders only `iconLeft` (iconRight is
-// hidden), so an icon-only Button without one is an empty square. Not
-// `warnOnce` from lib/deprecation: that prefixes `[HDS deprecation]`, and this
-// is a misuse, not a deprecation.
-let warnedIconOnlyWithoutIcon = false;
-// Warn once per module load: iconOnly hides the label text, so without label,
-// aria-label, aria-labelledby or title the button has no accessible name.
-let warnedIconOnlyWithoutName = false;
+// hidden), so an icon-only Button without one is an empty square; and iconOnly
+// hides the label text, so without label, aria-label, aria-labelledby or
+// title the button has no accessible name. Not `warnOnce` from
+// lib/deprecation: that prefixes `[HDS deprecation]`, and these are misuse,
+// not deprecations — `warnOncePlain` is the same guard without the prefix.
 
 /**
  * Triggers an action when activated.
@@ -239,6 +268,8 @@ let warnedIconOnlyWithoutName = false;
  * @a11y component required a11y:button.icon-only-name An icon-only button takes its accessible name from label (as aria-label).
  * @a11y component required a11y:button.target-size Every size is at least 24px tall, and an icon-only button at least 24px wide (WCAG 2.5.8).
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
+ * @a11y component required a11y:button.label-crossfade When a toggle button's text label changes, the old label is aria-hidden while it fades out, so the accessible name is the new label from the moment it changes.
+ * @a11y component required gate:check-reduced-motion The toggle label crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the label swaps instantly with no overlap.
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.
  */
@@ -322,6 +353,14 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         }
       : { style: edge ? ({ ...edge, ...style } as React.CSSProperties) : style };
     const content = children ?? label;
+    // A toggle Button whose text label changes crossfades the two labels
+    // (hds#938): old and new stay mounted, overlapped in one grid cell, until
+    // the fade ends. Only a plain-text label can crossfade; anything richer
+    // renders exactly as it always has. Under prefers-reduced-motion there
+    // is no overlap at all — the label swaps instantly.
+    const reducedMotion = useReducedMotion();
+    const crossfadeLabel =
+      isToggle && typeof content === 'string' && content !== '' && !reducedMotion;
 
     const toggleProps = isToggle
       ? {
@@ -382,9 +421,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       );
     }
 
-    if (iconOnly && !iconLeft && !loading && !warnedIconOnlyWithoutIcon && isDevelopment()) {
-      warnedIconOnlyWithoutIcon = true;
-      console.warn(
+    if (iconOnly && !iconLeft && !loading && isDevelopment()) {
+      warnOncePlain(
+        'button-iconOnly-without-icon',
         '[Button] iconOnly renders only iconLeft; pass iconLeft (iconRight is hidden in iconOnly mode).',
       );
     }
@@ -395,11 +434,10 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       !props['aria-label'] &&
       !props['aria-labelledby'] &&
       !props.title &&
-      !warnedIconOnlyWithoutName &&
       isDevelopment()
     ) {
-      warnedIconOnlyWithoutName = true;
-      console.warn(
+      warnOncePlain(
+        'button-iconOnly-without-name',
         '[Button] iconOnly hides the label text, so the button has no accessible name; pass label (or aria-label / aria-labelledby).',
       );
     }
@@ -430,7 +468,16 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         ) : (
           iconLeft
         )}
-        {!iconOnly && content}
+        {!iconOnly &&
+          (crossfadeLabel ? (
+            <span className="grid" data-slot="label-crossfade">
+              <AnimatePresence initial={false}>
+                <CrossfadeLabel key={content}>{content}</CrossfadeLabel>
+              </AnimatePresence>
+            </span>
+          ) : (
+            content
+          ))}
         {!loading && !iconOnly && iconRight}
       </button>
     );

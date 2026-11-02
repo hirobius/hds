@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { act, render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { act, render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import { AsyncState } from './async-state';
 
 afterEach(() => {
@@ -127,7 +127,7 @@ describe('AsyncState', () => {
     expect(onRetry).toHaveBeenCalledTimes(1);
   });
 
-  it('renders the empty node when empty and children when ready', () => {
+  it('renders the empty node when empty and children when ready', async () => {
     const { rerender } = render(
       <AsyncState status="empty" empty={<p>Nothing here</p>}>
         <p>Rows</p>
@@ -141,8 +141,68 @@ describe('AsyncState', () => {
       </AsyncState>,
     );
     expect(screen.getByText('Rows')).not.toBeNull();
-    expect(screen.queryByText('Nothing here')).toBeNull();
+    // The swap is a crossfade (hds#938): the empty node stays mounted while
+    // it fades out, then unmounts once the fade completes.
+    await waitFor(() => expect(screen.queryByText('Nothing here')).toBeNull());
     expect(screen.getByRole('region').getAttribute('aria-busy')).toBeNull();
+  });
+
+  it('a11y:async-state.crossfade-exit-hidden - mid-crossfade both blocks stay mounted; the exiting block is aria-hidden, inert and carries no aria-busy', async () => {
+    const { container, rerender } = render(
+      <AsyncState status="loading" label="Openings" rows={2}>
+        <p>Rows</p>
+      </AsyncState>,
+    );
+    rerender(
+      <AsyncState status="ready" label="Openings" rows={2}>
+        <p>Rows</p>
+      </AsyncState>,
+    );
+    // Mid-transition: the old and new blocks overlap in the crossfade stack.
+    const blocks = container.querySelectorAll('[data-crossfade-view]');
+    expect(blocks.length).toBe(2);
+    const exiting = container.querySelector('[data-crossfade-view="loading"]');
+    const live = container.querySelector('[data-crossfade-view="ready"]');
+    expect(exiting?.getAttribute('aria-hidden')).toBe('true');
+    expect(exiting?.getAttribute('data-exiting')).toBe('true');
+    expect((exiting as HTMLElement & { inert?: boolean })?.inert).toBe(true);
+    expect(exiting?.querySelectorAll('[aria-busy="true"]').length).toBe(0);
+    expect(live?.getAttribute('aria-hidden')).toBeNull();
+    // Assistive technology sees only the new state: the skeleton and its
+    // polite status line sit inside the aria-hidden exiting block.
+    expect(screen.queryByRole('status')).toBeNull();
+    expect(screen.getByText('Rows')).not.toBeNull();
+    // Once the fade completes the old block unmounts.
+    await waitFor(() => expect(container.querySelectorAll('[data-crossfade-view]').length).toBe(1));
+  });
+
+  it('swaps instantly with no overlap under prefers-reduced-motion', () => {
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: query.includes('reduce'),
+      media: query,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+    }));
+    try {
+      const { container, rerender } = render(
+        <AsyncState status="loading" label="Openings">
+          <p>Rows</p>
+        </AsyncState>,
+      );
+      rerender(
+        <AsyncState status="ready" label="Openings">
+          <p>Rows</p>
+        </AsyncState>,
+      );
+      // No crossfade stack at all: only the new block renders.
+      expect(container.querySelectorAll('[data-crossfade-view]').length).toBe(0);
+      expect(screen.getByText('Rows')).not.toBeNull();
+      expect(container.querySelectorAll('[data-slot="row"]').length).toBe(0);
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it('restarts the slow timer when a new load begins', () => {
