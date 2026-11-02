@@ -31,19 +31,25 @@ export interface EmptyStateProps {
   description?: React.ReactNode;
   /** Optional action that fills the space, rendered under the description. */
   action?: React.ReactNode;
+  /**
+   * Set the message in italic (the default). `false` sets it upright, for
+   * products whose type has no italic anywhere.
+   */
+  italic?: boolean;
   /** Escape hatch for layout adjustments — token-only, no business logic. */
   className?: string;
 }
 
 /** @public */
 export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, EmptyStateProps>(
-  function EmptyState({ icon, title, description, action, className }, ref) {
+  function EmptyState({ icon, title, description, action, italic = true, className }, ref) {
     return (
       <div
         ref={ref}
         data-hds-component="EmptyState"
         className={cn(
-          'flex flex-col gap-fixed-2xs hds-type-ui italic text-muted-foreground',
+          'flex flex-col gap-fixed-2xs hds-type-ui text-muted-foreground',
+          italic ? 'italic' : 'not-italic',
           className,
         )}
       >
