@@ -362,3 +362,34 @@ export function reportLineViolations(violations, jsonMode, { gate, ok, noun, fix
   for (const line of fix) console.error(line);
   return 1;
 }
+
+/**
+ * Emit a gate's violations as-is in the standard JSON payload
+ * (`{ violations, summary: { total }, ok }`) and return the exit code; the
+ * caller exits. For gates whose violations carry their own severity and
+ * extra fields (check-style-discipline, check-typography-discipline; hds#1010).
+ *
+ * @param {object[]} violations
+ * @returns {0|1}
+ */
+export function emitViolationsJson(violations) {
+  const ok = violations.length === 0;
+  emitResult({ violations, summary: { total: violations.length }, ok }, true);
+  return ok ? 0 : 1;
+}
+
+/**
+ * Group violations by `rule`, keeping first-seen rule order (hds#1010).
+ *
+ * @template {{ rule: string }} V
+ * @param {V[]} violations
+ * @returns {Map<string, V[]>}
+ */
+export function groupByRule(violations) {
+  const byRule = new Map();
+  for (const v of violations) {
+    if (!byRule.has(v.rule)) byRule.set(v.rule, []);
+    byRule.get(v.rule).push(v);
+  }
+  return byRule;
+}

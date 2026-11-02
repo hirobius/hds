@@ -5,9 +5,13 @@
  * hook, run the gate on its fixtures, and run it over the repo.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { ROOT, runGate, fixtureRunner, registryEntry } from './helpers/gate-runner.mjs';
+import {
+  expectCleanRun,
+  expectInPreCommit,
+  fixtureRunner,
+  registryEntry,
+  runGate,
+} from './helpers/gate-runner.mjs';
 import { findViolationsInText } from '../check-no-custom-tracking.mjs';
 
 const GATE = 'scripts/check-no-custom-tracking.mjs';
@@ -61,8 +65,7 @@ describe('check-no-custom-tracking: registry, hook, fixtures and the repo', () =
   });
 
   it('runs in .husky/pre-commit', () => {
-    const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
-    expect(hook).toMatch(/^node scripts\/check-no-custom-tracking\.mjs$/m);
+    expectInPreCommit('scripts/check-no-custom-tracking.mjs');
   });
 
   const runOn = fixtureRunner(GATE, 'fixtures/check-no-custom-tracking');
@@ -85,7 +88,6 @@ describe('check-no-custom-tracking: registry, hook, fixtures and the repo', () =
 
   it('exits 0 over the repo', () => {
     const run = runGate(GATE);
-    expect(run.stderr).toBe('');
-    expect(run.status).toBe(0);
+    expectCleanRun(run);
   });
 });
