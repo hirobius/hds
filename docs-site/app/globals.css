@@ -450,6 +450,11 @@ pre {
      hold the wider one's width so the swap does not shift the trigger (hds#770). */
   min-inline-size: 4.625rem;
 }
+/* The modifier key itself grows from "⌘" to "Ctrl" after hydration: hold the wider width
+   so its box does not move (CLS on load, hds#806). */
+.hds-docs-search-keys > :first-child {
+  min-inline-size: 2.875rem;
+}
 
 /* Collapsed sections (generated pages and token tables): a soft raised row with a
    chevron (no hairlines, hds#891), the content one click away. Native <details>, so it

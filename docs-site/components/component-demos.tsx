@@ -10,7 +10,7 @@
  * (Dialog, Menu, Select) portal into the nearest [data-hds] scope, which
  * <DemoFrame> provides so they inherit the page theme.
  */
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
   Avatar,
@@ -202,25 +202,32 @@ function DialogDemo() {
 }
 
 function AppShellDemo() {
+  // AppShell reads the viewport (lg) on the client only, so its server render is the narrow
+  // layout and hydration reflows it. Mount it after hydration inside the fixed-height frame
+  // so the page does not shift on load (check:docs-layout-shift, hds#806).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   return (
     <div style={{ height: '24rem', overflow: 'auto', isolation: 'isolate' }}>
-      <AppShell
-        header={<Text variant="ui">Ops</Text>}
-        sidebar={({ collapsed }) => (
-          <Stack gap="tight">
-            {['Today', 'Jobs', 'Documents'].map((item) => (
-              <InlineLink key={item} href={`#${item.toLowerCase()}`}>
-                {collapsed ? item.slice(0, 1) : item}
-              </InlineLink>
-            ))}
-          </Stack>
-        )}
-        aside={<Text variant="caption">Detail panel</Text>}
-      >
-        <Text variant="title" as="h2">
-          Pipeline
-        </Text>
-      </AppShell>
+      {mounted && (
+        <AppShell
+          header={<Text variant="ui">Ops</Text>}
+          sidebar={({ collapsed }) => (
+            <Stack gap="tight">
+              {['Today', 'Jobs', 'Documents'].map((item) => (
+                <InlineLink key={item} href={`#${item.toLowerCase()}`}>
+                  {collapsed ? item.slice(0, 1) : item}
+                </InlineLink>
+              ))}
+            </Stack>
+          )}
+          aside={<Text variant="caption">Detail panel</Text>}
+        >
+          <Text variant="title" as="h2">
+            Pipeline
+          </Text>
+        </AppShell>
+      )}
     </div>
   );
 }
@@ -838,7 +845,17 @@ function NavListDemo() {
           Design systems lead
           <MetaLine items={['Acme Cloud', 'Remote']} />
         </NavList.Item>
-        <NavList.Item href="#">
+        <NavList.Item
+          href="#"
+          action={
+            <Button
+              variant="tertiary"
+              iconOnly
+              label="Star Staff front-end engineer"
+              iconLeft={<Icon icon={Star} size="small" />}
+            />
+          }
+        >
           Staff front-end engineer
           <MetaLine items={['Northwind', 'Hybrid']} />
         </NavList.Item>

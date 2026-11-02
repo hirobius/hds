@@ -18,12 +18,12 @@
 import { type ReactElement } from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
-import { AlertDialog } from '@/app/components/alert-dialog';
 import { Popover } from '@/app/components/popover';
 import { Tooltip } from '@/app/components/hds-tooltip';
 import {
   user,
   DialogFixture,
+  AlertDialogFixture,
   MenuFixture,
   SelectFixture,
   ComboboxFixture,
@@ -32,24 +32,6 @@ import {
 afterEach(cleanup);
 
 // ── Fixtures (Dialog, Menu, Select, Combobox live in ./overlay-fixtures) ──────
-
-function AlertDialogFixture() {
-  return (
-    <AlertDialog>
-      <AlertDialog.Trigger>Delete</AlertDialog.Trigger>
-      <AlertDialog.Content>
-        <AlertDialog.Header>
-          <AlertDialog.Title>Delete project?</AlertDialog.Title>
-          <AlertDialog.Description>This cannot be undone.</AlertDialog.Description>
-        </AlertDialog.Header>
-        <AlertDialog.Footer>
-          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-          <AlertDialog.Action>Confirm</AlertDialog.Action>
-        </AlertDialog.Footer>
-      </AlertDialog.Content>
-    </AlertDialog>
-  );
-}
 
 function PopoverFixture() {
   return (

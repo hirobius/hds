@@ -26,24 +26,18 @@
  */
 
 import { readFileSync } from 'node:fs';
-import { join, dirname, extname, relative, resolve } from 'node:path';
+import { extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag } from './lib/gate-output.mjs';
 import {
   scanSources,
   findMarker,
   maskComments,
   isSpecFile,
-  isFixtureRun,
+  gateContext,
   reportLineViolations,
 } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-
-const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode = isFixtureRun(process.argv);
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'templates', 'tenants'];
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css', '.html'];

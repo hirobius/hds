@@ -537,6 +537,7 @@ A vertical list of rows (links, or buttons that select in place), one marked cur
 
 ### NavListItem
 One row of a NavList. With `href` it is a link routed through the HDS router seam (a plain anchor with no router) and sets aria-current="page" when `current`. …
+  - action: ReactNode
   - children: ReactNode
   - current: boolean
   - href: string

@@ -7,18 +7,9 @@
  * pack, prepare, build, render, axe), the CLI by spawning it over run
  * directories written to temp dirs. No network, no browser, no ledger.
  */
-import { afterAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import {
-  cpSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from 'node:fs';
-import os from 'node:os';
+import { cpSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readDirection } from '../lib/explorations/direction.mjs';
@@ -32,6 +23,7 @@ import {
   direction,
   writeDirection,
 } from './helpers/explorations-fixtures.mjs';
+import { useTempDirs } from './helpers/temp-dirs.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -49,15 +41,7 @@ const CLIENT_TENANT = (() => {
   }
   throw new Error('tenants/ has no non-demo tenant to test the client-tenant gates with');
 })();
-const tmpDirs = [];
-const makeTmp = (prefix = 'eval-explorations-') => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), prefix));
-  tmpDirs.push(dir);
-  return dir;
-};
-afterAll(() => {
-  for (const d of tmpDirs) rmSync(d, { recursive: true, force: true });
-});
+const makeTmp = useTempDirs('eval-explorations-');
 
 const PACKED = {
   tarball: '/x/pkg.tgz',
