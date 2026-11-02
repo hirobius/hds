@@ -1,4 +1,3 @@
-// motion-ok: token field — focus ring + transition via Tailwind utilities (gate accepts only hds.duration refs)
 /**
  * TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomic chips.
  * @category Inputs
@@ -512,7 +511,7 @@ export const TokenField = /* @__PURE__ */ React.forwardRef<TokenFieldHandle, Tok
           spellCheck
           tabIndex={disabled ? -1 : 0}
           className={cn(
-            'block w-full overflow-y-auto whitespace-pre-wrap break-words rounded-md border bg-background px-fixed-xs py-scale-xs hds-type-ui text-foreground ring-offset-background transition-colors cursor-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[empty]:before:pointer-events-none data-[empty]:before:text-muted-foreground data-[empty]:before:content-[attr(data-placeholder)] data-[state=disabled]:cursor-not-allowed data-[state=disabled]:bg-muted data-[state=disabled]:text-[var(--semantic-color-content-disabled)]',
+            'block w-full overflow-y-auto whitespace-pre-wrap break-words rounded-md border bg-background px-fixed-xs py-scale-xs hds-type-ui text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] cursor-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[empty]:before:pointer-events-none data-[empty]:before:text-muted-foreground data-[empty]:before:content-[attr(data-placeholder)] data-[state=disabled]:cursor-not-allowed data-[state=disabled]:bg-muted data-[state=disabled]:text-[var(--semantic-color-content-disabled)]',
             invalid ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
             fieldClassName,
           )}
