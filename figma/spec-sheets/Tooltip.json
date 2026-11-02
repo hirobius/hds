@@ -1,0 +1,65 @@
+{
+  "component": "Tooltip",
+  "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+  "docsPage": "/docs/components/tooltip",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "optional": true
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "delayDuration",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "disableHoverableContent",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Name an icon-only control, or add a short hint that appears on hover and keyboard focus.",
+    "whenNot": "Anything interactive, text people need to finish a task, or a hint touch users must see (touch has no hover).",
+    "useInstead": [
+      {
+        "component": "Popover",
+        "reason": "interactive or longer content that opens on click"
+      },
+      {
+        "component": "Text",
+        "reason": "a hint that must stay visible"
+      }
+    ]
+  }
+}

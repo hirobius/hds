@@ -1,0 +1,53 @@
+{
+  "component": "InlineLink",
+  "description": "InlineLink ” inline navigation and external-link primitive for body copy.",
+  "docsPage": "/docs/components/inline-link",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "externalIcon",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "href",
+      "type": "string"
+    },
+    {
+      "name": "standalone",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Link to a route or external URL from inside body copy.",
+    "whenNot": "An action that changes something, or a control that needs button styling.",
+    "useInstead": [
+      {
+        "component": "Button",
+        "reason": "an action or a link that needs button styling"
+      },
+      {
+        "component": "Text",
+        "reason": "unlinked body copy"
+      }
+    ]
+  }
+}

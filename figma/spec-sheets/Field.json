@@ -1,0 +1,56 @@
+{
+  "component": "Field",
+  "description": "Caption label paired with a value — used in metadata grids and read-only forms.",
+  "docsPage": "/docs/components/field",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "optional": true
+    },
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "mono",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "tone",
+      "type": "enum",
+      "values": ["success", "danger", "warning", "info", "neutral"],
+      "optional": true
+    },
+    {
+      "name": "value",
+      "type": "ReactNode",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show a labelled read-only value, such as a name and its value in a detail view.",
+    "whenNot": "Editable input, or a single headline figure.",
+    "useInstead": [
+      {
+        "component": "Input",
+        "reason": "an editable single-line value"
+      }
+    ]
+  }
+}

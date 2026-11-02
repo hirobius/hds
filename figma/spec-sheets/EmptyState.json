@@ -1,0 +1,64 @@
+{
+  "component": "EmptyState",
+  "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections.",
+  "docsPage": "/docs/components/empty-state",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": true
+    },
+    {
+      "name": "italic",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "title",
+      "type": "ReactNode"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step.",
+    "whenNot": "Content that is still loading, or a full-page error.",
+    "useInstead": [
+      {
+        "component": "Skeleton",
+        "reason": "content that is still loading"
+      },
+      {
+        "component": "Alert",
+        "reason": "a message about something that went wrong"
+      }
+    ]
+  }
+}

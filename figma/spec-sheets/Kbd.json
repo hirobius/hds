@@ -1,0 +1,37 @@
+{
+  "component": "Kbd",
+  "description": "Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.",
+  "docsPage": "/docs/components/kbd",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "size",
+      "type": "enum",
+      "values": ["sm", "md", "lg"],
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show a keyboard key or shortcut hint inline, as a native kbd element.",
+    "whenNot": "Code samples, or a control that runs the shortcut.",
+    "useInstead": [
+      {
+        "component": "Text",
+        "reason": "inline code and other typography"
+      }
+    ]
+  }
+}

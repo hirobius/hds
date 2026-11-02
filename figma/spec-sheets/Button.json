@@ -1,0 +1,275 @@
+{
+  "component": "Button",
+  "description": "Triggers an action when activated.",
+  "docsPage": "/docs/components/button",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
+  "anatomy": [
+    {
+      "part": "Root"
+    },
+    {
+      "part": "Label",
+      "figmaProperty": "Label",
+      "sourceProp": "label",
+      "type": "TEXT"
+    },
+    {
+      "part": "IconLeft",
+      "figmaProperty": "Show icon",
+      "sourceProp": "iconLeft",
+      "type": "BOOLEAN"
+    },
+    {
+      "part": "IconRight",
+      "figmaProperty": "Show trail icon",
+      "sourceProp": "iconRight",
+      "type": "BOOLEAN"
+    }
+  ],
+  "sizes": [
+    {
+      "size": "sm",
+      "values": {
+        "paddingX": {
+          "token": "component.button.size.sm.paddingX",
+          "value": "12px"
+        },
+        "paddingY": {
+          "token": "component.button.size.sm.paddingY",
+          "value": "4px"
+        },
+        "fontSize": {
+          "token": "component.button.size.sm.fontSize",
+          "value": "14px"
+        },
+        "iconSize": {
+          "token": "component.button.size.sm.iconSize",
+          "value": "12px"
+        },
+        "height": {
+          "token": "component.button.size.sm.height",
+          "value": "36px"
+        },
+        "itemSpacing": {
+          "token": "component.button.size.sm.itemSpacing",
+          "value": "8px"
+        }
+      }
+    },
+    {
+      "size": "md",
+      "values": {
+        "paddingX": {
+          "token": "component.button.size.md.paddingX",
+          "value": "16px"
+        },
+        "paddingY": {
+          "token": "component.button.size.md.paddingY",
+          "value": "8px"
+        },
+        "fontSize": {
+          "token": "component.button.size.md.fontSize",
+          "value": "16px"
+        },
+        "iconSize": {
+          "token": "component.button.size.md.iconSize",
+          "value": "16px"
+        },
+        "height": {
+          "token": "component.button.size.md.height",
+          "value": "44px"
+        },
+        "itemSpacing": {
+          "token": "component.button.size.md.itemSpacing",
+          "value": "8px"
+        }
+      }
+    },
+    {
+      "size": "lg",
+      "values": {
+        "paddingX": {
+          "token": "component.button.size.lg.paddingX",
+          "value": "24px"
+        },
+        "paddingY": {
+          "token": "component.button.size.lg.paddingY",
+          "value": "16px"
+        },
+        "fontSize": {
+          "token": "component.button.size.lg.fontSize",
+          "value": "16px"
+        },
+        "iconSize": {
+          "token": "component.button.size.lg.iconSize",
+          "value": "20px"
+        },
+        "height": {
+          "token": "component.button.size.lg.height",
+          "value": "52px"
+        },
+        "itemSpacing": {
+          "token": "component.button.size.lg.itemSpacing",
+          "value": "8px"
+        }
+      }
+    }
+  ],
+  "states": [
+    {
+      "state": "default",
+      "tokens": [
+        {
+          "name": "bg",
+          "token": "component.button.bg",
+          "value": "#0f1726"
+        },
+        {
+          "name": "text",
+          "token": "component.button.text",
+          "value": "#f9fafc"
+        }
+      ]
+    },
+    {
+      "state": "hover",
+      "tokens": [
+        {
+          "name": "bgHover",
+          "token": "component.button.bgHover",
+          "value": "#263043"
+        }
+      ]
+    },
+    {
+      "state": "focus",
+      "tokens": []
+    },
+    {
+      "state": "active",
+      "tokens": [
+        {
+          "name": "bgPressed",
+          "token": "component.button.bgPressed",
+          "value": "#1c2638"
+        }
+      ]
+    },
+    {
+      "state": "disabled",
+      "tokens": []
+    },
+    {
+      "state": "loading",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "defaultPressed",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "hoverEffect",
+      "type": "enum",
+      "values": ["none", "wipe"],
+      "default": "wipe"
+    },
+    {
+      "name": "iconLeft",
+      "type": "ReactNode",
+      "optional": true,
+      "figmaProperty": "Show icon"
+    },
+    {
+      "name": "iconOnly",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "iconRight",
+      "type": "ReactNode",
+      "optional": true,
+      "figmaProperty": "Show trail icon"
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "figmaProperty": "Label"
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "onPressedChange",
+      "type": "(pressed: boolean) => void",
+      "optional": true
+    },
+    {
+      "name": "pressed",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "shadow",
+      "type": "enum",
+      "values": ["none", "hard"],
+      "default": "hard"
+    },
+    {
+      "name": "size",
+      "type": "enum",
+      "values": ["sm", "md", "lg"],
+      "optional": true,
+      "figmaProperty": "Size"
+    },
+    {
+      "name": "tone",
+      "type": "enum",
+      "values": ["success", "danger", "warning", "info", "neutral"],
+      "optional": true,
+      "figmaProperty": "Tone"
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": ["primary", "secondary", "tertiary"],
+      "optional": true,
+      "figmaProperty": "Variant"
+    }
+  ],
+  "roleTokens": {
+    "background": "role.primary",
+    "text": "role.primary-foreground",
+    "border": "role.input",
+    "hoverSurface": "role.accent",
+    "hoverText": "role.accent-foreground",
+    "pressedOverlay": "role.pressed-overlay",
+    "focusRing": "role.ring",
+    "radius": "role.radius"
+  },
+  "usage": {
+    "when": "Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.",
+    "whenNot": "Navigating to another page, where a link is the correct element.",
+    "useInstead": [
+      {
+        "component": "InlineLink",
+        "reason": "navigation to another page"
+      }
+    ]
+  }
+}

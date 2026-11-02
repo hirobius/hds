@@ -1,0 +1,36 @@
+{
+  "component": "VisuallyHidden",
+  "description": "Renders its children off-screen (Tailwind `sr-only`) so they are announced by screen readers without occupying visual space — e.g. a text label for an icon-only control.",
+  "docsPage": "/docs/components/utilities",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "default": "span"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Give assistive technology a label or description that sighted people do not need to see.",
+    "whenNot": "Text everyone should read, or hiding an element from assistive technology too.",
+    "useInstead": [
+      {
+        "component": "Text",
+        "reason": "text that everyone should read"
+      }
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "component": "Disclosure",
+  "description": "Disclosure - compact disclosure surface for optional explanatory content.",
+  "docsPage": "/docs/components/disclosure",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-453",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "accent",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "contentStyle",
+      "type": "CSSProperties",
+      "optional": true
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "label",
+      "type": "ReactNode"
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "preview",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "triggerStyle",
+      "type": "CSSProperties",
+      "optional": true
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": ["panel", "nav", "card", "row"],
+      "default": "panel"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant=\"row\".",
+    "whenNot": "Content people must see, or switching between panels.",
+    "useInstead": [
+      {
+        "component": "Tabs",
+        "reason": "switching between panels of content"
+      }
+    ]
+  }
+}

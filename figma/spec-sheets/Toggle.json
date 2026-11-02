@@ -1,0 +1,47 @@
+{
+  "component": "Toggle",
+  "description": "Toggle — boolean on/off toggle with animated thumb.",
+  "docsPage": "/docs/components/toggle",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=37-19",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "checked",
+      "type": "boolean"
+    },
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "onChange",
+      "type": "(v: boolean) => void"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Switch one setting on or off, with the effect applying immediately.",
+    "whenNot": "A choice that only takes effect after submitting a form, or picking from several options.",
+    "useInstead": [
+      {
+        "component": "Checkbox",
+        "reason": "a form option confirmed on submit"
+      },
+      {
+        "component": "Radio",
+        "reason": "one choice from a set"
+      }
+    ]
+  }
+}

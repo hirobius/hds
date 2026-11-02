@@ -1,0 +1,89 @@
+{
+  "component": "Table",
+  "description": "Table - structured data table primitive for documentation and compact UI matrices.",
+  "docsPage": "/docs/components/table",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-300",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "caption",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "captionAction",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "columns",
+      "type": "TableColumn[]"
+    },
+    {
+      "name": "density",
+      "type": "enum",
+      "values": ["compact", "comfortable"],
+      "optional": true
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "emphasizeFirstColumn",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "flush",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "labelledBy",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "minWidth",
+      "type": "string | number",
+      "optional": true
+    },
+    {
+      "name": "rows",
+      "type": "TableRow[]"
+    },
+    {
+      "name": "stickyHeader",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show rows of structured data in aligned columns, with optional sorting.",
+    "whenNot": "A single record, a short list of links, or content that reflows as cards.",
+    "useInstead": [
+      {
+        "component": "Field",
+        "reason": "one record as label and value pairs"
+      },
+      {
+        "component": "Stack",
+        "reason": "a short list of items"
+      }
+    ]
+  }
+}

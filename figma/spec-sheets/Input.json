@@ -1,0 +1,189 @@
+{
+  "component": "Input",
+  "description": "Input — text field primitive with label, helper, and error slots.",
+  "docsPage": "/docs/components/input",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=38-20",
+  "anatomy": [
+    {
+      "part": "Root"
+    },
+    {
+      "part": "Label",
+      "figmaProperty": "Label",
+      "sourceProp": "label",
+      "type": "TEXT"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": [
+        {
+          "name": "bg",
+          "token": "component.input.bg",
+          "value": "#ffffff"
+        },
+        {
+          "name": "text",
+          "token": "component.input.text",
+          "value": "#0c111b"
+        },
+        {
+          "name": "border",
+          "token": "component.input.border",
+          "value": "#6f737b"
+        },
+        {
+          "name": "borderError",
+          "token": "component.input.borderError",
+          "value": "#b91c1c"
+        }
+      ]
+    },
+    {
+      "state": "focus",
+      "tokens": []
+    },
+    {
+      "state": "filled",
+      "tokens": []
+    },
+    {
+      "state": "error",
+      "tokens": []
+    },
+    {
+      "state": "disabled",
+      "tokens": []
+    },
+    {
+      "state": "loading",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "error",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "errorMessage",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "helperText",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "inputClassName",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "figmaProperty": "Label"
+    },
+    {
+      "name": "leadingVisual",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "prefix",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "size",
+      "type": "enum",
+      "values": ["sm", "md", "lg"],
+      "default": "md",
+      "figmaProperty": "Size"
+    },
+    {
+      "name": "suffix",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "textStyle",
+      "type": "enum",
+      "values": ["body", "mono"],
+      "default": "body"
+    },
+    {
+      "name": "trailingVisual",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "type",
+      "type": "enum",
+      "values": [
+        "text",
+        "email",
+        "password",
+        "search",
+        "tel",
+        "url",
+        "number",
+        "date",
+        "time",
+        "datetime-local"
+      ],
+      "default": "text"
+    }
+  ],
+  "roleTokens": {
+    "background": "role.background",
+    "text": "role.foreground",
+    "border": "role.input",
+    "borderError": "role.destructive",
+    "radius": "role.radius",
+    "focusRing": "role.ring",
+    "placeholder": "role.muted-foreground",
+    "helperText": "role.muted-foreground",
+    "errorText": "role.destructive",
+    "disabledBg": "role.muted",
+    "disabledText": "role.muted-foreground"
+  },
+  "usage": {
+    "when": "Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots.",
+    "whenNot": "Multi-line text, or choosing from a fixed list of options.",
+    "useInstead": [
+      {
+        "component": "Textarea",
+        "reason": "multi-line text"
+      },
+      {
+        "component": "Select",
+        "reason": "a short fixed list"
+      },
+      {
+        "component": "Combobox",
+        "reason": "a long fixed list that needs search"
+      }
+    ]
+  }
+}

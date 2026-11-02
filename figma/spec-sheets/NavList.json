@@ -1,0 +1,44 @@
+{
+  "component": "NavList",
+  "description": "A vertical list of rows (links, or buttons that select in place), one marked current. Rows hold rich content; hover fills with surface.hover; the current row holds the deeper surface.selected. Tagged here rather than in the file block because NavListItem shares this module and maps to its own Figma set through figma/mapping-overrides.json.",
+  "docsPage": "/docs/components/nav-list",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-26",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
+    "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
+    "useInstead": [
+      {
+        "component": "Tabs",
+        "reason": "switching between views on the same page"
+      },
+      {
+        "component": "Breadcrumb",
+        "reason": "showing where the current page sits in a hierarchy"
+      },
+      {
+        "component": "Menu",
+        "reason": "a list of actions rather than destinations"
+      }
+    ]
+  }
+}

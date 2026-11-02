@@ -1,0 +1,59 @@
+{
+  "component": "Pagination",
+  "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
+  "docsPage": "/docs/components/pagination",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "count",
+      "type": "number"
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Pagination"
+    },
+    {
+      "name": "onPageChange",
+      "type": "(page: number) => void"
+    },
+    {
+      "name": "page",
+      "type": "number"
+    },
+    {
+      "name": "siblingCount",
+      "type": "number",
+      "default": 1
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": ["default", "compact"],
+      "default": "default"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Move between pages of a long result set, with truncated page numbers.",
+    "whenNot": "A hierarchy trail, or a short list that fits on one page.",
+    "useInstead": [
+      {
+        "component": "Breadcrumb",
+        "reason": "a hierarchy trail"
+      }
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "component": "Divider",
+  "description": "Divider — semantic separator between content regions.",
+  "docsPage": "/docs/components/divider",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "orientation",
+      "type": "enum",
+      "values": ["horizontal", "vertical"],
+      "default": "horizontal"
+    },
+    {
+      "name": "spacing",
+      "type": "string | number",
+      "optional": true
+    },
+    {
+      "name": "strong",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": ["strong", "default"],
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Separate two blocks of content with a thin line.",
+    "whenNot": "Spacing alone would do, or the separation needs a container.",
+    "useInstead": [
+      {
+        "component": "Stack",
+        "reason": "gap-based spacing between siblings"
+      },
+      {
+        "component": "Surface",
+        "reason": "a bounded region with its own background"
+      }
+    ]
+  }
+}

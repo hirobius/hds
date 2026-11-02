@@ -1,0 +1,44 @@
+{
+  "component": "Breadcrumb",
+  "description": "Breadcrumb trail. Links route through the HDS router seam (plain anchors with no router, client-side nav when a router adapter is provided). The final item is marked aria-current=\"page\".",
+  "docsPage": "/docs/components/breadcrumb",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-159",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "BreadcrumbItem[]"
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Breadcrumb"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show where the current page sits in a hierarchy and link back up it.",
+    "whenNot": "Switching between sibling views, or stepping through pages of results.",
+    "useInstead": [
+      {
+        "component": "Tabs",
+        "reason": "switching between sibling views"
+      },
+      {
+        "component": "Pagination",
+        "reason": "stepping through pages of results"
+      }
+    ]
+  }
+}

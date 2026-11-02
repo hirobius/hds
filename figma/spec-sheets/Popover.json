@@ -1,0 +1,64 @@
+{
+  "component": "Popover",
+  "description": "Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+  "docsPage": "/docs/components/popover",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-32",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "optional": true
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "modal",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Anchor interactive content, such as a short form, a filter set or a picker, to a trigger people click to open.",
+    "whenNot": "A short label on hover or focus, a list of actions, or a decision that must block the page.",
+    "useInstead": [
+      {
+        "component": "Tooltip",
+        "reason": "a short label shown on hover or focus"
+      },
+      {
+        "component": "Menu",
+        "reason": "a list of actions"
+      },
+      {
+        "component": "Dialog",
+        "reason": "a decision that blocks the page"
+      }
+    ]
+  }
+}

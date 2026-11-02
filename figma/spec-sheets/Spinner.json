@@ -1,0 +1,46 @@
+{
+  "component": "Spinner",
+  "description": "Indeterminate spinner. Inherits the surrounding text color via currentColor.",
+  "docsPage": "/docs/components/spinner",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-106",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Loading"
+    },
+    {
+      "name": "size",
+      "type": "enum",
+      "values": ["sm", "md", "lg"],
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show that something is loading when the wait is short or has no measurable end.",
+    "whenNot": "A task with measurable progress, or a region whose layout is known.",
+    "useInstead": [
+      {
+        "component": "Progress",
+        "reason": "a task with measurable progress"
+      },
+      {
+        "component": "Skeleton",
+        "reason": "a region whose layout is known"
+      }
+    ]
+  }
+}
