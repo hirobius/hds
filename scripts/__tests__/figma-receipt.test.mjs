@@ -23,7 +23,7 @@ import { hdsChecksum, hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mj
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { applySnapshotDelta } from '../lib/figma-snapshot-delta.mjs';
 import { hdsSyncStamp } from '../lib/figma-sync-runtime.mjs';
-import { serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
+import { serializeSnapshotFile, tokensFileHash } from '../lib/figma-snapshot.mjs';
 import { planAgainstSnapshot, writePushArtifacts, writeSyncBundle } from '../figma-push.mjs';
 import { ingestReceipt } from '../figma-snapshot.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
@@ -378,7 +378,9 @@ describe('pnpm figma:snapshot --from-receipt', () => {
       const { checksum, outPath } = ingestReceipt({ root: s.root, files });
       expect(outPath).toBe(snapshotPath(s.root));
       expect(checksum).toBe(s.head().post);
-      expect(readFileSync(outPath, 'utf8')).toBe(serializeSnapshotFile(s.sync.result));
+      expect(readFileSync(outPath, 'utf8')).toBe(
+        serializeSnapshotFile({ ...s.sync.result, tokensHash: tokensFileHash(s.root) }),
+      );
 
       // The agent's commit gate: plain drift exits 0 AND the plan is 0 · 0 · 0.
       expect(runDriftCheck({ root: s.root })).toMatchObject({ exitCode: 0 });
