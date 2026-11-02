@@ -31,6 +31,7 @@ export const CODEMODS = Object.freeze({
   'hds-spacing-steps': { file: 'spacing-steps.mjs' },
   'hds-token-aliases': { file: 'token-aliases.mjs' },
   'hds-prop-map': { file: 'prop-map.mjs' },
+  'hds-token-keys': { file: 'token-keys.mjs' },
   'hds-css-vars': { file: 'css-vars.mjs' },
 });
 
@@ -44,7 +45,7 @@ const toPosix = (p) => p.split(sep).join('/');
  * @param {{ root: string, write?: boolean, skip?: string[], steps?: object[], child?: boolean, check?: boolean, dryRun?: boolean }} options
  *   In-process: `write` writes the edits, `skip` lists absolute directories not
  *   to enter, `steps` are the ledger steps that name the codemod (a
- *   ledger-driven one such as hds-prop-map takes its rules from them; the
+ *   ledger-driven one such as hds-prop-map or hds-token-keys takes its rules from them; the
  *   others ignore them). As a child: `check` / `dryRun` pass the flags of the same name.
  */
 export async function runCodemod(name, options) {
@@ -55,7 +56,7 @@ export async function runCodemod(name, options) {
   }
   const file = join(HERE, CODEMODS[name].file);
   if (options.child) {
-    // A child run gets no `steps`: hds-prop-map then reads the steps this
+    // A child run gets no `steps`: a ledger-driven codemod then reads the steps this
     // package ships, as the bin run alone does (--ledger names another file).
     const args = [file, '--root', options.root];
     if (options.check) args.push('--check');

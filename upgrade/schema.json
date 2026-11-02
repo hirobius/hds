@@ -487,6 +487,17 @@
           "additionalProperties": false,
           "description": "The component prop a prop step is about (hds#461), with what the prop-map codemod rewrites it to."
         },
+        "tokens": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1,
+          "description": "For a step the hds-token-keys codemod applies (hds#955): each JS token path it moved, under hds. and without that prefix (density.md), mapped to the path to read instead (semantic.space.scale.sm)."
+        },
         "facts": {
           "description": "The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.",
           "minItems": 1,
@@ -779,6 +790,17 @@
           ],
           "additionalProperties": false,
           "description": "The component prop a prop step is about (hds#461), with what the prop-map codemod rewrites it to."
+        },
+        "tokens": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 1,
+          "description": "For a step the hds-token-keys codemod applies (hds#955): each JS token path it moved, under hds. and without that prefix (density.md), mapped to the path to read instead (semantic.space.scale.sm)."
         },
         "facts": {
           "description": "The ids of the snapshot-diff facts this step accounts for (scripts/upgrade/diff.mjs), such as removed:.:IconButton.",
