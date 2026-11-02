@@ -51,7 +51,7 @@ Hand-kept, but a gate compares it with the code.
 Written by a person; the registry carries when it was last re-read. `pnpm check:state-surfaces` warns "review due" past the re-read window and fails under `--strict-review`.
 
 - `status.json` (focus, phase, note): Where the repo is heading: focus, phase and note (v2 shape; ops derives release, next and blocked live). Reviewed 2026-10-12, re-read within 45 days.
-- `README.md` (prose): What HDS is, how to install it and use it (prose). Reviewed 2026-10-12, re-read within 90 days.
+- `README.md` (prose): What HDS is, how to install it and use it (prose). Reviewed 2026-11-02, re-read within 90 days.
 - `DESIGN.source.md`: Narrative rules of the visual spec (the editable source of DESIGN.md). Reviewed 2026-10-12, re-read within 90 days.
 - `DESIGN-HANDOFF.md` (manual sections): Hand-written sections around the generated token tables. Reviewed 2026-10-12, re-read within 90 days.
 - `MIGRATIONS.md`: How HDS deprecates and removes public API, and the removals shipped so far. Reviewed 2026-10-12, re-read within 90 days.

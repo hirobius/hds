@@ -35,6 +35,20 @@ AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled 
   - onOpenChange: ((open: boolean) => void)
   - open: boolean
 
+### AppShell
+AppShell — the app frame for web apps: header, sidebar, main and an optional aside (hds#875).
+  - aside: ReactNode
+  - asideLabel: string = Details
+  - children: ReactNode
+  - className: string
+  - collapsed: boolean
+  - defaultCollapsed: boolean = false
+  - header: ReactNode
+  - onCollapsedChange: ((collapsed: boolean) => void)
+  - persistKey: string
+  - sidebar: ReactNode | ((state: AppShellSidebarState) => ReactNode)
+  - sidebarLabel: string = Main
+
 ### AssetImg
 AssetImg - responsive asset frame with fallback placeholder handling. Contexts: default, lightbox, and detail.
   - alt: string
@@ -378,6 +392,7 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - className: string
   - description: ReactNode
   - icon: LucideIcon
+  - italic: boolean = true
   - title: ReactNode
 
 ### Field

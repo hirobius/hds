@@ -1,0 +1,1 @@
+- Release gate (hds#801): `pnpm release` runs `pnpm check:figma-release` and refuses to publish while Figma drifts from code or `hirobius.tokens.json` no longer matches the snapshot's `tokensHash` (recorded at ingest; no git history needed).

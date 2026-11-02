@@ -1,6 +1,7 @@
 {
   "$comment": "hds#762 ratchet: the docs coverage gaps on the day the gate landed (scripts/check-docs-coverage.mjs). Entries may only be removed: fill a gap, then delete its line. A new gap is never added here.",
   "gaps": [
+    "AppShell:no-figma-link",
     "Grid:no-figma-link",
     "InlineCode:no-page",
     "InlineCode:no-demo",

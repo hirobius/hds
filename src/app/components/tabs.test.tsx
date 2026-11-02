@@ -179,3 +179,19 @@ describe('TabsContent variant (hds#819)', () => {
       expect(cls()).not.toContain(c);
   });
 });
+
+describe('TabsContent change cue (hds#938)', () => {
+  it('every panel carries the change-cue class, for both variants', () => {
+    render(
+      <Tabs defaultValue="a">
+        <TabsList aria-label="Sections">
+          <TabsTrigger value="a">One</TabsTrigger>
+        </TabsList>
+        <TabsContent value="a" variant="bare">
+          A
+        </TabsContent>
+      </Tabs>,
+    );
+    expect(screen.getByRole('tabpanel').className.split(/\s+/)).toContain('hds-tabs-content');
+  });
+});

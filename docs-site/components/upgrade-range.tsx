@@ -32,25 +32,31 @@ export function UpgradeRangeView({
   releases,
   latest,
   floor,
+  buildLabel,
 }: {
   releases: LedgerRelease[];
   latest: string;
   floor: string;
+  /** `<last release>+main <sha>` for the header (hds#464); omitted off the page. */
+  buildLabel?: string;
 }) {
   const [range, setRange] = useState<{ from: string | null; to: string | null } | null>(null);
+  const [cssOnly, setCssOnly] = useState(false);
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     setRange({ from: q.get('from'), to: q.get('to') ?? latest });
+    setCssOnly(q.get('css') === '1');
   }, [latest]);
 
   const versions = releases
     .map((r) => r.version)
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-  const r = range ? upgradeRange(releases, range.from, range.to) : null;
+  const r = range ? upgradeRange(releases, range.from, range.to, { cssOnly }) : null;
 
   return (
     <article className="hds-upgrade-page">
       <h1>Upgrade steps</h1>
+      {buildLabel ? <p className="hds-upgrade-build">Docs build {buildLabel}</p> : null}
       <form className="hds-upgrade-form" method="get">
         <label>
           From
@@ -69,6 +75,16 @@ export function UpgradeRangeView({
           </select>
         </label>
         <button type="submit">Show steps</button>
+        <label className="hds-upgrade-css-toggle">
+          <input
+            type="checkbox"
+            name="css"
+            value="1"
+            checked={cssOnly}
+            onChange={(e) => setCssOnly(e.target.checked)}
+          />
+          CSS only — hide steps that need the JavaScript package
+        </label>
       </form>
       <p>Run this first; it applies the codemods and lists what is left:</p>
       <pre>

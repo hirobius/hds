@@ -7,13 +7,25 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import { findViolationsInText, SPACING_KEYS } from '../check-spacing-vocabulary.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+import {
+  expectCleanRun,
+  expectInPreCommit,
+  expectNoViolations,
+  fixtureRunner,
+  registryEntry,
+  ROOT,
+  runExemptionsOn,
+  runGate,
+} from './helpers/gate-runner.mjs';
+
+const runOn = fixtureRunner(
+  'scripts/check-spacing-vocabulary.mjs',
+  'fixtures/check-spacing-vocabulary',
+);
 
 describe('SPACING_KEYS', () => {
   it('covers the full box-sx.ts spacing shorthand set', () => {
@@ -305,8 +317,7 @@ describe('the gate documents what it does not follow', () => {
   const header = readFileSync(join(ROOT, 'scripts/check-spacing-vocabulary.mjs'), 'utf8').split(
     '*/',
   )[1];
-  const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
-  const entry = registry.gates.find((g) => g.id === 'check-spacing-vocabulary');
+  const entry = registryEntry('check-spacing-vocabulary');
 
   it('names an sx array as a limit, with the type that rejects it, in the header and the registry', () => {
     expect(header).toMatch(/sx=\{\[/);
@@ -327,9 +338,7 @@ describe('the gate documents what it does not follow', () => {
 
 describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', () => {
   it('is error severity and fires at pre-commit in the registry', () => {
-    const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
-    const entry = registry.gates.find((g) => g.id === 'check-spacing-vocabulary');
-    expect(entry).toMatchObject({
+    expect(registryEntry('check-spacing-vocabulary')).toMatchObject({
       severity: 'error',
       firingChannel: 'pre-commit',
       firingChannels: ['pre-commit'],
@@ -337,20 +346,11 @@ describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', ()
   });
 
   it('runs in .husky/pre-commit', () => {
-    const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
-    expect(hook).toMatch(/^node scripts\/check-spacing-vocabulary\.mjs$/m);
+    expectInPreCommit('scripts/check-spacing-vocabulary.mjs');
   });
 
   it('reports its findings as errors and exits 1 on the violating fixture', () => {
-    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs', '--json'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        HDS_FIXTURE_MODE: '1',
-        FIXTURE_FILE: 'fixtures/check-spacing-vocabulary/violating.example.tsx',
-      },
-    });
+    const run = runOn('violating.example.tsx');
     expect(run.status).toBe(1);
     const { violations } = JSON.parse(run.stdout);
     expect(violations.map((v) => v.message.split(' ')[0])).toEqual([
@@ -368,26 +368,13 @@ describe('the gate blocks (hds#206: promoted from warn once src/ was clean)', ()
   });
 
   it('exits 0 on the passing fixture, where an inner same-name object shadows an integer one', () => {
-    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs', '--json'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        HDS_FIXTURE_MODE: '1',
-        FIXTURE_FILE: 'fixtures/check-spacing-vocabulary/passing.example.tsx',
-      },
-    });
-    expect(JSON.parse(run.stdout).violations).toEqual([]);
-    expect(run.status).toBe(0);
+    const run = runOn('passing.example.tsx');
+    expectNoViolations(run);
   });
 
   it('finds nothing in src/ (pnpm test runs this in CI, where the hook does not)', () => {
-    const run = spawnSync(process.execPath, ['scripts/check-spacing-vocabulary.mjs'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-    });
-    expect(run.stderr).toBe('');
-    expect(run.status).toBe(0);
+    const run = runGate('scripts/check-spacing-vocabulary.mjs');
+    expectCleanRun(run);
   });
 });
 
@@ -395,15 +382,7 @@ describe('its exemption marker (hds#206)', () => {
   it('is one check-exemptions knows, so pnpm check does not reject it', () => {
     // check:full runs check-exemptions over src/ and scripts/, and an unknown
     // `*-ok:` marker fails it. This gate documents `spacing-vocab-ok`.
-    const run = spawnSync(process.execPath, ['scripts/check-exemptions.mjs'], {
-      cwd: ROOT,
-      encoding: 'utf8',
-      env: {
-        ...process.env,
-        HDS_FIXTURE_MODE: '1',
-        FIXTURE_FILE: 'scripts/check-spacing-vocabulary.mjs',
-      },
-    });
+    const run = runExemptionsOn('scripts/check-spacing-vocabulary.mjs');
     expect(run.stderr).not.toMatch(/unknown exemption marker "spacing-vocab-ok"/);
     expect(run.status).toBe(0);
   });

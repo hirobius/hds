@@ -17,11 +17,14 @@
       animation-timeline: view();
       animation-range: entry 0% entry 60%;
     }
+    .hds-reveal:is([data-reveal='fade-up'], [data-reveal='fade-down']) {
+      animation-name: hds-reveal-fade-y;
+    }
     .hds-reveal[data-reveal='fade-up'] {
-      animation-name: hds-reveal-fade-up;
+      --hds-reveal-offset: var(--semantic-motion-distance);
     }
     .hds-reveal[data-reveal='fade-down'] {
-      animation-name: hds-reveal-fade-down;
+      --hds-reveal-offset: calc(-1 * var(--semantic-motion-distance));
     }
     .hds-reveal[data-reveal='scale'] {
       animation-name: hds-reveal-scale;
@@ -37,22 +40,11 @@
     opacity: 1;
   }
 }
-@keyframes hds-reveal-fade-up {
+/* fade-up and fade-down: the direction comes from --hds-reveal-offset. */
+@keyframes hds-reveal-fade-y {
   from {
     opacity: 0;
-    transform: translateY(var(--semantic-motion-distance)); /* css-ok: token-bound reveal offset */
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes hds-reveal-fade-down {
-  from {
-    opacity: 0;
-    transform: translateY(
-      calc(-1 * var(--semantic-motion-distance))
-    ); /* css-ok: token-bound reveal offset */
+    transform: translateY(var(--hds-reveal-offset)); /* css-ok: token-bound reveal offset */
   }
   to {
     opacity: 1;

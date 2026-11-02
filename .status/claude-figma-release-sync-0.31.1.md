@@ -1,0 +1,1 @@
+- 2026-10-23 · Figma release sync 0.31.1: delta push created `link/underlineThickness` in the library (2VgBbVpKiDnu0aftJEVyBQ); snapshot rebuilt from the receipt, drift 0, plan 0/0/0. Component audit: no manifest axis or enum changes since 0.31.0. `underlineOffset` (em) is not a Figma variable. Library needs publishing in Figma.

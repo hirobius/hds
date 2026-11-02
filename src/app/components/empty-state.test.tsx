@@ -74,4 +74,17 @@ describe('EmptyState', () => {
       true,
     );
   });
+
+  it('sets the title in italic by default', () => {
+    const { container } = render(<EmptyState title="No snippets yet" />);
+    const root = container.querySelector('[data-hds-component="EmptyState"]');
+    expect(root?.classList.contains('italic')).toBe(true);
+  });
+
+  it('sets the title upright with italic={false} (hds#863)', () => {
+    const { container } = render(<EmptyState title="No snippets yet" italic={false} />);
+    const root = container.querySelector('[data-hds-component="EmptyState"]');
+    expect(root?.classList.contains('italic')).toBe(false);
+    expect(root?.classList.contains('not-italic')).toBe(true);
+  });
 });

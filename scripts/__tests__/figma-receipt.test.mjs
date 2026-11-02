@@ -23,7 +23,7 @@ import { hdsChecksum, hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mj
 import { buildPushPayload } from '../lib/figma-scripts.mjs';
 import { applySnapshotDelta } from '../lib/figma-snapshot-delta.mjs';
 import { hdsSyncStamp } from '../lib/figma-sync-runtime.mjs';
-import { serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
+import { serializeSnapshotFile, tokensFileHash } from '../lib/figma-snapshot.mjs';
 import { planAgainstSnapshot, writePushArtifacts, writeSyncBundle } from '../figma-push.mjs';
 import { ingestReceipt } from '../figma-snapshot.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
@@ -54,10 +54,9 @@ const commitSnapshot = async (root, figma) =>
   writeFileSync(snapshotPath(root), serializeSnapshotFile(await hdsRunSnapshot(figma)));
 const readFiles = (dir) =>
   Object.fromEntries(
-    ['manifest.json', 'code.js', 'ui.html'].map((name) => [
-      name,
-      readFileSync(join(dir, name), 'utf8'),
-    ]),
+    ['manifest.json', 'code.js', 'ui.html', 'model.json']
+      .filter((name) => existsSync(join(dir, name)))
+      .map((name) => [name, readFileSync(join(dir, name), 'utf8')]),
   );
 const pushModel = async (figma) => {
   const { payload, checksum } = buildPushPayload(fixtureModel());
@@ -378,7 +377,9 @@ describe('pnpm figma:snapshot --from-receipt', () => {
       const { checksum, outPath } = ingestReceipt({ root: s.root, files });
       expect(outPath).toBe(snapshotPath(s.root));
       expect(checksum).toBe(s.head().post);
-      expect(readFileSync(outPath, 'utf8')).toBe(serializeSnapshotFile(s.sync.result));
+      expect(readFileSync(outPath, 'utf8')).toBe(
+        serializeSnapshotFile({ ...s.sync.result, tokensHash: tokensFileHash(s.root) }),
+      );
 
       // The agent's commit gate: plain drift exits 0 AND the plan is 0 · 0 · 0.
       expect(runDriftCheck({ root: s.root })).toMatchObject({ exitCode: 0 });
@@ -470,7 +471,14 @@ describe('the promote plugin clears the Sync receipt', () => {
     figma.command = command;
     figma.showUI = () => {};
     figma.closePlugin = () => {};
-    figma.ui = { postMessage: (message) => posted.push(message), onmessage: null };
+    // Plan and Push ask the window for model.json (hds#397); answer as the window does.
+    figma.ui = {
+      postMessage: (message) =>
+        message && message.ask === 'model'
+          ? setTimeout(() => figma.ui.onmessage({ type: 'model', text: files['model.json'] }), 0)
+          : posted.push(message),
+      onmessage: null,
+    };
     vm.runInNewContext(files['code.js'], { figma, __html__: files['ui.html'] });
     for (let i = 0; i < 400 && posted.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
     return JSON.parse(JSON.stringify(posted[0]));

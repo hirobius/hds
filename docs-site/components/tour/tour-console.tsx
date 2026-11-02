@@ -39,7 +39,7 @@ import {
   ToastProvider,
   VisuallyHidden,
 } from '@hirobius/design-system';
-import { Page, PageHeader } from '@hirobius/design-system/patterns';
+import { AppShell, Page, PageHeader } from '@hirobius/design-system/patterns';
 import { Search } from '@hirobius/design-system/icons';
 import type { TourData } from '../../lib/tour-data';
 import { TOUR_SECTIONS } from '../../lib/tour-sections';
@@ -94,7 +94,8 @@ export function TourConsole({ data }: { data: TourData }) {
     <HdsThemeProvider className="hds-tour">
       <HdsRouterProvider adapter={adapter}>
         <ToastProvider>
-          <Surface padding="none" overflow="visible">
+          {/* A plain frame, not a Surface: the cards inside must not sit in a card (hds#1046). */}
+          <Box>
             <Pin>
               <Surface padding="item">
                 <Switcher gap="tight">
@@ -230,12 +231,24 @@ export function TourConsole({ data }: { data: TourData }) {
                         The bar above stays pinned while you scroll. The rail on the left collapses
                         under the content on a phone.
                       </Text>
+                      <Box sx={{ height: '20rem', overflow: 'auto' }}>
+                        <AppShell
+                          header={<Text variant="ui">Console</Text>}
+                          sidebarLabel="Console frame"
+                          sidebar={<Text variant="caption">Overview</Text>}
+                        >
+                          <Text variant="ui">
+                            AppShell is the same frame as one component: a rail from lg, a menu
+                            sheet below it.
+                          </Text>
+                        </AppShell>
+                      </Box>
                     </TourBlock>
                   </Stack>
                 </Page>
               </Container>
             </Sidebar>
-          </Surface>
+          </Box>
         </ToastProvider>
       </HdsRouterProvider>
     </HdsThemeProvider>

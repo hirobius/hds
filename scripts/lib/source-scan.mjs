@@ -319,9 +319,12 @@ export function isFixtureRun(argv, env = process.env) {
  *
  * Human shape: `[ok] <gate>: <ok>` when clean, else
  * `\n✗ <gate>: <n> <noun(n)>\n`, then `  file:line  [rule] message` and
- * `    sample` per violation, then each `fix` line on stderr.
+ * `    sample` per violation, then each `fix` line on stderr. A file-level
+ * violation (no `line`, no `sample`, e.g. a token-file check) prints `  file  [rule] message`.
+ * A violation's optional `extra` object is spread into its JSON entry between
+ * `message` and `sample` (check-hardcoded-spacing keeps its `prop`/`value`).
  *
- * @param {Array<{file:string,line:number,rule:string,message:string,sample:string}>} violations
+ * @param {Array<{file:string,line?:number|null,rule:string,message:string,sample?:string,extra?:object}>} violations
  * @param {boolean} jsonMode
  * @param {{ gate: string, ok: string, noun: (n: number) => string, fix: string[] }} opts
  * @returns {0|1}
@@ -337,6 +340,7 @@ export function reportLineViolations(violations, jsonMode, { gate, ok, noun, fix
           rule: v.rule,
           severity: 'error',
           message: v.message,
+          ...v.extra,
           sample: v.sample,
         })),
         summary: { total: violations.length },
@@ -352,9 +356,40 @@ export function reportLineViolations(violations, jsonMode, { gate, ok, noun, fix
   }
   console.error(`\n✗ ${gate}: ${violations.length} ${noun(violations.length)}\n`);
   for (const v of violations) {
-    console.error(`  ${v.file}:${v.line}  [${v.rule}] ${v.message}`);
-    console.error(`    ${v.sample}`);
+    console.error(`  ${v.file}${v.line ? `:${v.line}` : ''}  [${v.rule}] ${v.message}`);
+    if (v.sample) console.error(`    ${v.sample}`);
   }
   for (const line of fix) console.error(line);
   return 1;
+}
+
+/**
+ * Emit a gate's violations as-is in the standard JSON payload
+ * (`{ violations, summary: { total }, ok }`) and return the exit code; the
+ * caller exits. For gates whose violations carry their own severity and
+ * extra fields (check-style-discipline, check-typography-discipline; hds#1010).
+ *
+ * @param {object[]} violations
+ * @returns {0|1}
+ */
+export function emitViolationsJson(violations) {
+  const ok = violations.length === 0;
+  emitResult({ violations, summary: { total: violations.length }, ok }, true);
+  return ok ? 0 : 1;
+}
+
+/**
+ * Group violations by `rule`, keeping first-seen rule order (hds#1010).
+ *
+ * @template {{ rule: string }} V
+ * @param {V[]} violations
+ * @returns {Map<string, V[]>}
+ */
+export function groupByRule(violations) {
+  const byRule = new Map();
+  for (const v of violations) {
+    if (!byRule.has(v.rule)) byRule.set(v.rule, []);
+    byRule.get(v.rule).push(v);
+  }
+  return byRule;
 }

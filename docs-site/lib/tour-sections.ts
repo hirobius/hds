@@ -22,6 +22,7 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'HdsRouterProvider',
       'HdsThemeProvider',
       'ToastProvider',
+      'AppShell',
       'Page',
       'Pin',
       'Sidebar',

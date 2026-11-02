@@ -24,6 +24,27 @@ export interface UpgradeRange {
 const cmp = (a: string, b: string) => a.localeCompare(b, undefined, { numeric: true });
 const GONE = new Set(['removed', 'moved', 'renamed', 'folded']);
 const SILENT = new Set(['none', 'additive']);
+
+/**
+ * The steps a CSS-only consumer still needs (hds#464): people who take the
+ * stylesheets and variables without the JavaScript package. A `value-changed`
+ * step's subject is a CSS variable (218 of 220 in the ledger; the other two
+ * are the token files those variables are generated from), and a `look` step
+ * is a visual change those styles produce. Every other kind names a JS
+ * export, prop, behaviour or dependency, so it is a JS-only step.
+ */
+export const isCssStep = (s: LedgerStep): boolean =>
+  s.kind === 'look' || s.kind === 'value-changed';
+
+/**
+ * The build line for the page header: `<last release>+main <sha>`, because the
+ * hosted docs build from main, not from a release (hds#464). The sha is
+ * shortened to 7 characters, git's short form; with no sha known (a build
+ * outside a git checkout or host), the label ends at `+main`.
+ */
+export const formatBuildLabel = (latest: string, sha?: string | null): string =>
+  sha ? `${latest}+main ${sha.slice(0, 7)}` : `${latest}+main`;
+
 const empty = (error?: string): UpgradeRange => ({
   error,
   releases: [],
@@ -37,6 +58,7 @@ export function upgradeRange(
   all: LedgerRelease[],
   from: string | null | undefined,
   to: string | null | undefined,
+  opts?: { cssOnly?: boolean },
 ): UpgradeRange {
   if (!from || !to) return empty('Add ?from=<your version>&to=<target version> to the address.');
   if (!all.some((r) => r.version === to)) return empty(`No release ledger for ${to}.`);
@@ -49,7 +71,8 @@ export function upgradeRange(
   out.error = undefined;
   out.releases = releases;
   const codemods = new Map<string, RangeCodemod>();
-  for (const s of releases.flatMap((r) => r.steps)) {
+  const steps = releases.flatMap((r) => r.steps);
+  for (const s of opts?.cssOnly ? steps.filter(isCssStep) : steps) {
     if (s.auto) {
       const command = [s.auto.codemod, ...s.auto.args].join(' ');
       const c = codemods.get(command) ?? { command, steps: [] };

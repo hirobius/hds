@@ -285,6 +285,16 @@
       "supportsJson": true
     },
     {
+      "id": "check-figma-release",
+      "description": "Release gate (hds#801): `pnpm release` (the script release.yml publishes through) refuses to publish while Figma is behind code. Fails on any drift between the model built from hirobius.tokens.json and figma/snapshot.json (unlike check-figma-drift --ci, which only fails on drift a push cannot explain), on a snapshot with no tokensHash (the sha256 of hirobius.tokens.json when it was ingested, recorded by `pnpm figma:snapshot --ingest`; a hash, not a commit, because squash merges leave branch commits unreachable from main), and when hirobius.tokens.json no longer hashes to tokensHash. The message names the drift and the fix: run figma/push delta.js through use_figma, take a snapshot, then pnpm figma:snapshot --ingest. scripts/__tests__/check-figma-release.test.mjs covers pass and each failure. Not in pretest: it is meant to block a publish, not a branch.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-release.mjs",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": false
+    },
+    {
       "id": "check-figma-retired-keys",
       "description": "Rejects every link from code to a Figma file that is not the HDS library (ADR-026, amended 2026-10-07): a retired file (figma/links.json retiredFiles: the old library, retired 2026-10-07 when its duplicate became the one HDS library) or HDS Staging (stagingFileKey, the draft workbench of amendment A4: a shipped component links its library node, never its staging draft). Scans src (@figma tags, Code Connect templates), public (the manifest figmaUrl), docs data (sync-map, DESIGN_LINKS.md, the shipped docs/CONSUMING.md), figma data (disposition, inventory, Code Connect registry), mcp/ and content/docs, and the files the package ships from the repo root (README.md, llms.txt, DESIGN.md, AGENTS.md, CONSUMING.md). ERROR on any finding, naming file, line and kind (retired or staging) with the fix for each; figma/links.json and prose (ADRs, figma/*.md, where the drawing recipe names the workbench) are not scanned, and a missing scan root, shipped root file or retiredFiles list, or a staging key that is the library's, fails loudly. FIXTURE_DIR runs it on fixtures/check-figma-retired-keys. Also runs in pnpm test through scripts/__tests__/check-figma-retired-keys.test.mjs, whose real-tree case gates the repo.",
       "severity": "error",

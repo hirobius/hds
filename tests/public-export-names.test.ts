@@ -205,7 +205,8 @@ describe('/patterns export names', () => {
   const names = exports.map((s) => s.name);
 
   it('no longer exports the hds#394 wave 4a pattern components (removed in 0.20.0)', () => {
-    for (const gone of WAVE_4A_PATTERNS) {
+    // AppShell is back in /patterns as a new component with its own API (hds#875).
+    for (const gone of WAVE_4A_PATTERNS.filter((n) => n !== 'AppShell')) {
       expect(names, `${gone} is still exported from /patterns`).not.toContain(gone);
     }
   });

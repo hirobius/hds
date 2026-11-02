@@ -170,7 +170,7 @@
   --hds-anim-enter: var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing);
   --hds-anim-entrance: var(--hds-motion-expressive-duration) var(--hds-motion-expressive-easing);
   --hds-anim-skeleton: var(--hds-motion-spatial-duration) ease-in-out infinite;
-  --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) var(--hds-motion-expressive-easing);
+  --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) linear;
 
   /* -- Accent ramp (blue scale aliases — raw stop access) --------------------- */
   --hds-accent-50: var(--primitive-color-blue-50);
@@ -365,6 +365,11 @@
 .hds-slider-input {
   appearance: none;
   -webkit-appearance: none;
+  /* Shared by the -webkit and -moz thumbs: vendor pseudo-elements cannot share
+   * one selector list, so the common values ride on custom properties. */
+  --hds-slider-thumb-transition:
+    transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
+    background-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
 }
 
 .hds-slider-input::-webkit-slider-runnable-track {
@@ -372,17 +377,18 @@
   background: transparent;
 }
 
+/* jscpd:ignore-start -- the -webkit and -moz thumbs must repeat these declarations:
+ * a selector list mixing vendor pseudo-elements is dropped whole. */
 .hds-slider-input::-webkit-slider-thumb {
   -webkit-appearance: none;
+  margin-top: calc((var(--primitive-space-1) - var(--primitive-size-16)) / 2);
   width: var(--primitive-size-16);
   height: var(--primitive-size-16);
-  margin-top: calc((var(--primitive-space-1) - var(--primitive-size-16)) / 2);
   border-radius: var(--primitive-radius-full);
   border: none;
   background: var(--semantic-color-surface-accent);
-  transition:
-    transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
-    background-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+  transition: var(--hds-slider-thumb-transition);
+  transform: scale(var(--hds-slider-thumb-scale, 1));
 }
 
 .hds-slider-input::-moz-range-track {
@@ -397,19 +403,17 @@
   border-radius: var(--primitive-radius-full);
   border: none;
   background: var(--semantic-color-surface-accent);
-  transition:
-    transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
-    background-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+  transition: var(--hds-slider-thumb-transition);
+  transform: scale(var(--hds-slider-thumb-scale, 1));
+}
+/* jscpd:ignore-end */
+
+.hds-slider-input:is(:hover, :focus-visible) {
+  --hds-slider-thumb-scale: 1.08;
 }
 
-.hds-slider-input:is(:hover, :focus-visible)::-webkit-slider-thumb,
-.hds-slider-input:is(:hover, :focus-visible)::-moz-range-thumb {
-  transform: scale(1.08);
-}
-
-.hds-slider-input:active::-webkit-slider-thumb,
-.hds-slider-input:active::-moz-range-thumb {
-  transform: scale(1.14);
+.hds-slider-input:active {
+  --hds-slider-thumb-scale: 1.14;
 }
 
 /* -- Slider touch target (WCAG 2.5.8) ---------------------------------------
@@ -443,6 +447,28 @@
   animation: hds-skeleton-shimmer var(--hds-anim-skeleton);
   /* sunken, not raised: a placeholder on a Card or Surface (raised) must differ from it */
   background: var(--semantic-color-surface-sunken);
+}
+
+/* Tabs change cue (hds#938): the panel that becomes active fades and rises in on the
+ * productive motion token; static under reduced motion. */
+@keyframes hds-tabs-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--primitive-space-1));
+  }
+}
+
+@layer components {
+  .hds-tabs-content[data-state='active'] {
+    animation: hds-tabs-enter var(--hds-motion-productive-duration)
+      var(--hds-motion-productive-easing);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hds-tabs-content {
+      animation: none;
+    }
+  }
 }
 
 /* --- Sheet (hds#690) ----------------------------------------------------------

@@ -50,6 +50,74 @@
       "default": null
     }
   },
+  "AppShell": {
+    "aside": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "asideLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Details"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "collapsed": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultCollapsed": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "header": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onCollapsedChange": {
+      "type": "((collapsed: boolean) => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "persistKey": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "sidebar": {
+      "type": "ReactNode | ((state: AppShellSidebarState) => ReactNode)",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "sidebarLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Main"
+    }
+  },
   "AssetImg": {
     "alt": {
       "type": "string",
@@ -1547,6 +1615,12 @@
       "optional": true,
       "values": null,
       "default": null
+    },
+    "italic": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "true"
     },
     "title": {
       "type": "ReactNode",

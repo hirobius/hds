@@ -123,6 +123,34 @@ creates a containing block or stacking context (`transform`, `filter`, `z-index`
 element so `position: fixed` overlays still cover the viewport. Scoping at
 `<html>` still works. See [ADR-016](adr/016-scoped-base-styles.md).
 
+The four theming dials (theme, density, brand, font) can be set on that same
+scope element:
+
+```html
+<!-- zero-JS: static markup (e.g. an Astro layout) -->
+<div
+  data-hds
+  data-theme="dark"
+  data-density="compact"
+  data-brand="acme"
+  style="--hds-font-family: 'Inter', sans-serif"
+>
+  …
+</div>
+```
+
+React apps can set the same contract declaratively with the typed
+`<HdsThemeProvider>` (renders the `data-hds` scope wrapper) and read it back
+with `useHdsTheme()`. The provider is optional:
+
+```tsx
+import { HdsThemeProvider } from '@hirobius/design-system';
+
+<HdsThemeProvider theme="dark" density="compact" brand="acme">
+  <App />
+</HdsThemeProvider>;
+```
+
 ## 5. Routing — optional, via the adapter seam
 
 HDS components never import a router. Navigation comes from an injectable
@@ -242,7 +270,7 @@ export function Example() {
 | `@hirobius/design-system/brand`           | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                   |
 | `@hirobius/design-system/scroll`          | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                            |
 | `@hirobius/design-system/static.css`      | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag` classes, no React (see §14)                                                                                                           |
-| `@hirobius/design-system/patterns`        | The 13 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
+| `@hirobius/design-system/patterns`        | The 14 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                               |
 | `@hirobius/design-system/icons`           | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                      |
 | `@hirobius/design-system/eslint-plugin`   | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                             |
 | `@hirobius/design-system/tailwind-preset` | The Tailwind theme preset (CommonJS): HDS role colors, radii, shadows and spacing as theme keys, for an app that compiles its own Tailwind (see below)                                                                                  |
