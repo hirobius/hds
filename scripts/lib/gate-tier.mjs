@@ -98,3 +98,20 @@ export function planGate(tier, files) {
   if (code.length) cmds.push(`pnpm exec vitest related --run --passWithNoTests ${code.join(' ')}`);
   return cmds;
 }
+
+/** The hook line that hands off to the tiered gate. */
+export const TIERED_GATE_SCRIPT = 'scripts/pre-push-gate.mjs';
+
+/**
+ * The commands a pre-push hook can run, with the tiered gate expanded to its full tier.
+ * Wiring checks read this instead of the raw hook: `node scripts/pre-push-gate.mjs` runs
+ * `pnpm test` (and every gate reachable from it) whenever a diff needs the full tier,
+ * so a gate wired through `pnpm test` stays counted as wired. Nothing is added when the
+ * hook does not call the tiered gate.
+ * @param {string} hookContent raw .husky/pre-push text
+ * @returns {string}
+ */
+export function expandPrePushHook(hookContent) {
+  if (!hookContent.includes(TIERED_GATE_SCRIPT)) return hookContent;
+  return `${hookContent}\n# ${TIERED_GATE_SCRIPT} full tier:\n${planGate('full', []).join('\n')}\n`;
+}

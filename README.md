@@ -207,7 +207,7 @@ The governing direction is "Editorial Enterprise": enterprise rigor with editori
 The gates are deterministic and need no browser or live site:
 
 - **pre-commit** (`.husky/pre-commit`): secrets scan (when `gitleaks` is installed locally), Prettier on staged files, typecheck, zero-warning ESLint, and token validity and contrast.
-- **pre-push** (`.husky/pre-push`): `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck).
+- **pre-push** (`.husky/pre-push`): the tiered gate (`scripts/pre-push-gate.mjs`; full tier: `pnpm check:fast`, `pnpm test` (the pretest gates, then Vitest unit and contract tests), then the consumer smoke build (library build, subpath resolution, publint, consumer typecheck); smaller diffs run a lighter tier, see `scripts/lib/gate-tier.mjs`).
 - **CI** (`.github/workflows/ci.yml`): a gitleaks scan over the full history, the pre-push checks, plus bundle budgets and the docs-site build with its axe gate.
 - **Visual review:** the docs site (`docs-site/`) is the visual verification surface: every core component and pattern has a page with a live demo, `check-docs-axe` gates its accessibility.
 
