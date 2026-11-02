@@ -7,13 +7,14 @@
  * @useInstead Tabs switching between views on the same page
  * @useInstead Breadcrumb showing where the current page sits in a hierarchy
  * @useInstead Menu a list of actions rather than destinations
- * @slot item A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`).
+ * @slot item A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`), with an optional trailing `action` beside it.
  * @a11y component required a11y:nav-list.list-of-links The rows are links in an unordered list, so a screen reader announces the list and its length.
  * @a11y component required a11y:nav-list.current-page The current item is marked aria-current=page and the others carry no aria-current.
  * @a11y component required a11y:nav-list.keyboard-focus Tab visits each link in order and each shows the focus ring.
  * @a11y component required a11y:nav-list.select-button With onSelect a row is a button in the list, not a link, so a screen reader announces a button and Enter or Space selects it.
  * @a11y component required a11y:nav-list.select-current The selected row is marked aria-current=true and the others carry no aria-current.
  * @a11y component required a11y:nav-list.select-keyboard Tab visits each row, Enter and Space select it, and each shows the focus ring.
+ * @a11y component required a11y:nav-list.trailing-action An item's `action` renders beside its link or button in the same row, never inside it, so the row and the action are two separate controls.
  * @a11y consumer required Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.
  */
 
@@ -65,6 +66,8 @@ export interface NavListLinkItemProps extends Omit<
   selected?: never;
   /** The row's content: a title line, a meta line, a badge. */
   children?: React.ReactNode;
+  /** A control beside the row (an icon link or button), in the same row but outside its link or button. */
+  action?: React.ReactNode;
 }
 
 /** @public */
@@ -80,10 +83,25 @@ export interface NavListSelectItemProps extends Omit<
   current?: never;
   /** The row's content: a title line, a meta line, a badge. */
   children?: React.ReactNode;
+  /** A control beside the row (an icon link or button), in the same row but outside its link or button. */
+  action?: React.ReactNode;
 }
 
 /** @public */
 export type NavListItemProps = NavListLinkItemProps | NavListSelectItemProps;
+
+/** The row's `li`: plain, or a flex row holding the item and its trailing action. */
+function NavListRow({ action, children }: { action?: React.ReactNode; children: React.ReactNode }) {
+  if (action == null || action === false) return <li>{children}</li>;
+  return (
+    <li className="flex items-center gap-fixed-xs">
+      <div className="min-w-0 flex-1">{children}</div>
+      <div data-slot="nav-list-action" className="flex shrink-0 items-center">
+        {action}
+      </div>
+    </li>
+  );
+}
 
 // ── Components ─────────────────────────────────────────────────────────────────
 
@@ -107,10 +125,11 @@ export const NavListItem = /* @__PURE__ */ React.forwardRef<
       className,
       children,
       onClick,
+      action,
       ...rest
     } = props as NavListSelectItemProps;
     return (
-      <li>
+      <NavListRow action={action}>
         <button
           ref={ref as React.Ref<HTMLButtonElement>}
           type="button"
@@ -128,7 +147,7 @@ export const NavListItem = /* @__PURE__ */ React.forwardRef<
         >
           {children}
         </button>
-      </li>
+      </NavListRow>
     );
   }
   const {
@@ -138,10 +157,11 @@ export const NavListItem = /* @__PURE__ */ React.forwardRef<
     selected: _selected,
     className,
     children,
+    action,
     ...rest
   } = props as NavListLinkItemProps;
   return (
-    <li>
+    <NavListRow action={action}>
       <LinkComponent
         ref={ref as React.Ref<HTMLAnchorElement>}
         to={href}
@@ -151,7 +171,7 @@ export const NavListItem = /* @__PURE__ */ React.forwardRef<
       >
         {children}
       </LinkComponent>
-    </li>
+    </NavListRow>
   );
 });
 
