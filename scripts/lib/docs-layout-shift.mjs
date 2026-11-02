@@ -51,10 +51,10 @@ export function evaluateLayout(scans, limit = CLS_LIMIT) {
     }
   }
   // Routes share chrome per layout: the landing page (/) is not the docs shell (/docs/**),
-  // and /tour is a standalone product screen with its own chrome (hds#795).
+  // and /tour (hds#795) and /upgrade (hds#464) are standalone pages with their own chrome.
   const groupOf = (route) => {
     const top = route.split('/')[1];
-    return top === 'docs' || top === 'tour' ? top : 'site';
+    return ['docs', 'tour', 'upgrade'].includes(top) ? top : 'site';
   };
   const refs = new Map();
   for (const s of scans) if (!refs.has(groupOf(s.route))) refs.set(groupOf(s.route), s);
