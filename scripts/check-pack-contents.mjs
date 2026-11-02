@@ -102,6 +102,7 @@ export const REQUIRED = [
   'codemods/lib/atomic-write.mjs',
   'codemods/lib/deprecated.mjs',
   'codemods/lib/installed-version.mjs',
+  'codemods/lib/ledger-codemod.mjs',
   'codemods/lib/preset.mjs',
   'codemods/lib/project.mjs',
   'codemods/lib/record.mjs',

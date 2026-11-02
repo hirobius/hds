@@ -43,6 +43,7 @@ import { fileURLToPath } from 'url';
 import {
   parseSnapshotFile,
   serializeSnapshotFile,
+  tokensFileHash,
   verifyBindingFallbacks,
 } from './lib/figma-snapshot.mjs';
 import { rebuildFromReceipt } from './lib/figma-receipt.mjs';
@@ -58,14 +59,20 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  * `bindingFallbacks` (a receipt, a diff, snapshot.js: none of them sweeps the
  * paints) keeps the committed file's record, which has its own `takenAt`.
  *
+ * It records `tokensHash`, the hash of hirobius.tokens.json at ingest: ingest
+ * after Figma has the token change.
+ *
  * @param {{ root: string, from?: string, text?: string }} options  the file, or its text
  */
 export function ingestSnapshot({ root, from, text = readFileSync(from, 'utf8') }) {
   const parsed = parseSnapshotFile(text);
   const outPath = join(root, 'figma', 'snapshot.json');
-  const verified = parsed.bindingFallbacks
+  const withFallbacks = parsed.bindingFallbacks
     ? parsed
     : { ...parsed, bindingFallbacks: committedFallbacks(outPath) };
+  // The tokens this snapshot matches: the release gate fails when the file
+  // hashes differently (scripts/check-figma-release.mjs, hds#801).
+  const verified = { ...withFallbacks, tokensHash: tokensFileHash(root) };
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, serializeSnapshotFile(verified));
   return { ...verified, outPath };

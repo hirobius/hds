@@ -205,6 +205,25 @@ export const Prop = z
     'The component prop a prop step is about (hds#461), with what the prop-map codemod rewrites it to.',
   );
 
+const TOKEN_PATH = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*$/;
+
+/**
+ * hds#955: a token step maps the `hds.a.b` paths it moves as data, so the
+ * token-keys codemod rewrites them without parsing prose.
+ */
+export const Tokens = z
+  .record(z.string(), z.string())
+  .refine((map) => Object.keys(map).length > 0, 'tokens maps at least one path')
+  .refine(
+    (map) =>
+      Object.entries(map).every(([from, to]) => TOKEN_PATH.test(from) && TOKEN_PATH.test(to)),
+    'each tokens key and value is a dotted path under hds, without the hds. prefix, such as density.md',
+  )
+  .meta({ minProperties: 1 })
+  .describe(
+    'For a step the hds-token-keys codemod applies (hds#955): each JS token path it moved, under hds. and without that prefix (density.md), mapped to the path to read instead (semantic.space.scale.sm).',
+  );
+
 /** The fields a release step and a pending step share, in schema order. */
 const stepFields = () => ({
   kind: z.enum(STEP_KINDS).describe('What changed.'),
@@ -228,6 +247,7 @@ const stepFields = () => ({
       'For a dependency or peer step: the range this package declared before the release, so a consumer that still imports it can add it back.',
     ),
   prop: Prop.optional(),
+  tokens: Tokens.optional(),
   facts: z
     .array(z.string().min(1))
     .min(1)

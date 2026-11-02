@@ -667,7 +667,7 @@ export async function upgrade(options, { pkgDir = PKG_DIR, deprecated = new Map(
           ...(overlay
             ? { root: overlay, write: true, skip: [] }
             : { root: importer.abs, write: apply, skip: importer.nested }),
-          // A ledger-driven codemod (hds-prop-map) takes its rules from these.
+          // A ledger-driven codemod (hds-prop-map, hds-token-keys) takes its rules from these.
           steps: steps.filter((s) => s.auto?.codemod === name),
         });
       } catch (error) {

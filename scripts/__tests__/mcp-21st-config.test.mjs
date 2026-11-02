@@ -124,7 +124,15 @@ describe('.claude/settings.json: the 21st deny list', () => {
   it('keeps the hooks and skill overrides the file had before', () => {
     const s = settings();
     expect(Object.keys(s.hooks).sort()).toEqual(
-      ['Notification', 'PostToolUse', 'PreToolUse', 'SessionEnd', 'SessionStart', 'Stop', 'UserPromptSubmit'].sort(),
+      [
+        'Notification',
+        'PostToolUse',
+        'PreToolUse',
+        'SessionEnd',
+        'SessionStart',
+        'Stop',
+        'UserPromptSubmit',
+      ].sort(),
     );
     expect(s.skillOverrides['keybindings-help']).toBe('off');
   });
