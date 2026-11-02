@@ -29,6 +29,16 @@ export const FULL_GATE_PATTERNS = [
   /^src\/(styles|tokens|theme)\//,
   /^scripts\/(?!__tests__\/).+/,
   /^\.husky\//,
+  // Published code and token sources outside src/ (bins, codemods, upgrade data, accents/tenants).
+  /^(bin|codemods|upgrade|accents|tenants)\//,
+  // Shipped Markdown with drift checks (DESIGN.md is generated from DESIGN.source.md).
+  /^(DESIGN(\.source)?|CONSUMING|UPGRADING|MIGRATIONS)\.md$/,
+  /^docs\/CONSUMING\.md$/,
+  // Remaining tool config.
+  /^knip\.config\.[^/]+$/,
+  /^\.size-limit\.c?js$/,
+  /^\.(npmrc|nvmrc)$/,
+  /^docs-site\/package\.json$/,
 ];
 
 const CODE_EXT = /\.(js|mjs|cjs|ts|tsx|jsx)$/;

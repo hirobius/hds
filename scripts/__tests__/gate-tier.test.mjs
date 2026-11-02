@@ -26,6 +26,22 @@ describe('classifyGateTier', () => {
     ['scripts/lib/hook-output.mjs'],
     ['scripts/build-tokens.mjs'],
     ['.husky/pre-push'],
+    ['codemods/token-keys.mjs'],
+    ['bin/hds-tokens.mjs'],
+    ['accents/cobalt/tokens.json'],
+    ['tenants/acme/tokens.json'],
+    ['upgrade/index.json'],
+    ['DESIGN.md'],
+    ['DESIGN.source.md'],
+    ['CONSUMING.md'],
+    ['docs/CONSUMING.md'],
+    ['UPGRADING.md'],
+    ['MIGRATIONS.md'],
+    ['knip.config.ts'],
+    ['.size-limit.cjs'],
+    ['.npmrc'],
+    ['.nvmrc'],
+    ['docs-site/package.json'],
   ])('%s triggers the full gate', (file) => {
     const r = classifyGateTier([file]);
     expect(r.tier).toBe('full');
