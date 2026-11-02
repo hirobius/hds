@@ -54,10 +54,9 @@ const commitSnapshot = async (root, figma) =>
   writeFileSync(snapshotPath(root), serializeSnapshotFile(await hdsRunSnapshot(figma)));
 const readFiles = (dir) =>
   Object.fromEntries(
-    ['manifest.json', 'code.js', 'ui.html'].map((name) => [
-      name,
-      readFileSync(join(dir, name), 'utf8'),
-    ]),
+    ['manifest.json', 'code.js', 'ui.html', 'model.json']
+      .filter((name) => existsSync(join(dir, name)))
+      .map((name) => [name, readFileSync(join(dir, name), 'utf8')]),
   );
 const pushModel = async (figma) => {
   const { payload, checksum } = buildPushPayload(fixtureModel());
@@ -472,7 +471,14 @@ describe('the promote plugin clears the Sync receipt', () => {
     figma.command = command;
     figma.showUI = () => {};
     figma.closePlugin = () => {};
-    figma.ui = { postMessage: (message) => posted.push(message), onmessage: null };
+    // Plan and Push ask the window for model.json (hds#397); answer as the window does.
+    figma.ui = {
+      postMessage: (message) =>
+        message && message.ask === 'model'
+          ? setTimeout(() => figma.ui.onmessage({ type: 'model', text: files['model.json'] }), 0)
+          : posted.push(message),
+      onmessage: null,
+    };
     vm.runInNewContext(files['code.js'], { figma, __html__: files['ui.html'] });
     for (let i = 0; i < 400 && posted.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
     return JSON.parse(JSON.stringify(posted[0]));

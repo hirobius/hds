@@ -4,6 +4,8 @@
 
 HDS is a governed, token-first React design system: components plus a DTCG token pipeline (CSS variables and TypeScript constants), quality gates in git hooks, one-way Figma sync, and WCAG-checked contrast and focus. Live docs: <https://hirobius-hds-components.vercel.app>
 
+Install: `pnpm add @hirobius/design-system`. Upgrading: [UPGRADING.md](UPGRADING.md). From 0.22.0, `npx @hirobius/design-system@latest upgrade` does it for you.
+
 [![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/brand-theme-dials.png)](https://hirobius-hds-components.vercel.app)
 
 <!-- auto:start:front-door-counts -->
@@ -15,7 +17,6 @@ HDS is a governed, token-first React design system: components plus a DTCG token
 
 - **Token pipeline:** a validated alias chain with AA-contrast gates in light and dark.
 - **Gates with proof-of-firing:** typecheck, zero-warning ESLint, token and contrast checks, Vitest and a consumer smoke build; many gates carry fixtures proving they fire.
-- **Upgrade path:** a release ledger ([UPGRADING.md](UPGRADING.md)) and `npx @hirobius/design-system@latest upgrade`.
 - **Theming without JavaScript:** four root attributes re-skin every HDS descendant.
 
 `pnpm readme:counts` generates the counts; `scripts/__tests__/front-door.test.mjs` fails if they overclaim. How it is built: [docs/ENGINEERING.md](docs/ENGINEERING.md). Agents: `npx skills add hirobius/hds --skill hds-consumer`.
@@ -104,7 +105,7 @@ The router seam (`HdsRouterProvider`), `HdsThemeProvider`, scoping and MUI coexi
 
 ## Figma ↔ code
 
-Code is the source of truth; sync runs one way. `pnpm figma:model` projects tokens into `figma/model.json`; `pnpm figma:push` and `pnpm figma:native-import` apply it by hand ([`figma/README.md`](figma/README.md)); `pnpm figma:snapshot --ingest` plus `pnpm check:figma-drift` catch hand edits in Figma. Code Connect templates exist but are unpublished (needs an Organization plan). Plans and architecture: [ADR-025](docs/adr/025-figma-sync-pro-architecture.md).
+Code is the source of truth; sync runs one way. `pnpm figma:model` projects tokens into `figma/model.json`; `pnpm figma:push` and `pnpm figma:native-import` apply it by hand ([`figma/README.md`](figma/README.md)); `pnpm figma:snapshot --ingest` plus `pnpm check:figma-drift` catch hand edits in Figma. Per-component Figma links: [docs/DESIGN_LINKS.md](docs/DESIGN_LINKS.md). Code Connect templates exist but are unpublished (needs an Organization plan). Plans and architecture: [ADR-025](docs/adr/025-figma-sync-pro-architecture.md).
 
 ## Developing this repo
 
@@ -116,7 +117,7 @@ pnpm docs:dev   # docs site with live demos
 pnpm test       # pretest gates + unit + contract tests, as the pre-push hook runs them
 ```
 
-Hooks: **pre-commit** runs gitleaks (if installed), Prettier, typecheck, ESLint and token/contrast checks; **pre-push** runs `pnpm test` and the consumer smoke build. GitHub Actions is off, so run `pnpm check:size` and the docs-site axe gate (`pnpm check:docs-axe`) by hand. Releases use [Changesets](https://github.com/changesets/changesets) ([docs/RELEASING.md](docs/RELEASING.md)).
+Hooks: **pre-commit** runs gitleaks (if installed), Prettier, typecheck, ESLint and token/contrast checks; **pre-push** runs the tiered gate (`scripts/pre-push-gate.mjs`): the full tier is `pnpm check:fast`, `pnpm test` and the consumer smoke build; smaller diffs run a lighter tier (`scripts/lib/gate-tier.mjs`). GitHub Actions is off, so run `pnpm check:size` and the docs-site axe gate (`pnpm check:docs-axe`) by hand. Releases use [Changesets](https://github.com/changesets/changesets) ([docs/RELEASING.md](docs/RELEASING.md)).
 
 ## Architecture
 
@@ -126,9 +127,9 @@ Component dispositions (core, pattern, fold, internal) are set in the [architect
 
 - **Contrast:** `scripts/check-contrast.mjs` enforces WCAG AA on core token pairs, light and dark (pre-commit).
 - **Lint:** `jsx-a11y` with zero warnings.
-- **Focus:** `pnpm check:focus` audits interactive components in `pretest`.
-- **Docs site:** `pnpm check:docs-axe` scans every component and pattern demo, light and dark; serious or critical violations fail.
-- **Screen reader:** `tests/primitive-contracts/screen-reader.contract.test.tsx` walks Dialog, Menu, Select, Combobox, Table and Alert with a virtual screen reader under jsdom (not a real one).
+- **Focus:** `scripts/check-focus-states.mjs` (`pnpm check:focus`) audits interactive components in `pretest` and passes with 0 violations.
+- **Docs site:** `scripts/check-docs-axe.mjs` (`pnpm check:docs-axe`) scans every component and pattern demo, light and dark; serious or critical violations outside `scripts/docs-axe-allowlist.json` (empty) fail.
+- **Announcements:** `tests/primitive-contracts/screen-reader.contract.test.tsx` walks Dialog, Menu, Select, Combobox, Table and Alert with a virtual reader under jsdom (not real assistive tech).
 
 ## Open explorations
 

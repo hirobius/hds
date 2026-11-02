@@ -752,8 +752,6 @@ Results: StatusTile now lives on Deprecated with a pointer to Card.Row (MIGRATIO
 
 Session total: 3 calls
 
-Calls logged for 2026-11-01: 3 of 200 (3).
-
 ## 2026-11-01 · hds#637 Timeline staging draft (file `C85ZXnwtVc4AteeIOZfXRC`, HDS Staging)
 
 | #   | Time (UTC) | Tool                   | Kind  | Purpose                                                    | Result                                                                |
@@ -767,4 +765,4 @@ Calls logged for 2026-11-01: 3 of 200 (3).
 
 Session total: 6 calls
 
-Calls logged for 2026-11-01: 9 of 200 (9).
+Calls logged for 2026-11-01: 9 of 200 (3 and 6).
