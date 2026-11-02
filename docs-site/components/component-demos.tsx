@@ -838,7 +838,17 @@ function NavListDemo() {
           Design systems lead
           <MetaLine items={['Acme Cloud', 'Remote']} />
         </NavList.Item>
-        <NavList.Item href="#">
+        <NavList.Item
+          href="#"
+          action={
+            <Button
+              variant="tertiary"
+              iconOnly
+              label="Star Staff front-end engineer"
+              iconLeft={<Icon icon={Star} size="small" />}
+            />
+          }
+        >
           Staff front-end engineer
           <MetaLine items={['Northwind', 'Hybrid']} />
         </NavList.Item>

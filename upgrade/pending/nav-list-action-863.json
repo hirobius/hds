@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "NavList.Item takes action={...} for a control beside the row's link; drop any local row that rebuilt NavList.Item to hold one."
+}

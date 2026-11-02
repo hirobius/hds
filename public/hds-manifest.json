@@ -10342,6 +10342,12 @@
           "testId": "a11y:nav-list.select-keyboard"
         },
         {
+          "rule": "An item's `action` renders beside its link or button in the same row, never inside it, so the row and the action are two separate controls.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.trailing-action"
+        },
+        {
           "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
           "required": true,
           "owner": "consumer"
@@ -10350,7 +10356,7 @@
       "slots": [
         {
           "name": "item",
-          "description": "A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`).",
+          "description": "A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`), with an optional trailing `action` beside it.",
           "source": "jsdoc"
         }
       ],
@@ -10443,6 +10449,12 @@
           "testId": "a11y:nav-list.select-keyboard"
         },
         {
+          "rule": "An item's `action` renders beside its link or button in the same row, never inside it, so the row and the action are two separate controls.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:nav-list.trailing-action"
+        },
+        {
           "rule": "Put the list in a nav landmark with a distinct label, or give NavList an aria-label, and give an item an aria-label when its text does not read well as one link name.",
           "required": true,
           "owner": "consumer"
@@ -10451,7 +10463,7 @@
       "slots": [
         {
           "name": "item",
-          "description": "A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`).",
+          "description": "A NavList.Item: one row holding any content, a link (`href`) or a button that selects in place (`onSelect`), with an optional trailing `action` beside it.",
           "source": "jsdoc"
         }
       ],
@@ -10468,6 +10480,10 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "action": {
+          "type": "ReactNode",
+          "optional": true
+        },
         "children": {
           "type": "ReactNode",
           "optional": true

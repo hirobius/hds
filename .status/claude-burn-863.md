@@ -1,1 +1,1 @@
-EmptyState: `italic={false}` sets the message upright (hds#863, first slice of the Roleforge gap epic).
+NavList.Item: `action` trailing slot beside the link (hds#863, second slice of the Roleforge gap epic).

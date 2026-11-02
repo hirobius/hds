@@ -184,4 +184,50 @@ describe('NavList', () => {
       expect(bad).toBeTruthy();
     });
   });
+
+  describe('trailing action', () => {
+    it('a11y:nav-list.trailing-action renders the action beside the link, outside it, in the same row', () => {
+      render(
+        <NavList>
+          <NavList.Item href="/a" action={<a href="https://x.test/a">Open posting</a>}>
+            Alpha
+          </NavList.Item>
+        </NavList>,
+      );
+      const row = screen.getByRole('link', { name: 'Alpha' });
+      const action = screen.getByRole('link', { name: 'Open posting' });
+      expect(row.contains(action)).toBe(false);
+      expect(row.closest('li')).toBe(action.closest('li'));
+      expect(screen.getAllByRole('listitem')).toHaveLength(1);
+    });
+
+    it('works on a select row and does not select when the action is used', async () => {
+      const onSelect = vi.fn();
+      const onAction = vi.fn();
+      render(
+        <NavList>
+          <NavList.Item onSelect={onSelect} action={<button onClick={onAction}>More</button>}>
+            Alpha
+          </NavList.Item>
+        </NavList>,
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'More' }));
+      expect(onAction).toHaveBeenCalledTimes(1);
+      expect(onSelect).not.toHaveBeenCalled();
+      expect(
+        screen
+          .getByRole('button', { name: 'Alpha' })
+          .contains(screen.getByRole('button', { name: 'More' })),
+      ).toBe(false);
+    });
+
+    it('renders no wrapper when there is no action', () => {
+      const { container } = render(
+        <NavList>
+          <NavList.Item href="/a">Alpha</NavList.Item>
+        </NavList>,
+      );
+      expect(container.querySelector('[data-slot="nav-list-action"]')).toBeNull();
+    });
+  });
 });
