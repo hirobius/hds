@@ -1,0 +1,1 @@
+Main unblock: declare NavList `data-slot` in PUBLIC_DATA_ATTRIBUTES (+ manifest/skill regen) so public-data-attributes passes on main again, and warm up ESLint in eslint-hds-self-lint's beforeAll so the first ruleIds test no longer eats the ~65s cold typed-lint cost inside its 20s timeout. Test/tooling only besides the manifest data addition; no component runtime change.
