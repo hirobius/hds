@@ -31,14 +31,9 @@ node scripts/check-record-freshness.mjs
 echo "TDD gate (source changes ship with a test)…"
 node scripts/check-tests-with-code.mjs
 
-# The fast gate chain (manifest, tokens, typecheck, docs, tier/spacing/brand,
-# doc refs + routes). It was manual-only and drifted red unnoticed; running it
-# on every push keeps it green.
-echo "Fast gates (pnpm check:fast)…"
-pnpm check:fast
-
-echo "Unit + contract tests (pnpm test: pretest gates + vitest)…"
-pnpm test
-
-echo "Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)…"
-pnpm smoke:consumer
+# Tiered gate (ops#1057; rule in scripts/lib/gate-tier.mjs): docs-only diffs
+# run no tests; small diffs run eslint on changed files + typecheck + vitest
+# related; deps, build/test config, tokens/theme, scripts/, >25 files or
+# HDS_FULL_GATE=1 run the full chain (check:fast + pnpm test + smoke:consumer).
+echo "Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + test + smoke)…"
+node scripts/pre-push-gate.mjs

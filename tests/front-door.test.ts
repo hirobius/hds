@@ -34,10 +34,10 @@ describe('README front door (first 20 lines)', () => {
     expect(head).toContain(links.docsUrl);
   });
 
-  it('shows CI, npm and Docs badges', () => {
-    expect(head).toMatch(
-      /!\[[^\]]*CI[^\]]*\]\(https:\/\/github\.com\/hirobius\/hds\/actions\/workflows\/ci\.yml\/badge\.svg/,
-    );
+  // GitHub Actions is off (2026-10-30), so a CI badge would show a stale or
+  // missing run; the README must not carry one until CI runs again.
+  it('shows npm and Docs badges, and no CI badge while Actions is off', () => {
+    expect(head).not.toMatch(/actions\/workflows\/ci\.yml\/badge\.svg/);
     expect(head).toMatch(
       /!\[[^\]]*npm[^\]]*\]\(https:\/\/img\.shields\.io\/npm\/v\/@hirobius\/design-system/,
     );

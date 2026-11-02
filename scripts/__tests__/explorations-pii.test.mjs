@@ -8,21 +8,13 @@
  * denylist of terms (every non-demo tenant's name, and an optional private file).
  * The inputs that must FAIL are written to temp dirs here, never committed.
  */
-import { afterAll, describe, expect, it } from 'vitest';
-import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
+import { describe, expect, it } from 'vitest';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { clientDenylist, loadDenylistFile, scanPaths, scanText } from '../lib/explorations/pii.mjs';
+import { useTempDirs } from './helpers/temp-dirs.mjs';
 
-const tmpDirs = [];
-const makeTmp = () => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), 'explorations-pii-'));
-  tmpDirs.push(dir);
-  return dir;
-};
-afterAll(() => {
-  for (const d of tmpDirs) rmSync(d, { recursive: true, force: true });
-});
+const makeTmp = useTempDirs('explorations-pii-');
 
 const kinds = (findings) => findings.map((f) => f.kind);
 const matches = (findings) => findings.map((f) => f.match);

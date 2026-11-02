@@ -5,9 +5,8 @@
  * ranked across every screen by how many screens hit each gap. Pure functions
  * tested with small hand-built logs; the loader is tested against a temp dir.
  */
-import { afterAll, describe, expect, it } from 'vitest';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
+import { describe, expect, it } from 'vitest';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   GAP_KINDS,
@@ -16,16 +15,9 @@ import {
   gapKey,
   validateGapLog,
 } from '../lib/explorations/gaps.mjs';
+import { useTempDirs } from './helpers/temp-dirs.mjs';
 
-const tmpDirs = [];
-const makeTmp = () => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), 'explorations-gaps-'));
-  tmpDirs.push(dir);
-  return dir;
-};
-afterAll(() => {
-  for (const d of tmpDirs) rmSync(d, { recursive: true, force: true });
-});
+const makeTmp = useTempDirs('explorations-gaps-');
 
 const gap = (over = {}) => ({
   screen: 'drops-inbox',
