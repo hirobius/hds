@@ -116,6 +116,36 @@
         "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
         "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
       ]
+    },
+    {
+      "id": "tenant/concrete-creations",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "The package no longer ships the concrete-creations brand block, so a page with data-brand=\"concrete-creations\" shows the base accent until the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?concrete-creations(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-color-content-onAccent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ]
     }
   ]
 }
