@@ -34,6 +34,11 @@ import { parse } from 'acorn';
 import { resolveEsbuild } from './button-probe-esbuild.mjs';
 import { hdsChecksum, hdsRuntimeFingerprint } from './figma-runtime.mjs';
 import { hdsDiffFingerprint } from './figma-snapshot-diff.mjs';
+import {
+  PROMOTE_RECEIPT_FILE,
+  PROMOTE_RECEIPT_KIND,
+  PROMOTE_RECEIPT_VERSION,
+} from './figma-promote-receipt.mjs';
 
 /**
  * Push order: a collection's aliases point at collections in its own chunk or
@@ -646,9 +651,11 @@ function hdsClearSyncReceipt() {
       return;
     }
     if (figma.command === 'snapshot') {
-      const result = await hdsRunSnapshot(figma);
+      const taken = await hdsRunSnapshot(figma);
       hdsClearSyncReceipt();
-      figma.ui.postMessage({ ok: true, title: 'Snapshot — download it, then run pnpm figma:snapshot --ingest <file>', fileName: 'figma-snapshot.json', result });
+      // The snapshot receipt (hds#397): one fixed shape under one fixed name, so pnpm figma:snapshot --ingest finds it with no path.
+      const result = { kind: '${PROMOTE_RECEIPT_KIND}', v: ${PROMOTE_RECEIPT_VERSION}, fileKey: figma.fileKey || null, checksum: taken.checksum, snapshot: taken.snapshot };
+      figma.ui.postMessage({ ok: true, title: 'Snapshot receipt — click Download JSON, then run pnpm figma:snapshot --ingest', fileName: '${PROMOTE_RECEIPT_FILE}', result });
       return;
     }
     const dryRun = figma.command !== 'push';

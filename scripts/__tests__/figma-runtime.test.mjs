@@ -525,7 +525,7 @@ describe('development plugin', () => {
     expect(pushed.result.summary.variables.created).toBe(58);
 
     const snap = await runPlugin(files, 'snapshot', figma);
-    expect(snap.fileName).toBe('figma-snapshot.json');
+    expect(snap.fileName).toBe('hds-snapshot-receipt.json');
     expect(snap.result.checksum).toBe(hdsChecksum(JSON.stringify(snap.result.snapshot)));
   });
 
