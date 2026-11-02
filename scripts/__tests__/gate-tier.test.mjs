@@ -38,6 +38,16 @@ describe('classifyGateTier', () => {
     ['UPGRADING.md'],
     ['MIGRATIONS.md'],
     ['knip.config.ts'],
+    ['docs/api/props-baseline.json'],
+    ['docs/api/types-baseline.json'],
+    ['src/app/data/component-api.json'],
+    ['public/hds-manifest.json'],
+    ['public/hds-stats.json'],
+    ['llms.txt'],
+    ['public/llms.txt'],
+    ['public/llms-full.txt'],
+    ['public/llms/components/button.txt'],
+    ['mcp/server.mjs'],
     ['.size-limit.cjs'],
     ['.npmrc'],
     ['.nvmrc'],
@@ -88,5 +98,17 @@ describe('planGate', () => {
 
   it('full tier runs check:fast, the whole suite and consumer smoke', () => {
     expect(planGate('full', [])).toEqual(['pnpm check:fast', 'pnpm test', 'pnpm smoke:consumer']);
+  });
+});
+
+describe('published package files (package.json files)', () => {
+  it('every published path takes the full tier, except build output', () => {
+    expect(classifyGateTier(['dist/index.js']).tier).not.toBe('full');
+    expect(classifyGateTier(['docs/api-notes.md']).tier).toBe('docs');
+  });
+  it('docs-site code runs lint and related tests in the fast tier', () => {
+    const plan = planGate('fast', ['docs-site/src/App.tsx']);
+    expect(plan.some((c) => c.startsWith('pnpm exec eslint'))).toBe(true);
+    expect(plan.some((c) => c.startsWith('pnpm exec vitest related'))).toBe(true);
   });
 });

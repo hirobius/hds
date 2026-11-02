@@ -10,7 +10,30 @@
  * @module gate-tier
  */
 
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 export const FULL_GATE_FILE_LIMIT = 25;
+
+/**
+ * Published paths from package.json "files" (dist excluded: it is build output, not a source).
+ * An entry ending in "/" covers its subtree; any other entry also covers a directory of that name.
+ */
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+export function publishedPatterns(files = []) {
+  return files
+    .filter((f) => f.replace(/\/$/, '') !== 'dist')
+    .map((f) =>
+      f.endsWith('/') ? new RegExp(`^${escapeRe(f)}`) : new RegExp(`^${escapeRe(f)}(\\/|$)`),
+    );
+}
+const PKG_FILES = JSON.parse(
+  readFileSync(
+    join(import.meta.dirname ?? dirname(fileURLToPath(import.meta.url)), '../../package.json'),
+    'utf8',
+  ),
+).files;
 
 const DOCS_PATTERNS = [/\.mdx?$/i, /^docs\//, /\.(png|jpe?g|gif|webp|avif|svg|ico)$/i];
 
@@ -39,10 +62,12 @@ export const FULL_GATE_PATTERNS = [
   /^\.size-limit\.c?js$/,
   /^\.(npmrc|nvmrc)$/,
   /^docs-site\/package\.json$/,
+  // Everything the package ships (package.json files): baselines, component-api, manifests, llms*, mcp/.
+  ...publishedPatterns(PKG_FILES),
 ];
 
 const CODE_EXT = /\.(js|mjs|cjs|ts|tsx|jsx)$/;
-const LINT_DIRS = /^(src|scripts|validators|tests|mcp)\//;
+const LINT_DIRS = /^(src|scripts|validators|tests|mcp|docs-site)\//;
 
 const isDocs = (f) => DOCS_PATTERNS.some((re) => re.test(f));
 
