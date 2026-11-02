@@ -67,6 +67,7 @@ import { fileURLToPath } from 'node:url';
 import { hashPrecommit } from './lib/precommit-canonical.mjs';
 
 import { reachableScripts } from './lib/script-reachability.mjs';
+import { expandPrePushHook } from './lib/gate-tier.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -466,7 +467,8 @@ function runWiringCheck(
 
   const precommitContent = readSafe(precommitPath);
   const parsedPrecommit = parseHookLines(precommitContent);
-  const prepushContent = prepushPath ? readSafe(prepushPath) : '';
+  // The tiered gate (pre-push-gate.mjs) is read as its full tier, which runs `pnpm test`.
+  const prepushContent = prepushPath ? expandPrePushHook(readSafe(prepushPath)) : '';
   const commitmsgContent = commitmsgPath ? readSafe(commitmsgPath) : '';
   const ralphGateContent = ralphGatePath ? readSafe(ralphGatePath) : '';
 

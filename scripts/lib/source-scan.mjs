@@ -37,7 +37,8 @@
 
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
-import { emitResult } from './gate-output.mjs';
+import { fileURLToPath } from 'node:url';
+import { emitResult, hasJsonFlag } from './gate-output.mjs';
 
 // ── Scan roots ───────────────────────────────────────────────────────────────
 
@@ -313,6 +314,20 @@ export function isFixtureRun(argv, env = process.env) {
 }
 
 /**
+ * The shared preamble of line-scoped gates (hds#1010): the repo root (the
+ * parent of the calling script's directory), `--json`, fixture mode and the
+ * fixture file. Call as `gateContext(import.meta.url)`.
+ */
+export function gateContext(importMetaUrl, argv = process.argv, env = process.env) {
+  return {
+    ROOT: path.join(path.dirname(fileURLToPath(importMetaUrl)), '..'),
+    jsonMode: hasJsonFlag(argv),
+    isFixtureMode: isFixtureRun(argv, env),
+    fixtureFile: env.FIXTURE_FILE,
+  };
+}
+
+/**
  * Shared report for line-scoped gates whose violations are
  * `{ file, line, rule, message, sample }` (hds#1010; gate-output.mjs is ops-canonical, so it lives here). Prints the JSON payload
  * or the human report and returns the exit code; the caller exits.
@@ -361,4 +376,35 @@ export function reportLineViolations(violations, jsonMode, { gate, ok, noun, fix
   }
   for (const line of fix) console.error(line);
   return 1;
+}
+
+/**
+ * Emit a gate's violations as-is in the standard JSON payload
+ * (`{ violations, summary: { total }, ok }`) and return the exit code; the
+ * caller exits. For gates whose violations carry their own severity and
+ * extra fields (check-style-discipline, check-typography-discipline; hds#1010).
+ *
+ * @param {object[]} violations
+ * @returns {0|1}
+ */
+export function emitViolationsJson(violations) {
+  const ok = violations.length === 0;
+  emitResult({ violations, summary: { total: violations.length }, ok }, true);
+  return ok ? 0 : 1;
+}
+
+/**
+ * Group violations by `rule`, keeping first-seen rule order (hds#1010).
+ *
+ * @template {{ rule: string }} V
+ * @param {V[]} violations
+ * @returns {Map<string, V[]>}
+ */
+export function groupByRule(violations) {
+  const byRule = new Map();
+  for (const v of violations) {
+    if (!byRule.has(v.rule)) byRule.set(v.rule, []);
+    byRule.get(v.rule).push(v);
+  }
+  return byRule;
 }

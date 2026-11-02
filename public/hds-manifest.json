@@ -4145,6 +4145,10 @@
           "type": "LucideIcon",
           "optional": true
         },
+        "italic": {
+          "type": "boolean",
+          "default": true
+        },
         "title": {
           "type": "ReactNode"
         }

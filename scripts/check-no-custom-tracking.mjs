@@ -23,23 +23,17 @@
  */
 
 import { readFileSync } from 'node:fs';
-import { join, dirname, relative, resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag } from './lib/gate-output.mjs';
 import {
   scanSources,
   findMarker,
   maskComments,
-  isFixtureRun,
+  gateContext,
   reportLineViolations,
 } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-
-const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode = isFixtureRun(process.argv);
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 const SKIP_DIRS = ['node_modules', '.git', 'dist', 'coverage', '__tests__', 'fixtures'];
 // The utility safelist (hds#449) names every utility the last release shipped, one of which is this rule's own fix.

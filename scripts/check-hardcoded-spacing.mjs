@@ -39,22 +39,15 @@
  */
 
 import { readFileSync } from 'fs';
-import { join, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { hasJsonFlag } from './lib/gate-output.mjs';
+import { resolve } from 'path';
 import {
   scanSources,
   suppressionFor,
-  isFixtureRun,
+  gateContext,
   reportLineViolations,
 } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-const jsonMode = hasJsonFlag(process.argv);
-
-const isFixtureMode = isFixtureRun(process.argv);
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 // ── Properties that carry spacing (not dimensions/visual sizes) ──────────────
 const SPACING_PROPS = new Set([

@@ -104,6 +104,15 @@ function rgbFloatToHex(rgb) {
   return ('#' + hex(r) + hex(g) + hex(b)).toLowerCase();
 }
 
+// The first SOLID fill as a raw hex (no token binding), else null.
+// Shared by extractFg (TEXT nodes) and extractBg (hds#1011).
+export function solidFillHex(fills) {
+  if (!Array.isArray(fills)) return null;
+  const solid = fills.find((f) => f && f.type === 'SOLID' && f.color);
+  const hex = solid ? rgbFloatToHex(solid.color) : null;
+  return hex ? { hex, tokenPath: null } : null;
+}
+
 // ── WCAG 2.1 luminance + contrast ─────────────────────────────
 // §1.4.3, exact formula. Linearization branch at 0.04045, weights
 // 0.2126 / 0.7152 / 0.0722.
@@ -153,13 +162,7 @@ function extractFg(node) {
       if (hex) return { hex, tokenPath: candidate };
     }
   }
-  if (node.type === 'TEXT' && Array.isArray(node.fills)) {
-    const solid = node.fills.find((f) => f && f.type === 'SOLID' && f.color);
-    if (solid) {
-      const hex = rgbFloatToHex(solid.color);
-      if (hex) return { hex, tokenPath: null };
-    }
-  }
+  if (node.type === 'TEXT') return solidFillHex(node.fills);
   return null;
 }
 
@@ -171,14 +174,7 @@ function extractBg(node) {
     const hex = resolveTokenToHex(tp.fills[0]);
     if (hex) return { hex, tokenPath: tp.fills[0] };
   }
-  if (Array.isArray(node.fills)) {
-    const solid = node.fills.find((f) => f && f.type === 'SOLID' && f.color);
-    if (solid) {
-      const hex = rgbFloatToHex(solid.color);
-      if (hex) return { hex, tokenPath: null };
-    }
-  }
-  return null;
+  return solidFillHex(node.fills);
 }
 
 function walk(node, currentBg, pairs) {
