@@ -527,7 +527,7 @@
  *            productive motion tokens;
  *   end / closed — the toast slides out toward the swipe edge on the exit
  *            tokens. A button/timer dismiss never swiped, so its end vars
- *            are unset and the same keyframes start from rest (0px
+ *            are unset and the same keyframes start from rest (0
  *            fallbacks) — one consistent exit either way. The slide travels
  *            the toast's own size plus the viewport padding
  *            (--semantic-space-fixed-sm, the Viewport's p-fixed-sm) so no
@@ -535,56 +535,22 @@
  * Token-timed only, no new token values. Under reduced motion the follow
  * and the slide are dropped entirely and Radix unmounts at once.
  * In @layer components so a consumer's utility className still wins. */
-@keyframes hds-toast-out-right {
+@keyframes hds-toast-out {
   from {
-    transform: translateX(var(--radix-toast-swipe-end-x, 0px));
+    transform: translate(var(--_x), var(--_y));
   }
-  to {
-    transform: translateX(
-      calc(var(--radix-toast-swipe-end-x, 0px) + 100% + var(--semantic-space-fixed-sm))
-    );
-  }
-}
 
-@keyframes hds-toast-out-left {
-  from {
-    transform: translateX(var(--radix-toast-swipe-end-x, 0px));
-  }
   to {
-    transform: translateX(
-      calc(var(--radix-toast-swipe-end-x, 0px) - 100% - var(--semantic-space-fixed-sm))
-    );
-  }
-}
-
-@keyframes hds-toast-out-up {
-  from {
-    transform: translateY(var(--radix-toast-swipe-end-y, 0px));
-  }
-  to {
-    transform: translateY(
-      calc(var(--radix-toast-swipe-end-y, 0px) - 100% - var(--semantic-space-fixed-sm))
-    );
-  }
-}
-
-@keyframes hds-toast-out-down {
-  from {
-    transform: translateY(var(--radix-toast-swipe-end-y, 0px));
-  }
-  to {
-    transform: translateY(
-      calc(var(--radix-toast-swipe-end-y, 0px) + 100% + var(--semantic-space-fixed-sm))
+    transform: translate(
+      calc(var(--_x) + var(--_a, 0) * var(--_t)),
+      calc(var(--_y) + var(--_b, 0) * var(--_t))
     );
   }
 }
 
 @layer components {
   .hds-toast[data-swipe='move'] {
-    transform: translate(
-      var(--radix-toast-swipe-move-x, 0px),
-      var(--radix-toast-swipe-move-y, 0px)
-    );
+    transform: translate(var(--radix-toast-swipe-move-x, 0), var(--radix-toast-swipe-move-y, 0));
   }
 
   .hds-toast[data-swipe='cancel'] {
@@ -592,37 +558,38 @@
     transition: transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
   }
 
-  .hds-toast[data-swipe='end'][data-swipe-direction='right'],
-  .hds-toast[data-state='closed'][data-swipe-direction='right'] {
-    animation: hds-toast-out-right var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
-      forwards;
+  .hds-toast:is([data-swipe='end'], [data-state='closed'])[data-swipe-direction] {
+    /* Short aliases for the exit keyframes: Radix's swipe-end vars, plus the
+       travel distance (the toast's own size plus the viewport padding),
+       defined once here and read as var(--_t) per axis. */
+    --_x: var(--radix-toast-swipe-end-x, 0);
+    --_y: var(--radix-toast-swipe-end-y, 0);
+    --_t: calc(100% + var(--semantic-space-fixed-sm));
+    animation: hds-toast-out var(--hds-motion-exit-duration) var(--hds-motion-exit-easing) both;
   }
 
-  .hds-toast[data-swipe='end'][data-swipe-direction='left'],
-  .hds-toast[data-state='closed'][data-swipe-direction='left'] {
-    animation: hds-toast-out-left var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
-      forwards;
+  /* The sign vars are only read by the exit keyframes above, so they can
+     ride on the direction attribute alone, without the state condition. */
+  .hds-toast[data-swipe-direction='right'] {
+    --_a: 1;
   }
 
-  .hds-toast[data-swipe='end'][data-swipe-direction='up'],
-  .hds-toast[data-state='closed'][data-swipe-direction='up'] {
-    animation: hds-toast-out-up var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
-      forwards;
+  .hds-toast[data-swipe-direction='left'] {
+    --_a: -1;
   }
 
-  .hds-toast[data-swipe='end'][data-swipe-direction='down'],
-  .hds-toast[data-state='closed'][data-swipe-direction='down'] {
-    animation: hds-toast-out-down var(--hds-motion-exit-duration) var(--hds-motion-exit-easing)
-      forwards;
+  .hds-toast[data-swipe-direction='up'] {
+    --_b: -1;
+  }
+
+  .hds-toast[data-swipe-direction='down'] {
+    --_b: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hds-toast {
       animation: none;
       transition: none;
-    }
-
-    .hds-toast[data-swipe='move'] {
       transform: none;
     }
   }

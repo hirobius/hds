@@ -86,8 +86,8 @@ describe('Toast swipe-follow + slide-out exit (hds#938)', () => {
 
   it('follows the pointer during a swipe through the Radix swipe-move vars', () => {
     expect(toastCss).toContain(".hds-toast[data-swipe='move']");
-    expect(toastCss).toContain('var(--radix-toast-swipe-move-x, 0px)');
-    expect(toastCss).toContain('var(--radix-toast-swipe-move-y, 0px)');
+    expect(toastCss).toContain('var(--radix-toast-swipe-move-x, 0)');
+    expect(toastCss).toContain('var(--radix-toast-swipe-move-y, 0)');
   });
 
   it('snaps a cancelled swipe back on the productive motion tokens', () => {
@@ -96,13 +96,16 @@ describe('Toast swipe-follow + slide-out exit (hds#938)', () => {
   });
 
   it('slides a dismissed toast out toward the swipe edge on the exit tokens, swipe or not', () => {
-    expect(toastCss).toContain('@keyframes hds-toast-out-right');
-    expect(toastCss).toContain("[data-swipe='end'][data-swipe-direction='right']");
+    expect(toastCss).toContain('@keyframes hds-toast-out');
+    expect(toastCss).toContain('--_a: 1');
+    expect(toastCss).toContain('* var(--_t)');
+    expect(toastCss).toContain('--_t: calc(100% + var(--semantic-space-fixed-sm))');
+    expect(toastCss).toContain("[data-swipe-direction='right']");
     // A button/timer dismiss never swiped: the closed state takes the same exit.
-    expect(toastCss).toContain("[data-state='closed'][data-swipe-direction='right']");
+    expect(toastCss).toContain(":is([data-swipe='end'], [data-state='closed'])");
     expect(toastCss).toContain('var(--hds-motion-exit-duration)');
     // From rest — a non-swipe dismiss has no swipe-end vars set.
-    expect(toastCss).toContain('var(--radix-toast-swipe-end-x, 0px)');
+    expect(toastCss).toContain('var(--radix-toast-swipe-end-x, 0)');
   });
 
   it('drops the follow and the slide under reduced motion', () => {
