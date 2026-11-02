@@ -15,7 +15,7 @@ import { AnimatePresence, motion, useIsPresent } from 'motion/react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';
 import { warnOncePlain } from '../../lib/deprecation';
-import { useHdsMotion } from '../hooks/useHdsMotion';
+import { crossfadeFade, useHdsMotion } from '../hooks/useHdsMotion';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { installWipeListeners } from './button-wipe';
 
@@ -236,10 +236,7 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
       className="col-start-1 row-start-1"
       data-crossfade-label={isPresent ? 'live' : 'exiting'}
       aria-hidden={!isPresent || undefined}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+      {...crossfadeFade(productiveMotion)}
     >
       {children}
     </motion.span>

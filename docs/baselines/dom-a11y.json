@@ -69,13 +69,15 @@
   "AsyncState": {
     "dom": [
       "div aria-label=\"Open roles\" data-hds-component=\"AsyncState\" data-status=\"error\" role=\"region\"",
-      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
-      "    div role=\"alert\"",
-      "      svg aria-hidden=\"true\" data-hds-icon",
-      "      span",
-      "        span",
-      "        span",
-      "    button data-hover-effect=\"wipe\" data-size=\"sm\" data-slot=\"retry\" data-variant=\"secondary\""
+      "  div",
+      "    div data-crossfade-view=\"error\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        div role=\"alert\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "          span",
+      "            span",
+      "            span",
+      "        button data-hover-effect=\"wipe\" data-size=\"sm\" data-slot=\"retry\" data-variant=\"secondary\""
     ],
     "reader": [
       "region, Open roles",
@@ -252,6 +254,8 @@
       "  button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
       "  button data-hover-effect=\"wipe\" data-variant=\"primary\"",
       "  button aria-pressed=\"false\" data-hover-effect=\"wipe\" data-pressed=\"false\" data-variant=\"secondary\"",
+      "    span data-slot=\"label-crossfade\"",
+      "      span data-crossfade-label=\"live\"",
       "  button data-hover-effect=\"wipe\" data-variant=\"tertiary\"",
       "  button data-hover-effect=\"wipe\" data-tone=\"danger\" data-variant=\"secondary\"",
       "  button data-variant=\"secondary\"",

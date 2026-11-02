@@ -7,6 +7,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, waitFor } from '@testing-library/react';
 import { Search } from 'lucide-react';
+import { stubReducedMotion } from '../../../tests/helpers/reduced-motion';
 import { Icon } from './icon';
 
 const MESSAGE =
@@ -284,14 +285,7 @@ describe('Button toggle label crossfade (hds#938)', () => {
   });
 
   it('swaps the label instantly with no overlap under prefers-reduced-motion', async () => {
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: query.includes('reduce'),
-      media: query,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-      addListener: () => {},
-      removeListener: () => {},
-    }));
+    stubReducedMotion();
     try {
       const { Button } = await load();
       const { container, getByRole, rerender } = render(

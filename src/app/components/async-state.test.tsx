@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { act, render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
+import { stubReducedMotion } from '../../../tests/helpers/reduced-motion';
 import { AsyncState } from './async-state';
 
 afterEach(() => {
@@ -177,14 +178,7 @@ describe('AsyncState', () => {
   });
 
   it('swaps instantly with no overlap under prefers-reduced-motion', () => {
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: query.includes('reduce'),
-      media: query,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-      addListener: () => {},
-      removeListener: () => {},
-    }));
+    stubReducedMotion();
     try {
       const { container, rerender } = render(
         <AsyncState status="loading" label="Openings">
