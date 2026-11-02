@@ -766,3 +766,17 @@ Session total: 3 calls
 Session total: 6 calls
 
 Calls logged for 2026-11-01: 9 of 200 (3 and 6).
+
+## 2026-11-02 · session claude/burn-302 (hds#302, library `2VgBbVpKiDnu0aftJEVyBQ`)
+
+| #   | Time (UTC) | Tool              | Kind | Purpose                                                                                     | Result                                                                                                                                     |
+| --- | ---------- | ----------------- | ---- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | 08:45      | `create_session`  | read | open file session                                                                           | OK                                                                                                                                         |
+| 2   | 08:45      | `get_figma_skill` | read | load figma-use                                                                              | OK                                                                                                                                         |
+| 3   | 08:46      | `use_figma`       | read | every page: text layers with no text style per component (`figma/reads/text-style-read.js`) | OK; 190 of 973 unstyled, all on Archive (22 components) or Deprecated (7); 0 on live pages. Stored in `figma/text-style-verification.json` |
+
+Results: no live component has an unstyled text layer, so no binding write was made. Nothing written, deleted or published.
+
+Session total: 3 calls
+
+Calls logged for 2026-11-02: 3 of 200.

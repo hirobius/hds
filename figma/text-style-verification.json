@@ -1,0 +1,289 @@
+{
+  "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
+  "readAt": "2026-11-02",
+  "source": "one read-only use_figma pass (figma/MCP-LEDGER.md, 2026-11-02, hds#302)",
+  "totalTextLayers": 973,
+  "textLayersWithoutStyle": 190,
+  "liveTextLayersWithoutStyle": 0,
+  "components": [
+    {
+      "page": "Archive",
+      "id": "2043:3",
+      "name": "_Calendar (archived 2026-10-07)",
+      "text": 38,
+      "unstyled": 38,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2043:184",
+      "name": "_ActivityFeed (archived 2026-10-07)",
+      "text": 24,
+      "unstyled": 24,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2028:27",
+      "name": "_ToggleButton (archived 2026-10-07)",
+      "text": 12,
+      "unstyled": 12,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2033:50",
+      "name": "_Stepper (archived 2026-10-07)",
+      "text": 12,
+      "unstyled": 12,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2043:99",
+      "name": "_CommandPalette (archived 2026-10-07)",
+      "text": 10,
+      "unstyled": 10,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2036:15",
+      "name": "_InputGroup (archived 2026-10-07)",
+      "text": 9,
+      "unstyled": 9,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2036:29",
+      "name": "_FileInput (archived 2026-10-07)",
+      "text": 8,
+      "unstyled": 8,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2042:52",
+      "name": "_Tokenizer (archived 2026-10-07)",
+      "text": 8,
+      "unstyled": 8,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2025:21",
+      "name": "_HeadingStack (archived 2026-10-07)",
+      "text": 12,
+      "unstyled": 6,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2034:7",
+      "name": "_ContextMenu (archived 2026-10-07)",
+      "text": 6,
+      "unstyled": 6,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2038:3",
+      "name": "_Toolbar (archived 2026-10-07)",
+      "text": 5,
+      "unstyled": 5,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2038:16",
+      "name": "_OverflowList (archived 2026-10-07)",
+      "text": 5,
+      "unstyled": 5,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2042:3",
+      "name": "_TopNav (archived 2026-10-07)",
+      "text": 5,
+      "unstyled": 5,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2038:36",
+      "name": "_Frame (archived 2026-10-07)",
+      "text": 4,
+      "unstyled": 4,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2040:3",
+      "name": "_TreeList (archived 2026-10-07)",
+      "text": 4,
+      "unstyled": 4,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2040:34",
+      "name": "_CinematicLink (archived 2026-10-07)",
+      "text": 4,
+      "unstyled": 4,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2041:61",
+      "name": "_Token (archived 2026-10-07)",
+      "text": 4,
+      "unstyled": 4,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2042:54",
+      "name": "_MultiSelector (archived 2026-10-07)",
+      "text": 4,
+      "unstyled": 4,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2044:53",
+      "name": "_StackedCardRail (archived 2026-10-07)",
+      "text": 8,
+      "unstyled": 4,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2039:21",
+      "name": "_TimeInput (archived 2026-10-07)",
+      "text": 3,
+      "unstyled": 3,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2034:3",
+      "name": "_HoverCard (archived 2026-10-07)",
+      "text": 2,
+      "unstyled": 2,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2039:23",
+      "name": "_DateTimeInput (archived 2026-10-07)",
+      "text": 2,
+      "unstyled": 2,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Deprecated",
+      "id": "2024:5",
+      "name": "Blockquote/sm/true",
+      "text": 2,
+      "unstyled": 2,
+      "mixed": 0,
+      "reason": "On the Deprecated page: kept for existing instances only. Not bound."
+    },
+    {
+      "page": "Deprecated",
+      "id": "2024:15",
+      "name": "Blockquote/lg/true",
+      "text": 2,
+      "unstyled": 2,
+      "mixed": 0,
+      "reason": "On the Deprecated page: kept for existing instances only. Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2039:3",
+      "name": "_DateInput (archived 2026-10-07)",
+      "text": 1,
+      "unstyled": 1,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Archive",
+      "id": "2039:37",
+      "name": "_DateRangeInput (archived 2026-10-07)",
+      "text": 1,
+      "unstyled": 1,
+      "mixed": 0,
+      "reason": "On the Archive page: retired component, kept because the library never deletes (ADR-026 amendment). Not bound."
+    },
+    {
+      "page": "Deprecated",
+      "id": "2024:3",
+      "name": "Blockquote/sm/false",
+      "text": 1,
+      "unstyled": 1,
+      "mixed": 0,
+      "reason": "On the Deprecated page: kept for existing instances only. Not bound."
+    },
+    {
+      "page": "Deprecated",
+      "id": "2024:8",
+      "name": "Blockquote/md/false",
+      "text": 1,
+      "unstyled": 1,
+      "mixed": 0,
+      "reason": "On the Deprecated page: kept for existing instances only. Not bound."
+    },
+    {
+      "page": "Deprecated",
+      "id": "2024:13",
+      "name": "Blockquote/lg/false",
+      "text": 1,
+      "unstyled": 1,
+      "mixed": 0,
+      "reason": "On the Deprecated page: kept for existing instances only. Not bound."
+    },
+    {
+      "page": "Deprecated",
+      "id": "2022:15",
+      "name": "Text/eyebrow",
+      "text": 1,
+      "unstyled": 1,
+      "mixed": 0,
+      "reason": "On the Deprecated page: kept for existing instances only. Not bound."
+    },
+    {
+      "page": "Deprecated",
+      "id": "2022:21",
+      "name": "Text/badge",
+      "text": 1,
+      "unstyled": 1,
+      "mixed": 0,
+      "reason": "On the Deprecated page: kept for existing instances only. Not bound."
+    }
+  ]
+}
