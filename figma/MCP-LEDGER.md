@@ -779,4 +779,24 @@ Results: no live component has an unstyled text layer, so no binding write was m
 
 Session total: 3 calls
 
-Calls logged for 2026-11-02: 3 of 200.
+
+## 2026-11-02 · hds#637 Timeline library redraw (library `2VgBbVpKiDnu0aftJEVyBQ`, staging `C85ZXnwtVc4AteeIOZfXRC`)
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                                     | Result                                                                           |
+| --- | ---------- | ---------------- | ----- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| 1   | --         | `create_session` | read  | open file session                                                           | OK                                                                               |
+| 2   | --         | `use_figma`      | read  | library node 2201:133 and page list                                         | OK; Timeline page 2201:3                                                         |
+| 3   | --         | `use_figma`      | read  | list Timeline page components                                               | OK; TimelineItem set 2201:132 (Tone x Last), Timeline 2201:133                   |
+| 4   | --         | `use_figma`      | read  | staging nodes 92:3197 / 92:3198                                             | OK; Tone x Detail set + Timeline                                                 |
+| 5   | --         | `use_figma`      | read  | screenshot library set + Timeline                                           | OK                                                                               |
+| 6   | --         | `use_figma`      | read  | dump staging structure, variable and style keys                             | OK                                                                               |
+| 7   | --         | `use_figma`      | read  | resolve keys to local variables/styles; external instances of 2201:132      | OK; all local, 0 external instances                                              |
+| 8   | --         | `use_figma`      | write | draw TimelineItem set (Tone x Detail) from staging, library vars only       | OK; set `2252:127` (variants `2252:37`..`2252:117`)                              |
+| 9   | --         | `use_figma`      | write | rebuild Timeline 2201:133 in place from 2252:127 instances; remove 2201:132 | OK; Timeline keeps id 2201:133 (the `@figma` tag); 2252:127 renamed TimelineItem |
+| 10  | --         | `use_figma`      | write | delete staging draft 92:3197 + 92:3198                                      | OK                                                                               |
+
+Results: library TimelineItem is now `2252:127` (Tone x Detail, matching the code's `children` disclosure); Timeline `2201:133` kept its id so `timeline.tsx`'s `@figma` tag already points at the library node. Staging draft deleted. Nothing published: Adrian publishes.
+
+Session total: 10 calls
+
+Calls logged for 2026-11-02: 13 of 200 (3 and 10).
