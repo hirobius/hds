@@ -81,28 +81,6 @@
         "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
         "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]"
       ]
-    },
-    {
-      "id": "tenant/concrete-creations",
-      "kind": "tenant",
-      "impact": "look",
-      "plain": "Pages themed with the concrete-creations brand (data-brand=\"concrete-creations\") may look different, so check them after upgrading.",
-      "detect": {
-        "regex": [
-          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?concrete-creations(?![\\w-])"
-        ]
-      },
-      "facts": [
-        "css-var-changed:--hds-edge-primary::root",
-        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
-        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
-        "css-var-changed:--semantic-accent-rest::root",
-        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
-        "css-var-changed:--semantic-color-surface-accent::root",
-        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
-        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
-        "css-var-changed:--hds-edge-primary:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
-      ]
     }
   ]
 }
