@@ -632,9 +632,15 @@ describe('CLI', () => {
 
 describe('this repo', () => {
   it('registers a state surface per kind and the committed tree passes the gate', () => {
-    // Pinned: the review ages are measured against a fixed day, so this test
-    // does not start failing when the calendar moves past a maxAgeDays.
-    const result = checkStateSurfaces({ root: ROOT, today: TODAY, strictReview: true });
+    // Pinned to the newest reviewedAt in the registry, not the clock: the test
+    // does not fail when the calendar moves past a maxAgeDays, and a fresh
+    // review bump is never "in the future".
+    const registry = JSON.parse(readFileSync(join(ROOT, 'docs/state-surfaces.json'), 'utf8'));
+    const today = registry.surfaces
+      .map((s) => s.reviewedAt)
+      .filter(Boolean)
+      .reduce((a, b) => (b > a ? b : a), TODAY);
+    const result = checkStateSurfaces({ root: ROOT, today, strictReview: true });
     expect(result.violations).toEqual([]);
     expect(Object.keys(result.summary.byKind).sort()).toEqual([
       'checked',
