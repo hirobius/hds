@@ -8,14 +8,14 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import {
-  ROOT,
-  runGate,
+  expectCleanRun,
+  expectInPreCommit,
+  expectNoViolations,
   fixtureRunner,
-  runExemptionsOn,
   registryEntry,
+  runExemptionsOn,
+  runGate,
 } from './helpers/gate-runner.mjs';
 import {
   findViolationsInText,
@@ -195,8 +195,7 @@ describe('the gate blocks at pre-commit', () => {
   });
 
   it('runs in .husky/pre-commit', () => {
-    const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
-    expect(hook).toMatch(/^node scripts\/check-layout-gap-vocabulary\.mjs$/m);
+    expectInPreCommit('scripts/check-layout-gap-vocabulary.mjs');
   });
 
   const runOn = fixtureRunner(GATE, 'fixtures/check-layout-gap-vocabulary');
@@ -219,14 +218,12 @@ describe('the gate blocks at pre-commit', () => {
 
   it('exits 0 on the passing fixture', () => {
     const run = runOn('passing.example.tsx');
-    expect(JSON.parse(run.stdout).violations).toEqual([]);
-    expect(run.status).toBe(0);
+    expectNoViolations(run);
   });
 
   it('finds nothing in src/ (pnpm test runs this in CI, where the hook does not)', () => {
     const run = runGate(GATE);
-    expect(run.stderr).toBe('');
-    expect(run.status).toBe(0);
+    expectCleanRun(run);
   });
 });
 

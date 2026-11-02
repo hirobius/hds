@@ -6,6 +6,7 @@
  * script, cwd at the repo root, and HDS_FIXTURE_MODE + FIXTURE_FILE to point
  * it at one fixture. This is that one copy.
  */
+import { expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -33,4 +34,22 @@ export const runExemptionsOn = (file) =>
 export function registryEntry(id) {
   const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
   return registry.gates.find((g) => g.id === id);
+}
+
+/** The gate's run found nothing: `--json` lists no violations and it exits 0. */
+export function expectNoViolations(run) {
+  expect(JSON.parse(run.stdout).violations).toEqual([]);
+  expect(run.status).toBe(0);
+}
+
+/** The gate ran over the repo silently and exited 0. */
+export function expectCleanRun(run) {
+  expect(run.stderr).toBe('');
+  expect(run.status).toBe(0);
+}
+
+/** `.husky/pre-commit` runs `node <gate>` on a line of its own. */
+export function expectInPreCommit(gate) {
+  const hook = readFileSync(join(ROOT, '.husky/pre-commit'), 'utf8');
+  expect(hook.split('\n')).toContain(`node ${gate}`);
 }

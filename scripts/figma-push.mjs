@@ -11,7 +11,8 @@
  *   figma/push/plugin/            the Sync plugin: Sync · Plan · Check this file · Mark
  *                                 (no model inside; it fetches the sync bundle, ADR-032)
  *   figma/push/promote/           HDS tokens promote (baked): Plan push · Push · Take snapshot,
- *                                 with the model baked in, for a deliberate prune (Adrian runs it);
+ *                                 its model in promote/model.json (picked in the window, hds#397),
+ *                                 for a deliberate prune (Adrian runs it);
  *                                 like Sync, it runs in the library only, never in HDS Staging
  *   figma/push/use-figma/NN-*.js  use_figma scripts for the Figma MCP server, run in order;
  *                                 never written with --prune (an agent never deletes in the library)
