@@ -54,6 +54,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   Dialog: ['data-state'],
   Disclosure: ['data-state'],
   Divider: ['data-variant'],
+  EmptyState: ['data-framed', 'data-variant'],
   ErrorPattern: ['data-role'],
   Field: ['data-tone'],
   FormActions: ['data-slot'],

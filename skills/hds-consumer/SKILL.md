@@ -291,6 +291,7 @@ The `data-*` attributes each component renders for you to select on:
 - `Dialog`: `data-state`
 - `Disclosure`: `data-state`
 - `Divider`: `data-variant`
+- `EmptyState`: `data-framed`, `data-variant`
 - `ErrorPattern`: `data-role`
 - `Field`: `data-tone`
 - `FormActions`: `data-slot`
