@@ -230,6 +230,16 @@ function PagedFixture({ start = 3, count = 10 }: { start?: number; count?: numbe
   return <Pagination page={page} count={count} onPageChange={setPage} />;
 }
 
+/** Whether the Pagination button named `name` is disabled. */
+const buttonDisabled = (name: string) =>
+  (screen.getByRole('button', { name }) as HTMLButtonElement).disabled;
+
+/** Pagination's Previous and Next controls are named buttons. */
+function expectPreviousNextNamed() {
+  expect(screen.getByRole('button', { name: 'Previous page' })).not.toBeNull();
+  expect(screen.getByRole('button', { name: 'Next page' })).not.toBeNull();
+}
+
 describe('Pagination accessibility contract', () => {
   it('a11y:pagination.nav-landmark - it is a navigation landmark with a default name, overridable', () => {
     const { rerender } = render(<Pagination page={1} count={5} onPageChange={() => {}} />);
@@ -240,8 +250,7 @@ describe('Pagination accessibility contract', () => {
 
   it('a11y:pagination.control-names - Previous, Next and each page number have a name', () => {
     render(<Pagination page={3} count={10} onPageChange={() => {}} />);
-    expect(screen.getByRole('button', { name: 'Previous page' })).not.toBeNull();
-    expect(screen.getByRole('button', { name: 'Next page' })).not.toBeNull();
+    expectPreviousNextNamed();
     expect(screen.getByRole('button', { name: 'Page 3' })).not.toBeNull();
     for (const button of screen.getAllByRole('button')) {
       expect(button.getAttribute('aria-label') || button.textContent).toBeTruthy();
@@ -258,16 +267,10 @@ describe('Pagination accessibility contract', () => {
 
   it('a11y:pagination.disabled-ends - Previous is disabled on page 1 and Next on the last page', () => {
     const { rerender } = render(<Pagination page={1} count={5} onPageChange={() => {}} />);
-    expect(
-      (screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled,
-    ).toBe(true);
-    expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
-      false,
-    );
+    expect(buttonDisabled('Previous page')).toBe(true);
+    expect(buttonDisabled('Next page')).toBe(false);
     rerender(<Pagination page={5} count={5} onPageChange={() => {}} />);
-    expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
-      true,
-    );
+    expect(buttonDisabled('Next page')).toBe(true);
   });
 
   it('a11y:pagination.ellipsis-hidden - the truncation ellipsis is hidden from assistive tech', () => {
@@ -332,21 +335,16 @@ describe('Pagination accessibility contract', () => {
 
   it('a11y:pagination.compact-control-names - the compact icon-only buttons are named Previous page and Next page', () => {
     render(<Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />);
-    expect(screen.getByRole('button', { name: 'Previous page' })).not.toBeNull();
-    expect(screen.getByRole('button', { name: 'Next page' })).not.toBeNull();
+    expectPreviousNextNamed();
   });
 
   it('a11y:pagination.compact-disabled-ends - compact Previous is disabled on the first page and Next on the last', () => {
     const { rerender } = render(
       <Pagination variant="compact" page={1} count={4} onPageChange={() => {}} />,
     );
-    expect(
-      (screen.getByRole('button', { name: 'Previous page' }) as HTMLButtonElement).disabled,
-    ).toBe(true);
+    expect(buttonDisabled('Previous page')).toBe(true);
     rerender(<Pagination variant="compact" page={4} count={4} onPageChange={() => {}} />);
-    expect((screen.getByRole('button', { name: 'Next page' }) as HTMLButtonElement).disabled).toBe(
-      true,
-    );
+    expect(buttonDisabled('Next page')).toBe(true);
   });
 
   it('a11y:pagination.target-size - page buttons lift to the touch target and Previous/Next are at least 24px', () => {

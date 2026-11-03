@@ -3,7 +3,7 @@
  * pins the cause the bash measured (a class, a role, an attribute, a source rule);
  * the rendered sizes were re-measured in Chromium against the packed kit.
  */
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { useState } from 'react';
@@ -43,17 +43,28 @@ import { Dialog } from '../src/app/components/dialog';
 
 const css = (p: string) => readFileSync(resolve(process.cwd(), 'src/styles', p), 'utf8');
 
-beforeAll(() => {
-  // @ts-expect-error minimal jsdom polyfills for Radix / Floating-UI.
-  globalThis.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  };
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 afterEach(cleanup);
+
+/** An open Dialog with the title and description it requires. */
+const renderOpenDialog = () =>
+  render(
+    <Dialog open>
+      <Dialog.Content>
+        <Dialog.Title>t</Dialog.Title>
+        <Dialog.Description>d</Dialog.Description>
+      </Dialog.Content>
+    </Dialog>,
+  );
+
+const COUNTRIES = [
+  { value: 'us', label: 'United States' },
+  { value: 'ca', label: 'Canada' },
+];
+
+function CountryCombobox() {
+  const [v, setV] = useState<string | null>(null);
+  return <Combobox aria-label="Country" options={COUNTRIES} value={v} onChange={setV} />;
+}
 
 /** Elements a Tab press can land on: natively focusable or tabindex >= 0. */
 function tabStops(root: HTMLElement): HTMLElement[] {
@@ -285,14 +296,7 @@ describe('Layout', () => {
   });
 
   it('Dialog keeps a 16px margin to the viewport edge', () => {
-    render(
-      <Dialog open>
-        <Dialog.Content>
-          <Dialog.Title>t</Dialog.Title>
-          <Dialog.Description>d</Dialog.Description>
-        </Dialog.Content>
-      </Dialog>,
-    );
+    renderOpenDialog();
     const content = screen.getByRole('dialog');
     expect(content.className).not.toMatch(/\bw-full\b/);
     expect(content.className).toContain('100%-2*var(--semantic-space-scale-sm)');
@@ -301,22 +305,14 @@ describe('Layout', () => {
 
 describe('A11y / keyboard', () => {
   it('Combobox returns focus to the trigger on Escape (single and multiple)', async () => {
-    const options = [
-      { value: 'us', label: 'United States' },
-      { value: 'ca', label: 'Canada' },
-    ];
-    function Single() {
-      const [v, setV] = useState<string | null>(null);
-      return <Combobox aria-label="Country" options={options} value={v} onChange={setV} />;
-    }
     function Multi() {
       const [v, setV] = useState<string[]>([]);
       return (
-        <Combobox multiple aria-label="Countries" options={options} value={v} onChange={setV} />
+        <Combobox multiple aria-label="Countries" options={COUNTRIES} value={v} onChange={setV} />
       );
     }
     for (const [ui, name] of [
-      [<Single key="s" />, 'Country'],
+      [<CountryCombobox key="s" />, 'Country'],
       [<Multi key="m" />, 'Countries'],
     ] as const) {
       const user = userEvent.setup();
@@ -431,30 +427,15 @@ describe('Untested fixes, pinned (hds#525 review)', () => {
   });
 
   it('Dialog caps its height to the viewport and scrolls', () => {
-    render(
-      <Dialog open>
-        <Dialog.Content>
-          <Dialog.Title>t</Dialog.Title>
-          <Dialog.Description>d</Dialog.Description>
-        </Dialog.Content>
-      </Dialog>,
-    );
+    renderOpenDialog();
     const cls = screen.getByRole('dialog').className;
     expect(cls).toContain('max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))]');
     expect(cls).toMatch(/\boverflow-y-auto\b/);
   });
 
   it('Combobox returns focus to the trigger after a pick', async () => {
-    const options = [
-      { value: 'us', label: 'United States' },
-      { value: 'ca', label: 'Canada' },
-    ];
-    function Single() {
-      const [v, setV] = useState<string | null>(null);
-      return <Combobox aria-label="Country" options={options} value={v} onChange={setV} />;
-    }
     const user = userEvent.setup();
-    render(<Single />);
+    render(<CountryCombobox />);
     const trigger = screen.getByRole('combobox', { name: 'Country' });
     await user.click(trigger);
     await user.click(await screen.findByRole('option', { name: 'Canada' }));

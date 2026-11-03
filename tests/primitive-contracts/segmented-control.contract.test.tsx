@@ -17,6 +17,14 @@ const OPTIONS = [
   { value: 'c', label: 'Option C' },
 ];
 
+/** Render a labelled control and return its radiogroup container. */
+function renderGroup() {
+  const { container } = render(
+    <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} aria-label="View mode" />,
+  );
+  return container.querySelector('[role="radiogroup"]');
+}
+
 describe('SegmentedControl contract', () => {
   it('renders without crashing', () => {
     const { container } = render(
@@ -62,18 +70,12 @@ describe('SegmentedControl contract', () => {
   });
 
   it('renders a radiogroup role container', () => {
-    const { container } = render(
-      <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} aria-label="View mode" />,
-    );
-    const group = container.querySelector('[role="radiogroup"]');
+    const group = renderGroup();
     expect(group).not.toBeNull();
   });
 
   it('aria-label is applied to the radiogroup', () => {
-    const { container } = render(
-      <SegmentedControl options={OPTIONS} value="a" onChange={() => {}} aria-label="View mode" />,
-    );
-    const group = container.querySelector('[role="radiogroup"]');
+    const group = renderGroup();
     expect(group?.getAttribute('aria-label')).toBe('View mode');
   });
 

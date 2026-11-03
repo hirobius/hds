@@ -21,6 +21,8 @@ import { fileURLToPath } from 'url';
 import { readTokenSource } from './lib/token-source.mjs';
 import { resolveAlias } from './lib/token-tree.mjs';
 import { BASE_PAIRS, PAIRS, NONTEXT_PAIRS } from './lib/contrast-pairs.mjs';
+// WCAG 2.1 §1.4.3 luminance + ratio: one implementation, shared with the validator (hds#1011).
+import { contrastRatio } from '../validators/contrast.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const tokenPath = resolve(__dirname, '../hirobius.tokens.json');
@@ -84,22 +86,6 @@ function resolveSemanticHex(dotPath, mode, overlay = null) {
     );
   }
   return hex.toLowerCase();
-}
-
-// ── WCAG luminance + contrast ─────────────────────────────────
-
-function hexToLuminance(hex) {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const lin = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
-  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
-}
-
-function contrastRatio(hex1, hex2) {
-  const L1 = hexToLuminance(hex1);
-  const L2 = hexToLuminance(hex2);
-  return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
 }
 
 // ── WCAG thresholds ───────────────────────────────────────────

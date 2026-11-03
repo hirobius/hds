@@ -32,21 +32,31 @@ afterEach(() => {
 
 // ── AlertDialog ───────────────────────────────────────────────────────────────
 
+/** Render the AlertDialog fixture and open it from its trigger with Enter. */
+async function openAlertDialogFixture() {
+  const u = user();
+  render(<AlertDialogFixture />);
+  screen.getByRole('button', { name: 'Delete' }).focus();
+  await u.keyboard('{Enter}');
+  return u;
+}
+
+/** Open the rendered "Actions" menu from its trigger with Enter. */
+async function openMenu(u: ReturnType<typeof user>) {
+  screen.getByRole('button', { name: 'Actions' }).focus();
+  await u.keyboard('{Enter}');
+  await screen.findByRole('menu');
+}
+
 describe('AlertDialog accessibility contract', () => {
   it('a11y:alertdialog.initial-focus-cancel - focus lands on Cancel, the least destructive action', async () => {
-    const u = user();
-    render(<AlertDialogFixture />);
-    screen.getByRole('button', { name: 'Delete' }).focus();
-    await u.keyboard('{Enter}');
+    await openAlertDialogFixture();
     const cancel = await screen.findByRole('button', { name: 'Cancel' });
     await waitFor(() => expect(document.activeElement).toBe(cancel));
   });
 
   it('a11y:alertdialog.no-outside-dismiss - a click outside does not close it', async () => {
-    const u = user();
-    render(<AlertDialogFixture />);
-    screen.getByRole('button', { name: 'Delete' }).focus();
-    await u.keyboard('{Enter}');
+    const u = await openAlertDialogFixture();
     await screen.findByRole('alertdialog');
     await u.pointer({ keys: '[MouseLeft]', target: document.body });
     fireEvent.pointerDown(document.body);
@@ -56,10 +66,7 @@ describe('AlertDialog accessibility contract', () => {
   });
 
   it('a11y:alertdialog.named-and-described - role=alertdialog named by the title, described by the description', async () => {
-    const u = user();
-    render(<AlertDialogFixture />);
-    screen.getByRole('button', { name: 'Delete' }).focus();
-    await u.keyboard('{Enter}');
+    await openAlertDialogFixture();
     const dialog = await screen.findByRole('alertdialog', { name: 'Delete project?' });
     const describedBy = dialog.getAttribute('aria-describedby');
     expect(describedBy).toBeTruthy();
@@ -69,10 +76,7 @@ describe('AlertDialog accessibility contract', () => {
   });
 
   it('a11y:alertdialog.actions-named - Cancel and Action are named buttons', async () => {
-    const u = user();
-    render(<AlertDialogFixture />);
-    screen.getByRole('button', { name: 'Delete' }).focus();
-    await u.keyboard('{Enter}');
+    await openAlertDialogFixture();
     await screen.findByRole('alertdialog');
     expect(screen.getByRole('button', { name: 'Cancel' })).not.toBeNull();
     expect(screen.getByRole('button', { name: 'Confirm' })).not.toBeNull();
@@ -135,9 +139,7 @@ describe('Menu accessibility contract', () => {
         </Menu.Content>
       </Menu>,
     );
-    screen.getByRole('button', { name: 'Actions' }).focus();
-    await u.keyboard('{Enter}');
-    await screen.findByRole('menu');
+    await openMenu(u);
     await u.keyboard(' ');
     await waitFor(() => expect(screen.queryByRole('menu')).toBeNull());
     expect(onSelect).toHaveBeenCalledTimes(1);
@@ -169,9 +171,7 @@ describe('Menu accessibility contract', () => {
         </Menu.Content>
       </Menu>,
     );
-    screen.getByRole('button', { name: 'Actions' }).focus();
-    await u.keyboard('{Enter}');
-    await screen.findByRole('menu');
+    await openMenu(u);
     const banana = screen.getByRole('menuitem', { name: 'Banana' });
     expect(banana.getAttribute('aria-disabled')).toBe('true');
     await u.keyboard('{ArrowDown}');
@@ -457,12 +457,18 @@ describe('DestructiveSection accessibility contract', () => {
     return onConfirm;
   }
 
-  it('a11y:destructive-section.cancel-returns-focus - Cancel closes the dialog, returns focus to the trigger and never runs the action', async () => {
+  /** Render the section and press its action from the keyboard, opening the confirmation. */
+  async function openConfirm() {
     const u = user();
     const onConfirm = setup();
     const trigger = screen.getByRole('button', { name: 'Archive client' });
     trigger.focus();
     await u.keyboard('{Enter}');
+    return { u, onConfirm, trigger };
+  }
+
+  it('a11y:destructive-section.cancel-returns-focus - Cancel closes the dialog, returns focus to the trigger and never runs the action', async () => {
+    const { u, onConfirm, trigger } = await openConfirm();
     const cancel = await screen.findByRole('button', { name: 'Cancel' });
     await waitFor(() => expect(document.activeElement).toBe(cancel));
     await u.keyboard('{Enter}');
@@ -472,20 +478,13 @@ describe('DestructiveSection accessibility contract', () => {
   });
 
   it('a11y:destructive-section.first-press-safe - the first press opens a confirmation and does not run the action', async () => {
-    const u = user();
-    const onConfirm = setup();
-    screen.getByRole('button', { name: 'Archive client' }).focus();
-    await u.keyboard('{Enter}');
+    const { onConfirm } = await openConfirm();
     await screen.findByRole('alertdialog');
     expect(onConfirm).not.toHaveBeenCalled();
   });
 
   it('a11y:destructive-section.confirm-returns-focus - confirming runs the action once and returns focus to the trigger', async () => {
-    const u = user();
-    const onConfirm = setup();
-    const trigger = screen.getByRole('button', { name: 'Archive client' });
-    trigger.focus();
-    await u.keyboard('{Enter}');
+    const { u, onConfirm, trigger } = await openConfirm();
     await screen.findByRole('alertdialog');
     await u.click(screen.getByRole('button', { name: 'Yes, archive' }));
     await waitFor(() => expect(screen.queryByRole('alertdialog')).toBeNull());

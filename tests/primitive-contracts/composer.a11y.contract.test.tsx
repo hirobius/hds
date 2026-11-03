@@ -7,15 +7,10 @@
  *
  * @primitive Composer
  */
-import { describe, it, expect, vi, afterEach, beforeAll } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup, fireEvent, waitFor, within } from '@testing-library/react';
 import { Composer } from '@/app/components/composer';
 import { user } from './overlay-fixtures';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 
@@ -114,17 +109,18 @@ describe('Composer accessibility contract', () => {
       await u.keyboard('{Enter}');
       return screen.findByRole('dialog');
     };
+    // The dialog is gone and focus is back on the chip that opened it.
+    const closedBackOnChip = async () => {
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+      await waitFor(() =>
+        expect(document.activeElement).toBe(screen.getByRole('button', { name: /pasted text/i })),
+      );
+    };
     await open();
     await u.keyboard('{Escape}');
-    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
-    await waitFor(() =>
-      expect(document.activeElement).toBe(screen.getByRole('button', { name: /pasted text/i })),
-    );
+    await closedBackOnChip();
     const dialog = await open();
     fireEvent.click(within(dialog).getByRole('button', { name: 'Save' }));
-    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
-    await waitFor(() =>
-      expect(document.activeElement).toBe(screen.getByRole('button', { name: /pasted text/i })),
-    );
+    await closedBackOnChip();
   });
 });

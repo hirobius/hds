@@ -7,17 +7,12 @@
  *
  * @primitive CommandPalette
  */
-import { describe, it, expect, afterEach, beforeAll } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import * as React from 'react';
 import { CommandPalette, type CommandPaletteItem } from '@/app/components/command-palette';
 import { axeViolations } from '../helpers/axe';
 import { user } from './overlay-fixtures';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 
@@ -60,6 +55,15 @@ const MULTI: CommandPaletteItem[] = [
 ];
 
 const field = () => screen.getByRole('combobox', { name: 'Command palette' });
+
+/** The open palette with the multi-step command, focus in its search field. */
+function renderMulti() {
+  const u = user();
+  render(<CommandPalette open items={MULTI} onOpenChange={() => {}} onSelect={() => {}} />);
+  const input = field();
+  input.focus();
+  return { u, input };
+}
 
 describe('CommandPalette accessibility contract', () => {
   it('a11y:command-palette.dialog-named - the palette is a modal dialog named by its label', async () => {
@@ -166,10 +170,7 @@ describe('CommandPalette accessibility contract', () => {
   });
 
   it('a11y:command-palette.argument-chips - a multi-step command shows the command and each chosen argument as a removable Tag chip before the field', async () => {
-    const u = user();
-    render(<CommandPalette open items={MULTI} onOpenChange={() => {}} onSelect={() => {}} />);
-    const input = field();
-    input.focus();
+    const { u, input } = renderMulti();
     await u.keyboard('{Enter}');
     // Picking the command did not close the palette; it became a chip and the
     // first argument's options replaced the command list.
@@ -185,10 +186,7 @@ describe('CommandPalette accessibility contract', () => {
   });
 
   it('a11y:command-palette.chip-backspace - Backspace in an empty field removes the last chip and steps back, focus staying in the field', async () => {
-    const u = user();
-    render(<CommandPalette open items={MULTI} onOpenChange={() => {}} onSelect={() => {}} />);
-    const input = field();
-    input.focus();
+    const { u, input } = renderMulti();
     await u.keyboard('{Enter}');
     await u.keyboard('{Enter}');
     expect(screen.getByRole('button', { name: 'Remove Website' })).toBeTruthy();
@@ -206,10 +204,7 @@ describe('CommandPalette accessibility contract', () => {
   });
 
   it('a11y:command-palette.argument-step-announced - each argument step is announced in the polite status with its name and position', async () => {
-    const u = user();
-    render(<CommandPalette open items={MULTI} onOpenChange={() => {}} onSelect={() => {}} />);
-    const input = field();
-    input.focus();
+    const { u } = renderMulti();
     await u.keyboard('{Enter}');
     const status = screen.getByRole('status');
     expect(status.textContent).toContain('Project');
