@@ -8,25 +8,13 @@
  * token sheet: `dist/variables.css` is `src/styles/tokens.generated.css` verbatim
  * plus a banner (scripts/build-vars-css.mjs).
  */
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import { contrastRatio } from '../utils/colorUtils';
-import { color } from '../../../tests/helpers/token-sheet';
+import { color, paintedVar } from '../../../tests/helpers/token-sheet';
 import { SegmentedControl } from './segmented-control';
 
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
-
 afterEach(cleanup);
-
-/** The custom property a Tailwind arbitrary class paints, e.g. bg-[var(--x)] → --x. */
-function paintedVar(className: string, pattern: RegExp): string {
-  const m = className.match(pattern);
-  if (!m) throw new Error(`no ${pattern} in "${className}"`);
-  return m[1];
-}
 
 function renderSecondary() {
   render(

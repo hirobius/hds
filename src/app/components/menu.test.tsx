@@ -3,27 +3,13 @@
  * Plain-DOM assertions (no jest-dom matchers).
  *
  * Radix DropdownMenu positions via Floating UI, which calls APIs jsdom lacks
- * (ResizeObserver, hasPointerCapture, scrollIntoView) — polyfilled below.
+ * (ResizeObserver, hasPointerCapture, scrollIntoView); tests/setup/jsdom-polyfills.ts
+ * stubs them for every suite.
  */
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { Menu } from './menu';
-
-beforeAll(() => {
-  // @ts-expect-error — minimal jsdom polyfills for Radix/Floating-UI.
-  globalThis.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  };
-  if (!Element.prototype.hasPointerCapture) {
-    Element.prototype.hasPointerCapture = () => false;
-  }
-  if (!Element.prototype.scrollIntoView) {
-    Element.prototype.scrollIntoView = () => {};
-  }
-});
 
 afterEach(cleanup);
 

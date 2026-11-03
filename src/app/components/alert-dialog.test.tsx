@@ -1,36 +1,18 @@
 /**
  * Tests for AlertDialog. Plain-DOM assertions. Radix AlertDialog needs the
- * same jsdom polyfills as Dialog (pointer capture, scrollIntoView).
+ * same jsdom polyfills as Dialog (pointer capture, scrollIntoView), which
+ * tests/setup/jsdom-polyfills.ts installs for every suite.
  */
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import { AlertDialogFixture } from '../../../tests/primitive-contracts/overlay-fixtures';
 import { AlertDialog } from './alert-dialog';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 
-function Example() {
-  return (
-    <AlertDialog>
-      <AlertDialog.Trigger>Delete</AlertDialog.Trigger>
-      <AlertDialog.Content>
-        <AlertDialog.Header>
-          <AlertDialog.Title>Delete project?</AlertDialog.Title>
-          <AlertDialog.Description>This cannot be undone.</AlertDialog.Description>
-        </AlertDialog.Header>
-        <AlertDialog.Footer>
-          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-          <AlertDialog.Action>Confirm</AlertDialog.Action>
-        </AlertDialog.Footer>
-      </AlertDialog.Content>
-    </AlertDialog>
-  );
-}
+// The same markup the keyboard and screen-reader contract suites drive.
+const Example = AlertDialogFixture;
 
 describe('AlertDialog', () => {
   it('renders no alertdialog while closed', () => {
