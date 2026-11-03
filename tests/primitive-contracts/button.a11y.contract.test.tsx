@@ -15,8 +15,39 @@ import userEvent from '@testing-library/user-event';
 import { Search } from 'lucide-react';
 import { Button } from '@/app/components/button';
 import { Icon } from '@/app/components/icon';
+import { resolveAlias } from '../../scripts/lib/token-tree.mjs';
+import { contrastRatio } from '../../validators/contrast.mjs';
 
 afterEach(cleanup);
+
+// Read as text: the module resolves its accents folder from import.meta.url, which is not a file URL under jsdom.
+const contrastPairs = readFileSync(
+  resolve(__dirname, '../../scripts/lib/contrast-pairs.mjs'),
+  'utf8',
+);
+const tokens = JSON.parse(readFileSync(resolve(__dirname, '../../hirobius.tokens.json'), 'utf8'));
+
+/** `top` at `alpha` over `bottom`, as a hex. */
+function mix(top: string, bottom: string, alpha: number): string {
+  const ch = (h: string, i: number) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16);
+  return `#${[0, 1, 2]
+    .map((i) =>
+      Math.round(ch(top, i) * alpha + ch(bottom, i) * (1 - alpha))
+        .toString(16)
+        .padStart(2, '0'),
+    )
+    .join('')}`;
+}
+
+/** A semantic colour token's hex in light or dark, the way check-contrast resolves it. */
+function hex(dotPath: string, mode: 'light' | 'dark'): string {
+  const node = dotPath.split('.').reduce((n, k) => n?.[k], tokens);
+  const raw =
+    mode === 'dark'
+      ? (node.$extensions?.['com.figma.variables']?.modes?.Dark ?? node.$value)
+      : node.$value;
+  return String(resolveAlias(raw, tokens, { maxDepth: 10 }));
+}
 
 const tokensCss = readFileSync(resolve(__dirname, '../../src/styles/tokens.generated.css'), 'utf8');
 
@@ -129,5 +160,77 @@ describe('Button accessibility contract', () => {
     expect(screen.getByRole('button').querySelector('svg')?.getAttribute('class')).toContain(
       'motion-reduce:animate-none',
     );
+  });
+
+  it('a11y:button.quiet-focus-ring - the quiet tone, flush and link keep the focus-visible ring', async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <Button variant="tertiary" tone="quiet">
+          Set aside
+        </Button>
+        <Button variant="tertiary" flush>
+          Back
+        </Button>
+        <Button variant="link">Clear</Button>
+        <Button variant="link" tone="quiet">
+          Details
+        </Button>
+      </>,
+    );
+    for (const name of ['Set aside', 'Back', 'Clear', 'Details']) {
+      await user.tab();
+      const button = screen.getByRole('button', { name });
+      expect(document.activeElement).toBe(button);
+      const cls = button.className.split(/\s+/);
+      expect(cls, name).toContain('focus-visible:ring-2');
+      expect(cls, name).toContain('focus-visible:ring-ring');
+      expect(cls, name).toContain('focus-visible:ring-offset-2');
+    }
+  });
+
+  it('a11y:button.quiet-contrast - quiet text clears 4.5:1 at rest, hovered and pressed, light and dark', () => {
+    render(
+      <Button variant="tertiary" tone="quiet">
+        Set aside
+      </Button>,
+    );
+    const cls = screen.getByRole('button').className.split(/\s+/);
+    // The text is content.secondary (role.muted-foreground) in every state.
+    expect(cls).toContain('text-muted-foreground');
+    expect(tokensCss).toMatch(
+      /--role-muted-foreground:\s*var\(--semantic-color-content-secondary\)/,
+    );
+    // Rest: a ghost on the page or a raised surface. Hover: the wipe fill, surface.hover.
+    for (const bg of ['surface.page', 'surface.raised', 'surface.hover']) {
+      for (const mode of ['light', 'dark'] as const) {
+        const ratio = contrastRatio(
+          hex('semantic.color.content.secondary', mode),
+          hex(`semantic.color.${bg}`, mode),
+        );
+        expect(ratio, `${bg} ${mode}`).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+    // check-contrast gates the hover pair on every push (rest is already gated).
+    expect(contrastPairs).toContain(
+      "text: 'semantic.color.content.secondary',\n    bg: 'semantic.color.surface.hover',",
+    );
+    // Press: the base 5% pressed-overlay wash over the surface, not the surface.soft fill
+    // (content.secondary on surface.soft is under 4.5:1 in dark).
+    expect(cls).toContain('active:inset-shadow-pressed-overlay/5');
+    expect(cls).not.toContain('active:bg-[color:var(--component-button-tertiary-bg-pressed)]');
+    for (const bg of ['surface.page', 'surface.raised']) {
+      for (const mode of ['light', 'dark'] as const) {
+        const ratio = contrastRatio(
+          hex('semantic.color.content.secondary', mode),
+          mix(
+            hex('semantic.color.state.pressed.overlay', mode),
+            hex(`semantic.color.${bg}`, mode),
+            0.05,
+          ),
+        );
+        expect(ratio, `pressed on ${bg} ${mode}`).toBeGreaterThanOrEqual(4.5);
+      }
+    }
   });
 });

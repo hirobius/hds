@@ -543,6 +543,12 @@
       "values": null,
       "default": null
     },
+    "flush": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
     "hoverEffect": {
       "type": "\"none\" | \"wipe\"",
       "optional": true,
@@ -614,21 +620,23 @@
       "default": "md"
     },
     "tone": {
-      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\" | null",
+      "type": "\"success\" | \"danger\" | \"warning\" | \"info\" | \"neutral\" | \"quiet\" | null",
       "optional": true,
       "values": [
         "success",
         "danger",
         "warning",
         "info",
-        "neutral"
+        "neutral",
+        "quiet"
       ],
       "default": "neutral"
     },
     "variant": {
-      "type": "\"primary\" | \"secondary\" | \"tertiary\" | null",
+      "type": "\"link\" | \"primary\" | \"secondary\" | \"tertiary\" | null",
       "optional": true,
       "values": [
+        "link",
         "primary",
         "secondary",
         "tertiary"

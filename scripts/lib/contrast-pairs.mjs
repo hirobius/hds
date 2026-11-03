@@ -48,6 +48,13 @@ export const BASE_PAIRS = [
     text: 'semantic.color.content.secondary',
     bg: 'semantic.color.surface.sunken',
   },
+  // Button tone="quiet" (hds#863): secondary text on the ghost hover fill
+  // (component.button.tertiary.bg.hover). It presses with the 5% wash, not surface.soft.
+  {
+    label: 'content.secondary / surface.hover',
+    text: 'semantic.color.content.secondary',
+    bg: 'semantic.color.surface.hover',
+  },
   {
     label: 'content.tertiary / surface.page',
     text: 'semantic.color.content.tertiary',

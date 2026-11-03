@@ -170,7 +170,7 @@ Board: Show work grouped by status as side-by-side columns, each with a title, a
 BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
 Breadcrumb: [core] Show where the current page sits in a hierarchy and link back up it. Use instead: Tabs, Pagination
-Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. Use instead: InlineLink
+Button: [core] Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. For a low-priority action beside a primary one use variant="tertiary" tone="quiet"; for a back link whose icon lines up with the heading add flush; for an action that reads as a text link in a row use variant="link". Use instead: InlineLink
 Card: [core] Group related content on a raised surface with header, body, footer and row slots, or as one selectable option. Use instead: Surface
 CardFacts: Show an entity's quick facts (location, salary, type) under its title.
 CardRow: Show a titled status inside a Card: Card.RowTitle, any Card.RowNote lines, and a Badge in `trailing`.
@@ -1090,6 +1090,7 @@ Triggers an action when activated.
   - asChild: boolean = false
   - defaultPressed: boolean
   - disabled: boolean
+  - flush: boolean = false
   - hoverEffect: "none" | "wipe" = wipe
   - iconLeft: ReactNode
   - iconOnly: boolean = false
@@ -1100,8 +1101,8 @@ Triggers an action when activated.
   - pressed: boolean
   - shadow: "none" | "hard" = hard
   - size: "sm" | "md" | "lg" | null
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
-  - variant: "primary" | "secondary" | "tertiary" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" | "quiet" | null
+  - variant: "link" | "primary" | "secondary" | "tertiary" | null
 
 ### Callout
 Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback fill language as Alert, without Alert's icon or status role.
