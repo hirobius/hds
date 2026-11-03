@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Toasts now follow a swipe and slide out toward the swipe edge when dismissed — button and timer dismissals slide the same way and reduced-motion settings still dismiss instantly — so drop any local CSS that animated toast swipe or exit."
+}
