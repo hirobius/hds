@@ -93,10 +93,10 @@ describe('EmptyState variant="teaching" (hds#863)', () => {
   const root = (c: HTMLElement) =>
     c.querySelector('[data-hds-component="EmptyState"]') as HTMLElement;
 
-  it('defaults to the inline layout: no tile, no centring, no frame', () => {
+  it('defaults to the inline layout: no tile, no centring, no frame, DOM unchanged', () => {
     const { container } = render(<EmptyState icon={Inbox} title="No roles yet" />);
     const el = root(container);
-    expect(el.getAttribute('data-variant')).toBe('inline');
+    expect(el.hasAttribute('data-variant')).toBe(false);
     expect(el.querySelector('[data-hds-empty-state-tile]')).toBeNull();
     expect(el.classList.contains('items-center')).toBe(false);
     expect(el.classList.contains('bg-card')).toBe(false);

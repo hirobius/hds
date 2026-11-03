@@ -77,7 +77,7 @@ export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Empty
       <div
         ref={ref}
         data-hds-component="EmptyState"
-        data-variant={variant}
+        data-variant={teaching ? variant : undefined}
         data-framed={isFramed ? 'true' : undefined}
         className={cn(
           'flex flex-col gap-fixed-2xs hds-type-ui text-muted-foreground',
