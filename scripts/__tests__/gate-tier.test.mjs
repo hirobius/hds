@@ -84,11 +84,21 @@ describe('planGate', () => {
 
   it('fast tier lints changed code files, typechecks, runs related tests', () => {
     const cmds = planGate('fast', ['src/a.tsx', 'src/a.test.tsx', 'docs/x.md']);
-    expect(cmds).toContain('pnpm exec eslint --max-warnings=0 src/a.tsx src/a.test.tsx');
+    expect(cmds).toContain(
+      'pnpm exec eslint --max-warnings=0 --no-warn-ignored src/a.tsx src/a.test.tsx',
+    );
     expect(cmds).toContain('pnpm typecheck');
     expect(cmds).toContain(
       'pnpm exec vitest related --run --passWithNoTests src/a.tsx src/a.test.tsx',
     );
+  });
+
+  it('fast tier lint does not fail on a file no eslint config covers (hds#1113)', () => {
+    // A changed canon fixture under scripts/__tests__/fixtures/ has no matching
+    // eslint config; without --no-warn-ignored eslint warns "File ignored" and
+    // --max-warnings=0 blocks the push even though nothing was linted.
+    const cmds = planGate('fast', ['scripts/__tests__/fixtures/canon/OVERSIZED_RADIUS.tsx']);
+    expect(cmds.find((c) => c.includes('eslint'))).toMatch(/--no-warn-ignored/);
   });
 
   it('fast tier with no code files skips lint and vitest', () => {
