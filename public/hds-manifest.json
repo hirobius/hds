@@ -2575,6 +2575,7 @@
         "src/app/components/card.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
+        "src/app/components/empty-state.tsx",
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
         "src/app/components/reveal.tsx",
@@ -3345,6 +3346,7 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
         "src/app/components/dialog.tsx",
+        "src/app/components/empty-state.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
@@ -4141,16 +4143,28 @@
           "type": "ReactNode",
           "optional": true
         },
+        "framed": {
+          "type": "boolean",
+          "default": false
+        },
         "icon": {
           "type": "LucideIcon",
           "optional": true
         },
         "italic": {
           "type": "boolean",
-          "default": true
+          "optional": true
         },
         "title": {
           "type": "ReactNode"
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "inline",
+            "teaching"
+          ],
+          "default": "inline"
         }
       },
       "allowedChildren": [
@@ -4158,11 +4172,32 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The icon, and the teaching variant's icon tile, are hidden from assistive technology; the title carries the message.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:empty-state.icon-decorative"
+        },
+        {
+          "rule": "Title, description and action are read in the order they are shown, in the inline and the teaching layout; the title is a paragraph, not a heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:empty-state.reading-order"
+        },
+        {
+          "rule": "When the empty state is a whole region's content, name the region yourself (a heading or aria-label on the section); the title is not a heading.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
       "docsPage": "/docs/components/empty-state",
-      "publicDataAttributes": [],
+      "publicDataAttributes": [
+        "data-framed",
+        "data-variant"
+      ],
       "usage": {
-        "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step.",
+        "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. When the empty state is the whole view and teaches the first step, use variant=\"teaching\" (centred, icon tile, bold title); add framed when it sits loose on the page.",
         "whenNot": "Content that is still loading, or a full-page error.",
         "useInstead": [
           {
@@ -4175,7 +4210,7 @@
           }
         ]
       },
-      "aiRules": "Use only for inline empty states inside an existing section. Do NOT use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container.",
+      "aiRules": "Use only for inline empty states inside an existing section. Do NOT use for full-page errors (use ErrorPage) or for loading states (use a skeleton). Do NOT wrap in Surface or Card — the empty state is a typographic message, not a chrome-bearing container; when a loose teaching empty state needs a panel, pass `framed` instead.",
       "core": true
     },
     "Field": {

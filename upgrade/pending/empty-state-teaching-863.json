@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "EmptyState takes variant=\"teaching\" (centred, icon tile, bold title) and framed (one raised panel); replace hand-built centred empty states, such as a local EmptyState wrapper with centered/framed props, with it."
+}

@@ -88,3 +88,75 @@ describe('EmptyState', () => {
     expect(root?.classList.contains('not-italic')).toBe(true);
   });
 });
+
+describe('EmptyState variant="teaching" (hds#863)', () => {
+  const root = (c: HTMLElement) =>
+    c.querySelector('[data-hds-component="EmptyState"]') as HTMLElement;
+
+  it('defaults to the inline layout: no tile, no centring, no frame, DOM unchanged', () => {
+    const { container } = render(<EmptyState icon={Inbox} title="No roles yet" />);
+    const el = root(container);
+    expect(el.hasAttribute('data-variant')).toBe(false);
+    expect(el.querySelector('[data-hds-empty-state-tile]')).toBeNull();
+    expect(el.classList.contains('items-center')).toBe(false);
+    expect(el.classList.contains('bg-card')).toBe(false);
+  });
+
+  it('centres one column, upright, with the icon in a token-sized muted tile', () => {
+    const { container } = render(
+      <EmptyState variant="teaching" icon={Inbox} title="No roles yet" />,
+    );
+    const el = root(container);
+    expect(el.getAttribute('data-variant')).toBe('teaching');
+    expect(el.classList.contains('items-center')).toBe(true);
+    expect(el.classList.contains('text-center')).toBe(true);
+    expect(el.classList.contains('not-italic')).toBe(true);
+    expect(el.classList.contains('italic')).toBe(false);
+    const tile = el.querySelector('[data-hds-empty-state-tile]') as HTMLElement;
+    expect(tile.className).toContain('size-[var(--semantic-size-row-compact)]');
+    expect(tile.className).toContain('bg-[var(--semantic-color-surface-muted)]');
+    expect(tile.className).toContain('text-foreground');
+  });
+
+  it('sets the title as Text: body role, bold weight step, primary content colour', () => {
+    render(<EmptyState variant="teaching" title="No roles yet" />);
+    const title = screen.getByText('No roles yet');
+    expect(title.tagName).toBe('P');
+    expect(title.className).toContain('hds-type-body');
+    expect(title.className).toContain('text-[var(--semantic-color-content-primary)]');
+    // tier-ok: the bold step is Text weight="bold", which reads the shipped weight token
+    expect(title.className).toContain('[font-weight:var(--primitive-typography-weight-bold)]');
+  });
+
+  it('puts the action one more spacing step below the sentence', () => {
+    render(
+      <EmptyState
+        variant="teaching"
+        title="No roles yet"
+        action={<button type="button">Add a role</button>}
+      />,
+    );
+    const wrapper = screen.getByRole('button', { name: 'Add a role' }).parentElement!;
+    expect(wrapper.className).toContain('pt-scale-xs');
+  });
+
+  it('framed draws one raised panel with no outline; it has no effect inline', () => {
+    const { container, rerender } = render(
+      <EmptyState variant="teaching" framed title="No roles yet" />,
+    );
+    const el = root(container);
+    expect(el.getAttribute('data-framed')).toBe('true');
+    expect(el.classList.contains('bg-card')).toBe(true);
+    expect(el.classList.contains('rounded-lg')).toBe(true);
+    expect(el.classList.contains('p-surface-padding')).toBe(true);
+    expect(el.className).not.toMatch(/(^|\s)border(\s|$)/);
+    rerender(<EmptyState framed title="No roles yet" />);
+    expect(root(container).classList.contains('bg-card')).toBe(false);
+    expect(root(container).hasAttribute('data-framed')).toBe(false);
+  });
+
+  it('keeps italic when asked for it explicitly', () => {
+    const { container } = render(<EmptyState variant="teaching" italic title="No roles yet" />);
+    expect(root(container).classList.contains('italic')).toBe(true);
+  });
+});

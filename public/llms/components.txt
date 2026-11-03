@@ -391,9 +391,11 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - action: ReactNode
   - className: string
   - description: ReactNode
+  - framed: boolean = false
   - icon: LucideIcon
-  - italic: boolean = true
+  - italic: boolean
   - title: ReactNode
+  - variant: 'inline' | 'teaching' = inline
 
 ### Field
 Caption label paired with a value — used in metadata grids and read-only forms.

@@ -32,6 +32,11 @@
       "optional": true
     },
     {
+      "name": "framed",
+      "type": "boolean",
+      "default": false
+    },
+    {
       "name": "icon",
       "type": "LucideIcon",
       "optional": true
@@ -39,16 +44,25 @@
     {
       "name": "italic",
       "type": "boolean",
-      "default": true
+      "optional": true
     },
     {
       "name": "title",
       "type": "ReactNode"
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": [
+        "inline",
+        "teaching"
+      ],
+      "default": "inline"
     }
   ],
   "roleTokens": {},
   "usage": {
-    "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step.",
+    "when": "Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. When the empty state is the whole view and teaches the first step, use variant=\"teaching\" (centred, icon tile, bold title); add framed when it sits loose on the page.",
     "whenNot": "Content that is still loading, or a full-page error.",
     "useInstead": [
       {

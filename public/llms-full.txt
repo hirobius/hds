@@ -186,7 +186,7 @@ DestructiveSection: Put a dangerous action, such as delete, in its own section w
 Dialog: [core] Interrupt the page with a modal that needs a decision or focused input before people continue. Use instead: Tooltip, Alert, ToastProvider, AlertDialog
 Disclosure: [core] Hide optional explanatory content behind a heading that people can expand. An expandable list row (one-line preview, actions beside the trigger) is variant="row". Use instead: Tabs
 Divider: [core] Separate two blocks of content with a thin line. Use instead: Stack, Surface
-EmptyState: [core] Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. Use instead: Skeleton, Alert
+EmptyState: [core] Say that a list, grid or section has no data yet, with a title, an optional description, and an optional action that teaches the next step. When the empty state is the whole view and teaches the first step, use variant="teaching" (centred, icon tile, bold title); add framed when it sits loose on the page. Use instead: Skeleton, Alert
 ErrorPattern: Show an error with a short message and a Back button, in place or as a full page.
 Field: [core] Show a labelled read-only value, such as a name and its value in a detail view. Use instead: Input
 Form: Wrap form fields so they stack with even spacing.
@@ -1340,9 +1340,11 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - action: ReactNode
   - className: string
   - description: ReactNode
+  - framed: boolean = false
   - icon: LucideIcon
-  - italic: boolean = true
+  - italic: boolean
   - title: ReactNode
+  - variant: 'inline' | 'teaching' = inline
 
 ### Field
 Caption label paired with a value — used in metadata grids and read-only forms.
