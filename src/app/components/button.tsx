@@ -80,10 +80,15 @@ const buttonVariants = /* @__PURE__ */ cva(
         secondary:
           'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground hover:bg-[color:var(--component-button-secondary-bg-hover)] active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent',
         // Ghost (C2): transparent at rest, no edge and no movement (shadow is forced off
-        // below); component.button.tertiary.bg.hover (surface.hover) on hover and the
-        // deeper .pressed (surface.soft) on press, wash swapped out like secondary.
-        tertiary:
-          'text-foreground hover:bg-[color:var(--component-button-tertiary-bg-hover)] active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
+        // below); component.button.tertiary.bg.hover (surface.hover) on hover and, in the
+        // neutral tone, the deeper .pressed (surface.soft) on press, wash swapped out like
+        // secondary (the compoundVariants: quiet keeps the base wash instead).
+        tertiary: 'text-foreground hover:bg-[color:var(--component-button-tertiary-bg-hover)]',
+        // Link-styled (hds#863): underlined text, no fill, no inline padding (the compound
+        // below), no hard shadow and no wipe (both forced off in the component). It keeps the
+        // size's height, so it stays a full touch target in a row; inside running prose use
+        // InlineLink. The pressed wash is swapped out, so nothing fills behind the text.
+        link: 'text-foreground underline hover:bg-transparent active:inset-shadow-transparent',
       },
       // Semantic action color. `neutral` (default) keeps the variant's own
       // colors; the status tones apply a token-driven tonal fill (tinted
@@ -105,6 +110,12 @@ const buttonVariants = /* @__PURE__ */ cva(
       // contract. So tones stay color-only here.
       tone: {
         neutral: '',
+        // Quiet (hds#863): a ghost-only tone. On tertiary and link it sets the secondary text
+        // colour (role.muted-foreground = content.secondary) for a low-priority action beside
+        // a primary one. A quiet tertiary presses with the base 5% wash, not the surface.soft
+        // fill: content.secondary on surface.soft is under 4.5:1 in dark. The classes live in
+        // the compoundVariants, so a filled variant ignores it.
+        quiet: '',
         danger:
           'border-transparent bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-danger active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
         success:
@@ -153,10 +164,18 @@ const buttonVariants = /* @__PURE__ */ cva(
       },
       {
         hoverEffect: 'wipe',
-        tone: 'neutral',
+        tone: ['neutral', 'quiet'],
         variant: 'tertiary',
         className: 'hover:bg-transparent',
       },
+      {
+        tone: 'neutral',
+        variant: 'tertiary',
+        className:
+          'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
+      },
+      { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
+      { variant: 'link', className: 'px-0' },
       {
         iconOnly: true,
         size: 'sm',
@@ -191,12 +210,14 @@ export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>,
     Omit<ButtonVariantProps, 'iconOnly' | 'hoverEffect' | 'shadow'> {
-  /** Visual treatment: `primary`, `secondary` or `tertiary`. Defaults to `secondary` (a soft tonal fill), so pass `primary` for the main action. */
+  /** Visual treatment: `primary`, `secondary`, `tertiary` or `link` (underlined text, no fill or padding). Defaults to `secondary` (a soft tonal fill), so pass `primary` for the main action. */
   variant?: ButtonVariantProps['variant'];
   /** `wipe` (default) slides the hover fill in from the pointer's edge; `none` changes it in place. */
   hoverEffect?: 'none' | 'wipe';
   /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. Its colour is the button's own fill stepped darker (`--hds-btn-edge` overrides it). */
   shadow?: 'hard' | 'none';
+  /** Drop the inline padding (tertiary), so a back link's icon lines up with the heading below it. The height stays. */
+  flush?: boolean;
   /** Render the button chrome onto a single child element for link semantics. */
   asChild?: boolean;
   /** Optional accessible label used when children are not suitable as the name. */
@@ -254,7 +275,7 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
 
 /**
  * Triggers an action when activated.
- * @usage Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.
+ * @usage Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. For a low-priority action beside a primary one use variant="tertiary" tone="quiet"; for a back link whose icon lines up with the heading add flush; for an action that reads as a text link in a row use variant="link".
  * @whenNot Navigating to another page, where a link is the correct element.
  * @useInstead InlineLink navigation to another page
  * @a11y component required a11y:button.keyboard-activate Enter and Space activate it, and it takes part in the Tab order.
@@ -267,6 +288,8 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
  * @a11y component required a11y:button.label-crossfade When a toggle button's text label changes, the old label is aria-hidden while it fades out, so the accessible name is the new label from the moment it changes.
  * @a11y component required gate:check-reduced-motion The toggle label crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the label swaps instantly with no overlap.
+ * @a11y component required a11y:button.quiet-focus-ring The quiet tone, flush and the link variant keep the focus-visible ring of every Button.
+ * @a11y component required a11y:button.quiet-contrast Quiet text is content.secondary and clears 4.5:1 at rest (page, raised), hovered (surface.hover) and pressed (the 5% wash), in light and dark.
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.
  */
@@ -280,6 +303,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       iconOnly = false,
       hoverEffect = 'wipe',
       shadow = 'hard',
+      flush = false,
       asChild = false,
       label,
       loading = false,
@@ -298,7 +322,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     ref,
   ) {
     const isDisabled = disabled || loading;
-    const wipe = hoverEffect === 'wipe';
+    // A link-styled Button has no fill to wipe in and no edge (hds#863).
+    const isLink = variant === 'link';
+    const wipe = hoverEffect === 'wipe' && !isLink;
     React.useEffect(() => {
       if (wipe) installWipeListeners();
     }, [wipe]);
@@ -315,7 +341,8 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       pressedProp !== undefined || defaultPressed !== undefined || onPressedChange !== undefined;
     const [ownPressed, setOwnPressed] = React.useState(defaultPressed ?? false);
     const isPressed = pressedProp ?? ownPressed;
-    const hasTone = tone != null && tone !== 'neutral';
+    // A status tone (not quiet, which only recolours a ghost's text).
+    const hasTone = tone != null && tone !== 'neutral' && tone !== 'quiet';
     // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#897): the fill it sits under,
     // stepped darker and precomputed as --hds-edge-<key>; the keys are the tone names plus
     // primary and secondary (a pressed neutral toggle paints bg-primary, so it takes primary's
@@ -326,7 +353,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         ? 'primary'
         : 'secondary';
     const edge =
-      shadow === 'hard' && variant !== 'tertiary'
+      shadow === 'hard' && variant !== 'tertiary' && !isLink
         ? { '--hds-edge': `var(--hds-edge-${edgeKey})` }
         : null;
     const wipeProps = wipe
@@ -383,10 +410,11 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         tone,
         size,
         iconOnly,
-        hoverEffect,
-        shadow: variant === 'tertiary' ? 'none' : shadow,
+        hoverEffect: wipe ? 'wipe' : 'none',
+        shadow: variant === 'tertiary' || isLink ? 'none' : shadow,
       }),
       isToggle && !hasTone && toggleOnClasses,
+      flush && 'px-0',
       className,
     );
 

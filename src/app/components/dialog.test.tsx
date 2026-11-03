@@ -1,9 +1,10 @@
 /**
  * Tests for Dialog — closed/open mounting, trigger open, controlled open, title.
  * Plain-DOM assertions (no jest-dom). Radix Dialog needs a couple of jsdom
- * polyfills (pointer capture, scrollIntoView).
+ * polyfills (pointer capture, scrollIntoView), installed for every suite by
+ * tests/setup/jsdom-polyfills.ts.
  */
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
@@ -18,11 +19,6 @@ import {
   DialogDescription,
   DialogClose,
 } from './dialog';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 

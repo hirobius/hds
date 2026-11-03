@@ -1,11 +1,6 @@
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, within } from '@testing-library/react';
 import { DestructiveSection } from './destructive-section';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 

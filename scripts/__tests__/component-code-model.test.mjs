@@ -63,7 +63,14 @@ describe('createCodeModel — real components', { timeout: 60_000 }, () => {
       expect.arrayContaining(['variant', 'tone', 'size', 'loading', 'iconLeft', 'disabled']),
     );
     expect(button.props.tone.optional).toBe(true);
-    expect(button.cva.axes.tone).toEqual(['neutral', 'danger', 'success', 'warning', 'info']);
+    expect(button.cva.axes.tone).toEqual([
+      'neutral',
+      'quiet',
+      'danger',
+      'success',
+      'warning',
+      'info',
+    ]);
     expect(button.cva.defaults).toMatchObject({ variant: 'secondary', size: 'md' });
   });
 

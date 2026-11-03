@@ -3,15 +3,10 @@
  * Plain-DOM assertions (no jest-dom). Radix Select's open/option interaction
  * relies on pointer-capture APIs jsdom lacks, so these cover the render contract.
  */
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { createRef } from 'react';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { Select } from './select';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 

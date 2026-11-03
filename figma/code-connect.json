@@ -104,13 +104,19 @@
             "Primary": "primary",
             "Secondary": "secondary",
             "Tertiary": "tertiary"
+          },
+          "codeOnly": {
+            "link": "Link-styled Button (hds#863): not drawn in the Figma Button master yet (Figma lane)."
           }
         },
         "Tone": {
           "type": "VARIANT",
           "options": ["neutral", "danger", "success", "warning", "info"],
           "default": "neutral",
-          "prop": "tone"
+          "prop": "tone",
+          "codeOnly": {
+            "quiet": "Quiet ghost tone (hds#863): not drawn in the Figma Button master yet (Figma lane)."
+          }
         },
         "Size": {
           "type": "VARIANT",

@@ -51,3 +51,14 @@ export function color(name: string, theme: Theme): string {
   if (!value.startsWith('#')) throw new Error(`${name} (${theme}) does not resolve to a hex`);
   return value;
 }
+
+/**
+ * The custom property a rendered class paints, captured by `pattern`'s first
+ * group: `bg-[var(--x)]` → --x, and a bare shadcn role such as `bg-muted` →
+ * --role-muted. Shared by the contrast suites that read colours off classes.
+ */
+export function paintedVar(className: string, pattern: RegExp): string {
+  const m = className.match(pattern);
+  if (!m) throw new Error(`no ${pattern} in "${className}"`);
+  return m[1].startsWith('--') ? m[1] : `--role-${m[1]}`;
+}

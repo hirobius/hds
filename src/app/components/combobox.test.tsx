@@ -2,27 +2,13 @@
  * Tests for Combobox — trigger label, open/filter/select, keyboard, empty state.
  * Plain-DOM assertions (no jest-dom matchers).
  *
- * Built on Popover (Radix/Floating-UI) — polyfill the jsdom-missing APIs.
+ * Built on Popover (Radix/Floating-UI); the jsdom-missing APIs come from
+ * tests/setup/jsdom-polyfills.ts.
  */
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { createRef, useState } from 'react';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { Combobox, type ComboboxOption } from './combobox';
-
-beforeAll(() => {
-  // @ts-expect-error — minimal jsdom polyfills for Radix/Floating-UI.
-  globalThis.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  };
-  if (!Element.prototype.hasPointerCapture) {
-    Element.prototype.hasPointerCapture = () => false;
-  }
-  if (!Element.prototype.scrollIntoView) {
-    Element.prototype.scrollIntoView = () => {};
-  }
-});
 
 afterEach(cleanup);
 

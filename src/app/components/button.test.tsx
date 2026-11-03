@@ -314,3 +314,93 @@ describe('Button toggle label crossfade (hds#938)', () => {
     expect(container.querySelector('[data-slot="label-crossfade"]')).toBeNull();
   });
 });
+
+describe('Button quiet tone, flush and link (hds#863)', () => {
+  const classesOf = (el: Element) => el.className.split(/\s+/);
+
+  it('tone="quiet" on tertiary sets the secondary text colour over the variant text', async () => {
+    const { Button } = await load();
+    const { getByRole } = render(
+      <Button variant="tertiary" tone="quiet">
+        Set aside
+      </Button>,
+    );
+    const button = getByRole('button', { name: 'Set aside' });
+    const c = classesOf(button);
+    expect(c).toContain('text-muted-foreground');
+    expect(c).not.toContain('text-foreground');
+    expect(button.getAttribute('data-tone')).toBe('quiet');
+    // still a ghost: its hover fill (the wipe), no feedback colour, no hard shadow; it presses with the
+    // base wash, not the surface.soft fill (secondary text on that is under 4.5:1 in dark)
+    expect(c).toContain('hds-btn-wipe');
+    expect(c).toContain('active:inset-shadow-pressed-overlay/5');
+    expect(c).not.toContain('active:bg-[color:var(--component-button-tertiary-bg-pressed)]');
+    expect(c.filter((x) => x.includes('feedback'))).toEqual([]);
+    expect(c).not.toContain('hds-btn-hard');
+    expect(button.style.getPropertyValue('--hds-wipe-fill')).toBe(
+      'var(--component-button-tertiary-bg-hover)',
+    );
+  });
+
+  it('tone="quiet" leaves a filled variant as it is (quiet is a ghost-only tone)', async () => {
+    const { Button } = await load();
+    const { getByRole } = render(
+      <Button variant="primary" tone="quiet">
+        Save
+      </Button>,
+    );
+    const c = classesOf(getByRole('button'));
+    expect(c).toContain('bg-primary');
+    expect(c).toContain('text-primary-foreground');
+    expect(c).not.toContain('text-muted-foreground');
+  });
+
+  it('flush drops the inline padding so the label lines up with the content edge', async () => {
+    const { Button } = await load();
+    const { getAllByRole } = render(
+      <>
+        <Button variant="tertiary" flush iconLeft={<Icon icon={Search} />}>
+          Pipeline
+        </Button>
+        <Button variant="tertiary">Pipeline</Button>
+      </>,
+    );
+    const [flush, plain] = getAllByRole('button');
+    expect(classesOf(flush)).toContain('px-0');
+    expect(classesOf(flush)).not.toContain('px-fixed-sm');
+    // the height (touch target) stays
+    expect(classesOf(flush)).toContain('h-[var(--component-button-size-md-height)]');
+    expect(classesOf(plain)).toContain('px-fixed-sm');
+    expect(flush.hasAttribute('flush')).toBe(false);
+  });
+
+  it('variant="link" is underlined text with no fill, no padding, no shadow and no wipe', async () => {
+    const { Button } = await load();
+    const { getByRole } = render(<Button variant="link">Clear</Button>);
+    const button = getByRole('button', { name: 'Clear' });
+    const c = classesOf(button);
+    expect(c).toContain('underline');
+    expect(c).toContain('text-foreground');
+    expect(c).toContain('px-0');
+    expect(c).not.toContain('hds-btn-hard');
+    expect(c).not.toContain('hds-btn-wipe');
+    expect(c).toContain('active:inset-shadow-transparent');
+    expect(
+      c.filter((x) => /^(hover:|active:)?bg-/.test(x) && x !== 'hover:bg-transparent'),
+    ).toEqual([]);
+    expect(button.getAttribute('data-variant')).toBe('link');
+  });
+
+  it('variant="link" tone="quiet" is a secondary-text link', async () => {
+    const { Button } = await load();
+    const { getByRole } = render(
+      <Button variant="link" tone="quiet">
+        Details
+      </Button>,
+    );
+    const c = classesOf(getByRole('button'));
+    expect(c).toContain('text-muted-foreground');
+    expect(c).not.toContain('text-foreground');
+    expect(c).toContain('underline');
+  });
+});

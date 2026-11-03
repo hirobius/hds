@@ -2,15 +2,11 @@
  * Tests for CommandPalette — filtering, grouping, arrow-key navigation, Enter to
  * run, the ⌘K / Ctrl+K hotkey, and the empty state. Plain-DOM assertions (no jest-dom).
  */
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, within } from '@testing-library/react';
 import * as React from 'react';
+import { MULTI_STEP_COMMANDS as MULTI } from '../../../tests/primitive-contracts/overlay-fixtures';
 import { CommandPalette, type CommandPaletteItem } from './command-palette';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(() => {
   cleanup();
@@ -42,26 +38,6 @@ function Harness(props: {
     </>
   );
 }
-
-const MULTI: CommandPaletteItem[] = [
-  {
-    id: 'move',
-    label: 'Move issue',
-    group: 'Actions',
-    args: [
-      {
-        id: 'project',
-        label: 'Project',
-        options: [
-          { id: 'web', label: 'Website' },
-          { id: 'api', label: 'API platform', keywords: ['backend'] },
-        ],
-      },
-      { id: 'note', label: 'Note' },
-    ],
-  },
-  { id: 'inbox', label: 'Go to inbox', group: 'Navigation' },
-];
 
 const field = () => screen.getByRole('combobox', { name: 'Command palette' }) as HTMLInputElement;
 const active = () => {

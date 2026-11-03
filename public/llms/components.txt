@@ -141,6 +141,7 @@ Triggers an action when activated.
   - asChild: boolean = false
   - defaultPressed: boolean
   - disabled: boolean
+  - flush: boolean = false
   - hoverEffect: "none" | "wipe" = wipe
   - iconLeft: ReactNode
   - iconOnly: boolean = false
@@ -151,8 +152,8 @@ Triggers an action when activated.
   - pressed: boolean
   - shadow: "none" | "hard" = hard
   - size: "sm" | "md" | "lg" | null
-  - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
-  - variant: "primary" | "secondary" | "tertiary" | null
+  - tone: "success" | "danger" | "warning" | "info" | "neutral" | "quiet" | null
+  - variant: "link" | "primary" | "secondary" | "tertiary" | null
 
 ### Callout
 Tone-driven tinted callout for notes, quotes, hypotheses — the same feedback fill language as Alert, without Alert's icon or status role.

@@ -2,14 +2,9 @@
  * Tests for Composer — auto-grow, paste folding, editing a fold, the submit
  * chord, and the pending/disabled lock. Plain-DOM assertions (no jest-dom).
  */
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, within, waitFor } from '@testing-library/react';
 import { Composer } from './composer';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(() => {
   cleanup();
