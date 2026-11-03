@@ -3,7 +3,6 @@
   "slug": "soft-demo",
   "displayName": "Soft Demo",
   "tagline": "hds#505 soft direction as an overlay: pill actions, soft containers, grey-fill grouping, roomier surfaces. demo-only, not a real client.",
-  "demo": true,
   "tier": 1,
   "deployment": {
     "vercelProject": null,

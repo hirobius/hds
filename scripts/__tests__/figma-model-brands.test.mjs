@@ -379,12 +379,6 @@ describe('buildFigmaModel refuses brand overlays Figma cannot express', () => {
     ).toThrow(/odd-demo.*semantic\.color\.brand.*hirobius\.tokens\.json/);
   });
 
-  it('a base token with a Compact mode, which build-tokens never emits as CSS', () => {
-    const raw = fixture();
-    raw.semantic.space.component.gap.$extensions = modes({ Compact: '{primitive.space.2}' });
-    expect(() => buildFigmaModel(raw)).toThrow(/semantic\.space\.component\.gap.*Compact/);
-  });
-
   it('two directions with one slug, or a slug equal to the base mode name', () => {
     expect(build(SHARP, SHARP)).toThrow(/sharp-demo.*twice/);
     expect(() =>

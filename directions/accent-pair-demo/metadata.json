@@ -3,7 +3,6 @@
   "slug": "accent-pair-demo",
   "displayName": "Accent Pair Demo",
   "tagline": "A primary accent plus a supporting accent: mauve and stone. The supporting half is a CSS-variable overlay, not a token. demo-only, not a real client.",
-  "demo": true,
   "tier": 1,
   "deployment": {
     "vercelProject": null,

@@ -1,1 +1,1 @@
-PR #661: merged main, regenerated ADR index with ADR-035 (64 records).
+PR #661: rebased onto main (985cef0c) per Muse REVIEW — CHANGES (2026-11-01); completed the tenants/ -> directions/ move for soft-demo and accent-pair-demo (added to tenants/ on main after the branch forked) and ported the ADR-035 treatment to files main changed since the fork (eval-consistency denylist, explorations tests, gate-tier, token-emit source header); changeset minor confirmed deliberate (below 1.0, minor is the breaking slot). Full gate re-run after rebase.

@@ -6,14 +6,14 @@ A machine- and human-readable specification of the Hirobius Design System for AI
 
 ## Overview
 
-Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast near-monochrome neutral palette tinted toward midnight (OKLCH hue 262) and a single accent that each tenant sets — a midnight graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
+Hirobius is a clean, structured visual language that bridges digital precision and physical fabrication through a high-contrast near-monochrome neutral palette tinted toward midnight (OKLCH hue 262) and a single accent that each direction or brand sets (ADR-035) — a midnight graphite by default. Its personality is disciplined, tactile, and quietly technical: structure is explicit, motion is purposeful, and visual noise is stripped away. Whitespace is treated as material, not leftover space, so every screen should feel deliberate, breathable, and exact.
 
 ## Colors
 
 <!-- auto:start:colors -->
 **One accent — one neutral system.**
 
-- **Accent** (`#0F1726`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a per-tenant knob, not a fixed hue (#208).
+- **Accent** (`#0F1726`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a lever each direction or brand sets, not a fixed hue (ADR-035) (#208).
 - **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only. Set `data-accent="cobalt"` on `<html>` (source `accents/cobalt/tokens.json`); graphite stays the default. Still one accent per screen.
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
@@ -202,9 +202,8 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | Background               | `var(--semantic-color-surface-raised)`                                                                                                                                                    | Any gradient, tinted fill, or custom color                                                  |
 | Border                   | Default variant: **borderless**. Opt-in (`bordered`/`tone`/`accent`): 1px solid the matching token (`border.default` / feedback color / `border.accent`). Never border + shadow together. | `box-shadow` as an elevation substitute; a border on the default variant (use `bordered`)   |
-| Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the tenant)                                                                                                                 | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
-| Padding                  | `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`                                                                                                             | Raw pixel values or ad hoc insets                                                           |
-| Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`                                                                                  | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
+| Border radius            | `rounded-lg` (`role.radius` + 4 px: 12 px by default, follows the direction or brand)                                                                                                                 | `var(--component-card-radius)`, `rounded-full`, or any hard-coded value                     |
+| Padding                  | `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`                                                                                                             | Raw pixel values or ad hoc insets                                                           || Shadow                   | Resting cards: none (`elevation.flat`). Interactive lifted state: `shadow.subtle` via `elevation.raised`                                                                                  | Raw `box-shadow` values, `drop-shadow`, glow, or any depth effect not bound to a role token |
 | Title                    | `hds.typeStyles.title` / `<Text variant="title">`                                                                                                                                         | Any other type style for the primary card heading                                           |
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
@@ -259,7 +258,7 @@ An expandable list row (one-line preview, actions beside the trigger) is `Disclo
 ## Do's and Don'ts
 
 - Don't invent new corner behavior for interactive controls; buttons, inputs, disclosures, and similar action surfaces should follow the shared action radius (`semantic.radius.action`).
-- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a near-monochrome, midnight-tinted neutral system. The accent is a per-tenant knob and defaults to a midnight graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
+- Don't introduce additional accent hues; Hirobius uses exactly one accent, resolved from `semantic.accent.rest`, over a near-monochrome, midnight-tinted neutral system. The accent is a knob each direction or brand sets (ADR-035) and defaults to a midnight graphite (`data-accent="cobalt"` swaps in cobalt) — read the token, never assume a hue.
 - Don't add other tints to the neutrals; the only one is the faint midnight lean (OKLCH hue 262, hds#755), and greys stay high-contrast.
 - Don't reach for shadow values directly — bind to a `semantic.elevation.*` role so surface + shadow + border stay paired.
 - Don't transform text to uppercase anywhere; sentence case, per the Casing rule above.

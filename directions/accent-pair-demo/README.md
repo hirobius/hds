@@ -46,7 +46,7 @@ Plain CSS beside the tokens: not generated and not in the package, so it is load
 package's CSS, after it:
 
 - **In this repo** (the preview bench, a test): import it after the token CSS, as
-  `preview/main.tsx` does: `import '../tenants/accent-pair-demo/support-overlay.css'`.
+  `preview/main.tsx` does: `import '../directions/accent-pair-demo/support-overlay.css'`.
 - **In an explorations harness run** (hds#628): a direction cannot load it itself. The harness
   copies only `src/` over the template, this file is outside the packed package, and a `.css`
   file in `src/` counts as custom CSS. The harness adds it to the page where it applies the
@@ -115,4 +115,4 @@ subtle, content, on}` with Light and Dark modes, base values that alias an exist
 
 - North Star: `docs/ai/NORTH_STAR.md` (the planned accent pair). Exploration program: hds#628, decision 4.
 - Format spec: `docs/architecture/tenant-token-overlay-format.md` (R1 tiers, R4 modes)
-- Primary-accent exemplar: `tenants/accent-lilac/`
+- Primary-accent exemplar: `directions/accent-lilac/`

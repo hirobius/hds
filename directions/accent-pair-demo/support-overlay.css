@@ -5,7 +5,7 @@
  * overlay FIRST, before any token change, so this file is plain CSS beside the
  * tenant's tokens.json and is NOT generated and NOT shipped in the package.
  * Load it as plain CSS after the HDS token CSS (tokens + tenants), for example
- * `import '../tenants/accent-pair-demo/support-overlay.css'` in an exploration's
+ * `import '../directions/accent-pair-demo/support-overlay.css'` in an exploration's
  * entry file. See README.md in this directory for what it is for and how to
  * promote it.
  *

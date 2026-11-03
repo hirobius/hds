@@ -24,8 +24,8 @@
  * buildManifest wrapper. Importing it reads no files.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { listDirectionSlugs } from './lib/directions.mjs';import { join, dirname } from 'path';
+import { readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { writeGenerated } from './lib/write-generated.mjs';
 import { collectDeprecations } from './lib/token-deprecations.mjs';

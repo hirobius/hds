@@ -29,7 +29,7 @@ describe('classifyGateTier', () => {
     ['codemods/token-keys.mjs'],
     ['bin/hds-tokens.mjs'],
     ['accents/cobalt/tokens.json'],
-    ['tenants/acme/tokens.json'],
+    ['directions/acme/tokens.json'],
     ['upgrade/index.json'],
     ['DESIGN.md'],
     ['DESIGN.source.md'],

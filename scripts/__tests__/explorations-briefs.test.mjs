@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { clientDenylist, scanPaths } from '../lib/explorations/pii.mjs';
+import { scanPaths } from '../lib/explorations/pii.mjs';
 import { BEND_KINDS } from '../lib/explorations/direction.mjs';
 import { GAP_KINDS } from '../lib/explorations/gaps.mjs';
 import { REQUIRED_STATES, SCREENS, SCREEN_IDS } from '../lib/explorations/spec.mjs';
@@ -116,9 +116,10 @@ describe('eval/explorations/screens: one brief and one fixture per screen', () =
       expect(typeof f.states.loading.note).toBe('string');
     });
 
-    it('has fixture data that passes the PII check, against every real client tenant', () => {
+    it('has fixture data that passes the PII check', () => {
       const findings = scanPaths([path.join(DIR, 'screens', id)], {
-        denylist: clientDenylist(path.join(ROOT, 'tenants')),
+        // No client lives in this repo (ADR-035), so the denylist is empty here.
+        denylist: [],
         root: ROOT,
       });
       expect(findings).toEqual([]);

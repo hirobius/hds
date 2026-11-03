@@ -30,7 +30,7 @@ import { runLive } from './lib/consistency/live.mjs';
 import { pairwiseJaccard } from './lib/consistency/jaccard.mjs';
 import { latestEntry, readLedger, summaryLine } from './lib/consistency/ledger.mjs';
 import { scanApp } from './lib/consistency/violations.mjs';
-import { clientDenylist, loadDenylistFile, scanPaths } from './lib/explorations/pii.mjs';
+import { loadDenylistFile, scanPaths } from './lib/explorations/pii.mjs';
 import { listDirections, readDirection, readTenants } from './lib/explorations/direction.mjs';
 import { aggregateGaps, collectGapLogs } from './lib/explorations/gaps.mjs';
 import { runExplorations } from './lib/explorations/live.mjs';
@@ -39,7 +39,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEDGER = path.join(ROOT, 'eval/consistency/ledger.json');
 const FIXTURES = path.join(ROOT, 'eval/consistency/fixtures');
 const EXPLORATIONS = path.join(ROOT, 'eval/explorations');
-const TENANTS = path.join(ROOT, 'tenants');
+const TENANTS = path.join(ROOT, 'directions');
 const SOURCE_FILE = /\.(?:[cm]?[jt]sx?|html?|css|scss|sass|less)$/i;
 
 const HELP = `Usage: node scripts/eval-consistency.mjs <mode>
@@ -281,11 +281,15 @@ async function live(dir, opts) {
   process.exit(result.code);
 }
 
-/** Denylist terms: every non-demo tenant, plus the private file from --denylist or the environment. */
+/**
+ * Denylist terms: the private file from --denylist or the environment. No client
+ * lives in this repo since ADR-035 (directions/ holds shared art directions only),
+ * so client names come from that file, never from disk.
+ */
 function denylistFor(opts) {
   const file = opts.denylist ?? process.env.EXPLORATIONS_PII_DENYLIST ?? null;
   try {
-    return [...clientDenylist(TENANTS), ...(file ? loadDenylistFile(file) : [])];
+    return file ? loadDenylistFile(file) : [];
   } catch (err) {
     return fail(err.message);
   }

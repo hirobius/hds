@@ -144,7 +144,9 @@ export function validateRefs(data, { letter, tenants }) {
     if (typeof data.tenant !== 'string') {
       problems.push('tenant must be a tenant slug or null');
     } else if (!(data.tenant in tenants)) {
-      problems.push(`tenant "${data.tenant}": there is no tenant "${data.tenant}" under tenants/`);
+      problems.push(
+        `tenant "${data.tenant}": there is no tenant "${data.tenant}" under directions/`,
+      );
     } else if (tenants[data.tenant].demo !== true) {
       problems.push(
         `tenant "${data.tenant}" is not a demo tenant; only a tenant with "demo": true in its metadata.json may be rendered on a board`,
@@ -205,15 +207,22 @@ export function validateRefs(data, { letter, tenants }) {
   return { ok: problems.length === 0, problems, tenant };
 }
 
-/** `{ slug: { demo } }` for every tenant under tenantsDir, skipping `_`-prefixed directories. */
-export function readTenants(tenantsDir) {
+/**
+ * `{ slug: { demo } }` for every direction under directionsDir, skipping `_`-prefixed
+ * directories. Every direction is a demo (ADR-035: the directions/ folder is the
+ * statement, a client's brand never lives in this repo), so the retired `demo`
+ * flag in its metadata is ignored.
+ */
+export function readTenants(directionsDir) {
   const out = {};
-  if (!existsSync(tenantsDir)) return out;
-  for (const name of readdirSync(tenantsDir).sort()) {
+  if (!existsSync(directionsDir)) return out;
+  for (const name of readdirSync(directionsDir).sort()) {
     if (name.startsWith('_')) continue;
     try {
-      const meta = JSON.parse(readFileSync(path.join(tenantsDir, name, 'metadata.json'), 'utf8'));
-      out[meta.slug ?? name] = { demo: meta.demo === true };
+      const meta = JSON.parse(
+        readFileSync(path.join(directionsDir, name, 'metadata.json'), 'utf8'),
+      );
+      out[meta.slug ?? name] = { demo: true };
     } catch {
       // no readable metadata: not a tenant the gates can vouch for
     }
