@@ -190,6 +190,14 @@ describe('Select screen-reader contract', () => {
   });
 });
 
+/** Render the Combobox fixture, start the reader and open the listbox from the trigger. */
+async function openComboboxUnderReader() {
+  render(<ComboboxFixture />);
+  await startReader();
+  await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
+  await screen.findByRole('listbox');
+}
+
 describe('Combobox screen-reader contract', () => {
   it('a11y:combobox.trigger-state - reads the closed trigger as a collapsed combobox with a listbox popup', async () => {
     render(<ComboboxFixture />);
@@ -201,10 +209,7 @@ describe('Combobox screen-reader contract', () => {
   });
 
   it('a11y:combobox.activedescendant - reads the open search field and named listbox, and the trigger as expanded', async () => {
-    render(<ComboboxFixture />);
-    await startReader();
-    await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
-    await screen.findByRole('listbox');
+    await openComboboxUnderReader();
     await next(1);
     // The popover is non-modal, so the reader can step back out of it to the trigger.
     await previous(5);
@@ -221,10 +226,7 @@ describe('Combobox screen-reader contract', () => {
   // accessibility tree is the listbox and the reader counts it among its
   // siblings, not alone in a list item (hds#407).
   it('a11y:combobox.option-position - reads each open option with its real position and set size', async () => {
-    render(<ComboboxFixture />);
-    await startReader();
-    await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
-    await screen.findByRole('listbox');
+    await openComboboxUnderReader();
     await next(8);
 
     const log = await virtual.spokenPhraseLog();
@@ -236,10 +238,7 @@ describe('Combobox screen-reader contract', () => {
   // The popover is Popover.Content, role="dialog": combobox.tsx names it with
   // the field label, so the reader does not enter an unnamed "dialog" (hds#399).
   it('a11y:combobox.popover-named - names the open popover dialog by the field label', async () => {
-    render(<ComboboxFixture />);
-    await startReader();
-    await press(screen.getByRole('combobox', { name: 'Fruit' }), '{Enter}');
-    await screen.findByRole('listbox');
+    await openComboboxUnderReader();
     await next(1);
     await previous(5);
 

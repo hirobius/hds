@@ -22,7 +22,7 @@ assignees: ''
 
 - [ ] HDS consumers (component / token API users)
 - [ ] HDS contributors (workflow / tooling)
-- [ ] Pilot tenants (e.g. concrete-creations)
+- [ ] Directions (e.g. accent-lilac, brutalist-demo) or a consumer's own brand overlay
 - [ ] AI agents driving autonomous builds
 
 ## Related issue

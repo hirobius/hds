@@ -9,32 +9,17 @@ import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { resolveAlias } from '../../../scripts/lib/token-tree.mjs';
 import { contrastRatio } from '../../app/utils/colorUtils';
+import { TOKENS, tokenLeaf } from './style-test-helpers';
 
 const ROOT = resolve(__dirname, '../../..');
-const TOKENS = JSON.parse(readFileSync(resolve(ROOT, 'hirobius.tokens.json'), 'utf8')) as Record<
-  string,
-  unknown
->;
 const COBALT = JSON.parse(
   readFileSync(resolve(ROOT, 'accents/cobalt/tokens.json'), 'utf8'),
 ) as Record<string, unknown>;
 const ACCENTS_CSS = readFileSync(resolve(ROOT, 'src/styles/accents.css'), 'utf8');
 
-type Leaf = {
-  $value: unknown;
-  $extensions?: Record<string, { modes?: Record<string, unknown> }>;
-};
-
-function leaf(tree: Record<string, unknown>, path: string): Leaf {
-  const node = path.split('.').reduce<unknown>((n, k) => (n as Record<string, unknown>)?.[k], tree);
-  if (!node || typeof node !== 'object' || !('$value' in node))
-    throw new Error(`no token at ${path}`);
-  return node as Leaf;
-}
-
 /** A token's hex in a Figma mode, following aliases; `tree` overlays the base. */
 function hex(path: string, mode: 'Light' | 'Dark', tree = TOKENS): string {
-  const t = leaf(tree, path);
+  const t = tokenLeaf(path, tree);
   const raw = t.$extensions?.['com.figma.variables']?.modes?.[mode] ?? t.$value;
   return (resolveAlias(raw, TOKENS) as string).toLowerCase();
 }

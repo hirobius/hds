@@ -21,6 +21,14 @@ import {
 
 // ── parseOklch ───────────────────────────────────────────────────────────────
 
+/** A parsed oklch() with the given lightness, chroma and hue. */
+function expectLch(result: ReturnType<typeof parseOklch>, l: number, c: number, h: number) {
+  expect(result).not.toBeNull();
+  expect(result?.l).toBeCloseTo(l);
+  expect(result?.c).toBeCloseTo(c);
+  expect(result?.h).toBeCloseTo(h);
+}
+
 describe('parseOklch', () => {
   it('returns null for non-oklch strings', () => {
     expect(parseOklch('red')).toBeNull();
@@ -36,21 +44,13 @@ describe('parseOklch', () => {
   });
 
   it('parses a valid oklch string with decimal lightness', () => {
-    const result = parseOklch('oklch(0.5 0.2 120)');
-    expect(result).not.toBeNull();
-    expect(result?.l).toBeCloseTo(0.5);
-    expect(result?.c).toBeCloseTo(0.2);
-    expect(result?.h).toBeCloseTo(120);
+    expectLch(parseOklch('oklch(0.5 0.2 120)'), 0.5, 0.2, 120);
   });
 
   it('parses lightness expressed as a percentage (the % branch)', () => {
     // lightnessText.endsWith('%') → parseFloat / 100
-    const result = parseOklch('oklch(50% 0.2 120)');
-    expect(result).not.toBeNull();
     // 50% → 0.5
-    expect(result?.l).toBeCloseTo(0.5);
-    expect(result?.c).toBeCloseTo(0.2);
-    expect(result?.h).toBeCloseTo(120);
+    expectLch(parseOklch('oklch(50% 0.2 120)'), 0.5, 0.2, 120);
   });
 
   it('parses oklch with optional alpha component', () => {

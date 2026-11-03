@@ -3,37 +3,6 @@
   "plain": "The default graphite primary fill is now near-black in light mode and near-white in dark mode, so primary Buttons, active Tags and accent fills read stronger; re-take accent screenshots.",
   "steps": [
     {
-      "id": "value-changed/--semantic-color-surface-accent",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "The accent fill (surface.accent, accent.rest) is graphite.950 #19161a in light (was #4a4146) and graphite.50 #f5f4f4 in dark (was #cbc6c9); on-accent text is 17.9:1 and 13.8:1.",
-      "detect": {
-        "cssVars": ["--semantic-color-surface-accent", "--semantic-accent-rest"],
-        "cssVarWrites": ["--semantic-color-surface-accent", "--semantic-accent-rest"]
-      },
-      "facts": [
-        "css-var-changed:--semantic-color-surface-accent::root",
-        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
-        "css-var-changed:--semantic-accent-rest::root",
-        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
-        "css-var-changed:--semantic-color-surface-accent:[data-theme=\"dark\"]"
-      ]
-    },
-    {
-      "id": "value-changed/--semantic-accent-pressed",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "In dark mode the accent hover and pressed fills now step darker from the near-white rest (pressed is graphite.200 #cbc6c9, was graphite.50).",
-      "detect": {
-        "cssVars": ["--semantic-accent-pressed"],
-        "cssVarWrites": ["--semantic-accent-pressed"]
-      },
-      "facts": [
-        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
-        "css-var-changed:--semantic-accent-pressed:[data-theme=\"dark\"]"
-      ]
-    },
-    {
       "id": "value-changed/--hds-edge-primary",
       "kind": "value-changed",
       "impact": "look",
@@ -48,17 +17,6 @@
         "css-var-changed:--hds-edge-primary:[data-theme=dark]",
         "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]"
       ]
-    },
-    {
-      "id": "value-changed/--semantic-accent-rest",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "In dark mode the accent rest fill is now graphite.50 (was graphite.200), matching the accent fill above.",
-      "detect": {
-        "cssVars": ["--semantic-accent-rest"],
-        "cssVarWrites": ["--semantic-accent-rest"]
-      },
-      "facts": ["css-var-changed:--semantic-accent-rest:[data-theme=\"dark\"]"]
     },
     {
       "id": "tenant/accent-lilac",
@@ -80,28 +38,6 @@
         "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
         "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
         "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]"
-      ]
-    },
-    {
-      "id": "tenant/concrete-creations",
-      "kind": "tenant",
-      "impact": "look",
-      "plain": "Pages themed with the concrete-creations brand (data-brand=\"concrete-creations\") may look different, so check them after upgrading.",
-      "detect": {
-        "regex": [
-          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?concrete-creations(?![\\w-])"
-        ]
-      },
-      "facts": [
-        "css-var-changed:--hds-edge-primary::root",
-        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
-        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
-        "css-var-changed:--semantic-accent-rest::root",
-        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
-        "css-var-changed:--semantic-color-surface-accent::root",
-        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
-        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
-        "css-var-changed:--hds-edge-primary:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
       ]
     }
   ]

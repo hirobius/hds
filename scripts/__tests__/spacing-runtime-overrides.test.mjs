@@ -39,7 +39,7 @@ describe('canonical overridable spacing tokens', () => {
 
 describe('runtime overrides sit on the new names and on scale steps', () => {
   it('brutalist-demo overrides surface.padding with scale.sm, scale.xs under compact', () => {
-    const overlay = JSON.parse(read('tenants/brutalist-demo/tokens.json'));
+    const overlay = JSON.parse(read('directions/brutalist-demo/tokens.json'));
     const leaf = overlay.semantic.space.surface.padding;
     expect(leaf.$value).toBe('{semantic.space.scale.sm}');
     expect(leaf.$extensions['com.figma.variables'].modes.Compact).toBe('{semantic.space.scale.xs}');
@@ -81,12 +81,10 @@ const SURFACE_PX = {
   base: [28, 16],
   'accent-lilac': [28, 16],
   'brutalist-demo': [20, 8],
-  'concrete-creations': [28, 16],
-  // Design-explorations demo tenants (hds#628): soft-demo opens surfaces up (scale.lg, scale.md
+  // Design-explorations demo directions (hds#628): soft-demo opens surfaces up (scale.lg, scale.md
   // compact); accent-pair-demo changes colour only.
   'soft-demo': [40, 16],
-  'accent-pair-demo': [28, 16],
-};
+  'accent-pair-demo': [28, 16],};
 /** Today's region.gutter in px per viewport width, [comfortable, compact]. Same for every tenant. */
 const GUTTER_PX = { 1280: [40, 24], 640: [40, 24], 639: [20, 12], 400: [20, 12] };
 
@@ -102,9 +100,9 @@ const PROBE =
   'display:block;padding-top:var(--semantic-space-surface-padding);' +
   'padding-bottom:var(--semantic-space-region-gutter)';
 
-describe('every tenant has a row in the computed-value table', () => {
-  it('matches the tenants/ directory', () => {
-    const tenants = readdirSync(join(ROOT, 'tenants'), { withFileTypes: true })
+describe('every direction has a row in the computed-value table', () => {
+  it('matches the directions/ directory', () => {
+    const tenants = readdirSync(join(ROOT, 'directions'), { withFileTypes: true })
       .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
       .map((d) => d.name)
       .sort();

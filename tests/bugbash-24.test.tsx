@@ -3,7 +3,7 @@
  * pins the cause the bash measured (a stylesheet rule, a class, a role, an attribute) and,
  * where the behaviour is observable, the behaviour. Rendered geometry was re-measured in Chromium.
  */
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
@@ -35,16 +35,6 @@ import { MetadataList } from '../src/app/components/metadata-list';
 const css = (p: string) => readFileSync(resolve(process.cwd(), 'src/styles', p), 'utf8');
 const src = (p: string) => readFileSync(resolve(process.cwd(), 'src/app/components', p), 'utf8');
 
-beforeAll(() => {
-  // @ts-expect-error minimal jsdom polyfills for Radix / Floating-UI.
-  globalThis.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  };
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 afterEach(cleanup);
 
 describe('Focus never moves a control (items 1, 2)', () => {

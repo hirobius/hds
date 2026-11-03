@@ -9,14 +9,15 @@ superseded-by: []
 
 # Multi-Tenant CSS Scope Decision
 
-| Field | Value |
-|---|---|
-| **Status** | Accepted |
-| **Date** | 2026-05-01 |
-| **Author** | Adrian Milsap (orchestrated; opus-class) |
-| **Unit** | `12m-mt-css-scope-architecture` |
-| **Supersedes** | — |
-| **Superseded by** | — |
+| Field             | Value                                                                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Status**        | Accepted                                                                                                                                        |
+| **Date**          | 2026-05-01                                                                                                                                      |
+| **Author**        | Adrian Milsap (orchestrated; opus-class)                                                                                                        |
+| **Unit**          | `12m-mt-css-scope-architecture`                                                                                                                 |
+| **Supersedes**    | —                                                                                                                                               |
+| **Superseded by** | —                                                                                                                                               |
+| **Amended by**    | ADR-035 (2026-10-12): `tenants/` became `directions/`; an overlay in this repo is a shared art direction, and a client's brand never lives here |
 
 ---
 
@@ -66,18 +67,18 @@ The CSS contract:
   /* …all base tokens… */
 }
 
-[data-tenant="concrete-creations"] {
-  --semantic-accent-rest: #8B6F47;
+[data-tenant='concrete-creations'] {
+  --semantic-accent-rest: #8b6f47;
   /* …only the overrides this tenant declares… */
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --semantic-accent-rest: var(--primitive-color-blue-500);
   /* …base dark overrides… */
 }
 
-[data-tenant="concrete-creations"][data-theme="dark"] {
-  --semantic-accent-rest: #6B5235;
+[data-tenant='concrete-creations'][data-theme='dark'] {
+  --semantic-accent-rest: #6b5235;
   /* …tenant + dark combination, only when both axes diverge from base… */
 }
 ```
@@ -98,22 +99,28 @@ the migration is a build-script swap, not a token-source rewrite.
 
 ## Reasoning — the four options
 
-### Option A — `[data-tenant="X"]` attribute selectors *(chosen)*
+### Option A — `[data-tenant="X"]` attribute selectors _(chosen)_
 
 ```css
-:root { --semantic-accent-rest: #1E2EFD; }
-[data-tenant="concrete-creations"] { --semantic-accent-rest: #8B6F47; }
-[data-tenant="concrete-creations"][data-theme="dark"] { --semantic-accent-rest: #6B5235; }
+:root {
+  --semantic-accent-rest: #1e2efd;
+}
+[data-tenant='concrete-creations'] {
+  --semantic-accent-rest: #8b6f47;
+}
+[data-tenant='concrete-creations'][data-theme='dark'] {
+  --semantic-accent-rest: #6b5235;
+}
 ```
 
-| Axis | Verdict |
-|---|---|
-| **Cascade** | Specificity-driven, predictable. `:root` (0,0,1) → `[data-tenant]` (0,1,0) → `[data-tenant][data-theme]` (0,2,0). |
-| **Baseline** | Universal — works in IE9+ (irrelevant lower bound; we don't support pre-evergreen anyway). |
-| **Authoring ergonomics** | Identical to `[data-theme="dark"]` — contributors already know this pattern. |
-| **Debugging** | DevTools shows the cascade plainly; the active selector wins, the others are struck through. No mental model unlock needed. |
-| **Migration cost** | ~Zero. `build-tokens.mjs` adds a single emit pass per tenant overlay; no architectural change to the generator. |
-| **Risk** | Specificity bloat into per-tenant component overrides if a contributor writes `[data-tenant=X] .deeply-nested` at component scope — caught by the existing `check-source-canon.mjs` discipline (token-driven only). |
+| Axis                     | Verdict                                                                                                                                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cascade**              | Specificity-driven, predictable. `:root` (0,0,1) → `[data-tenant]` (0,1,0) → `[data-tenant][data-theme]` (0,2,0).                                                                                                   |
+| **Baseline**             | Universal — works in IE9+ (irrelevant lower bound; we don't support pre-evergreen anyway).                                                                                                                          |
+| **Authoring ergonomics** | Identical to `[data-theme="dark"]` — contributors already know this pattern.                                                                                                                                        |
+| **Debugging**            | DevTools shows the cascade plainly; the active selector wins, the others are struck through. No mental model unlock needed.                                                                                         |
+| **Migration cost**       | ~Zero. `build-tokens.mjs` adds a single emit pass per tenant overlay; no architectural change to the generator.                                                                                                     |
+| **Risk**                 | Specificity bloat into per-tenant component overrides if a contributor writes `[data-tenant=X] .deeply-nested` at component scope — caught by the existing `check-source-canon.mjs` discipline (token-driven only). |
 
 **Why this wins:** mirrors the precedent the team already has working
 (`[data-theme="dark"]`), zero baseline risk, contributor-friendly, the
@@ -124,18 +131,26 @@ per-tenant deploys, this is the lowest-friction path to a working pilot.
 
 ```css
 @layer base, tenants;
-@layer base { :root { --semantic-accent-rest: #1E2EFD; } }
-@layer tenants { :root { --semantic-accent-rest: #8B6F47; } }
+@layer base {
+  :root {
+    --semantic-accent-rest: #1e2efd;
+  }
+}
+@layer tenants {
+  :root {
+    --semantic-accent-rest: #8b6f47;
+  }
+}
 ```
 
-| Axis | Verdict |
-|---|---|
-| **Cascade** | Layer-driven, decoupled from selector specificity. `tenants` always beats `base` regardless of how deep base selectors get. Cleanest model in the abstract. |
-| **Baseline** | Chrome 99 / Firefox 97 / Safari 15.4 (Mar 2022). Modern, but excludes long-tail iOS WebViews and any embedded surfaces with frozen Safari. Clients we don't control may have stricter analytics tails. |
-| **Authoring ergonomics** | Excellent in isolation — partial files just declare the layer name and write `:root`. But contributors unfamiliar with `@layer` read it as black magic. |
-| **Debugging** | DevTools cascade-layer support is real but historically the weakest of the three options. Improving fast. |
-| **Migration cost** | Higher than A. `build-tokens.mjs` has to wrap every emit in `@layer base { … }`, refactor `[data-theme="dark"]` into `@layer base.themes.dark`, and the static `theme.css` `@layer base { … }` reset block must be reconciled (it's the same name; layers merge by name, which is *probably* fine but needs verification). |
-| **Risk** | One latent: existing third-party CSS (Tailwind preflight, motion libraries, doc-page CSS) lands in the unnamed/anonymous layer, which is *highest* priority — breaking the assumption that `tenants` always wins. Audit needed before flipping the switch. |
+| Axis                     | Verdict                                                                                                                                                                                                                                                                                                                    |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cascade**              | Layer-driven, decoupled from selector specificity. `tenants` always beats `base` regardless of how deep base selectors get. Cleanest model in the abstract.                                                                                                                                                                |
+| **Baseline**             | Chrome 99 / Firefox 97 / Safari 15.4 (Mar 2022). Modern, but excludes long-tail iOS WebViews and any embedded surfaces with frozen Safari. Clients we don't control may have stricter analytics tails.                                                                                                                     |
+| **Authoring ergonomics** | Excellent in isolation — partial files just declare the layer name and write `:root`. But contributors unfamiliar with `@layer` read it as black magic.                                                                                                                                                                    |
+| **Debugging**            | DevTools cascade-layer support is real but historically the weakest of the three options. Improving fast.                                                                                                                                                                                                                  |
+| **Migration cost**       | Higher than A. `build-tokens.mjs` has to wrap every emit in `@layer base { … }`, refactor `[data-theme="dark"]` into `@layer base.themes.dark`, and the static `theme.css` `@layer base { … }` reset block must be reconciled (it's the same name; layers merge by name, which is _probably_ fine but needs verification). |
+| **Risk**                 | One latent: existing third-party CSS (Tailwind preflight, motion libraries, doc-page CSS) lands in the unnamed/anonymous layer, which is _highest_ priority — breaking the assumption that `tenants` always wins. Audit needed before flipping the switch.                                                                 |
 
 **Why this didn't win now:** the prize (clean cascade) is real, but the cost
 to extract it (re-architect tokens.css emit, audit every imported CSS source
@@ -148,14 +163,14 @@ multi-tenant preview environments become a hard requirement.**
 Each HDS component mounts inside a Shadow Root; tenants pass theme tokens via
 CSS custom properties at the host element.
 
-| Axis | Verdict |
-|---|---|
-| **Cascade** | Hermetic — by design, nothing crosses the shadow boundary except CSS custom properties. |
-| **Baseline** | Solid (Shadow DOM v1 is universal). |
-| **Authoring ergonomics** | Disruptive. Every primitive needs a shadow-host wrapper. `:has()` and descendant selectors stop at the boundary. Form/a11y interactions (autofill, label-for, focus rings, accessible name) have edge cases. |
-| **Debugging** | Inspector tools work but the mental model (separate trees, slot projection, host-vs-shadow specificity) is heavy. |
-| **Migration cost** | High. Every component in `src/app/components/` needs a wrapper; the documentation site (which heavily uses descendant selectors and `:has()`) needs an audit. |
-| **Risk** | The wrong primitive for the use case. Shadow DOM isolates **trust boundaries** — embeddable widgets crossing different sites' CSS. Tenants are NOT trust boundaries; they're cooperative deployments built from the same source. We'd be paying a heavy cost for protection we don't need. |
+| Axis                     | Verdict                                                                                                                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Cascade**              | Hermetic — by design, nothing crosses the shadow boundary except CSS custom properties.                                                                                                                                                                                                    |
+| **Baseline**             | Solid (Shadow DOM v1 is universal).                                                                                                                                                                                                                                                        |
+| **Authoring ergonomics** | Disruptive. Every primitive needs a shadow-host wrapper. `:has()` and descendant selectors stop at the boundary. Form/a11y interactions (autofill, label-for, focus rings, accessible name) have edge cases.                                                                               |
+| **Debugging**            | Inspector tools work but the mental model (separate trees, slot projection, host-vs-shadow specificity) is heavy.                                                                                                                                                                          |
+| **Migration cost**       | High. Every component in `src/app/components/` needs a wrapper; the documentation site (which heavily uses descendant selectors and `:has()`) needs an audit.                                                                                                                              |
+| **Risk**                 | The wrong primitive for the use case. Shadow DOM isolates **trust boundaries** — embeddable widgets crossing different sites' CSS. Tenants are NOT trust boundaries; they're cooperative deployments built from the same source. We'd be paying a heavy cost for protection we don't need. |
 
 **Why this didn't win:** Shadow DOM is for embeddable widgets. We ship sites,
 not widgets. The existing CSS-var token system already provides the leakage
@@ -168,14 +183,14 @@ component tree and accessibility surface.
 `build-tokens.mjs` runs once per tenant, emits `tokens.<slug>.css`. Each
 tenant's app loads its own file. No scope attribute or layer at runtime.
 
-| Axis | Verdict |
-|---|---|
-| **Cascade** | Simplest possible — one file, base selectors only. |
-| **Baseline** | Universal. |
-| **Authoring ergonomics** | Easiest for tenant authors; no scope vocabulary needed. |
-| **Debugging** | No cascade reasoning needed at all. |
-| **Migration cost** | Moderate. `build-tokens.mjs` forks per-tenant (build matrix), generated artifacts multiply, and the multi-output story has to land in CI. |
-| **Risk** | **One-tenant-per-deploy only.** Preview environments showing all clients side-by-side (a near-term stakeholder/agency-pitch use case Adrian flagged) would require ALSO implementing A or B. |
+| Axis                     | Verdict                                                                                                                                                                                      |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cascade**              | Simplest possible — one file, base selectors only.                                                                                                                                           |
+| **Baseline**             | Universal.                                                                                                                                                                                   |
+| **Authoring ergonomics** | Easiest for tenant authors; no scope vocabulary needed.                                                                                                                                      |
+| **Debugging**            | No cascade reasoning needed at all.                                                                                                                                                          |
+| **Migration cost**       | Moderate. `build-tokens.mjs` forks per-tenant (build matrix), generated artifacts multiply, and the multi-output story has to land in CI.                                                    |
+| **Risk**                 | **One-tenant-per-deploy only.** Preview environments showing all clients side-by-side (a near-term stakeholder/agency-pitch use case Adrian flagged) would require ALSO implementing A or B. |
 
 **Why this didn't win — but it's the closest second:** D is appealing for
 production deploys but loses the moment we want a single deploy serving
@@ -256,17 +271,17 @@ This decision is **additive** — no existing code changes required to land it.
 
 ## Decision log
 
-| Axis | Choice | Why |
-|---|---|---|
-| **Cascade mechanism** | `[data-tenant="X"]` attribute selector | Mirrors `[data-theme="dark"]` precedent already in use; specificity is predictable; no contributor onboarding cost. |
-| **Baseline support** | Universal (no `@layer` dependency) | Ships today across every browser HDS targets. `@layer` migration earmarked for when baseline is non-issue. |
-| **Authoring ergonomics** | Partial DTCG overlay at `tenants/<slug>/tokens.json` | Same shape as base tokens.json, semantic-and-higher tier only. |
-| **Debugging** | Standard CSS DevTools cascade view | Specificity columns reveal active rule; no special tooling. |
-| **Migration cost** | Low | One additional pass in `build-tokens.mjs`; no refactor of base CSS. |
-| **Isolation** | Per-deploy (one Vercel project per tenant) | Sufficient for current portfolio. Shadow DOM isolation rejected — wrong primitive. |
-| **Multi-tenant preview future** | Preserved | A keeps the door open for future preview environments without architectural rework; D would have closed it. |
-| **Component-tier overrides** | Allowed | Tenants may override `--component-button-primary-*` if brand demands. Primitive-tier overrides forbidden by overlay validator. |
-| **Dark + tenant combination** | `[data-tenant="X"][data-theme="dark"]` | Specificity correctly stacks; tested against current dark-mode emit path. |
+| Axis                            | Choice                                               | Why                                                                                                                            |
+| ------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **Cascade mechanism**           | `[data-tenant="X"]` attribute selector               | Mirrors `[data-theme="dark"]` precedent already in use; specificity is predictable; no contributor onboarding cost.            |
+| **Baseline support**            | Universal (no `@layer` dependency)                   | Ships today across every browser HDS targets. `@layer` migration earmarked for when baseline is non-issue.                     |
+| **Authoring ergonomics**        | Partial DTCG overlay at `tenants/<slug>/tokens.json` | Same shape as base tokens.json, semantic-and-higher tier only.                                                                 |
+| **Debugging**                   | Standard CSS DevTools cascade view                   | Specificity columns reveal active rule; no special tooling.                                                                    |
+| **Migration cost**              | Low                                                  | One additional pass in `build-tokens.mjs`; no refactor of base CSS.                                                            |
+| **Isolation**                   | Per-deploy (one Vercel project per tenant)           | Sufficient for current portfolio. Shadow DOM isolation rejected — wrong primitive.                                             |
+| **Multi-tenant preview future** | Preserved                                            | A keeps the door open for future preview environments without architectural rework; D would have closed it.                    |
+| **Component-tier overrides**    | Allowed                                              | Tenants may override `--component-button-primary-*` if brand demands. Primitive-tier overrides forbidden by overlay validator. |
+| **Dark + tenant combination**   | `[data-tenant="X"][data-theme="dark"]`               | Specificity correctly stacks; tested against current dark-mode emit path.                                                      |
 
 ---
 
@@ -275,7 +290,7 @@ This decision is **additive** — no existing code changes required to land it.
 1. **Component-CSS scope leak.** If a contributor writes
    `[data-tenant="concrete-creations"] .hds-button` somewhere downstream,
    they sidestep the token system. The Swiss-canon validator needs a rule
-   that disallows tenant-scoped selectors *outside* the generated tokens.css.
+   that disallows tenant-scoped selectors _outside_ the generated tokens.css.
    Tracked: see follow-ups.
 2. **`@layer` migration timing.** Decision is "later, when baseline allows."
    "Later" is intentionally not a date — it's gated on portfolio

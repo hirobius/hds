@@ -6,7 +6,7 @@ One file per decision, numbered in the order recorded ([ADR-009](009-adr-convent
 An Accepted ADR is not edited; a change is a new ADR that supersedes it through its
 Status line.
 
-63 records. 25 are **retroactive**: decisions made between June and
+64 records. 25 are **retroactive**: decisions made between June and
 October 2026 that shipped without an ADR, written up afterwards from the commit and PR
 history. Each one lists its evidence and says when the evidence does not record a reason.
 Their "Decided" date is when the decision landed, not when it was written up.
@@ -50,6 +50,7 @@ the bundle budget) predates this folder; see ADR-009.
 | [032](032-figma-sync-plugin-receipt.md) | The Sync Plugin Fetches Its Model; the Promote Plugin Stays Baked | Proposed | 2026-10-01 |  |
 | [033](033-zero-click-agent-sync.md) | Zero-Click Agent Sync Through One Pinned use_figma Call | Proposed | 2026-10-01 |  |
 | [034](034-remove-date-pickers.md) | Remove the Date Pickers; TimeInput Stays Native | Accepted | 2026-10-01 |  |
+| [035](035-directions-brands-preferences.md) | Directions, Brands and Preferences | Accepted | 2026-10-12 |  |
 | [036](036-docs-site-replaces-storybook.md) | The Docs Site Replaces Storybook | Accepted | 2026-10-14 |  |
 | [037](037-generated-docs-no-hosted-platform.md) | Docs, Agent Files and MCP Are Generated From Code; No Hosted Docs Platform | Accepted | 2026-10-14 |  |
 | [038](038-consumer-side-verification-gates-publish.md) | Consumer-Side Verification Gates the Publish | Accepted | 2026-06-19 | yes |

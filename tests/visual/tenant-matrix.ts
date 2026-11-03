@@ -9,11 +9,11 @@
  *
  * To add an axis value: append it below, then run
  * `pnpm test:visual-baselines:update` and commit the new PNGs. A brand must
- * have a tenants/<slug>/tokens.json overlay built into src/styles/tenants.css
+ * have a directions/<slug>/tokens.json overlay built into src/styles/tenants.css
  * (tenant-matrix.test.ts checks this). Each new value multiplies the snapshot
  * count, so widen PRIMITIVES only for a primitive that tenants restyle.
  */
-export const BRANDS = ['concrete-creations', 'accent-lilac'] as const;
+export const BRANDS = ['soft-demo', 'accent-lilac'] as const;
 export const DENSITIES = ['comfortable', 'compact'] as const;
 export const THEMES = ['light', 'dark'] as const;
 export const PRIMITIVES = ['button', 'card', 'input', 'badge', 'alert', 'table'] as const;

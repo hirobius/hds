@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "checkers": ["typescript"],
+  "cleanTempDir": true,
+  "concurrency": 2,
+  "coverageAnalysis": "perTest",
+  "htmlReporter": { "fileName": "reports/mutation/index.html" },
+  "jsonReporter": { "fileName": "reports/mutation/mutation.json" },
+  "mutate": [
+    "codemods/**/*.mjs",
+    "scripts/lib/**/*.mjs",
+    "src/lib/**/*.ts",
+    "!**/*.{test,spec}.*",
+    "!**/__tests__/**",
+    "!**/__fixtures__/**"
+  ],
+  "packageManager": "pnpm",
+  "plugins": ["@stryker-mutator/vitest-runner", "@stryker-mutator/typescript-checker"],
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "tempDirName": ".stryker-tmp",
+  "testRunner": "vitest",
+  "dryRunTimeoutMinutes": 30,
+  "timeoutFactor": 2,
+  "timeoutMS": 60000,
+  "thresholds": { "break": null, "high": 80, "low": 60 },
+  "tsconfigFile": "tsconfig.stryker.json",
+  "vitest": { "configFile": "vitest.stryker.config.ts" }
+}

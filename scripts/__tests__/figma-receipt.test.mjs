@@ -13,8 +13,9 @@
  * ingest and drift commands as functions on that root. Nothing here reaches a
  * network or Figma.
  */
-import { describe, it, expect } from 'vitest';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { describe, it, expect, afterAll, beforeAll } from 'vitest';
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs';
+import { tmpdir } from 'os';
 import { join } from 'path';
 import vm from 'vm';
 import { gunzipSync } from 'zlib';
@@ -300,6 +301,13 @@ describe('Sync writes the snapshot into the file as receipt pages', () => {
 
 // ── receipt.js ───────────────────────────────────────────────────────────────
 describe('figma/push/use-figma/receipt.js', () => {
+  // The first two tests only read the generated receipt.js text, so one Sync
+  // serves both; the third needs its own (a multi-page receipt).
+  let sharedScript;
+  beforeAll(async () => {
+    sharedScript = (await synced()).receiptScript;
+  });
+
   /** A file whose every property read is logged: what the script touched before it refused. */
   const watched = (fileKey) => {
     const figma = libraryFile();
@@ -315,7 +323,7 @@ describe('figma/push/use-figma/receipt.js', () => {
   };
 
   it('is at most 1,500 chars, and its first statement refuses any file but the library', async () => {
-    const { receiptScript } = await synced();
+    const receiptScript = sharedScript;
     expect(receiptScript.length).toBeLessThanOrEqual(1500);
     const ast = parse(receiptScript, {
       ecmaVersion: 2020,
@@ -331,7 +339,7 @@ describe('figma/push/use-figma/receipt.js', () => {
   });
 
   it('reads nothing but figma.fileKey in a retired file, in a file with no key, or in any other file', async () => {
-    const { receiptScript } = await synced();
+    const receiptScript = sharedScript;
     for (const key of [RETIRED_KEY, STAGING_KEY, null, undefined, 'SOMEOTHERFILE000000000']) {
       const { proxy, reads, figma } = watched(key);
       setRootData(figma, 'syncReceipt', '{"secret":true}');
@@ -365,6 +373,23 @@ describe('figma/push/use-figma/receipt.js', () => {
 
 // ── --from-receipt ───────────────────────────────────────────────────────────
 describe('pnpm figma:snapshot --from-receipt', () => {
+  // Two refusal tests below start from the same default Sync and the same
+  // collected reads, and each only mutates its own parsed copy of the reads
+  // (refuses() proves the committed snapshot is untouched), so one Sync and
+  // one collect serve both; loadReads re-parses the saved files per test.
+  // The copy lives outside useTempRoots, whose afterEach would remove it
+  // after the first test in this describe.
+  let sharedRoot;
+  let sharedFiles;
+  beforeAll(async () => {
+    const s = await synced();
+    const files = await collect(s);
+    sharedRoot = mkdtempSync(join(tmpdir(), 'hds-receipt-shared-'));
+    cpSync(s.root, sharedRoot, { recursive: true });
+    sharedFiles = files.map((file) => join(sharedRoot, file.slice(s.root.length + 1)));
+  });
+  afterAll(() => rmSync(sharedRoot, { recursive: true, force: true }));
+
   for (const [label, options] of [
     ['a raw JSON delta (1 page)', {}],
     ['a gzipped delta', { base: 'empty' }],
@@ -410,12 +435,11 @@ describe('pnpm figma:snapshot --from-receipt', () => {
   });
 
   it('refuses a receipt whose pages do not rebuild its post checksum', async () => {
-    const s = await synced();
-    const reads = loadReads(await collect(s));
+    const reads = loadReads(sharedFiles);
     const head = JSON.parse(reads[0].head);
     head.post = 'deadbeef';
     reads.forEach((read) => (read.head = JSON.stringify(head)));
-    refuses(s.root, saveReads(s.root, reads), /post checksum deadbeef/);
+    refuses(sharedRoot, saveReads(sharedRoot, reads), /post checksum deadbeef/);
   });
 
   it('refuses when a page is missing, naming it and how to read it', async () => {
@@ -426,11 +450,10 @@ describe('pnpm figma:snapshot --from-receipt', () => {
   });
 
   it('refuses a read from any file but the library', async () => {
-    const s = await synced();
     for (const file of [RETIRED_KEY, STAGING_KEY, null, 'SOMEOTHERFILE000000000']) {
-      const reads = loadReads(await collect(s));
+      const reads = loadReads(sharedFiles);
       reads[0].file = file;
-      refuses(s.root, saveReads(s.root, reads), /not the HDS library/);
+      refuses(sharedRoot, saveReads(sharedRoot, reads), /not the HDS library/);
     }
   });
 

@@ -17,7 +17,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import { Select, type SelectProps } from '@/app/components/select';
-import { FormField } from '@/app/components/form';
+import { expectFieldErrorOnTrigger, expectFieldLabelsTrigger } from './form-field-fixtures';
 import { user, FRUIT } from './overlay-fixtures';
 
 afterEach(cleanup);
@@ -65,27 +65,15 @@ describe('Select contract', () => {
 
 describe('Select in a FormField', () => {
   it('a11y:select.form-field-label - is the control the field label names', () => {
-    render(
-      <FormField label="Fruit" description="Pick one">
-        <Select label="Fruit" showLabel={false} options={FRUIT} value="apple" onChange={() => {}} />
-      </FormField>,
+    expectFieldLabelsTrigger(
+      <Select label="Fruit" showLabel={false} options={FRUIT} value="apple" onChange={() => {}} />,
+      'Fruit: Apple',
     );
-
-    const trigger = screen.getByLabelText('Fruit');
-    expect(trigger.getAttribute('role')).toBe('combobox');
-    expect(screen.getByRole('combobox', { name: 'Fruit: Apple' })).toBe(trigger);
-    expect(trigger.getAttribute('aria-describedby')).toBe(screen.getByText('Pick one').id);
   });
 
   it('a11y:select.form-field-error - carries the field error: invalid, and described by the message', () => {
-    render(
-      <FormField label="Fruit" error="Pick a fruit">
-        <Select label="Fruit" showLabel={false} options={FRUIT} value="apple" onChange={() => {}} />
-      </FormField>,
+    expectFieldErrorOnTrigger(
+      <Select label="Fruit" showLabel={false} options={FRUIT} value="apple" onChange={() => {}} />,
     );
-
-    const trigger = screen.getByLabelText('Fruit');
-    expect(trigger.getAttribute('aria-invalid')).toBe('true');
-    expect(trigger.getAttribute('aria-describedby')).toBe(screen.getByRole('alert').id);
   });
 });

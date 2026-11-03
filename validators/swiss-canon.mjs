@@ -24,7 +24,7 @@
  * STRUCTURAL_COMPONENTS / TEXT_BEARING_COMPONENTS sets need updating.
  */
 
-import { walkJsx, parseOrError } from './lib/jsx.mjs';
+import { validateElements } from './lib/jsx.mjs';
 import {
   ON_GRID_SPACING,
   STRUCTURAL_COMPONENTS,
@@ -145,16 +145,10 @@ function colorFamily(value) {
  * @param {string} jsxString
  * @returns {Promise<{ ok: boolean, errors: Array<{path, code, message, suggestion}> }>}
  */
-export default async function validate(jsxString) {
-  const { ast, result } = parseOrError(jsxString);
-  if (result) return result;
-
-  const errors = [];
-
-  walkJsx(ast, (element) => {
-    const tagName = element.openingElement?.name?.name;
+export default function validate(jsxString) {
+  return validateElements(jsxString, (element, { tagName: name, attrs, errors }) => {
+    const tagName = name;
     if (!tagName) return;
-    const attrs = element.openingElement?.attributes || [];
 
     for (const attr of attrs) {
       if (attr.type === 'JSXSpreadAttribute') continue;
@@ -339,6 +333,4 @@ export default async function validate(jsxString) {
       }
     }
   });
-
-  return { ok: errors.length === 0, errors };
 }

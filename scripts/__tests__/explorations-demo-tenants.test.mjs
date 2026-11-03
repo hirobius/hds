@@ -47,18 +47,18 @@ const SLUGS = ['soft-demo', 'accent-pair-demo'];
 // ── The files ────────────────────────────────────────────────────────────────
 
 describe.each(SLUGS)('%s: files', (slug) => {
-  const dir = `tenants/${slug}`;
+  const dir = `directions/${slug}`;
 
   it('is a demo tenant: tier 1, empty deployment and legal, status scaffold', () => {
     const meta = readJson(`${dir}/metadata.json`);
-    expect(meta).toMatchObject({ slug, demo: true, tier: 1, status: 'scaffold' });
+    expect(meta).toMatchObject({ slug, tier: 1, status: 'scaffold' });
     expect(Object.values(meta.deployment).every((v) => v === null)).toBe(true);
     expect(Object.values(meta.legal).every((v) => v === null)).toBe(true);
     expect(typeof meta.displayName).toBe('string');
   });
 
   it('is not a Figma Brand mode (publishing to the shared library is Adrian’s call)', () => {
-    expect(readJson('figma/brand-modes.json').tenants).not.toContain(slug);
+    expect(readJson('figma/brand-modes.json').directions).not.toContain(slug);
   });
 
   it('has an overlay the validator accepts, and `check-tenant-tokens` exits 0', () => {
@@ -91,7 +91,7 @@ describe.each(SLUGS)('%s: files', (slug) => {
   });
 
   it('is compiled into the committed src/styles/tenants.css (run `pnpm tokens`)', () => {
-    const { css, tenants } = buildTenantCSS(join(ROOT, 'tenants'), base);
+    const { css, tenants } = buildTenantCSS(join(ROOT, 'directions'), base);
     expect(tenants).toContain(slug);
     // The tenant's block: from its header comment to the next tenant's. The committed file is
     // prettier-formatted, so compare without whitespace and with one quote style.
@@ -111,13 +111,13 @@ describe.each(SLUGS)('%s: files', (slug) => {
 
 describe('accent-pair-demo: the supporting accent is an overlay, not a token', () => {
   it('ships the overlay beside the tokens and does not touch the base tokens', () => {
-    expect(existsSync(join(ROOT, 'tenants/accent-pair-demo/support-overlay.css'))).toBe(true);
+    expect(existsSync(join(ROOT, 'directions/accent-pair-demo/support-overlay.css'))).toBe(true);
     const flat = JSON.stringify(base);
     expect(flat).not.toMatch(/accent-?support|accentSupport/i);
   });
 
   it('declares only supporting-accent variables, and only inside the tenant scope', () => {
-    const css = read('tenants/accent-pair-demo/support-overlay.css');
+    const css = read('directions/accent-pair-demo/support-overlay.css');
     const stripped = css.replace(/\/\*[\s\S]*?\*\//g, '');
     const rules = [...stripped.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
     expect(rules.length).toBeGreaterThanOrEqual(2); // light, dark
@@ -132,7 +132,7 @@ describe('accent-pair-demo: the supporting accent is an overlay, not a token', (
   });
 
   it('names the token it would need and how to promote it', () => {
-    const readme = read('tenants/accent-pair-demo/README.md');
+    const readme = read('directions/accent-pair-demo/README.md');
     expect(readme).toContain('support-overlay.css');
     expect(readme).toContain('semantic.accent.support');
   });
@@ -150,7 +150,7 @@ const PAGE_CSS = [
   read('src/styles/tokens.generated.css'),
   read('src/styles/tenants.css'),
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
-  read('tenants/accent-pair-demo/support-overlay.css'),
+  read('directions/accent-pair-demo/support-overlay.css'),
 ].join('\n');
 
 /** A primitive colour as the browser prints it: `rgb(r, g, b)`. */
@@ -457,7 +457,7 @@ describe.skipIf(!hasBrowser)(
   'below <html>, the way the explorations harness applies a tenant',
   () => {
     describe.each(SLUGS)('%s', (slug) => {
-      const names = changedVars(readJson(`tenants/${slug}/tokens.json`));
+      const names = changedVars(readJson(`directions/${slug}/tokens.json`));
 
       it.each(THEMES)(
         'every variable it changes, directly or through an alias, resolves as it does on <html> (%s)',
