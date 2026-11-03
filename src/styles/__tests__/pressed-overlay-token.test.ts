@@ -17,6 +17,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect, beforeAll } from 'vitest';
+import { blockBody, declaration } from './style-test-helpers';
 
 let tokensCss: string;
 let buttonSource: string;
@@ -25,19 +26,6 @@ beforeAll(() => {
   tokensCss = readFileSync(resolve(__dirname, '../tokens.generated.css'), 'utf8');
   buttonSource = readFileSync(resolve(__dirname, '../../app/components/button.tsx'), 'utf8');
 });
-
-/** Body of the first top-level block whose selector list is exactly `selector`. */
-function blockBody(css: string, selector: string): string {
-  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*');
-  const match = css.match(new RegExp(`(?:^|\\n)${escaped}\\s*\\{([^}]*)\\}`));
-  if (!match) throw new Error(`Block not found: ${selector}`);
-  return match[1];
-}
-
-function declaration(body: string, prop: string): string | null {
-  const match = body.match(new RegExp(`${prop}:\\s*([^;]+);`));
-  return match ? match[1].trim() : null;
-}
 
 const TOKEN_VAR = '--semantic-color-state-pressed-overlay';
 
