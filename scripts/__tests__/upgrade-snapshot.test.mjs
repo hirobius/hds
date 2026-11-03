@@ -350,11 +350,82 @@ function packer(src, calls = []) {
   };
 }
 
+/**
+ * hds#1090 Slice 3 — classification of the upgrade-snapshot failures seen in
+ * the 2026-11-02 profiled full-suite runs: ENVIRONMENT-ONLY, not a code
+ * defect. Run alone as root (uid 0) on Muse's VM, this file passes 22/22
+ * with the repo config, repeatedly. The tarballs these tests extract are
+ * built by the packer above from fixtures the same process just wrote, so
+ * their entries are always owned by the test process's own uid and the
+ * extraction in snapshotFromNpm cannot hit an ownership error.
+ *
+ * One tar failure IS mechanically possible in the VM's user namespace
+ * (uid_map maps only 64k uids): extracting a tarball whose entries carry
+ * uids outside the map makes GNU tar exit with "Cannot change ownership to
+ * uid N, gid N: Invalid argument" when run as root. These tests never
+ * produce such a tarball today, but if one ever does (a fixture built from
+ * a pre-owned tree, a real published tarball), the case must degrade to a
+ * VISIBLE skip with a printed reason — never a false red, never a silent
+ * skip. Non-root runs never engage this: tar only restores ownership for
+ * root, and the detector requires uid 0.
+ */
+const TAR_OWNERSHIP_PATTERN = /Cannot change ownership to uid \d+, gid \d+/;
+
+function isRootTarOwnershipError(err, uid = process.getuid?.() ?? -1) {
+  if (uid !== 0 || !err) return false;
+  const text = [err.message, err.stderr?.toString(), err.stdout?.toString()]
+    .filter(Boolean)
+    .join('\n');
+  return TAR_OWNERSHIP_PATTERN.test(text);
+}
+
+/** snapshotFromNpm, degrading only the root/tar-ownership artifact to a visible skip. */
+function fromNpmOrSkip(ctx, version, pack) {
+  try {
+    return snapshotFromNpm(version, { pack });
+  } catch (err) {
+    if (!isRootTarOwnershipError(err)) throw err;
+    const reason =
+      'environment-only (hds#1090 Slice 3): running as root in a restricted user namespace, ' +
+      'tar cannot restore this tarball\u2019s ownership \u2014 the snapshot code path is not at fault';
+    console.warn(`upgrade-snapshot: skipping \u2014 ${reason}`);
+    ctx.skip(reason);
+    return undefined; // unreachable: ctx.skip aborts the test as skipped
+  }
+}
+
+describe('the root tar-ownership guard (hds#1090 Slice 3)', () => {
+  // The real error text, captured on Muse's VM extracting a tarball whose
+  // entries carry uid 100000 (outside the namespace's 64k uid map) as root.
+  const tarError = () =>
+    Object.assign(new Error('Command failed: tar -xzf fixture.tgz -C work'), {
+      stderr: Buffer.from(
+        'tar: package/f.txt: Cannot change ownership to uid 100000, gid 100000: Invalid argument\n' +
+          'tar: Exiting with failure status due to previous errors\n',
+      ),
+    });
+
+  it('detects the tar ownership error only for root', () => {
+    expect(isRootTarOwnershipError(tarError(), 0)).toBe(true);
+    expect(isRootTarOwnershipError(tarError(), 1000)).toBe(false);
+  });
+
+  it('does not engage for other errors, even as root', () => {
+    expect(isRootTarOwnershipError(new Error('snapshot mismatch'), 0)).toBe(false);
+    expect(isRootTarOwnershipError(null, 0)).toBe(false);
+  });
+
+  it('finds the signature in the error message when there is no stderr', () => {
+    const err = new Error('tar: Cannot change ownership to uid 70000, gid 70000: Invalid argument');
+    expect(isRootTarOwnershipError(err, 0)).toBe(true);
+  });
+});
+
 describe('snapshotFromNpm', () => {
-  it('packs the version into a temp dir, extracts it, snapshots it and removes the temp dir', () => {
+  it('packs the version into a temp dir, extracts it, snapshots it and removes the temp dir', (ctx) => {
     const calls = [];
     const pack = packer(builtPackage('9.8.7'), calls);
-    const snap = snapshotFromNpm('9.8.7', { pack });
+    const snap = fromNpmOrSkip(ctx, '9.8.7', pack);
     expect(calls.map((c) => c.spec)).toEqual(['@hirobius/design-system@9.8.7']);
     expect(snap).toEqual({ ...EXPECTED, version: '9.8.7' });
     expect(existsSync(calls[0].destination)).toBe(false);
@@ -373,8 +444,8 @@ describe('the source tree at a release and that release tarball', () => {
       .map(([key]) => key)
       .sort();
 
-  it('snapshot with no diff, for every exports entry, tooling ones included', () => {
-    const published = snapshotFromNpm('1.2.3', { pack: packer(builtPackage('1.2.3')) });
+  it('snapshot with no diff, for every exports entry, tooling ones included', (ctx) => {
+    const published = fromNpmOrSkip(ctx, '1.2.3', packer(builtPackage('1.2.3')));
     const source = snapshotFromSource(sourcePackage('1.2.3'));
     expect(diffSnapshots(published, source)).toEqual([]);
     const keys = objectEntries(JSON.parse(fixturePackageJson('1.2.3')));
@@ -384,10 +455,10 @@ describe('the source tree at a release and that release tarball', () => {
     for (const key of keys) expect(source.entries[key], key).toEqual(published.entries[key]);
   });
 
-  it('see a tooling entry losing its default export from either side', () => {
+  it('see a tooling entry losing its default export from either side', (ctx) => {
     const dir = sourcePackage();
     writeFileSync(join(dir, 'scripts/eslint-plugin-hds/index.d.mts'), 'export {};\n');
-    const published = snapshotFromNpm('1.2.3', { pack: packer(builtPackage('1.2.3')) });
+    const published = fromNpmOrSkip(ctx, '1.2.3', packer(builtPackage('1.2.3')));
     expect(diffSnapshots(published, snapshotFromSource(dir)).map((fact) => fact.id)).toEqual([
       'removed:./eslint-plugin:default',
     ]);
