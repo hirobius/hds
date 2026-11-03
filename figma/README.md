@@ -49,7 +49,8 @@ while two areas share one key or one name:
   exists yet, so `figma/links.json` names no key for it — a key is never
   invented. Adrian creates the file in Figma, then its key and name go into
   `figma/links.json` and the table above. Until then `pnpm figma:links --check`
-  fails by design, naming the missing key.
+  prints a loud warning naming the missing key and exits 0 (hds#1104 makes it
+  an error again once the file exists).
 
 The rules:
 

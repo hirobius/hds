@@ -77,15 +77,16 @@ describe('the committed tree is fresh', () => {
 
   // hds#763: figma-links --check also gates the three Figma areas, and the
   // committed figma/links.json does not name the visual explorations area
-  // yet — no such Figma file exists, and a key is never invented. Adrian
-  // creates the file and adds explorationsFileKey/explorationsFileName;
-  // until then the check exits 1 naming the missing key, by design. When
-  // the key lands, delete this test and put ['figma-links.mjs'] back in
-  // the list above.
-  it('figma-links.mjs --check exits 1 until figma/links.json names the explorations area (hds#763)', () => {
+  // yet — no such Figma file exists, and a key is never invented. The check
+  // runs in pretest, so until Adrian creates the file a missing explorations
+  // pair is a loud WARNING with exit 0, not a failure. hds#1104: when the key
+  // lands, delete this test and put ['figma-links.mjs'] back in the list above.
+  it('figma-links.mjs --check exits 0 with a warning until figma/links.json names the explorations area (hds#763)', () => {
     const res = run('figma-links.mjs', '--check');
-    expect(res.status).toBe(1);
-    expect(res.stderr).toContain('explorationsFileKey');
+    expect(res.status, res.stderr).toBe(0);
+    expect(res.stderr).toContain('WARNING: figma/links.json has no explorationsFileKey');
+    expect(res.stderr).toContain('hds#763');
+    expect(res.stderr).toContain('Adrian creates the file');
   }, 30_000);
 });
 
