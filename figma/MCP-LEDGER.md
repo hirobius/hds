@@ -765,7 +765,18 @@ Session total: 3 calls
 
 Session total: 6 calls
 
-Calls logged for 2026-11-01: 9 of 200 (3 and 6).
+## 2026-11-01 · token sync on 0.32.0 main 5922574
+
+Daily check: version unchanged; plan still blocked on the 21 hand deletions. Probe whether they are done.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                      | Result                                               |
+| --- | ---------- | ---------------- | ---- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 1   | 16:47      | `create_session` | read | open file session                                                            | OK; session opened                                   |
+| 2   | 16:47      | `use_figma`      | read | read-only probe: do the 21 variables code removed still exist in the library | OK; all 21 still present (503 variables), so no push |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-01: 11 of 200 (3, 6 and 2).
 
 ## 2026-11-02 · session claude/burn-302 (hds#302, library `2VgBbVpKiDnu0aftJEVyBQ`)
 
@@ -799,3 +810,16 @@ Results: library TimelineItem is now `2252:127` (Tone x Detail, matching the cod
 Session total: 10 calls
 
 Calls logged for 2026-11-02: 13 of 200 (3 and 10).
+
+## 2026-11-03 · token sync on 0.32.0 main e88099a
+
+Daily check (11-02 run, delayed): version unchanged; plan updated 42 · created 9, still blocked on the 21 hand deletions. Probe whether they are done.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                      | Result                                               |
+| --- | ---------- | ---------------- | ---- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 1   | 07:06      | `create_session` | read | open file session                                                            | OK; session opened                                   |
+| 2   | 07:06      | `use_figma`      | read | read-only probe: do the 21 variables code removed still exist in the library | OK; all 21 still present (503 variables), so no push |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-03: 2 of 200 (2).
