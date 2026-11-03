@@ -1,22 +1,14 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { createHash } from 'node:crypto';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { tmpdir } from 'node:os';
 import { installSkill } from '../install-skills.mjs';
+import { useTempDirsPerTest } from './helpers/temp-dirs.mjs';
 
-let cleanup = [];
 afterEach(() => {
-  for (const dir of cleanup) rmSync(dir, { recursive: true, force: true });
-  cleanup = [];
   vi.unstubAllGlobals();
 });
-
-function tmp() {
-  const dir = mkdtempSync(join(tmpdir(), 'install-skills-'));
-  cleanup.push(dir);
-  return dir;
-}
+const tmp = useTempDirsPerTest('install-skills-');
 
 function stubFetch(content) {
   const fetchMock = vi.fn(async () => ({

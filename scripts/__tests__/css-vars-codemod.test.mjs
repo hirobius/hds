@@ -4,11 +4,11 @@
  * code; a removed one is listed by hand; a file that uses neither is a no-op.
  */
 import { describe, expect, it } from 'vitest';
-import { mkdtempSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tempTree } from './helpers/codemod-fixture.mjs';
 import { rulesFromSteps, runCodemod, transformSource } from '../../codemods/css-vars.mjs';
 import { CODEMODS } from '../../codemods/registry.mjs';
 
@@ -35,14 +35,7 @@ const STEPS = [
   },
 ];
 
-const project = (files) => {
-  const dir = mkdtempSync(join(tmpdir(), 'hds-css-vars-'));
-  for (const [rel, text] of Object.entries(files)) {
-    mkdirSync(dirname(join(dir, rel)), { recursive: true });
-    writeFileSync(join(dir, rel), text);
-  }
-  return dir;
-};
+const project = (files) => tempTree('hds-css-vars-', files);
 
 describe('rulesFromSteps', () => {
   it('reads renames from auto.args and removals from removed steps', () => {

@@ -1,44 +1,28 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { createHash } from 'node:crypto';
+import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { tmpdir } from 'node:os';
-import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { ROOT, runFixtureMode } from './helpers/gate-runner.mjs';
+import { useTempDirsPerTest } from './helpers/temp-dirs.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..', '..');
 const SCRIPT = join(ROOT, 'scripts', 'check-skills-lock.mjs');
 
-let cleanup = [];
-afterEach(() => {
-  for (const dir of cleanup) rmSync(dir, { recursive: true, force: true });
-  cleanup = [];
-});
-
-function tmp() {
-  const dir = mkdtempSync(join(tmpdir(), 'check-skills-lock-'));
-  cleanup.push(dir);
-  return dir;
-}
+const tmp = useTempDirsPerTest('check-skills-lock-');
 
 // Runs the gate in fixture mode against a scratch lock file, the same
 // FIXTURE_FILE / HDS_FIXTURE_MODE contract check-guardrail-drift.mjs uses.
-function run(lockPath, extraArgs = []) {
-  let stdout = '';
-  let code = 0;
-  try {
-    stdout = execFileSync('node', [SCRIPT, '--fixture-mode', ...extraArgs], {
-      cwd: ROOT,
-      env: { ...process.env, FIXTURE_FILE: lockPath, HDS_FIXTURE_MODE: '1' },
-      encoding: 'utf8',
-    });
-  } catch (err) {
-    code = err.status ?? 1;
-    stdout = (err.stdout ?? '') + (err.stderr ?? '');
-  }
-  return { code, stdout };
-}
+const run = (lockPath, extraArgs = []) => runFixtureMode(SCRIPT, lockPath, extraArgs);
+
+// One pinned skill, 'demo', at this hash.
+const demoLock = (computedHash) => ({
+  demo: {
+    source: 'owner/repo',
+    sourceType: 'github',
+    skillPath: 'skills/demo/SKILL.md',
+    computedHash,
+  },
+});
 
 function writeLock(dir, skills) {
   const path = join(dir, 'skills-lock.json');
@@ -58,14 +42,7 @@ describe('check-skills-lock', () => {
     const content = 'demo skill content\n';
     installSkill(dir, 'demo', content);
     const hash = createHash('sha256').update(content).digest('hex');
-    const lockPath = writeLock(dir, {
-      demo: {
-        source: 'owner/repo',
-        sourceType: 'github',
-        skillPath: 'skills/demo/SKILL.md',
-        computedHash: hash,
-      },
-    });
+    const lockPath = writeLock(dir, demoLock(hash));
 
     const { code, stdout } = run(lockPath);
     expect(code).toBe(0);
@@ -74,14 +51,7 @@ describe('check-skills-lock', () => {
 
   it('fails when the skill is not installed', () => {
     const dir = tmp();
-    const lockPath = writeLock(dir, {
-      demo: {
-        source: 'owner/repo',
-        sourceType: 'github',
-        skillPath: 'skills/demo/SKILL.md',
-        computedHash: 'x'.repeat(64),
-      },
-    });
+    const lockPath = writeLock(dir, demoLock('x'.repeat(64)));
 
     const { code, stdout } = run(lockPath);
     expect(code).toBe(1);
@@ -92,14 +62,7 @@ describe('check-skills-lock', () => {
   it('fails when the installed skill has drifted from the pinned hash', () => {
     const dir = tmp();
     installSkill(dir, 'demo', 'drifted content\n');
-    const lockPath = writeLock(dir, {
-      demo: {
-        source: 'owner/repo',
-        sourceType: 'github',
-        skillPath: 'skills/demo/SKILL.md',
-        computedHash: 'x'.repeat(64),
-      },
-    });
+    const lockPath = writeLock(dir, demoLock('x'.repeat(64)));
 
     const { code, stdout } = run(lockPath);
     expect(code).toBe(1);
@@ -108,14 +71,7 @@ describe('check-skills-lock', () => {
 
   it('emits machine-readable JSON on stdout with --json', () => {
     const dir = tmp();
-    const lockPath = writeLock(dir, {
-      demo: {
-        source: 'owner/repo',
-        sourceType: 'github',
-        skillPath: 'skills/demo/SKILL.md',
-        computedHash: 'x'.repeat(64),
-      },
-    });
+    const lockPath = writeLock(dir, demoLock('x'.repeat(64)));
 
     const { code, stdout } = run(lockPath, ['--json']);
     expect(code).toBe(1);

@@ -7,7 +7,7 @@
  * it at one fixture. This is that one copy.
  */
 import { expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +20,26 @@ export function runGate(gate, args = [], { fixtureFile } = {}) {
     ? { ...process.env, HDS_FIXTURE_MODE: '1', FIXTURE_FILE: fixtureFile }
     : process.env;
   return spawnSync(process.execPath, [gate, ...args], { cwd: ROOT, encoding: 'utf8', env });
+}
+
+/**
+ * Run `node <gate> --fixture-mode ...extraArgs` on `fixtureFile` and return
+ * `{ code, stdout }`; on a non-zero exit `stdout` is stdout + stderr.
+ */
+export function runFixtureMode(gate, fixtureFile, extraArgs = []) {
+  let stdout = '';
+  let code = 0;
+  try {
+    stdout = execFileSync('node', [gate, '--fixture-mode', ...extraArgs], {
+      cwd: ROOT,
+      env: { ...process.env, FIXTURE_FILE: fixtureFile, HDS_FIXTURE_MODE: '1' },
+      encoding: 'utf8',
+    });
+  } catch (err) {
+    code = err.status ?? 1;
+    stdout = (err.stdout ?? '') + (err.stderr ?? '');
+  }
+  return { code, stdout };
 }
 
 /** A `runOn(fixture)` that runs `gate --json` on `<fixtureDir>/<fixture>`. */
