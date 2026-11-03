@@ -1,0 +1,4 @@
+# violating fixture for secret-pii-scan (hirobius/ops#943)
+# An obviously fake GitHub token: right shape for gitleaks' github-pat rule,
+# not a credential. The pre-push scan must block a push that adds it.
+GITHUB_TOKEN=ghp_FAKEfakeFAKEfakeFAKEfakeFAKEfake0000

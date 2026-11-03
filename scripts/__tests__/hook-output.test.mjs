@@ -75,6 +75,7 @@ describe('parseHookStages', () => {
   it('derives short names', () => {
     expect(shortName('pnpm exec lint-staged')).toBe('lint-staged');
     expect(shortName('node scripts/verify-tokens.mjs')).toBe('tokens');
+    expect(shortName('node scripts/hooks/secret-pii-scan.mjs')).toBe('secret-pii-scan');
     expect(shortName('pnpm smoke:consumer')).toBe('smoke:consumer');
   });
 });
