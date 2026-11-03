@@ -114,6 +114,7 @@ describe('pnpm figma:links', () => {
 
     expect(await checkDesignLinks(root)).toEqual({
       problems: [],
+      warnings: [],
       readmeUpToDate: true,
       readmeDiff: null,
       links: 1,
@@ -155,13 +156,24 @@ describe('the three Figma areas (hds#763)', () => {
     writeFileSync(path, JSON.stringify(edit(links)));
   };
 
-  it('fails the check on a links.json missing explorationsFileKey', async () => {
+  // Until Adrian creates the explorations Figma file (hds#763), a links.json
+  // with neither explorationsFileKey nor explorationsFileName warns instead of
+  // failing: the check runs in pretest, so a hard failure blocked every push.
+  // hds#1104 turns this back into a problem once the file exists.
+  it('warns, and does not fail the check, on a links.json missing the explorations area', async () => {
     const root = miniRoot();
     editLinks(root, ({ explorationsFileKey: _key, explorationsFileName: _name, ...rest }) => rest);
-    const problem =
-      'figma/links.json has no explorationsFileKey: the visual explorations area is not named. Adrian creates the explorations file in Figma, then add explorationsFileKey and explorationsFileName.';
-    expect(computeDesignLinks(root).problems).toContain(problem);
-    expect((await checkDesignLinks(root)).problems).toContain(problem);
+    const warning =
+      'WARNING: figma/links.json has no explorationsFileKey: the visual explorations area is not named yet (hds#763). No explorations Figma file exists, and Adrian creates the file; then add explorationsFileKey and explorationsFileName, never an invented key. This is a warning, not an error, until then (hds#1104).';
+    expect(computeDesignLinks(root).problems).toEqual([]);
+    expect(computeDesignLinks(root).warnings).toEqual([warning]);
+    const check = await checkDesignLinks(root);
+    expect(check.problems).toEqual([]);
+    expect(check.warnings).toEqual([warning]);
+  });
+
+  it('only an absent explorations pair warns: a complete links.json has no warnings', () => {
+    expect(computeDesignLinks(miniRoot()).warnings).toEqual([]);
   });
 
   it('fails the check when any of the three area keys is missing', () => {
@@ -269,12 +281,14 @@ describe('the three Figma areas (hds#763)', () => {
 describe('this repository', () => {
   it('has no broken or bypassed Figma links, and its design links doc is current (run pnpm figma:links)', async () => {
     const check = await checkDesignLinks(REPO);
-    // The one expected problem (hds#763): no visual explorations Figma file
-    // exists yet, and its key must not be invented. Adrian creates the file,
-    // adds explorationsFileKey/explorationsFileName to figma/links.json, and
-    // this expectation goes back to [].
-    expect(check.problems).toEqual([
-      'figma/links.json has no explorationsFileKey: the visual explorations area is not named. Adrian creates the explorations file in Figma, then add explorationsFileKey and explorationsFileName.',
+    // hds#763: no visual explorations Figma file exists yet, and its key must
+    // not be invented, so the one expected finding is a warning, not a
+    // problem. Adrian creates the file, adds explorationsFileKey/
+    // explorationsFileName to figma/links.json, and warnings goes back to []
+    // (hds#1104 restores the missing key to a problem).
+    expect(check.problems).toEqual([]);
+    expect(check.warnings).toEqual([
+      'WARNING: figma/links.json has no explorationsFileKey: the visual explorations area is not named yet (hds#763). No explorations Figma file exists, and Adrian creates the file; then add explorationsFileKey and explorationsFileName, never an invented key. This is a warning, not an error, until then (hds#1104).',
     ]);
     // Assert through readmeDiff, not the bare boolean: a bare
     // `expected false to be true` names neither the file nor the change, which

@@ -22,7 +22,10 @@
  *                                                     (broken includes a figma/links.json that
  *                                                     does not name all three Figma areas —
  *                                                     library, staging, visual explorations —
- *                                                     or names two areas with one key or name)
+ *                                                     or names two areas with one key or name;
+ *                                                     until the explorations file exists, an
+ *                                                     absent explorations pair only warns:
+ *                                                     hds#763, hds#1104)
  *   pnpm figma:links [--check] --root <dir>           the same against a copy of the tree (tests)
  *   FIGMA_ACCESS_TOKEN=… pnpm figma:links --dev-resources [--dry-run]
  *                                                     add "HDS source" / "HDS docs" dev resources
@@ -93,8 +96,19 @@ const AREA_MISSING = {
     'figma/links.json has no libraryFileKey: the library area is not named. Add libraryFileKey and libraryFileName.',
   stagingFileKey:
     'figma/links.json has no stagingFileKey: the staging area is not named. Add stagingFileKey and stagingFileName.',
+};
+
+/**
+ * Areas whose file does not exist yet, so an absent key-and-name pair is a
+ * warning, not a problem (exit 0). The visual explorations file is Adrian's to
+ * create (hds#763); figma-links --check runs in pretest, so failing on it
+ * blocked every push. Only the absent pair is softened: a key without a name,
+ * a bad value, a duplicate or a retired file is still a problem. hds#1104
+ * deletes this entry once the file exists.
+ */
+const AREA_PENDING = {
   explorationsFileKey:
-    'figma/links.json has no explorationsFileKey: the visual explorations area is not named. Adrian creates the explorations file in Figma, then add explorationsFileKey and explorationsFileName.',
+    'WARNING: figma/links.json has no explorationsFileKey: the visual explorations area is not named yet (hds#763). No explorations Figma file exists, and Adrian creates the file; then add explorationsFileKey and explorationsFileName, never an invented key. This is a warning, not an error, until then (hds#1104).',
 };
 
 /**
@@ -112,7 +126,7 @@ export function figmaAreaProblems(config) {
     const key = config[keyField] ?? null;
     const name = config[nameField] ?? null;
     if (key === null && name === null) {
-      problems.push(AREA_MISSING[keyField]);
+      if (!AREA_PENDING[keyField]) problems.push(AREA_MISSING[keyField]);
       continue;
     }
     if (key === null || name === null) {
@@ -162,8 +176,26 @@ export function figmaAreaProblems(config) {
 }
 
 /**
+ * Figma areas not named yet because their file does not exist (AREA_PENDING):
+ * printed loudly, but they do not fail the check.
+ *
+ * @param {object} config  figma/links.json
+ * @returns {string[]}
+ */
+export function figmaAreaWarnings(config) {
+  return FIGMA_AREAS.filter(
+    ({ keyField, nameField }) =>
+      AREA_PENDING[keyField] &&
+      (config[keyField] ?? null) === null &&
+      (config[nameField] ?? null) === null,
+  )
+    .map(({ keyField }) => AREA_PENDING[keyField])
+    .sort();
+}
+
+/**
  * @param {string} root  Repo root (or a mini-root with the same layout).
- * @returns {{ links: object[], problems: string[], total: number }}
+ * @returns {{ links: object[], problems: string[], warnings: string[], total: number }}
  */
 export function computeDesignLinks(root) {
   const config = readJson(root, LINKS_CONFIG);
@@ -173,7 +205,7 @@ export function computeDesignLinks(root) {
     packageName: readJson(root, 'package.json').name,
   });
   const problems = [...collected.problems, ...figmaAreaProblems(config)].sort();
-  return { ...collected, problems };
+  return { ...collected, problems, warnings: figmaAreaWarnings(config) };
 }
 
 /** docs/DESIGN_LINKS.md with a current section, in the bytes the repo commits. */
@@ -252,13 +284,14 @@ function firstDifference(current, next) {
 
 /**
  * @param {string} root
- * @returns {Promise<{ problems: string[], readmeUpToDate: boolean, readmeDiff: string | null, links: number, total: number }>}
+ * @returns {Promise<{ problems: string[], warnings: string[], readmeUpToDate: boolean, readmeDiff: string | null, links: number, total: number }>}
  */
 export async function checkDesignLinks(root) {
   const collected = computeDesignLinks(root);
   const { current, next } = await nextDesignLinksDoc(root, collected);
   return {
     problems: collected.problems,
+    warnings: collected.warnings,
     readmeUpToDate: current === next,
     readmeDiff: firstDifference(current, next),
     links: collected.links.length,
@@ -279,6 +312,13 @@ export async function writeDesignLinks({ root, outDir }) {
   return { ...collected, readmeChanged: next !== current, files };
 }
 
+/** Loud, on stderr, but not a failure: see AREA_PENDING. */
+function printWarnings(warnings) {
+  if (warnings.length === 0) return;
+  console.error(`\n⚠ ${warnings.length} warning(s) with the Figma links (not failing the check):`);
+  for (const warning of warnings) console.error(`  • ${warning}`);
+}
+
 function printProblems(problems) {
   if (problems.length === 0) return;
   console.error(`\n✗ ${problems.length} problem(s) with the Figma links:`);
@@ -291,7 +331,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const outDir = join(root, 'figma', 'links');
   try {
     if (args.includes('--dev-resources')) {
-      const { links, problems } = computeDesignLinks(root);
+      const { links, problems, warnings } = computeDesignLinks(root);
+      printWarnings(warnings);
       printProblems(problems);
       const result = await syncDevResources({
         links,
@@ -335,6 +376,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
           ].join('\n'),
         );
       }
+      printWarnings(collected.warnings);
       printProblems(collected.problems);
       if (collected.problems.length > 0) process.exitCode = 1;
     }
