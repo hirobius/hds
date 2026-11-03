@@ -35,7 +35,7 @@
  *   if (suppressed(lines, lineIdx)) continue;
  */
 
-import { existsSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { emitResult, hasJsonFlag } from './gate-output.mjs';
@@ -300,6 +300,27 @@ export { maskComments } from '../../bin/lib/visual-rules.mjs';
 /** 1-based line number of a character index in `text`. */
 export function lineOf(text, index) {
   return text.slice(0, index).split('\n').length;
+}
+
+/**
+ * A ratchet baseline file as a set of entries (hds#1010): trimmed lines, blank
+ * and `#` comment lines dropped. A missing or unreadable file is an empty set.
+ *
+ * @param {string} file  absolute path
+ * @returns {Set<string>}
+ */
+export function readBaselineSet(file) {
+  try {
+    const text = readFileSync(file, 'utf8');
+    return new Set(
+      text
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l && !l.startsWith('#')),
+    );
+  } catch {
+    return new Set();
+  }
 }
 
 /**

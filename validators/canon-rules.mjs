@@ -146,3 +146,71 @@ export function tailwindSpacingViolation(className) {
   }
   return null;
 }
+
+// ── Source-side scan helpers ─────────────────────────────────────────────────
+// Shared by scripts/check-source-canon.mjs and its proof-of-firing runner
+// scripts/__tests__/run-canon-fixtures.mjs (hds#1010).
+
+/**
+ * Pull all className="..." and className={`...`} substrings, plus their
+ * position so a caller can report a line number. Not full JSX parsing on
+ * purpose; the tradeoff is a few false negatives in unusual constructions vs
+ * zero AST dependencies.
+ *
+ * @param {string} source
+ * @returns {Array<{ value: string, index: number }>}
+ */
+export function extractClassNames(source) {
+  const out = [];
+  const reDoubleQuoted = /className\s*=\s*"([^"]*)"/g;
+  const reSingleQuoted = /className\s*=\s*'([^']*)'/g;
+  const reExpression = /className\s*=\s*\{([\s\S]*?)\}/g;
+  for (const re of [reDoubleQuoted, reSingleQuoted]) {
+    let m;
+    while ((m = re.exec(source)) !== null) {
+      out.push({ value: m[1], index: m.index });
+    }
+  }
+  let m;
+  while ((m = reExpression.exec(source)) !== null) {
+    // Inside an expression we extract any string literals. Templates and
+    // ternaries are flattened by capturing the first set of paired quotes.
+    const inner = m[1];
+    const strRe = /["'`]([^"'`]+)["'`]/g;
+    let s;
+    while ((s = strRe.exec(inner)) !== null) {
+      out.push({ value: s[1], index: m.index + s.index });
+    }
+  }
+  return out;
+}
+
+/**
+ * JSX text: text appearing between tags, not inside attributes. Shallow regex
+ * approximation. Skips captures that look like code rather than prose (parens,
+ * semicolons, imports, spread expressions, type generics). `index` is the
+ * capture's first character.
+ *
+ * @param {string} source
+ * @returns {Array<{ value: string, index: number }>}
+ */
+export function extractJsxText(source) {
+  const out = [];
+  const re = />([^<>{}]+)</g;
+  let m;
+  while ((m = re.exec(source)) !== null) {
+    const text = m[1];
+    if (text.trim().length === 0) continue;
+    if (/[();]|import |\.tsx|\.\.\.[A-Za-z_]|=>|: [A-Z]/.test(text)) continue;
+    out.push({ value: text, index: m.index + 1 });
+  }
+  return out;
+}
+
+/** Whether `source` renders any STRUCTURAL_COMPONENTS tag. */
+export function fileNearStructural(source) {
+  for (const tag of STRUCTURAL_COMPONENTS) {
+    if (source.includes('<' + tag)) return true;
+  }
+  return false;
+}

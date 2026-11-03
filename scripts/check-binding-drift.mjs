@@ -28,9 +28,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { gateContext, lineOf } from './lib/source-scan.mjs';
 
-const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+const { ROOT } = gateContext(import.meta.url);
 const SOFT = process.argv.includes('--soft');
 const VERBOSE = process.argv.includes('--verbose');
 
@@ -71,14 +71,6 @@ function fileHeaderHasBindingOk(source) {
   return /binding-ok\b/.test(head);
 }
 
-function lineNumber(source, index) {
-  let line = 1;
-  for (let i = 0; i < index && i < source.length; i += 1) {
-    if (source.charCodeAt(i) === 10) line += 1;
-  }
-  return line;
-}
-
 function extractCssVars(source) {
   const out = [];
   const re = /var\(\s*(--[a-zA-Z][a-zA-Z0-9-]*)\s*[),]/g;
@@ -103,7 +95,7 @@ function checkComponent(name, spec, sourcePath) {
     if (bindableVars.has(ref.name)) continue;
     violations.push({
       file: path.relative(INPUT_ROOT, sourcePath),
-      line: lineNumber(source, ref.index),
+      line: lineOf(source, ref.index),
       cssVar: ref.name,
       spec: name,
       message:

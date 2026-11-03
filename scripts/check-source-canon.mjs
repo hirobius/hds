@@ -36,9 +36,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import {
-  STRUCTURAL_COMPONENTS,
   LOREM_RE,
   TRIPLE_DOT_RE,
   FONT_BOLD_CLASS_RE,
@@ -52,39 +50,28 @@ import {
   INLINE_THIN_BAR_RE,
   INLINE_STRUCTURAL_BORDER_RE,
   tailwindSpacingViolation,
+  extractClassNames,
+  extractJsxText,
+  fileNearStructural,
 } from '../validators/canon-rules.mjs';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { resolveScanRoots } from './lib/scan-roots.mjs';
+import { emitResult } from './lib/gate-output.mjs';
+import { gateContext, gateFiles, lineOf, readBaselineSet } from './lib/source-scan.mjs';
 
-const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+// Fixture mode (--fixture-mode / HDS_FIXTURE_MODE=1 with FIXTURE_FILE) scans
+// a single file (proof-of-firing harness). No-op in normal runs.
+const ctx = gateContext(import.meta.url);
+const { ROOT, jsonMode } = ctx;
 const SOFT = process.argv.includes('--soft');
 const VERBOSE = process.argv.includes('--verbose');
-const jsonMode = hasJsonFlag(process.argv);
 
-// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
-
+// A missing root throws (scanSources). Spec files are scanned too.
 const SCAN_DIRS = ['src/app/components'];
-// Throws if a root disappears; returned absolute paths unused (report stays relative).
-resolveScanRoots(SCAN_DIRS, { root: ROOT, gate: 'check-source-canon' });
 
 // The sketches directory (formerly src/app/pages/sketches, removed with the
 // docs SPA teardown, #51) was the "Expressive Zone" and explicitly suspended
 // global HDS rules. Kept as a defensive skip in case generative-art code is
-// reintroduced elsewhere under a /sketches/ path.
-const SKIP_PATH_PARTS = ['/sketches/'];
-
-function* walk(dir) {
-  if (!fs.existsSync(dir)) return;
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    if (SKIP_PATH_PARTS.some((p) => full.includes(p))) continue;
-    if (entry.isDirectory()) yield* walk(full);
-    else if (entry.isFile() && /\.tsx$/.test(entry.name)) yield full;
-  }
-}
+// reintroduced elsewhere under a sketches/ directory.
+const SKIP_DIRS = ['sketches'];
 
 // Known rule codes for per-rule bypass parsing.
 const ALL_RULE_CODES = new Set([
@@ -154,50 +141,10 @@ function fileExemptions(source, filePath) {
   return { skippedCodes, skipAll };
 }
 
-function lineNumber(source, index) {
-  let line = 1;
-  for (let i = 0; i < index && i < source.length; i += 1) {
-    if (source.charCodeAt(i) === 10) line += 1;
-  }
-  return line;
-}
-
-// Pull all className="..." and className={`...`} substrings, plus their
-// position so we can report a line number. Not full JSX parsing on purpose;
-// the tradeoff is a few false negatives in unusual constructions vs zero
-// AST dependencies.
-function extractClassNames(source) {
+// JSX text (see extractJsxText in canon-rules), minus captures on JSDoc/line
+// comment lines, with the 1-based line of each capture.
+function jsxTextLines(source) {
   const out = [];
-  const reDoubleQuoted = /className\s*=\s*"([^"]*)"/g;
-  const reSingleQuoted = /className\s*=\s*'([^']*)'/g;
-  const reExpression = /className\s*=\s*\{([\s\S]*?)\}/g;
-  for (const re of [reDoubleQuoted, reSingleQuoted]) {
-    let m;
-    while ((m = re.exec(source)) !== null) {
-      out.push({ value: m[1], index: m.index });
-    }
-  }
-  let m;
-  while ((m = reExpression.exec(source)) !== null) {
-    // Inside an expression we extract any string literals. Templates and
-    // ternaries are flattened by capturing the first set of paired quotes.
-    const inner = m[1];
-    const strRe = /["'`]([^"'`]+)["'`]/g;
-    let s;
-    while ((s = strRe.exec(inner)) !== null) {
-      out.push({ value: s[1], index: m.index + s.index });
-    }
-  }
-  return out;
-}
-
-// JSX text — text appearing between tags, not inside attributes. Shallow
-// regex approximation. Skip captures that look like code rather than prose
-// (parens, semicolons, imports, spread expressions, type generics) and skip
-// captures inside JSDoc/line comments.
-function extractJsxText(source) {
-  const out = [];
-  const re = />([^<>{}]+)</g;
   const lines = source.split('\n');
   function lineFor(idx) {
     let cumulative = 0;
@@ -207,24 +154,13 @@ function extractJsxText(source) {
     }
     return { lineNum: lines.length, lineText: '' };
   }
-  let m;
-  while ((m = re.exec(source)) !== null) {
-    const text = m[1];
-    if (text.trim().length === 0) continue;
-    if (/[();]|import |\.tsx|\.\.\.[A-Za-z_]|=>|: [A-Z]/.test(text)) continue;
-    const { lineNum, lineText } = lineFor(m.index + 1);
+  for (const t of extractJsxText(source)) {
+    const { lineNum, lineText } = lineFor(t.index);
     const trimmed = lineText.trim();
     if (trimmed.startsWith('*') || trimmed.startsWith('//') || trimmed.startsWith('/*')) continue;
-    out.push({ value: text, index: m.index + 1, line: lineNum });
+    out.push({ ...t, line: lineNum });
   }
   return out;
-}
-
-function fileNearStructural(source) {
-  for (const tag of STRUCTURAL_COMPONENTS) {
-    if (source.includes('<' + tag)) return true;
-  }
-  return false;
 }
 
 function scanFile(filePath) {
@@ -244,7 +180,7 @@ function scanFile(filePath) {
 
   // ── className-based rules ──
   for (const cn of extractClassNames(source)) {
-    const line = lineNumber(source, cn.index);
+    const line = lineOf(source, cn.index);
     if (!skip('FONT_BOLD') && FONT_BOLD_CLASS_RE.test(cn.value)) {
       violations.push({
         rel,
@@ -316,7 +252,7 @@ function scanFile(filePath) {
     while ((m = reFontWeight.exec(source)) !== null) {
       violations.push({
         rel,
-        line: lineNumber(source, m.index),
+        line: lineOf(source, m.index),
         code: 'FONT_BOLD',
         sample: m[0],
         message: 'fontWeight bold/700+ in inline style — never bold',
@@ -328,7 +264,7 @@ function scanFile(filePath) {
     while ((m = reHex.exec(source)) !== null) {
       violations.push({
         rel,
-        line: lineNumber(source, m.index),
+        line: lineOf(source, m.index),
         code: 'BG_WHITE_BLACK',
         sample: m[0],
         message: 'raw #fff or #000 — use semantic.color tokens',
@@ -337,7 +273,7 @@ function scanFile(filePath) {
   }
 
   // ── JSX text content rules ──
-  for (const t of extractJsxText(source)) {
+  for (const t of jsxTextLines(source)) {
     if (!skip('LOREM') && LOREM_RE.test(t.value)) {
       violations.push({
         rel,
@@ -366,7 +302,7 @@ function scanFile(filePath) {
     while ((m = reTenant.exec(source)) !== null) {
       violations.push({
         rel,
-        line: lineNumber(source, m.index),
+        line: lineOf(source, m.index),
         code: 'DATA_TENANT',
         sample: m[0],
         message:
@@ -392,7 +328,7 @@ function scanFile(filePath) {
       while ((m = reBar.exec(source)) !== null) {
         violations.push({
           rel,
-          line: lineNumber(source, m.index),
+          line: lineOf(source, m.index),
           code: 'INLINE_THIN_BAR',
           sample: m[0].slice(0, 80),
           message:
@@ -408,7 +344,7 @@ function scanFile(filePath) {
     if (!skip('INLINE_STRUCTURAL_BORDER')) {
       const reBorder = new RegExp(INLINE_STRUCTURAL_BORDER_RE.source, 'g');
       while ((m = reBorder.exec(source)) !== null) {
-        const ln = lineNumber(source, m.index);
+        const ln = lineOf(source, m.index);
         const lineText = source.split('\n')[ln - 1] ?? '';
         if (lineText.includes('outline-ok:')) continue;
         violations.push({
@@ -431,17 +367,7 @@ function scanFile(filePath) {
 // Burn down by fixing the ref and removing its line. Generated via
 // `node scripts/check-source-canon.mjs --update-baseline`.
 function loadStructuralBorderBaseline() {
-  try {
-    const text = fs.readFileSync(path.join(ROOT, '.source-canon-baseline.txt'), 'utf8');
-    return new Set(
-      text
-        .split('\n')
-        .map((l) => l.trim())
-        .filter((l) => l && !l.startsWith('#')),
-    );
-  } catch {
-    return new Set();
-  }
+  return readBaselineSet(path.join(ROOT, '.source-canon-baseline.txt'));
 }
 
 function structuralBorderKey(v) {
@@ -449,14 +375,13 @@ function structuralBorderKey(v) {
 }
 
 function main() {
-  const allFiles = [];
-  if (isFixtureMode && fixtureFile) {
-    allFiles.push(path.resolve(fixtureFile));
-  } else {
-    for (const dir of SCAN_DIRS) {
-      for (const f of walk(path.join(ROOT, dir))) allFiles.push(f);
-    }
-  }
+  const allFiles = gateFiles(ctx, {
+    gate: 'check-source-canon',
+    roots: SCAN_DIRS,
+    exts: ['.tsx'],
+    skipDirs: SKIP_DIRS,
+    includeSpecs: true,
+  });
 
   const allViolations = [];
   for (const f of allFiles) {

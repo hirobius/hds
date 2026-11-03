@@ -35,6 +35,7 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
+import { readBaselineSet } from './lib/source-scan.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -193,17 +194,7 @@ function scanFile(file, validPaths) {
 }
 
 function loadBaseline() {
-  try {
-    const text = readFileSync(BASELINE_FILE, 'utf8');
-    return new Set(
-      text
-        .split('\n')
-        .map((l) => l.trim())
-        .filter((l) => l && !l.startsWith('#')),
-    );
-  } catch {
-    return new Set();
-  }
+  return readBaselineSet(BASELINE_FILE);
 }
 
 function violationKey(v) {
