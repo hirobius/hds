@@ -14,6 +14,7 @@
  * @a11y component required a11y:textarea.helper-described The helper text is linked with aria-describedby only while it renders.
  * @a11y component required a11y:textarea.error-wiring An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.
  * @a11y component required a11y:textarea.sr-field A screen reader speaks the label, the invalid state and the error message.
+ * @a11y component required a11y:textarea.touch-text On a phone or touch screen, the text is 16px or larger, so iOS does not zoom on focus.
  * @a11y consumer required Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.
  */
 
@@ -26,7 +27,7 @@ import { FORM_CONTROL_WIDTH } from './form-control';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-disabled has no named Tailwind-theme utility; var()-based so still token-driven (matches button/segmented disabled)
 const textareaVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-background px-fixed-xs py-scale-xs hds-type-ui text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
+  'flex w-full rounded-md border bg-background px-fixed-xs py-scale-xs hds-type-ui hds-touch-text text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       resize: {

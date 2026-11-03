@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "On a phone or touch screen, text fields show 16px text so iOS does not zoom on focus, and a filled Input with a clear button has 44px end padding at every size; drop local CSS that raised field text to 16px or widened that padding."
+}

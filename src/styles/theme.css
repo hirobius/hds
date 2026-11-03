@@ -333,6 +333,12 @@
     min-height: var(--semantic-size-touchTarget);
     min-width: var(--semantic-size-touchTarget);
   }
+  /* iOS zooms into a focused field under 16px. The field roles (caption, ui) are 16px or
+   * less in every density and tenant, so 16px is the floor and never a shrink (hds#863). */
+  .hds-touch-text {
+    /* type-ramp-ok: iOS's 16px no-zoom floor is a platform threshold, not a type role */
+    font-size: var(--primitive-typography-size-base);
+  }
 }
 
 /* --- Dark mode --------------------------------------------------------------- */

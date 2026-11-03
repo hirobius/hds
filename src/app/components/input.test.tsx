@@ -132,19 +132,16 @@ describe('Input horizontal padding (hds#393 review)', () => {
       rest: ['pl-scale-xs', 'pr-scale-xs'],
       gap: ['pl-1.5', 'pr-1.5'],
       lead: 'pl-7',
-      trail: 'pr-7',
     },
     md: {
       rest: ['pl-fixed-xs', 'pr-fixed-xs'],
       gap: ['pl-scale-xs', 'pr-scale-xs'],
       lead: 'pl-9',
-      trail: 'pr-9',
     },
     lg: {
       rest: ['pl-fixed-sm', 'pr-fixed-sm'],
       gap: ['pl-2.5', 'pr-2.5'],
       lead: 'pl-11',
-      trail: 'pr-11',
     },
   } as const;
 
@@ -158,7 +155,8 @@ describe('Input horizontal padding (hds#393 review)', () => {
 
       fireEvent.change(field, { target: { value: 'a' } });
       expect(screen.queryByRole('button', { name: 'Clear input' })).not.toBeNull();
-      expect(padClasses(field)).toEqual([pads.gap[0], pads.trail]);
+      // The clear button's end padding is its 44px touch width at every size (hds#863).
+      expect(padClasses(field)).toEqual([pads.gap[0], 'pr-11']);
     },
   );
 

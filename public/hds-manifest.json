@@ -1878,6 +1878,18 @@
           "testId": "a11y:input.clear-target-size"
         },
         {
+          "rule": "While the clear button shows, the value's end padding is its 44px touch width, so text never runs under it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.clear-pad"
+        },
+        {
+          "rule": "On a phone or touch screen, sm and md field text is 16px or larger, so iOS does not zoom on focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:input.touch-text"
+        },
+        {
           "rule": "A screen reader speaks the label, the invalid state and the error message.",
           "required": true,
           "owner": "component",
@@ -6678,6 +6690,12 @@
           "testId": "a11y:combobox.escape-keeps-selection"
         },
         {
+          "rule": "On a phone or touch screen, the search field and the creatable input are 16px or larger, so iOS does not zoom on focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:combobox.touch-text"
+        },
+        {
           "rule": "With multiple, each chip is a button named \"Remove <option>\".",
           "required": true,
           "owner": "component",
@@ -7955,6 +7973,12 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:textarea.sr-field"
+        },
+        {
+          "rule": "On a phone or touch screen, the text is 16px or larger, so iOS does not zoom on focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:textarea.touch-text"
         },
         {
           "rule": "Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.",
@@ -10659,6 +10683,12 @@
           "testId": "a11y:token-field.keyboard"
         },
         {
+          "rule": "On a phone or touch screen, the text is 16px or larger, so iOS does not zoom on focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:token-field.touch-text"
+        },
+        {
           "rule": "Pass a label, or an aria-label or aria-labelledby; a placeholder is not a name.",
           "required": true,
           "owner": "consumer"
@@ -11457,6 +11487,12 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:command-palette.axe-clean"
+        },
+        {
+          "rule": "On a phone or touch screen, the search field is 16px or larger, so iOS does not zoom on focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:command-palette.touch-text"
         },
         {
           "rule": "Pass a label that says what the palette searches when it is not a general command palette.",

@@ -29,6 +29,7 @@ import { Input } from '@/app/components/input';
 import { Textarea } from '@/app/components/textarea';
 import { TokenField } from '@/app/components/token-field';
 import { user } from './overlay-fixtures';
+import { touchRule } from './touch-css-fixtures';
 
 afterEach(async () => {
   await virtual.stop();
@@ -36,26 +37,6 @@ afterEach(async () => {
 });
 
 const noop = () => {};
-
-const theme = readFileSync(resolve(__dirname, '../../src/styles/theme.css'), 'utf8');
-
-/** The body of the first `{ ... }` block that starts at `from`. */
-function block(css: string, from: number): string {
-  let depth = 0;
-  for (let i = css.indexOf('{', from); i < css.length; i++) {
-    if (css[i] === '{') depth++;
-    if (css[i] === '}' && --depth === 0) return css.slice(from, i + 1);
-  }
-  throw new Error('unbalanced block');
-}
-
-/** The declarations of `selector` inside theme.css's touch block (phone width or coarse pointer). */
-function phoneRule(selector: string): string {
-  const media = block(theme, theme.indexOf('@media (max-width: 639px), (pointer: coarse)'));
-  const at = media.indexOf(`${selector} {`);
-  expect(at, `${selector} inside @media (max-width: 639px), (pointer: coarse)`).toBeGreaterThan(-1);
-  return block(media, at);
-}
 
 async function readAll(container: HTMLElement) {
   await virtual.start({ container });
@@ -142,7 +123,7 @@ describe('Checkbox accessibility contract', () => {
     render(<Checkbox label="Accept" checked={false} onChange={noop} />);
     const row = screen.getByRole('checkbox').parentElement as HTMLElement;
     expect(row.className).toContain('hds-touch-row');
-    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
+    expect(touchRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
@@ -199,7 +180,7 @@ describe('Radio accessibility contract', () => {
     expect((screen.getByRole('radio').parentElement as HTMLElement).className).toContain(
       'hds-touch-row',
     );
-    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
+    expect(touchRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
@@ -235,7 +216,7 @@ describe('Toggle accessibility contract', () => {
     expect((screen.getByRole('switch').parentElement as HTMLElement).className).toContain(
       'hds-touch-row',
     );
-    expect(phoneRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
+    expect(touchRule('.hds-touch-row')).toMatch(/min-height:\s*var\(--semantic-size-touchTarget\)/);
   });
 });
 
