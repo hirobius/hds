@@ -1,0 +1,88 @@
+{
+  "component": "HdsThemeProvider",
+  "description": "Renders a `data-hds` scope wrapper that carries the four theming dials as root attributes + CSS vars, and exposes them to `useHdsTheme()`.",
+  "docsPage": "/docs/guides/providers",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "default": "div"
+    },
+    {
+      "name": "brand",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "density",
+      "type": "enum",
+      "values": [
+        "comfortable",
+        "compact"
+      ],
+      "optional": true
+    },
+    {
+      "name": "fontFamily",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "fontFamilyDisplay",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "fontFamilyMono",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "style",
+      "type": "CSSProperties",
+      "optional": true
+    },
+    {
+      "name": "theme",
+      "type": "enum",
+      "values": [
+        "light",
+        "dark"
+      ],
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Wrap an app or region once to set theme, density and other root attributes for everything inside it.",
+    "whenNot": "Styling a single component, or per-component overrides.",
+    "useInstead": [
+      {
+        "component": "Surface",
+        "reason": "a single region with its own background"
+      }
+    ]
+  }
+}

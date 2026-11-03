@@ -1,0 +1,54 @@
+{
+  "component": "Box",
+  "description": "Box — polymorphic layout primitive with a token-first `sx` engine. `sx` is a deliberate SUBSET of MUI's sx — not all of CSS-in-JS is a feature: - Spacing shorthands (m/p/gap family) take the t-shirt scale ('xs'|'sm'|'md'|'lg'|'xl' → `--semantic-space-scale-*`, hds#206) through the resolver Stack's `gap` shares. Numbers still resolve as a count of 4px units (`p: 4` is 16px), and the deprecated 'tight'|'normal'|'inset'|'spacious' still read `--semantic-space-layout-*`, fixed px that compact density does not remap. HDS source may not use raw integers (check-spacing-vocabulary). - `color`/`bgcolor`/`borderColor`/`fill`/`stroke` resolve dotted token keys ('content.primary', 'surface.raised', 'border.subtle', 'accent', 'accent.hover', 'feedback.success', …) to the matching semantic CSS var. - Responsive `{ base, xs, sm, md, lg, xl }` objects: `base` is the value that applies at every width — it compiles to a plain rule with no media query, so it holds below the `xs` breakpoint (375px) too — and the breakpoint keys compile to `min-width` media queries off the HDS breakpoint scale. Use `base`, not `xs`, for the mobile-first value. - `&`-prefixed keys ('&:hover', '& > *', '&[data-state=open]') nest a selector, composable with responsive values. - Everything else passes through as a plain camelCase→kebab-case CSS declaration (numbers get `px` unless in the unitless allowlist). See `box-sx.ts` for the pure resolver + hashing/injection engine. On React 19 the rules render as a hoisted `<style href precedence>` (so they are in server HTML); on React 18 they inject into a managed sheet in the browser.",
+  "docsPage": "/docs/components/utilities",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "default": "div"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "sx",
+      "type": "SxObject",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Build one-off layout that no named layout primitive covers, using token keys through `sx`.",
+    "whenNot": "Ordinary vertical or horizontal spacing, columns, or page-width constraint.",
+    "useInstead": [
+      {
+        "component": "Stack",
+        "reason": "a row or column of content with even gaps"
+      },
+      {
+        "component": "Grid",
+        "reason": "multi-column layout"
+      },
+      {
+        "component": "Container",
+        "reason": "a width-constrained page region"
+      }
+    ]
+  }
+}

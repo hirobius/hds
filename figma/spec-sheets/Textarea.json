@@ -1,0 +1,76 @@
+{
+  "component": "Textarea",
+  "description": "Textarea — multi-line text field primitive with label, helper, and error slots. Mirrors Input's shell + token skin as a native `<textarea>`. Figma parity: the four states Default / Focus / Error / Disabled map to the focus-ring, `error`, and `disabled` treatments below.",
+  "docsPage": "/docs/components/textarea",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-14",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "error",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "errorMessage",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "helperText",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "resize",
+      "type": "enum",
+      "values": [
+        "none",
+        "both",
+        "vertical"
+      ],
+      "default": "vertical"
+    },
+    {
+      "name": "textareaClassName",
+      "type": "string",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Collect multi-line free text such as a message, note or description.",
+    "whenNot": "A single line of text, or choosing from a list.",
+    "useInstead": [
+      {
+        "component": "Input",
+        "reason": "a single line of text"
+      }
+    ]
+  }
+}

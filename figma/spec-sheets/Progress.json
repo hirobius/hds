@@ -1,0 +1,81 @@
+{
+  "component": "Progress",
+  "description": "Linear bar or circular ring. Determinate when `value` is a number, else indeterminate.",
+  "docsPage": "/docs/components/progress",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-91",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Progress"
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "default": 100
+    },
+    {
+      "name": "size",
+      "type": "enum",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "optional": true
+    },
+    {
+      "name": "tone",
+      "type": "enum",
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
+      "default": "neutral"
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "default": "null"
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": [
+        "linear",
+        "circular"
+      ],
+      "default": "linear"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show how far a task has got, as a bar or ring that is determinate or indeterminate.",
+    "whenNot": "A wait of unknown length with no bar, or content that is still loading.",
+    "useInstead": [
+      {
+        "component": "Spinner",
+        "reason": "a wait of unknown length"
+      },
+      {
+        "component": "Skeleton",
+        "reason": "placeholder shapes for loading content"
+      }
+    ]
+  }
+}

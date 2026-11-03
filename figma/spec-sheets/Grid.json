@@ -1,0 +1,102 @@
+{
+  "component": "Grid",
+  "description": "Grid — responsive grid composition primitive. Enforces semantic gap and column values. No arbitrary CSS grid. - layout='fixed': responsive base (collapses via CSS at tablet/mobile). `columns` sets desktop count (default 12). Tablet/mobile clamp to min(8, cols) and min(4, cols) respectively. - layout='auto-fit': responsive card wrapping via auto-fit. - layout='auto-fill': tile wrapping at `minItemWidth` (TileGrid's recipe; 0.20.0 removed TileGrid). - subgrid=true: sets gridTemplateColumns:'subgrid' for nested alignment. Usage (default responsive 12-col): <Grid> <Grid.Item colSpan={6}>…</Grid.Item> <Grid.Item colSpan={6}>…</Grid.Item> </Grid> Usage (responsive auto-fit): <Grid layout=\"auto-fit\"> <Card /> <Card /> </Grid>",
+  "docsPage": "/docs/components/grid",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "align",
+      "type": "enum",
+      "values": [
+        "center",
+        "end",
+        "start",
+        "stretch"
+      ],
+      "default": "start"
+    },
+    {
+      "name": "as",
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "default": "div"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "columns",
+      "type": "number",
+      "default": 12
+    },
+    {
+      "name": "gap",
+      "type": "enum",
+      "values": [
+        "medium",
+        "tight",
+        "normal",
+        "inset",
+        "spacious"
+      ],
+      "default": "inset"
+    },
+    {
+      "name": "layout",
+      "type": "enum",
+      "values": [
+        "fixed",
+        "auto-fit",
+        "auto-fill"
+      ],
+      "default": "fixed"
+    },
+    {
+      "name": "minItemWidth",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "style",
+      "type": "CSSProperties",
+      "optional": true
+    },
+    {
+      "name": "subgrid",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Lay out content in columns that adapt to the screen width, or line up nested content with subgrid.",
+    "whenNot": "A single row or column, or styling a surface.",
+    "useInstead": [
+      {
+        "component": "Stack",
+        "reason": "a single row or column"
+      },
+      {
+        "component": "Box",
+        "reason": "one-off layout that no named primitive covers"
+      }
+    ]
+  }
+}

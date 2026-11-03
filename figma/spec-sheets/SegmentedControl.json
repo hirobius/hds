@@ -1,0 +1,94 @@
+{
+  "component": "SegmentedControl",
+  "description": "SegmentedControl \" segmented selection input for compact mutually-exclusive choices. The active×hover×pressed×disabled×secondary state matrix is expressed through `cva` compound variants keyed by `active` / `interaction` (the live-or-frozen-demo hover/pressed/rest sub-state) / `variant` / `disabled`, each resolving to the same `--semantic-*` custom properties the pre-Tailwind inline styles referenced — same tokens, same pixels, just Tailwind classes instead of a `style` object. Per ADR-015 this control keeps its own hover/focus tracking (per-segment `string | null` cardinality) rather than the shared `useInteractionState` single-element machine; only the class composition changed, not the state machine feeding it. When the segments outgrow the rail (a phone), the rail scrolls: it fades the hidden edge (`data-overflow`, the same mask as the tab list) and keeps the selected segment in view on mount and on change (hds#823).",
+  "docsPage": "/docs/components/segmented-control",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-334",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "aria-label",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void"
+    },
+    {
+      "name": "options",
+      "type": "HdsSegmentedOption[]"
+    },
+    {
+      "name": "railPadding",
+      "type": "Padding<string | number>",
+      "optional": true
+    },
+    {
+      "name": "segmentPaddingX",
+      "type": "PaddingLeft<string | number>",
+      "optional": true
+    },
+    {
+      "name": "size",
+      "type": "enum",
+      "values": [
+        "sm",
+        "md"
+      ],
+      "default": "md"
+    },
+    {
+      "name": "value",
+      "type": "string"
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": [
+        "primary",
+        "secondary"
+      ],
+      "default": "primary"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
+    "whenNot": "A form choice that submits with the form, or more than five options.",
+    "useInstead": [
+      {
+        "component": "Radio",
+        "reason": "a form choice that submits with the form"
+      },
+      {
+        "component": "Tabs",
+        "reason": "switching between panels of content"
+      },
+      {
+        "component": "Select",
+        "reason": "more than five options"
+      }
+    ]
+  }
+}

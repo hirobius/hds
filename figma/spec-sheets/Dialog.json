@@ -1,0 +1,102 @@
+{
+  "component": "Dialog",
+  "description": "Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.",
+  "docsPage": "/docs/components/dialog",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-27",
+  "anatomy": [
+    {
+      "part": "Root"
+    },
+    {
+      "part": "Title",
+      "figmaProperty": "Title",
+      "sourceProp": "Title.children",
+      "type": "TEXT"
+    },
+    {
+      "part": "Description",
+      "figmaProperty": "Description",
+      "sourceProp": "Description.children",
+      "type": "TEXT"
+    },
+    {
+      "part": "Close",
+      "figmaProperty": "Show close",
+      "sourceProp": "Content.hideClose",
+      "type": "BOOLEAN"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "closed",
+      "tokens": []
+    },
+    {
+      "state": "open",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "modal",
+      "type": "boolean",
+      "optional": true,
+      "figmaProperty": "Modal"
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true
+    }
+  ],
+  "roleTokens": {
+    "background": "role.popover",
+    "text": "role.popover-foreground",
+    "border": "role.border",
+    "radius": "role.radius",
+    "shadow": "semantic.shadow.overlay",
+    "scrim": "role.scrim",
+    "descriptionText": "role.muted-foreground",
+    "closeHover": "role.accent",
+    "closeHoverText": "role.accent-foreground",
+    "focusRing": "role.ring"
+  },
+  "usage": {
+    "when": "Interrupt the page with a modal that needs a decision or focused input before people continue.",
+    "whenNot": "A preview on hover, a message that needs no reply, or content that can stay inline.",
+    "useInstead": [
+      {
+        "component": "Tooltip",
+        "reason": "a short hint on hover or focus"
+      },
+      {
+        "component": "Alert",
+        "reason": "a message that needs no reply"
+      },
+      {
+        "component": "ToastProvider",
+        "reason": "a brief confirmation"
+      },
+      {
+        "component": "AlertDialog",
+        "reason": "confirming a destructive or irreversible action"
+      }
+    ]
+  }
+}

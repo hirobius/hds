@@ -1,0 +1,61 @@
+{
+  "component": "Slider",
+  "description": "Slider — range slider with label and value display.",
+  "docsPage": "/docs/components/slider",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-265",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "max",
+      "type": "number"
+    },
+    {
+      "name": "min",
+      "type": "number"
+    },
+    {
+      "name": "onChange",
+      "type": "(v: number) => void"
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "default": 1
+    },
+    {
+      "name": "value",
+      "type": "number"
+    },
+    {
+      "name": "valueText",
+      "type": "string",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Pick a number within a known range by dragging, when the exact value matters less than the position.",
+    "whenNot": "A precise number the person must type or read exactly.",
+    "useInstead": [
+      {
+        "component": "Input",
+        "reason": "a precise typed value (type=\"number\")"
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "component": "Badge",
+  "description": "Compact metadata/status chip. Tone is the only styling input.",
+  "docsPage": "/docs/components/badge",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=31-15",
+  "anatomy": [
+    {
+      "part": "Root"
+    },
+    {
+      "part": "Label",
+      "figmaProperty": "Label",
+      "sourceProp": "children",
+      "type": "TEXT"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": [
+        {
+          "name": "text",
+          "token": "component.badge.text",
+          "value": "#0c111b"
+        },
+        {
+          "name": "bg",
+          "token": "component.badge.bg",
+          "value": "oklch(0.96 0.03 266.54)"
+        }
+      ]
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "default": "span"
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "dot",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "optional": true
+    },
+    {
+      "name": "size",
+      "type": "enum",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "optional": true
+    },
+    {
+      "name": "tone",
+      "type": "enum",
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral",
+        "inProgress"
+      ],
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).",
+    "whenNot": "A chip people can toggle, or a message that needs a sentence.",
+    "useInstead": [
+      {
+        "component": "Tag",
+        "reason": "an interactive filter or category chip"
+      },
+      {
+        "component": "Alert",
+        "reason": "a message that needs a sentence"
+      }
+    ]
+  }
+}

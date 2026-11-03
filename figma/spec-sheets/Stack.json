@@ -1,0 +1,129 @@
+{
+  "component": "Stack",
+  "description": "Stack — one-dimensional layout primitive.",
+  "docsPage": "/docs/components/stack",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "align",
+      "type": "enum",
+      "values": [
+        "start",
+        "center",
+        "end",
+        "stretch"
+      ],
+      "optional": true
+    },
+    {
+      "name": "as",
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "default": "div"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "direction",
+      "type": "enum",
+      "values": [
+        "row",
+        "column"
+      ],
+      "default": "column"
+    },
+    {
+      "name": "gap",
+      "type": "enum",
+      "values": [
+        "tight",
+        "normal",
+        "inset",
+        "spacious",
+        "gap",
+        "medium",
+        "hairline",
+        "xs",
+        "stack",
+        "px1",
+        "px2",
+        "px4",
+        "px6",
+        "px8",
+        "px10",
+        "px12",
+        "px16",
+        "px20",
+        "px24",
+        "px28",
+        "px32",
+        "px40",
+        "px48",
+        "px64",
+        "px80",
+        "px96",
+        "px128"
+      ],
+      "default": "tight"
+    },
+    {
+      "name": "justify",
+      "type": "enum",
+      "values": [
+        "start",
+        "center",
+        "end",
+        "space-between"
+      ],
+      "optional": true
+    },
+    {
+      "name": "role",
+      "type": "AriaRole",
+      "optional": true
+    },
+    {
+      "name": "style",
+      "type": "CSSProperties",
+      "optional": true
+    },
+    {
+      "name": "wrap",
+      "type": "FlexWrap",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Space items in a row or column with even gaps.",
+    "whenNot": "Multi-column layout, or giving content a background or padding.",
+    "useInstead": [
+      {
+        "component": "Grid",
+        "reason": "multi-column layout"
+      },
+      {
+        "component": "Surface",
+        "reason": "content that needs a background or padding"
+      }
+    ]
+  }
+}

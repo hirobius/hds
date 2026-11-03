@@ -1,0 +1,149 @@
+{
+  "component": "Card",
+  "description": "Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.",
+  "docsPage": "/docs/components/card",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=39-11",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": [
+        {
+          "name": "bg",
+          "token": "component.card.bg",
+          "value": "#f9fafc"
+        },
+        {
+          "name": "border",
+          "token": "component.card.border",
+          "value": "#c4c8cf"
+        }
+      ]
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "ElementType<any, keyof IntrinsicElements>",
+      "optional": true
+    },
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "gap",
+      "type": "enum",
+      "values": [
+        "tight",
+        "normal",
+        "inset",
+        "spacious",
+        "px1",
+        "px2",
+        "px4",
+        "px6",
+        "px8",
+        "px10",
+        "px12",
+        "px16",
+        "px20",
+        "px24",
+        "px28",
+        "px32",
+        "px40",
+        "px48",
+        "px64",
+        "px80",
+        "px96",
+        "px128"
+      ],
+      "default": "tight",
+      "figmaProperty": "Gap"
+    },
+    {
+      "name": "noPadding",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(selected: boolean) => void",
+      "optional": true
+    },
+    {
+      "name": "padding",
+      "type": "enum",
+      "values": [
+        "component",
+        "item",
+        "px16",
+        "px24",
+        "none"
+      ],
+      "default": "component",
+      "figmaProperty": "Padding"
+    },
+    {
+      "name": "selectable",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "tone",
+      "type": "enum",
+      "values": [
+        "neutral",
+        "danger",
+        "success",
+        "warning",
+        "info"
+      ],
+      "default": "neutral",
+      "figmaProperty": "Tone"
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": [
+        "default",
+        "accent"
+      ],
+      "default": "default",
+      "figmaProperty": "Variant"
+    }
+  ],
+  "roleTokens": {
+    "background": "role.card",
+    "text": "role.card-foreground",
+    "border": "role.border",
+    "radius": "role.radius",
+    "description": "role.muted-foreground"
+  },
+  "usage": {
+    "when": "Group related content on a raised surface with header, body, footer and row slots, or as one selectable option.",
+    "whenNot": "A bare padded background with no slot anatomy, or a single headline figure.",
+    "useInstead": [
+      {
+        "component": "Surface",
+        "reason": "a padded background without slot anatomy"
+      }
+    ]
+  }
+}

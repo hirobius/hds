@@ -1,0 +1,55 @@
+{
+  "component": "Skeleton",
+  "description": "Decorative loading placeholder. Marked aria-hidden — announce the loading state on the surrounding region (e.g. aria-busy) rather than per skeleton.",
+  "docsPage": "/docs/components/skeleton",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-95",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "height",
+      "type": "string | number",
+      "optional": true
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": [
+        "text",
+        "circular",
+        "rectangular"
+      ],
+      "default": "rectangular"
+    },
+    {
+      "name": "width",
+      "type": "string | number",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Reserve the shape of content that is still loading, so the layout does not jump.",
+    "whenNot": "A task with measurable progress, or a wait with no layout to reserve.",
+    "useInstead": [
+      {
+        "component": "Progress",
+        "reason": "a task with measurable progress"
+      },
+      {
+        "component": "Spinner",
+        "reason": "a short wait with no layout to reserve"
+      }
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "component": "Tag",
+  "description": "Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.",
+  "docsPage": "/docs/components/tag",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
+  "anatomy": [
+    {
+      "part": "Root"
+    },
+    {
+      "part": "Label",
+      "figmaProperty": "Label",
+      "sourceProp": "children",
+      "type": "TEXT"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": [
+        {
+          "name": "background",
+          "token": "component.tag.background",
+          "value": "#f4f5f7"
+        },
+        {
+          "name": "text",
+          "token": "component.tag.text",
+          "value": "#4d525b"
+        },
+        {
+          "name": "border",
+          "token": "component.tag.border",
+          "value": "#f4f5f7"
+        },
+        {
+          "name": "activeText",
+          "token": "component.tag.activeText",
+          "value": "#f9fafc"
+        },
+        {
+          "name": "activeBackground",
+          "token": "component.tag.activeBackground",
+          "value": "#0f1726"
+        },
+        {
+          "name": "activeBorder",
+          "token": "component.tag.activeBorder",
+          "value": "#0f1726"
+        }
+      ]
+    },
+    {
+      "state": "hover",
+      "tokens": [
+        {
+          "name": "activeHover",
+          "token": "component.tag.activeHover",
+          "value": "#263043"
+        }
+      ]
+    },
+    {
+      "state": "disabled",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "active",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "dismissLabel",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "optional": true
+    }
+  ],
+  "roleTokens": {
+    "minWidth": "component.tag.minWidth",
+    "minHeight": "component.tag.minHeight"
+  },
+  "usage": {
+    "when": "Show an interactive filter or category chip that people can toggle.",
+    "whenNot": "A read-only status or count label.",
+    "useInstead": [
+      {
+        "component": "Badge",
+        "reason": "a read-only status or count"
+      }
+    ]
+  }
+}

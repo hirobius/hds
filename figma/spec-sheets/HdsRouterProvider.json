@@ -1,0 +1,33 @@
+{
+  "component": "HdsRouterProvider",
+  "description": "Provide a router adapter to all HDS components below. Wrap your app root once.",
+  "docsPage": "/docs/guides/providers",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "adapter",
+      "type": "HdsRouterAdapter"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Wrap the app root once so HDS links and navigation use your client router; with no provider they stay plain anchors."
+  }
+}

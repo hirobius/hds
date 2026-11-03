@@ -1,0 +1,51 @@
+{
+  "component": "Radio",
+  "description": "Radio — radio button with animated selection indicator.",
+  "docsPage": "/docs/components/radio",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=36-17",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "checked",
+      "type": "boolean"
+    },
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "onChange",
+      "type": "(v: boolean) => void"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Choose exactly one option from a small set that should stay visible together.",
+    "whenNot": "Independent yes/no options, or a long list of options.",
+    "useInstead": [
+      {
+        "component": "Checkbox",
+        "reason": "independent options that can be ticked together"
+      },
+      {
+        "component": "Select",
+        "reason": "a long list that can collapse into a dropdown"
+      },
+      {
+        "component": "SegmentedControl",
+        "reason": "a compact switch between two to five views or modes"
+      }
+    ]
+  }
+}

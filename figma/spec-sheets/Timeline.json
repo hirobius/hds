@@ -1,0 +1,63 @@
+{
+  "component": "Timeline",
+  "description": "The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.",
+  "docsPage": "/docs/components/timeline",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-133",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "aria-label",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "order",
+      "type": "enum",
+      "values": [
+        "desc",
+        "asc"
+      ],
+      "default": "desc"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show a dated history of events, such as shipped releases or client activity, grouped under day headings.",
+    "whenNot": "A list with no dates, or steps someone completes in order.",
+    "useInstead": [
+      {
+        "component": "MetadataList",
+        "reason": "term and value pairs about one object"
+      },
+      {
+        "component": "StatusListItem",
+        "reason": "a status list with no time axis"
+      }
+    ]
+  }
+}

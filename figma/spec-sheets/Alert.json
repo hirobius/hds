@@ -1,0 +1,67 @@
+{
+  "component": "Alert",
+  "description": "Alert - compact feedback surface with contextual severity.",
+  "docsPage": "/docs/components/alert",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=33-34",
+  "anatomy": [
+    {
+      "part": "Root"
+    },
+    {
+      "part": "Title",
+      "figmaProperty": "Title",
+      "sourceProp": "title",
+      "type": "TEXT"
+    },
+    {
+      "part": "Body",
+      "figmaProperty": "Body",
+      "sourceProp": "children",
+      "type": "TEXT"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "tone",
+      "type": "enum",
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info"
+      ],
+      "default": "info"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show a persistent inline message with a severity, next to the content it concerns.",
+    "whenNot": "A brief confirmation that should disappear on its own, or a status label.",
+    "useInstead": [
+      {
+        "component": "ToastProvider",
+        "reason": "a brief confirmation that fades away"
+      },
+      {
+        "component": "Badge",
+        "reason": "a short status label"
+      }
+    ]
+  }
+}

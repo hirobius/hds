@@ -1,0 +1,78 @@
+{
+  "component": "Tabs",
+  "description": "The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-level @figma would silently claim this node for all four.",
+  "docsPage": "/docs/components/tabs",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-89",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "activationMode",
+      "type": "enum",
+      "values": [
+        "automatic",
+        "manual"
+      ],
+      "optional": true
+    },
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "dir",
+      "type": "\"ltr\" | \"rtl\"",
+      "optional": true
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "optional": true
+    },
+    {
+      "name": "orientation",
+      "type": "enum",
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
+      "optional": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Switch between panels of related content in the same place, one visible at a time.",
+    "whenNot": "A compact mode switch with no panels, or content that must all be visible.",
+    "useInstead": [
+      {
+        "component": "SegmentedControl",
+        "reason": "a compact switch with no panels"
+      },
+      {
+        "component": "Disclosure",
+        "reason": "optional content that expands in place"
+      }
+    ]
+  }
+}

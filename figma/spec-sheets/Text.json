@@ -1,0 +1,112 @@
+{
+  "component": "Text",
+  "description": "Text — polymorphic typography primitive spanning the full HDS type ramp.",
+  "docsPage": "/docs/components/text",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2022-31",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "\"symbol\" | \"object\" | \"title\" | \"a\" | \"button\" | \"div\" | \"form\" | \"h2\" | \"h3\" | \"img\" | \"input\" | \"label\" | \"li\" | \"nav\" | \"ol\" | \"p\" | \"select\" | \"span\" | \"svg\" | \"ul\" | \"abbr\" | \"address\" | ... 158 more ...",
+      "default": "defaultTagMap[variant]"
+    },
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "lineClamp",
+      "type": "TextLineClamp",
+      "optional": true
+    },
+    {
+      "name": "style",
+      "type": "CSSProperties",
+      "optional": true
+    },
+    {
+      "name": "tone",
+      "type": "enum",
+      "values": [
+        "primary",
+        "secondary",
+        "disabled",
+        "accent",
+        "success",
+        "warning",
+        "danger",
+        "info"
+      ],
+      "optional": true
+    },
+    {
+      "name": "truncate",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": [
+        "display",
+        "title",
+        "titleSm",
+        "body",
+        "ui",
+        "caption",
+        "mono",
+        "heading1",
+        "heading2",
+        "heading3",
+        "technical",
+        "eyebrow",
+        "badge",
+        "docLede",
+        "docBody",
+        "docSmall",
+        "docCode"
+      ]
+    },
+    {
+      "name": "weight",
+      "type": "enum",
+      "values": [
+        "regular",
+        "medium",
+        "bold"
+      ],
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Set any text on the type ramp, with the element chosen by `as`.",
+    "whenNot": "Navigation links, or a keyboard hint.",
+    "useInstead": [
+      {
+        "component": "InlineLink",
+        "reason": "a link inside body copy"
+      },
+      {
+        "component": "Kbd",
+        "reason": "a keyboard key hint"
+      }
+    ]
+  }
+}

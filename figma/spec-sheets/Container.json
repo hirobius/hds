@@ -1,0 +1,67 @@
+{
+  "component": "Container",
+  "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+  "docsPage": "/docs/components/utilities",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "maxWidth",
+      "type": "enum",
+      "values": [
+        "content",
+        "max"
+      ],
+      "default": "max"
+    },
+    {
+      "name": "padding",
+      "type": "string",
+      "default": "var(--semantic-space-surface-padding)"
+    },
+    {
+      "name": "style",
+      "type": "CSSProperties",
+      "optional": true
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Constrain a page region to the content or maximum width and centre it.",
+    "whenNot": "Spacing between siblings, columns, or a surface with padding.",
+    "useInstead": [
+      {
+        "component": "Stack",
+        "reason": "spacing between siblings"
+      },
+      {
+        "component": "Grid",
+        "reason": "columns"
+      },
+      {
+        "component": "Box",
+        "reason": "one-off layout that no named primitive covers"
+      }
+    ]
+  }
+}

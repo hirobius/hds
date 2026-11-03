@@ -1,0 +1,81 @@
+{
+  "component": "Select",
+  "description": "Select — dropdown selector built on Radix Select (ADR-001 Radix convention). Radix owns the listbox a11y contract: managed focus + active-descendant, typeahead, full keyboard (Home/End/PageUp-Down/wrap), Popper collision/flip positioning, and dismissal. The HDS surface is styled with the token-backed Tailwind idiom used by tabs.tsx / command-palette.tsx; `ref` targets the trigger button.",
+  "docsPage": "/docs/components/select",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-49",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "aria-invalid",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "container",
+      "type": "HTMLElement",
+      "optional": true
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "onChange",
+      "type": "(v: string) => void"
+    },
+    {
+      "name": "options",
+      "type": "{ value: string; label: string; }[]"
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "Select…"
+    },
+    {
+      "name": "showLabel",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "value",
+      "type": "string"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Choose one value from a short list of options in a form field.",
+    "whenNot": "Firing actions, or choosing from a list long enough to need search.",
+    "useInstead": [
+      {
+        "component": "Menu",
+        "reason": "firing actions from a trigger"
+      },
+      {
+        "component": "Combobox",
+        "reason": "a long list that needs search"
+      }
+    ]
+  }
+}

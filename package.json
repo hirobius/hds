@@ -329,6 +329,7 @@
     "health-commit": "pnpm check:semantic-report && node scripts/print-health-commit.mjs",
     "icons:sync": "node scripts/sync-icons.mjs",
     "knip": "knip",
+    "figma:spec-sheets": "node scripts/generate-spec-sheets.mjs",
     "lint": "eslint src scripts validators tests mcp --max-warnings=0",
     "lint:fix": "eslint src scripts validators tests mcp --fix",
     "llms:generate": "node scripts/generate-llms-txt.mjs",

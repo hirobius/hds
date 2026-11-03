@@ -1,0 +1,106 @@
+{
+  "component": "Combobox",
+  "description": "Combobox — searchable single- or multi-select (Popover + filtered listbox). A select-with-search built on the HDS Popover. The trigger shows the current selection (with `multiple`, a count and a removable chip per value); opening reveals a search field that filters the option list. `multiple creatable` is a chip input (a tag field): chips sit inline before the text input, suggestions open as you type, and Enter adds the typed text via `onCreate`. <Combobox multiple creatable options={skills} value={picked} onChange={setPicked} onCreate={(t) => setPicked((p) => [...p, t])} /> Full keyboard support (↑/↓ to move, Enter to choose, Esc/outside-click to close) and listbox/option ARIA. Controlled via `value` + `onChange`. <Combobox options={[{ value: 'us', label: 'United States' }, …]} value={country} onChange={setCountry} placeholder=\"Select a country\" />",
+  "docsPage": "/docs/components/combobox",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=82-237",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "aria-describedby",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "aria-invalid",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "creatable",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "emptyMessage",
+      "type": "string",
+      "default": "No results"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "onChange",
+      "type": "((value: string) => void) | ((value: string[]) => void) | ((value: string[]) => void)"
+    },
+    {
+      "name": "onCreate",
+      "type": "(text: string) => void"
+    },
+    {
+      "name": "options",
+      "type": "ComboboxOption[]"
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "Select…"
+    },
+    {
+      "name": "searchPlaceholder",
+      "type": "string",
+      "default": "Search…"
+    },
+    {
+      "name": "value",
+      "type": "string | readonly string[]"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Pick one value, or several with `multiple`, from a long list of options, with a search field that filters as you type.",
+    "whenNot": "A short list that needs no search, or an action list.",
+    "useInstead": [
+      {
+        "component": "Select",
+        "reason": "a short list without search"
+      },
+      {
+        "component": "Menu",
+        "reason": "firing actions from a trigger"
+      }
+    ]
+  }
+}

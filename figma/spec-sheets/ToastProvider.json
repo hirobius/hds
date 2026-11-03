@@ -1,0 +1,50 @@
+{
+  "component": "ToastProvider",
+  "description": "Provider + viewport for the toast system. Wrap the app root once.",
+  "docsPage": "/docs/guides/providers",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-367",
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "optional": true
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "default": 5000
+    },
+    {
+      "name": "swipeDirection",
+      "type": "SwipeDirection",
+      "default": "right"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Confirm an action with a brief message that appears and dismisses itself, through useToast.",
+    "whenNot": "A message people must act on or that must stay next to its content.",
+    "useInstead": [
+      {
+        "component": "Alert",
+        "reason": "a message that stays next to its content"
+      },
+      {
+        "component": "Dialog",
+        "reason": "a message that needs a decision"
+      }
+    ]
+  }
+}
