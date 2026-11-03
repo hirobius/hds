@@ -23,6 +23,52 @@ const nameOf = (node) => (node?.name && ts.isIdentifier(node.name) ? node.name.t
 const JSDOC_RE = /\/\*\*[\s\S]*?\*\//g;
 
 /**
+ * The dotted path a consumer writes for a key of an object literal bound to
+ * a variable (`hds.semantic.space.component.padding`), or null when the key
+ * is not under a plain `const x = { … }` (optionally `as const`).
+ */
+export function objectKeyPath(node) {
+  const path = [];
+  for (let at = node; at; at = at.parent) {
+    if (ts.isPropertyAssignment(at)) path.unshift(nameOf(at));
+    else if (ts.isVariableDeclaration(at)) {
+      path.unshift(nameOf(at));
+      break;
+    } else if (!ts.isObjectLiteralExpression(at) && !ts.isAsExpression(at)) return null;
+  }
+  return path.every(Boolean) ? path.join('.') : null;
+}
+
+/**
+ * Each `@deprecated` JSDoc block of one source file, with the declaration it
+ * documents: the outermost node starting after the block (pre-order). Not the
+ * SourceFile itself: its start is its first token, which is the declaration
+ * the block documents when the block opens the file. Files marked
+ * `// deprecation-ok` have none.
+ * @returns {Array<{ deprecation: object, node: ts.Node | undefined, index: number }>}
+ */
+export function deprecatedBlocks(file, text) {
+  if (text.includes('// deprecation-ok')) return [];
+  const kind = file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+  const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
+  const nodes = [];
+  const walk = (node) => {
+    nodes.push(node);
+    ts.forEachChild(node, walk);
+  };
+  walk(source);
+  const out = [];
+  for (const match of text.matchAll(JSDOC_RE)) {
+    const deprecation = parseDeprecation(match[0]);
+    if (!deprecation) continue;
+    const end = match.index + match[0].length;
+    const node = nodes.find((n) => !ts.isSourceFile(n) && n.getStart(source) >= end);
+    out.push({ deprecation, node, index: match.index });
+  }
+  return out;
+}
+
+/**
  * Classify the declaration a `@deprecated` block documents.
  * @returns {{ kind: 'export'|'prop'|'propValue', name: string, owner?: string } | null}
  *   null when this module cannot name what the block documents.
@@ -46,15 +92,8 @@ function classify(node) {
   // A key of an object literal (the token objects in src/app/design-system):
   // the consumer writes the dotted path, `hds.density`-style.
   if (ts.isPropertyAssignment(node)) {
-    const path = [];
-    for (let at = node; at; at = at.parent) {
-      if (ts.isPropertyAssignment(at)) path.unshift(nameOf(at));
-      else if (ts.isVariableDeclaration(at)) {
-        path.unshift(nameOf(at));
-        break;
-      } else if (!ts.isObjectLiteralExpression(at) && !ts.isAsExpression(at)) return null;
-    }
-    return path.every(Boolean) ? { kind: 'export', name: path.join('.') } : null;
+    const path = objectKeyPath(node);
+    return path ? { kind: 'export', name: path } : null;
   }
   // A top-level declaration: a component, an interface, a type, a function.
   const declared =
@@ -72,29 +111,14 @@ function classify(node) {
 
 /**
  * Every `@deprecated` block of one public-surface file, with the declaration
- * it documents. Mirrors scripts/__tests__/upgrade-deprecations.test.mjs: the
- * outermost node starting after the block is what the block documents.
+ * it documents (see deprecatedBlocks, which upgrade-deprecations.test.mjs
+ * shares).
  * @param {string} file repo-relative path (kept on each entry as `file`)
  * @param {string} text the file's source
  */
 export function deprecationsInFile(file, text) {
-  if (text.includes('// deprecation-ok')) return [];
-  const kind = file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
-  const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
-  const nodes = [];
-  const walk = (node) => {
-    nodes.push(node);
-    ts.forEachChild(node, walk);
-  };
-  walk(source);
   const out = [];
-  for (const match of text.matchAll(JSDOC_RE)) {
-    const deprecation = parseDeprecation(match[0]);
-    if (!deprecation) continue;
-    const end = match.index + match[0].length;
-    // Not the SourceFile itself: its start is its first token, which is the
-    // declaration the block documents when the block opens the file.
-    const node = nodes.find((n) => !ts.isSourceFile(n) && n.getStart(source) >= end);
+  for (const { deprecation, node } of deprecatedBlocks(file, text)) {
     const found = classify(node);
     if (!found) continue;
     const entry = {
