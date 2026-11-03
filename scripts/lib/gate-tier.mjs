@@ -104,7 +104,12 @@ export function planGate(tier, files) {
   if (tier === 'docs') return [];
   const code = files.filter((f) => CODE_EXT.test(f) && LINT_DIRS.test(f));
   const cmds = [];
-  if (code.length) cmds.push(`pnpm exec eslint --max-warnings=0 ${code.join(' ')}`);
+  // --no-warn-ignored: a changed file no eslint config covers (e.g. a canon
+  // fixture under scripts/__tests__/fixtures/) would otherwise emit a "File
+  // ignored" warning that --max-warnings=0 turns into a failed push. Real lint
+  // findings still count.
+  if (code.length)
+    cmds.push(`pnpm exec eslint --max-warnings=0 --no-warn-ignored ${code.join(' ')}`);
   cmds.push('pnpm typecheck');
   if (code.length) cmds.push(`pnpm exec vitest related --run --passWithNoTests ${code.join(' ')}`);
   return cmds;

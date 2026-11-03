@@ -77,3 +77,27 @@ export function TestComponent() {
     expect(output).not.toMatch(/tokens\.generated\.css:\d+\s+\[DATA_TENANT\]/);
   });
 });
+
+describe('check-source-canon: proof-of-firing fixtures (hds#1113)', () => {
+  // scripts/__tests__/run-canon-fixtures.mjs asserts every fixture in
+  // scripts/__tests__/fixtures/canon/ triggers its own rule. Nothing ran it,
+  // so OVERSIZED_RADIUS.tsx stopped proving its rule (it used `<Card`, which
+  // is not in STRUCTURAL_COMPONENTS) without anyone noticing. Run it here so a
+  // fixture that no longer fires fails the suite.
+  it('every canon fixture fires its rule', () => {
+    let output = '';
+    let status = 0;
+    try {
+      output = execSync(`node ${path.join(ROOT, 'scripts/__tests__/run-canon-fixtures.mjs')}`, {
+        encoding: 'utf8',
+        stdio: 'pipe',
+      });
+    } catch (err: any) {
+      status = err.status ?? 1;
+      output = (err.stdout || '') + (err.stderr || '');
+    }
+    expect(output).toContain('PASS  OVERSIZED_RADIUS.tsx');
+    expect(output).not.toContain('FAIL');
+    expect(status).toBe(0);
+  });
+});
