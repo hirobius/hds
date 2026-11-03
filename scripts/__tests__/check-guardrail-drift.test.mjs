@@ -1,57 +1,34 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import {
-  writeFileSync,
-  readFileSync,
-  mkdtempSync,
-  rmSync,
-  appendFileSync,
-  unlinkSync,
-} from 'node:fs';
-import { join, dirname } from 'node:path';
-import { tmpdir } from 'node:os';
-import { fileURLToPath } from 'node:url';
+import { describe, it, expect } from 'vitest';
+import { writeFileSync, readFileSync, appendFileSync, unlinkSync } from 'node:fs';
+import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { ROOT, runFixtureMode } from './helpers/gate-runner.mjs';
+import { useTempDirsPerTest } from './helpers/temp-dirs.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..', '..');
 const SCRIPT = join(ROOT, 'scripts', 'check-guardrail-drift.mjs');
 
-let cleanup = [];
-afterEach(() => {
-  for (const dir of cleanup) rmSync(dir, { recursive: true, force: true });
-  cleanup = [];
-});
-
-function tmp() {
-  const dir = mkdtempSync(join(tmpdir(), 'guardrail-drift-'));
-  cleanup.push(dir);
-  return dir;
-}
+const tmp = useTempDirsPerTest('guardrail-drift-');
 
 // Runs the gate against a scratch manifest via fixture-mode plumbing (the same
 // FIXTURE_FILE / HDS_FIXTURE_MODE contract validate-fixture-proof-of-firing
 // uses), so tests never touch the real docs/guardrails/shared-manifest.json.
-function run(manifestPath, extraArgs = []) {
-  let stdout = '';
-  let code = 0;
-  try {
-    stdout = execFileSync('node', [SCRIPT, '--fixture-mode', ...extraArgs], {
-      cwd: ROOT,
-      env: { ...process.env, FIXTURE_FILE: manifestPath, HDS_FIXTURE_MODE: '1' },
-      encoding: 'utf8',
-    });
-  } catch (err) {
-    code = err.status ?? 1;
-    stdout = (err.stdout ?? '') + (err.stderr ?? '');
-  }
-  return { code, stdout };
-}
+const run = (manifestPath, extraArgs = []) => runFixtureMode(SCRIPT, manifestPath, extraArgs);
 
 function writeManifest(dir, files) {
   const path = join(dir, 'manifest.json');
   writeFileSync(path, JSON.stringify({ canonicalRepo: 'hirobius/ops', files }));
   return path;
+}
+
+// A scratch target.txt in a manifest that --write has pinned.
+function pinnedTarget() {
+  const dir = tmp();
+  const target = join(dir, 'target.txt');
+  writeFileSync(target, 'stable content\n');
+  const manifest = writeManifest(dir, { [target]: '' });
+  run(manifest, ['--write']);
+  return { target, manifest };
 }
 
 describe('check-guardrail-drift', () => {
@@ -78,11 +55,7 @@ describe('check-guardrail-drift', () => {
   });
 
   it('flags drift once a pinned file changes', () => {
-    const dir = tmp();
-    const target = join(dir, 'target.txt');
-    writeFileSync(target, 'stable content\n');
-    const manifest = writeManifest(dir, { [target]: '' });
-    run(manifest, ['--write']);
+    const { target, manifest } = pinnedTarget();
 
     appendFileSync(target, 'a rogue byte\n');
     const { code, stdout } = run(manifest);
@@ -91,11 +64,7 @@ describe('check-guardrail-drift', () => {
   });
 
   it('--json reports structured findings on drift', () => {
-    const dir = tmp();
-    const target = join(dir, 'target.txt');
-    writeFileSync(target, 'stable content\n');
-    const manifest = writeManifest(dir, { [target]: '' });
-    run(manifest, ['--write']);
+    const { target, manifest } = pinnedTarget();
     appendFileSync(target, 'a rogue byte\n');
 
     const { code, stdout } = run(manifest, ['--json']);
@@ -107,11 +76,7 @@ describe('check-guardrail-drift', () => {
   });
 
   it('reports a deleted pinned file as missing', () => {
-    const dir = tmp();
-    const target = join(dir, 'target.txt');
-    writeFileSync(target, 'stable content\n');
-    const manifest = writeManifest(dir, { [target]: '' });
-    run(manifest, ['--write']);
+    const { target, manifest } = pinnedTarget();
 
     unlinkSync(target);
     const { code, stdout } = run(manifest);
