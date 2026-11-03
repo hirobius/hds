@@ -10,6 +10,13 @@
       "typeOnly": true
     },
     {
+      "name": "CardMetric",
+      "file": "src/app/components/card.tsx",
+      "note": "No replacement planned: compose a Card with the type roles (caption label, display/title value).",
+      "removeIn": "1.0.0",
+      "useInstead": null
+    },
+    {
       "name": "MetricTile",
       "file": "src/app/components/metric-tiles.tsx",
       "note": "No replacement planned: compose a Card with the type roles (caption label, display/title value).",

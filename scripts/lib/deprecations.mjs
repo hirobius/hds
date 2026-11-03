@@ -65,7 +65,9 @@ function classify(node) {
       ts.isClassDeclaration(node) ||
       ts.isEnumDeclaration(node)) &&
       nameOf(node));
-  return declared ? { kind: 'export', name: declared } : null;
+  if (!declared) return null;
+  const typeOnly = ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node);
+  return { kind: 'export', name: declared, ...(typeOnly ? { typeOnly: true } : {}) };
 }
 
 /**
@@ -98,6 +100,7 @@ export function deprecationsInFile(file, text) {
     const entry = {
       kind: found.kind,
       name: found.name,
+      ...(found.typeOnly ? { typeOnly: true } : {}),
       ...(found.owner ? { owner: found.owner } : {}),
       ...(deprecation.removeIn ? { removeIn: deprecation.removeIn } : {}),
       notice: deprecation.deprecated,

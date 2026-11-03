@@ -5,6 +5,7 @@
     {
       "kind": "export",
       "name": "CardMetricProps",
+      "typeOnly": true,
       "removeIn": "1.0.0",
       "notice": "No replacement planned: compose a Card with the type roles (caption label, display/title value).",
       "file": "src/app/components/card.tsx"

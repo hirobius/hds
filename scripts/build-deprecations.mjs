@@ -22,6 +22,12 @@
  * machine-readable record of the whole deprecation surface.
  * scripts/__tests__/build-deprecations.test.mjs pins it.
  *
+ * One JSDoc reader only: both records derive from lib/deprecations.mjs
+ * (`deprecationsInFile`). The eslint record is that reader's component-surface
+ * output re-keyed to the plugin's schema (prop values as `value`, the notice
+ * as `note`); the shipped record adds the design-system object keys, the
+ * tokens and the removed names on the wider deprecationScope.
+ *
  * Usage: node scripts/build-deprecations.mjs [--check] (from the package root)
  */
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
@@ -30,7 +36,6 @@ import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { deprecationScope } from './check-deprecations.mjs';
 import { buildDeprecations, deprecationsInFile, removedFromLedgers } from './lib/deprecations.mjs';
-import { collectExportDeprecations, collectPropDeprecations } from './lib/export-deprecations.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
 import { collectDeprecations } from './lib/token-deprecations.mjs';
 
@@ -57,10 +62,25 @@ export function buildDeprecationsJson() {
   for (const abs of sources()) {
     const content = readFileSync(abs, 'utf8');
     const file = relative(ROOT, abs).replaceAll('\\', '/');
-    exports.push(...collectExportDeprecations(content, file));
-    const found = collectPropDeprecations(content, file);
-    props.push(...found.props);
-    propValues.push(...found.propValues);
+    for (const entry of deprecationsInFile(file, content)) {
+      const base = {
+        file: entry.file,
+        note: entry.notice,
+        removeIn: entry.removeIn ?? null,
+        useInstead: entry.useInstead ?? null,
+      };
+      if (entry.kind === 'export') {
+        exports.push({
+          name: entry.name,
+          ...base,
+          ...(entry.typeOnly ? { typeOnly: true } : {}),
+        });
+      } else if (entry.kind === 'prop') {
+        props.push({ owner: entry.owner, name: entry.name, ...base });
+      } else if (entry.kind === 'propValue') {
+        propValues.push({ owner: entry.owner, value: entry.name, ...base });
+      }
+    }
   }
   return `${JSON.stringify(
     {

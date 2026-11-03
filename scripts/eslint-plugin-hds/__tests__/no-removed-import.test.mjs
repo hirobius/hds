@@ -17,6 +17,16 @@ ruleTester.run('no-removed-import', rule, {
     { code: "import { MetricTile } from 'other-lib';", options: [{ version: '9.0.0' }] },
     // default: the installed package's own version (pre-1.0 today)
     "import { MetricTile } from '@hirobius/design-system';",
+    // StatusDot was removed in 0.21.0: an install older than that still has it
+    {
+      code: "import { StatusDot } from '@hirobius/design-system';",
+      options: [{ version: '0.20.0' }],
+    },
+    // a removed name errors only at the entry point that removed it
+    {
+      code: "import { StatusDot } from '@hirobius/design-system/patterns';",
+      options: [{ version: '0.32.0' }],
+    },
   ],
   invalid: [
     {
@@ -36,6 +46,17 @@ ruleTester.run('no-removed-import', rule, {
         {
           messageId: 'removed',
           data: { name: 'StatusTile', removeIn: '1.0.0', version: '1.2.0', instead: ' Use Card.' },
+        },
+      ],
+    },
+    // the shipped deprecations.json removed list: StatusDot, removed in 0.21.0
+    {
+      code: "import { StatusDot } from '@hirobius/design-system';",
+      options: [{ version: '0.32.0' }],
+      errors: [
+        {
+          messageId: 'removed',
+          data: { name: 'StatusDot', removeIn: '0.21.0', version: '0.32.0', instead: '' },
         },
       ],
     },

@@ -2,35 +2,19 @@
 // @vitest-environment node
 /**
  * hds#469: deprecations.json is generated, not hand-kept — these tests pin
- * the three readings that build it (JSDoc classification, ledger removals,
- * changeset bumps) and that the committed file matches its sources.
+ * the readings that build it (JSDoc classification, ledger removals) and
+ * that the committed file matches its sources. (bumpOf/nextVersion are
+ * pinned by scripts/__tests__/next-version.test.mjs, not re-tested here.)
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { bumpOf, nextVersion } from '../lib/next-version.mjs';
 import { buildDeprecations, deprecationsInFile, removedFromLedgers } from '../lib/deprecations.mjs';
 import { renderDeprecations } from '../build-deprecations.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const PKG = '@hirobius/design-system';
-
-describe('bumpOf / nextVersion', () => {
-  it('reads the bump for this package out of frontmatter', () => {
-    expect(bumpOf(`---\n'${PKG}': minor\n---\n\nBody.\n`, PKG)).toBe('minor');
-    expect(bumpOf(`---\n"${PKG}": patch\n---\n`, PKG)).toBe('patch');
-    expect(bumpOf(`---\n'other-pkg': major\n---\n`, PKG)).toBeNull();
-    expect(bumpOf('no frontmatter here', PKG)).toBeNull();
-  });
-
-  it('applies the strongest pending bump, and the current version when none is pending', () => {
-    expect(nextVersion('0.32.0', ['patch', 'minor', 'patch'])).toBe('0.33.0');
-    expect(nextVersion('0.32.0', ['patch'])).toBe('0.32.1');
-    expect(nextVersion('0.32.0', ['major'])).toBe('1.0.0');
-    expect(nextVersion('0.32.0', [])).toBe('0.32.0');
-  });
-});
 
 describe('deprecationsInFile', () => {
   it('classifies an export, a prop and a union value', () => {
@@ -144,7 +128,7 @@ describe('the shipped deprecations.json', () => {
     expect(readFileSync(join(ROOT, 'deprecations.json'), 'utf8')).toBe(renderDeprecations(ROOT));
   });
 
-  it('carries the fixture the lint rules are judged by: StatusDot, removed in 0.21.0', () => {
+  it('carries the removed name the lint-rule fixture flags: StatusDot, removed in 0.21.0', () => {
     const record = JSON.parse(readFileSync(join(ROOT, 'deprecations.json'), 'utf8'));
     expect(record.removed).toContainEqual(
       expect.objectContaining({ name: 'StatusDot', from: PKG, removedIn: '0.21.0' }),
