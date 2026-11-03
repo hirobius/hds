@@ -39,15 +39,16 @@
  */
 
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import {
-  scanSources,
+  gateFiles,
+  isCommentLine,
   suppressionFor,
   gateContext,
   reportLineViolations,
 } from './lib/source-scan.mjs';
 
-const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
+const ctx = gateContext(import.meta.url);
+const { ROOT, jsonMode } = ctx;
 
 // ── Properties that carry spacing (not dimensions/visual sizes) ──────────────
 const SPACING_PROPS = new Set([
@@ -107,17 +108,13 @@ const BARE_NUM = /(\w+)\s*:\s*(\d+)\s*[,\n}]/g;
 
 const violations = [];
 
-const filesToScan =
-  isFixtureMode && fixtureFile
-    ? [resolve(fixtureFile)]
-    : scanSources({
-        root: ROOT,
-        gate: 'check-hardcoded-spacing',
-        roots: ['src/app'],
-        exts: ['.ts', '.tsx'],
-        skipDirs: ['data', 'node_modules'],
-        includeSpecs: true,
-      });
+const filesToScan = gateFiles(ctx, {
+  gate: 'check-hardcoded-spacing',
+  roots: ['src/app'],
+  exts: ['.ts', '.tsx'],
+  skipDirs: ['data', 'node_modules'],
+  includeSpecs: true,
+});
 
 for (const file of filesToScan) {
   const rel = file.replace(ROOT + '\\', '').replace(ROOT + '/', '');
@@ -125,7 +122,7 @@ for (const file of filesToScan) {
 
   lines.forEach((line, i) => {
     // Skip comments and lines already using token vars
-    if (line.trim().startsWith('//') || line.trim().startsWith('*')) return;
+    if (isCommentLine(line)) return;
     if (
       line.includes('hds.space.') ||
       line.includes('hds.density.') ||

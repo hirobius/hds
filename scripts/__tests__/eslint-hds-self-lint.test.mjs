@@ -6,7 +6,7 @@
  * __fixtures__ are the one carve-out, for the rules about raw controls and ad-hoc layout.
  */
 import { ESLint } from 'eslint';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 const eslint = new ESLint({ cwd: process.cwd() });
 
@@ -14,6 +14,17 @@ async function ruleIds(code, filePath) {
   const [res] = await eslint.lintText(code, { filePath });
   return res.messages.map((m) => m.ruleId);
 }
+
+// The first lintText pays the cold cost of loading the flat config and
+// building the typed-lint program (~65s on the fleet VM, ~1s once warm),
+// which alone blows the 20s per-test timeout and fails whichever test runs
+// first. Pay it once here, like component-api-contract pays for buildManifest.
+beforeAll(async () => {
+  await ruleIds(
+    `export const A = () => <div style={{ color: '#ff0000' }} />;\n`,
+    'src/app/pages/__fixture__.tsx',
+  );
+}, 180_000);
 
 describe('hds/* rules are enforced on src/', () => {
   const page = 'src/app/pages/__fixture__.tsx';

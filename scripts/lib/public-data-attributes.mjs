@@ -28,10 +28,18 @@
 
 /** The data-* attributes consumers may select on, per component. */
 export const PUBLIC_DATA_ATTRIBUTES = {
-  AsyncState: ['data-slot', 'data-status'],
+  AsyncState: ['data-crossfade-view', 'data-slot', 'data-status'],
   Avatar: ['data-size'],
   Badge: ['data-tone'],
-  Button: ['data-hover-effect', 'data-pressed', 'data-size', 'data-tone', 'data-variant'],
+  Button: [
+    'data-crossfade-label',
+    'data-hover-effect',
+    'data-pressed',
+    'data-size',
+    'data-slot',
+    'data-tone',
+    'data-variant',
+  ],
   Card: [
     'data-bordered',
     'data-format',
@@ -54,6 +62,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   Menu: ['data-state'],
   MetaLine: ['data-meta-separator'],
   MetricTiles: ['data-tone'],
+  NavList: ['data-slot'],
   PageHeader: ['data-slot'],
   Popover: ['data-state'],
   Progress: ['data-state', 'data-tone', 'data-variant'],

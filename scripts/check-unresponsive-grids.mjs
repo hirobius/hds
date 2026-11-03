@@ -40,17 +40,11 @@
  */
 
 import { readFileSync } from 'fs';
-import { join, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { scanSources, suppressionFor } from './lib/source-scan.mjs';
+import { gateContext, gateFiles, isCommentLine, suppressionFor } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const ctx = gateContext(import.meta.url);
+const { ROOT } = ctx;
 const isExempt = suppressionFor('grid-ok', { lookback: 0 });
-
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
 
 // How many lines above/below to look for an isMobile reference
 // (30 covers ternary branches that span a long desktop alternative)
@@ -84,25 +78,20 @@ function isMultiColumn(value) {
 
 const violations = [];
 
-const filesToScan =
-  isFixtureMode && fixtureFile
-    ? [resolve(fixtureFile)]
-    : scanSources({
-        root: ROOT,
-        gate: 'check-unresponsive-grids',
-        roots: ['src/app'],
-        exts: ['.ts', '.tsx'],
-        skipDirs: ['node_modules', 'data', 'experiments'],
-        includeSpecs: true,
-      });
+const filesToScan = gateFiles(ctx, {
+  gate: 'check-unresponsive-grids',
+  roots: ['src/app'],
+  exts: ['.ts', '.tsx'],
+  skipDirs: ['node_modules', 'data', 'experiments'],
+  includeSpecs: true,
+});
 
 for (const file of filesToScan) {
   const rel = file.replace(ROOT + '/', '');
   const lines = readFileSync(file, 'utf8').split('\n');
 
   lines.forEach((line, i) => {
-    // Skip comments
-    if (line.trim().startsWith('//') || line.trim().startsWith('*')) return;
+    if (isCommentLine(line)) return;
     // Skip explicit exemptions
     if (isExempt(lines, i)) return;
     // Skip CSS template literal content (lines inside backtick template strings for docs)

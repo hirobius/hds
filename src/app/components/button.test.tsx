@@ -5,8 +5,9 @@
  * label + iconLeft Icon, which replaced IconButton in 0.20.0), asChild or loading.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render } from '@testing-library/react';
+import { cleanup, fireEvent, render, waitFor } from '@testing-library/react';
 import { Search } from 'lucide-react';
+import { stubReducedMotion } from '../../../tests/helpers/reduced-motion';
 import { Icon } from './icon';
 
 const MESSAGE =
@@ -243,5 +244,73 @@ describe('Button asChild disabled contract (hds#— bugfix)', () => {
     expect(a.getAttribute('aria-disabled')).toBeNull();
     expect(a.getAttribute('tabindex')).toBeNull();
     expect(a.classList.contains('pointer-events-none')).toBe(false);
+  });
+});
+
+// ── hds#938: toggle label crossfade ─────────────────────────────────────────
+
+describe('Button toggle label crossfade (hds#938)', () => {
+  it('a11y:button.label-crossfade - a label change keeps old and new mounted overlapped; the old label is aria-hidden and the accessible name is the new label', async () => {
+    const { Button } = await load();
+    const { container, getByRole, rerender } = render(
+      <Button pressed={false} onPressedChange={() => {}}>
+        Follow
+      </Button>,
+    );
+    rerender(
+      <Button pressed onPressedChange={() => {}}>
+        Following
+      </Button>,
+    );
+    // Mid-transition: both labels are mounted in the crossfade stack.
+    const labels = container.querySelectorAll('[data-crossfade-label]');
+    expect(labels.length).toBe(2);
+    const live = container.querySelector('[data-crossfade-label="live"]');
+    const exiting = container.querySelector('[data-crossfade-label="exiting"]');
+    expect(live?.textContent).toBe('Following');
+    expect(exiting?.textContent).toBe('Follow');
+    expect(exiting?.getAttribute('aria-hidden')).toBe('true');
+    // Both labels share one grid cell, so the button holds the wider of the
+    // two widths for the whole transition, then releases it.
+    expect(live?.parentElement).toBe(exiting?.parentElement);
+    expect(live?.classList.contains('col-start-1')).toBe(true);
+    expect(exiting?.classList.contains('col-start-1')).toBe(true);
+    // The accessible name switched to the new label immediately.
+    expect(getByRole('button', { name: 'Following' })).not.toBeNull();
+    // Once the fade completes the old label unmounts.
+    await waitFor(() =>
+      expect(container.querySelectorAll('[data-crossfade-label]').length).toBe(1),
+    );
+    expect(container.querySelector('[data-crossfade-label="live"]')?.textContent).toBe('Following');
+  });
+
+  it('swaps the label instantly with no overlap under prefers-reduced-motion', async () => {
+    stubReducedMotion();
+    try {
+      const { Button } = await load();
+      const { container, getByRole, rerender } = render(
+        <Button pressed={false} onPressedChange={() => {}}>
+          Follow
+        </Button>,
+      );
+      rerender(
+        <Button pressed onPressedChange={() => {}}>
+          Following
+        </Button>,
+      );
+      expect(container.querySelectorAll('[data-crossfade-label]').length).toBe(0);
+      expect(container.querySelector('[data-slot="label-crossfade"]')).toBeNull();
+      expect(getByRole('button', { name: 'Following' })).not.toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('does not crossfade a non-toggle button whose label changes', async () => {
+    const { Button } = await load();
+    const { container, rerender } = render(<Button>Save</Button>);
+    rerender(<Button>Saved</Button>);
+    expect(container.querySelectorAll('[data-crossfade-label]').length).toBe(0);
+    expect(container.querySelector('[data-slot="label-crossfade"]')).toBeNull();
   });
 });

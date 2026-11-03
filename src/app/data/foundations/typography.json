@@ -26,7 +26,7 @@
       "id": "no-tailwind-font",
       "rule": "Skip Tailwind font utilities. Use hds.typeStyles.* inline style objects.",
       "enforceable": true,
-      "valid": "style={hds.typeStyles.h1}",
+      "valid": "style={hds.typeStyles.title}",
       "invalid": "className='text-xl font-semibold'"
     },
     {
@@ -43,16 +43,12 @@
       "apply": "hds.typeStyles.display"
     },
     {
-      "condition": "Primary section headings (h1)",
-      "apply": "hds.typeStyles.h1"
+      "condition": "Page and section headings (h1, h2)",
+      "apply": "hds.typeStyles.title"
     },
     {
-      "condition": "Secondary section headings (h2)",
-      "apply": "hds.typeStyles.h2"
-    },
-    {
-      "condition": "Tertiary headings or card titles (h3)",
-      "apply": "hds.typeStyles.h3"
+      "condition": "Card and dialog titles (h3)",
+      "apply": "hds.typeStyles.titleSm"
     },
     {
       "condition": "Body text for long-form prose",
@@ -60,7 +56,7 @@
     },
     {
       "condition": "Standard interface text: sidebars, nav, labels, inputs",
-      "apply": "hds.typeStyles.small"
+      "apply": "hds.typeStyles.ui"
     },
     {
       "condition": "Helper text, secondary metadata, form annotations",
@@ -83,12 +79,12 @@
     },
     {
       "name": "HEADING - React inline style",
-      "code": "<h2 style={{ ...hds.typeStyles.h2, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-primary)' }}>\n  Sub-section title\n</h2>",
-      "tokensUsed": ["semantic.typography.h2"]
+      "code": "<h2 style={{ ...hds.typeStyles.title, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-primary)' }}>\n  Sub-section title\n</h2>",
+      "tokensUsed": ["semantic.typography.title"]
     },
     {
       "name": "LABEL - React inline style",
-      "code": "<p style={{ ...hds.typeStyles.small, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-secondary)' }}>\n  On this page\n</p>",
+      "code": "<p style={{ ...hds.typeStyles.ui, fontFamily: hds.fontFamily, color: 'var(--semantic-color-content-secondary)' }}>\n  On this page\n</p>",
       "tokensUsed": [
         "semantic.typography.ui",
         "primitive.typography.size.sm",
@@ -110,22 +106,16 @@
       "component": "Hero headlines and displays"
     },
     {
-      "token": "semantic.typography.h1",
-      "css": "primitive-backed via hds.typeStyles.h1",
-      "figma": "semantic/typography/h1",
-      "component": "Primary section headers (h1)"
+      "token": "semantic.typography.title",
+      "css": "primitive-backed via hds.typeStyles.title",
+      "figma": "semantic/typography/title",
+      "component": "Page and section headings (h1, h2)"
     },
     {
-      "token": "semantic.typography.h2",
-      "css": "primitive-backed via hds.typeStyles.h2",
-      "figma": "semantic/typography/h2",
-      "component": "Secondary section headers (h2)"
-    },
-    {
-      "token": "semantic.typography.h3",
-      "css": "primitive-backed via hds.typeStyles.h3",
-      "figma": "semantic/typography/h3",
-      "component": "Tertiary headers (h3) and card titles"
+      "token": "semantic.typography.titleSm",
+      "css": "primitive-backed via hds.typeStyles.titleSm",
+      "figma": "semantic/typography/titleSm",
+      "component": "Card and dialog titles (h3)"
     },
     {
       "token": "semantic.typography.body",
@@ -134,9 +124,9 @@
       "component": "Body copy, long-form prose"
     },
     {
-      "token": "semantic.typography.small",
-      "css": "primitive-backed via hds.typeStyles.small",
-      "figma": "semantic/typography/small",
+      "token": "semantic.typography.ui",
+      "css": "primitive-backed via hds.typeStyles.ui",
+      "figma": "semantic.typography.ui",
       "component": "Interface text, sidebars, nav, labels, inputs"
     },
     {

@@ -37,9 +37,8 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { join, dirname, relative, resolve } from 'node:path';
+import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasJsonFlag } from './lib/gate-output.mjs';
 import { readFileSync } from 'node:fs';
 import {
   scanSources,
@@ -47,16 +46,11 @@ import {
   maskComments,
   isSpecFile,
   reportLineViolations,
+  gateContext,
 } from './lib/source-scan.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-
-const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 /** The seven roles of the ramp. */
 export const ROLES = Object.freeze([

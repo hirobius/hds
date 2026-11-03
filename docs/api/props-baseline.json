@@ -2302,6 +2302,12 @@
     }
   },
   "NavListItem": {
+    "action": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
     "children": {
       "type": "ReactNode",
       "optional": true,

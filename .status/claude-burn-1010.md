@@ -1,1 +1,1 @@
-hds#1010 slice 5: gate preamble shared via gateContext; jscpd threshold 1.59.
+hds#1010 slice 7: gateContext in four more gates; jscpd 1.53 -> 1.49.

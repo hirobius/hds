@@ -5,7 +5,7 @@
  * All visual values must be token paths or var: shorthands.
  */
 
-import { walkJsx, parseOrError } from './lib/jsx.mjs';
+import { validateElements } from './lib/jsx.mjs';
 
 const RAW_COLOR_RE = /^(#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(|lab\()/;
 const RAW_DIMENSION_RE = /^\d+(\.\d+)?(px|rem|em|ch|vh|vw)$/;
@@ -52,15 +52,9 @@ function isRawValue(value, attrName) {
  * @param {string} jsxString
  * @returns {{ ok: boolean, errors: Array<{path, code, message, suggestion}> }}
  */
-export default async function validate(jsxString) {
-  const { ast, result } = parseOrError(jsxString);
-  if (result) return result;
-
-  const errors = [];
-
-  walkJsx(ast, (element) => {
-    const tagName = element.openingElement?.name?.name || 'unknown';
-    const attrs = element.openingElement?.attributes || [];
+export default function validate(jsxString) {
+  return validateElements(jsxString, (element, { tagName: name, attrs, errors }) => {
+    const tagName = name || 'unknown';
 
     for (const attr of attrs) {
       if (attr.type === 'JSXSpreadAttribute') continue;
@@ -82,6 +76,4 @@ export default async function validate(jsxString) {
       }
     }
   });
-
-  return { ok: errors.length === 0, errors };
 }

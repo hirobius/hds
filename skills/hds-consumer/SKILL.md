@@ -281,10 +281,10 @@ In tests and styles, select HDS elements only by:
 
 The `data-*` attributes each component renders for you to select on:
 
-- `AsyncState`: `data-slot`, `data-status`
+- `AsyncState`: `data-crossfade-view`, `data-slot`, `data-status`
 - `Avatar`: `data-size`
 - `Badge`: `data-tone`
-- `Button`: `data-hover-effect`, `data-pressed`, `data-size`, `data-tone`, `data-variant`
+- `Button`: `data-crossfade-label`, `data-hover-effect`, `data-pressed`, `data-size`, `data-slot`, `data-tone`, `data-variant`
 - `Card`: `data-bordered`, `data-format`, `data-interactive`, `data-padding`, `data-slot`, `data-tone`, `data-variant`
 - `DataTableSection`: `data-slot`
 - `DestructiveSection`: `data-slot`
@@ -298,6 +298,7 @@ The `data-*` attributes each component renders for you to select on:
 - `Kbd`: `data-size`
 - `Menu`: `data-state`
 - `MetaLine`: `data-meta-separator`
+- `NavList`: `data-slot`
 - `PageHeader`: `data-slot`
 - `Popover`: `data-state`
 - `Progress`: `data-state`, `data-tone`, `data-variant`

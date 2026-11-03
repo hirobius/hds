@@ -25,7 +25,11 @@ import { Check, Minus } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import {
+  forwardFocusHandlers,
+  useInteractionState,
+  type InteractionVisualState,
+} from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
 import { Icon } from './icon';
 
@@ -204,18 +208,7 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
           disabled={isDisabled}
           aria-checked={indeterminate ? 'mixed' : checked}
           onChange={(e) => onChange(e.target.checked)}
-          onFocus={(e) => {
-            handlers.onFocus(e.currentTarget);
-            onFocus?.(e);
-          }}
-          onKeyDown={(e) => {
-            handlers.onKeyDown(e.currentTarget);
-            onKeyDown?.(e);
-          }}
-          onBlur={(e) => {
-            handlers.onBlur();
-            onBlur?.(e);
-          }}
+          {...forwardFocusHandlers(handlers, { onFocus, onKeyDown, onBlur })}
           className={checkboxInputVariants({ state: visualState })}
           {...rest}
         />

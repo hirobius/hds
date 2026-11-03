@@ -1,4 +1,3 @@
-// motion-ok: input field — focus ring + transition via Tailwind utilities (gate accepts only hds.duration refs)
 /**
  * Input — text field primitive with label, helper, and error slots.
  * @category Inputs
@@ -32,7 +31,7 @@ import { FORM_CONTROL_WIDTH } from './form-control';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-disabled has no named Tailwind-theme utility; var()-based so still token-driven (matches button/segmented disabled)
 const inputVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-background text-foreground ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
+  'flex w-full rounded-md border bg-background text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       size: {
@@ -61,8 +60,9 @@ const inputVariants = /* @__PURE__ */ cva(
 // moves from the <input> to this shell, so the slots sit in flow inside one
 // frame. The ring follows keyboard focus on the input only, as it does without
 // slots; a focused clear button keeps its own ring.
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- productive motion token duration/easing (var()-based, no named utility)
 const inputShellVariants = /* @__PURE__ */ cva(
-  'relative flex w-full items-center rounded-md border bg-background text-foreground ring-offset-background transition-colors has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted',
+  'relative flex w-full items-center rounded-md border bg-background text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted',
   {
     variants: {
       size: {
@@ -406,7 +406,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onClick={handleClear}
           aria-label={type === 'search' ? 'Clear search' : 'Clear input'}
           className={cn(
-            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
+            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
             padCfg.inset,
           )}
         >

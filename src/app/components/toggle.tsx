@@ -24,7 +24,11 @@ import hds, { tokenValues } from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
+import {
+  forwardFocusHandlers,
+  useInteractionState,
+  type InteractionVisualState,
+} from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
 
 /** Toggle — boolean on/off toggle with animated thumb. */
@@ -226,18 +230,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
         checked={checked}
         disabled={isDisabled}
         onChange={(e) => onChange(e.target.checked)}
-        onFocus={(e) => {
-          handlers.onFocus(e.currentTarget);
-          onFocus?.(e);
-        }}
-        onKeyDown={(e) => {
-          handlers.onKeyDown(e.currentTarget);
-          onKeyDown?.(e);
-        }}
-        onBlur={(e) => {
-          handlers.onBlur();
-          onBlur?.(e);
-        }}
+        {...forwardFocusHandlers(handlers, { onFocus, onKeyDown, onBlur })}
         className={cn('hds-focus', toggleInputVariants({ state: visualState }))}
         {...rest}
       />
