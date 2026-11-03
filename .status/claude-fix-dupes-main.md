@@ -1,0 +1,1 @@
+refactor(deprecations): share resolveModule/REEXPORT_RE (check-deprecations) and deprecatedBlocks/objectKeyPath (lib/deprecations), removing the 3 clones from hds#1023. check:dupes 1.18% -> 1.16% (232 -> 229 clones); .jscpd.json threshold 1.18 -> 1.17 (measured 1.1632%; 1.16 would fail the gate).

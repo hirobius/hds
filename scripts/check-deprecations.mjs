@@ -128,11 +128,11 @@ function topLevelSources(dir) {
 }
 
 // `export * from './x'`, `export * as ns from './x'`, `export { a, b as c } from './x'`
-const REEXPORT_RE =
+export const REEXPORT_RE =
   /^\s*export\s+(?:type\s+)?(?:\*(?:\s+as\s+\w+)?|\{[^}]*\})\s*from\s*['"](\.{1,2}\/[^'"]+)['"]/gm;
 
 /** The module a relative specifier names, or null for a non-TS target. */
-function resolveModule(fromFile, specifier) {
+export function resolveModule(fromFile, specifier) {
   const base = resolve(dirname(fromFile), specifier);
   return (
     [base, `${base}.ts`, `${base}.tsx`, join(base, 'index.ts'), join(base, 'index.tsx')].find(

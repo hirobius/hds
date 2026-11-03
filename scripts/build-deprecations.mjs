@@ -30,11 +30,11 @@
  *
  * Usage: node scripts/build-deprecations.mjs [--check] (from the package root)
  */
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
-import { deprecationScope } from './check-deprecations.mjs';
+import { REEXPORT_RE, deprecationScope, resolveModule } from './check-deprecations.mjs';
 import { buildDeprecations, deprecationsInFile, removedFromLedgers } from './lib/deprecations.mjs';
 import { readJsExportEntries } from './lib/package-entries.mjs';
 import { collectDeprecations } from './lib/token-deprecations.mjs';
@@ -94,21 +94,6 @@ export function buildDeprecationsJson() {
     2,
   )}\n`;
 }
-
-const isSourceFile = (file) => /\.tsx?$/.test(file) && existsSync(file) && statSync(file).isFile();
-
-/** The module a relative specifier names, or null for a non-TS target. */
-function resolveModule(fromFile, specifier) {
-  const base = resolve(dirname(fromFile), specifier);
-  return (
-    [base, `${base}.ts`, `${base}.tsx`, join(base, 'index.ts'), join(base, 'index.tsx')].find(
-      isSourceFile,
-    ) ?? null
-  );
-}
-
-const REEXPORT_RE =
-  /^\s*export\s+(?:type\s+)?(?:\*(?:\s+as\s+\w+)?|\{[^}]*\})\s*from\s*['"](\.{1,2}\/[^'"]+)['"]/gm;
 
 /** The names one source file exports: its own exported declarations and its export lists. */
 function exportedNames(file) {
