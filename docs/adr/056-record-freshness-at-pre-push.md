@@ -1,6 +1,6 @@
 # ADR-056: Enforce the record at pre-push
 
-**Status:** Accepted, retroactive (decided 2026-09-24; recorded 2026-10-13 from commit and PR history). Partly superseded by `6db35fb` (per-PR `.status/` notes replace `status.json` bumps as the proof of freshness).
+**Status:** Accepted, retroactive (decided 2026-09-24; recorded 2026-10-13 from commit and PR history). Partly superseded by `6db35fb` (per-PR `.status/` notes replace `status.json` bumps as the proof of freshness), then by ops#1057 (a commit naming its issue replaces the note; the issue receipt is the record).
 
 ## Context
 
@@ -53,6 +53,11 @@ scope.
   "conflicts on every PR". The gate now accepts a note as proof, and `pnpm status:fold`
   bumps `updatedAt` on main and deletes the notes. Only `focus` and `phase` stay
   hand-written.
+- ops#1057 retired the note as a requirement. It duplicated the receipt every
+  branch already posts on its issue. The gate now also accepts a pushed commit that
+  names its issue (`hds#12`, `owner/repo#N`, or `Refs`/`Fixes #N`; a bare `(#N)`
+  squash-merge suffix is a PR, not an issue, and does not count). Notes still pass,
+  so branches that already carry one push unchanged.
 - Later commits kept tuning the gate: `5ecb47d` (fail-fast, PR #509), and `5b2e42a`
   (PR #543) added the upgrade-note requirement. `CLAUDE.md` now describes both.
 - On origin/main the gate still runs from `.husky/pre-push`.
@@ -88,3 +93,4 @@ scope.
 - `6db35fb` feat(status): per-PR .status/ notes replace status.json bumps in the freshness gate (PR #526)
 - `5ecb47d` chore(hooks): quiet hooks, fail-fast record-freshness (PR #509)
 - hds#249: record freshness gate; hds#448: what counts as shipping
+- ops#1057 item 2: the issue receipt replaces the per-branch `.status/` note

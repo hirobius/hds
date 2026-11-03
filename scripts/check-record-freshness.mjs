@@ -17,7 +17,10 @@
  * HEAD when there is no upstream — a fresh branch's first push):
  *
  *   1. status.json freshness — a pushed commit touching src/, scripts/, or
- *      docs/adr/ must be no newer than status.json's `updatedAt`. Wired to
+ *      docs/adr/ must be no newer than status.json's `updatedAt`, unless a
+ *      pushed commit names its issue (`hds#12`, `Refs ops#1057`): the receipt
+ *      comment on that issue is the record (ops#1057). A `.status/<branch>.md`
+ *      note still counts, for branches written before that. Wired to
  *      pre-push, not pre-commit: mid-branch commits should not each demand a
  *      status bump, but a push is a state change the fleet dashboard renders.
  *   2. Changeset presence — a pushed commit that changes what ships to
@@ -246,15 +249,44 @@ export function hasStatusNote(commits) {
   return commits.some((c) => c.files.some(isStatusNote));
 }
 
+/** `repo#N` or `owner/repo#N`, anywhere in a commit message. */
+const QUALIFIED_ISSUE_REF = /(?<![\w/.#-])(?:[A-Za-z0-9_.-]+\/)?[A-Za-z][\w.-]*#\d+\b/;
+/** A bare `#N` counts only after a keyword: `(#1094)` alone is a squash-merge PR suffix. */
+const KEYWORD_ISSUE_REF =
+  /\b(?:refs?|references|fix(?:es|ed)?|close[sd]?|resolve[sd]?|part of|receipt)\b:?\s+(#\d+)\b/i;
+
 /**
- * A `.status/*.md` note in the pushed range counts as a fresh record (it is
- * folded into status.json later by `pnpm status:fold`), so PRs need not edit
- * status.json and stop conflicting on it.
+ * The issue a commit message names, or null: `hds#763`, `hirobius/ops#1057`,
+ * or `Refs #42` / `Fixes #42`. ops#1057 made the receipt comment on that issue
+ * the single record of the work, so naming the issue is the proof of record.
+ * @param {string | undefined} message
+ */
+export function issueReceiptRef(message) {
+  if (!message) return null;
+  const qualified = QUALIFIED_ISSUE_REF.exec(message);
+  if (qualified) return qualified[0];
+  const keyword = KEYWORD_ISSUE_REF.exec(message);
+  return keyword ? keyword[1] : null;
+}
+
+/** True when any pushed commit names the issue that carries its receipt. */
+export function hasIssueReceipt(commits) {
+  return commits.some((c) => issueReceiptRef(c.message) !== null);
+}
+
+/**
+ * A pushed commit is on the record when status.json's updatedAt is no older
+ * than it, or the range carries either proof: a commit naming its issue (the
+ * receipt comment on that issue is the record, ops#1057), or, for branches
+ * written before that, a `.status/*.md` note (folded into status.json later by
+ * `pnpm status:fold`). `via` says which: 'receipt', 'note' or undefined.
  * @param {Commit[]} commits
  * @param {string} statusUpdatedAt - ISO date/datetime from status.json
  */
 export function checkStatusFreshness(commits, statusUpdatedAt) {
-  if (hasStatusNote(commits)) return { ok: true };
+  const receipt = commits.map((c) => issueReceiptRef(c.message)).find(Boolean);
+  if (receipt) return { ok: true, via: 'receipt', ref: receipt };
+  if (hasStatusNote(commits)) return { ok: true, via: 'note' };
   const newest = newestTouching(commits, WATCHED_PREFIXES);
   if (!newest) return { ok: true };
   // Compare as ISO strings when both are comparable that way; status.json's
@@ -397,8 +429,9 @@ function main() {
       `✗ check-record-freshness — status.json is stale.\n` +
         `  commit ${statusResult.newest.sha.slice(0, 8)} (${statusResult.newest.date}) touches ` +
         `src/, scripts/ or docs/adr/, but status.json's updatedAt is ${status.updatedAt}.\n` +
-        `  fix: add a one-line note .status/<branch>.md (never conflicts; \`pnpm status:fold\` ` +
-        `folds notes into status.json on main), or run \`pnpm status:touch\` to bump status.json directly.`,
+        `  fix: name the issue in a commit message (e.g. "Refs ops#1057" or "fix: x (hds#12)"); ` +
+        `the receipt comment on that issue is the record. A .status/<branch>.md note or ` +
+        `\`pnpm status:touch\` still works too.`,
     );
   }
 
@@ -425,7 +458,9 @@ function main() {
   }
 
   if (hadFailure) process.exit(1);
-  console.log(`✓ check-record-freshness — status.json and changesets are current (${range}).`);
+  const record =
+    statusResult.via === 'receipt' ? `issue receipt ${statusResult.ref}` : 'status.json';
+  console.log(`✓ check-record-freshness — ${record} and changesets are current (${range}).`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

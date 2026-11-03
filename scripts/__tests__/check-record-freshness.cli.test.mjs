@@ -154,6 +154,28 @@ describe('check-record-freshness CLI', () => {
 
     expect(runGate('HEAD~2..HEAD').status).toBe(0);
   });
+  it('an issue reference in a pushed commit replaces both the bump and the .status note (ops#1057)', () => {
+    // status.json is still stale (2020) from the test above.
+    writeFileSync(path.join(dir, 'src', 'e.ts'), 'export const e = 5;\n');
+    commitAll(dir, 'fix: e\n\nskip-changeset', {
+      GIT_COMMITTER_DATE: '2033-01-01T00:00:00Z',
+      GIT_AUTHOR_DATE: '2033-01-01T00:00:00Z',
+    });
+
+    const stale = runGate('HEAD~1..HEAD');
+    expect(stale.status).not.toBe(0);
+    expect(stale.stderr).toMatch(/issue/i);
+
+    writeFileSync(path.join(dir, 'src', 'f.ts'), 'export const f = 6;\n');
+    commitAll(dir, 'fix: f\n\nRefs ops#1057\nskip-changeset', {
+      GIT_COMMITTER_DATE: '2033-01-02T00:00:00Z',
+      GIT_AUTHOR_DATE: '2033-01-02T00:00:00Z',
+    });
+
+    const withReceipt = runGate('HEAD~2..HEAD');
+    expect(withReceipt.status).toBe(0);
+    expect(withReceipt.stdout).toMatch(/ops#1057/);
+  });
 });
 
 describe('check-record-freshness CLI: package.json (hds#448)', () => {
