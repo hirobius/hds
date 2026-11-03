@@ -126,7 +126,7 @@ Warns on importing a `@deprecated` export of `@hirobius/design-system` (any entr
 
 ### `hds/no-removed-import`
 
-Errors on an import of an export whose `@removeIn` version the installed `@hirobius/design-system` has reached (the version is read from the installed package; override it with `{ version: '1.0.0' }`). Below that version `hds/no-deprecated-import` warns instead. Data: `rules/deprecated-exports.json`, which also lists deprecated props (`props`) and prop values (`propValues`).
+Errors on an import of an export whose `@removeIn` version the installed `@hirobius/design-system` has reached (the version is read from the installed package; override it with `{ version: '1.0.0' }`). Below that version `hds/no-deprecated-import` warns instead. Data: `rules/deprecated-exports.json`, which also lists deprecated props (`props`) and prop values (`propValues`), plus the shipped `deprecations.json` at the package root — its `removed` list flags a name a past release already took away (for example `StatusDot`, removed in 0.21.0) once the installed version reaches the release that removed it.
 
 ### `hds/no-deprecated-token`
 

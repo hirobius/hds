@@ -275,6 +275,7 @@ export function buildCSSSection(tokens, label, root = null) {
       // A Compact mode on a composite is partial: it names only the sub-properties
       // that move (today fontSize), and only those are re-declared.
       if (compact) {
+        if (deprecated) compactLines.push(`  /* @deprecated ${deprecated} */`);
         for (const [suffix, key, subType] of TYPO_PROPS) {
           if (compact[key] == null) continue;
           const cv = valueToCSS(compact[key], subType, true);
@@ -303,12 +304,20 @@ export function buildCSSSection(tokens, label, root = null) {
       const dark = readModes(extensions)?.Dark;
       if (dark) {
         const dv = valueToCSS(dark, type, true, root);
-        if (dv) darkLines.push(`  ${cssVar}: ${dv};`);
+        if (dv) {
+          // The dark re-declaration of a deprecated token (usually an alias)
+          // carries the marker too: variables.css is read at this line.
+          if (deprecated) darkLines.push(`  /* @deprecated ${deprecated} */`);
+          darkLines.push(`  ${cssVar}: ${dv};`);
+        }
       }
 
       if (compact) {
         const cv = valueToCSS(compact, type, true, root);
-        if (cv) compactLines.push(`  ${cssVar}: ${cv};`);
+        if (cv) {
+          if (deprecated) compactLines.push(`  /* @deprecated ${deprecated} */`);
+          compactLines.push(`  ${cssVar}: ${cv};`);
+        }
       }
     }
   }

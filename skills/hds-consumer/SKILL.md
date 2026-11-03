@@ -60,6 +60,7 @@ Subpath exports:
 - `@hirobius/design-system/eslint-plugin`
 - `@hirobius/design-system/stats.json`
 - `@hirobius/design-system/tailwind-preset`
+- `@hirobius/design-system/deprecations.json`
 
 ## Core set
 

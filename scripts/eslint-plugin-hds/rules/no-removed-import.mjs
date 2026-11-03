@@ -7,6 +7,13 @@
  * warns instead. Reads deprecated-exports.json and the installed package's
  * own version (the package.json three levels up, where this file ships);
  * the `version` option overrides it.
+ *
+ * It also reads the shipped record at the package root (deprecations.json,
+ * the `./deprecations.json` subpath): an import naming a name that record's
+ * `removed` list took away at this entry point errors once the installed
+ * version reaches the release that removed it (StatusDot, removed in
+ * 0.21.0, is the fixture). An install too old to ship the record simply
+ * gets the deprecated-exports half.
  */
 import { readFileSync } from 'node:fs';
 
@@ -14,6 +21,18 @@ const { exports: DEPRECATED } = JSON.parse(
   readFileSync(new URL('./deprecated-exports.json', import.meta.url), 'utf8'),
 );
 const byName = new Map(DEPRECATED.filter((d) => d.removeIn).map((d) => [d.name, d]));
+
+function shippedRemoved() {
+  try {
+    const { removed } = JSON.parse(
+      readFileSync(new URL('../../../deprecations.json', import.meta.url), 'utf8'),
+    );
+    return Array.isArray(removed) ? removed : [];
+  } catch {
+    return [];
+  }
+}
+const removedByKey = new Map(shippedRemoved().map((r) => [`${r.from} ${r.name}`, r]));
 const isHds = (source) =>
   source === '@hirobius/design-system' || source.startsWith('@hirobius/design-system/');
 
@@ -72,16 +91,26 @@ export default {
           const name =
             spec.imported.type === 'Identifier' ? spec.imported.name : spec.imported.value;
           const d = byName.get(name);
-          if (!d || !isAtOrPast(version, d.removeIn)) continue;
+          if (d) {
+            if (!isAtOrPast(version, d.removeIn)) continue;
+            context.report({
+              node: spec,
+              messageId: 'removed',
+              data: {
+                name,
+                removeIn: d.removeIn,
+                version,
+                instead: d.useInstead ? ` Use ${d.useInstead}.` : '',
+              },
+            });
+            continue;
+          }
+          const r = removedByKey.get(`${node.source.value} ${name}`);
+          if (!r || !isAtOrPast(version, r.removedIn)) continue;
           context.report({
             node: spec,
             messageId: 'removed',
-            data: {
-              name,
-              removeIn: d.removeIn,
-              version,
-              instead: d.useInstead ? ` Use ${d.useInstead}.` : '',
-            },
+            data: { name, removeIn: r.removedIn, version, instead: '' },
           });
         }
       },
