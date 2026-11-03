@@ -44,11 +44,11 @@
       "reason": "Internal to Pagination — pagination.tsx exports only paginationRange and Pagination. Figma models the individual page button as a component because it needs the variants; code renders it inline."
     },
     {
-      "nodeId": "2201:132",
+      "nodeId": "2252:127",
       "name": "TimelineItem",
       "mapsTo": "TimelineItem",
       "source": "src/app/components/timeline.tsx",
-      "reason": "A slot of Timeline (figma/disposition.json), so it takes an override rather than a tag. The Timeline component 2201:133 is built from its instances, and the item needs its own set for the tone variants."
+      "reason": "A slot of Timeline (figma/disposition.json), so it takes an override rather than a tag. The Timeline component 2201:133 is built from its instances, and the item needs its own set for the tone and detail variants (redrawn from the hds#637 staging draft as 2252:127, replacing 2201:132)."
     },
     {
       "nodeId": "2209:25",

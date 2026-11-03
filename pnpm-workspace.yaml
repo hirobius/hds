@@ -5,5 +5,12 @@ minimumReleaseAgeExclude:
   - '@hirobius/*'
 # Refuse a version whose publish provenance/trust is weaker than an earlier one.
 trustPolicy: no-downgrade
+trustPolicyExclude:
+  # Already pinned in pnpm-lock.yaml as a transitive dep of the Babel
+  # toolchain. An earlier 6.x release carried provenance and 6.3.1 (2023)
+  # carries none, so every `pnpm add` failed on a package the repo already
+  # ships with. Scoped to this exact version; drop it when Babel no longer
+  # resolves semver 6 (hds#1089 found this while adding StrykerJS).
+  - semver@6.3.1
 # Transitive deps may not come from git or arbitrary tarball URLs.
 blockExoticSubdeps: true
