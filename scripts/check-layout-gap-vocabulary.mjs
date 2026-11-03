@@ -61,6 +61,7 @@ import { fileURLToPath } from 'url';
 import ts from 'typescript';
 import { emitResult } from './lib/gate-output.mjs';
 import { scanSources, suppressionFor, isSpecFile, gateContext } from './lib/source-scan.mjs';
+import { unwrap } from './lib/ts-ast.mjs';
 
 const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
@@ -79,21 +80,6 @@ const isSuppressed = suppressionFor('layout-gap-ok');
 /** Whether a repo-relative path is out of scope: the one copy, or a test. */
 export function isExempt(rel) {
   return rel === CANONICAL || isSpecFile(rel);
-}
-
-/** Unwraps `(x)`, `x as T`, `x satisfies T` and `<T>x` down to the expression itself. */
-function unwrap(node) {
-  let n = node;
-  while (
-    n &&
-    (ts.isParenthesizedExpression(n) ||
-      ts.isAsExpression(n) ||
-      ts.isSatisfiesExpression(n) ||
-      ts.isTypeAssertionExpression(n))
-  ) {
-    n = n.expression;
-  }
-  return n;
 }
 
 /** A key or literal as written (`tight`, `'tight'`, `['tight']`), or null. */

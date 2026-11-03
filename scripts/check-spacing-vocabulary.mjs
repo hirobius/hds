@@ -67,6 +67,7 @@ import { fileURLToPath } from 'url';
 import ts from 'typescript';
 import { emitResult } from './lib/gate-output.mjs';
 import { scanSources, suppressionFor, gateContext } from './lib/source-scan.mjs';
+import { unwrap } from './lib/ts-ast.mjs';
 
 const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
@@ -93,21 +94,6 @@ export const SPACING_KEYS = new Set([
 
 const SKIP_DIRS = ['node_modules', '.git', 'dist', '__tests__'];
 const isSuppressed = suppressionFor('spacing-vocab-ok');
-
-/** Unwraps `(x)`, `x as T` and `x satisfies T` down to the expression itself. */
-function unwrap(node) {
-  let n = node;
-  while (
-    n &&
-    (ts.isParenthesizedExpression(n) ||
-      ts.isAsExpression(n) ||
-      ts.isSatisfiesExpression(n) ||
-      ts.isTypeAssertionExpression(n))
-  ) {
-    n = n.expression;
-  }
-  return n;
-}
 
 /** The property name as written (`p`, `'p'`, `"&:hover"`), or null for a computed key. */
 function propertyName(name) {
