@@ -1,0 +1,1 @@
+Pre-push secret + PII scan (ops#943): vendored scripts/hooks/secret-pii-scan.mjs from ops runs first in .husky/pre-push (gitleaks over the pushed range, fails closed without it, plus email/phone/SSN checks); hook-run.mjs now forwards git hook stdin to stages.

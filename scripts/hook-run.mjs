@@ -11,7 +11,9 @@
  * runs them serially via `sh -c`, and captures output to
  * $(git rev-parse --git-dir)/hook-logs/<hook>-<timestamp>.log (newest 5 kept).
  * Green: one summary line. Red: only the failing stage's excerpt, the full-log
- * path, and the stage's own exit code. HOOK_VERBOSE=1 runs the hook file
+ * path, and the stage's own exit code. Git's hook stdin (pre-push: one line per
+ * pushed ref) is read once and fed to every stage, so the secret + PII scan
+ * (ops#943) sees the refs. HOOK_VERBOSE=1 runs the hook file
  * as-is with full streaming output. Same commands, same exit codes.
  */
 import { spawnSync, execFileSync } from 'node:child_process';
@@ -55,6 +57,18 @@ if (stages.length === 0) {
   process.exit(2);
 }
 
+// Read once, before any stage runs: an empty stdin would let the pre-push
+// secret + PII scan see no refs and pass everything (ops#943). Skip on a TTY
+// (run by hand) so it never blocks waiting for input.
+let hookStdin = '';
+if (!process.stdin.isTTY) {
+  try {
+    hookStdin = fs.readFileSync(0, 'utf8');
+  } catch {
+    /* no stdin (closed or unreadable): stages get none, as before */
+  }
+}
+
 let logFile = null;
 {
   try {
@@ -73,6 +87,7 @@ for (const { name, cmd } of stages) {
   const start = performance.now();
   const r = spawnSync('sh', ['-c', cmd, hook, ...hookArgs], {
     encoding: 'utf8',
+    input: hookStdin,
     maxBuffer: 256 * 1024 * 1024,
   });
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`;

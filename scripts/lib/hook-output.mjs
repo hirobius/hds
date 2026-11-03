@@ -92,7 +92,7 @@ export function parseHookStages(text) {
 export function shortName(cmd) {
   const pnpm = /^pnpm\s+(?:exec\s+)?(\S+)/.exec(cmd);
   if (pnpm) return pnpm[1];
-  const node = /^node\s+scripts\/(?:check-|verify-)?([\w.-]+?)\.mjs/.exec(cmd);
+  const node = /^node\s+scripts\/(?:[\w-]+\/)*(?:check-|verify-)?([\w.-]+?)\.mjs/.exec(cmd);
   if (node) return node[1];
   return cmd.split(/\s+/)[0];
 }

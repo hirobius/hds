@@ -1,0 +1,5 @@
+# passing fixture for secret-pii-scan (hirobius/ops#943)
+# No credentials and no PII: only innocuous configuration constants.
+THEME=dark
+API_URL=https://api.example.com/v1
+SUPPORT_EMAIL=support@example.com

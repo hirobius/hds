@@ -16,7 +16,17 @@ set -e
 # The heavier lean gates that need a full toolchain — size-limit and the
 # docs-site axe gate — run in CI (chromatic.yml / quality.yml), not at push time.
 
-# Runs FIRST: it is cheap, and when it is going to fail the slow gates below
+# Secret + PII scan (hirobius/ops#943): vendored scripts/hooks/secret-pii-scan.mjs
+# from ops, template ops scripts/hooks/fleet/pre-push. Stays the FIRST stage: it
+# reads git's pre-push stdin (hook-run.mjs forwards it) and scans only the
+# commits this push adds: gitleaks (--redact, .gitleaks.toml) for secrets, plus
+# emails / US phones / SSNs on added lines. gitleaks missing FAILS with the
+# install command (brew install gitleaks); one push without it:
+# SKIP_SECRET_SCAN=1 git push. Reviewed PII false positive: `pii-allow` on the line.
+echo "Secret + PII scan (pushed commits; fails closed without gitleaks)…"
+node scripts/hooks/secret-pii-scan.mjs
+
+# Runs next: it is cheap, and when it is going to fail the slow gates below
 # should not burn minutes first. Fix: name the issue in a commit message
 # (`Refs ops#1057`); its receipt comment is the record (ops#1057).
 # Replaces "update it at intervals": status.json/CHANGELOG.md going stale is a
