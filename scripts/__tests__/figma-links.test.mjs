@@ -228,6 +228,41 @@ describe('the three Figma areas (hds#763)', () => {
     expect(computeDesignLinks(retired).problems).toContain(
       "figma/links.json: explorationsFileKey (ExplorationsKey123) is a retired file's key.",
     );
+
+    const retiredName = miniRoot();
+    editLinks(retiredName, (links) => ({
+      ...links,
+      retiredFiles: [{ fileKey: 'RetiredKey999', fileName: 'HDS Visual Explorations' }],
+    }));
+    expect(computeDesignLinks(retiredName).problems).toContain(
+      'figma/links.json: explorationsFileName ("HDS Visual Explorations") is a retired file\'s name.',
+    );
+  });
+
+  it('fails the check on an area key or name that is not a string, or is empty', () => {
+    const numericKey = miniRoot();
+    editLinks(numericKey, (links) => ({ ...links, explorationsFileKey: 123 }));
+    expect(computeDesignLinks(numericKey).problems).toContain(
+      'figma/links.json: explorationsFileKey is 123, not a file key.',
+    );
+
+    const emptyKey = miniRoot();
+    editLinks(emptyKey, (links) => ({ ...links, explorationsFileKey: '' }));
+    expect(computeDesignLinks(emptyKey).problems).toContain(
+      'figma/links.json: explorationsFileKey is "", not a file key.',
+    );
+
+    const numericName = miniRoot();
+    editLinks(numericName, (links) => ({ ...links, explorationsFileName: 42 }));
+    expect(computeDesignLinks(numericName).problems).toContain(
+      'figma/links.json: explorationsFileName is 42, not a file name.',
+    );
+
+    const emptyName = miniRoot();
+    editLinks(emptyName, (links) => ({ ...links, explorationsFileName: '' }));
+    expect(computeDesignLinks(emptyName).problems).toContain(
+      'figma/links.json: explorationsFileName is "", not a file name.',
+    );
   });
 });
 
