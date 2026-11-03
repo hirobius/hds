@@ -111,6 +111,9 @@ The registry rules are documented in
 - **A consumer smoke build** installs the packed library the way a real consumer
   would and verifies subpath resolution, `publint`, and a consumer-side
   typecheck — so "it builds here" also means "it works when installed."
+- **Mutation runs** (StrykerJS, diff-scoped, report-only) check that the tests
+  would fail if the code were wrong, not just that it ran — see
+  [`docs/mutation-testing.md`](mutation-testing.md).
 - **The docs themselves** are tested by the agent-consistency eval — see §4.
 
 ## 4. The docs are tested too: agent-consistency eval

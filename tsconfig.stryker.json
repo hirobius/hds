@@ -1,0 +1,31 @@
+{
+  // The tsconfig the StrykerJS TypeScript checker runs against (hds#1089).
+  // tsconfig.json alone does not work here: the checker builds one program
+  // for the tree it may mutate and fails on the repo's test and Figma files,
+  // which the real typecheck (tsconfig.typecheck.json) deliberately excludes
+  // and which use Node globals the base config never promised them. This
+  // config mirrors the typecheck config's exclusions and adds the pure-logic
+  // JS the mutate scope covers (codemods, scripts/lib) with allowJs + checkJs
+  // off — the same seam tsconfig.typecheck.json uses for .mjs. Verified to
+  // compile clean (`tsc --noEmit -p tsconfig.stryker.json`): do not add
+  // "types": ["node"] — @types/node is only a transitive dep here, so naming
+  // it makes the checker fail with TS2688 instead.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": ["src/**/*", "codemods/**/*.mjs", "scripts/lib/**/*.mjs", "vite.config.lib.ts"],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/__tests__/**",
+    "**/__fixtures__/**",
+    "**/*.figma.ts",
+    "node_modules",
+    "dist",
+    "docs-site"
+  ]
+}
