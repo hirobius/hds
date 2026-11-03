@@ -63,7 +63,6 @@ describe('the committed tree is fresh', () => {
     ['generate-consumer-skill.mjs'],
     ['generate-layout-contract.mjs'],
     ['generate-code-connect.mjs'],
-    ['figma-links.mjs'],
   ])(
     '%s --check exits 0',
     (script) => {
@@ -72,6 +71,19 @@ describe('the committed tree is fresh', () => {
     },
     30_000,
   );
+
+  // hds#763: figma-links --check also gates the three Figma areas, and the
+  // committed figma/links.json does not name the visual explorations area
+  // yet — no such Figma file exists, and a key is never invented. Adrian
+  // creates the file and adds explorationsFileKey/explorationsFileName;
+  // until then the check exits 1 naming the missing key, by design. When
+  // the key lands, delete this test and put ['figma-links.mjs'] back in
+  // the list above.
+  it('figma-links.mjs --check exits 1 until figma/links.json names the explorations area (hds#763)', () => {
+    const res = run('figma-links.mjs', '--check');
+    expect(res.status).toBe(1);
+    expect(res.stderr).toContain('explorationsFileKey');
+  }, 30_000);
 });
 
 describe('build-design-md --check', () => {
@@ -334,6 +346,17 @@ describe('figma-links on runGenerator', () => {
     ],
     out: 'docs/DESIGN_LINKS.md',
     fix: 'pnpm manifest:generate && pnpm figma:links',
+    // The contract below is about the generator, not the area gate: the
+    // committed figma/links.json names no explorations area yet (hds#763),
+    // so the copy gets a complete one — the area gate itself is covered by
+    // figma-links.test.mjs and the committed-tree test above.
+    prepare: (root) =>
+      edit(root, 'figma/links.json', (t) => {
+        const links = JSON.parse(t);
+        links.explorationsFileKey = 'ExplorationsKey123';
+        links.explorationsFileName = 'HDS Visual Explorations';
+        return JSON.stringify(links, null, 2);
+      }),
     makeStale: (root) =>
       edit(root, 'docs/DESIGN_LINKS.md', (t) => t.replace(/\*\*\d+ of \d+\*\*/, '**1 of 1**')),
   });
