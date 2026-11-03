@@ -1,7 +1,8 @@
 /**
  * CONTRIBUTING.md carries one gate table. This test keeps it honest: the
  * table rows for each stage must equal the steps parsed from the file that
- * actually runs them (.husky/pre-commit, .husky/pre-push, ci.yml).
+ * actually runs them (.husky/pre-commit, .husky/commit-msg, .husky/pre-push,
+ * ci.yml).
  *
  * A step is a hook `echo "<name>…"` line plus the commands under it, or a
  * ci.yml step that has a `run:` (checkout/setup steps use `uses:` and are
@@ -56,7 +57,7 @@ function parseTable(markdown) {
       .map((c) => c.trim().replace(/\\\|/g, '|'));
     if (cells.length !== 3) continue;
     const [stage, name, command] = cells;
-    if (!/^(pre-commit|pre-push|ci)$/.test(stage)) continue;
+    if (!/^(pre-commit|commit-msg|pre-push|ci)$/.test(stage)) continue;
     (rows[stage] ??= []).push({ name, command: command.replace(/^`|`$/g, '') });
   }
   return rows;
@@ -82,6 +83,9 @@ describe('parsers', () => {
 describe('CONTRIBUTING.md gate table matches the files that run the gates', () => {
   it('pre-commit', () => {
     expect(table['pre-commit']).toEqual(parseHook(read('.husky/pre-commit')));
+  });
+  it('commit-msg', () => {
+    expect(table['commit-msg']).toEqual(parseHook(read('.husky/commit-msg')));
   });
   it('pre-push', () => {
     expect(table['pre-push']).toEqual(parseHook(read('.husky/pre-push')));

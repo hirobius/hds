@@ -38,7 +38,7 @@ what it rebuilt. Run `pnpm regen` yourself after a merge made without the hooks
 
 ## Gates
 
-Two places run gates: `.husky/pre-commit` and `.husky/pre-push`. GitHub Actions
+Three places run gates: `.husky/pre-commit`, `.husky/commit-msg` and `.husky/pre-push`. GitHub Actions
 is disabled on this repo (2026-10-30), so `.github/workflows/ci.yml` never runs;
 its `ci` rows below stay for reference and as the list to run by hand before a
 push. Merges need an independent `Reviewed: PASS — <sha>` PR comment. The table below mirrors them step for step;
@@ -66,6 +66,7 @@ tooling, or restore the cache are omitted because they are not gates.
 | pre-commit | No hand-set letter-spacing                                                                          | `node scripts/check-no-custom-tracking.mjs`                                                                                                                                                |
 | pre-commit | Ralph kit drift (vendored kit files match ralph/kit.lock.json)                                      | `node scripts/check-ralph-kit-drift.mjs --staged`                                                                                                                                          |
 | pre-commit | Lessons copy (vendored .claude/lessons matches its lock)                                            | `node .claude/lessons/check-drift.mjs`                                                                                                                                                     |
+| commit-msg | Learned trailer (fix:/revert: commits carry a Learned: line)                                        | `node scripts/check-learned-trailer.mjs "$1"`                                                                                                                                              |
 | pre-push   | Record freshness (status.json + changeset presence)                                                 | `node scripts/check-record-freshness.mjs`                                                                                                                                                  |
 | pre-push   | TDD gate (source changes ship with a test)                                                          | `node scripts/check-tests-with-code.mjs`                                                                                                                                                   |
 | pre-push   | Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + test + smoke) | `node scripts/pre-push-gate.mjs`                                                                                                                                                           |
