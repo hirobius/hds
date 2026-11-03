@@ -86,7 +86,11 @@
     {
       "name": "weight",
       "type": "enum",
-      "values": ["regular", "medium", "bold"],
+      "values": [
+        "regular",
+        "medium",
+        "bold"
+      ],
       "optional": true
     }
   ],

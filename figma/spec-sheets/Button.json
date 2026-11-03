@@ -183,7 +183,10 @@
     {
       "name": "hoverEffect",
       "type": "enum",
-      "values": ["none", "wipe"],
+      "values": [
+        "none",
+        "wipe"
+      ],
       "default": "wipe"
     },
     {
@@ -227,27 +230,44 @@
     {
       "name": "shadow",
       "type": "enum",
-      "values": ["none", "hard"],
+      "values": [
+        "none",
+        "hard"
+      ],
       "default": "hard"
     },
     {
       "name": "size",
       "type": "enum",
-      "values": ["sm", "md", "lg"],
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
       "optional": true,
       "figmaProperty": "Size"
     },
     {
       "name": "tone",
       "type": "enum",
-      "values": ["success", "danger", "warning", "info", "neutral"],
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
       "optional": true,
       "figmaProperty": "Tone"
     },
     {
       "name": "variant",
       "type": "enum",
-      "values": ["primary", "secondary", "tertiary"],
+      "values": [
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
       "optional": true,
       "figmaProperty": "Variant"
     }

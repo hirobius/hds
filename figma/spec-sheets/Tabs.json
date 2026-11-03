@@ -19,7 +19,10 @@
     {
       "name": "activationMode",
       "type": "enum",
-      "values": ["automatic", "manual"],
+      "values": [
+        "automatic",
+        "manual"
+      ],
       "optional": true
     },
     {
@@ -45,7 +48,10 @@
     {
       "name": "orientation",
       "type": "enum",
-      "values": ["horizontal", "vertical"],
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
       "optional": true
     },
     {

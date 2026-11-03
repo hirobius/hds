@@ -39,7 +39,13 @@
     {
       "name": "padding",
       "type": "enum",
-      "values": ["component", "item", "px16", "px24", "none"],
+      "values": [
+        "component",
+        "item",
+        "px16",
+        "px24",
+        "none"
+      ],
       "default": "component"
     },
     {
@@ -55,7 +61,10 @@
     {
       "name": "theme",
       "type": "enum",
-      "values": ["light", "dark"],
+      "values": [
+        "light",
+        "dark"
+      ],
       "optional": true
     }
   ],

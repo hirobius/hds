@@ -81,7 +81,7 @@ function stateOf(leafName) {
   return 'default';
 }
 
-export function buildSpecSheet(name, spec, tree, apiProps) {
+export function buildSpecSheet(name, spec, tree) {
   const group = groupKey(name);
   const base = `component.${group}`;
   const all = leaves(lookup(tree, base));
@@ -108,16 +108,11 @@ export function buildSpecSheet(name, spec, tree, apiProps) {
   }));
 
   const mapping = spec.figmaPropertyMapping ?? {};
-  const props = apiProps
-    ? apiProps.map((row) => ({
-        ...row,
-        ...(mapping[row.name] ? { figmaProperty: mapping[row.name] } : {}),
-      }))
-    : Object.entries(spec.props ?? {}).map(([propName, p]) => ({
-        name: propName,
-        ...p,
-        ...(mapping[propName] ? { figmaProperty: mapping[propName] } : {}),
-      }));
+  const props = Object.entries(spec.props ?? {}).map(([propName, p]) => ({
+    name: propName,
+    ...p,
+    ...(mapping[propName] ? { figmaProperty: mapping[propName] } : {}),
+  }));
 
   const anatomy = [
     { part: 'Root' },
@@ -143,12 +138,11 @@ export function buildSpecSheet(name, spec, tree, apiProps) {
   };
 }
 
-export function buildSpecSheets(manifest, tree, api) {
+export function buildSpecSheets(manifest, tree) {
   const sheets = {};
   for (const [name, spec] of Object.entries(manifest.componentSpecs ?? {})) {
     if (!spec.core) continue;
-    const rows = api?.components?.[name]?.props ?? api?.[name]?.props;
-    sheets[name] = buildSpecSheet(name, spec, tree, Array.isArray(rows) ? rows : undefined);
+    sheets[name] = buildSpecSheet(name, spec, tree);
   }
   return sheets;
 }

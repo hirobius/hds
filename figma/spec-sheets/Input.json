@@ -117,7 +117,11 @@
     {
       "name": "size",
       "type": "enum",
-      "values": ["sm", "md", "lg"],
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
       "default": "md",
       "figmaProperty": "Size"
     },
@@ -129,7 +133,10 @@
     {
       "name": "textStyle",
       "type": "enum",
-      "values": ["body", "mono"],
+      "values": [
+        "body",
+        "mono"
+      ],
       "default": "body"
     },
     {

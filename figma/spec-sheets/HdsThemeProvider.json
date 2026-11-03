@@ -38,7 +38,10 @@
     {
       "name": "density",
       "type": "enum",
-      "values": ["comfortable", "compact"],
+      "values": [
+        "comfortable",
+        "compact"
+      ],
       "optional": true
     },
     {
@@ -64,7 +67,10 @@
     {
       "name": "theme",
       "type": "enum",
-      "values": ["light", "dark"],
+      "values": [
+        "light",
+        "dark"
+      ],
       "optional": true
     }
   ],

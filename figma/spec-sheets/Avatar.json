@@ -23,7 +23,10 @@
     {
       "name": "fallback",
       "type": "enum",
-      "values": ["initials", "icon"],
+      "values": [
+        "initials",
+        "icon"
+      ],
       "default": "initials"
     },
     {
@@ -34,7 +37,11 @@
     {
       "name": "size",
       "type": "enum",
-      "values": ["sm", "md", "lg"],
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
       "optional": true
     },
     {
@@ -45,7 +52,13 @@
     {
       "name": "status",
       "type": "enum",
-      "values": ["neutral", "info", "success", "warning", "danger"],
+      "values": [
+        "neutral",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
       "optional": true
     },
     {

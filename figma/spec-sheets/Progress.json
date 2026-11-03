@@ -29,13 +29,23 @@
     {
       "name": "size",
       "type": "enum",
-      "values": ["sm", "md", "lg"],
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
       "optional": true
     },
     {
       "name": "tone",
       "type": "enum",
-      "values": ["success", "danger", "warning", "info", "neutral"],
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
       "default": "neutral"
     },
     {
@@ -46,7 +56,10 @@
     {
       "name": "variant",
       "type": "enum",
-      "values": ["linear", "circular"],
+      "values": [
+        "linear",
+        "circular"
+      ],
       "default": "linear"
     }
   ],

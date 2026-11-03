@@ -19,7 +19,12 @@
     {
       "name": "align",
       "type": "enum",
-      "values": ["center", "end", "start", "stretch"],
+      "values": [
+        "center",
+        "end",
+        "start",
+        "stretch"
+      ],
       "default": "start"
     },
     {
@@ -44,13 +49,23 @@
     {
       "name": "gap",
       "type": "enum",
-      "values": ["medium", "tight", "normal", "inset", "spacious"],
+      "values": [
+        "medium",
+        "tight",
+        "normal",
+        "inset",
+        "spacious"
+      ],
       "default": "inset"
     },
     {
       "name": "layout",
       "type": "enum",
-      "values": ["fixed", "auto-fit", "auto-fill"],
+      "values": [
+        "fixed",
+        "auto-fit",
+        "auto-fill"
+      ],
       "default": "fixed"
     },
     {

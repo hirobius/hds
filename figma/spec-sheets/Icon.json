@@ -48,7 +48,14 @@
     {
       "name": "weight",
       "type": "enum",
-      "values": ["fill", "bold", "light", "thin", "regular", "duotone"],
+      "values": [
+        "fill",
+        "bold",
+        "light",
+        "thin",
+        "regular",
+        "duotone"
+      ],
       "optional": true
     }
   ],

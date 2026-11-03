@@ -28,7 +28,10 @@
     {
       "name": "maxWidth",
       "type": "enum",
-      "values": ["content", "max"],
+      "values": [
+        "content",
+        "max"
+      ],
       "default": "max"
     },
     {

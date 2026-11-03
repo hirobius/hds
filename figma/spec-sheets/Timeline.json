@@ -38,7 +38,10 @@
     {
       "name": "order",
       "type": "enum",
-      "values": ["desc", "asc"],
+      "values": [
+        "desc",
+        "asc"
+      ],
       "default": "desc"
     }
   ],

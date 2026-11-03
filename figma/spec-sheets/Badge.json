@@ -61,13 +61,24 @@
     {
       "name": "size",
       "type": "enum",
-      "values": ["sm", "md", "lg"],
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
       "optional": true
     },
     {
       "name": "tone",
       "type": "enum",
-      "values": ["success", "danger", "warning", "info", "neutral", "inProgress"],
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral",
+        "inProgress"
+      ],
       "optional": true
     }
   ],

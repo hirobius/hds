@@ -85,7 +85,13 @@
     {
       "name": "padding",
       "type": "enum",
-      "values": ["component", "item", "px16", "px24", "none"],
+      "values": [
+        "component",
+        "item",
+        "px16",
+        "px24",
+        "none"
+      ],
       "default": "component",
       "figmaProperty": "Padding"
     },
@@ -102,14 +108,23 @@
     {
       "name": "tone",
       "type": "enum",
-      "values": ["neutral", "danger", "success", "warning", "info"],
+      "values": [
+        "neutral",
+        "danger",
+        "success",
+        "warning",
+        "info"
+      ],
       "default": "neutral",
       "figmaProperty": "Tone"
     },
     {
       "name": "variant",
       "type": "enum",
-      "values": ["default", "accent"],
+      "values": [
+        "default",
+        "accent"
+      ],
       "default": "default",
       "figmaProperty": "Variant"
     }

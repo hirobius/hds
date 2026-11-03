@@ -33,7 +33,13 @@
     {
       "name": "tone",
       "type": "enum",
-      "values": ["success", "danger", "warning", "info", "neutral"],
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "neutral"
+      ],
       "optional": true
     },
     {

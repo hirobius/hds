@@ -38,6 +38,9 @@ scripts/__tests__/fixtures/figma-model/model.golden.json
 figma/snapshot.json
 fixtures/check-figma-drift/**/snapshot.json
 fixtures/check-figma-fallbacks/**/snapshot.json
+# Figma spec-sheet data (hds#598) — written by scripts/generate-spec-sheets.mjs,
+# whose --check compares bytes against JSON.stringify output.
+figma/spec-sheets/
 # Upgrade ledger (hds#447): release snapshots, release ledgers and the JSON
 # Schema generated from scripts/upgrade/schema.mjs. Their writers own the layout
 # and each --check compares bytes, so Prettier must not reflow them.

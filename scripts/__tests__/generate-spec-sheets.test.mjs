@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'fs';
+import { getFileInfo } from 'prettier';
 import { buildSpecSheet, buildSpecSheets, resolveToken } from '../generate-spec-sheets.mjs';
 
 const tokens = {
@@ -96,13 +97,17 @@ describe('buildSpecSheet', () => {
     expect(sheet.docsPage).toBe('/docs/components/button');
     expect(sheet.roleTokens).toEqual({ focusRing: 'role.ring' });
   });
-  it('prefers component-api props rows when given', () => {
+  it('reads props from the manifest projection only (component-api.json never feeds sheets)', () => {
     const s = buildSpecSheet('Button', spec, tokens, [
       { name: 'size', type: "'md'", required: false },
     ]);
-    expect(s.props).toEqual([
-      { name: 'size', type: "'md'", required: false, figmaProperty: 'Size' },
-    ]);
+    expect(s.props.map((p) => p.name)).toEqual(['size', 'label']);
+    expect(s.props[0]).toEqual({
+      name: 'size',
+      type: 'enum',
+      values: ['md'],
+      figmaProperty: 'Size',
+    });
   });
   it('has empty sizes when no component token group exists', () => {
     expect(buildSpecSheet('Alert', spec, tokens).sizes).toEqual([]);
@@ -137,5 +142,16 @@ describe('committed figma/spec-sheets', () => {
         `${JSON.stringify(sheet, null, 2)}\n`,
       );
     }
+  });
+});
+
+describe('figma/spec-sheets formatting', () => {
+  // The generator owns the layout and --check compares bytes, so Prettier
+  // (lint-staged on commit) must not reflow these files.
+  it('is ignored by Prettier', async () => {
+    const info = await getFileInfo('figma/spec-sheets/Button.json', {
+      ignorePath: '.prettierignore',
+    });
+    expect(info.ignored).toBe(true);
   });
 });

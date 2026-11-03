@@ -19,7 +19,10 @@
     {
       "name": "orientation",
       "type": "enum",
-      "values": ["horizontal", "vertical"],
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
       "default": "horizontal"
     },
     {
@@ -35,7 +38,10 @@
     {
       "name": "variant",
       "type": "enum",
-      "values": ["strong", "default"],
+      "values": [
+        "strong",
+        "default"
+      ],
       "optional": true
     }
   ],

@@ -33,7 +33,10 @@
     {
       "name": "density",
       "type": "enum",
-      "values": ["compact", "comfortable"],
+      "values": [
+        "compact",
+        "comfortable"
+      ],
       "optional": true
     },
     {

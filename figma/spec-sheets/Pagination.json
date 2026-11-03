@@ -41,7 +41,10 @@
     {
       "name": "variant",
       "type": "enum",
-      "values": ["default", "compact"],
+      "values": [
+        "default",
+        "compact"
+      ],
       "default": "default"
     }
   ],

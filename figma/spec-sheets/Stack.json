@@ -19,7 +19,12 @@
     {
       "name": "align",
       "type": "enum",
-      "values": ["start", "center", "end", "stretch"],
+      "values": [
+        "start",
+        "center",
+        "end",
+        "stretch"
+      ],
       "optional": true
     },
     {
@@ -39,7 +44,10 @@
     {
       "name": "direction",
       "type": "enum",
-      "values": ["row", "column"],
+      "values": [
+        "row",
+        "column"
+      ],
       "default": "column"
     },
     {
@@ -79,7 +87,12 @@
     {
       "name": "justify",
       "type": "enum",
-      "values": ["start", "center", "end", "space-between"],
+      "values": [
+        "start",
+        "center",
+        "end",
+        "space-between"
+      ],
       "optional": true
     },
     {

@@ -24,7 +24,11 @@
     {
       "name": "variant",
       "type": "enum",
-      "values": ["text", "circular", "rectangular"],
+      "values": [
+        "text",
+        "circular",
+        "rectangular"
+      ],
       "default": "rectangular"
     },
     {

@@ -72,7 +72,12 @@
     {
       "name": "variant",
       "type": "enum",
-      "values": ["panel", "nav", "card", "row"],
+      "values": [
+        "panel",
+        "nav",
+        "card",
+        "row"
+      ],
       "default": "panel"
     }
   ],

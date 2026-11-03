@@ -40,7 +40,12 @@
     {
       "name": "tone",
       "type": "enum",
-      "values": ["success", "danger", "warning", "info"],
+      "values": [
+        "success",
+        "danger",
+        "warning",
+        "info"
+      ],
       "default": "info"
     }
   ],

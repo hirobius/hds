@@ -52,7 +52,10 @@
     {
       "name": "size",
       "type": "enum",
-      "values": ["sm", "md"],
+      "values": [
+        "sm",
+        "md"
+      ],
       "default": "md"
     },
     {
@@ -62,7 +65,10 @@
     {
       "name": "variant",
       "type": "enum",
-      "values": ["primary", "secondary"],
+      "values": [
+        "primary",
+        "secondary"
+      ],
       "default": "primary"
     }
   ],
