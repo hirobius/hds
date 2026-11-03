@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { writeFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { describe, it, expect } from 'vitest';
+import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { tmpdir } from 'node:os';
+import { useTempDirsPerTest } from './helpers/temp-dirs.mjs';
 import {
   loadRegistry,
   selectGates,
@@ -13,17 +13,7 @@ import {
   REGISTRY_PATH,
 } from '../lib/guardrail-core.mjs';
 
-let cleanup = [];
-afterEach(() => {
-  for (const dir of cleanup) rmSync(dir, { recursive: true, force: true });
-  cleanup = [];
-});
-
-function tmp() {
-  const dir = mkdtempSync(join(tmpdir(), 'guardrail-core-'));
-  cleanup.push(dir);
-  return dir;
-}
+const tmp = useTempDirsPerTest('guardrail-core-');
 
 // A small synthetic registry for the pure selectGates tests.
 const FIXTURE_REGISTRY = {

@@ -6,7 +6,13 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { useCodemodFixture, expectShipped } from './helpers/codemod-fixture.mjs';
+import {
+  useCodemodFixture,
+  expectShipped,
+  itLeavesAlone,
+  itSkipsSkippedDir,
+  describeCodemodCli,
+} from './helpers/codemod-fixture.mjs';
 import { transformSource, runCodemod } from '../../codemods/spacing-steps.mjs';
 import { CODEMODS } from '../../codemods/registry.mjs';
 
@@ -42,7 +48,7 @@ describe('transformSource', () => {
     expect(r.sites).toBeGreaterThan(0);
   });
 
-  it.each([
+  itLeavesAlone(transformSource, [
     '--primitive-space-px1',
     '--primitive-space-px2',
     '--primitive-space-px60',
@@ -58,13 +64,7 @@ describe('transformSource', () => {
     'size-px6',
     'text-px10',
     'xp-px6',
-  ])('leaves %s alone', (src) => {
-    const r = transformSource(src);
-    expect(r.changed).toBe(false);
-    expect(r.source).toBe(src);
-    expect(r.sites).toBe(0);
-    expect(r.edits).toEqual([]);
-  });
+  ]);
 
   it('counts sites and reports changed lines before and after', () => {
     const src = 'a\nx: var(--primitive-space-px6) var(--primitive-space-px10);\nb\n';
@@ -128,51 +128,11 @@ describe('runCodemod', () => {
     expect(readFileSync(join(fx.dir, 'needs-rewrite/src/panel.tsx'), 'utf8')).toBe(tsx);
   });
 
-  it('does not enter a skipped directory', () => {
-    const r = runCodemod({ root: fx.dir, skip: [join(fx.dir, 'needs-rewrite')] });
-    expect(r.files).toEqual([]);
-  });
+  itSkipsSkippedDir(runCodemod, fx);
 });
 
-describe('CLI', () => {
-  const fx = useCodemodFixture('spacing-steps');
-  const run = (root, ...args) => fx.run('--root', root, ...args);
-
-  it('--check exits 1 when a rewrite is needed and writes nothing', () => {
-    const file = join(fx.dir, 'needs-rewrite/src/panel.tsx');
-    const before = readFileSync(file, 'utf8');
-    const r = run(fx.dir, '--check');
-    expect(r.status).toBe(1);
-    expect(r.stderr).toMatch(/panel\.tsx/);
-    expect(readFileSync(file, 'utf8')).toBe(before);
-  });
-
-  it('--check exits 0 on a clean tree', () => {
-    const r = run(join(fx.dir, 'clean'), '--check');
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe('');
-  });
-
-  it('--dry-run prints -/+ lines, exits 0 and writes nothing', () => {
-    const file = join(fx.dir, 'needs-rewrite/src/panel.css');
-    const before = readFileSync(file, 'utf8');
-    const r = run(fx.dir, '--dry-run');
-    expect(r.status).toBe(0);
-    const lines = r.stdout.split('\n');
-    expect(lines).toContain('-   padding: var(--primitive-space-px6);');
-    expect(lines).toContain('+   padding: var(--primitive-space-2);');
-    expect(readFileSync(file, 'utf8')).toBe(before);
-  });
-
-  it('a real run rewrites, then --check exits 0 and a second run rewrites 0 files', () => {
-    expect(run(fx.dir).status).toBe(0);
-    expect(run(fx.dir, '--check').status).toBe(0);
-    expect(run(fx.dir).stdout).toMatch(/rewrote 0 files/);
-  });
-
-  it('rejects an unknown argument with exit 2', () => {
-    expect(run(fx.dir, '--nope').status).toBe(2);
-  });
+describeCodemodCli('spacing-steps', {
+  dryRun: ['-   padding: var(--primitive-space-px6);', '+   padding: var(--primitive-space-2);'],
 });
 
 describe('wiring', () => {

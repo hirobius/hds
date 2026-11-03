@@ -1,21 +1,11 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { createHash } from 'node:crypto';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { tmpdir } from 'node:os';
+import { useTempDirsPerTest } from './helpers/temp-dirs.mjs';
 import { entryFiles, computeHash, rawUrl, verifyInstalled } from '../lib/skills-lock.mjs';
 
-let cleanup = [];
-afterEach(() => {
-  for (const dir of cleanup) rmSync(dir, { recursive: true, force: true });
-  cleanup = [];
-});
-
-function tmp() {
-  const dir = mkdtempSync(join(tmpdir(), 'skills-lock-'));
-  cleanup.push(dir);
-  return dir;
-}
+const tmp = useTempDirsPerTest('skills-lock-');
 
 describe('entryFiles', () => {
   it('returns just the skillPath file when there are no extra paths', () => {

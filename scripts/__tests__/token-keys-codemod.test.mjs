@@ -7,10 +7,11 @@
  */
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tempTree } from './helpers/codemod-fixture.mjs';
 import { CODEMODS, runCodemod as runRegistered } from '../../codemods/registry.mjs';
 import { rulesFromSteps, runCodemod, transformSource } from '../../codemods/token-keys.mjs';
 
@@ -54,14 +55,7 @@ const RULES = rulesFromSteps(STEPS);
 const one = (body, imports = `import { hds } from '${PKG}';`) =>
   transformSource(`${imports}\n${body}\n`, RULES);
 
-const tree = (files) => {
-  const dir = mkdtempSync(join(tmpdir(), 'token-keys-'));
-  for (const [rel, text] of Object.entries(files)) {
-    mkdirSync(dirname(join(dir, rel)), { recursive: true });
-    writeFileSync(join(dir, rel), text);
-  }
-  return dir;
-};
+const tree = (files) => tempTree('token-keys-', files);
 
 describe('rulesFromSteps', () => {
   it('keeps the token steps in release order, each with its version and map', () => {

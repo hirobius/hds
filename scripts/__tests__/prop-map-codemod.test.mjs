@@ -9,10 +9,10 @@
  */
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { expectShipped, tempTree } from './helpers/codemod-fixture.mjs';
 import { CODEMODS, runCodemod as runRegistered } from '../../codemods/registry.mjs';
 import { rulesFromSteps, runCodemod, transformSource } from '../../codemods/prop-map.mjs';
 
@@ -49,14 +49,7 @@ const RULES = rulesFromSteps(STEPS);
 const one = (body, imports = `import { Stack, Button } from '${PKG}';`) =>
   transformSource(`${imports}\n${body}\n`, RULES);
 
-const tree = (files) => {
-  const dir = mkdtempSync(join(tmpdir(), 'prop-map-'));
-  for (const [rel, text] of Object.entries(files)) {
-    mkdirSync(dirname(join(dir, rel)), { recursive: true });
-    writeFileSync(join(dir, rel), text);
-  }
-  return dir;
-};
+const tree = (files) => tempTree('prop-map-', files);
 
 describe('rulesFromSteps', () => {
   it('keeps the prop steps, each with the release its id names', () => {
@@ -244,10 +237,8 @@ describe('CLI', () => {
 
 describe('wiring', () => {
   it('is registered and in package.json#bin and #files', () => {
-    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
     expect(CODEMODS['hds-prop-map']).toEqual({ file: 'prop-map.mjs' });
-    expect(pkg.bin['hds-prop-map']).toBe('codemods/prop-map.mjs');
-    expect(pkg.files).toContain('codemods/prop-map.mjs');
+    expectShipped('prop-map');
   });
 
   it('the upgrade command hands each codemod the steps that name it', () => {
