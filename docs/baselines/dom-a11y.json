@@ -257,6 +257,9 @@
       "    span data-slot=\"label-crossfade\"",
       "      span data-crossfade-label=\"live\"",
       "  button data-hover-effect=\"wipe\" data-variant=\"tertiary\"",
+      "  button data-hover-effect=\"wipe\" data-tone=\"quiet\" data-variant=\"tertiary\"",
+      "  button data-hover-effect=\"wipe\" data-variant=\"tertiary\"",
+      "  button data-variant=\"link\"",
       "  button data-hover-effect=\"wipe\" data-tone=\"danger\" data-variant=\"secondary\"",
       "  button data-variant=\"secondary\"",
       "  button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\""
@@ -267,6 +270,9 @@
       "button, Disabled, disabled",
       "button, Toggle, not pressed",
       "button, Tertiary",
+      "button, Quiet",
+      "button, Flush",
+      "button, Link",
       "button, Danger",
       "button, Flat (opt-out)",
       "button, Small"

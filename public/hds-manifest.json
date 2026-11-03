@@ -3782,6 +3782,10 @@
           "type": "boolean",
           "optional": true
         },
+        "flush": {
+          "type": "boolean",
+          "default": false
+        },
         "hoverEffect": {
           "type": "enum",
           "values": [
@@ -3842,13 +3846,15 @@
             "danger",
             "warning",
             "info",
-            "neutral"
+            "neutral",
+            "quiet"
           ],
           "optional": true
         },
         "variant": {
           "type": "enum",
           "values": [
+            "link",
             "primary",
             "secondary",
             "tertiary"
@@ -3946,6 +3952,18 @@
           "testId": "gate:check-reduced-motion"
         },
         {
+          "rule": "The quiet tone, flush and the link variant keep the focus-visible ring of every Button.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.quiet-focus-ring"
+        },
+        {
+          "rule": "Quiet text is content.secondary and clears 4.5:1 at rest (page, raised), hovered (surface.hover) and pressed (the 5% wash), in light and dark.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.quiet-contrast"
+        },
+        {
           "rule": "Give an icon-only Button a label (or aria-label); without one it has no accessible name.",
           "required": true,
           "owner": "consumer"
@@ -3964,6 +3982,9 @@
           "type": "boolean"
         },
         "disabled": {
+          "type": "boolean"
+        },
+        "flush": {
           "type": "boolean"
         },
         "hoverEffect": {
@@ -4007,12 +4028,14 @@
             "danger",
             "warning",
             "info",
-            "neutral"
+            "neutral",
+            "quiet"
           ]
         },
         "variant": {
           "type": "enum",
           "values": [
+            "link",
             "primary",
             "secondary",
             "tertiary"
@@ -4030,7 +4053,7 @@
         "data-variant"
       ],
       "usage": {
-        "when": "Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed.",
+        "when": "Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. For a low-priority action beside a primary one use variant=\"tertiary\" tone=\"quiet\"; for a back link whose icon lines up with the heading add flush; for an action that reads as a text link in a row use variant=\"link\".",
         "whenNot": "Navigating to another page, where a link is the correct element.",
         "useInstead": [
           {

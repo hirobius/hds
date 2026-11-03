@@ -126,6 +126,13 @@ function ButtonDemo() {
         {pressed ? 'Pressed' : 'Toggle'}
       </Button>
       <Button variant="tertiary">Tertiary</Button>
+      <Button variant="tertiary" tone="quiet">
+        Quiet
+      </Button>
+      <Button variant="tertiary" flush>
+        Flush
+      </Button>
+      <Button variant="link">Link</Button>
       <Button variant="secondary" tone="danger">
         Danger
       </Button>

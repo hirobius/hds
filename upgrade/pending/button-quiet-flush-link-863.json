@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Button takes tone=\"quiet\" (secondary-text tertiary), flush (no inline padding) and variant=\"link\" (an underlined text action); drop local classes that recoloured a tertiary Button, removed its inline padding or restyled it as a link."
+}
