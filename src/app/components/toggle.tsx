@@ -30,6 +30,7 @@ import {
   type InteractionVisualState,
 } from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
+import { ControlLabel, ControlLabelText } from './control-label';
 
 /** Toggle — boolean on/off toggle with animated thumb. */
 export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
@@ -205,18 +206,9 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
   const productiveMotion = useHdsMotion('productive');
 
   return (
-    <motion.label
-      // motion's whileTap puts tabindex=0 on a non-focusable element, which gave
-      // every control two tab stops (the label, then the input). An explicit
-      // tabindex keeps motion from adding it; the native input is the one stop (hds#522).
-      tabIndex={-1}
-      whileTap={isDisabled ? undefined : { scale: 0.99 }}
-      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
-      onMouseEnter={handlers.onMouseEnter}
-      onMouseLeave={handlers.onMouseLeave}
-      onPointerDown={handlers.onPointerDown}
-      onPointerUp={handlers.onPointerUp}
-      onPointerCancel={handlers.onPointerCancel}
+    <ControlLabel
+      disabled={isDisabled}
+      pointer={handlers}
       animate={{
         y: isPressed ? hds.semantic.space.subgrid.hairline : 0,
       }}
@@ -258,24 +250,9 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
           className={toggleThumbVariants({ on: checked, disabled: isDisabled })}
         />
       </motion.span>
-      <motion.span
-        className="text-muted-foreground"
-        animate={{
-          x: isPressed ? hds.semantic.space.subgrid.hairline : 0,
-        }}
-        transition={{
-          duration: productiveMotion.duration,
-          ease: productiveMotion.easing,
-        }}
-        style={{
-          ...hds.typeStyles.ui,
-          color: isDisabled
-            ? 'var(--semantic-color-content-disabled)'
-            : 'var(--semantic-color-content-primary)',
-        }}
-      >
+      <ControlLabelText pressed={isPressed} disabled={isDisabled} className="text-muted-foreground">
         {label}
-      </motion.span>
-    </motion.label>
+      </ControlLabelText>
+    </ControlLabel>
   );
 });
