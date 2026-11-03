@@ -32,9 +32,10 @@
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { cva } from 'class-variance-authority';
-import { Check, X } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { DialogPortal, DialogOverlay, DialogTitle, DialogDescription } from './dialog';
+import { OverlayClose } from './overlay-close';
 
 // ── Keyboard awareness ────────────────────────────────────────────────────────
 
@@ -117,17 +118,7 @@ const SheetContent = /* @__PURE__ */ React.forwardRef<
         <div aria-hidden="true" className="hds-sheet-handle" />
         {children}
         {!hideClose && (
-          <DialogPrimitive.Close
-            className={cn(
-              'absolute right-4 top-4 inline-flex size-8 hds-touch-target items-center justify-center rounded-sm text-muted-foreground transition-colors',
-              // Hover steps to surface.sunken: `bg-accent` was 1.10:1 on the white popover in light (hds#522).
-              'hover:bg-[var(--semantic-color-surface-sunken)] hover:text-foreground',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-            )}
-          >
-            <X aria-hidden="true" className="size-4" />
-            <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
+          <OverlayClose placement="absolute right-4 top-4 inline-flex size-8 hds-touch-target" />
         )}
       </DialogPrimitive.Content>
     </DialogPortal>
