@@ -1,4 +1,7 @@
-/** @internal — not part of @hirobius/design-system public API surface. */
+/**
+ * @internal — not part of @hirobius/design-system public API surface.
+ * @doc-ignore  listbox helpers shared by the two Combobox files, not an HDS component
+ */
 /**
  * The listbox-popup plumbing Combobox and its creatable arm
  * (combobox-creatable.tsx) share: open/query/active-row state and ids, the

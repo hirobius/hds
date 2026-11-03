@@ -1,4 +1,7 @@
-/** @internal — not part of @hirobius/design-system public API surface. */
+/**
+ * @internal — not part of @hirobius/design-system public API surface.
+ * @doc-ignore  close button shared by Dialog and Sheet, not an HDS component
+ */
 /**
  * The X close button that Dialog.Content and Sheet.Content (sheet.tsx) both
  * render in their top-right padding: its colours, hover fill, focus ring, icon

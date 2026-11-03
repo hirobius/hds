@@ -291,7 +291,9 @@ export function discoverHdsComponents() {
     if (parseTags(findFileJsDocBlock(source), source).docIgnore) continue;
 
     for (const name of exportedNames) {
-      // @doc-ignore is a file-level "skip me" marker (not currently in use anywhere).
+      // @doc-ignore is a file-level "skip me" marker: a module that is not an HDS
+      // component (the ./form adapters, helpers two components share such as
+      // combobox-list.tsx) stays out of the manifest. tests/manifest-internal-helpers.test.ts.
       // @doc-exempt is a component-level "no docs page" marker — the component is
       // still real (e.g. Card ships in GENERATIVE_SUBSET) and must surface in
       // the manifest so its tier and metadata can be governed. Callers that build
