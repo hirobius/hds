@@ -552,7 +552,7 @@
  *            productive motion tokens;
  *   end / closed — the toast slides out toward the swipe edge on the exit
  *            tokens. A button/timer dismiss never swiped, so its end vars
- *            are unset and the same keyframes start from rest (0
+ *            are unset and the same keyframes start from rest (0px
  *            fallbacks) — one consistent exit either way. The slide travels
  *            the toast's own size plus the viewport padding
  *            (--semantic-space-fixed-sm, the Viewport's p-fixed-sm) so no
@@ -587,8 +587,8 @@
     /* Short aliases for the exit keyframes: Radix's swipe-end vars, plus the
        travel distance (the toast's own size plus the viewport padding),
        defined once here and read as var(--_t) per axis. */
-    --_x: var(--radix-toast-swipe-end-x, 0);
-    --_y: var(--radix-toast-swipe-end-y, 0);
+    --_x: var(--radix-toast-swipe-end-x, 0px);
+    --_y: var(--radix-toast-swipe-end-y, 0px);
     --_t: calc(100% + var(--semantic-space-fixed-sm));
     animation: hds-toast-out var(--hds-motion-exit-duration) var(--hds-motion-exit-easing) both;
   }
@@ -612,7 +612,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hds-toast {
+    .hds-toast,
+    .hds-toast[data-swipe] {
       animation: none;
       transition: none;
       transform: none;

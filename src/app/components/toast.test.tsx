@@ -104,13 +104,19 @@ describe('Toast swipe-follow + slide-out exit (hds#938)', () => {
     // A button/timer dismiss never swiped: the closed state takes the same exit.
     expect(toastCss).toContain(":is([data-swipe='end'], [data-state='closed'])");
     expect(toastCss).toContain('var(--hds-motion-exit-duration)');
-    // From rest — a non-swipe dismiss has no swipe-end vars set.
-    expect(toastCss).toContain('var(--radix-toast-swipe-end-x, 0)');
+    // From rest — a non-swipe dismiss has no swipe-end vars set. The
+    // fallbacks must be 0px, not 0: the exit keyframes add them to a
+    // length in calc(), and a unitless 0 makes that value invalid.
+    expect(toastCss).toContain('var(--radix-toast-swipe-end-x, 0px)');
+    expect(toastCss).toContain('var(--radix-toast-swipe-end-y, 0px)');
   });
 
   it('drops the follow and the slide under reduced motion', () => {
     const reduced = toastCss.slice(toastCss.indexOf('prefers-reduced-motion'));
     expect(reduced).toContain('.hds-toast');
+    // The [data-swipe] arm raises specificity so the rule beats the
+    // .hds-toast[data-swipe='move'] follow rule in the same layer.
+    expect(reduced).toContain('.hds-toast[data-swipe]');
     expect(reduced).toContain('animation: none');
     expect(reduced).toContain('transform: none');
   });
