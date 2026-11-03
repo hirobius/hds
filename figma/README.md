@@ -25,7 +25,15 @@ committed. `figma/snapshot.json` is committed: it records Figma's state.
 
 ## Where agents write
 
-Two Figma files (ADR-026, amended 2026-10-07; both in `figma/links.json`):
+Three Figma areas (ADR-026, amended 2026-10-07; named in `figma/links.json`).
+`pnpm figma:links --check` fails while any of the three is unnamed there, or
+while two areas share one key or one name:
+
+| Area                | File                                                                  | Who may write                                                                                                            | Who may delete                              | Who publishes                                                   |
+| ------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- | --------------------------------------------------------------- |
+| Library (locked)    | `HDS Tokens & Components` (`libraryFileKey`)                          | Adrian; agents restyle, fix, add, copy or redraw components. Variables and styles only from code, via Sync or `delta.js` | No agent, ever; Adrian only (promote prune) | Adrian only                                                     |
+| Staging             | `HDS Staging` (`stagingFileKey`)                                      | Agents drafting a new component                                                                                          | Agents, their own drafts, after the ingest  | No one — never published; Sync never targets it                 |
+| Visual explorations | Not created yet (`explorationsFileKey`, once Adrian creates the file) | Adrian; agents drafting explorations                                                                                     | Adrian; agents, their own drafts            | No one — a pick is redrawn in the library, like a staging draft |
 
 - **The HDS library**, `HDS Tokens & Components` (`2VgBbVpKiDnu0aftJEVyBQ`,
   `libraryFileKey`): the one file consumers subscribe to. The staging copy became this
@@ -36,6 +44,12 @@ Two Figma files (ADR-026, amended 2026-10-07; both in `figma/links.json`):
   ingests it by redrawing it in the library and deletes the draft
   ([below](#new-components-draft-in-staging-ingest-to-the-library)). Sync, `delta.js` and
   the promote plugin never target it.
+- **Visual explorations** (`explorationsFileKey`): the third area, for visual
+  exploration drafts that are neither staging drafts nor library work. No file
+  exists yet, so `figma/links.json` names no key for it — a key is never
+  invented. Adrian creates the file in Figma, then its key and name go into
+  `figma/links.json` and the table above. Until then `pnpm figma:links --check`
+  fails by design, naming the missing key.
 
 The rules:
 
@@ -46,7 +60,8 @@ The rules:
   click by Adrian) or `delta.js` (an agent, zero clicks), below. Neither ever deletes.
 - **Never delete anything in the library and never publish it.** Adrian publishes. A
   deliberate prune is the promote plugin (`pnpm figma:push --prune`), and only Adrian runs
-  it. HDS Staging is the one file where an agent deletes: its own drafts, after the ingest.
+  it. The scratch files are where an agent deletes: HDS Staging (its own drafts, after the
+  ingest) and, once it exists, visual explorations (its own drafts).
 - **Retiring a component is a move, not a delete.** Removed from code: move it to the
   "Archive" page and rename it `_<Name> (archived <date>)`; the leading underscore keeps it
   out of publishing, and Adrian deletes it later. Deprecated in code: move it to the

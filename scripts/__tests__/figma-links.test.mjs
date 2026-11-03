@@ -44,6 +44,13 @@ function miniRoot() {
       repository: 'https://github.com/hirobius/hds',
       branch: 'main',
       docsUrl: 'https://docs.example.org',
+      libraryFileKey: 'LibraryKey123',
+      libraryFileName: 'HDS Library',
+      stagingFileKey: 'StagingKey123',
+      stagingFileName: 'HDS Staging',
+      explorationsFileKey: 'ExplorationsKey123',
+      explorationsFileName: 'HDS Visual Explorations',
+      retiredFiles: [],
     }),
   );
   write(
@@ -141,10 +148,99 @@ describe('pnpm figma:links', () => {
   });
 });
 
+describe('the three Figma areas (hds#763)', () => {
+  const editLinks = (root, edit) => {
+    const path = join(root, 'figma', 'links.json');
+    const links = JSON.parse(readFileSync(path, 'utf8'));
+    writeFileSync(path, JSON.stringify(edit(links)));
+  };
+
+  it('fails the check on a links.json missing explorationsFileKey', async () => {
+    const root = miniRoot();
+    editLinks(root, ({ explorationsFileKey: _key, explorationsFileName: _name, ...rest }) => rest);
+    const problem =
+      'figma/links.json has no explorationsFileKey: the visual explorations area is not named. Adrian creates the explorations file in Figma, then add explorationsFileKey and explorationsFileName.';
+    expect(computeDesignLinks(root).problems).toContain(problem);
+    expect((await checkDesignLinks(root)).problems).toContain(problem);
+  });
+
+  it('fails the check when any of the three area keys is missing', () => {
+    for (const [keyField, nameField, problem] of [
+      [
+        'libraryFileKey',
+        'libraryFileName',
+        'figma/links.json has no libraryFileKey: the library area is not named. Add libraryFileKey and libraryFileName.',
+      ],
+      [
+        'stagingFileKey',
+        'stagingFileName',
+        'figma/links.json has no stagingFileKey: the staging area is not named. Add stagingFileKey and stagingFileName.',
+      ],
+    ]) {
+      const root = miniRoot();
+      editLinks(root, (links) => {
+        const next = { ...links };
+        delete next[keyField];
+        delete next[nameField];
+        return next;
+      });
+      expect(computeDesignLinks(root).problems).toContain(problem);
+    }
+  });
+
+  it('fails the check on an area named by key but not by name, or the other way round', () => {
+    const root = miniRoot();
+    editLinks(root, ({ explorationsFileName: _name, ...rest }) => rest);
+    expect(computeDesignLinks(root).problems).toContain(
+      'figma/links.json sets explorationsFileKey but has no explorationsFileName: a Figma area needs both its file key and its file name.',
+    );
+    const other = miniRoot();
+    editLinks(other, ({ explorationsFileKey: _key, ...rest }) => rest);
+    expect(computeDesignLinks(other).problems).toContain(
+      'figma/links.json sets explorationsFileName but has no explorationsFileKey: a Figma area needs both its file key and its file name.',
+    );
+  });
+
+  it('fails the check when the explorations key or name is another area’s, or a retired file’s', () => {
+    const asLibrary = miniRoot();
+    editLinks(asLibrary, (links) => ({ ...links, explorationsFileKey: links.libraryFileKey }));
+    expect(computeDesignLinks(asLibrary).problems).toContain(
+      'figma/links.json: explorationsFileKey is the same file key as libraryFileKey (LibraryKey123): each Figma area is its own file.',
+    );
+
+    const asStaging = miniRoot();
+    editLinks(asStaging, (links) => ({ ...links, explorationsFileKey: links.stagingFileKey }));
+    expect(computeDesignLinks(asStaging).problems).toContain(
+      'figma/links.json: explorationsFileKey is the same file key as stagingFileKey (StagingKey123): each Figma area is its own file.',
+    );
+
+    const sameName = miniRoot();
+    editLinks(sameName, (links) => ({ ...links, explorationsFileName: links.libraryFileName }));
+    expect(computeDesignLinks(sameName).problems).toContain(
+      'figma/links.json: explorationsFileName is the same file name as libraryFileName ("HDS Library"): file names must tell the Figma areas apart.',
+    );
+
+    const retired = miniRoot();
+    editLinks(retired, (links) => ({
+      ...links,
+      retiredFiles: [{ fileKey: 'ExplorationsKey123', fileName: 'HDS Explorations (old)' }],
+    }));
+    expect(computeDesignLinks(retired).problems).toContain(
+      "figma/links.json: explorationsFileKey (ExplorationsKey123) is a retired file's key.",
+    );
+  });
+});
+
 describe('this repository', () => {
   it('has no broken or bypassed Figma links, and its design links doc is current (run pnpm figma:links)', async () => {
     const check = await checkDesignLinks(REPO);
-    expect(check.problems).toEqual([]);
+    // The one expected problem (hds#763): no visual explorations Figma file
+    // exists yet, and its key must not be invented. Adrian creates the file,
+    // adds explorationsFileKey/explorationsFileName to figma/links.json, and
+    // this expectation goes back to [].
+    expect(check.problems).toEqual([
+      'figma/links.json has no explorationsFileKey: the visual explorations area is not named. Adrian creates the explorations file in Figma, then add explorationsFileKey and explorationsFileName.',
+    ]);
     // Assert through readmeDiff, not the bare boolean: a bare
     // `expected false to be true` names neither the file nor the change, which
     // is what made hds#229 expensive to diagnose.
