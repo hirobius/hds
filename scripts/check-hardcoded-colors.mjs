@@ -46,25 +46,17 @@
  * Via:  pnpm check:colors
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, extname, relative, basename, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { readFileSync } from 'fs';
+import { basename } from 'path';
+import { emitResult } from './lib/gate-output.mjs';
+import { fileLines, gateContext, gateFiles, isCommentLine } from './lib/source-scan.mjs';
 
-const jsonMode = hasJsonFlag(process.argv);
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src');
-
-// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const ctx = gateContext(import.meta.url);
+const { ROOT, jsonMode } = ctx;
 
 // ── Exemptions ────────────────────────────────────────────────────────────────
 
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '__tests__']);
+const SKIP_DIRS = ['node_modules', '.git', 'dist', '__tests__'];
 
 const SKIP_BASENAMES = new Set([
   'HdsWebGLTriangleLogo.tsx',
@@ -73,14 +65,6 @@ const SKIP_BASENAMES = new Set([
   'generated-token-descriptions.ts',
   'generated-token-vars.d.ts',
 ]);
-
-function isSkippedFile(fullPath) {
-  const base = basename(fullPath);
-  if (SKIP_BASENAMES.has(base)) return true;
-  if (base.endsWith('.test.ts') || base.endsWith('.spec.ts')) return true;
-  if (base.endsWith('.test.tsx') || base.endsWith('.spec.tsx')) return true;
-  return false;
-}
 
 /** Returns true if the file opts out via // @sketchbook-canvas in first 10 lines. */
 function isSketchbookCanvas(fullPath) {
@@ -106,32 +90,32 @@ const SVG_EXEMPT_RE = /^(?:none|currentColor|inherit|transparent|url\s*\(|var\s*
 const NAMED_COLOR_RE =
   /^(?:red|blue|green|white|black|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal|lime|silver|gold)\b/i;
 
-// ── Walk ──────────────────────────────────────────────────────────────────────
-
-function walk(dir, files = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (SKIP_DIRS.has(entry)) continue;
-    const stat = statSync(full);
-    if (stat.isDirectory()) {
-      walk(full, files);
-      continue;
-    }
-    const ext = extname(entry);
-    if (ext !== '.tsx' && ext !== '.ts') continue;
-    if (isSkippedFile(full)) continue;
-    if (isSketchbookCanvas(full)) continue;
-    files.push(full);
-  }
-  return files;
-}
-
 // ── Suppression check ─────────────────────────────────────────────────────────
 
 function isSuppressed(lines, lineIdx) {
   const same = lines[lineIdx] || '';
   const prev = lineIdx > 0 ? lines[lineIdx - 1] : '';
   return same.includes('// color-ok:') || prev.includes('// color-ok:');
+}
+
+// One line-by-line regex scan shared by C1 and C2: every match whose captured
+// value `isHardcoded` and is not suppressed becomes a violation.
+function scanAssignments(lines, rel, violations, { re, check, isHardcoded, detail, fix }) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    // Skip comment lines
+    if (isCommentLine(line)) continue;
+
+    re.lastIndex = 0;
+    let m;
+    while ((m = re.exec(line)) !== null) {
+      const val = (m[1] || m[2] || m[3] || '').trim();
+      if (!val) continue;
+      if (!isHardcoded(val)) continue;
+      if (isSuppressed(lines, i)) continue;
+      violations.push({ check, file: rel, line: i + 1, detail: detail(val), fix });
+    }
+  }
 }
 
 // ── C1 — SVG fill= / stroke= with hardcoded color ────────────────────────────
@@ -142,33 +126,13 @@ function isSuppressed(lines, lineIdx) {
 //
 // Also catches fill={expr} where the string literal inside contains a color.
 
-const SVG_ATTR_RE =
-  /\b(?:fill|stroke)(?:Color)?\s*=\s*(?:"([^"]+)"|'([^']+)'|\{['"]([^'"]+)['"]\})/g;
-
-function checkSvgAttrs(lines, rel, violations) {
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    // Skip comment lines
-    if (/^\s*\/\//.test(line) || /^\s*\*/.test(line)) continue;
-
-    SVG_ATTR_RE.lastIndex = 0;
-    let m;
-    while ((m = SVG_ATTR_RE.exec(line)) !== null) {
-      const val = (m[1] || m[2] || m[3] || '').trim();
-      if (!val) continue;
-      if (SVG_EXEMPT_RE.test(val)) continue;
-      if (!COLOR_VALUE_RE.test(val)) continue;
-      if (isSuppressed(lines, i)) continue;
-      violations.push({
-        check: 'C1',
-        file: rel,
-        line: i + 1,
-        detail: `SVG fill/stroke attribute has hardcoded color: "${val}"`,
-        fix: `Use getComputedStyle(el).getPropertyValue('--semantic-color-...') or color-ok: <reason>`,
-      });
-    }
-  }
-}
+const SVG_RULE = {
+  re: /\b(?:fill|stroke)(?:Color)?\s*=\s*(?:"([^"]+)"|'([^']+)'|\{['"]([^'"]+)['"]\})/g,
+  check: 'C1',
+  isHardcoded: (val) => !SVG_EXEMPT_RE.test(val) && COLOR_VALUE_RE.test(val),
+  detail: (val) => `SVG fill/stroke attribute has hardcoded color: "${val}"`,
+  fix: `Use getComputedStyle(el).getPropertyValue('--semantic-color-...') or color-ok: <reason>`,
+};
 
 // ── C2 — Canvas context color property assignments ────────────────────────────
 //
@@ -177,44 +141,31 @@ function checkSvgAttrs(lines, rel, violations) {
 //   ctx.strokeStyle = 'oklch(...)'
 //   context.shadowColor = 'rgb(...)'
 
-const CANVAS_COLOR_RE =
-  /\.(?:fillStyle|strokeStyle|shadowColor)\s*=\s*(?:"([^"]+)"|'([^']+)'|`([^`]+)`)/g;
-
-function checkCanvasAssignments(lines, rel, violations) {
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (/^\s*\/\//.test(line) || /^\s*\*/.test(line)) continue;
-
-    CANVAS_COLOR_RE.lastIndex = 0;
-    let m;
-    while ((m = CANVAS_COLOR_RE.exec(line)) !== null) {
-      const val = (m[1] || m[2] || m[3] || '').trim();
-      if (!val) continue;
-      // Exempt CSS vars passed to canvas (valid pattern via getComputedStyle result)
-      if (val.startsWith('var(--')) continue;
-      if (!COLOR_VALUE_RE.test(val) && !NAMED_COLOR_RE.test(val)) continue;
-      if (isSuppressed(lines, i)) continue;
-      violations.push({
-        check: 'C2',
-        file: rel,
-        line: i + 1,
-        detail: `Canvas context color assignment has hardcoded value: "${val}"`,
-        fix: `Read via getComputedStyle(el).getPropertyValue('--semantic-color-...') at render time`,
-      });
-    }
-  }
-}
+const CANVAS_RULE = {
+  re: /\.(?:fillStyle|strokeStyle|shadowColor)\s*=\s*(?:"([^"]+)"|'([^']+)'|`([^`]+)`)/g,
+  check: 'C2',
+  // Exempt CSS vars passed to canvas (valid pattern via getComputedStyle result)
+  isHardcoded: (val) =>
+    !val.startsWith('var(--') && (COLOR_VALUE_RE.test(val) || NAMED_COLOR_RE.test(val)),
+  detail: (val) => `Canvas context color assignment has hardcoded value: "${val}"`,
+  fix: `Read via getComputedStyle(el).getPropertyValue('--semantic-color-...') at render time`,
+};
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walk(SRC);
+const files = gateFiles(ctx, {
+  gate: 'check-hardcoded-colors',
+  roots: ['src'],
+  exts: ['.ts', '.tsx'],
+  skipDirs: SKIP_DIRS,
+  keep: (file) => !SKIP_BASENAMES.has(basename(file)) && !isSketchbookCanvas(file),
+});
 const violations = [];
 
 for (const file of files) {
-  const rel = relative(ROOT, file).replace(/\\/g, '/');
-  const lines = readFileSync(file, 'utf-8').split('\n');
-  checkSvgAttrs(lines, rel, violations);
-  checkCanvasAssignments(lines, rel, violations);
+  const { rel, lines } = fileLines(ROOT, file);
+  scanAssignments(lines, rel, violations, SVG_RULE);
+  scanAssignments(lines, rel, violations, CANVAS_RULE);
 }
 
 if (jsonMode) {

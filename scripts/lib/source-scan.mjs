@@ -35,7 +35,7 @@
  *   if (suppressed(lines, lineIdx)) continue;
  */
 
-import { existsSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { emitResult, hasJsonFlag } from './gate-output.mjs';
@@ -411,15 +411,32 @@ export function groupByRule(violations) {
 
 /**
  * The files a line-scoped gate reads (hds#1010): the fixture file alone in
- * fixture mode, else `scanSources` over `ctx.ROOT` with `opts`.
+ * fixture mode, else `scanSources` over `ctx.ROOT` with `opts`. An optional
+ * `keep(absPath)` drops scanned files (allowlists, skipped basenames); it is
+ * not applied to the fixture file.
  *
  * @param {{ ROOT: string, isFixtureMode: boolean, fixtureFile?: string }} ctx
- * @param {Omit<Parameters<typeof scanSources>[0], 'root'>} opts
+ * @param {Omit<Parameters<typeof scanSources>[0], 'root'> & { keep?: (file: string) => boolean }} opts
  * @returns {string[]}
  */
-export function gateFiles(ctx, opts) {
+export function gateFiles(ctx, { keep, ...opts }) {
   if (ctx.isFixtureMode && ctx.fixtureFile) return [path.resolve(ctx.fixtureFile)];
-  return scanSources({ root: ctx.ROOT, ...opts });
+  const files = scanSources({ root: ctx.ROOT, ...opts });
+  return keep ? files.filter(keep) : files;
+}
+
+/**
+ * A scanned file's repo-relative posix path and its lines (hds#1010).
+ *
+ * @param {string} root
+ * @param {string} file  absolute path
+ * @returns {{ rel: string, lines: string[] }}
+ */
+export function fileLines(root, file) {
+  return {
+    rel: path.relative(root, file).replace(/\\/g, '/'),
+    lines: readFileSync(file, 'utf-8').split('\n'),
+  };
 }
 
 /** Whether a source line is a `//` or block-comment `*` line (hds#1010). */

@@ -16,16 +16,12 @@
  *   {slash* tier-ok: <reason> *slash}  (replace "slash" with the actual slash character)
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, extname, relative, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { exemptionContext } from './lib/gate-scope.mjs';
+import { fileLines, gateContext, gateFiles } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-const SRC = join(ROOT, 'src');
-
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist']);
+const ctx = gateContext(import.meta.url);
+const { ROOT } = ctx;
 
 // Resolved absolute paths of files that legitimately use --primitive-* vars
 const ALLOWLIST = new Set([
@@ -43,36 +39,20 @@ const ALLOWLIST = new Set([
   join(ROOT, 'src', 'app', 'design-system', 'generated-token-descriptions.ts'),
 ]);
 
-// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
-
 const TIER_BYPASS_RE = /var\(--primitive-/;
 
-function walk(dir, files = []) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (SKIP_DIRS.has(entry)) continue;
-    const stat = statSync(full);
-    if (stat.isDirectory()) {
-      walk(full, files);
-      continue;
-    }
-    const ext = extname(entry);
-    if (!['.tsx', '.ts', '.css'].includes(ext)) continue;
-    if (ALLOWLIST.has(full)) continue;
-    files.push(full);
-  }
-  return files;
-}
-
-const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : walk(SRC);
+// Spec files stay in scope: a spec under src/ is held to the same tier rule.
+const files = gateFiles(ctx, {
+  gate: 'check-tier-bypass',
+  roots: ['src'],
+  exts: ['.tsx', '.ts', '.css'],
+  includeSpecs: true,
+  keep: (file) => !ALLOWLIST.has(file),
+});
 const violations = [];
 
 for (const file of files) {
-  const rel = relative(ROOT, file).replace(/\\/g, '/');
-  const lines = readFileSync(file, 'utf-8').split('\n');
+  const { rel, lines } = fileLines(ROOT, file);
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
