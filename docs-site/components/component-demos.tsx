@@ -75,6 +75,7 @@ import {
   Briefcase,
   CircleCheck,
   Copy,
+  FileText,
   MapPin,
   Search,
   Star,
@@ -685,10 +686,20 @@ function DividerDemo() {
 
 function EmptyStateDemo() {
   return (
-    <EmptyState
-      title="No projects yet"
-      description="Create a project to start tracking tokens and components."
-    />
+    <div style={demoStack}>
+      <EmptyState
+        title="No projects yet"
+        description="Create a project to start tracking tokens and components."
+      />
+      <EmptyState
+        variant="teaching"
+        framed
+        icon={FileText}
+        title="No projects yet"
+        description="Create a project to start tracking tokens and components."
+        action={<Button variant="primary">New project</Button>}
+      />
+    </div>
   );
 }
 

@@ -1610,6 +1610,12 @@
       "values": null,
       "default": null
     },
+    "framed": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
     "icon": {
       "type": "LucideIcon",
       "optional": true,
@@ -1620,13 +1626,22 @@
       "type": "boolean",
       "optional": true,
       "values": null,
-      "default": "true"
+      "default": null
     },
     "title": {
       "type": "ReactNode",
       "optional": false,
       "values": null,
       "default": null
+    },
+    "variant": {
+      "type": "'inline' | 'teaching'",
+      "optional": true,
+      "values": [
+        "inline",
+        "teaching"
+      ],
+      "default": "inline"
     }
   },
   "Field": {
