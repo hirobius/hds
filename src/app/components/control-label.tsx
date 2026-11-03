@@ -1,4 +1,7 @@
-/** @internal — not part of @hirobius/design-system public API surface. */
+/**
+ * @internal — not part of @hirobius/design-system public API surface.
+ * @doc-ignore  label root shared by Checkbox, Toggle and Radio, not an HDS component
+ */
 /**
  * The `<motion.label>` root that Checkbox, Toggle and Radio all render around
  * their native input: one tab stop (`tabIndex={-1}`), the 0.99 tap scale on

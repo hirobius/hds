@@ -3,12 +3,12 @@
  * Internal helpers stay out of the public manifest.
  *
  * A module that two components share (combobox-list.tsx from hds#1111,
- * overlay-close.tsx from hds#1116) is not an HDS component. Its file-level
- * JSDoc carries `@doc-ignore <reason>`, the marker src/form/hds-form.tsx uses,
- * so scripts/component-discovery.mjs skips it and `pnpm manifest:generate`
- * writes no spec for its PascalCase exports. Without the marker, `@internal`
- * alone surfaces each export as a hidden spec with a null tier, and
- * validate-manifest fails on the next regen.
+ * overlay-close.tsx from hds#1116, control-label.tsx from hds#1009) is not
+ * an HDS component. Its file-level JSDoc carries `@doc-ignore <reason>`,
+ * the marker src/form/hds-form.tsx uses, so scripts/component-discovery.mjs
+ * skips it and `pnpm manifest:generate` writes no spec for its PascalCase
+ * exports. Without the marker, `@internal` alone surfaces each export as a
+ * hidden spec with a null tier, and validate-manifest fails on the next regen.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -37,6 +37,10 @@ const INTERNAL_HELPERS = [
     exports: ['ListboxFooter', 'OptionCheck'],
   },
   { file: 'src/app/components/overlay-close.tsx', exports: ['OverlayClose'] },
+  {
+    file: 'src/app/components/control-label.tsx',
+    exports: ['ControlLabel', 'ControlLabelText'],
+  },
 ];
 
 const discovered = discoverHdsComponents().components as Array<{
