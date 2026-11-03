@@ -70,7 +70,10 @@ describe('the committed tree is fresh', () => {
       const res = run(script, '--check');
       expect(res.status, res.stderr).toBe(0);
     },
-    30_000,
+    // 60s, not 30: generate-llms-txt --check alone takes >30s wall on the
+    // fleet VM (it rebuilds eight llms files from the full corpus), so the
+    // llms case timed out deterministically there while exiting 0.
+    60_000,
   );
 });
 

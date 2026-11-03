@@ -748,11 +748,15 @@ describe('check-upgrade-ledger.mjs CLI', () => {
     expect(run(['--fixture-mode'], env('passing.example.d')).status).toBe(0);
   });
 
+  // The CLI takes ~27s wall on this repository on the fleet VM (mostly
+  // subprocess and I/O wait), over the 20s global timeout, so this test
+  // timed out deterministically there. Same allowance check-dupes gives
+  // its passes-on-this-repository test.
   it('passes on this repository, with no network and no build', () => {
     const res = run([]);
     expect(res.status).toBe(0);
     expect(onlyRecordHints(res.stderr)).toBe(true);
-  });
+  }, 60_000);
 
   it('runs in pretest, so pnpm test fails a change without its step', () => {
     const pkg = readPkg(REPO);

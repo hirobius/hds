@@ -15,40 +15,10 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
-import { resolveAlias } from '../../../scripts/lib/token-tree.mjs';
 import { contrastRatio } from '../../app/utils/colorUtils';
+import { tokenHex, type TokenMode } from './style-test-helpers';
 
-const TOKENS = JSON.parse(
-  readFileSync(resolve(__dirname, '../../../hirobius.tokens.json'), 'utf8'),
-) as Record<string, unknown>;
-
-type Mode = 'Light' | 'Dark';
-type Leaf = {
-  $value: unknown;
-  $extensions?: Record<string, { modes?: Record<string, unknown> }>;
-};
-
-function leaf(path: string): Leaf {
-  const node = path
-    .split('.')
-    .reduce<unknown>((n, k) => (n as Record<string, unknown>)?.[k], TOKENS);
-  if (!node || typeof node !== 'object' || !('$value' in node))
-    throw new Error(`no token at ${path}`);
-  return node as Leaf;
-}
-
-/** A token's hex in a mode, following aliases (role → semantic → primitive). */
-function hex(path: string, mode: Mode): string {
-  const t = leaf(path);
-  const raw = t.$extensions?.['com.figma.variables']?.modes?.[mode] ?? t.$value;
-  if (typeof raw === 'string' && /^\{.+\}$/.test(raw)) {
-    const target = raw.slice(1, -1);
-    if (leaf(target).$extensions?.['com.figma.variables']) return hex(target, mode);
-  }
-  return resolveAlias(raw, TOKENS) as string;
-}
-
-const FLOOR: Record<Mode, number> = { Light: 1.15, Dark: 1.5 };
+const FLOOR: Record<TokenMode, number> = { Light: 1.15, Dark: 1.5 };
 const FILL = 'role.popover';
 const BORDER = 'role.border';
 const BACKDROPS = [
@@ -58,20 +28,23 @@ const BACKDROPS = [
   'semantic.color.surface.overlay',
 ];
 
-describe.each<Mode>(['Light', 'Dark'])('overlay edge in %s', (mode) => {
+describe.each<TokenMode>(['Light', 'Dark'])('overlay edge in %s', (mode) => {
   it.each(BACKDROPS)(`separates from %s at the floor`, (backdrop) => {
-    const b = hex(backdrop, mode);
-    const edge = Math.max(contrastRatio(hex(FILL, mode), b), contrastRatio(hex(BORDER, mode), b));
+    const b = tokenHex(backdrop, mode);
+    const edge = Math.max(
+      contrastRatio(tokenHex(FILL, mode), b),
+      contrastRatio(tokenHex(BORDER, mode), b),
+    );
     expect(edge).toBeGreaterThanOrEqual(FLOOR[mode]);
   });
 
   it('fills overlays per the open-layout spec (white / neutral.800 #212630)', () => {
-    expect(hex(FILL, mode)).toBe(mode === 'Light' ? '#ffffff' : '#212630');
+    expect(tokenHex(FILL, mode)).toBe(mode === 'Light' ? '#ffffff' : '#212630');
   });
 
   it('keeps popover text at WCAG AA on the overlay fill', () => {
-    const fg = hex('role.popover-foreground', mode);
-    expect(contrastRatio(fg, hex(FILL, mode))).toBeGreaterThanOrEqual(4.5);
+    const fg = tokenHex('role.popover-foreground', mode);
+    expect(contrastRatio(fg, tokenHex(FILL, mode))).toBeGreaterThanOrEqual(4.5);
   });
 });
 
