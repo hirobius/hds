@@ -21,7 +21,6 @@ import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { motion } from 'motion/react';
 import { cva } from 'class-variance-authority';
-import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
@@ -31,6 +30,7 @@ import {
   type InteractionVisualState,
 } from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
+import { ControlLabel, ControlLabelText } from './control-label';
 
 /** Radio — radio button with animated selection indicator. */
 export type HdsRadioDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
@@ -200,15 +200,7 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
   const expressiveMotion = useHdsMotion('expressive');
 
   return (
-    <motion.label
-      // motion's whileTap puts tabindex=0 on a non-focusable element, which gave
-      // every control two tab stops (the label, then the input). An explicit
-      // tabindex keeps motion from adding it; the native input is the one stop (hds#522).
-      tabIndex={-1}
-      whileTap={isDisabled ? undefined : { scale: 0.99 }}
-      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
-      className={radioRootVariants({ state: visualState })}
-    >
+    <ControlLabel disabled={isDisabled} className={radioRootVariants({ state: visualState })}>
       <input
         ref={ref}
         type="radio"
@@ -266,23 +258,9 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
           />
         )}
       </motion.span>
-      <motion.span
-        animate={{
-          x: isPressed ? hds.semantic.space.subgrid.hairline : 0,
-        }}
-        transition={{
-          duration: productiveMotion.duration,
-          ease: productiveMotion.easing,
-        }}
-        style={{
-          ...hds.typeStyles.ui,
-          color: isDisabled
-            ? 'var(--semantic-color-content-disabled)'
-            : 'var(--semantic-color-content-primary)',
-        }}
-      >
+      <ControlLabelText pressed={isPressed} disabled={isDisabled}>
         {label}
-      </motion.span>
-    </motion.label>
+      </ControlLabelText>
+    </ControlLabel>
   );
 });
