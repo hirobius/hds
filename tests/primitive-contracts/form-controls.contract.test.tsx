@@ -73,6 +73,27 @@ function Stateful({
   return <>{children(on, set)}</>;
 }
 
+/** Tab from the top skips the disabled `control` and lands on the button after it. */
+async function expectTabSkips(control: React.ReactNode) {
+  render(
+    <>
+      {control}
+      <button type="button">next</button>
+    </>,
+  );
+  await user().tab();
+  expect(document.activeElement).toBe(screen.getByRole('button', { name: 'next' }));
+}
+
+/** The textbox `name` is aria-invalid and described by the error alert, which is returned. */
+function expectInvalidDescribedByAlert(name: string) {
+  const field = screen.getByRole('textbox', { name });
+  expect(field.getAttribute('aria-invalid')).toBe('true');
+  const alert = screen.getByRole('alert');
+  expect(field.getAttribute('aria-describedby')).toContain(alert.id);
+  return alert;
+}
+
 describe('Checkbox accessibility contract', () => {
   it('a11y:checkbox.space-toggles Space toggles the checkbox from the keyboard', async () => {
     render(
@@ -170,14 +191,7 @@ describe('Radio accessibility contract', () => {
   });
 
   it('a11y:radio.disabled-skipped a disabled radio is skipped by Tab', async () => {
-    render(
-      <>
-        <Radio name="x" label="Off" checked={false} disabled onChange={noop} />
-        <button type="button">next</button>
-      </>,
-    );
-    await user().tab();
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'next' }));
+    await expectTabSkips(<Radio name="x" label="Off" checked={false} disabled onChange={noop} />);
   });
 
   it('a11y:radio.target-size the row lifts to the touch minimum on a phone', () => {
@@ -213,14 +227,7 @@ describe('Toggle accessibility contract', () => {
   });
 
   it('a11y:toggle.disabled-skipped a disabled switch is skipped by Tab', async () => {
-    render(
-      <>
-        <Toggle label="Off" checked={false} disabled onChange={noop} />
-        <button type="button">next</button>
-      </>,
-    );
-    await user().tab();
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'next' }));
+    await expectTabSkips(<Toggle label="Off" checked={false} disabled onChange={noop} />);
   });
 
   it('a11y:toggle.target-size the row lifts to the touch minimum on a phone', () => {
@@ -489,11 +496,8 @@ describe('Input accessibility contract', () => {
 
   it('a11y:input.error-wiring an error sets aria-invalid, is described by the message, and is announced', () => {
     render(<Input label="Email" error errorMessage="Enter a valid email" />);
-    const field = screen.getByRole('textbox', { name: 'Email' });
-    expect(field.getAttribute('aria-invalid')).toBe('true');
-    const alert = screen.getByRole('alert');
+    const alert = expectInvalidDescribedByAlert('Email');
     expect(alert.textContent).toBe('Enter a valid email');
-    expect(field.getAttribute('aria-describedby')).toContain(alert.id);
   });
 
   it('a11y:input.sr-field a screen reader speaks the label, the invalid state and the error', async () => {
@@ -515,10 +519,7 @@ describe('Input accessibility contract', () => {
 describe('Textarea accessibility contract', () => {
   it('a11y:textarea.error-wiring an error sets aria-invalid, is described by the message, and is announced', () => {
     render(<Textarea label="Message" error errorMessage="Required" />);
-    const field = screen.getByRole('textbox', { name: 'Message' });
-    expect(field.getAttribute('aria-invalid')).toBe('true');
-    const alert = screen.getByRole('alert');
-    expect(field.getAttribute('aria-describedby')).toContain(alert.id);
+    expectInvalidDescribedByAlert('Message');
   });
 
   it('a11y:textarea.sr-field a screen reader speaks the label, the invalid state and the error', async () => {
@@ -550,10 +551,7 @@ describe('TokenField accessibility contract', () => {
     render(
       <TokenField label="Message" value="" onChange={() => {}} error errorMessage="Required" />,
     );
-    const field = screen.getByRole('textbox', { name: 'Message' });
-    expect(field.getAttribute('aria-invalid')).toBe('true');
-    const alert = screen.getByRole('alert');
-    expect(field.getAttribute('aria-describedby')).toContain(alert.id);
+    expectInvalidDescribedByAlert('Message');
   });
 
   it('a11y:token-field.keyboard Tab enters and leaves the field, and Backspace takes a chip whole', async () => {

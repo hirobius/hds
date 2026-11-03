@@ -164,6 +164,24 @@ async function openWithKeyboard(spec: Spec, key = spec.openKeys[0]) {
   return { u, trigger };
 }
 
+/** Tab (or Shift+Tab) past every stop and then some: focus never leaves `surface`. */
+async function expectTabStaysIn(u: ReturnType<typeof user>, surface: HTMLElement, shift = false) {
+  const presses = focusables(surface).length + 2;
+  for (let i = 0; i < presses; i++) {
+    await u.tab({ shift });
+    expect(surface.contains(document.activeElement)).toBe(true);
+  }
+}
+
+/** One Tab in the open overlay: it stays open and focus stays inside. */
+async function expectTabContained(spec: Spec) {
+  const { u } = await openWithKeyboard(spec);
+  const surface = spec.surface() as HTMLElement;
+  await u.tab();
+  expect(spec.surface()).not.toBeNull();
+  expect(surface.contains(document.activeElement)).toBe(true);
+}
+
 describe.each(OVERLAYS)('$name keyboard contract', (spec) => {
   it.each(spec.openKeys)(`${spec.ids.open} - opens from the trigger with %j`, async (key) => {
     await openWithKeyboard(spec, key);
@@ -228,16 +246,9 @@ describe('Tab behaviour', () => {
     async (_name, spec) => {
       const { u } = await openWithKeyboard(spec);
       const surface = spec.surface() as HTMLElement;
-      const presses = focusables(surface).length + 2;
-      for (let i = 0; i < presses; i++) {
-        await u.tab();
-        expect(surface.contains(document.activeElement)).toBe(true);
-      }
+      await expectTabStaysIn(u, surface);
       // Shift+Tab is trapped too.
-      for (let i = 0; i < presses; i++) {
-        await u.tab({ shift: true });
-        expect(surface.contains(document.activeElement)).toBe(true);
-      }
+      await expectTabStaysIn(u, surface, true);
     },
   );
 
@@ -258,34 +269,20 @@ describe('Tab behaviour', () => {
       const { u, trigger } = await openWithKeyboard(spec);
       const surface = spec.surface() as HTMLElement;
       expect(surface.contains(document.activeElement)).toBe(true);
-      const presses = focusables(surface).length + 2;
-      for (let i = 0; i < presses; i++) {
-        await u.tab();
-        expect(surface.contains(document.activeElement)).toBe(true);
-      }
+      await expectTabStaysIn(u, surface);
       expect(trigger.closest('[aria-hidden="true"]')).toBeNull();
       expect(document.body.style.pointerEvents).not.toBe('none');
     },
   );
 
   it('a11y:menu.tab-contained - Menu keeps Tab from leaving to the page while open', async () => {
-    const spec = OVERLAYS[3];
-    const { u } = await openWithKeyboard(spec);
-    const surface = spec.surface() as HTMLElement;
-    await u.tab();
     // Radix Menu content preventDefaults Tab: the menu stays open, focus stays inside.
-    expect(spec.surface()).not.toBeNull();
-    expect(surface.contains(document.activeElement)).toBe(true);
+    await expectTabContained(OVERLAYS[3]);
   });
 
   it('a11y:select.tab-contained - Select keeps Tab from leaving to the page while open', async () => {
-    const spec = OVERLAYS[4];
-    const { u } = await openWithKeyboard(spec);
-    const surface = spec.surface() as HTMLElement;
-    await u.tab();
     // Radix Select content preventDefaults Tab: the listbox stays open, focus stays inside.
-    expect(spec.surface()).not.toBeNull();
-    expect(surface.contains(document.activeElement)).toBe(true);
+    await expectTabContained(OVERLAYS[4]);
   });
 
   it('a11y:combobox.focus-search-field - Combobox: search field takes focus on open, Tab stays in the list, page stays non-modal', async () => {

@@ -23,10 +23,11 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'yaml';
+import { sourceFiles, stripComments } from './helpers/source-files';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const SRC = join(ROOT, 'src');
@@ -36,29 +37,14 @@ const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as {
 };
 const runtimeDependencies = Object.keys(pkg.dependencies ?? {});
 
-/** Comments are stripped so prose naming a package is not an import site. */
-const stripComments = (text: string) =>
-  text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
-
 /** Files built as an app or a template, not as the published library. */
 const isExempt = (path: string) =>
   /\.(test|spec)\.[jt]sx?$/.test(path) ||
   /\.figma\.tsx?$/.test(path) ||
   path.includes('/__tests__/');
 
-function shippedSourceFiles(dir: string, acc: string[] = []): string[] {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      shippedSourceFiles(full, acc);
-      continue;
-    }
-    if (!/\.(ts|tsx|js|jsx|mjs)$/.test(entry)) continue;
-    const rel = relative(ROOT, full).replaceAll('\\', '/');
-    if (!isExempt(rel)) acc.push(rel);
-  }
-  return acc;
-}
+const shippedSourceFiles = (dir: string) =>
+  sourceFiles(dir, { root: ROOT, extensions: /\.(ts|tsx|js|jsx|mjs)$/, isExempt });
 
 /**
  * Module specifiers in `code`: `import … from`, `export … from`, side-effect
@@ -67,6 +53,7 @@ function shippedSourceFiles(dir: string, acc: string[] = []): string[] {
 const SPECIFIER = /(?:\bfrom\s*|\bimport\s*\(?\s*|\brequire\s*\(\s*)(['"])([^'"\n]+)\1/g;
 
 function importedSpecifiers(code: string): string[] {
+  // Comments are stripped so prose naming a package is not an import site.
   return [...stripComments(code).matchAll(SPECIFIER)].map((match) => match[2]);
 }
 

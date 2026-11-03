@@ -11,29 +11,11 @@
  * highlight fills for rows and items, not surfaces to place a Button on.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { contrastRatio } from '../src/app/utils/colorUtils';
+import { tokenHex as hex } from './helpers/token-color';
 
-const tokens = JSON.parse(readFileSync(resolve(process.cwd(), 'hirobius.tokens.json'), 'utf8'));
 const MODES = ['Light', 'Dark'] as const;
 type Mode = (typeof MODES)[number];
-
-function at(path: string) {
-  return path.split('.').reduce((node, key) => node?.[key], tokens);
-}
-
-/** Resolve a token to a hex colour in the given Figma mode. */
-function hex(path: string, mode: Mode): string {
-  const node = at(path);
-  let value: unknown = node?.$extensions?.['com.figma.variables']?.modes?.[mode] ?? node?.$value;
-  while (typeof value === 'string' && value.startsWith('{')) {
-    const ref = at(value.slice(1, -1));
-    value = ref?.$extensions?.['com.figma.variables']?.modes?.[mode] ?? ref?.$value;
-  }
-  if (typeof value !== 'string') throw new Error(`${path} (${mode}) does not resolve to a colour`);
-  return value;
-}
 
 const ratio = (a: string, b: string, mode: Mode) => contrastRatio(hex(a, mode), hex(b, mode));
 const surface = (s: string) => `semantic.color.surface.${s}`;

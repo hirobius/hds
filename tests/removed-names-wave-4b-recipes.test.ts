@@ -11,6 +11,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { staleMentions } from './helpers/stale-mentions';
 import { layoutRecipeSteps, layoutNegativeRules } from '../scripts/lib/layout-recipe.mjs';
 
 const ROOT = resolve(__dirname, '..');
@@ -56,13 +57,7 @@ describe('recipes after the hds#394 wave 4b removals', () => {
 
   for (const file of RECIPES) {
     it(`${file} names a folded component only to say 0.20.0 removed it`, () => {
-      const stale = read(file)
-        .split('\n')
-        .flatMap((line, i) =>
-          FOLDED.filter((name) => mention(file, name).test(line) && !line.includes('0.20.0')).map(
-            (name) => `${file}:${i + 1}: ${name}`,
-          ),
-        );
+      const stale = staleMentions(file, read(file), FOLDED, (name) => mention(file, name));
       expect(stale).toEqual([]);
     });
   }

@@ -11,6 +11,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { staleMentions } from './helpers/stale-mentions';
 
 const ROOT = resolve(__dirname, '..');
 const LIVING = ['docs/ROADMAP.md'];
@@ -59,13 +60,12 @@ const mention = (name: string) =>
 describe('living docs after the 0.20.0 removals', () => {
   for (const file of LIVING) {
     it(`${file} names a removed export only to say 0.20.0 removed it`, () => {
-      const stale = readFileSync(resolve(ROOT, file), 'utf8')
-        .split('\n')
-        .flatMap((line, i) =>
-          REMOVED.filter((name) => mention(name).test(line) && !line.includes('0.20.0')).map(
-            (name) => `${file}:${i + 1}: ${name}`,
-          ),
-        );
+      const stale = staleMentions(
+        file,
+        readFileSync(resolve(ROOT, file), 'utf8'),
+        REMOVED,
+        mention,
+      );
       expect(stale).toEqual([]);
     });
   }

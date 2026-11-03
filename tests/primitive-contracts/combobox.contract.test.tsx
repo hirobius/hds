@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { Combobox, type ComboboxProps } from '@/app/components/combobox';
-import { FormField } from '@/app/components/form';
+import { expectFieldErrorOnTrigger, expectFieldLabelsTrigger } from './form-field-fixtures';
 import { user, FRUIT } from './overlay-fixtures';
 
 afterEach(cleanup);
@@ -33,29 +33,27 @@ async function open() {
   await user().keyboard('{Enter}');
 }
 
+/** Open the popover; it and its listbox are both named `name`. */
+async function expectPopoverNamed(name: string) {
+  await open();
+  expect(await screen.findByRole('dialog', { name })).toBeTruthy();
+  expect(screen.getByRole('listbox', { name })).toBeTruthy();
+}
+
 describe('Combobox contract', () => {
   it('a11y:combobox.popover-named a11y:combobox.listbox-named - names the open popover dialog and its listbox by the field label', async () => {
     renderCombobox({ 'aria-label': 'Fruit' });
-    await open();
-
-    expect(await screen.findByRole('dialog', { name: 'Fruit' })).toBeTruthy();
-    expect(screen.getByRole('listbox', { name: 'Fruit' })).toBeTruthy();
+    await expectPopoverNamed('Fruit');
   });
 
   it('names the open popover dialog by the placeholder when there is no field label', async () => {
     renderCombobox({ placeholder: 'Pick a fruit' });
-    await open();
-
-    expect(await screen.findByRole('dialog', { name: 'Pick a fruit' })).toBeTruthy();
-    expect(screen.getByRole('listbox', { name: 'Pick a fruit' })).toBeTruthy();
+    await expectPopoverNamed('Pick a fruit');
   });
 
   it('names the open popover dialog by the placeholder when the field label is empty', async () => {
     renderCombobox({ 'aria-label': '', placeholder: 'Pick a fruit' });
-    await open();
-
-    expect(await screen.findByRole('dialog', { name: 'Pick a fruit' })).toBeTruthy();
-    expect(screen.getByRole('listbox', { name: 'Pick a fruit' })).toBeTruthy();
+    await expectPopoverNamed('Pick a fruit');
   });
 });
 
@@ -75,28 +73,14 @@ describe('Combobox listbox', () => {
 
 describe('Combobox in a FormField', () => {
   it('a11y:combobox.form-field-label - is the control the field label names', () => {
-    render(
-      <FormField label="Fruit" description="Pick one">
-        <Combobox options={FRUIT} value={null} onChange={() => {}} />
-      </FormField>,
+    expectFieldLabelsTrigger(
+      <Combobox options={FRUIT} value={null} onChange={() => {}} />,
+      'Fruit',
     );
-
-    const trigger = screen.getByLabelText('Fruit');
-    expect(trigger.getAttribute('role')).toBe('combobox');
-    expect(screen.getByRole('combobox', { name: 'Fruit' })).toBe(trigger);
-    expect(trigger.getAttribute('aria-describedby')).toBe(screen.getByText('Pick one').id);
   });
 
   it('a11y:combobox.form-field-error - carries the field error: invalid, and described by the message', () => {
-    render(
-      <FormField label="Fruit" error="Pick a fruit">
-        <Combobox options={FRUIT} value={null} onChange={() => {}} />
-      </FormField>,
-    );
-
-    const trigger = screen.getByLabelText('Fruit');
-    expect(trigger.getAttribute('aria-invalid')).toBe('true');
-    expect(trigger.getAttribute('aria-describedby')).toBe(screen.getByRole('alert').id);
+    expectFieldErrorOnTrigger(<Combobox options={FRUIT} value={null} onChange={() => {}} />);
   });
 });
 

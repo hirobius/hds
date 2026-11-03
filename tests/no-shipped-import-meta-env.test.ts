@@ -20,44 +20,27 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sourceFiles, stripComments } from './helpers/source-files';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const SRC = join(ROOT, 'src');
 
-/**
- * Comments are stripped before scanning, so prose may still name the rule it
- * documents — including the docblocks that explain this very ban. Without this
- * the guard would forbid anyone from ever writing down WHY it exists, which is
- * how a rule survives as a string and dies as an understanding.
- *
- * Deliberately regex, not a parser: a string literal containing `//` could
- * over-strip, but that can only ever hide a match inside a string, which is not
- * executable code. The failure mode is a false negative in an unreachable spot,
- * never a false positive that blocks a legitimate change.
+/*
+ * Comments are stripped before scanning (stripComments), so prose may still name
+ * the rule it documents — including the docblocks that explain this very ban.
+ * Without this the guard would forbid anyone from ever writing down WHY it
+ * exists, which is how a rule survives as a string and dies as an understanding.
  */
-const stripComments = (text: string) =>
-  text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
 /** Files Vite builds as an app, not as the published library. */
 const isExempt = (path: string) =>
   /\.(test|spec)\.[jt]sx?$/.test(path) || path.endsWith('vite-env.d.ts');
 
-function shippedSourceFiles(dir: string, acc: string[] = []): string[] {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) {
-      shippedSourceFiles(full, acc);
-      continue;
-    }
-    if (!/\.(ts|tsx)$/.test(entry)) continue;
-    const rel = relative(ROOT, full).replaceAll('\\', '/');
-    if (!isExempt(rel)) acc.push(rel);
-  }
-  return acc;
-}
+const shippedSourceFiles = (dir: string) =>
+  sourceFiles(dir, { root: ROOT, extensions: /\.(ts|tsx)$/, isExempt });
 
 /**
  * Every occurrence of `import.meta`, wherever it appears.
