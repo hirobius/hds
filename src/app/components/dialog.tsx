@@ -37,10 +37,10 @@
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Text } from './text';
+import { OverlayClose } from './overlay-close';
 
 // ── Root + leaf primitives (re-exported from Radix) ────────────────────────────
 
@@ -100,18 +100,10 @@ const DialogContent = /* @__PURE__ */ React.forwardRef<
       >
         {children}
         {!hideClose && (
-          <DialogPrimitive.Close
-            className={cn(
-              'absolute right-4 top-4 inline-flex size-8 hds-touch-target items-center justify-center rounded-sm text-muted-foreground transition-colors',
-              // Hover steps to surface.sunken: `bg-accent` was 1.10:1 on the white popover in light (hds#522).
-              'hover:bg-[var(--semantic-color-surface-sunken)] hover:text-foreground',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-              'disabled:pointer-events-none',
-            )}
-          >
-            <X aria-hidden="true" className="size-4" />
-            <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
+          <OverlayClose
+            placement="absolute right-4 top-4 inline-flex size-8 hds-touch-target"
+            className="disabled:pointer-events-none"
+          />
         )}
       </DialogPrimitive.Content>
     </DialogPortal>
