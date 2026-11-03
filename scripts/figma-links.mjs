@@ -19,6 +19,10 @@
  * Usage:
  *   pnpm figma:links                                  write docs/DESIGN_LINKS.md and carriers
  *   pnpm figma:links --check                          exit 1 when stale or broken; writes nothing
+ *                                                     (broken includes a figma/links.json that
+ *                                                     does not name all three Figma areas —
+ *                                                     library, staging, visual explorations —
+ *                                                     or names two areas with one key or name)
  *   pnpm figma:links [--check] --root <dir>           the same against a copy of the tree (tests)
  *   FIGMA_ACCESS_TOKEN=… pnpm figma:links --dev-resources [--dry-run]
  *                                                     add "HDS source" / "HDS docs" dev resources
@@ -67,16 +71,109 @@ const readJson = (root, path) => {
 };
 
 /**
+ * The three Figma areas (hds#763; figma/README.md names who may write, delete
+ * and publish in each), as the fields that name them in figma/links.json.
+ * Keys and names must tell the three apart, and none may be a retired file:
+ * a carrier or an agent that picks a file by key or by name must never land
+ * in the wrong area.
+ */
+const FIGMA_AREAS = [
+  { keyField: 'libraryFileKey', nameField: 'libraryFileName', area: 'library' },
+  { keyField: 'stagingFileKey', nameField: 'stagingFileName', area: 'staging' },
+  {
+    keyField: 'explorationsFileKey',
+    nameField: 'explorationsFileName',
+    area: 'visual explorations',
+  },
+];
+
+/** Why an area with neither field set is unnamed, per area. */
+const AREA_MISSING = {
+  libraryFileKey:
+    'figma/links.json has no libraryFileKey: the library area is not named. Add libraryFileKey and libraryFileName.',
+  stagingFileKey:
+    'figma/links.json has no stagingFileKey: the staging area is not named. Add stagingFileKey and stagingFileName.',
+  explorationsFileKey:
+    'figma/links.json has no explorationsFileKey: the visual explorations area is not named. Adrian creates the explorations file in Figma, then add explorationsFileKey and explorationsFileName.',
+};
+
+/**
+ * Every way figma/links.json fails to name the three Figma areas: an area
+ * missing its key or its name, a value that is not a file key or file name,
+ * two areas sharing one key or one name, or an area that is a retired file.
+ *
+ * @param {object} config  figma/links.json
+ * @returns {string[]}
+ */
+export function figmaAreaProblems(config) {
+  const problems = [];
+  const retired = Array.isArray(config.retiredFiles) ? config.retiredFiles : [];
+  for (const { keyField, nameField } of FIGMA_AREAS) {
+    const key = config[keyField] ?? null;
+    const name = config[nameField] ?? null;
+    if (key === null && name === null) {
+      problems.push(AREA_MISSING[keyField]);
+      continue;
+    }
+    if (key === null || name === null) {
+      const [set, missing] = key === null ? [nameField, keyField] : [keyField, nameField];
+      problems.push(
+        `figma/links.json sets ${set} but has no ${missing}: a Figma area needs both its file key and its file name.`,
+      );
+      continue;
+    }
+    if (typeof key !== 'string' || !key) {
+      problems.push(`figma/links.json: ${keyField} is ${JSON.stringify(key)}, not a file key.`);
+    }
+    if (typeof name !== 'string' || !name) {
+      problems.push(`figma/links.json: ${nameField} is ${JSON.stringify(name)}, not a file name.`);
+    }
+  }
+  for (let i = 0; i < FIGMA_AREAS.length; i += 1) {
+    const { keyField, nameField } = FIGMA_AREAS[i];
+    const key = config[keyField];
+    const name = config[nameField];
+    if (typeof key === 'string' && key) {
+      if (retired.some((file) => file && file.fileKey === key)) {
+        problems.push(`figma/links.json: ${keyField} (${key}) is a retired file's key.`);
+      }
+      for (const other of FIGMA_AREAS.slice(i + 1)) {
+        if (config[other.keyField] === key) {
+          problems.push(
+            `figma/links.json: ${other.keyField} is the same file key as ${keyField} (${key}): each Figma area is its own file.`,
+          );
+        }
+      }
+    }
+    if (typeof name === 'string' && name) {
+      if (retired.some((file) => file && file.fileName === name)) {
+        problems.push(`figma/links.json: ${nameField} ("${name}") is a retired file's name.`);
+      }
+      for (const other of FIGMA_AREAS.slice(i + 1)) {
+        if (config[other.nameField] === name) {
+          problems.push(
+            `figma/links.json: ${other.nameField} is the same file name as ${nameField} ("${name}"): file names must tell the Figma areas apart.`,
+          );
+        }
+      }
+    }
+  }
+  return problems.sort();
+}
+
+/**
  * @param {string} root  Repo root (or a mini-root with the same layout).
  * @returns {{ links: object[], problems: string[], total: number }}
  */
 export function computeDesignLinks(root) {
   const config = readJson(root, LINKS_CONFIG);
-  return collectDesignLinks({
+  const collected = collectDesignLinks({
     manifest: readJson(root, 'public/hds-manifest.json'),
     config,
     packageName: readJson(root, 'package.json').name,
   });
+  const problems = [...collected.problems, ...figmaAreaProblems(config)].sort();
+  return { ...collected, problems };
 }
 
 /** docs/DESIGN_LINKS.md with a current section, in the bytes the repo commits. */
