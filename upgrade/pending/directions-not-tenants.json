@@ -32,26 +32,29 @@
       "id": "value-changed/--semantic-accent-pressed",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The concrete-creations block no longer sets --semantic-accent-pressed, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-pressed, and in dark mode the base pressed fill now steps darker from the near-white rest (graphite.200, was graphite.50), so a page on that slug gets the new base value unless the app compiles its own overlay.",
       "detect": {
         "regex": ["concrete-creations"]
       },
       "facts": [
         "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
-        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=\"dark\"]"
       ]
     },
     {
       "id": "value-changed/--semantic-accent-rest",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The concrete-creations block no longer sets --semantic-accent-rest, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-rest, and in dark mode the base rest fill is now graphite.50 (was graphite.200), so a page on that slug gets the new base value unless the app compiles its own overlay.",
       "detect": {
         "regex": ["concrete-creations"]
       },
       "facts": [
         "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
-        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest:[data-theme=\"dark\"]"
       ]
     },
     {
@@ -96,12 +99,17 @@
       "id": "value-changed/--semantic-color-surface-accent",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The concrete-creations block no longer sets --semantic-color-surface-accent, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "plain": "The concrete-creations block no longer sets --semantic-color-surface-accent, and the base accent fill is now graphite.950 in light (was #4a4146) and graphite.50 in dark (was #cbc6c9), so a page on that slug gets the new base fill unless the app compiles its own overlay.",
       "detect": {
         "regex": ["concrete-creations"]
       },
       "facts": [
-        "css-var-changed:--semantic-color-surface-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]"
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=\"dark\"]"
       ]
     },
     {
