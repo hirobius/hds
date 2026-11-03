@@ -51,3 +51,22 @@ export function parseOrError(jsxString) {
     },
   };
 }
+
+/**
+ * Parse, walk every element, collect errors. visit(element, { tagName, attrs, errors })
+ * pushes onto errors; tagName is the plain identifier name or null.
+ * @param {string} jsxString
+ * @param {(element: object, ctx: { tagName: string | null, attrs: object[], errors: object[] }) => void} visit
+ * @returns {Promise<{ ok: boolean, errors: object[] }>}
+ */
+export async function validateElements(jsxString, visit) {
+  const { ast, result } = parseOrError(jsxString);
+  if (result) return result;
+  const errors = [];
+  walkJsx(ast, (element) => {
+    const tagName = element.openingElement?.name?.name ?? null;
+    const attrs = element.openingElement?.attributes || [];
+    visit(element, { tagName, attrs, errors });
+  });
+  return { ok: errors.length === 0, errors };
+}
