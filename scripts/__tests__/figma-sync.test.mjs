@@ -25,27 +25,17 @@ import {
 } from '../lib/figma-scripts.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { fixtureModel, newFixtureFile } from './helpers/figma-fixture.mjs';
+import { COMMIT, LINKS, NOTHING_LINE } from './helpers/figma-temp-root.mjs';
 import { runSyncPlugin, serve } from './helpers/sync-plugin.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const model = fixtureModel();
 
-const LINKS = Object.freeze({
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-  // HDS Staging, the draft workbench (ADR-026, A4): never a Sync target, and never baked in.
-  stagingFileKey: 'STAGINGKEY000000000000',
-  stagingFileName: 'HDS Staging',
-});
 const RETIRED = LINKS.retiredFiles[0];
 const STAGING = { fileKey: LINKS.stagingFileKey, fileName: LINKS.stagingFileName };
 const BUNDLE_URL = 'https://hirobius-design-system.vercel.app/figma/sync-bundle.json';
-const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const PLUGIN = buildSyncPlugin(LINKS);
 const BUNDLE = buildSyncBundle(model, { commit: COMMIT, pluginFiles: PLUGIN });
-const NOTHING_LINE = 'updated 0 · created 0 · deleted 0';
 
 // ── Harness ──────────────────────────────────────────────────────────────────
 const copy = (value) => JSON.parse(JSON.stringify(value));
@@ -62,6 +52,16 @@ const libraryFile = (key = LINKS.libraryFileKey, name = LINKS.libraryFileName) =
 const markAsLibrary = (figma, value = LINKS.libraryFileKey, marker = 'libraryFileKey') =>
   figma.root.setSharedPluginData('hirobius', marker, value);
 const rootData = (figma, key) => figma.root.getSharedPluginData('hirobius', key);
+/** The library after one Sync, plus a Semantic variable the model does not have. */
+const syncedWithUnusedVariable = async () => {
+  const figma = libraryFile();
+  expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
+  const semantic = (await figma.variables.getLocalVariableCollectionsAsync()).find(
+    (c) => c.name === 'Hirobius/Semantic',
+  );
+  figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
+  return figma;
+};
 /** A bundle edited after the build, with its checksum recomputed so only the edit is tested. */
 const rebundled = (mutate) => {
   const bundle = copy(BUNDLE);
@@ -222,12 +222,7 @@ describe('Sync in the library file', () => {
     // hdsSyncMain forces prune off whatever the bundle says; with prune on,
     // this file's extra variable would be removed and the line would read
     // "deleted 1". Only the promote plugin, run by Adrian, deletes.
-    const figma = libraryFile();
-    expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
-    const semantic = (await figma.variables.getLocalVariableCollectionsAsync()).find(
-      (c) => c.name === 'Hirobius/Semantic',
-    );
-    figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
+    const figma = await syncedWithUnusedVariable();
     const start = figma.writes.length;
 
     const plan = await runPlugin(PLUGIN, 'plan', figma);
@@ -470,12 +465,7 @@ describe('bundle handshake', () => {
   };
 
   it('refuses a prune bundle with 0 deletes', async () => {
-    const figma = libraryFile();
-    expect((await runPlugin(PLUGIN, 'sync', figma)).ok).toBe(true);
-    const semantic = (await figma.variables.getLocalVariableCollectionsAsync()).find(
-      (c) => c.name === 'Hirobius/Semantic',
-    );
-    figma.variables.createVariable('legacy/unused', semantic, 'FLOAT');
+    const figma = await syncedWithUnusedVariable();
 
     const pruning = rebundled((b) => {
       b.payload.options.prune = true;

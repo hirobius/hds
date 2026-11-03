@@ -10,21 +10,18 @@
  * every GIT_* variable, so a hook-exported GIT_DIR can never point a child
  * process at a real repository.
  */
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
-  mkdtempSync,
   mkdirSync,
   readFileSync,
   writeFileSync,
   copyFileSync,
   existsSync,
   readdirSync,
-  rmSync,
   utimesSync,
 } from 'fs';
 import { tmpdir } from 'os';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { spawnSync } from 'child_process';
 import {
   formatRun,
@@ -40,36 +37,25 @@ import { buildFigmaModel } from '../lib/figma-model.mjs';
 import { hdsChecksum, hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
 import { buildPushPayload, stagingFrom, syncPluginBuild } from '../lib/figma-scripts.mjs';
 import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
-import { FIXTURE_TOKENS_PATH, newFixtureFile } from './helpers/figma-fixture.mjs';
+import { newFixtureFile } from './helpers/figma-fixture.mjs';
+import {
+  LIBRARY_LINKS as LINKS,
+  STAGING_LINKS as STAGING,
+  useTempRoots,
+  writeLinks,
+} from './helpers/figma-temp-root.mjs';
+import { ROOT as REPO } from './helpers/gate-runner.mjs';
+import { useTempDirsPerTest } from './helpers/temp-dirs.mjs';
 
-const REPO = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const cleanEnv = () =>
   Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
 
-let dirs = [];
-afterEach(() => {
-  dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
-  dirs = [];
-});
-/** The figma/links.json fields the Sync plugin bakes in (test keys, the real names and host). */
-const LINKS = {
-  docsUrl: 'https://hirobius-design-system.vercel.app',
-  libraryFileKey: 'LIBRARYKEY000000000000',
-  libraryFileName: 'HDS Tokens & Components',
-  retiredFiles: [{ fileKey: 'RETIREDKEY000000000000', fileName: 'HDS Tokens & Components (old)' }],
-};
-/** HDS Staging, the draft workbench (ADR-026, A4): optional in figma/links.json, and never a target. */
-const STAGING = { stagingFileKey: 'STAGINGKEY000000000000', stagingFileName: 'HDS Staging' };
-const writeLinks = (root, links) => {
-  mkdirSync(join(root, 'figma'), { recursive: true });
-  writeFileSync(join(root, 'figma', 'links.json'), JSON.stringify(links, null, 2));
-};
-const tempRoot = () => {
-  const root = mkdtempSync(join(tmpdir(), 'hds-figma-'));
-  dirs.push(root);
-  copyFileSync(FIXTURE_TOKENS_PATH, join(root, 'hirobius.tokens.json'));
-  writeLinks(root, LINKS);
-  return root;
+const tempRoot = useTempRoots('hds-figma-', LINKS);
+const tempDir = useTempDirsPerTest();
+/** Sets a file's times to long ago, so the drift gate cannot lean on dates. */
+const backdate = (file) => {
+  const longAgo = new Date('2020-01-01T00:00:00Z');
+  utimesSync(file, longAgo, longAgo);
 };
 /** Pushes the root's model (through `builder`, to emulate another builder) into a new file, edits it, snapshots it. */
 const takeSnapshot = async (root, edit = async () => {}, builder = (model) => model) => {
@@ -399,8 +385,7 @@ describe('pnpm figma:push --bundle', () => {
     });
 
   it('writes the bundle from the real repo with no secret and no network', () => {
-    const root = mkdtempSync(join(tmpdir(), 'hds-figma-bundle-'));
-    dirs.push(root);
+    const root = tempDir('hds-figma-bundle-');
     const out = join(root, 'deep', 'sync-bundle.json');
     const run = runCli(['--bundle', out], {
       VERCEL_GIT_COMMIT_SHA: '0123456789abcdef0123456789abcdef01234567',
@@ -533,8 +518,7 @@ describe('pnpm check:figma-drift', () => {
       writeSnapshot(root, await takeSnapshot(root));
       const tokens = join(root, 'hirobius.tokens.json');
       writeFileSync(tokens, readFileSync(tokens, 'utf8').replace('#1E2EFD', '#1E2EFE'));
-      const longAgo = new Date('2020-01-01T00:00:00Z');
-      utimesSync(tokens, longAgo, longAgo);
+      backdate(tokens);
 
       const { exitCode, output } = runDriftCheck({ root, ci: true });
       expect(exitCode).toBe(0);
@@ -551,9 +535,7 @@ describe('pnpm check:figma-drift', () => {
         return copy;
       };
       writeSnapshot(root, await takeSnapshot(root, async () => {}, olderBuilder));
-      const tokens = join(root, 'hirobius.tokens.json');
-      const longAgo = new Date('2020-01-01T00:00:00Z');
-      utimesSync(tokens, longAgo, longAgo);
+      backdate(join(root, 'hirobius.tokens.json'));
 
       const { exitCode, output } = runDriftCheck({ root, ci: true });
       expect(exitCode).toBe(0);
@@ -695,8 +677,7 @@ describe('pnpm figma:native-import', () => {
   });
 
   it('builds from the real hirobius.tokens.json', () => {
-    const root = mkdtempSync(join(tmpdir(), 'hds-figma-real-'));
-    dirs.push(root);
+    const root = tempDir('hds-figma-real-');
     copyFileSync(join(REPO, 'hirobius.tokens.json'), join(root, 'hirobius.tokens.json'));
     const { files } = writeNativeImport({ root, outDir: join(root, 'out') });
     // Five tier files plus Hirobius/Density's Comfortable and Compact (compact density for apps).
