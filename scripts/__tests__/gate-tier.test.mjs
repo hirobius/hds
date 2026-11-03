@@ -96,8 +96,39 @@ describe('planGate', () => {
     expect(cmds.join(' ')).not.toMatch(/eslint|vitest/);
   });
 
-  it('full tier runs check:fast, the whole suite and consumer smoke', () => {
+  it('full tier with an unknown (empty) diff runs check:fast, the whole suite and consumer smoke', () => {
     expect(planGate('full', [])).toEqual(['pnpm check:fast', 'pnpm test', 'pnpm smoke:consumer']);
+  });
+
+  it('full tier runs the lane selection for a known diff (#1090)', () => {
+    // src-only diff at the full tier: pretest + fast lane, no heavy subset.
+    expect(planGate('full', ['package.json'])).toEqual([
+      'pnpm check:fast',
+      'pnpm run pretest',
+      'pnpm test:fast',
+      'pnpm smoke:consumer',
+    ]);
+  });
+
+  it('full tier adds the path-triggered heavy subset (#1090)', () => {
+    const cmds = planGate('full', ['scripts/upgrade/compile.mjs']);
+    expect(cmds[0]).toBe('pnpm check:fast');
+    expect(cmds).toContain('pnpm test:fast');
+    expect(cmds.some((c) => c.includes('scripts/__tests__/upgrade-command.test.mjs'))).toBe(true);
+    expect(cmds.at(-1)).toBe('pnpm smoke:consumer');
+  });
+
+  it('full tier fails safe to the whole suite when the diff touches the gate mechanism (#1090)', () => {
+    expect(planGate('full', ['scripts/__tests__/heavy-files.txt'])).toEqual([
+      'pnpm check:fast',
+      'pnpm test',
+      'pnpm smoke:consumer',
+    ]);
+    expect(planGate('full', ['vitest.fast.config.ts'])).toEqual([
+      'pnpm check:fast',
+      'pnpm test',
+      'pnpm smoke:consumer',
+    ]);
   });
 });
 
