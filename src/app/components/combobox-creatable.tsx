@@ -10,13 +10,22 @@
 // and options use token color transitions via their utility classes.
 
 import * as React from 'react';
-import { Check, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { ACTIVE_OPTION_CLASS } from './listbox-nav';
 import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
 import type { ComboboxOption } from './combobox';
+import {
+  ListboxFooter,
+  OptionCheck,
+  outsideTarget,
+  resultCount,
+  useComboboxList,
+  useForwardedRef,
+  useScrollActiveIntoView,
+} from './combobox-list';
 
 interface CreatableComboboxProps {
   options: ComboboxOption[];
@@ -68,20 +77,19 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
   },
   forwardedRef,
 ) {
-  const [open, setOpen] = React.useState(false);
-  const [query, setQuery] = React.useState('');
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const baseId = React.useId();
-  const listId = `${baseId}-list`;
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
-  const setInputRef = React.useCallback(
-    (node: HTMLInputElement | null) => {
-      inputRef.current = node;
-      if (typeof forwardedRef === 'function') forwardedRef(node);
-      else if (forwardedRef) forwardedRef.current = node;
-    },
-    [forwardedRef],
-  );
+  const {
+    open,
+    setOpen,
+    query,
+    setQuery,
+    activeIndex,
+    setActiveIndex,
+    listId,
+    optionId: rowId,
+    moveActive,
+    scrollActiveIntoView,
+  } = useComboboxList();
+  const [inputRef, setInputRef] = useForwardedRef(forwardedRef);
   const popupName = ariaLabel || placeholder;
 
   // A created value has no option; its chip reads as the value itself.
@@ -126,14 +134,8 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
     );
   }
 
-  const scrollActiveIntoView = React.useRef(false);
-  const rowId = (i: number) => `${baseId}-opt-${i}`;
   const activeId = open && rows[activeIndex] ? rowId(activeIndex) : undefined;
-  React.useEffect(() => {
-    if (!scrollActiveIntoView.current) return;
-    scrollActiveIntoView.current = false;
-    if (activeId) document.getElementById(activeId)?.scrollIntoView({ block: 'nearest' });
-  }, [activeId]);
+  useScrollActiveIntoView(scrollActiveIntoView, activeId);
 
   function commit(row: Row | undefined) {
     if (!row) return;
@@ -165,11 +167,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
         return;
       }
       if (rows.length === 0) return;
-      const next = nextEnabled(rows, activeIndex, e.key === 'ArrowDown' ? 1 : -1);
-      if (next !== activeIndex) {
-        scrollActiveIntoView.current = true;
-        setActiveIndex(next);
-      }
+      moveActive(nextEnabled(rows, activeIndex, e.key === 'ArrowDown' ? 1 : -1));
     } else if (e.key === 'Enter') {
       e.preventDefault();
       // Closed (after Escape) with text typed, Enter still adds it.
@@ -266,8 +264,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
         onOpenAutoFocus={(e) => e.preventDefault()}
         onCloseAutoFocus={(e) => e.preventDefault()}
         onInteractOutside={(e) => {
-          const oe = (e as { detail?: { originalEvent?: Event } }).detail?.originalEvent;
-          const target = (oe?.target ?? (e as unknown as Event).target) as Node | null;
+          const target = outsideTarget(e);
           if (target && inputRef.current?.parentElement?.contains(target)) e.preventDefault();
         }}
       >
@@ -301,11 +298,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                   )}
                 >
-                  <span className="flex size-4 items-center justify-center">
-                    {isSelected ? (
-                      <Icon icon={Check} size="small" color="currentColor" aria-hidden />
-                    ) : null}
-                  </span>
+                  <OptionCheck selected={isSelected} />
                   <span className="truncate">
                     {row.kind === 'create' ? `Add “${row.text}”` : row.option.label}
                   </span>
@@ -314,16 +307,13 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
             );
           })}
         </ul>
-        {rows.length === 0 ? (
-          <p className="m-fixed-2xs px-scale-xs py-fixed-md text-center hds-type-ui text-muted-foreground">
-            {emptyMessage}
-          </p>
-        ) : null}
-        <div role="status" aria-live="polite" className="sr-only">
-          {suggestionCount === 0 && addRow
-            ? `Add “${addRow.text}”`
-            : `${suggestionCount} ${suggestionCount === 1 ? 'result' : 'results'}`}
-        </div>
+        <ListboxFooter
+          empty={rows.length === 0}
+          emptyMessage={emptyMessage}
+          status={
+            suggestionCount === 0 && addRow ? `Add “${addRow.text}”` : resultCount(suggestionCount)
+          }
+        />
       </Popover.Content>
     </Popover>
   );
