@@ -527,7 +527,7 @@
     },
     {
       "id": "check-no-status-clutter",
-      "description": "hds#759 -- no status dots and no coloured left accent bars (Adrian, 2026-10-16): status is implied by content. Fails a `dot` prop on a <Badge> usage, a left-border bar (border-l-2..8 or border-l-[2..8px]) in a class list that also has a tone colour, the --hds-accent-bar variable and the Board column dot. Scans src/, docs-site/, preview/, starter-kit/, templates/, tenants/; skips comments, tests and fixtures. A line is exempt with // status-clutter-ok: <reason>. Does not see the guideline 'no heading over a card of supporting meta'; that one is in DESIGN.md. Error severity, runs in pretest.",
+      "description": "hds#759 -- no status dots and no coloured left accent bars (Adrian, 2026-10-16): status is implied by content. Fails a `dot` prop on a <Badge> usage, a left-border bar (border-l-2..8 or border-l-[2..8px]) in a class list that also has a tone colour, the --hds-accent-bar variable and the Board column dot. Scans src/, docs-site/, preview/, starter-kit/, templates/, directions/; skips comments, tests and fixtures. A line is exempt with // status-clutter-ok: <reason>. Does not see the guideline 'no heading over a card of supporting meta'; that one is in DESIGN.md. Error severity, runs in pretest.",
       "severity": "error",
       "gateScript": "scripts/check-no-status-clutter.mjs",
       "fixturePath": "fixtures/check-no-status-clutter",
