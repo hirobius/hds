@@ -1,1 +1,1 @@
-hds#1010 slice 6: gateFiles/isCommentLine shared by breakpoints, grids, spacing gates; jscpd 1.59 -> 1.56.
+hds#1010 slice 7: gateContext in four more gates; jscpd 1.53 -> 1.49.

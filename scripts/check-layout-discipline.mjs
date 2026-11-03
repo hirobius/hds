@@ -63,19 +63,11 @@
  */
 
 import { readFileSync } from 'fs';
-import { join, dirname, resolve, relative } from 'path';
-import { fileURLToPath } from 'url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, suppressionFor, lineOf } from './lib/source-scan.mjs';
+import { resolve, relative } from 'path';
+import { emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor, lineOf, gateContext } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-const jsonMode = hasJsonFlag(process.argv);
-
-// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 // ── Layout properties this gate polices ───────────────────────────────────────
 // Margin/padding family + position offsets + gap family + flexBasis. `position`

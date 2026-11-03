@@ -56,22 +56,16 @@
  */
 
 import { readFileSync } from 'fs';
-import { join, dirname, extname, relative, resolve } from 'path';
+import { extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, suppressionFor, isSpecFile } from './lib/source-scan.mjs';
+import { emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor, isSpecFile, gateContext } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 /** The one copy of the map. */
 const CANONICAL = 'src/app/components/box-sx.ts';
-
-const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
 
 /** The layout-gap names box-sx.ts maps to the scale. */
 export const LAYOUT_GAP_NAMES = Object.freeze(['tight', 'normal', 'inset', 'spacious']);
