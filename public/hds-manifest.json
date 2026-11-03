@@ -1295,6 +1295,7 @@
         "src/app/components/checkbox.tsx",
         "src/app/components/code-block.tsx",
         "src/app/components/combobox-creatable.tsx",
+        "src/app/components/combobox-list.tsx",
         "src/app/components/combobox.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/disclosure.tsx",
@@ -3403,6 +3404,7 @@
         "src/app/components/command-palette.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/overlay-close.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/sheet.tsx",
         "src/app/components/toast.tsx"
@@ -6466,6 +6468,7 @@
       },
       "consumers": [
         "src/app/components/combobox-creatable.tsx",
+        "src/app/components/combobox-list.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/form-control.ts",
         "src/app/components/form.tsx",
@@ -10935,7 +10938,8 @@
         "sizing": "panel"
       },
       "consumers": [
-        "src/app/components/app-shell.tsx"
+        "src/app/components/app-shell.tsx",
+        "src/app/components/overlay-close.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
