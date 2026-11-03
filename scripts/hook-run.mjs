@@ -3,8 +3,10 @@
 /**
  * hook-run.mjs — quiet runner for husky hooks.
  *
- *   node scripts/hook-run.mjs <hook>        (called by .husky/<hook>)
+ *   node scripts/hook-run.mjs <hook> [args…]  (called by .husky/<hook>)
  *
+ * The hook's own arguments (e.g. commit-msg's message file) are forwarded to
+ * every stage as its positional parameters, so a stage reads them as "$1"….
  * Parses .husky/<hook> into stages (echo "<title>…" + the commands under it),
  * runs them serially via `sh -c`, and captures output to
  * $(git rev-parse --git-dir)/hook-logs/<hook>-<timestamp>.log (newest 5 kept).
@@ -26,6 +28,7 @@ import {
 } from './lib/hook-output.mjs';
 
 const hook = process.argv[2];
+const hookArgs = process.argv.slice(3);
 if (!hook) {
   console.error('usage: hook-run.mjs <hook>');
   process.exit(2);
@@ -35,7 +38,7 @@ const hookFile = path.join(root, '.husky', hook);
 const verbose = process.env.HOOK_VERBOSE === '1';
 
 if (verbose) {
-  const r = spawnSync('sh', [hookFile], {
+  const r = spawnSync('sh', [hookFile, ...hookArgs], {
     stdio: 'inherit',
     env: { ...process.env, HOOK_RUN_RAW: '1' },
   });
@@ -68,7 +71,10 @@ const t0 = performance.now();
 const labels = [];
 for (const { name, cmd } of stages) {
   const start = performance.now();
-  const r = spawnSync('sh', ['-c', cmd], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+  const r = spawnSync('sh', ['-c', cmd, hook, ...hookArgs], {
+    encoding: 'utf8',
+    maxBuffer: 256 * 1024 * 1024,
+  });
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`;
   const ms = performance.now() - start;
   if (logFile)

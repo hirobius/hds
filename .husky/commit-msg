@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+set -e
+
+# Quiet by default: scripts/hook-run.mjs runs each stage below (the echo line
+# names it, the lines under it are its commands). git passes the message file
+# as $1; "$@" hands it to the runner, which forwards it to every stage.
+# HOOK_VERBOSE=1 runs this file as-is with full output.
+[ -n "$HOOK_RUN_RAW" ] || exec node scripts/hook-run.mjs "$(basename "$0")" "$@"
+
+# ops#612: fix:/revert: commits must carry a "Learned: <one line>" trailer
+# ("Learned: none" is allowed and counted); feat: and other types are
+# untouched; merges skip. Blocking. Vendored byte-identical from hirobius/ops
+# scripts/check-learned-trailer.mjs (ops#1043).
+echo "Learned trailer (fix:/revert: commits carry a Learned: line)…"
+node scripts/check-learned-trailer.mjs "$1"
