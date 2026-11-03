@@ -54,6 +54,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   Menu: ['data-state'],
   MetaLine: ['data-meta-separator'],
   MetricTiles: ['data-tone'],
+  NavList: ['data-slot'],
   PageHeader: ['data-slot'],
   Popover: ['data-state'],
   Progress: ['data-state', 'data-tone', 'data-variant'],

@@ -297,6 +297,7 @@ The `data-*` attributes each component renders for you to select on:
 - `Kbd`: `data-size`
 - `Menu`: `data-state`
 - `MetaLine`: `data-meta-separator`
+- `NavList`: `data-slot`
 - `PageHeader`: `data-slot`
 - `Popover`: `data-state`
 - `Progress`: `data-state`, `data-tone`, `data-variant`

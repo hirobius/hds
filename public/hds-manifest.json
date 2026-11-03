@@ -10384,7 +10384,9 @@
       "propConstraints": {},
       "requiredProps": [],
       "docsPage": "/docs/components/nav-list",
-      "publicDataAttributes": [],
+      "publicDataAttributes": [
+        "data-slot"
+      ],
       "usage": {
         "when": "List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records).",
         "whenNot": "Switching views inside one page, or a trail back up a hierarchy.",
