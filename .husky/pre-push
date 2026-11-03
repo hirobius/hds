@@ -27,7 +27,8 @@ echo "Secret + PII scan (pushed commits; fails closed without gitleaks)…"
 node scripts/hooks/secret-pii-scan.mjs
 
 # Runs next: it is cheap, and when it is going to fail the slow gates below
-# should not burn minutes first. Fix: `pnpm status:touch`.
+# should not burn minutes first. Fix: name the issue in a commit message
+# (`Refs ops#1057`); its receipt comment is the record (ops#1057).
 # Replaces "update it at intervals": status.json/CHANGELOG.md going stale is a
 # convention nothing enforced (hds#249). A push is the state change the fleet
 # dashboard shows, so this runs here rather than per-commit.

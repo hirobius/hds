@@ -13,8 +13,10 @@ import {
   checkChangesetPresence,
   checkStatusFreshness,
   consumerPackageChanges,
+  hasIssueReceipt,
   hasStatusNote,
   isStatusNote,
+  issueReceiptRef,
   newestTouching,
   shippedCodeEntries,
   shipsToConsumers,
@@ -278,5 +280,55 @@ describe('status notes (.status/*.md) — conflict-free alternative to bumping u
   it('canary: without a note, the same stale status.json still fails', () => {
     const commits = [commit({ date: '2026-09-23T00:00:00Z', files: ['src/x.ts'] })];
     expect(checkStatusFreshness(commits, '2026-09-01T00:00:00Z').ok).toBe(false);
+  });
+});
+
+describe('issue receipts (ops#1057): the issue a commit names is the record', () => {
+  it('reads a repo-qualified issue reference anywhere in the message', () => {
+    expect(issueReceiptRef('fix(x): y (hds#763)')).toBe('hds#763');
+    expect(issueReceiptRef('chore: z\n\nRefs ops#1057')).toBe('ops#1057');
+    expect(issueReceiptRef('feat: w\n\nPart of hirobius/ops#1057')).toBe('hirobius/ops#1057');
+  });
+
+  it('reads a bare #N only after a closing/refs keyword', () => {
+    expect(issueReceiptRef('fix: a\n\nFixes #42')).toBe('#42');
+    expect(issueReceiptRef('fix: a\n\nrefs: #7')).toBe('#7');
+    expect(issueReceiptRef('Closes #9')).toBe('#9');
+  });
+
+  it('a bare PR suffix or no reference is not a receipt', () => {
+    expect(issueReceiptRef('feat: thing (#1094)')).toBeNull();
+    expect(issueReceiptRef('chore: something')).toBeNull();
+    expect(issueReceiptRef('')).toBeNull();
+    expect(issueReceiptRef(undefined)).toBeNull();
+    expect(issueReceiptRef('see path/to#anchor')).toBeNull();
+  });
+
+  it('hasIssueReceipt is true when any pushed commit names an issue', () => {
+    expect(hasIssueReceipt([commit({ files: ['src/a.ts'] })])).toBe(false);
+    expect(
+      hasIssueReceipt([
+        commit({ files: ['src/a.ts'] }),
+        commit({ files: ['README.md'], message: 'docs: b\n\nRefs hds#12' }),
+      ]),
+    ).toBe(true);
+  });
+
+  it('an issue reference satisfies freshness for a stale status.json with no .status note', () => {
+    const commits = [
+      commit({ date: '2026-09-23T00:00:00Z', files: ['src/x.ts'], message: 'fix: x (hds#5)' }),
+    ];
+    const result = checkStatusFreshness(commits, '2026-09-01T00:00:00Z');
+    expect(result.ok).toBe(true);
+    expect(result.via).toBe('receipt');
+  });
+
+  it('back-compat: a .status note still satisfies freshness without an issue reference', () => {
+    const commits = [
+      commit({ date: '2026-09-23T00:00:00Z', files: ['src/x.ts', '.status/claude-x.md'] }),
+    ];
+    const result = checkStatusFreshness(commits, '2026-09-01T00:00:00Z');
+    expect(result.ok).toBe(true);
+    expect(result.via).toBe('note');
   });
 });

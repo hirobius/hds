@@ -35,7 +35,7 @@
     },
     {
       "path": ".status",
-      "describes": "Per-branch one-line notes standing in for a status.json bump until pnpm status:fold",
+      "describes": "Legacy per-branch notes standing in for a status.json bump until pnpm status:fold; new branches name their issue instead (ops#1057)",
       "kind": "checked",
       "by": "scripts/check-record-freshness.mjs"
     },

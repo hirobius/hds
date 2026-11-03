@@ -1,0 +1,1 @@
+- hds#1010 slice 8: check-hardcoded-colors and check-tier-bypass use gateContext/gateFiles/fileLines (output byte-identical); .jscpd.json 1.18 -> 1.17.

@@ -17,7 +17,7 @@ import { relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { deprecationScope } from '../check-deprecations.mjs';
-import { parseDeprecation } from '../lib/jsdoc-contract.mjs';
+import { deprecatedBlocks, objectKeyPath } from '../lib/deprecations.mjs';
 import { compileHistory, deprecationRemovals } from '../upgrade/compile.mjs';
 import { readPendingNotes } from '../upgrade/pending.mjs';
 
@@ -38,17 +38,7 @@ function jsxOf(typeName, literal) {
 
 /** How a consumer writes a use of the declaration `node`, or null when this test cannot tell. */
 function usageOf(node) {
-  if (ts.isPropertyAssignment(node)) {
-    const path = [];
-    for (let at = node; at; at = at.parent) {
-      if (ts.isPropertyAssignment(at)) path.unshift(nameOf(at));
-      else if (ts.isVariableDeclaration(at)) {
-        path.unshift(nameOf(at));
-        break;
-      } else if (!ts.isObjectLiteralExpression(at) && !ts.isAsExpression(at)) return null;
-    }
-    return path.join('.');
-  }
+  if (ts.isPropertyAssignment(node)) return objectKeyPath(node);
   if (ts.isPropertySignature(node)) {
     const owner = ts.isTypeLiteralNode(node.parent) ? node.parent.parent : node.parent;
     const jsx = owner && nameOf(owner) ? jsxOf(nameOf(owner)) : null;
@@ -72,26 +62,11 @@ function usageOf(node) {
 /** Each `@deprecated` block of `file` with the declaration it sits on. */
 function deprecationsIn(file) {
   const text = readFileSync(file, 'utf8');
-  if (text.includes('// deprecation-ok')) return [];
-  const kind = file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
-  const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
-  const nodes = [];
-  const walk = (node) => {
-    nodes.push(node);
-    ts.forEachChild(node, walk);
-  };
-  walk(source);
-  const out = [];
-  for (const match of text.matchAll(/\/\*\*[\s\S]*?\*\//g)) {
-    const deprecation = parseDeprecation(match[0]);
-    if (!deprecation) continue;
-    const end = match.index + match[0].length;
-    // Pre-order: the outermost node that starts after the block is what it documents.
-    const node = nodes.find((n) => n.getStart(source) >= end);
-    const line = text.slice(0, match.index).split('\n').length;
-    out.push({ where: `${relative(REPO, file)}:${line}`, deprecation, use: node && usageOf(node) });
-  }
-  return out;
+  return deprecatedBlocks(file, text).map(({ deprecation, node, index }) => ({
+    where: `${relative(REPO, file)}:${text.slice(0, index).split('\n').length}`,
+    deprecation,
+    use: node && usageOf(node),
+  }));
 }
 
 /** True when the step's detect finds `use`. */

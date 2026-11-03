@@ -40,7 +40,7 @@ Hand-kept, but a gate compares it with the code.
 
 - `status.json` (updatedAt): updatedAt, which a commit to src/, scripts/ or docs/adr/ must not outpace. Checked by `scripts/check-record-freshness.mjs`.
 - `status.json` (consistency): The agent-consistency figures, compared with the latest ledger entry. Checked by `scripts/check-status-claims.mjs`.
-- `.status`: Per-branch one-line notes standing in for a status.json bump until pnpm status:fold. Checked by `scripts/check-record-freshness.mjs`.
+- `.status`: Legacy per-branch notes standing in for a status.json bump until pnpm status:fold; new branches name their issue instead (ops#1057). Checked by `scripts/check-record-freshness.mjs`.
 - `README.md` (Open explorations): Open explorations, including the agent-consistency line. Checked by `scripts/check-status-claims.mjs`.
 - `figma/MCP-LEDGER.md`: Append-only log of every Figma MCP call an agent session makes (the budget record); it has no review age. Checked by `scripts/__tests__/figma-one-library-rule.test.mjs`.
 - `docs/guardrails/registry.json`: Every gate, where it fires and its proof-of-firing fixtures. Checked by `scripts/validate-guardrail-registry.mjs`.
