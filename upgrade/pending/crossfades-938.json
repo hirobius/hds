@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A toggle Button's label and AsyncState's status blocks now fade through each other instead of swapping at once; nothing to change, and both swap instantly under reduced motion."
+}

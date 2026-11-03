@@ -23,3 +23,18 @@ export function useHdsMotion<Category extends HdsMotionCategory>(
   const token = hds.motion[category];
   return reduced ? { ...token, duration: 0 } : token;
 }
+
+/**
+ * Fade props for one side of a true crossfade (AsyncState status blocks,
+ * toggle Button labels): spread onto the entering and exiting motion nodes
+ * so the old node fades out while the new one fades in, on the category's
+ * curve. Pair with `AnimatePresence` + `useIsPresent`.
+ */
+export function crossfadeFade(motion: (typeof hds.motion)['productive']) {
+  return {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { duration: motion.duration, ease: motion.easing },
+  };
+}

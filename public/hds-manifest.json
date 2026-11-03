@@ -3729,6 +3729,7 @@
         "src/app/components/sheet.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
+        "src/app/hooks/useHdsMotion.ts",
         "src/form/index.ts",
         "src/index.ts",
         "src/mui/index.ts"
@@ -3933,6 +3934,18 @@
           "testId": "a11y:button.reduced-motion"
         },
         {
+          "rule": "When a toggle button's text label changes, the old label is aria-hidden while it fades out, so the accessible name is the new label from the moment it changes.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.label-crossfade"
+        },
+        {
+          "rule": "The toggle label crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the label swaps instantly with no overlap.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
           "rule": "Give an icon-only Button a label (or aria-label); without one it has no accessible name.",
           "required": true,
           "owner": "consumer"
@@ -4008,9 +4021,11 @@
       },
       "docsPage": "/docs/components/button",
       "publicDataAttributes": [
+        "data-crossfade-label",
         "data-hover-effect",
         "data-pressed",
         "data-size",
+        "data-slot",
         "data-tone",
         "data-variant"
       ],
@@ -10196,6 +10211,18 @@
           "testId": "a11y:async-state.retry-keyboard"
         },
         {
+          "rule": "During a status crossfade the exiting block is aria-hidden and inert, and only the live block carries aria-busy, so assistive technology never reads the old state.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:async-state.crossfade-exit-hidden"
+        },
+        {
+          "rule": "The status crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the swap renders only the new block with no overlap.",
+          "required": true,
+          "owner": "component",
+          "testId": "gate:check-reduced-motion"
+        },
+        {
           "rule": "Give the region a label that names what is loading (\"Open roles\"), not \"Loading\".",
           "required": true,
           "owner": "consumer"
@@ -10214,7 +10241,9 @@
         "exportName": "AsyncState",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/hooks/useHdsMotion.ts"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -10276,6 +10305,7 @@
       "requiredProps": [],
       "docsPage": "/docs/patterns/async-state",
       "publicDataAttributes": [
+        "data-crossfade-view",
         "data-slot",
         "data-status"
       ],
