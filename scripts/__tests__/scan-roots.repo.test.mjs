@@ -77,11 +77,13 @@ describe('every gate scans a directory that exists', () => {
     expect(dead, `${rel} scans ${dead.join(', ')}, which does not exist`).toEqual([]);
   });
 
+  // gateFiles / scanSources (scripts/lib/source-scan.mjs) call resolveScanRoots
+  // themselves, so a gate that lists its files through them is covered too.
   it.each(['audit-tokens', 'check-focus-states', 'check-source-canon'])(
     '%s routes its scan roots through resolveScanRoots',
     (name) => {
       const code = readFileSync(path.join(ROOT, 'scripts', `${name}.mjs`), 'utf8');
-      expect(code).toMatch(/resolveScanRoots\(/);
+      expect(code).toMatch(/\b(?:resolveScanRoots|scanSources|gateFiles)\(/);
     },
   );
 });

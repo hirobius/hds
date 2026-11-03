@@ -303,6 +303,27 @@ export function lineOf(text, index) {
 }
 
 /**
+ * A ratchet baseline file as a set of entries (hds#1010): trimmed lines, blank
+ * and `#` comment lines dropped. A missing or unreadable file is an empty set.
+ *
+ * @param {string} file  absolute path
+ * @returns {Set<string>}
+ */
+export function readBaselineSet(file) {
+  try {
+    const text = readFileSync(file, 'utf8');
+    return new Set(
+      text
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l && !l.startsWith('#')),
+    );
+  } catch {
+    return new Set();
+  }
+}
+
+/**
  * Whether a gate runs in fixture mode (`--fixture-mode` or HDS_FIXTURE_MODE=1).
  *
  * @param {readonly string[]} argv

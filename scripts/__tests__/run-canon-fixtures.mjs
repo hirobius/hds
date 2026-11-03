@@ -35,56 +35,15 @@ import {
   DATA_TENANT_SELECTOR_RE,
   INLINE_THIN_BAR_RE,
   INLINE_STRUCTURAL_BORDER_RE,
-  STRUCTURAL_COMPONENTS,
+  extractClassNames,
+  extractJsxText,
+  fileNearStructural,
 } from '../../validators/canon-rules.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE_DIR = path.join(__dirname, 'fixtures', 'canon');
 
 // ── Minimal scanner (mirrors check-source-canon.mjs scanFile logic) ──────────
-
-function extractClassNames(source) {
-  const out = [];
-  const reDoubleQuoted = /className\s*=\s*"([^"]*)"/g;
-  const reSingleQuoted = /className\s*=\s*'([^']*)'/g;
-  const reExpression = /className\s*=\s*\{([\s\S]*?)\}/g;
-  for (const re of [reDoubleQuoted, reSingleQuoted]) {
-    let m;
-    while ((m = re.exec(source)) !== null) {
-      out.push({ value: m[1], index: m.index });
-    }
-  }
-  let m;
-  while ((m = reExpression.exec(source)) !== null) {
-    const inner = m[1];
-    const strRe = /["'`]([^"'`]+)["'`]/g;
-    let s;
-    while ((s = strRe.exec(inner)) !== null) {
-      out.push({ value: s[1], index: m.index + s.index });
-    }
-  }
-  return out;
-}
-
-function extractJsxText(source) {
-  const out = [];
-  const re = />([^<>{}]+)</g;
-  let m;
-  while ((m = re.exec(source)) !== null) {
-    const text = m[1];
-    if (text.trim().length === 0) continue;
-    if (/[();]|import |\.tsx|\.\.\.[A-Za-z_]|=>|: [A-Z]/.test(text)) continue;
-    out.push({ value: text, index: m.index + 1 });
-  }
-  return out;
-}
-
-function fileNearStructural(source) {
-  for (const tag of STRUCTURAL_COMPONENTS) {
-    if (source.includes('<' + tag)) return true;
-  }
-  return false;
-}
 
 /**
  * Scan a single file for canon violations.
@@ -185,7 +144,9 @@ for (const file of fixtureFiles) {
     console.log(`  PASS  ${file}  [${expectedCode}] fired`);
     passed++;
   } else {
-    console.error(`  FAIL  ${file}  expected [${expectedCode}] but got: [${codes.join(', ') || 'none'}]`);
+    console.error(
+      `  FAIL  ${file}  expected [${expectedCode}] but got: [${codes.join(', ') || 'none'}]`,
+    );
     failed++;
   }
 }
@@ -193,7 +154,9 @@ for (const file of fixtureFiles) {
 console.log(`\n${passed} passed, ${failed} failed (${fixtureFiles.length} fixtures)`);
 
 if (failed > 0) {
-  console.error(`\nFailed: ${failed} validator(s) silently no-op on their own fixture — rule is aspirational, not proven.`);
+  console.error(
+    `\nFailed: ${failed} validator(s) silently no-op on their own fixture — rule is aspirational, not proven.`,
+  );
   process.exit(1);
 }
 process.exit(0);
