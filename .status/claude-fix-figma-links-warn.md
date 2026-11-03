@@ -1,0 +1,1 @@
+figma-links --check: an absent explorationsFileKey/explorationsFileName pair is a loud WARNING with exit 0 until Adrian creates the explorations Figma file (hds#763); every other area problem still fails. Restore the error in hds#1104. Unblocks the hds pre-push hook (pretest). Scripts and tests only, nothing ships. skip-changeset
