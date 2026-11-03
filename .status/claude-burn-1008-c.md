@@ -1,0 +1,1 @@
+J1 slice (hds#1008, spec ops#1075): figma-cli / figma-plugin-zip / figma-sync tests now share helpers/figma-temp-root (LIBRARY_LINKS, STAGING_LINKS, writeLinks, useTempRoots) and temp-dirs. Same test counts (32/4/49). check:dupes 1.1876% -> 1.1786%, threshold stays 1.18. Test-only.
