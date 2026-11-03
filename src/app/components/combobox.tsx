@@ -69,13 +69,22 @@
 // trigger and options use token color transitions via their utility classes.
 
 import * as React from 'react';
-import { Check, ChevronsUpDown, X } from 'lucide-react';
+import { ChevronsUpDown, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
 import { CreatableCombobox } from './combobox-creatable';
 import { ACTIVE_OPTION_CLASS, firstEnabledIndex, nextEnabledIndex } from './listbox-nav';
+import {
+  ListboxFooter,
+  OptionCheck,
+  outsideTarget,
+  resultCount,
+  useComboboxList,
+  useForwardedRef,
+  useScrollActiveIntoView,
+} from './combobox-list';
 
 /** @public */
 export interface ComboboxOption {
@@ -183,11 +192,18 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
     },
     ref,
   ) {
-    const [open, setOpen] = React.useState(false);
-    const [query, setQuery] = React.useState('');
-    const [activeIndex, setActiveIndex] = React.useState(0);
-    const baseId = React.useId();
-    const listId = `${baseId}-list`;
+    const {
+      open,
+      setOpen,
+      query,
+      setQuery,
+      activeIndex,
+      setActiveIndex,
+      listId,
+      optionId,
+      moveActive,
+      scrollActiveIntoView,
+    } = useComboboxList();
     // Names the open popover and the listbox inside it (hds#399): the field
     // label, or the placeholder when the field has none or it is empty (hds#408).
     const popupName = ariaLabel || placeholder;
@@ -223,10 +239,6 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       setActiveIndex(firstEnabledIndex(filtered));
     }
 
-    // Keyboard moves bring the active option into view inside the max-h list.
-    // Mouse hover also sets activeIndex but must not scroll, so only a key sets this.
-    const scrollActiveIntoView = React.useRef(false);
-
     function commit(option: ComboboxOption) {
       if (option.disabled) return;
       if (selection.multiple) {
@@ -250,16 +262,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
     // The trigger is a Popover.Anchor, not a Popover.Trigger, so Radix has no
     // trigger to hand focus back to: Escape (or a pick) dropped it on <body>.
     // Keep our own ref and return focus there unless the person clicked elsewhere (hds#522).
-    const triggerRef = React.useRef<HTMLButtonElement | null>(null);
+    const [triggerRef, setTriggerRef] = useForwardedRef(ref);
     const interactedOutside = React.useRef(false);
-    const setTriggerRef = React.useCallback(
-      (node: HTMLButtonElement | null) => {
-        triggerRef.current = node;
-        if (typeof ref === 'function') ref(node);
-        else if (ref) ref.current = node;
-      },
-      [ref],
-    );
     const refocus = React.useRef<{ index: number; count: number } | null>(null);
     React.useEffect(() => {
       const pending = refocus.current;
@@ -282,11 +286,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       if (filtered.length === 0) return;
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-        const next = nextEnabledIndex(filtered, activeIndex, e.key === 'ArrowDown' ? 1 : -1);
-        if (next !== activeIndex) {
-          scrollActiveIntoView.current = true;
-          setActiveIndex(next);
-        }
+        moveActive(nextEnabledIndex(filtered, activeIndex, e.key === 'ArrowDown' ? 1 : -1));
       } else if (e.key === 'Enter') {
         e.preventDefault();
         const option = filtered[activeIndex];
@@ -294,18 +294,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       }
     }
 
-    // Ids come from the index: an option value may hold spaces or characters
-    // that are invalid in an id / aria-activedescendant reference.
-    const optionId = (i: number) => `${baseId}-opt-${i}`;
     const activeOptionId = filtered[activeIndex] ? optionId(activeIndex) : undefined;
-
-    React.useEffect(() => {
-      if (!scrollActiveIntoView.current) return;
-      scrollActiveIntoView.current = false;
-      if (open && activeOptionId) {
-        document.getElementById(activeOptionId)?.scrollIntoView({ block: 'nearest' });
-      }
-    }, [open, activeOptionId]);
+    useScrollActiveIntoView(scrollActiveIntoView, open ? activeOptionId : undefined);
 
     const popover = (
       <Popover
@@ -362,8 +352,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             // the popover could never be closed by clicking the trigger. Let the
             // onClick own that toggle; treat every other outside interaction as a
             // real dismissal.
-            const oe = (event as { detail?: { originalEvent?: Event } }).detail?.originalEvent;
-            const target = (oe?.target ?? (event as unknown as Event).target) as Node | null;
+            const target = outsideTarget(event);
             if (target && triggerRef.current?.contains(target)) {
               event.preventDefault();
               return;
@@ -430,30 +419,18 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                       'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                     )}
                   >
-                    <span className="flex size-4 items-center justify-center">
-                      {isSelected ? (
-                        <Icon icon={Check} size="small" color="currentColor" aria-hidden />
-                      ) : null}
-                    </span>
+                    <OptionCheck selected={isSelected} />
                     <span className="truncate">{option.label}</span>
                   </button>
                 </li>
               );
             })}
           </ul>
-          {/* Beside the listbox, not in it: a listbox holding text but no
-              option fails axe aria-required-children (hds#407). m-fixed-2xs stands in
-              for the empty listbox's padding, so the box is unchanged. */}
-          {filtered.length === 0 ? (
-            <p className="m-fixed-2xs px-scale-xs py-fixed-md text-center hds-type-ui text-muted-foreground">
-              {emptyMessage}
-            </p>
-          ) : null}
-          {/* Filtering changes the list without moving focus, so the match count is
-              announced through a polite live region (WCAG 4.1.3). */}
-          <div role="status" aria-live="polite" className="sr-only">
-            {`${filtered.length} ${filtered.length === 1 ? 'result' : 'results'}`}
-          </div>
+          <ListboxFooter
+            empty={filtered.length === 0}
+            emptyMessage={emptyMessage}
+            status={resultCount(filtered.length)}
+          />
         </Popover.Content>
       </Popover>
     );
