@@ -20,7 +20,23 @@ export function warnOnce(code: string, message: string): void {
   console.warn(`[HDS deprecation] ${message} (${code})`);
 }
 
+const warnedPlain = new Set<string>();
+
+/**
+ * Emit a plain warning once per unique `code` (dev only), with no
+ * `[HDS deprecation]` prefix — for misuse warnings that are not deprecations.
+ * The guard lives here, not in the component: the React Compiler lint
+ * rejects module-level state mutated from inside a component's render.
+ */
+export function warnOncePlain(code: string, message: string): void {
+  if (isProduction()) return;
+  if (warnedPlain.has(code)) return;
+  warnedPlain.add(code);
+  console.warn(message);
+}
+
 /** Test helper to reset the once-per-session guard. */
 export function __resetDeprecationWarnings(): void {
   warned.clear();
+  warnedPlain.clear();
 }

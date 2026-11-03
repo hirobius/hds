@@ -1,0 +1,32 @@
+# Heavy test files — the slow lane of the split test gate (hds#1090, Slice 1).
+#
+# One repo-relative path per line; blank lines and lines starting with `#`
+# are ignored. Adding a file here is a one-line change: it leaves the fast
+# lane (`pnpm test:fast`) and runs only in the full suite, in the nightly
+# run, or when a diff triggers its area (see scripts/lib/test-lanes.mjs).
+#
+# Scope: scripts/__tests__ only. src/ tests are never heavy-listed — the
+# component suites are ~9% of the gate; the scripts integration tests are
+# ~79% (they spawn whole tools as child processes per test case).
+#
+# Seeded 2026-11-02 from measured per-file wall times on Muse's VM (full
+# `pnpm test`: 8,294 tests, 940s clean wall, 1,194s summed per-file work).
+# Every scripts/__tests__ file measured >10s per-file wall is listed, with
+# its measured time. The daily gate-timing collection re-measures per-file
+# durations: a fast-lane file that crosses 10s in two consecutive
+# collections moves here in the same PR that reports it (and a heavy file
+# that drops well under the line after slow-file surgery comes back out).
+scripts/__tests__/generator-check-flags.test.mjs # 112.3s
+scripts/__tests__/upgrade-command.test.mjs # 71.7s
+scripts/__tests__/upgrade-compile.test.mjs # 68.8s
+scripts/__tests__/figma-receipt.test.mjs # 50.2s
+scripts/__tests__/eval-explorations.test.mjs # 48.4s
+scripts/__tests__/check-upgrade-ledger.test.mjs # 32.4s
+scripts/__tests__/figma-agent-sync-parts.test.mjs # 31.7s
+scripts/__tests__/check-code-connect.test.mjs # 23.5s
+scripts/__tests__/figma-cli.test.mjs # 20.8s
+scripts/__tests__/eslint-hds-self-lint.test.mjs # 17.5s
+scripts/__tests__/upgrade-snapshot.test.mjs # 16.6s
+scripts/__tests__/generate-llms-input-independence.test.mjs # 16.3s
+scripts/__tests__/generate-llms-full.test.mjs # 15.2s
+scripts/__tests__/figma-snapshot-diff.test.mjs # 14.7s

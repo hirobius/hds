@@ -30,14 +30,12 @@ import {
   _resetPendingRequests,
   _pendingRequestsSize,
 } from '../scripts/correlation.mjs';
+import { readFixtureInput } from './lib/fixture-input.mjs';
 
 export default async function correlationValidator(input) {
-  if (!input || typeof input !== 'object') {
-    return { ok: false, code: 'MALFORMED', message: 'fixture input is not an object' };
-  }
-  const scenario = input.scenario;
-  const id = typeof input.id === 'string' ? input.id : '11111111-1111-4111-8111-111111111111';
-  const type = typeof input.type === 'string' ? input.type : 'fixture.test';
+  const read = readFixtureInput(input);
+  if (read.result) return read.result;
+  const { scenario, id, type } = read;
 
   // Each fixture starts from a clean pending-Map so cases don't interfere.
   _resetPendingRequests();
@@ -82,7 +80,9 @@ export default async function correlationValidator(input) {
     case 'unknown-id': {
       // Resolving an id that was never registered must return false and
       // must NOT throw. The pending Map stays empty.
-      const matched = resolvePendingRequest('00000000-0000-4000-8000-000000000000', { stray: true });
+      const matched = resolvePendingRequest('00000000-0000-4000-8000-000000000000', {
+        stray: true,
+      });
       return {
         ok: true,
         matched,
