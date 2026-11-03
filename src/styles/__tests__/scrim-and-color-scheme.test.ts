@@ -12,6 +12,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, it, expect, beforeAll } from 'vitest';
+import { blockBody, declaration } from './style-test-helpers';
 
 let themeCss: string;
 let tokensCss: string;
@@ -20,19 +21,6 @@ beforeAll(() => {
   themeCss = readFileSync(resolve(__dirname, '../theme.css'), 'utf8');
   tokensCss = readFileSync(resolve(__dirname, '../tokens.generated.css'), 'utf8');
 });
-
-/** Body of the first top-level block whose selector list is exactly `selector`. */
-function blockBody(css: string, selector: string): string {
-  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*');
-  const match = css.match(new RegExp(`(?:^|\\n)${escaped}\\s*\\{([^}]*)\\}`));
-  if (!match) throw new Error(`Block not found: ${selector}`);
-  return match[1];
-}
-
-function declaration(body: string, prop: string): string | null {
-  const match = body.match(new RegExp(`${prop}:\\s*([^;]+);`));
-  return match ? match[1].trim() : null;
-}
 
 describe('semantic.color.surface.scrim', () => {
   it('is defined in :root and in the dark block with different values', () => {

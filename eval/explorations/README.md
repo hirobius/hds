@@ -133,8 +133,8 @@ on the board.
 - `tenant`: the demo tenant the harness applies when it renders the direction; `null` is the
   HDS default. A renders at the default, B must declare one (it pushes tokens through a
   tenant overlay, so without one it is a second A), C may do either. Only a tenant with
-  `"demo": true` in `tenants/<slug>/metadata.json` is accepted: a client tenant fails the
-  gate, and so does a slug with no directory under `tenants/`.
+  `"demo": true` in `directions/<slug>/metadata.json` is accepted: a client tenant fails the
+  gate, and so does a slug with no directory under `directions/`.
 - `searches`: every 21st MCP call. `tool` is one of `search`, `get_inspiration`, `get_theme`
   and `get_component`; a `get_component` call needs a `reason` (why the preview was not
   enough). The endpoint also exposes tools that edit or delete things on the account; the

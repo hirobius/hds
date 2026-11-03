@@ -42,20 +42,16 @@ import {
   _resetPendingRequests,
   _pendingRequestsSize,
 } from '../scripts/correlation.mjs';
+import { readFixtureInput } from './lib/fixture-input.mjs';
 
 export default async function runtimeErrorChannelValidator(input) {
-  if (!input || typeof input !== 'object') {
-    return { ok: false, code: 'MALFORMED', message: 'fixture input is not an object' };
-  }
-
-  const scenario = input.scenario;
-  const id = typeof input.id === 'string' ? input.id : '11111111-1111-4111-8111-111111111111';
-  const type = typeof input.type === 'string' ? input.type : 'fixture.test';
+  const read = readFixtureInput(input);
+  if (read.result) return read.result;
+  const { scenario, id, type } = read;
   const ttlMs = typeof input.ttlMs === 'number' ? input.ttlMs : 5_000;
   const runtimeErrorsEnabled = Boolean(input.runtimeErrorsEnabled);
-  const renderErrorMessage = (input.renderError && typeof input.renderError === 'object')
-    ? input.renderError
-    : null;
+  const renderErrorMessage =
+    input.renderError && typeof input.renderError === 'object' ? input.renderError : null;
 
   // Fixtures must not interfere with each other.
   _resetPendingRequests();
@@ -113,8 +109,12 @@ export default async function runtimeErrorChannelValidator(input) {
       let pendingSettled = false;
       const pending = registerPendingRequest({ id, type }, { ttlMs });
       pending.then(
-        () => { pendingSettled = true; },
-        () => { pendingSettled = true; },
+        () => {
+          pendingSettled = true;
+        },
+        () => {
+          pendingSettled = true;
+        },
       );
 
       const verdict = handleRenderError({

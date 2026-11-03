@@ -13,6 +13,7 @@
 import { describe, it, expect } from 'vitest';
 import { resolve } from 'node:path';
 import ts from 'typescript';
+import { readModuleExports } from './helpers/module-exports';
 
 const ROOT = resolve(__dirname, '..');
 const INDEX = resolve(ROOT, 'src/index.ts');
@@ -109,15 +110,7 @@ const WAVE_4B = [
 const B5_REMOVED = ['NotFoundPattern', 'TileGrid', 'TileGridProps'];
 const B5_MOVED = ['StatusTile', 'StatusTileProps', 'StatusTileTone'];
 
-function readBarrel(entry = INDEX) {
-  const config = ts.readConfigFile(resolve(ROOT, 'tsconfig.json'), ts.sys.readFile);
-  const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, ROOT);
-  const program = ts.createProgram([entry], { ...parsed.options, noEmit: true });
-  const checker = program.getTypeChecker();
-  const source = program.getSourceFile(entry)!; // tier-ok: root file passed to createProgram above
-  const moduleSymbol = checker.getSymbolAtLocation(source)!; // tier-ok: barrel is a module
-  return { checker, exports: checker.getExportsOfModule(moduleSymbol) };
-}
+const readBarrel = (entry = INDEX) => readModuleExports(entry);
 
 describe('public component export names', () => {
   const { checker, exports } = readBarrel();

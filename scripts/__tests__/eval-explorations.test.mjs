@@ -27,20 +27,6 @@ import { useTempDirs } from './helpers/temp-dirs.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-/** A real (non-demo) tenant, read from tenants/ so no client name is written in this file. */
-const CLIENT_TENANT = (() => {
-  const dir = path.join(ROOT, 'tenants');
-  for (const slug of readdirSync(dir).sort()) {
-    if (slug.startsWith('_')) continue;
-    try {
-      const meta = JSON.parse(readFileSync(path.join(dir, slug, 'metadata.json'), 'utf8'));
-      if (meta.demo !== true && meta.displayName) return { slug, name: meta.displayName };
-    } catch {
-      /* no metadata: not a tenant */
-    }
-  }
-  throw new Error('tenants/ has no non-demo tenant to test the client-tenant gates with');
-})();
 const makeTmp = useTempDirs('eval-explorations-');
 
 const PACKED = {
@@ -485,20 +471,20 @@ describe('pnpm eval:consistency -- --explorations (CLI, offline)', () => {
     ).toBe(1);
   }, 30_000); // four CLI spawns: past the 5 s default when the machine is loaded
 
-  it('exits 1 when a direction renders under a client tenant', () => {
+  it('exits 1 when a direction renders under a tenant that is not a direction (ADR-035)', () => {
     const dir = runOf(
       direction('B', {
         meta: {
           refs: {
             present: true,
-            value: { tenant: CLIENT_TENANT.slug, searches: [], refs: [] },
+            value: { tenant: 'some-client', searches: [], refs: [] },
           },
         },
       }),
     );
     const r = run(['--explorations', dir, '--offline']);
     expect(r.code).toBe(1);
-    expect(r.out).toMatch(/not a demo tenant/);
+    expect(r.out).toMatch(/no tenant "some-client" under directions\//);
   });
 
   it('lists the directions, in the order of the hds#628 table, and the folders it ignored', () => {
@@ -621,12 +607,15 @@ describe('pnpm eval:consistency -- --gaps and --pii (CLI)', () => {
     expect(run(['--pii', path.join(a, 'missing')]).code).toBe(2);
   });
 
-  it('--pii always checks against the real tenants in tenants/', () => {
+  it('--pii checks client names from the denylist file (no client lives in this repo, ADR-035)', () => {
     const dir = makeTmp();
-    writeFileSync(path.join(dir, 'brief.md'), `A pitch to ${CLIENT_TENANT.name}`);
-    const r = run(['--pii', dir]);
+    const list = path.join(makeTmp(), 'denylist.txt');
+    writeFileSync(list, 'Alder Bay Plumbing\n');
+    writeFileSync(path.join(dir, 'brief.md'), 'A pitch to Alder Bay Plumbing');
+    expect(run(['--pii', dir]).code).toBe(0);
+    const r = run(['--pii', dir, '--denylist', list]);
     expect(r.code).toBe(1);
-    expect(r.out).toContain(`denylist ${CLIENT_TENANT.name}`);
+    expect(r.out).toContain('denylist Alder Bay Plumbing');
   });
 });
 

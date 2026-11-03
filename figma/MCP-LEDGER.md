@@ -765,4 +765,61 @@ Session total: 3 calls
 
 Session total: 6 calls
 
-Calls logged for 2026-11-01: 9 of 200 (3 and 6).
+## 2026-11-01 · token sync on 0.32.0 main 5922574
+
+Daily check: version unchanged; plan still blocked on the 21 hand deletions. Probe whether they are done.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                      | Result                                               |
+| --- | ---------- | ---------------- | ---- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 1   | 16:47      | `create_session` | read | open file session                                                            | OK; session opened                                   |
+| 2   | 16:47      | `use_figma`      | read | read-only probe: do the 21 variables code removed still exist in the library | OK; all 21 still present (503 variables), so no push |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-01: 11 of 200 (3, 6 and 2).
+
+## 2026-11-02 · session claude/burn-302 (hds#302, library `2VgBbVpKiDnu0aftJEVyBQ`)
+
+| #   | Time (UTC) | Tool              | Kind | Purpose                                                                                     | Result                                                                                                                                     |
+| --- | ---------- | ----------------- | ---- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | 08:45      | `create_session`  | read | open file session                                                                           | OK                                                                                                                                         |
+| 2   | 08:45      | `get_figma_skill` | read | load figma-use                                                                              | OK                                                                                                                                         |
+| 3   | 08:46      | `use_figma`       | read | every page: text layers with no text style per component (`figma/reads/text-style-read.js`) | OK; 190 of 973 unstyled, all on Archive (22 components) or Deprecated (7); 0 on live pages. Stored in `figma/text-style-verification.json` |
+
+Results: no live component has an unstyled text layer, so no binding write was made. Nothing written, deleted or published.
+
+Session total: 3 calls
+
+## 2026-11-02 · hds#637 Timeline library redraw (library `2VgBbVpKiDnu0aftJEVyBQ`, staging `C85ZXnwtVc4AteeIOZfXRC`)
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                                     | Result                                                                           |
+| --- | ---------- | ---------------- | ----- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| 1   | --         | `create_session` | read  | open file session                                                           | OK                                                                               |
+| 2   | --         | `use_figma`      | read  | library node 2201:133 and page list                                         | OK; Timeline page 2201:3                                                         |
+| 3   | --         | `use_figma`      | read  | list Timeline page components                                               | OK; TimelineItem set 2201:132 (Tone x Last), Timeline 2201:133                   |
+| 4   | --         | `use_figma`      | read  | staging nodes 92:3197 / 92:3198                                             | OK; Tone x Detail set + Timeline                                                 |
+| 5   | --         | `use_figma`      | read  | screenshot library set + Timeline                                           | OK                                                                               |
+| 6   | --         | `use_figma`      | read  | dump staging structure, variable and style keys                             | OK                                                                               |
+| 7   | --         | `use_figma`      | read  | resolve keys to local variables/styles; external instances of 2201:132      | OK; all local, 0 external instances                                              |
+| 8   | --         | `use_figma`      | write | draw TimelineItem set (Tone x Detail) from staging, library vars only       | OK; set `2252:127` (variants `2252:37`..`2252:117`)                              |
+| 9   | --         | `use_figma`      | write | rebuild Timeline 2201:133 in place from 2252:127 instances; remove 2201:132 | OK; Timeline keeps id 2201:133 (the `@figma` tag); 2252:127 renamed TimelineItem |
+| 10  | --         | `use_figma`      | write | delete staging draft 92:3197 + 92:3198                                      | OK                                                                               |
+
+Results: library TimelineItem is now `2252:127` (Tone x Detail, matching the code's `children` disclosure); Timeline `2201:133` kept its id so `timeline.tsx`'s `@figma` tag already points at the library node. Staging draft deleted. Nothing published: Adrian publishes.
+
+Session total: 10 calls
+
+Calls logged for 2026-11-02: 13 of 200 (3 and 10).
+
+## 2026-11-03 · token sync on 0.32.0 main e88099a
+
+Daily check (11-02 run, delayed): version unchanged; plan updated 42 · created 9, still blocked on the 21 hand deletions. Probe whether they are done.
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                                                      | Result                                               |
+| --- | ---------- | ---------------- | ---- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 1   | 07:06      | `create_session` | read | open file session                                                            | OK; session opened                                   |
+| 2   | 07:06      | `use_figma`      | read | read-only probe: do the 21 variables code removed still exist in the library | OK; all 21 still present (503 variables), so no push |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-03: 2 of 200 (2).

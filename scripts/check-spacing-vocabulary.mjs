@@ -62,19 +62,13 @@
  */
 
 import { readFileSync } from 'fs';
-import { join, dirname, relative, resolve } from 'path';
+import { relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
-import { scanSources, suppressionFor } from './lib/source-scan.mjs';
+import { emitResult } from './lib/gate-output.mjs';
+import { scanSources, suppressionFor, gateContext } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-
-const jsonMode = hasJsonFlag(process.argv);
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 // The `sx` spacing shorthand keys resolved by box-sx.ts's SPACING_PROP_MAP.
 export const SPACING_KEYS = new Set([

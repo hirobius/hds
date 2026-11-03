@@ -8,7 +8,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { resolve } from 'node:path';
-import ts from 'typescript';
+import { readModuleExports } from './helpers/module-exports';
 
 const ROOT = resolve(__dirname, '..');
 const PATTERNS = resolve(ROOT, 'src/patterns.ts');
@@ -32,15 +32,8 @@ const TYPES = [
   'DataTableSectionRow',
 ];
 
-function exportedNames(entry: string) {
-  const config = ts.readConfigFile(resolve(ROOT, 'tsconfig.json'), ts.sys.readFile);
-  const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, ROOT);
-  const program = ts.createProgram([entry], { ...parsed.options, noEmit: true });
-  const checker = program.getTypeChecker();
-  const source = program.getSourceFile(entry)!; // tier-ok: root file passed to createProgram above
-  const moduleSymbol = checker.getSymbolAtLocation(source)!; // tier-ok: entry is a module
-  return new Set(checker.getExportsOfModule(moduleSymbol).map((s) => s.name));
-}
+const exportedNames = (entry: string) =>
+  new Set(readModuleExports(entry).exports.map((s) => s.name));
 
 describe('screen patterns entry points (hds#337)', () => {
   it('src/patterns.ts exports the components and their Props types', () => {

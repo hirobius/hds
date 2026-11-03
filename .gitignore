@@ -175,6 +175,10 @@ knowledge-clients.local.json
 # Generated gate reports
 reports/
 
+# StrykerJS mutation runs (hds#1089): sandbox copies of the tree; the report
+# itself lands under reports/ above.
+.stryker-tmp/
+
 # Agent-built consistency runs (eval/consistency/README.md); force-add only a run that backs a ledger entry
 eval/consistency/runs/
 
@@ -191,3 +195,6 @@ content/docs/guides/providers.mdx
 # impeccable skill local critique snapshots (not part of the package)
 .impeccable/
 .vercel-redirect/
+
+# design.md harvests (scripts/harvest-design-md.mjs): brand overlays a consumer takes home, never filed under directions/ (ADR-035)
+harvest/

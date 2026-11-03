@@ -33,7 +33,7 @@ describe('tenant visual matrix', () => {
   it('only names brands the shipped CSS can activate', () => {
     const css = readFileSync('src/styles/tenants.css', 'utf8');
     for (const brand of BRANDS) {
-      expect(existsSync(`tenants/${brand}/tokens.json`)).toBe(true);
+      expect(existsSync(`directions/${brand}/tokens.json`)).toBe(true);
       expect(css).toContain(`[data-brand='${brand}']`);
     }
   });

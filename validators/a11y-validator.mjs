@@ -5,7 +5,7 @@
  * Reads a11yRules from componentSpecs in the manifest.
  */
 
-import { walkJsx, parseOrError } from './lib/jsx.mjs';
+import { validateElements } from './lib/jsx.mjs';
 
 const INTERACTIVE_COMPONENTS = new Set([
   'HdsButton',
@@ -27,16 +27,10 @@ function hasAccessibleName(attrs) {
  * @param {string} jsxString
  * @returns {{ ok: boolean, errors: Array<{path, code, message, suggestion}> }}
  */
-export default async function validate(jsxString) {
-  const { ast, result } = parseOrError(jsxString);
-  if (result) return result;
-
-  const errors = [];
-
-  walkJsx(ast, (element) => {
-    const tagName = element.openingElement?.name?.name;
+export default function validate(jsxString) {
+  return validateElements(jsxString, (element, { tagName: name, attrs, errors }) => {
+    const tagName = name;
     if (!tagName) return;
-    const attrs = element.openingElement?.attributes || [];
 
     if (INTERACTIVE_COMPONENTS.has(tagName)) {
       if (!hasAccessibleName(attrs)) {
@@ -49,6 +43,4 @@ export default async function validate(jsxString) {
       }
     }
   });
-
-  return { ok: errors.length === 0, errors };
 }

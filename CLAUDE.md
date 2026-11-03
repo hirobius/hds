@@ -112,8 +112,8 @@ When asked to perform a task, read the corresponding file BEFORE writing code:
   `figma/model.json`; `pnpm figma:push` and `pnpm figma:native-import` apply it to a
   Figma file by hand; `pnpm figma:snapshot --ingest` records the file into the committed
   `figma/snapshot.json`; `pnpm check:figma-drift` compares the two. Runbook:
-  `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, demo tenants
-  only (`figma/brand-modes.json`) — a client tenant never enters the shared library. In the
+  `figma/README.md`. Brand is modes of one `Hirobius/Brand` collection, directions
+  only (`figma/brand-modes.json`, ADR-035) — a client's brand never enters the shared library. In the
   HDS library (`libraryFileKey` in `figma/links.json`, ADR-026 amended 2026-10-07) agents
   may restyle, fix, add, copy or redraw components (one `use_figma` script naming the node
   ids it touches, screenshots before and after), but never delete anything in the library
@@ -194,6 +194,7 @@ may skip:
 - **A perf-budget failure (`pnpm size-limit` / `check:size`, Button probe) → `performance-optimization`** (Osmani). Never raise a budget to get green.
 - **Charting a multi-decision lane → `/wayfinder`.**
 - **Design-touching UI → `/design-review`.**
+- **A visual bug (HDS or a consumer app) → `/visual-fix`**; `/design-review` scores a screen, `/visual-fix` fixes one.
 - **UI polish → `/impeccable`** (`docs/agents/design-quality.md`).
 - **Docs copy → `humanizer`; UI 2nd pass → `web-design-guidelines`** (`.claude/skills/_vendor/anti-slop/ROUTING.md`).
 

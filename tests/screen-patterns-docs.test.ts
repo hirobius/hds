@@ -59,6 +59,15 @@ describe('llms.txt screen recipe', () => {
 describe('DESIGN.md screen rules', () => {
   const design = read('DESIGN.md');
 
+  /** Each name leads a row of a Markdown table in DESIGN.md (first cell, as code). */
+  const expectRowsLedBy = (names: string[]) => {
+    const rows = design.split('\n').filter((l) => l.startsWith('|'));
+    for (const name of names) {
+      const found = rows.some((l) => l.split('|')[1]?.includes(`\`${name}\``));
+      expect(found, `no table row led by \`${name}\``).toBe(true);
+    }
+  };
+
   it('has a "Which one, when" table with a "Use instead" column', () => {
     expect(design).toMatch(/Which one, when/);
     const header = design.split('\n').find((l) => /^\|.*Use instead.*\|/.test(l));
@@ -66,11 +75,7 @@ describe('DESIGN.md screen rules', () => {
   });
 
   it('has a row for Stat, Card.Metric, Card.Row and MetricTiles', () => {
-    const rows = design.split('\n').filter((l) => l.startsWith('|'));
-    for (const name of ['Stat', 'Card.Metric', 'Card.Row', 'MetricTiles']) {
-      const found = rows.some((l) => l.split('|')[1]?.includes(`\`${name}\``));
-      expect(found, `no table row led by \`${name}\``).toBe(true);
-    }
+    expectRowsLedBy(['Stat', 'Card.Metric', 'Card.Row', 'MetricTiles']);
   });
 
   // hds#622: StatusTile folded into Card.Row. The row names it, so an agent
@@ -81,11 +86,7 @@ describe('DESIGN.md screen rules', () => {
   });
 
   it('has a row for Card, Surface, DestructiveSection and DataTableSection', () => {
-    const rows = design.split('\n').filter((l) => l.startsWith('|'));
-    for (const name of ['Card', 'Surface', 'DestructiveSection', 'DataTableSection']) {
-      const found = rows.some((l) => l.split('|')[1]?.includes(`\`${name}\``));
-      expect(found, `no table row led by \`${name}\``).toBe(true);
-    }
+    expectRowsLedBy(['Card', 'Surface', 'DestructiveSection', 'DataTableSection']);
   });
 
   // hds#393 (prune B3): the survivors that replace SelectableCard, TileGrid and

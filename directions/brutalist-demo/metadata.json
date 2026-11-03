@@ -1,0 +1,28 @@
+{
+  "$schema": "../../hirobius.tenant-metadata.schema.json",
+  "slug": "brutalist-demo",
+  "displayName": "Brutalist Demo",
+  "tagline": "ADR-022 shape/density exemplar — sharp radius + tightened spacing. demo-only, not a real client.",
+  "tier": 1,
+  "deployment": {
+    "vercelProject": null,
+    "primaryDomain": null,
+    "previewDomain": null
+  },
+  "brand": {
+    "primaryHex": "#111111",
+    "accentName": "brutalist-ink",
+    "logoPath": null
+  },
+  "legal": {
+    "entity": null,
+    "jurisdiction": null,
+    "stripeAccountKind": null
+  },
+  "createdAt": "2026-07-12",
+  "status": "scaffold",
+  "_notes": [
+    "Exemplar direction proving the per-direction shape+density overlay axis from ADR-022 (#128, epic #124). Not a real client — demo exemplar only, no deployment.",
+    "Overrides role.radius (0, density-invariant) and semantic.space.surface.padding (16px / scale.sm comfortable baseline, 8px / scale.xs under [data-density=\"compact\"] via the Compact figma-variables mode)."
+  ]
+}

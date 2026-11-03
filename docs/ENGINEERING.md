@@ -111,6 +111,9 @@ The registry rules are documented in
 - **A consumer smoke build** installs the packed library the way a real consumer
   would and verifies subpath resolution, `publint`, and a consumer-side
   typecheck — so "it builds here" also means "it works when installed."
+- **Mutation runs** (StrykerJS, diff-scoped, report-only) check that the tests
+  would fail if the code were wrong, not just that it ran — see
+  [`docs/mutation-testing.md`](mutation-testing.md).
 - **The docs themselves** are tested by the agent-consistency eval — see §4.
 
 ## 4. The docs are tested too: agent-consistency eval
@@ -201,10 +204,12 @@ Figma. The full rationale and plan limits are in
 
 The visual system re-skins through four root attributes — `data-theme`,
 `data-density`, `data-brand`, and a font variable — read as CSS variables, so a
-theme, density, brand overlay, or typeface applies to every HDS descendant with
-**zero JavaScript**, equally in React, Astro, or plain HTML. The React
-`<HdsThemeProvider>` is a typed convenience over the same attribute contract,
-not a requirement. See [Theming in the README](../README.md#theming-the-four-dials).
+theme, density, direction or brand overlay, or typeface applies to every HDS
+descendant with **zero JavaScript**, equally in React, Astro, or plain HTML. A
+direction ships in the package (`directions/<slug>`); a brand is applied at the
+consumer through `@hirobius/design-system/brand` and never enters the package
+(ADR-035, `GLOSSARY.md`). The React `<HdsThemeProvider>` is a typed convenience
+over the same attribute contract, not a requirement. See [Theming in the README](../README.md#theming-the-four-dials).
 
 ## Further reading
 
