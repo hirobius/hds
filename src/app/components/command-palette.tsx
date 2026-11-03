@@ -26,6 +26,7 @@
  * @a11y component required a11y:command-palette.argument-step-announced Each argument step is announced in the polite status with the argument's name and its position among the command's arguments.
  * @a11y component required a11y:command-palette.escape-returns-focus Escape closes the palette and returns focus to the element that had it.
  * @a11y component required a11y:command-palette.axe-clean The open palette has no axe violations, with results or empty.
+ * @a11y component required a11y:command-palette.touch-text On a phone or touch screen, the search field is 16px or larger, so iOS does not zoom on focus.
  * @a11y consumer required Pass a label that says what the palette searches when it is not a general command palette.
  *
  * Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data;
@@ -421,7 +422,7 @@ export const CommandPalette = /* @__PURE__ */ React.forwardRef<HTMLDivElement, C
               spellCheck={false}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={onInputKeyDown}
-              className="h-12 min-w-0 flex-1 bg-transparent hds-type-ui text-foreground outline-none placeholder:text-muted-foreground"
+              className="h-12 min-w-0 flex-1 bg-transparent hds-type-ui hds-touch-text text-foreground outline-none placeholder:text-muted-foreground"
             />
             <Kbd size="sm" aria-hidden>
               Esc

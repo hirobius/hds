@@ -877,6 +877,8 @@ When a component or pattern needs visual inspiration, look at [21st.dev](https:/
 
 On a coarse pointer (any phone or tablet) or a viewport under 640px, small controls lift to `semantic.size.touchTarget` (`--semantic-size-touchTarget`, 44px): sm Button (icon-only sm in both axes), Tabs trigger, SegmentedControl option, Tag and its dismiss X, Disclosure trigger, Input clear, Combobox chips, Checkbox/Radio/Toggle rows and Pagination. It is on by default, with no prop; a fine pointer on a wide viewport keeps desktop density. A custom control opts in with the `hds-touch-row` class (height) or `hds-touch-target` (height and width). Hosts can delete their own touch-size overrides. `pnpm check:docs-touch-targets` measures the docs demos on a 390px phone and a 1024px touch tablet.
 
+In the same query, text fields set their text at 16px (`--primitive-typography-size-base`) so iOS Safari does not zoom the page into a focused field: Input sm and md, Textarea, TokenField and the Combobox and CommandPalette search fields carry the `hds-touch-text` hook (Input lg is 18px already). A custom text field opts in with the same class. While Input's clear button shows, the end padding is 44px at every size, so typed text never runs under the grown button (hds#863).
+
 ### Card Anatomy (mandatory — all properties non-negotiable)
 
 Every HDS card surface must conform to this anatomy exactly. No creative interpretation is permitted on any of these properties.

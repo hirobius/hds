@@ -248,7 +248,7 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
             onFocus={() => setOpen(true)}
             onKeyDown={onKeyDown}
             className={cn(
-              'h-7 min-w-24 flex-1 bg-transparent px-fixed-2xs hds-type-ui text-foreground outline-none',
+              'h-7 min-w-24 flex-1 bg-transparent px-fixed-2xs hds-type-ui hds-touch-text text-foreground outline-none',
               'placeholder:text-muted-foreground disabled:cursor-not-allowed',
             )}
           />

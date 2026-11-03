@@ -31,6 +31,7 @@
  * @a11y component required a11y:combobox.result-count-announced The match count is announced in a polite status as the list is filtered (4.1.3).
  * @a11y component required a11y:combobox.multiple-enter-toggles With multiple, Enter toggles the active option and keeps the list open.
  * @a11y component required a11y:combobox.escape-keeps-selection With multiple, Escape closes the list and keeps the selection.
+ * @a11y component required a11y:combobox.touch-text On a phone or touch screen, the search field and the creatable input are 16px or larger, so iOS does not zoom on focus.
  * @a11y component required a11y:combobox.chips-named With multiple, each chip is a button named "Remove <option>".
  * @a11y component required a11y:combobox.chip-keyboard A chip removes its value from the keyboard and focus stays on the chips.
  * @a11y component required a11y:combobox.creatable-input-combobox With `creatable` the text input is the combobox: a listbox popup that reports expanded, what it controls and the active option.
@@ -384,7 +385,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             }}
             onKeyDown={onInputKeyDown}
             className={cn(
-              'hds-focus h-10 w-full border-b border-border bg-transparent px-fixed-xs hds-type-ui text-foreground',
+              'hds-focus h-10 w-full border-b border-border bg-transparent px-fixed-xs hds-type-ui hds-touch-text text-foreground',
               'outline-none placeholder:text-muted-foreground',
             )}
           />

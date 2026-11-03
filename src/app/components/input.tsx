@@ -15,6 +15,8 @@
  * @a11y component required a11y:input.loading-focusable A loading field stays focusable (read-only with aria-busy), so typing keeps focus.
  * @a11y component required a11y:input.clear-button The clear button is named, reachable by Tab, and returns focus to the field.
  * @a11y component required a11y:input.clear-target-size The clear button spans the field height and is 24px or wider (WCAG 2.5.8).
+ * @a11y component required a11y:input.clear-pad While the clear button shows, the value's end padding is its 44px touch width, so text never runs under it.
+ * @a11y component required a11y:input.touch-text On a phone or touch screen, sm and md field text is 16px or larger, so iOS does not zoom on focus.
  * @a11y component required a11y:input.sr-field A screen reader speaks the label, the invalid state and the error message.
  * @a11y consumer required Pass a label, or an aria-labelledby that points at visible text; a placeholder is not a name.
  * @a11y consumer recommended Set autoComplete on fields that collect the person's own details (WCAG 1.3.5).
@@ -201,6 +203,10 @@ const ADORNMENT_BY_SIZE = {
   },
 } as const;
 
+// While the clear button shows, every size takes lg's trailing pad (pr-11, 44px):
+// the width the button grows to on a phone or touch screen (hds#863).
+const CLEAR_PAD = ADORNMENT_BY_SIZE.lg.trailPad;
+
 // A slot is set when it renders something: `0` renders "0", while null,
 // undefined, booleans and '' render nothing.
 function isSlotSet(node: React.ReactNode): boolean {
@@ -283,6 +289,9 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
   const showClearButton =
     !TYPES_WITHOUT_CLEAR.has(type) && currentValue.length > 0 && !isDisabled && !isLoading;
   const trailingActive = isLoading || hasTrailing || showClearButton;
+  // The clear button renders only when no spinner (showClearButton already excludes
+  // loading) or trailing visual takes its place.
+  const showClear = showClearButton && !hasTrailing;
 
   function assignInputRef(node: HTMLInputElement | null) {
     inputRef.current = node;
@@ -320,11 +329,16 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
             : 'default';
 
   const padLeft = hasLeading ? padCfg.leadPad : hasPrefix ? padCfg.prefixGap : padCfg.restPadL;
-  const padRight = trailingActive
-    ? padCfg.trailPad
-    : hasSuffix
-      ? padCfg.suffixGap
-      : padCfg.restPadR;
+  // The clear button grows to the 44px touch target on a phone or touch screen
+  // (.hds-touch-target), wider than sm's and md's trailPad, so while it shows the
+  // end padding is pr-11 (44px) at every size: typed text never runs under it (hds#863).
+  const padRight = showClear
+    ? CLEAR_PAD
+    : trailingActive
+      ? padCfg.trailPad
+      : hasSuffix
+        ? padCfg.suffixGap
+        : padCfg.restPadR;
   const slotClass = cn(
     'flex shrink-0 items-center whitespace-nowrap text-muted-foreground',
     padCfg.iconWrap,
@@ -363,6 +377,9 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           inputVariants({ size, textStyle, invalid }),
           padLeft,
           padRight,
+          // Phone or touch screen: text up to 16px so iOS does not zoom on focus; lg is in the
+          // body role (18px) already (hds#863).
+          size !== 'lg' && 'hds-touch-text',
           inShell && SHELLED_INPUT,
           inputClassName,
         )}
@@ -400,7 +417,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
         </span>
       )}
 
-      {!isLoading && !hasTrailing && showClearButton && (
+      {showClear && (
         <button
           type="button"
           onClick={handleClear}

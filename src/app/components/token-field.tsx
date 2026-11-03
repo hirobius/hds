@@ -10,6 +10,7 @@
  * @a11y component required a11y:token-field.chip-unit Each chip is announced as one unit, its label and the token noun, never letter by letter.
  * @a11y component required a11y:token-field.error-wiring An error sets aria-invalid, links the message with aria-describedby and announces it with role=alert.
  * @a11y component required a11y:token-field.keyboard Tab enters and leaves the field; Backspace, Delete and the arrows treat a chip as one character.
+ * @a11y component required a11y:token-field.touch-text On a phone or touch screen, the text is 16px or larger, so iOS does not zoom on focus.
  * @a11y consumer required Pass a label, or an aria-label or aria-labelledby; a placeholder is not a name.
  *
  * The value stays a plain string. The field is a contenteditable textbox that
@@ -511,7 +512,7 @@ export const TokenField = /* @__PURE__ */ React.forwardRef<TokenFieldHandle, Tok
           spellCheck
           tabIndex={disabled ? -1 : 0}
           className={cn(
-            'block w-full overflow-y-auto whitespace-pre-wrap break-words rounded-md border bg-background px-fixed-xs py-scale-xs hds-type-ui text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] cursor-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[empty]:before:pointer-events-none data-[empty]:before:text-muted-foreground data-[empty]:before:content-[attr(data-placeholder)] data-[state=disabled]:cursor-not-allowed data-[state=disabled]:bg-muted data-[state=disabled]:text-[var(--semantic-color-content-disabled)]',
+            'block w-full overflow-y-auto whitespace-pre-wrap break-words rounded-md border bg-background px-fixed-xs py-scale-xs hds-type-ui hds-touch-text text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] cursor-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[empty]:before:pointer-events-none data-[empty]:before:text-muted-foreground data-[empty]:before:content-[attr(data-placeholder)] data-[state=disabled]:cursor-not-allowed data-[state=disabled]:bg-muted data-[state=disabled]:text-[var(--semantic-color-content-disabled)]',
             invalid ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
             fieldClassName,
           )}
