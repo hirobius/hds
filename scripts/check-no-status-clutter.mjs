@@ -5,7 +5,7 @@
  *
  * Adrian's rule (2026-10-16, hds#759): status clutter is out. Status is implied
  * by content, so no status dots and no coloured left accent bars on cards or
- * tiles. Fails on, in src/, docs-site/, preview/, starter-kit/, templates/ and tenants/:
+ * tiles. Fails on, in src/, docs-site/, preview/, starter-kit/, templates/ and directions/:
  *
  *   - a `dot` prop on a `<Badge>` usage (a status dot)
  *   - a left-border bar (`border-l-2` to `border-l-8`, or `border-l-[2-8px]`)
@@ -39,7 +39,7 @@ import {
 
 const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
-const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'templates', 'tenants'];
+const SCAN_DIRS = ['src', 'docs-site', 'preview', 'starter-kit', 'templates', 'directions'];
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css', '.html'];
 const CODE_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.css']);
 const SKIP_DIRS = [

@@ -9,7 +9,7 @@
  * The inputs that must FAIL are written to temp dirs here, never committed.
  */
 import { describe, expect, it } from 'vitest';
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { clientDenylist, loadDenylistFile, scanPaths, scanText } from '../lib/explorations/pii.mjs';
 import { useTempDirs } from './helpers/temp-dirs.mjs';
@@ -171,23 +171,12 @@ describe('clientDenylist: a client tenant never reaches a board', () => {
     expect(clientDenylist(path.join(makeTmp(), 'missing'))).toEqual([]);
   });
 
-  it('finds the real tenants in this repository, and none of the demo ones', () => {
+  it('finds no client tenants in this repository (ADR-035: no client lives here)', () => {
+    // tenants/ is gone: directions/ holds shared art directions only, and a
+    // client's name reaches the denylist only through a private file.
     const dir = path.resolve(import.meta.dirname, '..', '..', 'tenants');
-    const terms = clientDenylist(dir);
-    // Every non-demo tenant directory, read from disk so no client name is written here.
-    const clients = readdirSync(dir).filter((n) => {
-      if (n.startsWith('_')) return false;
-      try {
-        return JSON.parse(readFileSync(path.join(dir, n, 'metadata.json'), 'utf8')).demo !== true;
-      } catch {
-        return false;
-      }
-    });
-    expect(clients.length).toBeGreaterThan(0);
-    for (const slug of clients) expect(terms).toContain(slug);
-    expect(terms).not.toContain('brutalist-demo');
-    expect(terms).not.toContain('accent-lilac');
-    expect(terms).not.toContain('_template');
+    expect(existsSync(dir)).toBe(false);
+    expect(clientDenylist(dir)).toEqual([]);
   });
 });
 

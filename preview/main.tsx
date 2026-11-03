@@ -25,7 +25,7 @@ import '../src/styles/fonts.css';
 import '../src/styles/index.css';
 // The accent-pair demo's supporting accent is plain CSS beside its tokens, not a token (hds#628
 // decision 4): the bench loads it the way any consumer must, after the token CSS.
-import '../tenants/accent-pair-demo/support-overlay.css';
+import '../directions/accent-pair-demo/support-overlay.css';
 import './preview.css';
 
 /* ── contrast helpers — the preview reports the same numbers the audit does ── */
@@ -107,7 +107,6 @@ function useMeasurements(hostRef: React.RefObject<HTMLElement>, knobs: Knobs) {
 const BRANDS = [
   { value: '', label: 'default' },
   { value: 'brutalist-demo', label: 'brutalist' },
-  { value: 'concrete-creations', label: 'concrete' },
   { value: 'accent-lilac', label: 'lilac' },
   { value: 'soft-demo', label: 'soft' },
   { value: 'accent-pair-demo', label: 'accent pair' },

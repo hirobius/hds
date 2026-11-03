@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://hirobius.com/schemas/tenant-metadata.schema.json",
   "title": "Hirobius Tenant Metadata",
-  "description": "Identity, deployment and brand metadata for one tenant (tenants/<slug>/metadata.json). Token values live in the sibling tokens.json; this file is for tooling that needs tenant facts without parsing DTCG. Field contract: docs/architecture/tenant-token-overlay-format.md (metadata.json section); scripts/check-tenant-tokens.mjs enforces its M1-M3 subset.",
+  "description": "Identity and brand metadata for one overlay: a direction in this repo (directions/<slug>/metadata.json, ADR-035) or a client's brand overlay kept in that client's own repo. Token values live in the sibling tokens.json; this file is for tooling that needs the facts without parsing DTCG. Field contract: docs/architecture/tenant-token-overlay-format.md (metadata.json section); scripts/check-tenant-tokens.mjs enforces its M1-M3 subset. A direction keeps deployment and legal empty at tier 1; scripts/lib/figma-brand-modes.mjs refuses anything else.",
   "type": "object",
   "additionalProperties": false,
   "required": ["slug", "displayName", "tier", "deployment", "brand", "status"],
@@ -22,7 +22,7 @@
     "slug": {
       "type": "string",
       "pattern": "^_?[a-z0-9-]+$",
-      "description": "Verbatim data-tenant / data-brand attribute value. Must match the directory name (M1). A leading underscore marks a non-deployable directory such as _template."
+      "description": "Verbatim data-brand / data-tenant attribute value. Must match the directory name (M1). A leading underscore marks a non-deployable directory such as _template."
     },
     "displayName": {
       "type": "string",
@@ -35,7 +35,7 @@
     },
     "demo": {
       "type": "boolean",
-      "description": "true only for a non-client exemplar tenant. Required (together with a figma/brand-modes.json listing) before a tenant becomes a mode of the shared Figma Brand collection; scaffold:tenant and tenants/_template never write it."
+      "description": "Retired (ADR-035): the directions/ folder is the statement that an overlay is a shared art direction, not a client. Still accepted so older files validate; tooling ignores it."
     },
     "tier": {
       "enum": [1, 2, 3],
