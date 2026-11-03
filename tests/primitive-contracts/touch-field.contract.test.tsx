@@ -31,32 +31,11 @@ import { Combobox } from '@/app/components/combobox';
 import { CreatableCombobox } from '@/app/components/combobox-creatable';
 import { CommandPalette } from '@/app/components/command-palette';
 import { user, FRUIT } from './overlay-fixtures';
+import { theme, touchBlock, touchRule } from './touch-css-fixtures';
 
 afterEach(cleanup);
 
-const theme = readFileSync(resolve(__dirname, '../../src/styles/theme.css'), 'utf8');
 const tokens = readFileSync(resolve(__dirname, '../../src/styles/tokens.generated.css'), 'utf8');
-const TOUCH_QUERY = '@media (max-width: 639px), (pointer: coarse)';
-
-/** The text from `from` to the end of the first `{ ... }` block after it. */
-function block(css: string, from: number): string {
-  let depth = 0;
-  for (let i = css.indexOf('{', from); i < css.length; i++) {
-    if (css[i] === '{') depth++;
-    if (css[i] === '}' && --depth === 0) return css.slice(from, i + 1);
-  }
-  throw new Error('unbalanced block');
-}
-
-const touchBlock = () => block(theme, theme.indexOf(TOUCH_QUERY));
-
-/** The declarations of `selector` inside the touch block. */
-function touchRule(selector: string): string {
-  const media = touchBlock();
-  const at = media.indexOf(`${selector} {`);
-  expect(at, `${selector} inside ${TOUCH_QUERY}`).toBeGreaterThan(-1);
-  return block(media, at);
-}
 
 const hasHook = (el: Element, hook: string) => el.classList.contains(hook);
 
