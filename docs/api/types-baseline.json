@@ -427,6 +427,9 @@
     "EmptyStateProps": {
       "kind": "type"
     },
+    "EmptyStateVariant": {
+      "kind": "type"
+    },
     "Field": {
       "kind": "value",
       "signatures": [
