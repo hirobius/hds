@@ -11,6 +11,7 @@ import { AlertDialog } from '@/app/components/alert-dialog';
 import { Menu } from '@/app/components/menu';
 import { Select } from '@/app/components/select';
 import { Combobox } from '@/app/components/combobox';
+import type { CommandPaletteItem } from '@/app/components/command-palette';
 
 /** A real keyboard. Radix sets pointer-events: none on some wrappers, so skip that check. */
 export const user = () => userEvent.setup({ pointerEventsCheck: 0 });
@@ -19,6 +20,27 @@ export const FRUIT = [
   { value: 'apple', label: 'Apple' },
   { value: 'banana', label: 'Banana' },
   { value: 'cherry', label: 'Cherry' },
+];
+
+/** A CommandPalette list whose first command takes an option step and a free-text step. */
+export const MULTI_STEP_COMMANDS: CommandPaletteItem[] = [
+  {
+    id: 'move',
+    label: 'Move issue',
+    group: 'Actions',
+    args: [
+      {
+        id: 'project',
+        label: 'Project',
+        options: [
+          { id: 'web', label: 'Website' },
+          { id: 'api', label: 'API platform', keywords: ['backend'] },
+        ],
+      },
+      { id: 'note', label: 'Note' },
+    ],
+  },
+  { id: 'inbox', label: 'Go to inbox', group: 'Navigation' },
 ];
 
 export function DialogFixture() {

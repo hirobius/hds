@@ -11,10 +11,10 @@
  * (tests/helpers/token-sheet.ts, hds#961).
  */
 import type { ReactElement } from 'react';
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import { contrastRatio } from '../utils/colorUtils';
-import { color } from '../../../tests/helpers/token-sheet';
+import { color, paintedVar } from '../../../tests/helpers/token-sheet';
 import { Combobox, type ComboboxOption } from './combobox';
 import { Dialog } from './dialog';
 import { Sheet } from './sheet';
@@ -24,19 +24,7 @@ import { Kbd } from './kbd';
 import { Callout } from './callout';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
-
 afterEach(cleanup);
-
-/** The custom property a class paints: `bg-muted` → --role-muted, `bg-[var(--x)]` → --x. */
-function paintedVar(className: string, pattern: RegExp): string {
-  const m = className.match(pattern);
-  if (!m) throw new Error(`no ${pattern} in "${className}"`);
-  return m[1].startsWith('--') ? m[1] : `--role-${m[1]}`;
-}
 
 const REST = /(?:^|\s)bg-(muted|\[var\(--[\w-]+\)\])(?:\s|$)/;
 const HOVER = /(?:^|\s)hover:bg-(?:\[var\((--[\w-]+)\)\]|([a-z]+))(?:\s|$)/;

@@ -12,7 +12,7 @@ import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import * as React from 'react';
 import { CommandPalette, type CommandPaletteItem } from '@/app/components/command-palette';
 import { axeViolations } from '../helpers/axe';
-import { user } from './overlay-fixtures';
+import { user, MULTI_STEP_COMMANDS as MULTI } from './overlay-fixtures';
 
 afterEach(cleanup);
 
@@ -33,26 +33,6 @@ function Page() {
     </>
   );
 }
-
-const MULTI: CommandPaletteItem[] = [
-  {
-    id: 'move',
-    label: 'Move issue',
-    group: 'Actions',
-    args: [
-      {
-        id: 'project',
-        label: 'Project',
-        options: [
-          { id: 'web', label: 'Website' },
-          { id: 'api', label: 'API platform' },
-        ],
-      },
-      { id: 'note', label: 'Note' },
-    ],
-  },
-  { id: 'inbox', label: 'Go to inbox', group: 'Navigation' },
-];
 
 const field = () => screen.getByRole('combobox', { name: 'Command palette' });
 

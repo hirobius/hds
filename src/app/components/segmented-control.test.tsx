@@ -1,16 +1,12 @@
 /**
  * Tests for SegmentedControl — radiogroup semantics, selected state, onChange.
  * Plain-DOM assertions (no jest-dom). Radix ToggleGroup needs a couple of
- * jsdom polyfills (pointer capture).
+ * jsdom polyfills (pointer capture), installed for every suite by
+ * tests/setup/jsdom-polyfills.ts.
  */
-import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import { SegmentedControl } from './segmented-control';
-
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) Element.prototype.hasPointerCapture = () => false;
-  if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
-});
 
 afterEach(cleanup);
 
