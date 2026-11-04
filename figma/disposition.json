@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-11-01",
+  "generatedAt": "2026-11-04",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,15 +22,15 @@
     }
   },
   "summary": {
-    "total": 125,
+    "total": 130,
     "byClass": {
-      "library": 74,
-      "slot": 29,
+      "library": 75,
+      "slot": 33,
       "layout": 10,
       "internal": 12
     },
     "libraryLinked": 68,
-    "libraryMissing": 6,
+    "libraryMissing": 7,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -603,6 +603,46 @@
       "category": "Display",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9"
+    },
+    {
+      "name": "List",
+      "class": "library",
+      "parent": null,
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "ListEmpty",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "ListGroup",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "ListItem",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "ListTile",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Menu",

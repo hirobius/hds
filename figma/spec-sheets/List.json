@@ -1,0 +1,53 @@
+{
+  "component": "List",
+  "description": "List - an inset grouped list: titled groups of tappable rows on a raised surface.",
+  "docsPage": "/docs/components/list",
+  "figmaLink": null,
+  "anatomy": [
+    {
+      "part": "Root"
+    }
+  ],
+  "sizes": [],
+  "states": [
+    {
+      "state": "default",
+      "tokens": []
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "optional": true
+    },
+    {
+      "name": "variant",
+      "type": "enum",
+      "values": [
+        "inset",
+        "plain"
+      ],
+      "default": "inset"
+    }
+  ],
+  "roleTokens": {},
+  "usage": {
+    "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+    "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
+    "useInstead": [
+      {
+        "component": "NavList",
+        "reason": "a rail of destinations with the open one marked current"
+      },
+      {
+        "component": "MetadataList",
+        "reason": "term and value pairs about one object"
+      },
+      {
+        "component": "Table",
+        "reason": "rows compared across columns"
+      }
+    ]
+  }
+}

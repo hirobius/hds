@@ -514,6 +514,45 @@ Input — text field primitive with label, helper, and error slots.
 Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
   - size: "sm" | "md" | "lg" | null
 
+### List
+List - an inset grouped list: titled groups of tappable rows on a raised surface.
+  - children: ReactNode
+  - variant: 'inset' | 'plain' = inset
+
+### ListEmpty
+The empty state of a group: an EmptyState in a row.
+  - action: ReactNode
+  - className: string
+  - description: ReactNode
+  - icon: LucideIcon
+  - italic: boolean
+  - title: ReactNode
+
+### ListGroup
+A group: the heading outside the surface, the rows inside it.
+  - action: ReactNode
+  - children: ReactNode
+  - count: number
+  - headingLevel: 3 | 4 | 2 = 2
+  - title: ReactNode
+
+### ListItem
+One row: the whole row is the link (or button); an icon button or overflow menu sits beside it.
+  - actions: ReactNode
+  - className: string
+  - description: ReactNode
+  - href: string
+  - leading: ReactNode
+  - meta: ReactNode
+  - onSelect: (() => void)
+  - title: ReactNode
+  - trailing: ListItemTrailing
+
+### ListTile
+The leading icon tile: a sunken rounded square at component.list.leadingSize.
+  - className: string
+  - icon: LucideIcon
+
 ### Menu
 Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
   - children: React.ReactNode

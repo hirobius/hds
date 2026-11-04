@@ -10,8 +10,8 @@ Install: `pnpm add @hirobius/design-system`. Upgrading: [UPGRADING.md](UPGRADING
 
 <!-- auto:start:front-door-counts -->
 
-- **62** public component modules, exported from `src/index.ts`
-- **474** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **63** public component modules, exported from `src/index.ts`
+- **481** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 
@@ -44,10 +44,10 @@ Month-by-month adoption in each product app, one row per measured commit: [docs/
 
 <!-- auto:start:core-set -->
 
-**47** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries `core: true` in `public/hds-manifest.json`.
+**48** components are the core set: the brand-neutral, composable surface every HDS screen is built from, and the part of the system that has to be excellent. Import them from the package root; each carries `core: true` in `public/hds-manifest.json`.
 
 - **Actions:** `Button`
-- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`, `Timeline`
+- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `List`, `Table`, `Timeline`
 - **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`

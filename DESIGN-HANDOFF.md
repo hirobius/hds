@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 522 tokens, aliases, and TS refs in one shot.
+Checks all 529 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -432,6 +432,7 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `primitive.size.44`              | `44px`  | 44px size step.                            |
 | `primitive.size.48`              | `48px`  | 48px size step.                            |
 | `primitive.size.52`              | `52px`  | 52px size step.                            |
+| `primitive.size.56`              | `56px`  | 56px size step.                            |
 | `primitive.size.64`              | `64px`  | 64px size step.                            |
 | `primitive.size.80`              | `80px`  | 80px size step.                            |
 | `primitive.size.96`              | `96px`  | 96px size step.                            |

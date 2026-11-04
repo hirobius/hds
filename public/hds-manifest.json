@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-30T17:09:03.408Z",
+  "generated": "2026-11-04T06:07:13.010Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -105,6 +105,11 @@
     "InlineLink",
     "Input",
     "Kbd",
+    "List",
+    "ListEmpty",
+    "ListGroup",
+    "ListItem",
+    "ListTile",
     "Menu",
     "MetadataList",
     "MetaLine",
@@ -1303,6 +1308,7 @@
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
+        "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
@@ -2425,6 +2431,7 @@
       "consumers": [
         "src/app/components/board.tsx",
         "src/app/components/data-table-section.tsx",
+        "src/app/components/list.tsx",
         "src/app/hooks/useBreakpoint.ts"
       ],
       "tokenMapping": {},
@@ -2794,6 +2801,7 @@
         "src/app/components/empty-state.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/form-control.ts",
+        "src/app/components/list.tsx",
         "src/app/components/metric-tiles.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/slider.tsx",
@@ -3364,6 +3372,7 @@
         "src/app/components/hds-tooltip.tsx",
         "src/app/components/inline-link.tsx",
         "src/app/components/kbd.tsx",
+        "src/app/components/list.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
@@ -3737,6 +3746,7 @@
         "src/app/components/icon.tsx",
         "src/app/components/inline-code.tsx",
         "src/app/components/inline-link.tsx",
+        "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
@@ -4162,7 +4172,8 @@
       },
       "consumers": [
         "src/app/components/async-state.tsx",
-        "src/app/components/data-table-section.tsx"
+        "src/app/components/data-table-section.tsx",
+        "src/app/components/list.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -4744,6 +4755,7 @@
         "src/app/components/avatar.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
+        "src/app/components/list.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/tag.tsx",
         "src/app/components/text.tsx",
@@ -7388,6 +7400,7 @@
       },
       "consumers": [
         "src/app/components/card.tsx",
+        "src/app/components/list.tsx",
         "src/app/components/meta-line.tsx",
         "src/app/components/timeline.tsx"
       ],
@@ -8774,6 +8787,7 @@
         "src/app/components/combobox.tsx",
         "src/app/components/command-palette.tsx",
         "src/app/components/data-table-section.tsx",
+        "src/app/components/list.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
@@ -10486,7 +10500,9 @@
         "exportName": "NavList",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/list.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -11741,6 +11757,611 @@
         }
       ],
       "aiRules": "Pass the nav as `sidebar` (a node, or a function of `{ collapsed }` to draw an icon-only rail) and the page as children. Do not put a second `<main>`, `<header>` or `<nav>` landmark for the same regions inside it. Structure: Stack (header over body), Grid (rail, main, aside columns) and Surface (header and rail fill). Widths are CSS lengths on local `--hds-local-appshell-*` variables; spacing and colour are HDS tokens. Structural references (no code copied): Primer PageLayout, shadcn/ui sidebar blocks, the common SaaS frame. Slice 1 of #863; a bottom tab bar variant and moving Roleforge and Ops over are follow-up slices."
+    },
+    "List": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/list.tsx",
+      "description": "List - an inset grouped list: titled groups of tappable rows on a raised surface.",
+      "a11yRules": [
+        {
+          "rule": "Each group is a ul of li rows, labelled by its heading, so a screen reader announces the list, its name and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.list-semantics"
+        },
+        {
+          "rule": "The row link or button is named by its title alone; the description and meta are its accessible description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.row-name"
+        },
+        {
+          "rule": "With onSelect the row is a button named by its title, reached by Tab and fired by Enter or Space, with the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.select-button"
+        },
+        {
+          "rule": "Secondary actions sit in a Menu whose trigger is named \"More actions for <title>\" and sits beside the row link, never inside it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.overflow-menu"
+        },
+        {
+          "rule": "The leading tile and the chevron are hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.decorative-affordances"
+        },
+        {
+          "rule": "Give an icon-only trailing button its own label, and keep the title unique within a group so each row reads as a distinct link.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "group",
+          "description": "A List.Group: a heading outside the surface (title, count Badge, optional action) over a ul of rows.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "item",
+          "description": "A List.Item: leading, title, description, meta and one trailing affordance (chevron, count or icon button), or an overflow Menu via `actions`.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "empty",
+          "description": "A List.Empty: an EmptyState row shown when the group has no items.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "List",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/board.tsx",
+        "src/app/components/nav-list.tsx",
+        "src/app/components/tabs.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [
+        "data-leading",
+        "data-slot",
+        "data-variant"
+      ],
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "inset",
+            "plain"
+          ],
+          "default": "inset"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": "/docs/components/list",
+      "usage": {
+        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
+        "useInstead": [
+          {
+            "component": "NavList",
+            "reason": "a rail of destinations with the open one marked current"
+          },
+          {
+            "component": "MetadataList",
+            "reason": "term and value pairs about one object"
+          },
+          {
+            "component": "Table",
+            "reason": "rows compared across columns"
+          }
+        ]
+      },
+      "core": true
+    },
+    "ListEmpty": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/list.tsx",
+      "description": "The empty state of a group: an EmptyState in a row.",
+      "a11yRules": [
+        {
+          "rule": "Each group is a ul of li rows, labelled by its heading, so a screen reader announces the list, its name and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.list-semantics"
+        },
+        {
+          "rule": "The row link or button is named by its title alone; the description and meta are its accessible description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.row-name"
+        },
+        {
+          "rule": "With onSelect the row is a button named by its title, reached by Tab and fired by Enter or Space, with the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.select-button"
+        },
+        {
+          "rule": "Secondary actions sit in a Menu whose trigger is named \"More actions for <title>\" and sits beside the row link, never inside it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.overflow-menu"
+        },
+        {
+          "rule": "The leading tile and the chevron are hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.decorative-affordances"
+        },
+        {
+          "rule": "Give an icon-only trailing button its own label, and keep the title unique within a group so each row reads as a distinct link.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "group",
+          "description": "A List.Group: a heading outside the surface (title, count Badge, optional action) over a ul of rows.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "item",
+          "description": "A List.Item: leading, title, description, meta and one trailing affordance (chevron, count or icon button), or an overflow Menu via `actions`.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "empty",
+          "description": "A List.Empty: an EmptyState row shown when the group has no items.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "ListEmpty",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {
+        "action": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon",
+          "optional": true
+        },
+        "italic": {
+          "type": "boolean",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
+        "useInstead": [
+          {
+            "component": "NavList",
+            "reason": "a rail of destinations with the open one marked current"
+          },
+          {
+            "component": "MetadataList",
+            "reason": "term and value pairs about one object"
+          },
+          {
+            "component": "Table",
+            "reason": "rows compared across columns"
+          }
+        ]
+      }
+    },
+    "ListGroup": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/list.tsx",
+      "description": "A group: the heading outside the surface, the rows inside it.",
+      "a11yRules": [
+        {
+          "rule": "Each group is a ul of li rows, labelled by its heading, so a screen reader announces the list, its name and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.list-semantics"
+        },
+        {
+          "rule": "The row link or button is named by its title alone; the description and meta are its accessible description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.row-name"
+        },
+        {
+          "rule": "With onSelect the row is a button named by its title, reached by Tab and fired by Enter or Space, with the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.select-button"
+        },
+        {
+          "rule": "Secondary actions sit in a Menu whose trigger is named \"More actions for <title>\" and sits beside the row link, never inside it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.overflow-menu"
+        },
+        {
+          "rule": "The leading tile and the chevron are hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.decorative-affordances"
+        },
+        {
+          "rule": "Give an icon-only trailing button its own label, and keep the title unique within a group so each row reads as a distinct link.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "group",
+          "description": "A List.Group: a heading outside the surface (title, count Badge, optional action) over a ul of rows.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "item",
+          "description": "A List.Item: leading, title, description, meta and one trailing affordance (chevron, count or icon button), or an overflow Menu via `actions`.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "empty",
+          "description": "A List.Empty: an EmptyState row shown when the group has no items.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "ListGroup",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {
+        "action": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "count": {
+          "type": "number",
+          "optional": true
+        },
+        "headingLevel": {
+          "type": "3 | 4 | 2",
+          "default": 2
+        },
+        "title": {
+          "type": "ReactNode"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
+        "useInstead": [
+          {
+            "component": "NavList",
+            "reason": "a rail of destinations with the open one marked current"
+          },
+          {
+            "component": "MetadataList",
+            "reason": "term and value pairs about one object"
+          },
+          {
+            "component": "Table",
+            "reason": "rows compared across columns"
+          }
+        ]
+      }
+    },
+    "ListItem": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/list.tsx",
+      "description": "One row: the whole row is the link (or button); an icon button or overflow menu sits beside it.",
+      "a11yRules": [
+        {
+          "rule": "Each group is a ul of li rows, labelled by its heading, so a screen reader announces the list, its name and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.list-semantics"
+        },
+        {
+          "rule": "The row link or button is named by its title alone; the description and meta are its accessible description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.row-name"
+        },
+        {
+          "rule": "With onSelect the row is a button named by its title, reached by Tab and fired by Enter or Space, with the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.select-button"
+        },
+        {
+          "rule": "Secondary actions sit in a Menu whose trigger is named \"More actions for <title>\" and sits beside the row link, never inside it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.overflow-menu"
+        },
+        {
+          "rule": "The leading tile and the chevron are hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.decorative-affordances"
+        },
+        {
+          "rule": "Give an icon-only trailing button its own label, and keep the title unique within a group so each row reads as a distinct link.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "group",
+          "description": "A List.Group: a heading outside the surface (title, count Badge, optional action) over a ul of rows.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "item",
+          "description": "A List.Item: leading, title, description, meta and one trailing affordance (chevron, count or icon button), or an overflow Menu via `actions`.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "empty",
+          "description": "A List.Empty: an EmptyState row shown when the group has no items.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "ListItem",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {
+        "actions": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "href": {
+          "type": "string",
+          "optional": true
+        },
+        "leading": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "meta": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "onSelect": {
+          "type": "() => void",
+          "optional": true
+        },
+        "title": {
+          "type": "ReactNode"
+        },
+        "trailing": {
+          "type": "ListItemTrailing",
+          "optional": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
+        "useInstead": [
+          {
+            "component": "NavList",
+            "reason": "a rail of destinations with the open one marked current"
+          },
+          {
+            "component": "MetadataList",
+            "reason": "term and value pairs about one object"
+          },
+          {
+            "component": "Table",
+            "reason": "rows compared across columns"
+          }
+        ]
+      }
+    },
+    "ListTile": {
+      "category": "Display",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/list.tsx",
+      "description": "The leading icon tile: a sunken rounded square at component.list.leadingSize.",
+      "a11yRules": [
+        {
+          "rule": "Each group is a ul of li rows, labelled by its heading, so a screen reader announces the list, its name and its length.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.list-semantics"
+        },
+        {
+          "rule": "The row link or button is named by its title alone; the description and meta are its accessible description.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.row-name"
+        },
+        {
+          "rule": "With onSelect the row is a button named by its title, reached by Tab and fired by Enter or Space, with the focus ring.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.select-button"
+        },
+        {
+          "rule": "Secondary actions sit in a Menu whose trigger is named \"More actions for <title>\" and sits beside the row link, never inside it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.overflow-menu"
+        },
+        {
+          "rule": "The leading tile and the chevron are hidden from assistive technology.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:list.decorative-affordances"
+        },
+        {
+          "rule": "Give an icon-only trailing button its own label, and keep the title unique within a group so each row reads as a distinct link.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "group",
+          "description": "A List.Group: a heading outside the surface (title, count Badge, optional action) over a ul of rows.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "item",
+          "description": "A List.Item: leading, title, description, meta and one trailing affordance (chevron, count or icon button), or an overflow Menu via `actions`.",
+          "source": "jsdoc"
+        },
+        {
+          "name": "empty",
+          "description": "A List.Empty: an EmptyState row shown when the group has no items.",
+          "source": "jsdoc"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "ListTile",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon"
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
+        "useInstead": [
+          {
+            "component": "NavList",
+            "reason": "a rail of destinations with the open one marked current"
+          },
+          {
+            "component": "MetadataList",
+            "reason": "term and value pairs about one object"
+          },
+          {
+            "component": "Table",
+            "reason": "rows compared across columns"
+          }
+        ]
+      }
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -13537,6 +14158,13 @@
         "value": "52px"
       },
       {
+        "path": "primitive.size.56",
+        "cssVar": "--primitive-size-56",
+        "type": "dimension",
+        "description": "56px size step.",
+        "value": "56px"
+      },
+      {
         "path": "primitive.size.64",
         "cssVar": "--primitive-size-64",
         "type": "dimension",
@@ -15127,6 +15755,14 @@
         "resolvedValue": "48px"
       },
       {
+        "path": "semantic.size.listRow",
+        "cssVar": "--semantic-size-listRow",
+        "type": "dimension",
+        "description": "Minimum height of a List row: a title over one description line.",
+        "alias": "{primitive.size.56}",
+        "resolvedValue": "56px"
+      },
+      {
         "path": "semantic.zIndex.control",
         "cssVar": "--semantic-zIndex-control",
         "type": "number",
@@ -15840,6 +16476,46 @@
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
         "resolvedValue": "#f4f5f7"
+      },
+      {
+        "path": "component.list.groupGap",
+        "cssVar": "--component-list-groupGap",
+        "type": "dimension",
+        "description": "Gap between List groups, the largest step of the list rhythm (32px compact).",
+        "alias": "{semantic.space.scale.xl}",
+        "resolvedValue": "64px"
+      },
+      {
+        "path": "component.list.headingGap",
+        "cssVar": "--component-list-headingGap",
+        "type": "dimension",
+        "description": "Gap from a List group heading down to its surface (8px).",
+        "alias": "{semantic.space.scale.xs}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "component.list.rowPadding",
+        "cssVar": "--component-list-rowPadding",
+        "type": "dimension",
+        "description": "Inset inside each List row (12px compact).",
+        "alias": "{semantic.space.scale.sm}",
+        "resolvedValue": "20px"
+      },
+      {
+        "path": "component.list.rowMinHeight",
+        "cssVar": "--component-list-rowMinHeight",
+        "type": "dimension",
+        "description": "Minimum height of a List row (56px).",
+        "alias": "{semantic.size.listRow}",
+        "resolvedValue": "56px"
+      },
+      {
+        "path": "component.list.leadingSize",
+        "cssVar": "--component-list-leadingSize",
+        "type": "dimension",
+        "description": "Width and height of a List row's leading icon tile or logo (40px).",
+        "alias": "{semantic.size.avatar}",
+        "resolvedValue": "40px"
       }
     ],
     "role": [

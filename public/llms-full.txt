@@ -105,7 +105,7 @@ This file intentionally does not embed prop tables or long-form API docs.
 
 ## Core set
 
-The 47 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
+The 48 components of the ratified core set: brand-neutral, composable, imported from the package root. Build a screen from these first. Each has `core: true` in `public/hds-manifest.json` and is marked `[core]` under "Which one when". Composed pattern modules (page shells, forms, code blocks, page sections) are imported from `@hirobius/design-system/patterns`.
 
 - Button (Actions)
 - Avatar (Display)
@@ -114,6 +114,7 @@ The 47 components of the ratified core set: brand-neutral, composable, imported 
 - Field (Display)
 - Icon (Display)
 - Kbd (Display)
+- List (Display)
 - Table (Display)
 - Timeline (Display)
 - Alert (Feedback)
@@ -198,6 +199,11 @@ Icon: [core] Show a Lucide icon at a set size and color. Use instead: Button, Av
 InlineLink: [core] Link to a route or external URL from inside body copy. Use instead: Button, Text
 Input: [core] Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
+List: [core] Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
+ListEmpty: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
+ListGroup: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
+ListItem: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
+ListTile: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
 Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
 MetaLine: [core] Show one or two secondary facts on a single line, joined by a bullet ("Acme Cloud · Remote"). Use instead: A
 NavList: [core] List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
@@ -964,7 +970,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (474 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (481 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -1465,6 +1471,45 @@ Input — text field primitive with label, helper, and error slots.
 ### Kbd
 Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
   - size: "sm" | "md" | "lg" | null
+
+### List
+List - an inset grouped list: titled groups of tappable rows on a raised surface.
+  - children: ReactNode
+  - variant: 'inset' | 'plain' = inset
+
+### ListEmpty
+The empty state of a group: an EmptyState in a row.
+  - action: ReactNode
+  - className: string
+  - description: ReactNode
+  - icon: LucideIcon
+  - italic: boolean
+  - title: ReactNode
+
+### ListGroup
+A group: the heading outside the surface, the rows inside it.
+  - action: ReactNode
+  - children: ReactNode
+  - count: number
+  - headingLevel: 3 | 4 | 2 = 2
+  - title: ReactNode
+
+### ListItem
+One row: the whole row is the link (or button); an icon button or overflow menu sits beside it.
+  - actions: ReactNode
+  - className: string
+  - description: ReactNode
+  - href: string
+  - leading: ReactNode
+  - meta: ReactNode
+  - onSelect: (() => void)
+  - title: ReactNode
+  - trailing: ListItemTrailing
+
+### ListTile
+The leading icon tile: a sunken rounded square at component.list.leadingSize.
+  - className: string
+  - icon: LucideIcon
 
 ### Menu
 Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
