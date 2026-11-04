@@ -13,16 +13,10 @@
  */
 
 import { readFileSync } from 'fs';
-import { relative, resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { scanSources, EXEMPTION_MARKERS } from './lib/source-scan.mjs';
+import { relative, resolve } from 'path';
+import { gateContext, scanSources, EXEMPTION_MARKERS } from './lib/source-scan.mjs';
 
-const __scriptDir = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__scriptDir, '..');
-
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 const SCAN_ROOTS = ['src', 'scripts'];
 

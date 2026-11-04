@@ -19,18 +19,13 @@
  */
 
 import { readFileSync } from 'fs';
-import { join, dirname, relative, resolve } from 'path';
+import { relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { scanSources, suppressionFor } from './lib/source-scan.mjs';
+import { gateContext, scanSources, suppressionFor } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const { ROOT, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 const SKIP_DIRS = ['data', 'node_modules', 'dist'];
 
-// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
 const DIMENSION_PROP_RE = /\b(width|minWidth|maxWidth|height|minHeight|maxHeight)\s*:\s*([^,}]+)/g;
 const isAuditOk = suppressionFor('audit-ok', { lookback: 0 });
 const WATCHED_SIZES = new Set([12, 32, 48]);

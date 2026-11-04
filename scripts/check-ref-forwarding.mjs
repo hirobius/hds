@@ -36,13 +36,11 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, relative, resolve, basename } from 'path';
 
-const ROOT = process.cwd();
-const COMPONENTS_DIR = join(ROOT, 'src/app/components');
+import { gateContext } from './lib/source-scan.mjs';
 
-// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const ROOT = process.cwd();
+const { isFixtureMode, fixtureFile } = gateContext(import.meta.url);
+const COMPONENTS_DIR = join(ROOT, 'src/app/components');
 
 const SKIP_FILES = new Set([
   'types.ts',
