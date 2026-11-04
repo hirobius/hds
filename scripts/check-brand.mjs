@@ -21,20 +21,14 @@
  */
 
 import { readFileSync, existsSync } from 'fs';
-import { join, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { join, resolve } from 'path';
 import { homedir } from 'os';
 
+import { gateContext } from './lib/source-scan.mjs';
 import { brandAccent, violationsInSource } from './lib/brand-truth.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
-
-// Fixture mode: scan a single file (proof-of-firing harness). No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const { ROOT, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 const LEGACY_FONT_NAME = ['In', 'ter'].join('');
 const LEGACY_FONT_PATTERN = new RegExp(`\\b${LEGACY_FONT_NAME}\\b`, 'i');

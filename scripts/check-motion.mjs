@@ -61,18 +61,13 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, extname, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { join, extname, resolve } from 'path';
 import { isSpecFile } from './lib/gate-scope.mjs';
+import { gateContext } from './lib/source-scan.mjs';
 
-const __scriptDir = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__scriptDir, '..');
+const { ROOT, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 const COMP_DIR = join(ROOT, 'src/app/components');
 const failures = [];
-
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
 
 // ── Files where motion is structurally N/A ────────────────────────────────────
 // These are utility files, type definitions, or display-only components.
