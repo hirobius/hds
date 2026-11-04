@@ -823,3 +823,20 @@ Daily check (11-02 run, delayed): version unchanged; plan updated 42 · created 
 Session total: 2 calls
 
 Calls logged for 2026-11-03: 2 of 200 (2).
+
+## 2026-11-04 · hds#801 prune of the 21 extra variables (partial)
+
+Override: Adrian 11-04 in chat: prune all 21, one-off override of ADR-026. Only variables with no node bindings and no alias dependents were deleted; bound ones were left and reported.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                              | Result                                                               |
+| --- | ---------- | ---------------- | ----- | ---------------------------------------------------- | -------------------------------------------------------------------- |
+| 1   | 04:27      | `create_session` | read  | open file session                                    | OK                                                                   |
+| 2   | 04:27      | `use_figma`      | read  | `snapshot-diff.js` re-base                           | OK; live 74b25d2c, 1 effect style changed (shadow/hard), 0 variables |
+| 3   | 04:28      | `use_figma`      | read  | resolve the 21 extra ids, alias and style references | OK; all 21 present; 9 alias refs; 0 style refs                       |
+| 4   | 04:29      | `use_figma`      | read  | scan all pages (5,400 nodes) for bindings to the 21  | OK; 9 of the 21 bound to nodes                                       |
+| 5   | 04:30      | `use_figma`      | write | delete 11 unbound extras                             | OK; 503 → 492 variables                                              |
+| 6   | 04:31      | `use_figma`      | read  | `snapshot-diff.js` re-base                           | OK; live cb87b47d, 11 removed                                        |
+
+Session total: 6 calls
+
+Calls logged for 2026-11-04: 6 of 200 (5 and 1).

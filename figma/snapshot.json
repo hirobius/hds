@@ -1,8 +1,8 @@
 {
-  "checksum": "04c1e4d2",
+  "checksum": "cb87b47d",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-10-27T16:01:36.232Z",
+    "takenAt": "2026-11-04T04:31:06.876Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
@@ -6053,30 +6053,6 @@
             }
           },
           {
-            "id": "VariableID:10:34",
-            "name": "space/component/padding",
-            "path": "semantic.space.component.padding",
-            "resolvedType": "FLOAT",
-            "description": "Inset for cards, forms and panels (follows surface.padding). DEPRECATED alias (hds#206) — use semantic.space.surface.padding; kept live, no removal yet.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-component-padding)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2061:883",
-                "to": "Hirobius/Semantic: space/surface/padding"
-              },
-              "Dark": {
-                "alias": "VariableID:2061:883",
-                "to": "Hirobius/Semantic: space/surface/padding"
-              }
-            }
-          },
-          {
             "id": "VariableID:2229:14",
             "name": "space/fixed/2xs",
             "path": "semantic.space.fixed.2xs",
@@ -6221,78 +6197,6 @@
             }
           },
           {
-            "id": "VariableID:10:37",
-            "name": "space/layout/gutter",
-            "path": "semantic.space.layout.gutter",
-            "resolvedType": "FLOAT",
-            "description": "Column and region gutters (follows region.gutter). DEPRECATED alias (hds#206) — use semantic.space.region.gutter (responsive in theme.css); kept live, no removal yet.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-layout-gutter)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2061:884",
-                "to": "Hirobius/Semantic: space/region/gutter"
-              },
-              "Dark": {
-                "alias": "VariableID:2061:884",
-                "to": "Hirobius/Semantic: space/region/gutter"
-              }
-            }
-          },
-          {
-            "id": "VariableID:10:38",
-            "name": "space/layout/inset",
-            "path": "semantic.space.layout.inset",
-            "resolvedType": "FLOAT",
-            "description": "40px (24px compact). Deprecated alias (hds#206): use semantic.space.scale.lg. Varies by density: its value comes from Hirobius/Density.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-layout-inset)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2230:7",
-                "to": "Hirobius/Density: semantic/space/layout/inset"
-              },
-              "Dark": {
-                "alias": "VariableID:2230:7",
-                "to": "Hirobius/Density: semantic/space/layout/inset"
-              }
-            }
-          },
-          {
-            "id": "VariableID:10:36",
-            "name": "space/layout/normal",
-            "path": "semantic.space.layout.normal",
-            "resolvedType": "FLOAT",
-            "description": "28px (16px compact). Deprecated alias (hds#206): use semantic.space.scale.md. Varies by density: its value comes from Hirobius/Density.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-layout-normal)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2230:6",
-                "to": "Hirobius/Density: semantic/space/layout/normal"
-              },
-              "Dark": {
-                "alias": "VariableID:2230:6",
-                "to": "Hirobius/Density: semantic/space/layout/normal"
-              }
-            }
-          },
-          {
             "id": "VariableID:10:39",
             "name": "space/layout/spacious",
             "path": "semantic.space.layout.spacious",
@@ -6313,30 +6217,6 @@
               "Dark": {
                 "alias": "VariableID:2230:8",
                 "to": "Hirobius/Density: semantic/space/layout/spacious"
-              }
-            }
-          },
-          {
-            "id": "VariableID:10:35",
-            "name": "space/layout/tight",
-            "path": "semantic.space.layout.tight",
-            "resolvedType": "FLOAT",
-            "description": "20px (12px compact). Deprecated alias (hds#206): use semantic.space.scale.sm. Varies by density: its value comes from Hirobius/Density.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-layout-tight)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2230:5",
-                "to": "Hirobius/Density: semantic/space/layout/tight"
-              },
-              "Dark": {
-                "alias": "VariableID:2230:5",
-                "to": "Hirobius/Density: semantic/space/layout/tight"
               }
             }
           },
@@ -6649,30 +6529,6 @@
               "Dark": {
                 "alias": "VariableID:5:9",
                 "to": "Hirobius/Primitives: space/5"
-              }
-            }
-          },
-          {
-            "id": "VariableID:2061:885",
-            "name": "space/sidebar/railWidth",
-            "path": "semantic.space.sidebar.railWidth",
-            "resolvedType": "FLOAT",
-            "description": "Docs-shell nav and TOC rail width (hds#280), one token for both rails; 0 below their breakpoint (see HdsDocsShell).",
-            "scopes": [
-              "WIDTH_HEIGHT"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-sidebar-railWidth)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2061:876",
-                "to": "Hirobius/Primitives: size/width/280"
-              },
-              "Dark": {
-                "alias": "VariableID:2061:876",
-                "to": "Hirobius/Primitives: size/width/280"
               }
             }
           },
@@ -9525,47 +9381,6 @@
             }
           },
           {
-            "id": "VariableID:15:40",
-            "name": "lightbox/backdrop/blur",
-            "path": "component.lightbox.backdrop.blur",
-            "resolvedType": "FLOAT",
-            "description": "Backdrop blur applied behind fullscreen image lightboxes.",
-            "scopes": [
-              "EFFECT_FLOAT"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-lightbox-backdrop-blur)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:5:24",
-                "to": "Hirobius/Primitives: blur/16"
-              }
-            }
-          },
-          {
-            "id": "VariableID:14:2",
-            "name": "nav/bg",
-            "path": "component.nav.bg",
-            "resolvedType": "COLOR",
-            "description": "Nav bar background fill.",
-            "scopes": [
-              "FRAME_FILL",
-              "SHAPE_FILL"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-nav-bg)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:10:2",
-                "to": "Hirobius/Semantic: color/surface/page"
-              }
-            }
-          },
-          {
             "id": "VariableID:14:3",
             "name": "nav/bgActive",
             "path": "component.nav.bgActive",
@@ -10581,46 +10396,6 @@
             }
           },
           {
-            "id": "VariableID:2230:7",
-            "name": "semantic/space/layout/inset",
-            "path": "density.semantic.space.layout.inset",
-            "resolvedType": "FLOAT",
-            "description": "Density value of semantic.space.layout.inset: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
-            "scopes": [],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {},
-            "valuesByMode": {
-              "Comfortable": {
-                "alias": "VariableID:5:13",
-                "to": "Hirobius/Primitives: space/10"
-              },
-              "Compact": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
-              }
-            }
-          },
-          {
-            "id": "VariableID:2230:6",
-            "name": "semantic/space/layout/normal",
-            "path": "density.semantic.space.layout.normal",
-            "resolvedType": "FLOAT",
-            "description": "Density value of semantic.space.layout.normal: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
-            "scopes": [],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {},
-            "valuesByMode": {
-              "Comfortable": {
-                "alias": "VariableID:5:11",
-                "to": "Hirobius/Primitives: space/7"
-              },
-              "Compact": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
-              }
-            }
-          },
-          {
             "id": "VariableID:2230:8",
             "name": "semantic/space/layout/spacious",
             "path": "density.semantic.space.layout.spacious",
@@ -10637,26 +10412,6 @@
               "Compact": {
                 "alias": "VariableID:5:12",
                 "to": "Hirobius/Primitives: space/8"
-              }
-            }
-          },
-          {
-            "id": "VariableID:2230:5",
-            "name": "semantic/space/layout/tight",
-            "path": "density.semantic.space.layout.tight",
-            "resolvedType": "FLOAT",
-            "description": "Density value of semantic.space.layout.tight: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
-            "scopes": [],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {},
-            "valuesByMode": {
-              "Comfortable": {
-                "alias": "VariableID:5:9",
-                "to": "Hirobius/Primitives: space/5"
-              },
-              "Compact": {
-                "alias": "VariableID:5:7",
-                "to": "Hirobius/Primitives: space/3"
               }
             }
           },
@@ -11424,6 +11179,32 @@
         ]
       },
       {
+        "id": "S:8678f2e20aea1886758c0805c80f68e98cdbf429,",
+        "name": "shadow/hard",
+        "path": null,
+        "description": "Button shadow=&quot;hard&quot; (code default, primary + secondary, all tones; never tertiary or link). 0 3px 0, colour color/shadow/hard. Hover 4px, pressed 1px, disabled none (theme.css .hds-btn-hard).",
+        "effects": [
+          {
+            "type": "DROP_SHADOW",
+            "color": {
+              "r": 0.156863,
+              "g": 0.172549,
+              "b": 0.203922,
+              "a": 1
+            },
+            "offset": {
+              "x": 0,
+              "y": 3
+            },
+            "radius": 0,
+            "spread": 0,
+            "visible": true,
+            "blendMode": "NORMAL",
+            "showShadowBehindNode": false
+          }
+        ]
+      },
+      {
         "id": "S:d75d0491b0992f48e193641c6efb18aa4513329e,",
         "name": "shadow/overlay",
         "path": "semantic.shadow.overlay",
@@ -11534,5 +11315,6 @@
     "bindings": 1863,
     "mismatches": [],
     "checksum": "99955183"
-  }
+  },
+  "tokensHash": "sha256:696362384aedb90604f92db114d3e292e458b72b6dfeea5410fe735f5c4ad029"
 }
