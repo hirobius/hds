@@ -291,6 +291,7 @@ export const tokenRefs = {
       width: {
         "96": "var(--primitive-size-width-96)",
         "280": "var(--primitive-size-width-280)",
+        "512": "var(--primitive-size-width-512)",
         "760": "var(--primitive-size-width-760)",
         "1200": "var(--primitive-size-width-1200)",
         "50ch": "var(--primitive-size-width-50ch)"
@@ -316,6 +317,12 @@ export const tokenRefs = {
       xs: "var(--primitive-borderWidth-xs)",
       sm: "var(--primitive-borderWidth-sm)",
       md: "var(--primitive-borderWidth-md)"
+    },
+    strokeWidth: {
+      "100": "var(--primitive-strokeWidth-100)",
+      "150": "var(--primitive-strokeWidth-150)",
+      "200": "var(--primitive-strokeWidth-200)",
+      "250": "var(--primitive-strokeWidth-250)"
     }
   },
   semantic: {
@@ -601,7 +608,13 @@ export const tokenRefs = {
     },
     borderWidth: {
       default: "var(--semantic-borderWidth-default)",
-      emphasis: "var(--semantic-borderWidth-emphasis)"
+      emphasis: "var(--semantic-borderWidth-emphasis)",
+      icon: {
+        thin: "var(--semantic-borderWidth-icon-thin)",
+        light: "var(--semantic-borderWidth-icon-light)",
+        regular: "var(--semantic-borderWidth-icon-regular)",
+        bold: "var(--semantic-borderWidth-icon-bold)"
+      }
     },
     link: {
       underlineThickness: "var(--semantic-link-underlineThickness)",

@@ -196,7 +196,7 @@ const DialogHeader = /* @__PURE__ */ React.forwardRef<
     // Flex gap, not `space-y-*`: a host reset (`* { margin: 0 }`) zeroes sibling margins, never gap (hds#863).
     <div
       ref={ref}
-      className={cn('flex shrink-0 flex-col gap-1.5 text-left', className)}
+      className={cn('flex shrink-0 flex-col gap-px6 text-left', className)}
       {...props}
     />
   );

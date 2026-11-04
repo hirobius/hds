@@ -227,6 +227,7 @@ declare module 'react' {
     '--primitive-size-interactive-minCompact'?: string | undefined;
     '--primitive-size-width-96'?: string | undefined;
     '--primitive-size-width-280'?: string | undefined;
+    '--primitive-size-width-512'?: string | undefined;
     '--primitive-size-width-760'?: string | undefined;
     '--primitive-size-width-1200'?: string | undefined;
     '--primitive-size-width-50ch'?: string | undefined;
@@ -241,6 +242,10 @@ declare module 'react' {
     '--primitive-borderWidth-xs'?: string | undefined;
     '--primitive-borderWidth-sm'?: string | undefined;
     '--primitive-borderWidth-md'?: string | undefined;
+    '--primitive-strokeWidth-100'?: string | undefined;
+    '--primitive-strokeWidth-150'?: string | undefined;
+    '--primitive-strokeWidth-200'?: string | undefined;
+    '--primitive-strokeWidth-250'?: string | undefined;
     '--hds-motion-productive-duration'?: string | undefined;
     '--hds-motion-productive-easing'?: string | undefined;
     '--hds-motion-expressive-duration'?: string | undefined;
@@ -439,6 +444,10 @@ declare module 'react' {
     '--semantic-radius-scale-pill'?: string | undefined;
     '--semantic-borderWidth-default'?: string | undefined;
     '--semantic-borderWidth-emphasis'?: string | undefined;
+    '--semantic-borderWidth-icon-thin'?: string | undefined;
+    '--semantic-borderWidth-icon-light'?: string | undefined;
+    '--semantic-borderWidth-icon-regular'?: string | undefined;
+    '--semantic-borderWidth-icon-bold'?: string | undefined;
     '--semantic-link-underlineThickness'?: string | undefined;
     '--semantic-link-underlineOffset'?: string | undefined;
     '--semantic-shadow-subtle'?: string | undefined;
