@@ -4,8 +4,9 @@
  * polyfills (pointer capture, scrollIntoView), installed for every suite by
  * tests/setup/jsdom-polyfills.ts.
  */
+import * as React from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup, act } from '@testing-library/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   Dialog,
@@ -18,6 +19,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
+  DialogBody,
 } from './dialog';
 
 afterEach(cleanup);
@@ -89,6 +91,7 @@ describe('Dialog compound assembly (hds#363)', () => {
     expect(Dialog.Overlay).toBe(DialogOverlay);
     expect(Dialog.Content).toBe(DialogContent);
     expect(Dialog.Header).toBe(DialogHeader);
+    expect(Dialog.Body).toBe(DialogBody);
     expect(Dialog.Footer).toBe(DialogFooter);
     expect(Dialog.Title).toBe(DialogTitle);
     expect(Dialog.Description).toBe(DialogDescription);
@@ -130,5 +133,144 @@ describe('Dialog close vs title (bug bash 24 review)', () => {
       </Dialog>,
     );
     expect(screen.getByRole('dialog').className).not.toMatch(reserve);
+  });
+});
+
+describe('Dialog size (hds#863)', () => {
+  const content = (props: React.ComponentProps<typeof DialogContent>) => {
+    render(
+      <Dialog open>
+        <Dialog.Content {...props}>
+          <Dialog.Title>T</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    return screen.getByRole('dialog');
+  };
+  it('defaults to the existing max-w-lg width', () => {
+    expect(content({}).className).toMatch(/(^|\s)max-w-lg(\s|$)/);
+  });
+  it.each([
+    ['sm', 'max-w-sm'],
+    ['md', 'max-w-lg'],
+    ['lg', 'max-w-2xl'],
+    ['xl', 'max-w-4xl'],
+  ] as const)('size=%s caps the width at %s', (size, cls) => {
+    const el = content({ size });
+    expect(el.className).toContain(cls);
+    expect(el.getAttribute('data-size')).toBe(size);
+  });
+});
+
+describe('Dialog scroll body with pinned header and footer (hds#863)', () => {
+  function Scrolling() {
+    return (
+      <Dialog open>
+        <Dialog.Content scrollBody>
+          <Dialog.Header>
+            <Dialog.Title>Long</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body data-testid="body">lots</Dialog.Body>
+          <Dialog.Footer data-testid="footer">actions</Dialog.Footer>
+        </Dialog.Content>
+      </Dialog>
+    );
+  }
+  it('makes the surface a clipped flex column so only the body scrolls', () => {
+    render(<Scrolling />);
+    const cls = screen.getByRole('dialog').className;
+    expect(cls).toMatch(/(^|\s)flex(\s|$)/);
+    expect(cls).toMatch(/(^|\s)flex-col(\s|$)/);
+    expect(cls).toMatch(/(^|\s)overflow-hidden(\s|$)/);
+    expect(cls).not.toMatch(/(^|\s)overflow-y-auto(\s|$)/);
+  });
+  it('lets the body shrink and scroll; header and footer never shrink', () => {
+    render(<Scrolling />);
+    const body = screen.getByTestId('body').className;
+    expect(body).toContain('min-h-0');
+    expect(body).toContain('flex-1');
+    expect(body).toContain('overflow-y-auto');
+    expect(screen.getByTestId('footer').className).toContain('shrink-0');
+    expect(screen.getByText('Long').closest('div')!.className).toContain('shrink-0');
+  });
+  it('keeps the default scrolling surface when scrollBody is off', () => {
+    render(
+      <Dialog open>
+        <Dialog.Content>
+          <Dialog.Title>T</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    expect(screen.getByRole('dialog').className).toMatch(/(^|\s)overflow-y-auto(\s|$)/);
+  });
+});
+
+describe('Dialog top-anchored, keyboard-aware placement (hds#863)', () => {
+  afterEach(() => {
+    delete (window as unknown as { visualViewport?: unknown }).visualViewport;
+  });
+  it('anchors to the top instead of centring', () => {
+    render(
+      <Dialog open>
+        <Dialog.Content placement="top">
+          <Dialog.Title>T</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    const el = screen.getByRole('dialog');
+    expect(el.getAttribute('data-placement')).toBe('top');
+    expect(el.className).toContain('top-[max(');
+    expect(el.className).not.toMatch(/(^|\s)top-1\/2(\s|$)/);
+    expect(el.className).not.toMatch(/-translate-y-1\/2/);
+  });
+  it('centres by default', () => {
+    render(
+      <Dialog open>
+        <Dialog.Content>
+          <Dialog.Title>T</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    expect(screen.getByRole('dialog').className).toMatch(/(^|\s)top-1\/2(\s|$)/);
+  });
+  it('caps its height to the visual viewport so the on-screen keyboard does not cover it', () => {
+    const listeners: Record<string, () => void> = {};
+    const vv = {
+      height: 400,
+      offsetTop: 0,
+      addEventListener: (t: string, fn: () => void) => (listeners[t] = fn),
+      removeEventListener: (t: string) => delete listeners[t],
+    };
+    (window as unknown as { visualViewport: unknown }).visualViewport = vv;
+    render(
+      <Dialog open>
+        <Dialog.Content placement="top">
+          <Dialog.Title>T</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    const el = screen.getByRole('dialog');
+    expect(el.style.getPropertyValue('--hds-dialog-viewport-height')).toBe('400px');
+    vv.height = 250;
+    act(() => listeners.resize());
+    expect(el.style.getPropertyValue('--hds-dialog-viewport-height')).toBe('250px');
+  });
+});
+
+describe('Dialog title/description gap survives a host CSS reset (hds#863)', () => {
+  it('spaces the header with flex gap, not sibling margins a `* { margin: 0 }` reset would zero', () => {
+    render(
+      <Dialog open>
+        <Dialog.Content>
+          <Dialog.Header data-testid="h">
+            <Dialog.Title>T</Dialog.Title>
+            <Dialog.Description>D</Dialog.Description>
+          </Dialog.Header>
+        </Dialog.Content>
+      </Dialog>,
+    );
+    const cls = screen.getByTestId('h').className;
+    expect(cls).toMatch(/(^|\s)gap-1\.5(\s|$)/);
+    expect(cls).not.toMatch(/space-y-/);
   });
 });

@@ -65,6 +65,41 @@ const DialogOverlay = /* @__PURE__ */ React.forwardRef<
 
 // ── Content ────────────────────────────────────────────────────────────────────
 
+type DialogSize = 'sm' | 'md' | 'lg' | 'xl';
+type DialogPlacement = 'center' | 'top';
+
+// `md` is the long-standing max-w-lg, so a Dialog with no `size` is unchanged.
+const DIALOG_SIZE: Record<DialogSize, string> = {
+  sm: 'max-w-sm',
+  md: 'max-w-lg',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+};
+
+const VIEWPORT_HEIGHT_VAR = '--hds-dialog-viewport-height';
+
+/**
+ * Tracks the visual viewport height (it shrinks when the on-screen keyboard
+ * opens, where `100dvh` does not on iOS) and publishes it as a CSS variable
+ * on the dialog surface. No-op without `window.visualViewport`.
+ */
+function useVisualViewportHeight(enabled: boolean) {
+  const [height, setHeight] = React.useState<number | null>(null);
+  React.useEffect(() => {
+    const vv = typeof window === 'undefined' ? undefined : window.visualViewport;
+    if (!enabled || !vv) return;
+    const update = () => setHeight(vv.height);
+    update();
+    vv.addEventListener('resize', update);
+    vv.addEventListener('scroll', update);
+    return () => {
+      vv.removeEventListener('resize', update);
+      vv.removeEventListener('scroll', update);
+    };
+  }, [enabled]);
+  return height;
+}
+
 /** @public */
 export interface DialogContentProps extends React.ComponentPropsWithoutRef<
   typeof DialogPrimitive.Content
@@ -76,20 +111,61 @@ export interface DialogContentProps extends React.ComponentPropsWithoutRef<
    * overlay inherits its theme; pass `null` to use `document.body`.
    */
   container?: HTMLElement | null;
+  /** Maximum width of the panel. `md` (default) is the long-standing width. */
+  size?: DialogSize;
+  /**
+   * Where the panel sits. `center` (default) is vertically centred; `top`
+   * anchors it under the top safe area and caps its height to the visual
+   * viewport, so a form with an on-screen keyboard stays visible.
+   */
+  placement?: DialogPlacement;
+  /**
+   * Pin `Dialog.Header` and `Dialog.Footer` and scroll only `Dialog.Body`.
+   * Off (default), the whole panel scrolls.
+   */
+  scrollBody?: boolean;
 }
 
 const DialogContent = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   DialogContentProps
->(function DialogContent({ className, children, hideClose = false, container, ...props }, ref) {
+>(function DialogContent(
+  {
+    className,
+    children,
+    hideClose = false,
+    container,
+    size = 'md',
+    placement = 'center',
+    scrollBody = false,
+    style,
+    ...props
+  },
+  ref,
+) {
+  const top = placement === 'top';
+  const viewportHeight = useVisualViewportHeight(top);
+  const heightStyle =
+    top && viewportHeight !== null
+      ? ({ [VIEWPORT_HEIGHT_VAR]: `${viewportHeight}px` } as React.CSSProperties)
+      : undefined;
   return (
     <DialogPortal container={container}>
       <DialogOverlay />
       <DialogPrimitive.Content
         ref={ref}
+        data-size={size}
+        data-placement={placement}
+        style={heightStyle ? { ...heightStyle, ...style } : style}
         className={cn(
           // 16px of page margin each side, so the panel never sits flush to a 390px viewport (hds#522)
-          'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2*var(--semantic-space-scale-sm))] max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))] max-w-lg overflow-y-auto -translate-x-1/2 -translate-y-1/2 gap-scale-sm rounded-lg border border-border bg-popover p-surface-padding text-popover-foreground shadow-overlay hds-focus',
+          'fixed left-1/2 z-50 w-[calc(100%-2*var(--semantic-space-scale-sm))] -translate-x-1/2 gap-scale-sm rounded-lg border border-border bg-popover p-surface-padding text-popover-foreground shadow-overlay hds-focus',
+          DIALOG_SIZE[size],
+          // Whole-panel scroll (default) or a clipped column where only Dialog.Body scrolls.
+          scrollBody ? 'flex flex-col overflow-hidden' : 'grid overflow-y-auto',
+          top
+            ? 'top-[max(var(--semantic-space-scale-sm),env(safe-area-inset-top))] max-h-[calc(var(--hds-dialog-viewport-height,100dvh)-2*var(--semantic-space-scale-sm))]'
+            : 'top-1/2 -translate-y-1/2 max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))]',
           // The close button sits in the top-right padding (up to 60px in at 390, where it is a 44px
           // target); the first child, the Title or Header, keeps 40px clear so a long title never runs
           // under the X.
@@ -117,7 +193,12 @@ const DialogHeader = /* @__PURE__ */ React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(function DialogHeader({ className, ...props }, ref) {
   return (
-    <div ref={ref} className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />
+    // Flex gap, not `space-y-*`: a host reset (`* { margin: 0 }`) zeroes sibling margins, never gap (hds#863).
+    <div
+      ref={ref}
+      className={cn('flex shrink-0 flex-col gap-1.5 text-left', className)}
+      {...props}
+    />
   );
 });
 
@@ -129,9 +210,23 @@ const DialogFooter = /* @__PURE__ */ React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        'flex flex-col-reverse gap-scale-xs sm:flex-row sm:justify-end sm:gap-scale-xs',
+        'flex shrink-0 flex-col-reverse gap-scale-xs sm:flex-row sm:justify-end sm:gap-scale-xs',
         className,
       )}
+      {...props}
+    />
+  );
+});
+
+/** Scrolling region between a pinned Header and Footer; needs `scrollBody` on Content. */
+const DialogBody = /* @__PURE__ */ React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(function DialogBody({ className, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      className={cn('min-h-0 flex-1 overflow-y-auto overscroll-contain', className)}
       {...props}
     />
   );
@@ -198,6 +293,7 @@ interface DialogComponent extends React.FC<DialogProps> {
   Overlay: typeof DialogOverlay;
   Content: typeof DialogContent;
   Header: typeof DialogHeader;
+  Body: typeof DialogBody;
   Footer: typeof DialogFooter;
   Title: typeof DialogTitle;
   Description: typeof DialogDescription;
@@ -219,6 +315,7 @@ interface DialogComponent extends React.FC<DialogProps> {
  * @slot header Groups the title and description (Dialog.Header).
  * @slot title The heading that names the dialog (Dialog.Title).
  * @slot description Supporting text announced with the title (Dialog.Description).
+ * @slot body The scrolling region between a pinned header and footer (Dialog.Body, with scrollBody on Dialog.Content).
  * @slot footer The row of actions (Dialog.Footer).
  * @slot close The button that closes the dialog (Dialog.Close, or the X built into Dialog.Content).
  * @keyboard Enter/Space Opens the dialog from the trigger and moves focus inside it.
@@ -245,6 +342,7 @@ export const Dialog: DialogComponent = /* @__PURE__ */ Object.assign(DialogRoot,
   Overlay: DialogOverlay,
   Content: DialogContent,
   Header: DialogHeader,
+  Body: DialogBody,
   Footer: DialogFooter,
   Title: DialogTitle,
   Description: DialogDescription,
@@ -260,6 +358,7 @@ export {
   DialogOverlay,
   DialogContent,
   DialogHeader,
+  DialogBody,
   DialogFooter,
   DialogTitle,
   DialogDescription,

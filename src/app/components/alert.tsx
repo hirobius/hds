@@ -33,9 +33,14 @@ type AlertTone = 'success' | 'danger' | 'warning' | 'info';
 const alertVariants = /* @__PURE__ */ cva(
   // Same padding and radius as Callout (they differ by role only, DESIGN.md): the surface padding, and the
   // action radius via rounded-md so a tenant's shape setting reaches it.
-  'flex gap-[var(--semantic-space-scale-xs)] p-[var(--semantic-space-surface-padding)] rounded-md',
+  'flex gap-[var(--semantic-space-scale-xs)] rounded-md',
   {
     variants: {
+      // md is the long-standing surface padding; sm is the compact inline form (hds#863).
+      size: {
+        md: 'p-[var(--semantic-space-surface-padding)]',
+        sm: 'p-[var(--semantic-space-scale-xs)]',
+      },
       tone: {
         success: 'bg-feedback-bg-success',
         danger: 'bg-feedback-bg-danger',
@@ -47,13 +52,15 @@ const alertVariants = /* @__PURE__ */ cva(
         false: 'items-center',
       },
     },
-    defaultVariants: { tone: 'info', hasTitle: false },
+    defaultVariants: { tone: 'info', hasTitle: false, size: 'md' },
   },
 );
 
 export interface AlertProps {
   /** Feedback tone that controls icon, border, and surface treatment. */
   tone?: AlertTone;
+  /** Density. `md` (default) uses the surface padding; `sm` is compact for inline use. */
+  size?: 'sm' | 'md';
   /** Optional heading shown above the body copy. */
   title?: string;
   /** Main alert message content. */
@@ -69,7 +76,7 @@ const TONE_CONFIG: Record<AlertTone, { icon: LucideIcon; colorVar: IconColor }> 
 
 /** @public */
 export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  { tone = 'info', title, children },
+  { tone = 'info', size = 'md', title, children },
   ref,
 ) {
   const { icon: IconGlyph, colorVar } = TONE_CONFIG[tone];
@@ -85,7 +92,8 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
       initial={{ opacity: 0, y: -4 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
-      className={cn(alertVariants({ tone, hasTitle }))}
+      data-size={size}
+      className={cn(alertVariants({ tone, hasTitle, size }))}
     >
       <Icon
         icon={IconGlyph}
