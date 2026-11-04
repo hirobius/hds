@@ -6,6 +6,12 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
+import {
+  installScrollToMock,
+  layoutScrollRail,
+  restoreScrollTo,
+  stubReducedMotion,
+} from '../../../tests/primitive-contracts/scroll-rail-fixtures';
 import { SegmentedControl } from './segmented-control';
 
 afterEach(cleanup);
@@ -39,33 +45,15 @@ describe('SegmentedControl overflow (hds#823)', () => {
   const MANY = ['a', 'b', 'c', 'd', 'e'].map((v) => ({ value: v, label: v.toUpperCase() }));
   const rail = () => screen.getByRole('radiogroup');
 
-  // jsdom has no layout: a 300px rail, 120px segments, 600px of content.
   function layout() {
-    const el = rail();
-    Object.defineProperty(el, 'clientWidth', { configurable: true, value: 300 });
-    Object.defineProperty(el, 'scrollWidth', { configurable: true, value: 600 });
-    el.getBoundingClientRect = () => ({ left: 0, right: 300, width: 300 }) as DOMRect;
-    screen.getAllByRole('radio').forEach((seg, i) => {
-      seg.getBoundingClientRect = () =>
-        ({
-          left: i * 120 - el.scrollLeft,
-          right: i * 120 + 120 - el.scrollLeft,
-          width: 120,
-        }) as DOMRect;
-    });
+    layoutScrollRail(rail(), screen.getAllByRole('radio'));
   }
 
-  let scrollTo: ReturnType<typeof vi.fn>;
+  let scrollTo: ReturnType<typeof installScrollToMock>;
   beforeEach(() => {
-    scrollTo = vi.fn(function (this: HTMLElement, opts: ScrollToOptions) {
-      this.scrollLeft = opts.left ?? 0;
-    });
-    (HTMLElement.prototype as unknown as { scrollTo: unknown }).scrollTo = scrollTo;
+    scrollTo = installScrollToMock();
   });
-  afterEach(() => {
-    delete (HTMLElement.prototype as unknown as { scrollTo?: unknown }).scrollTo;
-    vi.unstubAllGlobals();
-  });
+  afterEach(restoreScrollTo);
 
   it('marks no overflow when the segments fit', () => {
     render(<SegmentedControl aria-label="View" value="a" onChange={() => {}} options={OPTIONS} />);
@@ -101,12 +89,7 @@ describe('SegmentedControl overflow (hds#823)', () => {
   });
 
   it('jumps without smooth scroll under prefers-reduced-motion', async () => {
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: query.includes('reduce'),
-      media: query,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-    }));
+    stubReducedMotion();
     const { rerender } = render(
       <SegmentedControl aria-label="View" value="a" onChange={() => {}} options={MANY} />,
     );
