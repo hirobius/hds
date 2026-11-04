@@ -9,6 +9,7 @@
  * @useInstead Table rows compared across columns
  * @slot group A List.Group: a heading outside the surface (title, count Badge, optional action) over a ul of rows.
  * @slot item A List.Item: leading, title, description, meta and one trailing affordance (chevron, count or icon button), or an overflow Menu via `actions`.
+ * @slot status A row's `status` ({ value, label }) in the meta line or, with statusIn="trailing", before the trailing affordance; the List's `defaultStatus` hides the default one. Entity rows use variant="plain" divider="none": spacing, not hairlines, separates them.
  * @slot empty A List.Empty: an EmptyState row shown when the group has no items.
  * @a11y component required a11y:list.list-semantics Each group is a ul of li rows, labelled by its heading, so a screen reader announces the list, its name and its length.
  * @a11y component required a11y:list.row-name The row link or button is named by its title alone; the description and meta are its accessible description.
@@ -37,18 +38,21 @@ import { Text } from './text';
 // past the leading tile on a row that has one. `inset` puts the rows on a raised
 // rounded Surface; `plain` is the same rows with no surface, for page feeds.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven divider inset; var()-based, no Tailwind-theme utility exists
-const listRowsVariants = /* @__PURE__ */ cva(
-  "m-0 flex list-none flex-col p-0 [--hds-local-list-text-start:var(--component-list-rowPadding)] [&>li[data-leading]]:[--hds-local-list-text-start:calc(var(--component-list-rowPadding)*2+var(--component-list-leadingSize))] [&>li]:relative [&>li+li]:before:pointer-events-none [&>li+li]:before:absolute [&>li+li]:before:top-0 [&>li+li]:before:right-0 [&>li+li]:before:left-[var(--hds-local-list-text-start)] [&>li+li]:before:border-t [&>li+li]:before:border-border [&>li+li]:before:content-['']",
-  {
-    variants: {
-      variant: {
-        inset: 'overflow-hidden shadow-[var(--semantic-elevation-raised-shadow)]',
-        plain: '',
-      },
+const listRowsVariants = /* @__PURE__ */ cva('m-0 flex list-none flex-col p-0', {
+  variants: {
+    variant: {
+      inset: 'overflow-hidden shadow-[var(--semantic-elevation-raised-shadow)]',
+      plain: '',
     },
-    defaultVariants: { variant: 'inset' },
+    divider: {
+      inset:
+        "[--hds-local-list-text-start:var(--component-list-rowPadding)] [&>li[data-leading]]:[--hds-local-list-text-start:calc(var(--component-list-rowPadding)*2+var(--component-list-leadingSize))] [&>li]:relative [&>li+li]:before:pointer-events-none [&>li+li]:before:absolute [&>li+li]:before:top-0 [&>li+li]:before:right-0 [&>li+li]:before:left-[var(--hds-local-list-text-start)] [&>li+li]:before:border-t [&>li+li]:before:border-border [&>li+li]:before:content-['']",
+      // Entity rows: spacing separates them, never hairlines (plain only).
+      none: 'gap-scale-xs',
+    },
   },
-);
+  defaultVariants: { variant: 'inset', divider: 'inset' },
+});
 
 // Token-driven row metrics, fills and text colours: var()-based, no Tailwind-theme utility exists.
 const SLOT = {
@@ -58,6 +62,7 @@ const SLOT = {
   meta: 'hds-type-caption block truncate text-[var(--semantic-color-content-tertiary)]',
   control: 'flex shrink-0 items-center pr-[var(--component-list-rowPadding)]',
   empty: 'p-[var(--component-list-rowPadding)]',
+  status: 'hds-type-caption flex shrink-0 text-[var(--semantic-color-content-tertiary)]',
 } as const;
 
 const ROW =
@@ -68,14 +73,44 @@ const ROW =
 /** @public */
 export type ListVariant = 'inset' | 'plain';
 
-const ListVariantContext = /* @__PURE__ */ React.createContext<ListVariant>('inset');
+interface ListContextValue {
+  variant: ListVariant;
+  divider: 'inset' | 'none';
+  defaultStatus?: string;
+}
+const ListVariantContext = /* @__PURE__ */ React.createContext<ListContextValue>({
+  variant: 'inset',
+  divider: 'inset',
+});
 
-/** @public */
-export interface ListProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** `inset` (default): rows on a raised rounded surface. `plain`: no surface, for page feeds. */
-  variant?: ListVariant;
+interface ListBaseProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** A status value the host treats as the default: rows with this `status.value` hide their status. */
+  defaultStatus?: string;
   /** List.Group children. */
   children?: React.ReactNode;
+}
+
+/** @public */
+export type ListProps = ListBaseProps &
+  (
+    | {
+        /** `inset` (default): rows on a raised rounded surface. */
+        variant?: 'inset';
+        divider?: 'inset';
+      }
+    | {
+        /** `plain`: no surface, for page feeds. */
+        variant: 'plain';
+        /** `none`: no dividers; rows are separated by spacing (entity rows). Plain only. */
+        divider?: 'inset' | 'none';
+      }
+  );
+
+/** A row's status: `value` is compared with the list's `defaultStatus`, `label` is shown. */
+/** @public */
+export interface ListItemStatus {
+  value: string;
+  label: React.ReactNode;
 }
 
 /** @public */
@@ -105,6 +140,10 @@ interface ListItemBaseProps {
   meta?: React.ReactNode;
   /** A List.Tile or a logo image, before the text column. */
   leading?: React.ReactNode;
+  /** The row's status, shown in the meta line or in trailing (`statusIn`). */
+  status?: ListItemStatus;
+  /** Where the status goes: `meta` (default) or `trailing`, before the trailing affordance. */
+  statusIn?: 'meta' | 'trailing';
   /** Extra classes on the row link or button. */
   className?: string;
 }
@@ -149,7 +188,10 @@ export type ListEmptyProps = Omit<EmptyStateProps, 'variant' | 'framed'>;
 
 // ── Components ─────────────────────────────────────────────────────────────────
 
-/** The leading icon tile: a sunken rounded square at component.list.leadingSize. */
+/**
+ * The leading icon tile: a sunken rounded square at component.list.leadingSize.
+ * @usage Put an icon in a sunken square at the start of a List.Item (its `leading`).
+ */
 export function ListTile({ icon, className }: ListTileProps) {
   return (
     <span className={cn(SLOT.tile, className)}>
@@ -158,10 +200,30 @@ export function ListTile({ icon, className }: ListTileProps) {
   );
 }
 
-/** One row: the whole row is the link (or button); an icon button or overflow menu sits beside it. */
+/**
+ * One row: the whole row is the link (or button); an icon button or overflow menu sits beside it.
+ * @usage One record in a List.Group: a title, a description, a meta line and one trailing affordance, the whole row tappable.
+ */
 export function ListItem(props: ListItemProps) {
   const { LinkComponent } = useHdsRouter();
-  const { title, description, meta, leading, className, trailing, actions } = props;
+  const { title, description, leading, className, trailing, actions, statusIn = 'meta' } = props;
+  const { defaultStatus } = React.useContext(ListVariantContext);
+  const status =
+    props.status != null && props.status.value !== defaultStatus ? props.status : undefined;
+  const statusNode = status != null && (
+    <span data-slot="list-status" className="block min-w-0 shrink truncate">
+      {status.label}
+    </span>
+  );
+  const meta =
+    statusIn === 'meta' && statusNode ? (
+      <span className="flex min-w-0 items-center gap-scale-xs">
+        {props.meta != null && <span className="min-w-0 truncate">{props.meta}</span>}
+        {statusNode}
+      </span>
+    ) : (
+      props.meta
+    );
   const id = React.useId();
   const titleId = `${id}-title`;
   const descId = `${id}-desc`;
@@ -229,6 +291,11 @@ export function ListItem(props: ListItemProps) {
           </span>
         )}
       </span>
+      {statusIn === 'trailing' && statusNode && (
+        <span id={`${descId}-s`} className={SLOT.status}>
+          {statusNode}
+        </span>
+      )}
       {inner}
     </>
   );
@@ -240,6 +307,7 @@ export function ListItem(props: ListItemProps) {
         description != null && `${descId}-d`,
         meta != null && `${descId}-m`,
         typeof trailing === 'number' && actions == null && `${descId}-c`,
+        statusIn === 'trailing' && statusNode && `${descId}-s`,
       ]
         .filter(Boolean)
         .join(' ') || undefined,
@@ -270,15 +338,18 @@ export function ListItem(props: ListItemProps) {
   );
 }
 
-/** A group: the heading outside the surface, the rows inside it. */
+/**
+ * A group: the heading outside the surface, the rows inside it.
+ * @usage One titled group of List.Item rows, with a count Badge and an optional action in its heading.
+ */
 export const ListGroup = /* @__PURE__ */ React.forwardRef<HTMLElement, ListGroupProps>(
   function ListGroup(
     { title, count, action, headingLevel = 2, className, children, ...rest },
     ref,
   ) {
-    const variant = React.useContext(ListVariantContext);
+    const { variant, divider } = React.useContext(ListVariantContext);
     const headingId = `${React.useId()}-heading`;
-    const rows = listRowsVariants({ variant });
+    const rows = listRowsVariants({ variant, divider: variant === 'plain' ? divider : 'inset' });
     return (
       <section
         ref={ref}
@@ -306,7 +377,10 @@ export const ListGroup = /* @__PURE__ */ React.forwardRef<HTMLElement, ListGroup
   },
 );
 
-/** The empty state of a group: an EmptyState in a row. */
+/**
+ * The empty state of a group: an EmptyState in a row.
+ * @usage Say that a List.Group has no rows yet, in place of its items.
+ */
 export function ListEmpty(props: ListEmptyProps) {
   return (
     <li className={SLOT.empty}>
@@ -325,11 +399,15 @@ type ListComponent = React.ForwardRefExoticComponent<
 };
 
 const ListRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, ListProps>(function List(
-  { variant = 'inset', className, children, ...rest },
+  { variant = 'inset', divider = 'inset', defaultStatus, className, children, ...rest },
   ref,
 ) {
+  const ctx = React.useMemo(
+    () => ({ variant, divider, defaultStatus }),
+    [variant, divider, defaultStatus],
+  );
   return (
-    <ListVariantContext.Provider value={variant}>
+    <ListVariantContext.Provider value={ctx}>
       <div
         ref={ref}
         data-variant={variant}

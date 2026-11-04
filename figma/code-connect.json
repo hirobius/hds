@@ -391,6 +391,10 @@
       "kind": "queued",
       "reason": "Table exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
     },
+    "src/app/components/list.tsx": {
+      "kind": "no-figma-component",
+      "reason": "List is new (job-hunt request); no Figma component set exists yet. The template follows the Figma List set."
+    },
     "src/app/components/text.tsx": {
       "kind": "no-figma-component",
       "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."

@@ -220,4 +220,67 @@ describe('List', () => {
     expect(row.textContent).toContain('No saved roles yet');
     expect(within(row).queryByRole('link')).toBeNull();
   });
+
+  describe('entity rows', () => {
+    const status = { value: 'open', label: 'Open' };
+
+    it('puts the status in a slot inside the meta line by default', () => {
+      render(
+        <List>
+          <List.Group title="Roles">
+            <List.Item href="/a" title="A" meta="2 days ago" status={status} />
+          </List.Group>
+        </List>,
+      );
+      const meta = document.querySelector('[data-slot="list-meta"]') as HTMLElement;
+      const slot = meta.querySelector('[data-slot="list-status"]') as HTMLElement;
+      expect(slot.textContent).toBe('Open');
+      expect(slot.className).toContain('truncate');
+    });
+
+    it('puts the status in trailing with statusIn="trailing", before the one affordance', () => {
+      render(
+        <List>
+          <List.Group title="Roles">
+            <List.Item href="/a" title="A" status={status} statusIn="trailing" trailing="chevron" />
+          </List.Group>
+        </List>,
+      );
+      expect(document.querySelector('[data-slot="list-meta"]')).toBeNull();
+      const slots = Array.from(document.querySelectorAll<HTMLElement>('[data-slot^="list-"]')).map(
+        (el) => el.dataset.slot,
+      );
+      expect(slots.slice(-2)).toEqual(['list-status', 'list-trailing']);
+      expect(document.querySelectorAll('[data-slot="list-trailing"]')).toHaveLength(1);
+    });
+
+    it('hides the status that is the list default (defaultStatus)', () => {
+      render(
+        <List defaultStatus="open">
+          <List.Group title="Roles">
+            <List.Item href="/a" title="A" status={status} />
+            <List.Item href="/b" title="B" status={{ value: 'closed', label: 'Closed' }} />
+          </List.Group>
+        </List>,
+      );
+      const shown = Array.from(document.querySelectorAll('[data-slot="list-status"]')).map(
+        (el) => el.textContent,
+      );
+      expect(shown).toEqual(['Closed']);
+    });
+
+    it('divider="none" on plain renders no dividers and spaces the rows instead', () => {
+      const { container } = render(
+        <List variant="plain" divider="none">
+          <List.Group title="Roles">
+            <List.Item href="/a" title="A" />
+            <List.Item href="/b" title="B" />
+          </List.Group>
+        </List>,
+      );
+      const ul = container.querySelector('ul') as HTMLElement;
+      expect(ul.className).not.toContain('before:border-t');
+      expect(ul.className).toContain('gap-scale-xs');
+    });
+  });
 });

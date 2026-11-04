@@ -891,6 +891,24 @@ function ListDemo() {
           <List.Empty title="No applications yet" description="Roles you apply to show here." />
         </List.Group>
       </List>
+      <List variant="plain" divider="none" defaultStatus="open">
+        <List.Group title="Pipeline" count={2}>
+          <List.Item
+            href="#"
+            title="Acme Cloud"
+            meta="Updated today"
+            status={{ value: 'open', label: 'Open' }}
+          />
+          <List.Item
+            href="#"
+            title="Northwind"
+            meta="Updated Monday"
+            status={{ value: 'interview', label: 'Interview' }}
+            statusIn="trailing"
+            trailing="chevron"
+          />
+        </List.Group>
+      </List>
     </div>
   );
 }

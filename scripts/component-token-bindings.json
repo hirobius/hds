@@ -125,6 +125,10 @@
       "source": "src/app/components/inline-code.tsx",
       "cva": "inlineCodeVariants"
     },
+    "list": {
+      "source": "src/app/components/list.tsx",
+      "cva": "listRowsVariants"
+    },
     "card": {
       "source": "src/app/components/card.tsx",
       "cva": "cardVariants",
