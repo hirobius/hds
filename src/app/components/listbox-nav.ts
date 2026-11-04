@@ -4,6 +4,7 @@
  * active-row look, shared by Combobox and CommandPalette so they move and mark
  * the active row the same way.
  */
+import * as React from 'react';
 
 /** Classes for the active option (`data-active="true"`): sunken fill and an inset focus ring. */
 export const ACTIVE_OPTION_CLASS =
@@ -30,4 +31,25 @@ export function nextEnabledIndex(list: readonly NavOption[], from: number, dir: 
     if (!list[i].disabled) return i;
   }
   return from;
+}
+
+/**
+ * Reset the active row to the first selectable one whenever the list is opened
+ * or its contents change. Keyed on each option's key and disabled flag (not the
+ * array identity) so a parent re-render with equal options doesn't yank the
+ * cursor. Adjusted during render, the React-endorsed alternative to a setState
+ * effect.
+ */
+export function useResetActiveOnListChange<T extends NavOption>(
+  open: boolean,
+  list: readonly T[],
+  keyOf: (option: T) => string,
+  setActiveIndex: (index: number) => void,
+): void {
+  const listKey = `${open}|${list.map((o) => `${keyOf(o)}:${o.disabled ? 1 : 0}`).join('\u0000')}`;
+  const [prevListKey, setPrevListKey] = React.useState(listKey);
+  if (prevListKey !== listKey) {
+    setPrevListKey(listKey);
+    setActiveIndex(firstEnabledIndex(list));
+  }
 }

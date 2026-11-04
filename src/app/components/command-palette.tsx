@@ -54,7 +54,7 @@ import { Dialog } from './dialog';
 import { Icon } from './icon';
 import { Kbd } from './kbd';
 import { Tag } from './tag';
-import { ACTIVE_OPTION_CLASS, firstEnabledIndex, nextEnabledIndex } from './listbox-nav';
+import { ACTIVE_OPTION_CLASS, nextEnabledIndex, useResetActiveOnListChange } from './listbox-nav';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -221,12 +221,7 @@ export const CommandPalette = /* @__PURE__ */ React.forwardRef<HTMLDivElement, C
         setCollected([]);
       }
     }
-    const listKey = `${open}|${filtered.map((i) => `${i.id}:${i.disabled ? 1 : 0}`).join('\u0000')}`;
-    const [prevListKey, setPrevListKey] = React.useState(listKey);
-    if (prevListKey !== listKey) {
-      setPrevListKey(listKey);
-      setActiveIndex(firstEnabledIndex(filtered));
-    }
+    useResetActiveOnListChange(open, filtered, (i) => i.id, setActiveIndex);
 
     React.useEffect(() => {
       if (!hotkey) return;
