@@ -48,7 +48,7 @@ export interface StackProps extends React.AriaAttributes {
   /** Flex direction for the stack. */
   direction?: 'row' | 'column';
   /**
-   * Gap token: semantic (tight, normal, inset, spacious) or primitive (px4, px8, etc). Defaults to 'tight' (16px).
+   * Gap token: semantic (tight, normal, inset, spacious) or primitive (px4, px8, etc). Defaults to 'tight' (space/scale/sm: 20px, 12px compact).
    * Not the t-shirt scale: Stack's 'xs' is the 2px subgrid step, while Box `sx` 'xs' is scale.xs (8px), until the 1.0 rename (hds#206).
    */
   gap?: GapOption;
