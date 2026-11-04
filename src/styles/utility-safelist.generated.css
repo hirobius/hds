@@ -391,6 +391,7 @@
 @source inline("max-h-[var(--radix-dropdown-menu-content-available-height)]");
 @source inline("max-sm:hidden");
 @source inline("max-sm:pr-16");
+@source inline("max-w-2xl");
 @source inline("max-w-4xl");
 @source inline("max-w-5xl");
 @source inline("max-w-7xl");
