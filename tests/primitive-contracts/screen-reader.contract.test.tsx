@@ -21,7 +21,8 @@ import { useState } from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, waitFor } from '@testing-library/react';
 import { virtual } from '@guidepup/virtual-screen-reader';
-import { Table, type TableColumn, type TableRow } from '@/app/components/table';
+import { Table, type TableColumn } from '@/app/components/table';
+import { TABLE_ROWS } from './table-fixtures';
 import { Alert } from '@/app/components/alert';
 import {
   user,
@@ -53,23 +54,7 @@ async function press(control: HTMLElement, key: string) {
   await user().keyboard(key);
 }
 
-// Same shape as src/app/components/table.test.tsx, with Name sorted ascending.
-const ROWS: TableRow[] = [
-  {
-    key: 'a',
-    cells: [
-      { slot: 'label', content: 'Alpha' },
-      { slot: 'value', content: '1' },
-    ],
-  },
-  {
-    key: 'b',
-    cells: [
-      { slot: 'label', content: 'Beta' },
-      { slot: 'value', content: '2' },
-    ],
-  },
-];
+// Same rows as src/app/components/table.test.tsx, with Name sorted ascending.
 const SORTED_COLUMNS: TableColumn[] = [
   { key: 'name', label: 'Name', sortable: true, sortDirection: 'ascending' },
   { key: 'value', label: 'Value' },
@@ -249,7 +234,7 @@ describe('Combobox screen-reader contract', () => {
 
 describe('Table screen-reader contract', () => {
   it('a11y:table.sorted-header a11y:table.sort-button-named - reads the sorted column header with its sort state, and its sort button', async () => {
-    render(<Table columns={SORTED_COLUMNS} rows={ROWS} />);
+    render(<Table columns={SORTED_COLUMNS} rows={TABLE_ROWS} />);
     await startReader();
     await next(6);
 

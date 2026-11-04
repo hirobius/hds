@@ -4,6 +4,7 @@
  */
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
+import { expectInsetFocusRing } from '../../../tests/primitive-contracts/tabs-fixtures';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 
 afterEach(cleanup);
@@ -30,13 +31,7 @@ describe('Tabs', () => {
 
   it('draws the focus ring inset, so the scrolling list (overflow-x-auto) cannot clip it', () => {
     render(<Example />);
-    const list = screen.getByRole('tablist');
-    expect(list.className).toContain('overflow-x-auto');
-    for (const tab of screen.getAllByRole('tab')) {
-      const cls = tab.className.split(/\s+/);
-      expect(cls).toContain('focus-visible:ring-2');
-      expect(cls).toContain('focus-visible:ring-inset');
-    }
+    expectInsetFocusRing();
   });
 });
 
