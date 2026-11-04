@@ -293,6 +293,16 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.
  */
+/** The hard edge each raised Button paints (theme.css `.hds-btn-hard`, hds#897). */
+const BUTTON_EDGE = {
+  primary: 'var(--hds-edge-primary)',
+  secondary: 'var(--component-button-edge-secondary)',
+  danger: 'var(--component-button-edge-danger)',
+  success: 'var(--component-button-edge-success)',
+  warning: 'var(--component-button-edge-warning)',
+  info: 'var(--component-button-edge-info)',
+} as const;
+
 export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
     {
@@ -355,10 +365,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     const edge =
       shadow === 'hard' && variant !== 'tertiary' && !isLink
         ? {
-            '--hds-edge':
-              edgeKey === 'primary'
-                ? 'var(--hds-edge-primary)'
-                : `var(--component-button-edge-${edgeKey})`,
+            '--hds-edge': BUTTON_EDGE[edgeKey],
           }
         : null;
     const wipeProps = wipe
