@@ -479,7 +479,9 @@
         }
       },
       "docsPage": "/docs/components/alert",
-      "publicDataAttributes": [],
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show a persistent inline message with a severity, next to the content it concerns.",
         "whenNot": "A brief confirmation that should disappear on its own, or a status label.",

@@ -29,6 +29,7 @@
 /** The data-* attributes consumers may select on, per component. */
 export const PUBLIC_DATA_ATTRIBUTES = {
   AsyncState: ['data-crossfade-view', 'data-slot', 'data-status'],
+  Alert: ['data-size'],
   Avatar: ['data-size'],
   Badge: ['data-tone'],
   Button: [

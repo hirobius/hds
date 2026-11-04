@@ -282,6 +282,7 @@ In tests and styles, select HDS elements only by:
 
 The `data-*` attributes each component renders for you to select on:
 
+- `Alert`: `data-size`
 - `AsyncState`: `data-crossfade-view`, `data-slot`, `data-status`
 - `Avatar`: `data-size`
 - `Badge`: `data-tone`
