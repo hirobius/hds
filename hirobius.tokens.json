@@ -1284,22 +1284,34 @@
       }
     },
     "strokeWidth": {
-      "$type": "number",
-      "$description": "Icon stroke widths, unitless SVG user units on Lucide's 24-unit viewBox.",
+      "$type": "dimension",
+      "$description": "Icon stroke widths in px at Lucide's 24-unit viewBox (1 unit = 1px at the 24px icon size); Lucide takes the unitless number.",
       "100": {
-        "$value": 1,
+        "$value": {
+          "value": 1,
+          "unit": "px"
+        },
         "$description": "1-unit stroke."
       },
       "150": {
-        "$value": 1.5,
+        "$value": {
+          "value": 1.5,
+          "unit": "px"
+        },
         "$description": "1.5-unit stroke."
       },
       "200": {
-        "$value": 2,
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        },
         "$description": "2-unit stroke, Lucide's default."
       },
       "250": {
-        "$value": 2.5,
+        "$value": {
+          "value": 2.5,
+          "unit": "px"
+        },
         "$description": "2.5-unit stroke."
       }
     }
@@ -2560,8 +2572,8 @@
         "$description": "Stronger border weight for focus rings and active indicators."
       },
       "icon": {
-        "$type": "number",
-        "$description": "Icon stroke weight, read by Icon's weight prop (icon.tsx). Unitless SVG stroke-width.",
+        "$type": "dimension",
+        "$description": "Icon stroke weight, read by Icon's weight prop (icon.tsx). px at the 24px icon size; Icon passes the number to Lucide's strokeWidth.",
         "thin": {
           "$value": "{primitive.strokeWidth.100}",
           "$description": "Thin icon stroke (1)."

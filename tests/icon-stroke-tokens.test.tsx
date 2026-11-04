@@ -24,7 +24,7 @@ describe('icon stroke-width tokens', () => {
     const ref = t.semantic.borderWidth.icon[weight].$value as string;
     const key = /^\{primitive\.strokeWidth\.(\w+)\}$/.exec(ref)?.[1];
     expect(key).toBeDefined();
-    expect(t.primitive.strokeWidth[key!].$value).toBe(value);
+    expect(t.primitive.strokeWidth[key!].$value).toEqual({ value, unit: 'px' });
   });
 
   it.each(Object.entries(expected))('Icon weight=%s renders stroke-width %s', (weight, value) => {

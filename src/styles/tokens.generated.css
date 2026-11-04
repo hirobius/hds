@@ -243,10 +243,10 @@
   --primitive-borderWidth-xs: 1px;
   --primitive-borderWidth-sm: 2px;
   --primitive-borderWidth-md: 4px;
-  --primitive-strokeWidth-100: 1;
-  --primitive-strokeWidth-150: 1.5;
-  --primitive-strokeWidth-200: 2;
-  --primitive-strokeWidth-250: 2.5;
+  --primitive-strokeWidth-100: 1px;
+  --primitive-strokeWidth-150: 1.5px;
+  --primitive-strokeWidth-200: 2px;
+  --primitive-strokeWidth-250: 2.5px;
 
   /* ── Semantic (light mode defaults) ────────────────────────────────────── */
   /* semantic.motion.productive */

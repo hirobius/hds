@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-04T22:26:03.123Z",
+  "generated": "2026-11-04T22:39:29.918Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13762,30 +13762,30 @@
       {
         "path": "primitive.strokeWidth.100",
         "cssVar": "--primitive-strokeWidth-100",
-        "type": "number",
+        "type": "dimension",
         "description": "1-unit stroke.",
-        "value": "1"
+        "value": "1px"
       },
       {
         "path": "primitive.strokeWidth.150",
         "cssVar": "--primitive-strokeWidth-150",
-        "type": "number",
+        "type": "dimension",
         "description": "1.5-unit stroke.",
-        "value": "1.5"
+        "value": "1.5px"
       },
       {
         "path": "primitive.strokeWidth.200",
         "cssVar": "--primitive-strokeWidth-200",
-        "type": "number",
+        "type": "dimension",
         "description": "2-unit stroke, Lucide's default.",
-        "value": "2"
+        "value": "2px"
       },
       {
         "path": "primitive.strokeWidth.250",
         "cssVar": "--primitive-strokeWidth-250",
-        "type": "number",
+        "type": "dimension",
         "description": "2.5-unit stroke.",
-        "value": "2.5"
+        "value": "2.5px"
       }
     ],
     "semantic": [
@@ -15044,34 +15044,34 @@
       {
         "path": "semantic.borderWidth.icon.thin",
         "cssVar": "--semantic-borderWidth-icon-thin",
-        "type": "number",
+        "type": "dimension",
         "description": "Thin icon stroke (1).",
         "alias": "{primitive.strokeWidth.100}",
-        "resolvedValue": "1"
+        "resolvedValue": "1px"
       },
       {
         "path": "semantic.borderWidth.icon.light",
         "cssVar": "--semantic-borderWidth-icon-light",
-        "type": "number",
+        "type": "dimension",
         "description": "Light icon stroke (1.5).",
         "alias": "{primitive.strokeWidth.150}",
-        "resolvedValue": "1.5"
+        "resolvedValue": "1.5px"
       },
       {
         "path": "semantic.borderWidth.icon.regular",
         "cssVar": "--semantic-borderWidth-icon-regular",
-        "type": "number",
+        "type": "dimension",
         "description": "Regular icon stroke (2), the default when no weight is set.",
         "alias": "{primitive.strokeWidth.200}",
-        "resolvedValue": "2"
+        "resolvedValue": "2px"
       },
       {
         "path": "semantic.borderWidth.icon.bold",
         "cssVar": "--semantic-borderWidth-icon-bold",
-        "type": "number",
+        "type": "dimension",
         "description": "Bold icon stroke (2.5).",
         "alias": "{primitive.strokeWidth.250}",
-        "resolvedValue": "2.5"
+        "resolvedValue": "2.5px"
       },
       {
         "path": "semantic.link.underlineThickness",

@@ -21,12 +21,12 @@ export type IconSize = keyof typeof hds.iconSize | number | string;
 // Numeric, not var(): SVG stroke-width attributes can't resolve CSS variables.
 const STROKE = tokenValues.primitive.strokeWidth;
 const WEIGHT_TO_STROKE: Record<string, number> = {
-  thin: Number(STROKE['100']), // semantic.borderWidth.icon.thin
-  light: Number(STROKE['150']), // semantic.borderWidth.icon.light
-  regular: Number(STROKE['200']), // semantic.borderWidth.icon.regular
-  bold: Number(STROKE['250']), // semantic.borderWidth.icon.bold
-  fill: Number(STROKE['200']),
-  duotone: Number(STROKE['200']),
+  thin: parseFloat(STROKE['100']), // semantic.borderWidth.icon.thin
+  light: parseFloat(STROKE['150']), // semantic.borderWidth.icon.light
+  regular: parseFloat(STROKE['200']), // semantic.borderWidth.icon.regular
+  bold: parseFloat(STROKE['250']), // semantic.borderWidth.icon.bold
+  fill: parseFloat(STROKE['200']),
+  duotone: parseFloat(STROKE['200']),
 };
 
 /**

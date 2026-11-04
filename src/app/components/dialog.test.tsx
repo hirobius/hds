@@ -256,7 +256,7 @@ describe('Dialog title/description gap survives a host CSS reset (hds#863)', () 
       </Dialog>,
     );
     const cls = screen.getByTestId('h').className;
-    expect(cls).toMatch(/(^|\s)gap-1\.5(\s|$)/);
+    expect(cls).toMatch(/(^|\s)gap-px6(\s|$)/);
     expect(cls).not.toMatch(/space-y-/);
   });
 });
