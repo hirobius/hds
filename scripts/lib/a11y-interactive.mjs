@@ -59,6 +59,7 @@ export const PARTS = Object.freeze({
   DialogOverlay: 'Dialog',
   DialogContent: 'Dialog',
   DialogHeader: 'Dialog',
+  DialogBody: 'Dialog',
   DialogFooter: 'Dialog',
   DialogTitle: 'Dialog',
   DialogDescription: 'Dialog',

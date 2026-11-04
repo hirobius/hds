@@ -80,6 +80,7 @@
     "DataTableSection",
     "DestructiveSection",
     "Dialog",
+    "DialogBody",
     "DialogClose",
     "DialogContent",
     "DialogDescription",
@@ -379,7 +380,8 @@
         }
       ],
       "variantAxes": [
-        "tone"
+        "tone",
+        "size"
       ],
       "componentProperties": [
         {
@@ -432,6 +434,14 @@
         "children": {
           "type": "ReactNode"
         },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md"
+          ],
+          "default": "md"
+        },
         "title": {
           "type": "string",
           "optional": true
@@ -448,6 +458,13 @@
         }
       },
       "propConstraints": {
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md"
+          ]
+        },
         "title": {
           "type": "string"
         },
@@ -462,7 +479,9 @@
         }
       },
       "docsPage": "/docs/components/alert",
-      "publicDataAttributes": [],
+      "publicDataAttributes": [
+        "data-size"
+      ],
       "usage": {
         "when": "Show a persistent inline message with a severity, next to the content it concerns.",
         "whenNot": "A brief confirmation that should disappear on its own, or a status label.",
@@ -3555,6 +3574,11 @@
         {
           "name": "trigger",
           "description": "The element that opens the dialog (Dialog.Trigger).",
+          "source": "jsdoc"
+        },
+        {
+          "name": "body",
+          "description": "The scrolling region between a pinned header and footer (Dialog.Body, with scrollBody on Dialog.Content).",
           "source": "jsdoc"
         }
       ],
@@ -7783,6 +7807,7 @@
         "sizing": "panel"
       },
       "consumers": [
+        "src/app/components/dialog.tsx",
         "src/app/components/form-actions.tsx"
       ],
       "tokenMapping": {},
@@ -8347,6 +8372,28 @@
         "onPointerDownOutside": {
           "type": "(event: CustomEvent<{ originalEvent: PointerEvent; }>) => void",
           "optional": true
+        },
+        "placement": {
+          "type": "enum",
+          "values": [
+            "center",
+            "top"
+          ],
+          "default": "center"
+        },
+        "scrollBody": {
+          "type": "boolean",
+          "default": false
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ],
+          "default": "md"
         }
       },
       "allowedChildren": [
@@ -11741,6 +11788,35 @@
         }
       ],
       "aiRules": "Pass the nav as `sidebar` (a node, or a function of `{ collapsed }` to draw an icon-only rail) and the page as children. Do not put a second `<main>`, `<header>` or `<nav>` landmark for the same regions inside it. Structure: Stack (header over body), Grid (rail, main, aside columns) and Surface (header and rail fill). Widths are CSS lengths on local `--hds-local-appshell-*` variables; spacing and colour are HDS tokens. Structural references (no code copied): Primer PageLayout, shadcn/ui sidebar blocks, the common SaaS frame. Slice 1 of #863; a bottom tab bar variant and moving Roleforge and Ops over are follow-up slices."
+    },
+    "DialogBody": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "docExempt": true,
+      "filePath": "src/app/components/dialog.tsx",
+      "description": "Scrolling region between a pinned Header and Footer; needs `scrollBody` on Content.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "DialogBody",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
     },
     "HdsPhosphor": {
       "category": "Compiler",

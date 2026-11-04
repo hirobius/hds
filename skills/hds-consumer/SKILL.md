@@ -171,6 +171,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `AlertDialog` — AlertDialog root + parts.
 - `CommandPalette` — CommandPalette — ⌘K search and command box: a modal search field over grouped results.
 - `Dialog` — Tagged per-export, not on the file block: this module exports ten components and a file-level @figma would hand all ten this one node.
+- `DialogBody` — Scrolling region between a pinned Header and Footer; needs `scrollBody` on Content.
 - `DialogClose` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `DialogContent` — Dialog — modal dialog (shadcn baseline, compound parts).
 - `DialogDescription` — Dialog — modal dialog (shadcn baseline, compound parts).
@@ -281,6 +282,7 @@ In tests and styles, select HDS elements only by:
 
 The `data-*` attributes each component renders for you to select on:
 
+- `Alert`: `data-size`
 - `AsyncState`: `data-crossfade-view`, `data-slot`, `data-status`
 - `Avatar`: `data-size`
 - `Badge`: `data-tone`

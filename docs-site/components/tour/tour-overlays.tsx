@@ -64,6 +64,7 @@ export function TourOverlays() {
               This publishes the latest notes to the changelog page.
             </Dialog.Description>
           </Dialog.Header>
+          <Dialog.Body>Notes go live on the changelog page as soon as you publish.</Dialog.Body>
           <Dialog.Footer>
             <Dialog.Close asChild>
               <Button variant="secondary">Cancel</Button>

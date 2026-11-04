@@ -161,6 +161,7 @@ export const TOUR_SECTIONS: readonly TourSection[] = [
       'DialogHeader',
       'DialogTitle',
       'DialogDescription',
+      'DialogBody',
       'DialogFooter',
       'DialogClose',
       'DialogPortal',

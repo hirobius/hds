@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Dialog.Content takes size (sm, md, lg, xl), placement=\"top\" and scrollBody with a new Dialog.Body part, and Alert takes size=\"sm\"; drop local max-width, top-anchoring or scroll-body classes on dialogs."
+}

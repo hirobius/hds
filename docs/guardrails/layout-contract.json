@@ -261,6 +261,13 @@
       "kind": "overlay",
       "probe": false
     },
+    "DialogBody": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "DialogClose": {
       "width": "hug",
       "height": "hug",

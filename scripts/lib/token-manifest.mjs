@@ -212,7 +212,7 @@ const COMPONENT_SPEC_SEEDS = {
   // These get full props/tokens via auto-discovery + tokenMapping preservation.
   // We only seed the Figma master shape: variantAxes, componentProperties, states.
   Alert: {
-    variantAxes: ['tone'],
+    variantAxes: ['tone', 'size'],
     componentProperties: [
       {
         name: 'Title',
