@@ -28,11 +28,10 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, extname } from 'node:path';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { emitResult } from './lib/gate-output.mjs';
+import { gateContext } from './lib/source-scan.mjs';
 
-const argv = process.argv.slice(2);
-const jsonMode = hasJsonFlag(argv);
-const fixtureFile = process.env.FIXTURE_FILE;
+const { jsonMode, fixtureFile } = gateContext(import.meta.url);
 
 const CONFIG = '.gitleaks.toml';
 const configArgs = existsSync(CONFIG) ? ['--config', CONFIG] : [];
