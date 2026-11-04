@@ -15,12 +15,15 @@ const tone = instance.getEnum('Tone', {
   warning: 'warning',
   danger: 'danger',
 });
+const size = instance.getEnum('Size', {
+  md: 'md',
+});
 const showTitle = instance.getBoolean('Show title');
 const title = instance.getString('Title');
 const body = instance.getString('Body');
 
 export default {
-  example: figma.code`<Alert${tone === 'info' ? '' : ` tone="${tone}"`}${showTitle ? ` title="${title}"` : ''}>${body}</Alert>`,
+  example: figma.code`<Alert${tone === 'info' ? '' : ` tone="${tone}"`}${size === 'md' ? '' : ` size="${size}"`}${showTitle ? ` title="${title}"` : ''}>${body}</Alert>`,
   imports: ["import { Alert } from '@hirobius/design-system'"],
   id: 'alert',
   metadata: { nestable: true },

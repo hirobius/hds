@@ -857,4 +857,4 @@ Override: Adrian 11-04 in chat: prune all 21, one-off override of ADR-026. Only 
 
 Session total: 6 calls
 
-Calls logged for 2026-11-04: 6 of 200 (5 and 1).
+Calls logged for 2026-11-04: 6 of 200 (6).

@@ -24,4 +24,26 @@ describe('Alert', () => {
     expect(body.style.fontFamily).toBe('var(--semantic-typography-caption-font-family)');
     expect(body.style.fontWeight).toBe('var(--semantic-typography-caption-font-weight)');
   });
+
+  it('defaults to the existing padding (size md) and offers a compact sm', () => {
+    const { container, rerender } = render(<Alert>Msg</Alert>);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.getAttribute('data-size')).toBe('md');
+    expect(root.className).toContain('p-[var(--semantic-space-surface-padding)]');
+    rerender(<Alert size="sm">Msg</Alert>);
+    const sm = container.firstElementChild as HTMLElement;
+    expect(sm.getAttribute('data-size')).toBe('sm');
+    expect(sm.className).toContain('p-[var(--semantic-space-scale-xs)]');
+    expect(sm.className).not.toContain('p-[var(--semantic-space-surface-padding)]');
+  });
+
+  it('separates title and message with a flex gap and explicit zero margins, so a host reset cannot collapse or inflate it (hds#863)', () => {
+    render(<Alert title="Published">Your changes are live.</Alert>);
+    const stack = screen.getByText('Published').parentElement as HTMLElement;
+    expect(stack.className).toMatch(/(^|\s)flex(\s|$)/);
+    expect(stack.className).toContain('flex-col');
+    expect(stack.className).toContain('gap-[var(--semantic-space-subgrid-hairline)]');
+    expect(screen.getByText('Published').style.margin).toBe('0px');
+    expect(screen.getByText('Your changes are live.').style.margin).toBe('0px');
+  });
 });

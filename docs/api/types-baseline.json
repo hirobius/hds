@@ -329,6 +329,7 @@
         "(props: DialogProps, deprecatedLegacyContext?: any): ReactNode"
       ],
       "members": [
+        "Body",
         "Close",
         "Content",
         "Description",
@@ -338,6 +339,12 @@
         "Portal",
         "Title",
         "Trigger"
+      ]
+    },
+    "DialogBody": {
+      "kind": "value",
+      "signatures": [
+        "(props: HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>): ReactNode"
       ]
     },
     "DialogClose": {

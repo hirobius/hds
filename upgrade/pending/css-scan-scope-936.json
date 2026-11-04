@@ -1,6 +1,6 @@
 {
   "impact": "breaking",
-  "plain": "The published CSS drops 136 plain Tailwind utilities no HDS component uses (they leaked in from tests and docs) and the 15 Tailwind theme variables only they read; compile any you need with your own Tailwind.",
+  "plain": "The published CSS drops 134 plain Tailwind utilities no HDS component uses (they leaked in from tests and docs) and the 14 Tailwind theme variables only they read; compile any you need with your own Tailwind.",
   "steps": [
     {
       "id": "removed/tailwind-utilities-936",
@@ -72,7 +72,6 @@
           "leading-loose",
           "line-through",
           "m-1",
-          "max-w-2xl",
           "max-w-[900px]",
           "md:px-3",
           "md:px-6",
@@ -210,7 +209,6 @@
         "utility-removed:leading-loose",
         "utility-removed:line-through",
         "utility-removed:m-1",
-        "utility-removed:max-w-2xl",
         "utility-removed:max-w-[900px]",
         "utility-removed:md:px-3",
         "utility-removed:md:px-6",
@@ -295,7 +293,6 @@
           "--blur-xs",
           "--color-gray-100",
           "--color-stone-900",
-          "--container-2xl",
           "--ease-in",
           "--ease-in-out",
           "--font-weight-bold",
@@ -313,7 +310,6 @@
         "css-var-removed:--blur-xs",
         "css-var-removed:--color-gray-100",
         "css-var-removed:--color-stone-900",
-        "css-var-removed:--container-2xl",
         "css-var-removed:--ease-in",
         "css-var-removed:--ease-in-out",
         "css-var-removed:--font-weight-bold",

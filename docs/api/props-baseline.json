@@ -6,6 +6,15 @@
       "values": null,
       "default": null
     },
+    "size": {
+      "type": "\"sm\" | \"md\"",
+      "optional": true,
+      "values": [
+        "sm",
+        "md"
+      ],
+      "default": "md"
+    },
     "title": {
       "type": "string",
       "optional": true,
@@ -1358,6 +1367,7 @@
       "default": null
     }
   },
+  "DialogBody": {},
   "DialogClose": {
     "asChild": {
       "type": "boolean",
@@ -1426,6 +1436,32 @@
       "optional": true,
       "values": null,
       "default": null
+    },
+    "placement": {
+      "type": "'center' | 'top'",
+      "optional": true,
+      "values": [
+        "center",
+        "top"
+      ],
+      "default": "center"
+    },
+    "scrollBody": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
+    "size": {
+      "type": "'sm' | 'md' | 'lg' | 'xl'",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ],
+      "default": "md"
     }
   },
   "DialogDescription": {
