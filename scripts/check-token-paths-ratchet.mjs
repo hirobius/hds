@@ -30,15 +30,13 @@
  */
 
 import { readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs';
-import { join, relative, dirname, extname, resolve } from 'node:path';
+import { join, relative, extname, resolve } from 'node:path';
 import { execSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { emitResult } from './lib/gate-output.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
-import { readBaselineSet } from './lib/source-scan.mjs';
+import { readBaselineSet, gateContext } from './lib/source-scan.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 // ─── Token-path scanning helpers ─────────────────────────────────────────────
 
@@ -254,9 +252,6 @@ const args = new Set(process.argv.slice(2));
 const isRatchetMode = args.has('--ratchet');
 const isUpdateBaseline = args.has('--update-baseline');
 const isFullReport = args.has('--full');
-const isFixtureMode = args.has('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
-const jsonMode = hasJsonFlag(process.argv);
 const BASELINE_FILE = join(ROOT, '.token-path-baseline.txt');
 
 if (isRatchetMode) {

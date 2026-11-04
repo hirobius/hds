@@ -26,12 +26,11 @@
  */
 
 import { readFileSync, existsSync } from 'fs';
-import { join, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { join, resolve } from 'path';
+import { gateContext } from './lib/source-scan.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const { ROOT, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 const DESCRIPTION_FILE = join(
   ROOT,
   'src',
@@ -43,8 +42,6 @@ const DESCRIPTION_FILE = join(
 // Parse CLI flags
 const args = process.argv.slice(2);
 
-const isFixtureMode = args.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
 const TOKENS_FILE =
   isFixtureMode && fixtureFile ? resolve(fixtureFile) : join(ROOT, 'hirobius.tokens.json');
 const maxWordsArg = args.indexOf('--max-words');

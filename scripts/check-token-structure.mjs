@@ -27,20 +27,16 @@
  * No suppression mechanism. All violations require a structural fix in the JSON.
  */
 
-import { join, dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { join, resolve } from 'path';
+import { gateContext } from './lib/source-scan.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 import { parseAlias, walkNodes } from './lib/token-tree.mjs';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const { ROOT, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
 const TOKENS_FILE = join(ROOT, 'hirobius.tokens.json');
 
 // Fixture mode: proof-of-firing harness supplies a single file via env vars.
 // No-op in normal runs.
-const isFixtureMode =
-  process.argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
 
 // ── Ordered-scale (monotonicity) vocabulary ─────────────────────────────────
 // The shared t-shirt-size step vocabulary, low to high. A tuple entry means

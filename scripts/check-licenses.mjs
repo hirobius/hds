@@ -14,12 +14,10 @@
 
 import { execFileSync } from 'node:child_process';
 import { readFileSync as fsReadFileSync } from 'node:fs';
-import { hasJsonFlag, emitResult } from './lib/gate-output.mjs';
+import { emitResult } from './lib/gate-output.mjs';
+import { gateContext } from './lib/source-scan.mjs';
 
-const argv = process.argv.slice(2);
-const jsonMode = hasJsonFlag(argv);
-const fixtureMode = argv.includes('--fixture-mode') || process.env.HDS_FIXTURE_MODE === '1';
-const fixtureFile = process.env.FIXTURE_FILE;
+const { jsonMode, isFixtureMode: fixtureMode, fixtureFile } = gateContext(import.meta.url);
 
 const DENY_PATTERNS = [
   /^GPL/i,
@@ -41,7 +39,9 @@ if (fixtureMode && fixtureFile) {
   try {
     raw = fsReadFileSync(fixtureFile, 'utf8');
   } catch (err) {
-    process.stderr.write(`check-licenses: cannot read fixture file ${fixtureFile}: ${err.message}\n`);
+    process.stderr.write(
+      `check-licenses: cannot read fixture file ${fixtureFile}: ${err.message}\n`,
+    );
     process.exit(2);
   }
 } else {
