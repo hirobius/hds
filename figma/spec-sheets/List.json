@@ -22,6 +22,20 @@
       "optional": true
     },
     {
+      "name": "defaultStatus",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "name": "divider",
+      "type": "enum",
+      "values": [
+        "none",
+        "inset"
+      ],
+      "default": "inset"
+    },
+    {
       "name": "variant",
       "type": "enum",
       "values": [

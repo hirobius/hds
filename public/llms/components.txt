@@ -517,7 +517,9 @@ Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
 ### List
 List - an inset grouped list: titled groups of tappable rows on a raised surface.
   - children: ReactNode
-  - variant: 'inset' | 'plain' = inset
+  - defaultStatus: string
+  - divider: "none" | "inset" = inset
+  - variant: "inset" | "plain" = inset
 
 ### ListEmpty
 The empty state of a group: an EmptyState in a row.
@@ -545,6 +547,8 @@ One row: the whole row is the link (or button); an icon button or overflow menu 
   - leading: ReactNode
   - meta: ReactNode
   - onSelect: (() => void)
+  - status: ListItemStatus
+  - statusIn: "meta" | "trailing"
   - title: ReactNode
   - trailing: ListItemTrailing
 

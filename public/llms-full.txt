@@ -200,10 +200,10 @@ InlineLink: [core] Link to a route or external URL from inside body copy. Use in
 Input: [core] Collect a single line of text, a number, an email, a password, a date or a time, with label, helper and error slots. Use instead: Textarea, Select, Combobox
 Kbd: [core] Show a keyboard key or shortcut hint inline, as a native kbd element. Use instead: Text
 List: [core] Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
-ListEmpty: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
-ListGroup: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
-ListItem: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
-ListTile: Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record. Use instead: NavList, MetadataList, Table
+ListEmpty: Say that a List.Group has no rows yet, in place of its items. Use instead: NavList, MetadataList, Table
+ListGroup: One titled group of List.Item rows, with a count Badge and an optional action in its heading. Use instead: NavList, MetadataList, Table
+ListItem: One record in a List.Group: a title, a description, a meta line and one trailing affordance, the whole row tappable. Use instead: NavList, MetadataList, Table
+ListTile: Put an icon in a sunken square at the start of a List.Item (its `leading`). Use instead: NavList, MetadataList, Table
 Menu: [core] Offer a list of actions from a trigger, closed until opened. Use instead: Select
 MetaLine: [core] Show one or two secondary facts on a single line, joined by a bullet ("Acme Cloud · Remote"). Use instead: A
 NavList: [core] List sibling destinations as rows that can hold a title, a meta line and a badge, with the open one marked current (a rail of jobs, documents or records). Use instead: Tabs, Breadcrumb, Menu
@@ -1475,7 +1475,9 @@ Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
 ### List
 List - an inset grouped list: titled groups of tappable rows on a raised surface.
   - children: ReactNode
-  - variant: 'inset' | 'plain' = inset
+  - defaultStatus: string
+  - divider: "none" | "inset" = inset
+  - variant: "inset" | "plain" = inset
 
 ### ListEmpty
 The empty state of a group: an EmptyState in a row.
@@ -1503,6 +1505,8 @@ One row: the whole row is the link (or button); an icon button or overflow menu 
   - leading: ReactNode
   - meta: ReactNode
   - onSelect: (() => void)
+  - status: ListItemStatus
+  - statusIn: "meta" | "trailing"
   - title: ReactNode
   - trailing: ListItemTrailing
 

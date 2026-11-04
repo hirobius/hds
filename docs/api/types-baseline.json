@@ -598,6 +598,9 @@
     "ListItemProps": {
       "kind": "type"
     },
+    "ListItemStatus": {
+      "kind": "type"
+    },
     "ListItemTrailing": {
       "kind": "type"
     },

@@ -11813,6 +11813,11 @@
           "source": "jsdoc"
         },
         {
+          "name": "status",
+          "description": "A row's `status` ({ value, label }) in the meta line or, with statusIn=\"trailing\", before the trailing affordance; the List's `defaultStatus` hides the default one. Entity rows use variant=\"plain\" divider=\"none\": spacing, not hairlines, separates them.",
+          "source": "jsdoc"
+        },
+        {
           "name": "empty",
           "description": "A List.Empty: an EmptyState row shown when the group has no items.",
           "source": "jsdoc"
@@ -11843,6 +11848,18 @@
         "children": {
           "type": "ReactNode",
           "optional": true
+        },
+        "defaultStatus": {
+          "type": "string",
+          "optional": true
+        },
+        "divider": {
+          "type": "enum",
+          "values": [
+            "none",
+            "inset"
+          ],
+          "default": "inset"
         },
         "variant": {
           "type": "enum",
@@ -11934,6 +11951,11 @@
           "source": "jsdoc"
         },
         {
+          "name": "status",
+          "description": "A row's `status` ({ value, label }) in the meta line or, with statusIn=\"trailing\", before the trailing affordance; the List's `defaultStatus` hides the default one. Entity rows use variant=\"plain\" divider=\"none\": spacing, not hairlines, separates them.",
+          "source": "jsdoc"
+        },
+        {
           "name": "empty",
           "description": "A List.Empty: an EmptyState row shown when the group has no items.",
           "source": "jsdoc"
@@ -11984,7 +12006,7 @@
       "requiredProps": [],
       "docsPage": null,
       "usage": {
-        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "when": "Say that a List.Group has no rows yet, in place of its items.",
         "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
         "useInstead": [
           {
@@ -12057,6 +12079,11 @@
           "source": "jsdoc"
         },
         {
+          "name": "status",
+          "description": "A row's `status` ({ value, label }) in the meta line or, with statusIn=\"trailing\", before the trailing affordance; the List's `defaultStatus` hides the default one. Entity rows use variant=\"plain\" divider=\"none\": spacing, not hairlines, separates them.",
+          "source": "jsdoc"
+        },
+        {
           "name": "empty",
           "description": "A List.Empty: an EmptyState row shown when the group has no items.",
           "source": "jsdoc"
@@ -12103,7 +12130,7 @@
       "requiredProps": [],
       "docsPage": null,
       "usage": {
-        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "when": "One titled group of List.Item rows, with a count Badge and an optional action in its heading.",
         "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
         "useInstead": [
           {
@@ -12176,6 +12203,11 @@
           "source": "jsdoc"
         },
         {
+          "name": "status",
+          "description": "A row's `status` ({ value, label }) in the meta line or, with statusIn=\"trailing\", before the trailing affordance; the List's `defaultStatus` hides the default one. Entity rows use variant=\"plain\" divider=\"none\": spacing, not hairlines, separates them.",
+          "source": "jsdoc"
+        },
+        {
           "name": "empty",
           "description": "A List.Empty: an EmptyState row shown when the group has no items.",
           "source": "jsdoc"
@@ -12223,6 +12255,18 @@
           "type": "() => void",
           "optional": true
         },
+        "status": {
+          "type": "ListItemStatus",
+          "optional": true
+        },
+        "statusIn": {
+          "type": "enum",
+          "values": [
+            "meta",
+            "trailing"
+          ],
+          "optional": true
+        },
         "title": {
           "type": "ReactNode"
         },
@@ -12238,7 +12282,7 @@
       "requiredProps": [],
       "docsPage": null,
       "usage": {
-        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "when": "One record in a List.Group: a title, a description, a meta line and one trailing affordance, the whole row tappable.",
         "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
         "useInstead": [
           {
@@ -12311,6 +12355,11 @@
           "source": "jsdoc"
         },
         {
+          "name": "status",
+          "description": "A row's `status` ({ value, label }) in the meta line or, with statusIn=\"trailing\", before the trailing affordance; the List's `defaultStatus` hides the default one. Entity rows use variant=\"plain\" divider=\"none\": spacing, not hairlines, separates them.",
+          "source": "jsdoc"
+        },
+        {
           "name": "empty",
           "description": "A List.Empty: an EmptyState row shown when the group has no items.",
           "source": "jsdoc"
@@ -12345,7 +12394,7 @@
       "requiredProps": [],
       "docsPage": null,
       "usage": {
-        "when": "Show groups of records (roles, documents, settings) as rows with a leading tile, a title, one description line, one meta line and one quiet trailing affordance; the whole row opens the record.",
+        "when": "Put an icon in a sunken square at the start of a List.Item (its `leading`).",
         "whenNot": "A rail of sibling pages with one marked current, term and value pairs, or a data grid with columns.",
         "useInstead": [
           {

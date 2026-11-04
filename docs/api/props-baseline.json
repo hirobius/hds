@@ -2205,8 +2205,23 @@
       "values": null,
       "default": null
     },
+    "defaultStatus": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "divider": {
+      "type": "\"none\" | \"inset\"",
+      "optional": true,
+      "values": [
+        "none",
+        "inset"
+      ],
+      "default": "inset"
+    },
     "variant": {
-      "type": "'inset' | 'plain'",
+      "type": "\"inset\" | \"plain\"",
       "optional": true,
       "values": [
         "inset",
@@ -2326,6 +2341,21 @@
       "type": "(() => void)",
       "optional": true,
       "values": null,
+      "default": null
+    },
+    "status": {
+      "type": "ListItemStatus",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "statusIn": {
+      "type": "\"meta\" | \"trailing\"",
+      "optional": true,
+      "values": [
+        "meta",
+        "trailing"
+      ],
       "default": null
     },
     "title": {
