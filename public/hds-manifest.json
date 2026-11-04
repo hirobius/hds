@@ -380,7 +380,8 @@
         }
       ],
       "variantAxes": [
-        "tone"
+        "tone",
+        "size"
       ],
       "componentProperties": [
         {

@@ -33,6 +33,15 @@
       "type": "ReactNode"
     },
     {
+      "name": "size",
+      "type": "enum",
+      "values": [
+        "sm",
+        "md"
+      ],
+      "default": "md"
+    },
+    {
       "name": "title",
       "type": "string",
       "optional": true

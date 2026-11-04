@@ -194,29 +194,27 @@ describe('Dialog scroll body with pinned header and footer (hds#863)', () => {
     expect(screen.getByText('Long').closest('div')!.className).toContain('shrink-0');
   });
   it('keeps the default scrolling surface when scrollBody is off', () => {
-    render(
-      <Dialog open>
-        <Dialog.Content>
-          <Dialog.Title>T</Dialog.Title>
-        </Dialog.Content>
-      </Dialog>,
-    );
+    renderTitleOnly();
     expect(screen.getByRole('dialog').className).toMatch(/(^|\s)overflow-y-auto(\s|$)/);
   });
 });
+
+function renderTitleOnly(placement?: 'top') {
+  render(
+    <Dialog open>
+      <Dialog.Content placement={placement}>
+        <Dialog.Title>T</Dialog.Title>
+      </Dialog.Content>
+    </Dialog>,
+  );
+}
 
 describe('Dialog top-anchored, keyboard-aware placement (hds#863)', () => {
   afterEach(() => {
     delete (window as unknown as { visualViewport?: unknown }).visualViewport;
   });
   it('anchors to the top instead of centring', () => {
-    render(
-      <Dialog open>
-        <Dialog.Content placement="top">
-          <Dialog.Title>T</Dialog.Title>
-        </Dialog.Content>
-      </Dialog>,
-    );
+    renderTitleOnly('top');
     const el = screen.getByRole('dialog');
     expect(el.getAttribute('data-placement')).toBe('top');
     expect(el.className).toContain('top-[max(');
@@ -224,13 +222,7 @@ describe('Dialog top-anchored, keyboard-aware placement (hds#863)', () => {
     expect(el.className).not.toMatch(/-translate-y-1\/2/);
   });
   it('centres by default', () => {
-    render(
-      <Dialog open>
-        <Dialog.Content>
-          <Dialog.Title>T</Dialog.Title>
-        </Dialog.Content>
-      </Dialog>,
-    );
+    renderTitleOnly();
     expect(screen.getByRole('dialog').className).toMatch(/(^|\s)top-1\/2(\s|$)/);
   });
   it('caps its height to the visual viewport so the on-screen keyboard does not cover it', () => {
@@ -242,13 +234,7 @@ describe('Dialog top-anchored, keyboard-aware placement (hds#863)', () => {
       removeEventListener: (t: string) => delete listeners[t],
     };
     (window as unknown as { visualViewport: unknown }).visualViewport = vv;
-    render(
-      <Dialog open>
-        <Dialog.Content placement="top">
-          <Dialog.Title>T</Dialog.Title>
-        </Dialog.Content>
-      </Dialog>,
-    );
+    renderTitleOnly('top');
     const el = screen.getByRole('dialog');
     expect(el.style.getPropertyValue('--hds-dialog-viewport-height')).toBe('400px');
     vv.height = 250;
