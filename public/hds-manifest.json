@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-10-30T17:09:03.408Z",
+  "generated": "2026-11-04T22:26:03.123Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13669,6 +13669,13 @@
         "value": "280px"
       },
       {
+        "path": "primitive.size.width.512",
+        "cssVar": "--primitive-size-width-512",
+        "type": "dimension",
+        "description": "512px width step: the default (md) Dialog max width, max-w-lg.",
+        "value": "512px"
+      },
+      {
         "path": "primitive.size.width.760",
         "cssVar": "--primitive-size-width-760",
         "type": "dimension",
@@ -13751,6 +13758,34 @@
         "cssVar": "--primitive-borderWidth-md",
         "type": "dimension",
         "value": "4px"
+      },
+      {
+        "path": "primitive.strokeWidth.100",
+        "cssVar": "--primitive-strokeWidth-100",
+        "type": "number",
+        "description": "1-unit stroke.",
+        "value": "1"
+      },
+      {
+        "path": "primitive.strokeWidth.150",
+        "cssVar": "--primitive-strokeWidth-150",
+        "type": "number",
+        "description": "1.5-unit stroke.",
+        "value": "1.5"
+      },
+      {
+        "path": "primitive.strokeWidth.200",
+        "cssVar": "--primitive-strokeWidth-200",
+        "type": "number",
+        "description": "2-unit stroke, Lucide's default.",
+        "value": "2"
+      },
+      {
+        "path": "primitive.strokeWidth.250",
+        "cssVar": "--primitive-strokeWidth-250",
+        "type": "number",
+        "description": "2.5-unit stroke.",
+        "value": "2.5"
       }
     ],
     "semantic": [
@@ -15005,6 +15040,38 @@
         "description": "Stronger border weight for focus rings and active indicators.",
         "alias": "{primitive.borderWidth.sm}",
         "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.borderWidth.icon.thin",
+        "cssVar": "--semantic-borderWidth-icon-thin",
+        "type": "number",
+        "description": "Thin icon stroke (1).",
+        "alias": "{primitive.strokeWidth.100}",
+        "resolvedValue": "1"
+      },
+      {
+        "path": "semantic.borderWidth.icon.light",
+        "cssVar": "--semantic-borderWidth-icon-light",
+        "type": "number",
+        "description": "Light icon stroke (1.5).",
+        "alias": "{primitive.strokeWidth.150}",
+        "resolvedValue": "1.5"
+      },
+      {
+        "path": "semantic.borderWidth.icon.regular",
+        "cssVar": "--semantic-borderWidth-icon-regular",
+        "type": "number",
+        "description": "Regular icon stroke (2), the default when no weight is set.",
+        "alias": "{primitive.strokeWidth.200}",
+        "resolvedValue": "2"
+      },
+      {
+        "path": "semantic.borderWidth.icon.bold",
+        "cssVar": "--semantic-borderWidth-icon-bold",
+        "type": "number",
+        "description": "Bold icon stroke (2.5).",
+        "alias": "{primitive.strokeWidth.250}",
+        "resolvedValue": "2.5"
       },
       {
         "path": "semantic.link.underlineThickness",

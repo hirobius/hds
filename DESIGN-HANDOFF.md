@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 522 tokens, aliases, and TS refs in one shot.
+Checks all 531 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -446,6 +446,7 @@ Use `primitive.size.*` for explicit widths and heights. Keep `primitive.space.*`
 | --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
 | `primitive.size.width.96`   | `96px`   | 96px width step.                                                                                                     |
 | `primitive.size.width.280`  | `280px`  | Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room. |
+| `primitive.size.width.512`  | `512px`  | 512px width step: the default (md) Dialog max width, max-w-lg.                                                       |
 | `primitive.size.width.760`  | `760px`  |                                                                                                                      |
 | `primitive.size.width.1200` | `1200px` |                                                                                                                      |
 | `primitive.size.width.50ch` | `50ch`   |                                                                                                                      |

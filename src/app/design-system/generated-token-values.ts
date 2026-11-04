@@ -284,6 +284,7 @@ export const tokenValues = {
       width: {
         "96": "96px",
         "280": "280px",
+        "512": "512px",
         "760": "760px",
         "1200": "1200px",
         "50ch": "50ch"
@@ -309,6 +310,12 @@ export const tokenValues = {
       xs: "1px",
       sm: "2px",
       md: "4px"
+    },
+    strokeWidth: {
+      "100": "1",
+      "150": "1.5",
+      "200": "2",
+      "250": "2.5"
     }
   },
 } as const;

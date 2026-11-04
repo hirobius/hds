@@ -10,20 +10,23 @@
  */
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
-import hds from '../design-system/tokens';
+import hds, { tokenValues } from '../design-system/tokens';
 import { isDevelopment } from '../../lib/env';
 
 /** @public */
 export type IconSize = keyof typeof hds.iconSize | number | string;
 
 // Map Phosphor weight names to Lucide strokeWidth values for backward compat.
+// Values come from semantic.borderWidth.icon.* (-> primitive.strokeWidth.*).
+// Numeric, not var(): SVG stroke-width attributes can't resolve CSS variables.
+const STROKE = tokenValues.primitive.strokeWidth;
 const WEIGHT_TO_STROKE: Record<string, number> = {
-  thin: 1,
-  light: 1.5,
-  regular: 2,
-  bold: 2.5,
-  fill: 2,
-  duotone: 2,
+  thin: Number(STROKE['100']), // semantic.borderWidth.icon.thin
+  light: Number(STROKE['150']), // semantic.borderWidth.icon.light
+  regular: Number(STROKE['200']), // semantic.borderWidth.icon.regular
+  bold: Number(STROKE['250']), // semantic.borderWidth.icon.bold
+  fill: Number(STROKE['200']),
+  duotone: Number(STROKE['200']),
 };
 
 /**
