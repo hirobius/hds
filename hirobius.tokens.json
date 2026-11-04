@@ -1187,6 +1187,14 @@
           },
           "$description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
         },
+        "512": {
+          "$type": "dimension",
+          "$value": {
+            "value": 512,
+            "unit": "px"
+          },
+          "$description": "512px width step: the default (md) Dialog max width, max-w-lg."
+        },
         "760": {
           "$type": "dimension",
           "$value": {
@@ -1273,6 +1281,38 @@
           "value": 4,
           "unit": "px"
         }
+      }
+    },
+    "strokeWidth": {
+      "$type": "dimension",
+      "$description": "Icon stroke widths in px, measured at the 24px icon size.",
+      "100": {
+        "$value": {
+          "value": 1,
+          "unit": "px"
+        },
+        "$description": "1-unit stroke."
+      },
+      "150": {
+        "$value": {
+          "value": 1.5,
+          "unit": "px"
+        },
+        "$description": "1.5-unit stroke."
+      },
+      "200": {
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        },
+        "$description": "2-unit stroke, Lucide's default."
+      },
+      "250": {
+        "$value": {
+          "value": 2.5,
+          "unit": "px"
+        },
+        "$description": "2.5-unit stroke."
       }
     }
   },
@@ -2530,6 +2570,26 @@
         "$type": "dimension",
         "$value": "{primitive.borderWidth.sm}",
         "$description": "Stronger border weight for focus rings and active indicators."
+      },
+      "icon": {
+        "$type": "dimension",
+        "$description": "Icon stroke weight, read by Icon's weight prop.",
+        "thin": {
+          "$value": "{primitive.strokeWidth.100}",
+          "$description": "Thin icon stroke (1)."
+        },
+        "light": {
+          "$value": "{primitive.strokeWidth.150}",
+          "$description": "Light icon stroke (1.5)."
+        },
+        "regular": {
+          "$value": "{primitive.strokeWidth.200}",
+          "$description": "Regular icon stroke (2), the default when no weight is set."
+        },
+        "bold": {
+          "$value": "{primitive.strokeWidth.250}",
+          "$description": "Bold icon stroke (2.5)."
+        }
       }
     },
     "link": {

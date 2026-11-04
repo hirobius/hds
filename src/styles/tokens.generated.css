@@ -228,6 +228,7 @@
   --primitive-size-interactive-minCompact: 24px;
   --primitive-size-width-96: 96px;
   --primitive-size-width-280: 280px;
+  --primitive-size-width-512: 512px;
   --primitive-size-width-760: 760px;
   --primitive-size-width-1200: 1200px;
   --primitive-size-width-50ch: 50ch;
@@ -242,6 +243,10 @@
   --primitive-borderWidth-xs: 1px;
   --primitive-borderWidth-sm: 2px;
   --primitive-borderWidth-md: 4px;
+  --primitive-strokeWidth-100: 1px;
+  --primitive-strokeWidth-150: 1.5px;
+  --primitive-strokeWidth-200: 2px;
+  --primitive-strokeWidth-250: 2.5px;
 
   /* ── Semantic (light mode defaults) ────────────────────────────────────── */
   /* semantic.motion.productive */
@@ -441,6 +446,10 @@
   --semantic-radius-scale-pill: var(--primitive-radius-full);
   --semantic-borderWidth-default: var(--primitive-borderWidth-xs);
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
+  --semantic-borderWidth-icon-thin: var(--primitive-strokeWidth-100);
+  --semantic-borderWidth-icon-light: var(--primitive-strokeWidth-150);
+  --semantic-borderWidth-icon-regular: var(--primitive-strokeWidth-200);
+  --semantic-borderWidth-icon-bold: var(--primitive-strokeWidth-250);
   --semantic-link-underlineThickness: var(--primitive-borderWidth-sm);
   --semantic-link-underlineOffset: var(--primitive-underline-offset);
   --semantic-shadow-subtle: 0 1px 2px hsl(var(--primitive-shadow-color) / 0.04), 0 1px 1px hsl(var(--primitive-shadow-color) / 0.06);

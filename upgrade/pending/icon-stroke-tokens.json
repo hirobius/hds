@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New tokens semantic.borderWidth.icon.* (icon stroke weights) and primitive.size.width.512 are available; nothing to change."
+}
