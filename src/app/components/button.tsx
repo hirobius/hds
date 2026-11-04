@@ -273,6 +273,16 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
 // lib/deprecation: that prefixes `[HDS deprecation]`, and these are misuse,
 // not deprecations — `warnOncePlain` is the same guard without the prefix.
 
+/** The hard edge each raised Button paints (theme.css `.hds-btn-hard`, hds#897). */
+const BUTTON_EDGE = {
+  primary: 'var(--hds-edge-primary)',
+  secondary: 'var(--component-button-edge-secondary)',
+  danger: 'var(--component-button-edge-danger)',
+  success: 'var(--component-button-edge-success)',
+  warning: 'var(--component-button-edge-warning)',
+  info: 'var(--component-button-edge-info)',
+} as const;
+
 /**
  * Triggers an action when activated.
  * @usage Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. For a low-priority action beside a primary one use variant="tertiary" tone="quiet"; for a back link whose icon lines up with the heading add flush; for an action that reads as a text link in a row use variant="link".
@@ -293,15 +303,6 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.
  */
-/** The hard edge each raised Button paints (theme.css `.hds-btn-hard`, hds#897). */
-const BUTTON_EDGE = {
-  primary: 'var(--hds-edge-primary)',
-  secondary: 'var(--component-button-edge-secondary)',
-  danger: 'var(--component-button-edge-danger)',
-  success: 'var(--component-button-edge-success)',
-  warning: 'var(--component-button-edge-warning)',
-  info: 'var(--component-button-edge-info)',
-} as const;
 
 export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
