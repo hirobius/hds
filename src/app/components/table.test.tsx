@@ -5,26 +5,10 @@
  */
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
-import { Table, type TableColumn, type TableRow } from './table';
+import { TABLE_ROWS as rows } from '../../../tests/primitive-contracts/table-fixtures';
+import { Table, type TableColumn } from './table';
 
 afterEach(cleanup);
-
-const rows: TableRow[] = [
-  {
-    key: 'a',
-    cells: [
-      { slot: 'label', content: 'Alpha' },
-      { slot: 'value', content: '1' },
-    ],
-  },
-  {
-    key: 'b',
-    cells: [
-      { slot: 'label', content: 'Beta' },
-      { slot: 'value', content: '2' },
-    ],
-  },
-];
 
 function columnsWith(overrides: Partial<TableColumn>): TableColumn[] {
   return [

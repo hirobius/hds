@@ -20,6 +20,7 @@ import { Breadcrumb } from '@/app/components/breadcrumb';
 import { NavList } from '@/app/components/nav-list';
 import { Pagination } from '@/app/components/pagination';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/app/components/tabs';
+import { expectInsetFocusRing } from './tabs-fixtures';
 
 afterEach(cleanup);
 
@@ -442,12 +443,7 @@ describe('Tabs accessibility contract', () => {
 
   it('a11y:tabs.focus-ring - the trigger ring is inset so the scrolling list does not clip it', () => {
     render(<TabsFixture />);
-    expect(screen.getByRole('tablist').className).toContain('overflow-x-auto');
-    for (const tab of screen.getAllByRole('tab')) {
-      const cls = tab.className.split(/\s+/);
-      expect(cls).toContain('focus-visible:ring-2');
-      expect(cls).toContain('focus-visible:ring-inset');
-    }
+    expectInsetFocusRing();
   });
 
   it('a11y:tabs.target-size - the tab strip is 40px tall, over the 24px floor', () => {
