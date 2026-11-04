@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Board columns now keep their full width from tablet width up (the first column no longer collapses) and off-screen column counts no longer widen the page, so remove any local CSS override that worked around either."
+}

@@ -93,10 +93,18 @@ describe('Board', () => {
     expect(root_).toContain('@container');
     // Below tablet: a single column track.
     expect(tr).toContain('grid');
-    expect(tr).toContain('grid-cols-1');
+    expect(tr).toContain('@max-3xl:grid-cols-1');
     // At tablet (48rem = 768px, hds.breakpoints.md) and up: columns flow sideways at a floor width.
     expect(tr).toContain('@3xl:grid-flow-col');
     expect(tr).toContain('@3xl:auto-cols-[minmax(16rem,1fr)]');
+    // hds#1114: a bare `grid-cols-1` stays as an explicit 1fr first track at tablet and
+    // up and squeezes column one to ~40px. A `@3xl:grid-cols-none` override loses to it
+    // in the compiled CSS (it is emitted after the container rule), so the single-column
+    // template is scoped to below @3xl instead.
+    expect(tr).not.toContain('grid-cols-1');
+    // The track is the containing block for the visually-hidden count text, so the
+    // Board's overflow clips it instead of widening the page.
+    expect(tr).toContain('relative');
     // Overflow scrolls inside the Board instead of wrapping, so no column is orphaned.
     expect(root_).toContain('overflow-x-auto');
     expect(tr.some((c) => c.includes('flex-wrap') || c.includes('auto-fit'))).toBe(false);
