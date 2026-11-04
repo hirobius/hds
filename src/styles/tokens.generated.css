@@ -220,6 +220,7 @@
   --primitive-size-44: 44px;
   --primitive-size-48: 48px;
   --primitive-size-52: 52px;
+  --primitive-size-56: 56px;
   --primitive-size-64: 64px;
   --primitive-size-80: 80px;
   --primitive-size-96: 96px;
@@ -473,6 +474,7 @@
   --semantic-size-tile: var(--primitive-size-120);
   --semantic-size-row-compact: var(--primitive-size-40);
   --semantic-size-row-comfortable: var(--primitive-size-48);
+  --semantic-size-listRow: var(--primitive-size-56);
   --semantic-zIndex-control: var(--primitive-zIndex-10);
   --semantic-zIndex-sticky: var(--primitive-zIndex-100);
 
@@ -569,6 +571,11 @@
   --component-card-padding: var(--primitive-space-7);
   --component-card-gap: var(--semantic-space-scale-sm);
   --component-inlineCode-bg: var(--semantic-color-surface-overlay);
+  --component-list-groupGap: var(--semantic-space-scale-xl);
+  --component-list-headingGap: var(--semantic-space-scale-xs);
+  --component-list-rowPadding: var(--semantic-space-scale-sm);
+  --component-list-rowMinHeight: var(--semantic-size-listRow);
+  --component-list-leadingSize: var(--semantic-size-avatar);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
   --role-background: var(--semantic-color-surface-page);
@@ -755,6 +762,8 @@
   --semantic-space-region-gutter: var(--semantic-space-scale-lg);
   --semantic-docs-space-section: var(--semantic-space-scale-xl);
   --component-card-gap: var(--semantic-space-scale-sm);
+  --component-list-groupGap: var(--semantic-space-scale-xl);
+  --component-list-rowPadding: var(--semantic-space-scale-sm);
 }
 /* Raised edges (hds#897): each fill stepped darker in both themes (C2). scripts/lib/raised-edge.mjs */
 :root{--hds-edge-primary:#010207;--hds-edge-secondary:#bdbec0;--hds-edge-danger:#d4cccc;--hds-edge-success:#c8d4ce;--hds-edge-warning:#d6d3c8;--hds-edge-info:#c4cbd9;--hds-edge-kbd:#cdcecf;}

@@ -218,6 +218,7 @@ declare module 'react' {
     '--primitive-size-44'?: string | undefined;
     '--primitive-size-48'?: string | undefined;
     '--primitive-size-52'?: string | undefined;
+    '--primitive-size-56'?: string | undefined;
     '--primitive-size-64'?: string | undefined;
     '--primitive-size-80'?: string | undefined;
     '--primitive-size-96'?: string | undefined;
@@ -466,6 +467,7 @@ declare module 'react' {
     '--semantic-size-tile'?: string | undefined;
     '--semantic-size-row-compact'?: string | undefined;
     '--semantic-size-row-comfortable'?: string | undefined;
+    '--semantic-size-listRow'?: string | undefined;
     '--semantic-zIndex-control'?: string | undefined;
     '--semantic-zIndex-sticky'?: string | undefined;
     '--component-nav-paddingY'?: string | undefined;
@@ -560,6 +562,11 @@ declare module 'react' {
     '--component-card-padding'?: string | undefined;
     '--component-card-gap'?: string | undefined;
     '--component-inlineCode-bg'?: string | undefined;
+    '--component-list-groupGap'?: string | undefined;
+    '--component-list-headingGap'?: string | undefined;
+    '--component-list-rowPadding'?: string | undefined;
+    '--component-list-rowMinHeight'?: string | undefined;
+    '--component-list-leadingSize'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;
     '--role-card'?: string | undefined;

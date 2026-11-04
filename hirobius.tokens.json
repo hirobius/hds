@@ -1118,6 +1118,14 @@
         },
         "$description": "52px size step."
       },
+      "56": {
+        "$type": "dimension",
+        "$value": {
+          "value": 56,
+          "unit": "px"
+        },
+        "$description": "56px size step."
+      },
       "64": {
         "$type": "dimension",
         "$value": {
@@ -2668,6 +2676,10 @@
           "$value": "{primitive.size.48}",
           "$description": "Comfortable-density row minimum height."
         }
+      },
+      "listRow": {
+        "$value": "{primitive.size.56}",
+        "$description": "Minimum height of a List row: a title over one description line."
       }
     },
     "zIndex": {
@@ -3169,6 +3181,33 @@
         "$type": "color",
         "$value": "{semantic.color.surface.overlay}",
         "$description": "Inline code chip background."
+      }
+    },
+    "list": {
+      "groupGap": {
+        "$type": "dimension",
+        "$value": "{semantic.space.scale.xl}",
+        "$description": "Gap between List groups, the largest step of the list rhythm (32px compact)."
+      },
+      "headingGap": {
+        "$type": "dimension",
+        "$value": "{semantic.space.scale.xs}",
+        "$description": "Gap from a List group heading down to its surface (8px)."
+      },
+      "rowPadding": {
+        "$type": "dimension",
+        "$value": "{semantic.space.scale.sm}",
+        "$description": "Inset inside each List row (12px compact)."
+      },
+      "rowMinHeight": {
+        "$type": "dimension",
+        "$value": "{semantic.size.listRow}",
+        "$description": "Minimum height of a List row (56px)."
+      },
+      "leadingSize": {
+        "$type": "dimension",
+        "$value": "{semantic.size.avatar}",
+        "$description": "Width and height of a List row's leading icon tile or logo (40px)."
       }
     }
   },
