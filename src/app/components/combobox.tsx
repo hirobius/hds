@@ -76,7 +76,7 @@ import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
 import { CreatableCombobox } from './combobox-creatable';
-import { ACTIVE_OPTION_CLASS, firstEnabledIndex, nextEnabledIndex } from './listbox-nav';
+import { ACTIVE_OPTION_CLASS, nextEnabledIndex, useResetActiveOnListChange } from './listbox-nav';
 import {
   ListboxFooter,
   OptionCheck,
@@ -229,16 +229,8 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       return options.filter((o) => o.label.toLowerCase().includes(q));
     }, [options, query]);
 
-    // Reset the active row to the first selectable one whenever the list is
-    // opened or its contents change. Keyed on the option values (not the array
-    // identity) so a parent re-render with equal options doesn't yank the cursor.
-    // Adjusted during render, the React-endorsed alternative to a setState effect.
-    const listKey = `${open}|${filtered.map((o) => `${o.value}:${o.disabled ? 1 : 0}`).join('\u0000')}`;
-    const [prevListKey, setPrevListKey] = React.useState(listKey);
-    if (prevListKey !== listKey) {
-      setPrevListKey(listKey);
-      setActiveIndex(firstEnabledIndex(filtered));
-    }
+    // Reset the active row to the first selectable one when the list opens or changes.
+    useResetActiveOnListChange(open, filtered, (o) => o.value, setActiveIndex);
 
     function commit(option: ComboboxOption) {
       if (option.disabled) return;
