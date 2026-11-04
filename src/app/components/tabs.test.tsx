@@ -2,8 +2,14 @@
  * Tests for Tabs — the focus ring must not be clipped by the scrolling list.
  * Plain-DOM assertions (no jest-dom matchers).
  */
-import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
+import {
+  installScrollToMock,
+  layoutScrollRail,
+  restoreScrollTo,
+  stubReducedMotion,
+} from '../../../tests/primitive-contracts/scroll-rail-fixtures';
 import { expectInsetFocusRing } from '../../../tests/primitive-contracts/tabs-fixtures';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 
@@ -62,19 +68,8 @@ describe('TabsList overflow cue (hds#723)', () => {
 });
 
 describe('TabsList keeps the selected tab in view (hds#823)', () => {
-  // jsdom has no layout: give the list a 300px box and each tab a 120px slot.
   function layout(list: HTMLElement) {
-    Object.defineProperty(list, 'clientWidth', { configurable: true, value: 300 });
-    Object.defineProperty(list, 'scrollWidth', { configurable: true, value: 600 });
-    list.getBoundingClientRect = () => ({ left: 0, right: 300, width: 300 }) as DOMRect;
-    list.querySelectorAll<HTMLElement>('[role="tab"]').forEach((tab, i) => {
-      tab.getBoundingClientRect = () =>
-        ({
-          left: i * 120 - list.scrollLeft,
-          right: i * 120 + 120 - list.scrollLeft,
-          width: 120,
-        }) as DOMRect;
-    });
+    layoutScrollRail(list, list.querySelectorAll<HTMLElement>('[role="tab"]'));
   }
 
   function Many({ value, onValueChange }: { value?: string; onValueChange?: (v: string) => void }) {
@@ -91,17 +86,11 @@ describe('TabsList keeps the selected tab in view (hds#823)', () => {
     );
   }
 
-  let scrollTo: ReturnType<typeof vi.fn>;
+  let scrollTo: ReturnType<typeof installScrollToMock>;
   beforeEach(() => {
-    scrollTo = vi.fn(function (this: HTMLElement, opts: ScrollToOptions) {
-      this.scrollLeft = opts.left ?? 0;
-    });
-    (HTMLElement.prototype as unknown as { scrollTo: unknown }).scrollTo = scrollTo;
+    scrollTo = installScrollToMock();
   });
-  afterEach(() => {
-    delete (HTMLElement.prototype as unknown as { scrollTo?: unknown }).scrollTo;
-    vi.unstubAllGlobals();
-  });
+  afterEach(restoreScrollTo);
 
   it('scrolls a selected tab past the edge into view on mount, instantly', () => {
     render(<Many value="e" />);
@@ -123,12 +112,7 @@ describe('TabsList keeps the selected tab in view (hds#823)', () => {
   });
 
   it('does not smooth-scroll under prefers-reduced-motion', async () => {
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: query.includes('reduce'),
-      media: query,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-    }));
+    stubReducedMotion();
     const { rerender } = render(<Many value="a" />);
     rerender(<Many value="d" />);
     await waitFor(() => expect(scrollTo).toHaveBeenCalledTimes(1));
