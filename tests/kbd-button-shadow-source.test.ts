@@ -7,7 +7,7 @@ import { resolve } from 'node:path';
 describe('Kbd shadow follows the Button light source', () => {
   const theme = readFileSync(resolve(__dirname, '../src/styles/theme.css'), 'utf8');
   const docs = readFileSync(resolve(__dirname, '../docs-site/app/globals.css'), 'utf8');
-  const colour = 'var(--hds-edge, var(--hds-edge-secondary))';
+  const colour = 'var(--hds-edge, var(--component-button-edge-secondary))';
 
   it('shipped Kbd takes a 2px straight-down key shadow in its own-colour edge, through --semantic-shadow-key', () => {
     expect(theme).toMatch(

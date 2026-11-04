@@ -520,6 +520,11 @@ declare module 'react' {
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;
     '--component-button-bgPressed'?: string | undefined;
+    '--component-button-edge-secondary'?: string | undefined;
+    '--component-button-edge-danger'?: string | undefined;
+    '--component-button-edge-success'?: string | undefined;
+    '--component-button-edge-warning'?: string | undefined;
+    '--component-button-edge-info'?: string | undefined;
     '--component-button-text'?: string | undefined;
     '--component-button-radius'?: string | undefined;
     '--component-button-paddingX'?: string | undefined;

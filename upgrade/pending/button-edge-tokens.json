@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Secondary and tone Buttons show a slightly different hard edge colour, so re-take screenshots; to restyle an edge, set --component-button-edge-<tone> or --hds-btn-edge."
+}

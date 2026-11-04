@@ -10,6 +10,9 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
   EDGE_FILLS,
+  EDGE_MIN_CONTRAST,
+  EDGE_TOKEN_FILLS,
+  EDGE_TOKENS,
   hexToOklch,
   layered,
   oklchToHex,
@@ -26,14 +29,15 @@ const theme = read('src/styles/theme.css');
 const MODES = ['Light', 'Dark'] as const;
 type Mode = (typeof MODES)[number];
 const KEYS = Object.keys(EDGE_FILLS);
+const TOKEN_KEYS = Object.keys(EDGE_TOKENS) as (keyof typeof EDGE_TOKENS)[];
 
-/** The --hds-edge-* values a theme actually resolves to, keyed by edge name. */
+/** The --hds-edge-* values a theme actually resolves to, keyed by edge name (computed ones). */
 function shipped(mode: Mode): Record<string, string> {
   const vars = THEMES[mode === 'Light' ? 'light' : 'dark'];
   return Object.fromEntries(
     Object.entries(vars).flatMap(([name, value]) => {
       const m = name.match(/^--hds-edge-([a-z]+)$/);
-      return m ? [[m[1], value]] : [];
+      return m && m[1] in EDGE_FILLS ? [[m[1], value]] : [];
     }),
   );
 }
@@ -92,12 +96,10 @@ describe.each(MODES)('raised edges (%s)', (mode) => {
 
 // Primary edges follow the graphite fill, near-black / near-white since hds#887.
 describe('C2 reference edges (graphite defaults)', () => {
-  it('light: secondary ≈ #bdbec0, primary ≈ #010207', () => {
-    near(shipped('Light').secondary, '#bdbec0', 1);
+  it('light: primary ≈ #010207', () => {
     near(shipped('Light').primary, '#010207', 1);
   });
-  it('dark: secondary ≈ #3d4147 (neutral-700 stepped down), primary ≈ #a5a6a9', () => {
-    near(shipped('Dark').secondary, '#3d4147');
+  it('dark: primary ≈ #a5a6a9', () => {
     near(shipped('Dark').primary, '#a5a6a9');
   });
 });
@@ -120,11 +122,68 @@ describe('accent themes re-derive the primary edge', () => {
 describe('wiring', () => {
   it('Button and Kbd default their hooks to the own-colour edge; shadow.hard stays exported', () => {
     expect(theme.replace(/\s+/g, ' ')).toContain(
-      '0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge, var(--hds-edge-secondary)))',
+      '0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
     );
     expect(theme.replace(/\s+/g, ' ').replace(/\( | \)/g, (m) => m.trim())).toContain(
       'var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)))',
     );
     expect(css).toContain('--semantic-color-shadow-hard:');
+  });
+});
+
+// Button secondary and tone edges are tokens (component.button.edge.*), approved values.
+describe('Button edge tokens', () => {
+  const APPROVED: Record<Mode, Record<keyof typeof EDGE_TOKENS, string>> = {
+    Light: {
+      secondary: 'neutral.350',
+      danger: 'red.400',
+      success: 'green.400',
+      warning: 'amber.400',
+      info: 'blue.300',
+    },
+    Dark: {
+      secondary: 'neutral.725',
+      danger: 'red.700',
+      success: 'green.700',
+      warning: 'amber.800',
+      info: 'blue.500',
+    },
+  };
+  const lum = (hex: string) => {
+    const [r, g, b] = [1, 3, 5].map((i) => {
+      const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+      return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a: string, b: string) => {
+    const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+    return (hi + 0.05) / (lo + 0.05);
+  };
+
+  it.each(MODES.flatMap((m) => TOKEN_KEYS.map((k) => [m, k] as const)))(
+    '%s %s: aliases the approved primitive',
+    (mode, key) => {
+      const token = EDGE_TOKENS[key].split('.').reduce((n, k) => n[k], raw);
+      expect(token.$extensions['com.figma.variables'].modes[mode]).toBe(
+        `{primitive.color.${APPROVED[mode][key]}}`,
+      );
+    },
+  );
+
+  it.each(MODES.flatMap((m) => TOKEN_KEYS.map((k) => [m, k] as const)))(
+    '%s %s: at least 1.5:1 against its fill',
+    (mode, key) => {
+      const ratio = contrast(
+        resolveHex(raw, EDGE_TOKENS[key], mode),
+        resolveHex(raw, EDGE_TOKEN_FILLS[key], mode),
+      );
+      expect(EDGE_MIN_CONTRAST).toBe(1.5);
+      expect(ratio).toBeGreaterThanOrEqual(EDGE_MIN_CONTRAST);
+    },
+  );
+
+  it.each(TOKEN_KEYS)('--hds-edge-%s aliases its token for back-compat', (key) => {
+    expect(css).toContain(`--hds-edge-${key}:var(--component-button-edge-${key});`);
   });
 });

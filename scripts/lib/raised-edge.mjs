@@ -18,16 +18,36 @@ const CK = 0.85 ** 2; // two steps of C ×0.85
 const DARK_SHARE = 1 / 3; // dark: share of the fill→card lightness gap the edge drops
 const DARK_MIN = 0.03; // dark: smallest drop, for fills at or below the card
 
-/** Where each raised item takes its fill, and the CSS hook name suffix it ships under. */
+/** Where each computed raised item takes its fill, and the CSS hook name suffix it ships under. */
 export const EDGE_FILLS = {
   primary: 'semantic.color.surface.accent', // role.primary (bg-primary)
+  kbd: 'semantic.color.surface.overlay', // role.muted (bg-muted)
+};
+
+/**
+ * Button edges that are tokens, not computed (Adrian approved): component.button.edge.<key>,
+ * a fixed primitive per theme, kept at least EDGE_MIN_CONTRAST against the fill it sits under.
+ * --hds-edge-<key> aliases the token's CSS variable, which switches with the theme itself.
+ */
+export const EDGE_TOKENS = {
+  secondary: 'component.button.edge.secondary',
+  danger: 'component.button.edge.danger',
+  success: 'component.button.edge.success',
+  warning: 'component.button.edge.warning',
+  info: 'component.button.edge.info',
+};
+
+/** The fill each token edge sits under (for the contrast floor). */
+export const EDGE_TOKEN_FILLS = {
   secondary: 'component.button.secondary.bg.rest',
   danger: 'semantic.color.feedback.bg.error',
   success: 'semantic.color.feedback.bg.success',
   warning: 'semantic.color.feedback.bg.warning',
   info: 'semantic.color.feedback.bg.info',
-  kbd: 'semantic.color.surface.overlay', // role.muted (bg-muted)
 };
+
+/** Smallest WCAG contrast a token edge keeps against its fill. */
+export const EDGE_MIN_CONTRAST = 1.5;
 
 /** The card a Button or Kbd usually sits on: the dark step is measured toward it. */
 export const EDGE_CARD = 'semantic.color.surface.raised';
@@ -148,6 +168,7 @@ export function computeEdges(tree) {
 }
 
 const decls = (edges, keys) => keys.map((k) => `--hds-edge-${k}:${edges[k]};`).join('');
+const tokenVar = (path) => `var(--${path.replaceAll('.', '-')})`;
 
 /** The base CSS: light edges on :root, only the changed ones under [data-theme="dark"]. */
 export function buildEdgeCSS(raw) {
@@ -155,8 +176,10 @@ export function buildEdgeCSS(raw) {
   const keys = Object.keys(EDGE_FILLS);
   const dark = keys.filter((k) => e.Dark[k] !== e.Light[k]);
   return (
-    `/* Raised edges (hds#897): each fill stepped darker in both themes (C2). scripts/lib/raised-edge.mjs */\n` +
-    `:root{${decls(e.Light, keys)}}\n[data-theme="dark"]{${decls(e.Dark, dark)}}\n`
+    `/* Raised edges (hds#897): computed fills stepped darker (C2); Button tones alias component.button.edge.*. scripts/lib/raised-edge.mjs */\n` +
+    `:root{${decls(e.Light, keys)}${Object.entries(EDGE_TOKENS)
+      .map(([k, p]) => `--hds-edge-${k}:${tokenVar(p)};`)
+      .join('')}}\n[data-theme="dark"]{${decls(e.Dark, dark)}}\n`
   );
 }
 

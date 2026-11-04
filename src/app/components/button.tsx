@@ -344,9 +344,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // A status tone (not quiet, which only recolours a ghost's text).
     const hasTone = tone != null && tone !== 'neutral' && tone !== 'quiet';
     // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#897): the fill it sits under,
-    // stepped darker and precomputed as --hds-edge-<key>; the keys are the tone names plus
-    // primary and secondary (a pressed neutral toggle paints bg-primary, so it takes primary's
-    // edge). --hds-btn-edge still overrides.
+    // primary's is its fill stepped darker, precomputed as --hds-edge-primary; secondary and
+    // the tones read their component.button.edge.<key> token (a pressed neutral toggle paints
+    // bg-primary, so it takes primary's edge). --hds-btn-edge still overrides.
     const edgeKey = hasTone
       ? tone
       : variant === 'primary' || (isToggle && isPressed)
@@ -354,7 +354,12 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         : 'secondary';
     const edge =
       shadow === 'hard' && variant !== 'tertiary' && !isLink
-        ? { '--hds-edge': `var(--hds-edge-${edgeKey})` }
+        ? {
+            '--hds-edge':
+              edgeKey === 'primary'
+                ? 'var(--hds-edge-primary)'
+                : `var(--component-button-edge-${edgeKey})`,
+          }
         : null;
     const wipeProps = wipe
       ? {
