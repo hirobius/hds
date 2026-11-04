@@ -1,8 +1,8 @@
 {
-  "checksum": "cb87b47d",
+  "checksum": "e11b63d8",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-04T04:31:06.876Z",
+    "takenAt": "2026-11-04T23:16:02.758Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
@@ -2781,6 +2781,23 @@
             }
           },
           {
+            "id": "VariableID:2272:2",
+            "name": "size/36",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "36px size step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-36)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 36
+              }
+            }
+          },
+          {
             "id": "VariableID:7:32",
             "name": "size/40",
             "path": "primitive.size.40",
@@ -2798,6 +2815,23 @@
             }
           },
           {
+            "id": "VariableID:2272:3",
+            "name": "size/44",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "44px size step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-44)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 44
+              }
+            }
+          },
+          {
             "id": "VariableID:7:33",
             "name": "size/48",
             "path": "primitive.size.48",
@@ -2811,6 +2845,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 48
+              }
+            }
+          },
+          {
+            "id": "VariableID:2272:4",
+            "name": "size/52",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "52px size step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-52)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 52
               }
             }
           },
@@ -2964,6 +3015,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 658.799988
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:6",
+            "name": "size/width/512",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "512px width step: the default (md) Dialog max width, max-w-lg.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-width-512)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 512
               }
             }
           },
@@ -3321,6 +3389,74 @@
             "valuesByMode": {
               "Default": {
                 "value": 6
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:2",
+            "name": "strokeWidth/100",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "1-unit stroke.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-strokeWidth-100)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 1
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:3",
+            "name": "strokeWidth/150",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "1.5-unit stroke.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-strokeWidth-150)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 1.5
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:4",
+            "name": "strokeWidth/200",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "2-unit stroke, Lucide's default.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-strokeWidth-200)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 2
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:5",
+            "name": "strokeWidth/250",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "2.5-unit stroke.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-strokeWidth-250)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 2.5
               }
             }
           },
@@ -4104,6 +4240,294 @@
             }
           },
           {
+            "id": "VariableID:2347:10",
+            "name": "borderWidth/icon/bold",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "Bold icon stroke (2.5).",
+            "scopes": [
+              "STROKE_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-borderWidth-icon-bold)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2347:5",
+                "to": "Hirobius/Primitives: strokeWidth/250"
+              },
+              "Dark": {
+                "alias": "VariableID:2347:5",
+                "to": "Hirobius/Primitives: strokeWidth/250"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:8",
+            "name": "borderWidth/icon/light",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "Light icon stroke (1.5).",
+            "scopes": [
+              "STROKE_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-borderWidth-icon-light)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2347:3",
+                "to": "Hirobius/Primitives: strokeWidth/150"
+              },
+              "Dark": {
+                "alias": "VariableID:2347:3",
+                "to": "Hirobius/Primitives: strokeWidth/150"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:9",
+            "name": "borderWidth/icon/regular",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "Regular icon stroke (2), the default when no weight is set.",
+            "scopes": [
+              "STROKE_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-borderWidth-icon-regular)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2347:4",
+                "to": "Hirobius/Primitives: strokeWidth/200"
+              },
+              "Dark": {
+                "alias": "VariableID:2347:4",
+                "to": "Hirobius/Primitives: strokeWidth/200"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2347:7",
+            "name": "borderWidth/icon/thin",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "Thin icon stroke (1).",
+            "scopes": [
+              "STROKE_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-borderWidth-icon-thin)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2347:2",
+                "to": "Hirobius/Primitives: strokeWidth/100"
+              },
+              "Dark": {
+                "alias": "VariableID:2347:2",
+                "to": "Hirobius/Primitives: strokeWidth/100"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2273:1151",
+            "name": "button/edge/danger",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--hds-edge-danger)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.831373,
+                  "g": 0.8,
+                  "b": 0.8,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.207843,
+                  "g": 0.05098,
+                  "b": 0.043137,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2273:1154",
+            "name": "button/edge/info",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--hds-edge-info)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.768627,
+                  "g": 0.796078,
+                  "b": 0.85098,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.047059,
+                  "g": 0.07451,
+                  "b": 0.141176,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2273:1149",
+            "name": "button/edge/primary",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--hds-edge-primary)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.003922,
+                  "g": 0.007843,
+                  "b": 0.027451,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.647059,
+                  "g": 0.65098,
+                  "b": 0.662745,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2273:1150",
+            "name": "button/edge/secondary",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--hds-edge-secondary)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.741176,
+                  "g": 0.745098,
+                  "b": 0.752941,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.239216,
+                  "g": 0.254902,
+                  "b": 0.278431,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2273:1152",
+            "name": "button/edge/success",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--hds-edge-success)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.784314,
+                  "g": 0.831373,
+                  "b": 0.807843,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.031373,
+                  "g": 0.137255,
+                  "b": 0.109804,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2273:1153",
+            "name": "button/edge/warning",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--hds-edge-warning)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.839216,
+                  "g": 0.827451,
+                  "b": 0.784314,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.211765,
+                  "g": 0.094118,
+                  "b": 0.035294,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:10:18",
             "name": "color/border/accent",
             "path": "semantic.color.border.accent",
@@ -4196,30 +4620,6 @@
               "Dark": {
                 "alias": "VariableID:3:8",
                 "to": "Hirobius/Primitives: color/neutral/600"
-              }
-            }
-          },
-          {
-            "id": "VariableID:10:15",
-            "name": "color/border/subdued",
-            "path": "semantic.color.border.subdued",
-            "resolvedType": "COLOR",
-            "description": "Quiet divider border. DEPRECATED (2026-10-12), kept live: use semantic.color.border.default; identical in Light, two steps lighter in Dark.",
-            "scopes": [
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-color-border-subdued)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2146:4",
-                "to": "Hirobius/Primitives: color/graphite/200"
-              },
-              "Dark": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
               }
             }
           },
@@ -6005,30 +6405,6 @@
             }
           },
           {
-            "id": "VariableID:10:32",
-            "name": "space/component/gap",
-            "path": "semantic.space.component.gap",
-            "resolvedType": "FLOAT",
-            "description": "8px label↔input rhythm and closely coupled control spacing. DEPRECATED alias (hds#206) — use semantic.space.scale.xs; kept live, no removal yet.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-component-gap)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2061:878",
-                "to": "Hirobius/Semantic: space/scale/xs"
-              },
-              "Dark": {
-                "alias": "VariableID:2061:878",
-                "to": "Hirobius/Semantic: space/scale/xs"
-              }
-            }
-          },
-          {
             "id": "VariableID:10:33",
             "name": "space/component/medium",
             "path": "semantic.space.component.medium",
@@ -6193,30 +6569,6 @@
               "Dark": {
                 "alias": "VariableID:5:7",
                 "to": "Hirobius/Primitives: space/3"
-              }
-            }
-          },
-          {
-            "id": "VariableID:10:39",
-            "name": "space/layout/spacious",
-            "path": "semantic.space.layout.spacious",
-            "resolvedType": "FLOAT",
-            "description": "64px (32px compact). Deprecated alias (hds#206): use semantic.space.scale.xl. Varies by density: its value comes from Hirobius/Density.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": true,
-            "codeSyntax": {
-              "WEB": "var(--semantic-space-layout-spacious)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2230:8",
-                "to": "Hirobius/Density: semantic/space/layout/spacious"
-              },
-              "Dark": {
-                "alias": "VariableID:2230:8",
-                "to": "Hirobius/Density: semantic/space/layout/spacious"
               }
             }
           },
@@ -8624,8 +8976,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:15",
-                "to": "Hirobius/Semantic: color/border/subdued"
+                "alias": "VariableID:10:14",
+                "to": "Hirobius/Semantic: color/border/default"
               }
             }
           },
@@ -8726,8 +9078,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:33",
-                "to": "Hirobius/Primitives: size/48"
+                "alias": "VariableID:2272:4",
+                "to": "Hirobius/Primitives: size/52"
               }
             }
           },
@@ -8846,8 +9198,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:32",
-                "to": "Hirobius/Primitives: size/40"
+                "alias": "VariableID:2272:3",
+                "to": "Hirobius/Primitives: size/44"
               }
             }
           },
@@ -8966,8 +9318,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:31",
-                "to": "Hirobius/Primitives: size/32"
+                "alias": "VariableID:2272:2",
+                "to": "Hirobius/Primitives: size/36"
               }
             }
           },
@@ -10396,26 +10748,6 @@
             }
           },
           {
-            "id": "VariableID:2230:8",
-            "name": "semantic/space/layout/spacious",
-            "path": "density.semantic.space.layout.spacious",
-            "resolvedType": "FLOAT",
-            "description": "Density value of semantic.space.layout.spacious: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
-            "scopes": [],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {},
-            "valuesByMode": {
-              "Comfortable": {
-                "alias": "VariableID:5:15",
-                "to": "Hirobius/Primitives: space/16"
-              },
-              "Compact": {
-                "alias": "VariableID:5:12",
-                "to": "Hirobius/Primitives: space/8"
-              }
-            }
-          },
-          {
             "id": "VariableID:2229:19",
             "name": "semantic/space/scale/lg",
             "path": "density.semantic.space.scale.lg",
@@ -11316,5 +11648,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:696362384aedb90604f92db114d3e292e458b72b6dfeea5410fe735f5c4ad029"
+  "tokensHash": "sha256:4b95a9e0aed5b03d0b9098f985e3ce08fb3ec6394afff42d107d8a54e74f4e9d"
 }
