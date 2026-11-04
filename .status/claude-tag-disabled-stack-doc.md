@@ -1,0 +1,1 @@
+Tag disabled pill now uses content/disabled (group-disabled); Stack `tight` gap JSDoc corrected to space/scale/sm (20px, 12px compact). Textarea `rounded-md` audited: resolves to --role-radius, the same as Input; left as is.
