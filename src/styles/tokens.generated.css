@@ -572,7 +572,7 @@
   --component-card-gap: var(--semantic-space-scale-sm);
   --component-inlineCode-bg: var(--semantic-color-surface-overlay);
   --component-list-groupGap: var(--semantic-space-scale-xl);
-  --component-list-headingGap: var(--semantic-space-scale-xs);
+  --component-list-headingGap: var(--semantic-space-fixed-sm);
   --component-list-rowPadding: var(--semantic-space-scale-sm);
   --component-list-rowMinHeight: var(--semantic-size-listRow);
   --component-list-leadingSize: var(--semantic-size-avatar);

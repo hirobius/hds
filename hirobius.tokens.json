@@ -3191,8 +3191,8 @@
       },
       "headingGap": {
         "$type": "dimension",
-        "$value": "{semantic.space.scale.xs}",
-        "$description": "Gap from a List group heading down to its surface (8px)."
+        "$value": "{semantic.space.fixed.sm}",
+        "$description": "Gap from a List group heading down to its surface (16px)."
       },
       "rowPadding": {
         "$type": "dimension",

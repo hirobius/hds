@@ -381,7 +381,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.card.padding": "Card inset at the default density (28px). Card itself pads with semantic.space.surface.padding.",
   "component.inlineCode.bg": "Inline code chip background.",
   "component.list.groupGap": "Gap between List groups, the largest step of the list rhythm (32px compact).",
-  "component.list.headingGap": "Gap from a List group heading down to its surface (8px).",
+  "component.list.headingGap": "Gap from a List group heading down to its surface (16px).",
   "component.list.rowPadding": "Inset inside each List row (12px compact).",
   "component.list.rowMinHeight": "Minimum height of a List row (56px).",
   "component.list.leadingSize": "Width and height of a List row's leading icon tile or logo (40px).",

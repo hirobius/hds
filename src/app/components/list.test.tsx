@@ -2,6 +2,7 @@ import * as React from 'react';
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
 import { Bell, Star } from 'lucide-react';
+import tokens from '../../../hirobius.tokens.json';
 import { List } from './list';
 import { Button } from './button';
 import { Icon } from './icon';
@@ -206,6 +207,14 @@ describe('List', () => {
     expect(container.querySelector('section')?.className).toContain(
       'gap-[var(--component-list-headingGap)]',
     );
+  });
+
+  it('uses the 32/16/12 rhythm: groupGap xl, headingGap fixed 16px, rowPadding sm', () => {
+    const list = tokens.component.list;
+    expect(list.groupGap.$value).toBe('{semantic.space.scale.xl}');
+    expect(list.headingGap.$value).toBe('{semantic.space.fixed.sm}');
+    expect(tokens.semantic.space.fixed.sm.$value).toBe('{primitive.space.4}');
+    expect(list.rowPadding.$value).toBe('{semantic.space.scale.sm}');
   });
 
   it('List.Empty renders an EmptyState row inside the group', () => {
