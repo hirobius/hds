@@ -776,7 +776,25 @@ Daily check: version unchanged; plan still blocked on the 21 hand deletions. Pro
 
 Session total: 2 calls
 
-Calls logged for 2026-11-01: 11 of 200 (3, 6 and 2).
+## 2026-11-01 · hds#540 Pagination arrows on Button iconOnly (branch claude/burn-540)
+
+Pagination `86:194` turned out to draw its arrows with Button `28:138` already (Prev `86:195`, Next `86:209`, both on variant `28:93` with `Icon only=false` and a hidden label), not `_IconButton`. The one write flips the `Icon only` variant axis to `true`, the variant code uses (`Button iconOnly`). Session cap: 8 calls.
+
+| #   | Time (UTC) | Tool              | Kind  | Purpose                                                                                                                 | Result                                                                                                                                                                                                                                            |
+| --- | ---------- | ----------------- | ----- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | --         | `create_session`  | read  | Open the MCP session for the library 2VgBbVpKiDnu0aftJEVyBQ                                                             | OK                                                                                                                                                                                                                                                |
+| 2   | --         | `get_figma_skill` | read  | figma-use SKILL.md: mandatory load before any `use_figma`                                                               | OK                                                                                                                                                                                                                                                |
+| 3   | --         | `use_figma`       | read  | Library: Pagination 86:194 children and Button set 28:138 property definitions                                          | OK; Prev 86:195 and Next 86:209 are Button instances (variant 28:93, `Icon only=false`); no `_IconButton` inside Pagination                                                                                                                       |
+| 4   | --         | `use_figma`       | read  | Library: every instance of `_IconButton (archived 2026-10-07)` 40:39 (one read)                                         | OK; 6 instances (82:383, 82:389, 82:398, 82:404, 82:413, 82:419), all inside archived Field on the Archive page; none elsewhere                                                                                                                   |
+| 5   | --         | `get_screenshot`  | read  | Pagination 86:194 before                                                                                                | OK; 244x36, arrow buttons at 32x32                                                                                                                                                                                                                |
+| 6   | --         | `use_figma`       | write | Library: `setProperties({'Icon only':'true'})` on 86:195 and 86:209 only (guarded: must be INSTANCE children of 86:194) | OK; both now on variant 2158:650 `Variant=Tertiary, Tone=neutral, Size=sm, State=Default, Icon only=true` in set 28:138, 32x32; the variant binds itemSpacing, padding, height and radii to library variables. Nothing deleted, nothing published |
+| 7   | --         | `get_screenshot`  | read  | Pagination 86:194 after                                                                                                 | OK; 244x36, layout unchanged                                                                                                                                                                                                                      |
+
+For Adrian: no instance of `_IconButton (archived 2026-10-07)` remains outside the Archive page, so it may be deleted together with the archived Field that nests it, then the library published.
+
+Session total: 7 calls
+
+Calls logged for 2026-11-01: 18 of 200 (3, 6, 2 and 7).
 
 ## 2026-11-02 · session claude/burn-302 (hds#302, library `2VgBbVpKiDnu0aftJEVyBQ`)
 
