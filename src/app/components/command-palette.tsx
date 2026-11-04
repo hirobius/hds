@@ -44,8 +44,6 @@
  *   <CommandPalette open={open} onOpenChange={setOpen} items={commands}
  *     onSelect={(item) => run(item.id)} />
  */
-// motion-ok: open/close motion is owned by the underlying Dialog (Radix); rows use
-// token colour utilities only.
 
 import * as React from 'react';
 import { Search } from 'lucide-react';
@@ -470,7 +468,7 @@ export const CommandPalette = /* @__PURE__ */ React.forwardRef<HTMLDivElement, C
                         }}
                         onClick={() => choose(item)}
                         className={cn(
-                          'flex cursor-pointer items-center justify-between gap-scale-xs rounded-sm px-scale-xs py-fixed-2xs hds-type-ui hds-touch-row text-foreground outline-none',
+                          'flex cursor-pointer items-center justify-between gap-scale-xs rounded-sm px-scale-xs py-fixed-2xs hds-type-ui hds-touch-row text-foreground outline-none transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
                           ACTIVE_OPTION_CLASS,
                           'aria-disabled:cursor-not-allowed aria-disabled:text-[var(--semantic-color-content-disabled)]',
                         )}

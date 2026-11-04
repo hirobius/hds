@@ -23,8 +23,6 @@
  * separates it from surface.muted (overlay-edge.test.ts). Mirrors Dialog's surface treatment so overlays read
  * as one family.
  */
-// motion-ok: Radix Popover manages open/close mounting; the trigger is a styling
-// passthrough (asChild) and adds no interactive surface of its own.
 
 import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';

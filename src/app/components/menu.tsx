@@ -20,8 +20,6 @@
  *     </Menu.Content>
  *   </Menu>
  */
-// motion-ok: Radix DropdownMenu manages open/close mounting + item highlight;
-// triggers/items are styling passthroughs over the primitive's a11y contract.
 
 import * as React from 'react';
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu';
