@@ -1285,7 +1285,7 @@
     },
     "strokeWidth": {
       "$type": "dimension",
-      "$description": "Icon stroke widths in px at Lucide's 24-unit viewBox (1 unit = 1px at the 24px icon size); Lucide takes the unitless number.",
+      "$description": "Icon stroke widths in px, measured at the 24px icon size.",
       "100": {
         "$value": {
           "value": 1,
@@ -2573,7 +2573,7 @@
       },
       "icon": {
         "$type": "dimension",
-        "$description": "Icon stroke weight, read by Icon's weight prop (icon.tsx). px at the 24px icon size; Icon passes the number to Lucide's strokeWidth.",
+        "$description": "Icon stroke weight, read by Icon's weight prop.",
         "thin": {
           "$value": "{primitive.strokeWidth.100}",
           "$description": "Thin icon stroke (1)."
