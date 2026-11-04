@@ -1,5 +1,3 @@
-// motion-ok: interaction feedback (open/close, chevron rotate, item highlight) is
-// provided by Radix Select + CSS transitions, not motion/react.
 /**
  * Select — dropdown selector built on Radix Select.
  * @category Inputs

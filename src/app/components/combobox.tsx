@@ -66,8 +66,6 @@
  *     placeholder="Select a country"
  *   />
  */
-// motion-ok: open/close motion is owned by the underlying Popover (Radix); the
-// trigger and options use token color transitions via their utility classes.
 
 import * as React from 'react';
 import { ChevronsUpDown, X } from 'lucide-react';
@@ -407,7 +405,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                     onMouseEnter={() => setActiveIndex(i)}
                     onClick={() => commit(option)}
                     className={cn(
-                      'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none',
+                      'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
                       ACTIVE_OPTION_CLASS,
                       'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
                     )}
@@ -464,7 +462,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
                   disabled={disabled || option.disabled}
                   onClick={() => remove(option, i)}
                   className={cn(
-                    'hds-focus hds-touch-row inline-flex h-7 items-center gap-fixed-2xs rounded-sm bg-muted pl-scale-xs pr-fixed-2xs',
+                    'hds-focus hds-touch-row inline-flex h-7 items-center gap-fixed-2xs rounded-sm bg-muted pl-scale-xs pr-fixed-2xs transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
                     // Hover steps to surface.sunken: `hover:bg-accent` (accentSubtle) equalled the `bg-muted` rest fill in light (1.01:1, hds#522).
                     'hds-type-caption text-foreground hover:bg-[var(--semantic-color-surface-sunken)]',
                     'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',

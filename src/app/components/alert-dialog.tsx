@@ -24,7 +24,6 @@
  *     </AlertDialog.Content>
  *   </AlertDialog>
  */
-// motion-ok: Radix AlertDialog manages mount/unmount, focus trap, and scrim; parts are token styling passthroughs.
 
 import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
