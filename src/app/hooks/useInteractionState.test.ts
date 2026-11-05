@@ -5,7 +5,11 @@
  */
 import { describe, it, expect, vi } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import { forwardFocusHandlers, useInteractionState } from './useInteractionState';
+import {
+  forwardFocusHandlers,
+  forwardPointerHandlers,
+  useInteractionState,
+} from './useInteractionState';
 
 describe('useInteractionState', () => {
   it('defaults to rest with all flags false', () => {
@@ -183,5 +187,43 @@ describe('forwardFocusHandlers', () => {
     const forwarded = forwardFocusHandlers(machine, {});
     expect(() => forwarded.onBlur(event)).not.toThrow();
     expect(machine.onBlur).toHaveBeenCalledOnce();
+  });
+});
+
+describe('forwardPointerHandlers', () => {
+  it('runs each machine handler, then the consumer handler, with the event', () => {
+    const calls: string[] = [];
+    const names = [
+      'onMouseEnter',
+      'onMouseLeave',
+      'onPointerDown',
+      'onPointerUp',
+      'onPointerCancel',
+    ] as const;
+    const machine = Object.fromEntries(
+      names.map((n) => [n, vi.fn(() => calls.push(`machine:${n}`))]),
+    ) as unknown as Record<(typeof names)[number], () => void>;
+    const own = Object.fromEntries(names.map((n) => [n, vi.fn(() => calls.push(`own:${n}`))]));
+    const event = {} as React.PointerEvent<HTMLInputElement> & React.MouseEvent<HTMLInputElement>;
+
+    const forwarded = forwardPointerHandlers<HTMLInputElement>(machine, own);
+    for (const n of names) forwarded[n](event);
+
+    for (const n of names) expect(own[n]).toHaveBeenCalledWith(event);
+    expect(calls).toEqual(names.flatMap((n) => [`machine:${n}`, `own:${n}`]));
+  });
+
+  it('works with no consumer handlers', () => {
+    const machine = {
+      onMouseEnter: vi.fn(),
+      onMouseLeave: vi.fn(),
+      onPointerDown: vi.fn(),
+      onPointerUp: vi.fn(),
+      onPointerCancel: vi.fn(),
+    };
+    const event = {} as React.PointerEvent<HTMLInputElement>;
+    const forwarded = forwardPointerHandlers<HTMLInputElement>(machine, {});
+    expect(() => forwarded.onPointerCancel(event)).not.toThrow();
+    expect(machine.onPointerCancel).toHaveBeenCalledOnce();
   });
 });
