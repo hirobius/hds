@@ -222,6 +222,15 @@ describe('sidebar group labels and drawer header (hds#860)', () => {
 
   // Adrian 2026-11-05 replaced hds#860's "label the first group too": a "Docs" label above
   // "Overview" only repeats what the whole site is, so the top group starts with its pages.
+  // Adrian 2026-11-05: the two pages about HDS itself sit under one group label, after the
+  // reference sections. A label, not a folder, so /docs/engineering and /docs/voice keep their URLs.
+  it('groups the engineering and voice pages under "About HDS"', () => {
+    const pages = JSON.parse(read('content/docs/meta.json')).pages as string[];
+    const at = pages.indexOf('---About HDS---');
+    expect(at).toBeGreaterThan(pages.indexOf('guides'));
+    expect(pages.slice(at + 1, at + 3)).toEqual(['engineering', 'voice']);
+  });
+
   it('starts the sidebar with a page, not a group label', () => {
     const pages = JSON.parse(read('content/docs/meta.json')).pages as string[];
     expect(pages[0]).toBe('index');
