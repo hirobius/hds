@@ -4,32 +4,35 @@
  *
  * Backs useHdsMotion() so JS/Motion (motion/react) durations collapse the
  * same way the CSS `--hds-*-duration` vars already do under Layer 1 (see
- * scripts/check-reduced-motion.mjs). SSR-safe: defaults to `false` when
- * `matchMedia` is unavailable, and updates live on OS preference change.
+ * scripts/check-reduced-motion.mjs). Hydration-safe: useSyncExternalStore with a
+ * `false` server snapshot, so SSR and the hydration pass agree; the client
+ * then re-renders with the real preference and updates live on change.
  */
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 const QUERY = '(prefers-reduced-motion: reduce)';
 
-function readPreference(): boolean {
+function subscribe(onChange: () => void): () => void {
+  if (typeof window === 'undefined' || !window.matchMedia) return () => {};
+  const mq = window.matchMedia(QUERY);
+  if (mq.addEventListener) mq.addEventListener('change', onChange);
+  else mq.addListener(onChange); // Safari < 14 fallback (zero-cost).
+  return () => {
+    if (mq.removeEventListener) mq.removeEventListener('change', onChange);
+    else mq.removeListener(onChange);
+  };
+}
+
+function getSnapshot(): boolean {
   if (typeof window === 'undefined' || !window.matchMedia) return false;
   return window.matchMedia(QUERY).matches;
 }
 
+/** Server and hydration render `false`, so SSR markup matches (React #418). */
+function getServerSnapshot(): boolean {
+  return false;
+}
+
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(readPreference);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-    const mq = window.matchMedia(QUERY);
-    const onChange = () => setReduced(mq.matches);
-    if (mq.addEventListener) mq.addEventListener('change', onChange);
-    else mq.addListener(onChange); // Safari < 14 fallback (zero-cost).
-    return () => {
-      if (mq.removeEventListener) mq.removeEventListener('change', onChange);
-      else mq.removeListener(onChange);
-    };
-  }, []);
-
-  return reduced;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
