@@ -31,10 +31,76 @@ describe('check-figma-components', () => {
     expect(Object.keys(contract.variantAxes).sort()).toEqual(['Size', 'State', 'Variant']);
     expect(contract.variantAxes.State.values).toEqual(['rest', 'hover', 'pressed', 'disabled']);
     expect(contract.variantCount).toBe(48);
-    expect(Object.keys(contract.booleans)).toEqual(
-      expect.arrayContaining(['Icon only', 'Loading', 'Focus']),
-    );
+    expect(Object.keys(contract.booleans)).toEqual(expect.arrayContaining(['Loading', 'Focus']));
     expect(contract.modeCollections['Button tone'].modes).toContain('quiet');
+  });
+
+  // Owner decision 2026-11-05: icon-only buttons are their own IconButton component.
+  it('Button has no icon-only property; link keeps zero inline padding', () => {
+    expect(Object.keys(contract.booleans)).not.toContain('Icon only');
+    expect(JSON.stringify(contract)).not.toContain('iconOnly');
+    expect(contract.zeroPaddingXVariants).toEqual(['link']);
+  });
+
+  describe('IconButton contract', () => {
+    const icon = buildContract('IconButton');
+
+    it('committed IconButton contract is what code generates', () => {
+      expect(json(path.join(REPO, 'figma/contracts/IconButton.json'))).toEqual(icon);
+    });
+
+    it('is Variant [primary, secondary, tertiary] x Size x State, no link', () => {
+      expect(icon.variantAxes.Variant.values).toEqual(['primary', 'secondary', 'tertiary']);
+      expect(icon.variantAxes.Size.values).toEqual(['sm', 'md', 'lg']);
+      expect(icon.variantAxes.State.values).toEqual(['rest', 'hover', 'pressed', 'disabled']);
+      expect(icon.variantCount).toBe(36);
+    });
+
+    it('has Focus and Loading booleans, an Icon instance swap and the Button tone modes', () => {
+      expect(Object.keys(icon.booleans).sort()).toEqual(['Focus', 'Loading']);
+      expect(Object.keys(icon.instanceSwaps)).toEqual(['Icon']);
+      expect(icon.texts).toEqual({});
+      expect(icon.modeCollections).toEqual(contract.modeCollections);
+    });
+
+    it('binds a square root to size height, padding 0, and the Icon layer to iconSize', () => {
+      for (const s of ['sm', 'md', 'lg']) {
+        expect(icon.sizeBindings[s]).toEqual({
+          'root.width': `button/size/${s}/height`,
+          'root.height': `button/size/${s}/height`,
+          'Icon.width': `button/size/${s}/iconSize`,
+          'Icon.height': `button/size/${s}/iconSize`,
+        });
+      }
+      expect(icon.rootPadding).toBe(0);
+    });
+
+    it('a Figma IconButton with padding fails the diff; no snapshot script before it is drawn', () => {
+      const snap = {
+        variantAxes: {
+          Variant: icon.variantAxes.Variant.values,
+          Size: icon.variantAxes.Size.values,
+          State: icon.variantAxes.State.values,
+        },
+        variantCount: 36,
+        booleans: { Focus: false, Loading: false },
+        instanceSwaps: { Icon: true },
+        texts: {},
+        modeCollections: { 'Button tone': icon.modeCollections['Button tone'].modes },
+        sizeBindings: Object.fromEntries(
+          Object.entries(icon.sizeBindings).map(([s, f]) => [
+            s,
+            Object.fromEntries(Object.entries(f).map(([k, v]) => [k, [v]])),
+          ]),
+        ),
+        rootPadding: 0,
+      };
+      expect(diffContract(icon, snap)).toEqual([]);
+      expect(diffContract(icon, { ...snap, rootPadding: 8 })).toEqual([
+        'root padding: contract 0, Figma 8',
+      ]);
+      expect(() => buildSnapshotScript('IconButton')).toThrow(/not drawn/);
+    });
   });
 
   it('pass fixture has no differences', () => {

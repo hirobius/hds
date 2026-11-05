@@ -5,10 +5,6 @@
       "default": false,
       "prop": ":focus-visible"
     },
-    "Icon only": {
-      "default": false,
-      "prop": "iconOnly"
-    },
     "Loading": {
       "default": false,
       "prop": "loading"
