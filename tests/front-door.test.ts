@@ -8,6 +8,7 @@ import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { readLaneScripts } from '../scripts/lib/gate-lanes.mjs';
 
 const ROOT = process.cwd();
 const read = (rel: string) => readFileSync(join(ROOT, rel), 'utf8');
@@ -105,8 +106,7 @@ describe('README honesty', () => {
     }
 
     expect(focus).toContain('pretest');
-    const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> };
-    expect(pkg.scripts.pretest).toContain('scripts/check-focus-states.mjs');
+    expect(readLaneScripts(ROOT).pretest).toContain('scripts/check-focus-states.mjs');
   });
 
   it('names the docs-site axe gate CI runs, and its allowlist as it is', () => {
