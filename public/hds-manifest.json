@@ -4007,7 +4007,7 @@
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "The quiet tone, flush and the link variant keep the focus-visible ring of every Button.",
+          "rule": "The quiet tone and flush keep the focus-visible ring of every Button; the link variant draws a focus-visible outline with a 2px gap and the control radius instead (hds#1167).",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.quiet-focus-ring"
@@ -9213,7 +9213,8 @@
         "src/app/components/control-color-fade.ts",
         "src/app/components/control-label.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle.tsx"
+        "src/app/components/toggle.tsx",
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],

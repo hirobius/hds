@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Button } from './button';
 
-// Owner bug (2026-11-05): with px-0 the base ring-2 + ring-offset-2 hugged a link's glyphs and
+// hds#1167: with px-0 the base ring-2 + ring-offset-2 hugged a link's glyphs and
 // underline. The link variant draws a token-bound outline instead (computed values are pinned in
 // tests/visual/button-link-focus.spec.ts); this pins the class contract jsdom can see.
 const classesOf = (el: Element) => el.className.split(/\s+/);

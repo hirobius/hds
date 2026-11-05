@@ -2,7 +2,7 @@ import { test, expect, type Locator } from '@playwright/test';
 import { openThemed } from './theme';
 
 /**
- * Button variant="link" focus ring (owner bug, 2026-11-05). The link variant has no inline
+ * Button variant="link" focus ring (hds#1167). The link variant has no inline
  * padding, so the base box-shadow ring (ring-2 + ring-offset-2 on the md radius) hugged the
  * glyphs and the underline. It now draws an outline: role.ring colour, the thick border width,
  * a 2px offset and the control radius, on :focus-visible only, so the rest box never moves.

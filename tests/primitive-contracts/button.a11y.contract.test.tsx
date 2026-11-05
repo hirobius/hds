@@ -183,9 +183,18 @@ describe('Button accessibility contract', () => {
       const button = screen.getByRole('button', { name });
       expect(document.activeElement).toBe(button);
       const cls = button.className.split(/\s+/);
-      expect(cls, name).toContain('focus-visible:ring-2');
-      expect(cls, name).toContain('focus-visible:ring-ring');
-      expect(cls, name).toContain('focus-visible:ring-offset-2');
+      if (name === 'Clear' || name === 'Details') {
+        // A link has no inline padding, so it draws an outline with room instead of the
+        // box-shadow ring (hds#1167); computed values live in tests/visual/button-link-focus.spec.ts.
+        expect(cls, name).toContain('focus-visible:outline-solid');
+        expect(cls, name).toContain('focus-visible:outline-ring');
+        expect(cls, name).toContain('focus-visible:outline-offset-2');
+        expect(cls, name).not.toContain('focus-visible:outline-none');
+      } else {
+        expect(cls, name).toContain('focus-visible:ring-2');
+        expect(cls, name).toContain('focus-visible:ring-ring');
+        expect(cls, name).toContain('focus-visible:ring-offset-2');
+      }
     }
   });
 
