@@ -12,6 +12,16 @@ export function findUp(relative: string, start = process.cwd()): string {
   }
 }
 
+/**
+ * The released package's version, from the repo root package.json (the one beside
+ * hirobius.tokens.json); findUp('package.json') alone would stop at docs-site's own.
+ */
+export function loadPackageVersion(): string {
+  const root = dirname(findUp('hirobius.tokens.json'));
+  return (JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as { version: string })
+    .version;
+}
+
 const cache = new Map<string, unknown>();
 function readJson(relative: string): unknown {
   if (!cache.has(relative)) cache.set(relative, JSON.parse(readFileSync(findUp(relative), 'utf8')));

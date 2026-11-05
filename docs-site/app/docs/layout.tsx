@@ -3,7 +3,7 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { source } from '@/lib/source';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { PreviewSwitches } from '@/components/preview-switches';
-import { SITE_MARK } from '@/lib/site-name';
+import { SiteMark } from '@/components/site-mark';
 import { TopBarTitle } from '@/components/top-bar-title';
 import { SidebarGroupLabel } from '@/components/sidebar-group-label';
 import { SearchTriggerFull, SearchTriggerSmall } from '@/components/search-trigger';
@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <DocsLayout
       tree={source.pageTree}
       nav={{
-        title: SITE_MARK,
+        title: <SiteMark />,
         children: <TopBarTitle />,
       }}
       slots={{ searchTrigger: { sm: SearchTriggerSmall, full: SearchTriggerFull } }}
