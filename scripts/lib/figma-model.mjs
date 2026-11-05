@@ -918,16 +918,59 @@ function assertAliasesResolve(collections, excludedBy) {
   }
 }
 
+// ── Meta ─────────────────────────────────────────────────────────────────────
+/**
+ * Facts about the package, not tokens. The library cover's version text binds
+ * meta/version, so a push writes the released version into Figma and
+ * check:figma-drift / check:figma-release fail when Figma shows another one.
+ * The value is package.json's "version", read at build time by the caller
+ * (loadFigmaInputs); never hand-written. No CSS variable, so no codeSyntax;
+ * hidden from publishing, so consumers' pickers never offer it.
+ */
+export const META_COLLECTION = Object.freeze({ key: 'meta', name: 'Hirobius/Meta' });
+export const META_VERSION_PATH = 'meta.version';
+
+function metaCollection(version) {
+  return {
+    ...META_COLLECTION,
+    modes: [SINGLE_MODE],
+    hiddenFromPublishing: true,
+    variables: [
+      {
+        path: META_VERSION_PATH,
+        name: 'meta/version',
+        resolvedType: 'STRING',
+        unit: null,
+        description:
+          'The @hirobius/design-system version (package.json), shown on the library cover. Written by pnpm figma:push; never edit by hand.',
+        scopes: ['TEXT_CONTENT'],
+        hiddenFromPublishing: true,
+        codeSyntax: {},
+        valuesByMode: { [SINGLE_MODE]: { value: version } },
+      },
+    ],
+  };
+}
+
+/** The meta/version value a model carries, or null when it has none. */
+export function metaVersionOf(model) {
+  const meta = model.collections.find((c) => c.key === META_COLLECTION.key);
+  const v = meta?.variables.find((x) => x.path === META_VERSION_PATH);
+  return v ? (v.valuesByMode[SINGLE_MODE]?.value ?? null) : null;
+}
+
 /**
  * Builds the Figma model for a token graph.
  *
  * @param {object} raw  Parsed hirobius.tokens.json (or a fixture graph).
- * @param {{ brands?: { baseMode: string, directions: Array<{ slug: string, overlay: object }> } | null }} [options]
+ * @param {{ brands?: { baseMode: string, directions: Array<{ slug: string, overlay: object }> } | null, version?: string|null }} [options]
  *   brands: direction overlays for the Brand and Density collections
  *   (scripts/lib/figma-brand-modes.mjs loads them). Omitted: no axis collections.
+ *   version: package.json's "version" for the Hirobius/Meta collection
+ *   (meta/version). Omitted: no Meta collection.
  * @returns {object}    The model written to figma/model.json.
  */
-export function buildFigmaModel(raw, { brands = null } = {}) {
+export function buildFigmaModel(raw, { brands = null, version = null } = {}) {
   const graph = createGraph(raw);
   const notInFigma = NOT_IN_FIGMA.map(({ id, reason }) => ({ id, reason, tokens: [] }));
   const exclude = (id, path) => notInFigma.find((e) => e.id === id).tokens.push(path);
@@ -1014,6 +1057,7 @@ export function buildFigmaModel(raw, { brands = null } = {}) {
     };
   });
   const collections = [...tierCollections, ...axes];
+  if (version) collections.push(metaCollection(String(version)));
   assertAliasesResolve(collections, excludedBy);
 
   return {

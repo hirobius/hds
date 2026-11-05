@@ -643,6 +643,21 @@ Figma access cannot push. The rule compares model hashes, not commit dates, so a
 branch whose token commit predates a snapshot committed later is not blamed.
 Until a snapshot is committed the step only adds a notice.
 
+### meta/version (the library cover)
+
+The cover's version text binds `meta/version`, the one STRING variable in the
+`Hirobius/Meta` collection (hidden from publishing, scope Text content, mode
+Default). Code owns it: the model sets it to package.json's `"version"` at build
+time (`loadFigmaInputs`), and a push writes it (chunk `04-role`). Never type the
+version into Figma.
+
+`pnpm check:figma-drift` names it on its own line when Figma's value differs.
+`pnpm check:figma-release` fails on it, and `pnpm release:local` runs that check
+alone (`check-figma-release.mjs --meta-version`) before the build. After a
+version bump: push, refresh the snapshot by the snapshot-diff route
+([re-base](#agent-re-base-after-an-out-of-band-change-snapshot-diff)), commit
+`figma/snapshot.json`, and Adrian publishes the library.
+
 ## Bound-colour fallbacks
 
 A paint or effect bound to a colour variable also stores a raw "fallback" colour,

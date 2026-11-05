@@ -50,7 +50,7 @@ export const PUSH_CHUNKS = Object.freeze([
   { id: '01-primitive', scope: ['primitive'] },
   { id: '02-semantic', scope: ['semantic', 'brand', 'density'] },
   { id: '03-component', scope: ['component'] },
-  { id: '04-role', scope: ['role'] },
+  { id: '04-role', scope: ['role', 'meta'] },
   { id: '05-styles', scope: ['styles'] },
 ]);
 

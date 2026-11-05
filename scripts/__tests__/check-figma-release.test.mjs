@@ -9,7 +9,12 @@ import { describe, it, expect } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync, cpSync, readFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { runReleaseGate, componentCoverageGaps } from '../check-figma-release.mjs';
+import {
+  runReleaseGate,
+  componentCoverageGaps,
+  metaVersionGap,
+  runMetaVersionGate,
+} from '../check-figma-release.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import {
   parseSnapshotFile,
@@ -141,5 +146,55 @@ describe('ingest records tokensHash', () => {
     expect(written.tokensHash).toMatch(/^sha256:[0-9a-f]{64}$/);
     expect(written.tokensHash).toBe(tokensFileHash(dir));
     expect(written).not.toHaveProperty('matchesCommit');
+  });
+});
+
+describe('meta/version (the library cover)', () => {
+  /** A root pushed while package.json said `pushed`, now saying `version`. */
+  async function versioned(version, pushed = version) {
+    const dir = mkdtempSync(join(tmpdir(), 'figma-release-'));
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version: pushed }));
+    const built = await root();
+    cpSync(join(built, 'figma'), join(dir, 'figma'), { recursive: true });
+    cpSync(join(built, 'hirobius.tokens.json'), join(dir, 'hirobius.tokens.json'));
+    const { model } = loadFigmaInputs(dir);
+    const figma = newFixtureFile();
+    const { payload, checksum } = buildPushPayload(model);
+    await hdsRunPush(figma, payload, checksum);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...(await hdsRunSnapshot(figma)), tokensHash: tokensFileHash(dir) }),
+    );
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version }));
+    return dir;
+  }
+
+  it('passes when Figma meta/version is the version being released', async () => {
+    const dir = await versioned('1.0.0');
+    expect(metaVersionGap(dir)).toEqual({ expected: '1.0.0', actual: '1.0.0', ok: true });
+    expect(runReleaseGate({ root: dir }).exitCode).toBe(0);
+    const only = runMetaVersionGate({ root: dir });
+    expect(only.exitCode).toBe(0);
+    expect(only.output).toMatch(/meta\/version 1\.0\.0/);
+  });
+
+  it('fails the gate on a mismatch, with a reminder and the snapshot-diff route', async () => {
+    const dir = await versioned('1.1.0', '1.0.0');
+    expect(metaVersionGap(dir)).toEqual({ expected: '1.1.0', actual: '1.0.0', ok: false });
+    for (const r of [runReleaseGate({ root: dir }), runMetaVersionGate({ root: dir })]) {
+      expect(r.exitCode).toBe(1);
+      expect(r.output).toMatch(/meta\/version is 1\.0\.0 in Figma but this release is 1\.1\.0/);
+      expect(r.output).toMatch(/Reminder/);
+      expect(r.output).toMatch(/snapshot-diff\.js.*pnpm figma:snapshot --from-diff/s);
+    }
+  });
+
+  it('fails when the snapshot has no meta/version', async () => {
+    const dir = await root();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version: '1.0.0' }));
+    expect(metaVersionGap(dir)).toEqual({ expected: '1.0.0', actual: null, ok: false });
+    const r = runMetaVersionGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/no meta\/version in Figma/);
   });
 });

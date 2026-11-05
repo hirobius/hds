@@ -18,6 +18,7 @@ import { buildFigmaModel } from './lib/figma-model.mjs';
 import { loadBrandModes } from './lib/figma-brand-modes.mjs';
 import { validateFigmaModel, summarizeFigmaModel } from './lib/figma-model-invariants.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
+import { packageVersion } from './lib/figma-inputs.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -26,10 +27,11 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
  *
  * @param {{ tokensPath: string, outPath: string, brands?: object|null }} paths
  *   brands: direction overlays (loadBrandModes) for the Brand and Density collections.
+ *   version: package.json's "version" for meta/version (packageVersion).
  * @returns {{ model: object, summary: object, violations: string[] }}
  */
-export function writeFigmaModel({ tokensPath, outPath, brands = null }) {
-  const model = buildFigmaModel(readTokenSource(tokensPath), { brands });
+export function writeFigmaModel({ tokensPath, outPath, brands = null, version = null }) {
+  const model = buildFigmaModel(readTokenSource(tokensPath), { brands, version });
   const violations = validateFigmaModel(model);
   if (violations.length === 0) {
     mkdirSync(dirname(outPath), { recursive: true });
@@ -65,6 +67,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       tokensPath,
       outPath,
       brands: loadBrandModes(ROOT, readTokenSource(tokensPath)),
+      version: packageVersion(ROOT),
     });
     if (violations.length > 0) {
       console.error(

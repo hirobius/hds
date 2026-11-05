@@ -16,6 +16,28 @@
 
 import { hdsHex, hdsPlan } from './figma-runtime.mjs';
 import { modelHash } from './figma-scripts.mjs';
+import { META_VERSION_PATH, metaVersionOf } from './figma-model.mjs';
+
+/**
+ * Figma's meta/version (the library cover's version text) in a snapshot, or
+ * null: matched by the path a push stamps, else by name, as hdsMatch does.
+ */
+export function snapshotMetaVersion(snapshot) {
+  const all = snapshot.collections.flatMap((c) => c.variables);
+  const v =
+    all.find((x) => x.path === META_VERSION_PATH) ?? all.find((x) => x.name === 'meta/version');
+  if (!v) return null;
+  const entry = Object.values(v.valuesByMode ?? {})[0];
+  return typeof entry?.value === 'string' ? entry.value : null;
+}
+
+/** meta/version in the model vs Figma; null when the model carries none. */
+export function metaVersionDrift(model, snapshot) {
+  const expected = metaVersionOf(model);
+  if (expected === null) return null;
+  const actual = snapshotMetaVersion(snapshot);
+  return { expected, actual, ok: actual === expected };
+}
 
 /** A mode entry as a person reads it: `→ path`, `#rrggbb`, a number or a quoted string. */
 function formatEntry(entry) {
@@ -151,6 +173,8 @@ export function figmaDrift(model, snapshotFile, { renames = {} } = {}) {
     // drift may be a push still to come. null: no push is recorded in the file.
     // false: Figma was pushed from this exact model, so drift was made in Figma.
     pushedFromOtherModel: snapshot.lastPush ? snapshot.lastPush.modelHash !== hash : null,
+    // The library cover's version: named on its own line, as it is what a release reads.
+    metaVersion: metaVersionDrift(model, snapshot),
     unmanagedCollections: plan.unmanagedCollections,
     totals: {
       variables: model.collections.reduce((n, c) => n + c.variables.length, 0),
@@ -200,6 +224,12 @@ export function formatDrift(report, { snapshotLabel = 'figma/snapshot.json' } = 
   } else if (!report.ok) {
     lines.push(
       `⚠ Figma was last pushed from this exact model (${report.modelHash} at ${snapshot.lastPush.pushedAt}), so the drift below was made in Figma after that push.`,
+    );
+  }
+  const mv = report.metaVersion;
+  if (mv && !mv.ok) {
+    lines.push(
+      `✗ meta/version: Figma ${mv.actual === null ? 'has none' : `shows ${mv.actual}`}, package.json is ${mv.expected}. The library cover is stale: push (pnpm figma:push), then refresh the snapshot.`,
     );
   }
   if (report.unmanagedCollections.length) {
