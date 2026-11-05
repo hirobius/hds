@@ -9,6 +9,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
+  EDGE_COMPUTED_TOKENS,
   EDGE_FILLS,
   EDGE_MIN_CONTRAST,
   EDGE_TOKEN_FILLS,
@@ -17,10 +18,12 @@ import {
   layered,
   oklchToHex,
   resolveColor,
+  buildEdgeCSS,
+  edgeTokenDrift,
   resolveHex,
   toOklch,
 } from '../scripts/lib/raised-edge.mjs';
-import { THEMES } from './helpers/token-sheet';
+import { THEMES, resolveVar } from './helpers/token-sheet';
 
 const read = (p: string) => readFileSync(resolve(process.cwd(), p), 'utf8');
 const raw = JSON.parse(read('hirobius.tokens.json'));
@@ -37,7 +40,10 @@ function shipped(mode: Mode): Record<string, string> {
   return Object.fromEntries(
     Object.entries(vars).flatMap(([name, value]) => {
       const m = name.match(/^--hds-edge-([a-z]+)$/);
-      return m && m[1] in EDGE_FILLS ? [[m[1], value]] : [];
+      const theme = mode === 'Light' ? 'light' : 'dark';
+      if (!m || !(m[1] in EDGE_FILLS) || !value) return [];
+      const v = resolveVar(name, theme); // token-backed edges ship as oklch()
+      return [[m[1], v.startsWith('#') ? v : oklchToHex(toOklch(v))]];
     }),
   );
 }
@@ -190,5 +196,44 @@ describe('Button edge tokens', () => {
 
   it.each(TOKEN_KEYS)('--hds-edge-%s aliases its token for back-compat', (key) => {
     expect(css).toContain(`--hds-edge-${key}:var(--component-button-edge-${key});`);
+  });
+});
+
+// The primary edge is computed, but it also ships as a token (semantic.color.edge.primary)
+// so the Figma variable button/edge/primary has a code source. The build fails on drift.
+describe('computed edges that ship as tokens', () => {
+  it('primary: semantic.color.edge.primary holds the computed Light/Dark edges', () => {
+    expect(EDGE_COMPUTED_TOKENS.primary).toBe('semantic.color.edge.primary');
+    const hex = (mode: Mode) => resolveHex(raw, EDGE_COMPUTED_TOKENS.primary, mode);
+    expect({ Light: hex('Light'), Dark: hex('Dark') }).toEqual({
+      Light: '#010207',
+      Dark: '#a5a6a9',
+    });
+    for (const mode of MODES) expect(hex(mode)).toBe(expected(raw, 'primary', mode));
+  });
+
+  it('component.button.edge.primary aliases the semantic edge', () => {
+    expect(raw.component.button.edge.primary.$value).toBe('{semantic.color.edge.primary}');
+  });
+
+  it('--hds-edge-primary reads the token, with no hard-coded hex', () => {
+    expect(css).toContain('--hds-edge-primary:var(--component-button-edge-primary);');
+    expect(css).not.toMatch(/--hds-edge-primary:#/);
+  });
+
+  it('reports no drift for the shipped tokens', () => {
+    expect(edgeTokenDrift(raw)).toEqual([]);
+  });
+
+  it('fails the build when the token and the computed edge drift apart', () => {
+    const tree = structuredClone(raw);
+    tree.semantic.color.edge.primary.$extensions['com.figma.variables'].modes.Dark =
+      'oklch(0.75 0.0044 271.35)';
+    const [drift] = edgeTokenDrift(tree);
+    expect(drift).toMatch(
+      /^semantic\.color\.edge\.primary \(Dark\) is #[0-9a-f]{6}; raised-edge computes #a5a6a9$/,
+    );
+    expect(edgeTokenDrift(tree)).toHaveLength(1);
+    expect(() => buildEdgeCSS(tree)).toThrow(/semantic\.color\.edge\.primary \(Dark\)/);
   });
 });

@@ -5,6 +5,7 @@
     "badge.fontWeight": "LITERAL-MATCH",
     "badge.radius": "LITERAL-MATCH",
     "button.bg": "LITERAL-MATCH",
+    "button.edge.primary": "LITERAL-MATCH",
     "button.paddingX": "LITERAL-MATCH",
     "button.paddingY": "LITERAL-MATCH",
     "button.radius": "LITERAL-MATCH",

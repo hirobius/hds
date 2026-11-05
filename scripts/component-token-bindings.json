@@ -32,7 +32,15 @@
           "state": ["disabled", ""]
         },
         { "match": "secondary.*.*", "ctx": { "variant": "secondary" } },
-        { "match": "secondary.text", "ctx": { "variant": "secondary" } }
+        { "match": "secondary.text", "ctx": { "variant": "secondary" } },
+        {
+          "match": "edge.primary",
+          "declared": {
+            "token": "component.button.edge.primary",
+            "evidence": "primary: 'var(--hds-edge-primary)'",
+            "note": "Button paints the primary edge through --hds-edge-primary, which tokens.generated.css sets to var(--component-button-edge-primary); accents and tenants override --hds-edge-primary with their own computed edge (scripts/lib/raised-edge.mjs)."
+          }
+        }
       ]
     },
     "tag": {

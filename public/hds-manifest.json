@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T18:12:30.456Z",
+  "generated": "2026-11-05T19:21:08.447Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -15051,6 +15051,17 @@
         }
       },
       {
+        "path": "semantic.color.edge.primary",
+        "cssVar": "--semantic-color-edge-primary",
+        "type": "color",
+        "description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
+        "value": "oklch(0.0875 0.0215 266.83)",
+        "dark": {
+          "alias": "oklch(0.7253 0.0044 271.35)",
+          "resolvedValue": "oklch(0.7253 0.0044 271.35)"
+        }
+      },
+      {
         "path": "semantic.color.edge.neutral",
         "cssVar": "--semantic-color-edge-neutral",
         "type": "color",
@@ -16714,6 +16725,14 @@
         "description": "Primary button pressed fill (hds#748).",
         "alias": "{semantic.accent.pressed}",
         "resolvedValue": "#1c2638"
+      },
+      {
+        "path": "component.button.edge.primary",
+        "cssVar": "--component-button-edge-primary",
+        "type": "color",
+        "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
+        "alias": "{semantic.color.edge.primary}",
+        "resolvedValue": "oklch(0.0875 0.0215 266.83)"
       },
       {
         "path": "component.button.edge.secondary",
