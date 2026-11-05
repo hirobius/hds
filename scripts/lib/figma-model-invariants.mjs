@@ -14,6 +14,7 @@ import {
   ALL_SCOPES_ALLOWLIST,
   AXIS_COLLECTION_KEYS,
   DENSITY_MODES,
+  META_COLLECTION,
   THEME_MODES,
 } from './figma-model.mjs';
 
@@ -134,6 +135,10 @@ function checkVariable(v, c, ctx, flag) {
       flag(
         `${where}: an axis variable has no CSS variable of its own, so it carries no codeSyntax, got ${v.codeSyntax.WEB}.`,
       );
+    }
+  } else if (c.key === META_COLLECTION.key) {
+    if (v.codeSyntax?.WEB) {
+      flag(`${where}: a meta variable has no CSS variable, so it carries no codeSyntax.`);
     }
   } else {
     const expectedSyntax = `var(--${v.path.replaceAll('.', '-')})`;
