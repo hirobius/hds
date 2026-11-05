@@ -45,10 +45,11 @@ run_step pnpm check:colors
 run_step pnpm check:motion
 
 run_step pnpm typecheck
-# Test stage (#1090): the shared lane selection — same helper the pre-push
-# full tier uses (scripts/lib/test-lanes.mjs). Fast lane + path-triggered
-# heavy subsets; fails safe to the whole suite when the diff touches the
-# gate mechanism. The full suite also runs nightly (see the helper header).
+# Test stage (#1090): the shared selection — same helper the pre-push full
+# tier uses (scripts/lib/test-lanes.mjs). Pretest + only the tests the diff
+# reaches; fails safe to the whole suite on shared config, tokens, generators,
+# test setup or the gate mechanism. The full suite also runs nightly and
+# before release (see the helper header).
 run_step node scripts/lib/test-lanes.mjs run
 run_step pnpm lint
 

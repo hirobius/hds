@@ -135,7 +135,7 @@ describe('wiring', () => {
 describe('Button edge tokens', () => {
   const APPROVED: Record<Mode, Record<keyof typeof EDGE_TOKENS, string>> = {
     Light: {
-      secondary: 'neutral.350',
+      secondary: 'neutral.400',
       danger: 'red.400',
       success: 'green.400',
       warning: 'amber.400',

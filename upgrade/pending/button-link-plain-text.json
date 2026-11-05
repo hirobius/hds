@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A Button with variant=\"link\" and a status tone (danger, success, warning or info) is now coloured, underlined text with no tinted background, so re-take screenshots of toned link buttons and drop any local class that cleared their fill."
+}

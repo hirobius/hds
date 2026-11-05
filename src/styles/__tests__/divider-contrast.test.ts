@@ -5,7 +5,9 @@
  * surface a divider sits on: page, raised (cards), overlay, muted, the
  * floating overlay fill and the warm accentSubtle tint.
  *
- * - Light floor 1.45:1 (target band 1.5–1.7, so it stays quiet).
+ * - Light floor 1.45:1. The ceiling is 2.1:1: hds#522 darkened the light
+ *   ladder (muted 1.35:1 on the page), so a divider that clears 1.45:1 on muted
+ *   sits near 2.0:1 on white. Still quiet next to border.strong.
  * - Dark is checked at 1.4:1 so a dark regression is caught too.
  * - border.strong must stay at least as strong as border.default, or the
  *   Divider `strong` variant would read weaker than the default rule.
@@ -46,10 +48,10 @@ describe.each<TokenMode>(['Light', 'Dark'])('divider contrast in %s', (mode) => 
 });
 
 describe('light dividers stay quiet', () => {
-  it.each(SURFACES)('border.default stays under 1.8:1 on %s', (surface) => {
+  it.each(SURFACES)('border.default stays under 2.1:1 on %s', (surface) => {
     expect(
       contrastRatio(tokenHex('semantic.color.border.default', 'Light'), tokenHex(surface, 'Light')),
-    ).toBeLessThan(1.8);
+    ).toBeLessThan(2.1);
   });
 });
 

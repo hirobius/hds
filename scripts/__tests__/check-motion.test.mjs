@@ -33,6 +33,12 @@ describe('check-motion', () => {
     expect(check(button('transition-colors')).ok).toBe(true);
   });
 
+  it('passes a transition on a motion-intent duration variable', () => {
+    const src =
+      "export const B = () => <button style={{ transition: 'width var(--hds-motion-productive-duration) ease' }}>Go</button>;\n";
+    expect(check(src).ok).toBe(true);
+  });
+
   it('fails a button with no motion', () => {
     expect(check(button('px-2')).ok).toBe(false);
   });
@@ -79,5 +85,19 @@ describe('check-motion', () => {
     expect(check(button('transition-colors duration-[var(--primitive-duration-fast)]')).ok).toBe(
       true,
     );
+  });
+
+  // hds#751: an exemption on a file that already animates is stale. It says
+  // "no motion here" over code that has it, and it hid any hard-coded value.
+  it('fails a motion-ok exemption on a file that already has motion', () => {
+    const r = check(`// motion-ok: colours fade\n${button('transition-colors')}`);
+    expect(r.ok).toBe(false);
+    expect(r.out).toContain('Stale motion-ok');
+    const viaMotion = `// motion-ok: spring below\nimport { motion } from 'motion/react';\nexport const B = () => <motion.button>Go</motion.button>;\n`;
+    expect(check(viaMotion).ok).toBe(false);
+  });
+
+  it('still accepts a motion-ok exemption on a file with no motion of its own', () => {
+    expect(check(`// motion-ok: Button owns the feedback\n${button('px-2')}`).ok).toBe(true);
   });
 });

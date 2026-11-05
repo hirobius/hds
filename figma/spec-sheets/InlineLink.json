@@ -8,7 +8,47 @@
       "part": "Root"
     }
   ],
-  "sizes": [],
+  "sizes": [
+    {
+      "size": "sm",
+      "values": {
+        "fontSize": {
+          "token": "component.inlineLink.size.sm.fontSize",
+          "value": "16px"
+        },
+        "iconSize": {
+          "token": "component.inlineLink.size.sm.iconSize",
+          "value": "12px"
+        }
+      }
+    },
+    {
+      "size": "md",
+      "values": {
+        "fontSize": {
+          "token": "component.inlineLink.size.md.fontSize",
+          "value": "18px"
+        },
+        "iconSize": {
+          "token": "component.inlineLink.size.md.iconSize",
+          "value": "12px"
+        }
+      }
+    },
+    {
+      "size": "lg",
+      "values": {
+        "fontSize": {
+          "token": "component.inlineLink.size.lg.fontSize",
+          "value": "28px"
+        },
+        "iconSize": {
+          "token": "component.inlineLink.size.lg.iconSize",
+          "value": "20px"
+        }
+      }
+    }
+  ],
   "states": [
     {
       "state": "default",
@@ -30,12 +70,26 @@
       "type": "string"
     },
     {
+      "name": "size",
+      "type": "enum",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "optional": true,
+      "figmaProperty": "Size"
+    },
+    {
       "name": "standalone",
       "type": "boolean",
       "default": false
     }
   ],
-  "roleTokens": {},
+  "roleTokens": {
+    "iconSize": "component.inlineLink.iconSize",
+    "iconGap": "component.inlineLink.iconGap"
+  },
   "usage": {
     "when": "Link to a route or external URL from inside body copy.",
     "whenNot": "An action that changes something, or a control that needs button styling.",

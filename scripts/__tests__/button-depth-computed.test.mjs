@@ -157,3 +157,69 @@ describe.skipIf(!hasBrowser)('the hit band on a real default Button (wipe + hard
     }
   });
 });
+
+describe.skipIf(!hasBrowser)('Button focus ring wraps the hard edge in Chromium', () => {
+  let browser;
+  let page;
+  beforeAll(async () => {
+    browser = await chromium.launch({ executablePath: CHROMIUM });
+    page = await browser.newPage({ hasTouch: false });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+  });
+  afterAll(() => browser?.close());
+
+  // Focus wraps face AND edge (Adrian 11-04): the gap and the ring are each drawn twice,
+  // once on the border box and once offset by the edge height, so they follow the
+  // face-plus-edge shape. The edge itself stays first and visible.
+  const ringFor = (edge, hs) =>
+    `0 ${hs} 0 ${edge}, 0 0 0 2px var(--role-background), 0 ${hs} 0 2px var(--role-background), ` +
+    `0 0 0 4px var(--role-ring), 0 ${hs} 0 4px var(--role-ring)`;
+  // Button's focus-visible:outline-none and ring-* utilities, in Tailwind's utilities layer
+  // (which outranks components): the focus rule must beat them.
+  const OUTLINE_NONE =
+    `@layer utilities{button:focus-visible{outline-style:none;` +
+    `box-shadow:0 0 0 2px var(--role-background),0 0 0 4px var(--role-ring)}}`;
+  const focusShadow = async (style, expected) => {
+    await page.setContent(
+      `<html><head><style>@layer components, utilities;${OUTLINE_NONE}</style><style>${CSS}</style><style>${TW} body{margin:40px}</style></head><body>` +
+        `<button class="hds-btn-hard" style="height:40px;width:120px;border:0;${style}">Go</button>` +
+        `<i id="ref" style="box-shadow:${expected}"></i></body></html>`,
+    );
+    await page.mouse.move(0, 0);
+    await page.keyboard.press('Tab'); // keyboard focus: :focus-visible
+    return page.evaluate(() => ({
+      got: getComputedStyle(document.querySelector('button')).boxShadow,
+      want: getComputedStyle(document.getElementById('ref')).boxShadow,
+    }));
+  };
+
+  it('focus ring wraps a primary button and its edge', async () => {
+    const { got, want } = await focusShadow(
+      '--hds-edge:var(--hds-edge-primary)',
+      ringFor('var(--hds-edge-primary)', '3px'),
+    );
+    expect(want).not.toBe('none');
+    expect(got.endsWith(want)).toBe(true);
+  });
+
+  it('focus ring wraps a toned (danger) secondary button and its edge', async () => {
+    const { got, want } = await focusShadow(
+      '--hds-edge:var(--component-button-edge-danger)',
+      ringFor('var(--component-button-edge-danger)', '3px'),
+    );
+    expect(want).not.toBe('none');
+    expect(got.endsWith(want)).toBe(true);
+  });
+
+  it('forced colors keeps a visible focus outline', async () => {
+    await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
+    await focusShadow('', 'none');
+    const o = await page.$eval('button', (b) => {
+      const cs = getComputedStyle(b);
+      return { style: cs.outlineStyle, width: parseFloat(cs.outlineWidth) };
+    });
+    await page.emulateMedia({ forcedColors: 'none', reducedMotion: 'reduce' });
+    expect(o.style).not.toBe('none');
+    expect(o.width).toBeGreaterThan(0);
+  });
+});

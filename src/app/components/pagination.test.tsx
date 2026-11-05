@@ -124,6 +124,16 @@ describe('Pagination variant="compact"', () => {
     }
   });
 
+  it('sizes Previous and Next as 40x40 bordered squares from the pagination token (hds#1150)', () => {
+    render(<Pagination variant="compact" page={2} count={4} onPageChange={() => {}} />);
+    for (const name of ['Previous page', 'Next page']) {
+      const button = screen.getByRole('button', { name });
+      expect(button.className).toContain('border-[color:var(--semantic-color-border-default)]');
+      expect(button.className).toContain('h-[var(--component-pagination-compactControlSize)]');
+      expect(button.className).toContain('w-[var(--component-pagination-compactControlSize)]');
+    }
+  });
+
   it('leaves the default variant unchanged', () => {
     render(<Pagination page={1} count={4} onPageChange={() => {}} />);
     expect(screen.getByRole('button', { name: 'Page 1' })).not.toBeNull();
