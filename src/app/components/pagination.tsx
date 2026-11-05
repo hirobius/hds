@@ -135,9 +135,10 @@ export interface PaginationProps
 // The compact arrows are outlined (hds#886): a border-default edge at rest, and a disabled end keeps
 // the outline at reduced emphasis (transparent, the same border-default edge, content-disabled
 // icon) instead of the Button base's muted primary fill, so it reads as "not here" without looking
-// like a different control. Tertiary keeps its own hover and pressed fills.
+// like a different control. Tertiary keeps its own hover and pressed fills. They are 40x40 squares
+// (component.pagination.compactControlSize, hds#1150), a step up from the 36px sm Button.
 const compactArrowClass =
-  'border border-[color:var(--semantic-color-border-default)] disabled:bg-transparent';
+  'border border-[color:var(--semantic-color-border-default)] disabled:bg-transparent h-[var(--component-pagination-compactControlSize)] w-[var(--component-pagination-compactControlSize)]';
 
 /** Paged navigation with first/last anchors, sibling pages, and ellipses. */
 export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, PaginationProps>(

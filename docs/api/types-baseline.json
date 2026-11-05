@@ -1587,6 +1587,11 @@
         "component.nav.paddingY.$description",
         "component.nav.paddingY.$type",
         "component.nav.paddingY.$value",
+        "component.pagination",
+        "component.pagination.compactControlSize",
+        "component.pagination.compactControlSize.$description",
+        "component.pagination.compactControlSize.$type",
+        "component.pagination.compactControlSize.$value",
         "component.tag",
         "component.tag.activeBackground",
         "component.tag.activeBackground.$description",
@@ -3249,6 +3254,9 @@
       "signatures": [
         "(props: PageHeaderProps & RefAttributes<HTMLElement>): ReactNode"
       ]
+    },
+    "PageHeaderDescriptionPlacement": {
+      "kind": "type"
     },
     "PageHeaderLevel": {
       "kind": "type"

@@ -417,6 +417,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.inlineLink.size.md.iconSize": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
   "component.inlineLink.size.lg.fontSize": "Link text size: the size step's type role (sm ui, md body, lg title).",
   "component.inlineLink.size.lg.iconSize": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+  "component.pagination.compactControlSize": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
   "role.background": "Page background. shadcn role: background.",
   "role.foreground": "Default text on background. shadcn role: foreground.",
   "role.card": "Card surface. shadcn role: card.",

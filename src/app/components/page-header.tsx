@@ -3,16 +3,25 @@
  * @category Layout
  * @usage Open a screen with its title, plus optional breadcrumb, status and actions.
  * @tier pattern
+ * @a11y component required a11y:page-header.title-menu-named The title menu button is named by titleMenuLabel and sits beside the heading.
+ * @a11y component required a11y:page-header.title-menu-keyboard Tab reaches the title menu button; Enter opens it; Escape closes it and returns focus.
  */
 
 import * as React from 'react';
+import { ChevronDown } from 'lucide-react';
 import hds from '../design-system/tokens';
 import { cn } from '../../lib/utils';
+import { Button } from './button';
+import { Icon } from './icon';
+import { Menu } from './menu';
 import { Stack } from './stack';
 import { Text } from './text';
 
 /** @public */
 export type PageHeaderLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+/** @public */
+export type PageHeaderDescriptionPlacement = 'below' | 'title';
 
 /** @public */
 export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
@@ -23,6 +32,12 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
   /** One supporting line under the title, in secondary body text. Only when it
    *  adds information; longer context belongs in the page body. */
   description?: React.ReactNode;
+  /** `below` (default): under the title row. `title`: in the title column, beside the actions. */
+  descriptionPlacement?: PageHeaderDescriptionPlacement;
+  /** `Menu.Item`s for a chevron menu beside the title (rename, switch). */
+  titleMenu?: React.ReactNode;
+  /** Name of the title menu button. */
+  titleMenuLabel?: string;
   /** Facts about the screen's subject (source, stage), as a wrapping row of
    *  `Badge`s above the title; mirrors `Card.Header`'s `metadata`. Facts only:
    *  the single state belongs in `status`. */
@@ -48,10 +63,66 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
  */
 export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHeaderProps>(
   function PageHeader(
-    { breadcrumb, title, description, metadata, status, actions, level = 1, className, ...props },
+    {
+      breadcrumb,
+      title,
+      description,
+      descriptionPlacement = 'below',
+      titleMenu,
+      titleMenuLabel = 'Title options',
+      metadata,
+      status,
+      actions,
+      level = 1,
+      className,
+      ...props
+    },
     ref,
   ) {
     const Heading = `h${level}` as const;
+    const descriptionNode = description ? (
+      <Text as="p" variant="body" data-slot="description" className="m-0 text-muted-foreground">
+        {description}
+      </Text>
+    ) : null;
+    const titleRow = (
+      <Stack
+        direction="row"
+        wrap="wrap"
+        gap="tight"
+        align="center"
+        justify="start"
+        data-slot={descriptionPlacement === 'title' ? undefined : 'title-group'}
+      >
+        <Heading
+          // inline-ok: the one canonical page-title size, bound to the title role
+          style={{
+            ...hds.typeStyles.title,
+            margin: 0,
+            color: 'var(--semantic-color-content-primary)',
+          }}
+        >
+          {title}
+        </Heading>
+        {titleMenu ? (
+          <div data-slot="title-menu">
+            <Menu>
+              <Menu.Trigger asChild>
+                <Button
+                  iconOnly
+                  size="sm"
+                  variant="tertiary"
+                  label={titleMenuLabel}
+                  iconLeft={<Icon icon={ChevronDown} size="small" />}
+                />
+              </Menu.Trigger>
+              <Menu.Content align="start">{titleMenu}</Menu.Content>
+            </Menu>
+          </div>
+        ) : null}
+        {status ? <div data-slot="status">{status}</div> : null}
+      </Stack>
+    );
     return (
       <header
         ref={ref}
@@ -69,19 +140,14 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
             </div>
           ) : null}
           <Stack direction="row" wrap="wrap" gap="normal" align="start" justify="space-between">
-            <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="start">
-              <Heading
-                // inline-ok: the one canonical page-title size, bound to the title role
-                style={{
-                  ...hds.typeStyles.title,
-                  margin: 0,
-                  color: 'var(--semantic-color-content-primary)',
-                }}
-              >
-                {title}
-              </Heading>
-              {status ? <div data-slot="status">{status}</div> : null}
-            </Stack>
+            {descriptionPlacement === 'title' ? (
+              <Stack gap="tight" data-slot="title-group">
+                {titleRow}
+                {descriptionNode}
+              </Stack>
+            ) : (
+              titleRow
+            )}
             {actions ? (
               <div data-slot="actions" className="ml-auto">
                 <Stack direction="row" wrap="wrap" gap="tight" align="center" justify="end">
@@ -90,16 +156,7 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
               </div>
             ) : null}
           </Stack>
-          {description ? (
-            <Text
-              as="p"
-              variant="body"
-              data-slot="description"
-              className="m-0 text-muted-foreground"
-            >
-              {description}
-            </Text>
-          ) : null}
+          {descriptionPlacement === 'title' ? null : descriptionNode}
         </Stack>
       </header>
     );

@@ -35,6 +35,7 @@
     "MetricTilesProps",
     "Page",
     "PageHeader",
+    "PageHeaderDescriptionPlacement",
     "PageHeaderLevel",
     "PageHeaderProps",
     "PageProps",
