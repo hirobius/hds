@@ -26,8 +26,10 @@ const ALLOWED_EXTS = ['.ts', '.tsx', '.js', '.mjs', '.cjs', '.css', '.md'];
 // cannot honor a marker this one rejects.
 const MARKERS = EXEMPTION_MARKERS;
 
-const markerPattern = new RegExp(`\\b(${MARKERS.join('|')}):\\s*(.*)$`);
-const unknownPattern = /\b([a-z-]+-ok):/i;
+// A marker starts at a word start that is not inside a hyphenated name, so a CSS
+// custom property such as `--bd-ok:` is not read as an unknown `bd-ok` marker.
+const markerPattern = new RegExp(`(?<![\\w-])(${MARKERS.join('|')}):\\s*(.*)$`);
+const unknownPattern = /(?<![\w-])([a-z][a-z-]*-ok):/i;
 
 const violations = [];
 const counts = new Map();
