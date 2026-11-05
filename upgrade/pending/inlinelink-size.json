@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "InlineLink's external icon now follows the link's font size (12px in 16px text, was 11px) and InlineLink takes size=\"sm\" | \"md\" | \"lg\"; drop local CSS that resized the icon or the link text and set size instead."
+}
