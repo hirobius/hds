@@ -411,14 +411,18 @@ pre {
   border-radius: var(--semantic-radius-action);
 }
 
-/* Sidebar search trigger (components/search-trigger.tsx, hds#903): a raised row with the
-   shortcut drawn by the HDS Kbd. Tokens only, so Corners reaches it. */
+/* Sidebar search trigger (components/search-trigger.tsx, hds#903): a search field, with the
+   shortcut drawn by the HDS Kbd. surface.raised is the sidebar's own fill, so the trigger takes
+   the page fill and a default border to read as a box (Adrian, 2026-11-05). The block padding
+   gives back the border's 1px, so the row keeps its 40px height. Tokens only, so Corners
+   reaches it. */
 .hds-docs-search {
   display: inline-flex;
   align-items: center;
   gap: var(--semantic-space-scale-xs);
-  padding: var(--semantic-space-scale-xs) var(--semantic-space-scale-sm);
-  background: var(--semantic-color-surface-raised);
+  padding: calc(var(--semantic-space-scale-xs) - 1px) var(--semantic-space-scale-sm);
+  background: var(--semantic-color-surface-page);
+  border: 1px solid var(--semantic-color-border-default);
   border-radius: var(--semantic-radius-action);
   color: var(--semantic-color-content-secondary);
   font-family: var(--semantic-typography-ui-font-family);
@@ -428,6 +432,7 @@ pre {
 }
 .hds-docs-search:hover {
   color: var(--semantic-color-content-primary);
+  border-color: var(--semantic-color-border-strong);
 }
 .hds-docs-search:focus-visible {
   outline: 2px solid var(--semantic-color-border-accent);
@@ -910,9 +915,11 @@ a code[data-density] {
   ) {
   border-radius: var(--semantic-radius-action);
 }
-/* The collapse button gets its corners from its parent's `*:rounded-md`. */
+/* The collapse button gets its corners from its parent's `*:rounded-md`. Its subdued secondary
+   tone is the one every sidebar icon control shares (the gear below, Adrian 2026-11-05). */
 #nd-sidebar button[aria-label='Collapse Sidebar'] {
   border-radius: var(--semantic-radius-action);
+  color: var(--semantic-color-content-secondary);
 }
 
 /* Fumadocs' Tailwind shadow-lg (collapsed sidebar, its reopen button, open contents popover)
@@ -924,6 +931,16 @@ a code[data-density] {
   box-shadow: var(--semantic-shadow-overlay);
 }
 
+/* The gear takes the drawer toggle's subdued secondary tone; hover lifts both to primary. */
+.hds-docs-display [data-docs-switch-trigger] {
+  color: var(--semantic-color-content-secondary);
+}
+.hds-docs-display [data-docs-switch-trigger]:hover,
+#nd-sidebar button[aria-label='Collapse Sidebar']:hover,
+#nd-sidebar-mobile div:has(> .hds-docs-display) > button:hover {
+  color: var(--semantic-color-content-primary);
+}
+
 /* The gear is a tertiary sm button, whose 12px icon reads too faint without a border. */
 .hds-docs-display [data-docs-switch-trigger] svg {
   inline-size: var(--semantic-size-icon-sm);
@@ -933,7 +950,8 @@ a code[data-density] {
 /* Mobile drawer header (hds#860): theme switch, display settings and the close toggle share one
    touch height and centre line, with room above the row and before the list. Below 640px HDS lifts
    each segment to 44px, which grew the rail to 54px; the rail itself is the touch target here, so
-   its segments stretch to fill it instead. The Fumadocs toggle takes the gear's tertiary look. */
+   its segments stretch to fill it instead. The Fumadocs toggle takes the gear's tertiary look,
+   in the shared secondary tone. */
 #nd-sidebar-mobile > div:first-child {
   padding-block: var(--semantic-space-scale-md) var(--semantic-space-scale-sm);
 }
@@ -954,7 +972,7 @@ a code[data-density] {
   min-block-size: 0;
   padding: 0;
   border-radius: var(--semantic-radius-action);
-  color: var(--semantic-color-content-primary);
+  color: var(--semantic-color-content-secondary);
 }
 #nd-sidebar-mobile [data-docs-switch-trigger] svg,
 #nd-sidebar-mobile div:has(> .hds-docs-display) > button svg {
