@@ -2298,7 +2298,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Variant of body: weight 700, what Text weight=\"bold\" renders. Matches Figma typography/bodyStrong.",
+        "$description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2345,7 +2345,7 @@
           },
           "fontStyle": "italic"
         },
-        "$description": "Variant of ui: italic, what EmptyState's inline message renders. Matches Figma typography/uiItalic.",
+        "$description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {

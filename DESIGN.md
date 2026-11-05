@@ -44,9 +44,9 @@ Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700`
 | `semantic.typography.title` | 28px | 24px | 700 | Section and card headings |
 | `semantic.typography.titleSm` | 20px | same | 700 | Small heading inside a card or section band, and the Alert title |
 | `semantic.typography.body` | 18px | 15px | 400 | Prose |
-| `semantic.typography.bodyStrong` | 18px | 15px | 700 | Variant of body: weight 700, what Text weight="bold" renders |
+| `semantic.typography.bodyStrong` | 18px | 15px | 700 | Variant of body: weight 700, what Text with weight bold renders |
 | `semantic.typography.ui` | 16px | 14px | 500 | Controls, nav, table text, values |
-| `semantic.typography.uiItalic` | 16px | 14px | 500 | Variant of ui: italic, what EmptyState's inline message renders |
+| `semantic.typography.uiItalic` | 16px | 14px | 500 | Variant of ui: italic, what the inline EmptyState message renders |
 | `semantic.typography.caption` | 14px | 13px | 500 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | same | 400 | Code and ids, 15px / 1.5 / 400 |
 | `semantic.typography.lineHeight.none` |  | same |  | Semantic alias for leading-none (1) |

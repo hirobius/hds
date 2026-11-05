@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T07:38:52.741Z",
+  "generated": "2026-11-05T11:59:35.660Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -15556,7 +15556,7 @@
         "path": "semantic.typography.bodyStrong",
         "cssVar": "--semantic-typography-bodyStrong",
         "type": "typography",
-        "description": "Variant of body: weight 700, what Text weight=\"bold\" renders. Matches Figma typography/bodyStrong.",
+        "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
@@ -15596,7 +15596,7 @@
         "path": "semantic.typography.uiItalic",
         "cssVar": "--semantic-typography-uiItalic",
         "type": "typography",
-        "description": "Variant of ui: italic, what EmptyState's inline message renders. Matches Figma typography/uiItalic.",
+        "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
         "composite": {
           "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",

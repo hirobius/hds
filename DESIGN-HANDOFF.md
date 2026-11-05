@@ -296,9 +296,9 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `title`           | 28px       | 700    | 1.25        | -0.01em        | Section and card headings. 28px / 1.25 / 700. Role 2 of 6.                                                                      |
 | `titleSm`         | 20px       | 700    | 1.375       | 0em            | Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.                                           |
 | `body`            | 18px       | 400    | 1.6         | 0em            | Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.                                                                             |
-| `bodyStrong`      | 18px       | 700    | 1.6         | 0em            | Variant of body: weight 700, what Text weight="bold" renders. Matches Figma typography/bodyStrong.                              |
+| `bodyStrong`      | 18px       | 700    | 1.6         | 0em            | Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.                           |
 | `ui`              | 16px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.                                                               |
-| `uiItalic`        | 16px       | 500    | 1.5         | 0em            | Variant of ui: italic, what EmptyState's inline message renders. Matches Figma typography/uiItalic.                             |
+| `uiItalic`        | 16px       | 500    | 1.5         | 0em            | Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.                           |
 | `caption`         | 14px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.                                                |
 | `mono`            | 15px       | 400    | 1.5         | 0em            | Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.                                   |
 | `h1`              | 28px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                                                       |

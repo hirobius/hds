@@ -214,7 +214,7 @@ const forged = (text, edit) => {
     );
 };
 
-describe('a type-ramp change too big for one delta.js (about 53,000 characters with the compact Density variables; 57,000 before Fix A)', () => {
+describe('a type-ramp change too big for one delta.js (about 59,000 characters with hero, bodyStrong and uiItalic; 53,000 before them; 57,000 before Fix A)', () => {
   let s;
   let single;
   beforeEach(async () => {
@@ -224,7 +224,9 @@ describe('a type-ramp change too big for one delta.js (about 53,000 characters w
 
   it('is more than one delta.js holds, and becomes ordered parts that each fit', () => {
     expect(single.built.chars, 'the one-script size of the scenario').toBeGreaterThan(45000);
-    expect(single.built.chars).toBeLessThan(54000);
+    // Scenario size, not a budget: the per-part cap (45,000) below is the limit that matters.
+    // 54,000 until three text styles and 16 variables joined the real model (2026-11-05).
+    expect(single.built.chars).toBeLessThan(60000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
     // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 until the
@@ -309,8 +311,18 @@ describe('a type-ramp change too big for one delta.js (about 53,000 characters w
     const chained = ingest(s.root, reads);
     expect(chained.head.parts).toBe(s.built.parts.length);
 
+    // A single delta.js whose receipt outgrew its result returns only the head; the
+    // agent then saves the receipt.js pages (hero, bodyStrong and uiItalic, 2026-11-05).
     const one = await run(single.built.text, single.figma);
-    const whole = ingest(single.root, [one]);
+    const oneReads =
+      'text' in one
+        ? [one]
+        : await Promise.all(
+            Array.from({ length: JSON.parse(one.head).pages }, (_, page) =>
+              readPage(single.figma, page),
+            ),
+          );
+    const whole = ingest(single.root, oneReads);
     expect(timeless(chained.snapshot)).toEqual(timeless(whole.snapshot));
     // The library the parts left plans to nothing against the new snapshot.
     expect(planLine(s.next, { snapshot: chained.snapshot })).toBe(NOTHING_LINE);
