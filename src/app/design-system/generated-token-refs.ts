@@ -293,6 +293,7 @@ export const tokenRefs = {
         "280": "var(--primitive-size-width-280)",
         "512": "var(--primitive-size-width-512)",
         "760": "var(--primitive-size-width-760)",
+        "1180": "var(--primitive-size-width-1180)",
         "1200": "var(--primitive-size-width-1200)",
         "50ch": "var(--primitive-size-width-50ch)"
       }
@@ -454,7 +455,8 @@ export const tokenRefs = {
     layout: {
       width: {
         content: "var(--semantic-layout-width-content)",
-        max: "var(--semantic-layout-width-max)"
+        max: "var(--semantic-layout-width-max)",
+        shell: "var(--semantic-layout-width-shell)"
       },
       container: {
         maxWidth: "var(--semantic-layout-container-maxWidth)"
