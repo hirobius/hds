@@ -218,7 +218,14 @@ export function AppShell({
       <Grid
         layout="auto-fill"
         align="stretch"
-        style={{ gridTemplateColumns: columns, gap: 0, flex: 1 }}
+        style={{
+          gridTemplateColumns: columns,
+          gap: 0,
+          flex: 1,
+          // The rail eases between its widths on collapse; the token is zeroed under reduced motion.
+          transition:
+            'grid-template-columns var(--hds-motion-productive-duration) var(--hds-motion-productive-easing)',
+        }}
       >
         {wide && (
           <Surface
