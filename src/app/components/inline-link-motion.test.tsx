@@ -47,7 +47,7 @@ describe('InlineLink external icon nudge (hds#751)', () => {
   });
 
   it('stops under prefers-reduced-motion: theme.css zeroes the productive duration', () => {
-    const root = theme.match(/@media \(prefers-reduced-motion: reduce\) \{\s*:root \{[^}]*\}/);
+    const root = theme.match(/\(prefers-reduced-motion: reduce\) \{\s*:root \{[^}]*\}/);
     expect(root?.[0]).toContain('--hds-motion-productive-duration: 0s');
   });
 
