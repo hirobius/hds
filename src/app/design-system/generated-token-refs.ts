@@ -398,6 +398,7 @@ export const tokenRefs = {
         warning: "var(--semantic-color-border-warning)"
       },
       edge: {
+        primary: "var(--semantic-color-edge-primary)",
         neutral: "var(--semantic-color-edge-neutral)",
         danger: "var(--semantic-color-edge-danger)",
         success: "var(--semantic-color-edge-success)",
@@ -817,6 +818,7 @@ export const tokenRefs = {
       bgHover: "var(--component-button-bgHover)",
       bgPressed: "var(--component-button-bgPressed)",
       edge: {
+        primary: "var(--component-button-edge-primary)",
         secondary: "var(--component-button-edge-secondary)",
         danger: "var(--component-button-edge-danger)",
         success: "var(--component-button-edge-success)",
