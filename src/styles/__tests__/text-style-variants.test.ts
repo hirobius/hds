@@ -10,14 +10,12 @@
  *
  * @unit ADR-052
  */
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 // @ts-expect-error — untyped .mjs module
 import { buildFigmaModel } from '../../../scripts/lib/figma-model.mjs';
+import { repoFile } from './style-test-helpers';
 
-const ROOT = resolve(__dirname, '../../..');
-const tokens = JSON.parse(readFileSync(resolve(ROOT, 'hirobius.tokens.json'), 'utf8'));
+const tokens = JSON.parse(repoFile('hirobius.tokens.json'));
 const typo = tokens.semantic.typography;
 const model = buildFigmaModel(tokens);
 const style = (name: string) =>
@@ -34,7 +32,7 @@ describe('bodyStrong (ADR-052 addendum)', () => {
   });
 
   it('matches the weight Text weight="bold" sets', () => {
-    expect(readFileSync(resolve(ROOT, 'src/app/components/text.tsx'), 'utf8')).toContain(
+    expect(repoFile('src/app/components/text.tsx')).toContain(
       // tier-ok: asserts the string Text ships, not a style
       "bold: '[font-weight:var(--primitive-typography-weight-bold)]'",
     );
@@ -61,18 +59,18 @@ describe('uiItalic (ADR-052 addendum)', () => {
   });
 
   it('matches what EmptyState renders inline', () => {
-    const src = readFileSync(resolve(ROOT, 'src/app/components/empty-state.tsx'), 'utf8');
+    const src = repoFile('src/app/components/empty-state.tsx');
     expect(src).toContain("isItalic ? 'italic' : 'not-italic'");
     expect(src).toContain('hds-type-ui');
   });
 
   it('ships font-style italic in CSS and the JS style object', () => {
-    expect(readFileSync(resolve(ROOT, 'src/styles/tokens.generated.css'), 'utf8')).toContain(
+    expect(repoFile('src/styles/tokens.generated.css')).toContain(
       '--semantic-typography-uiItalic-font-style: italic;',
     );
-    expect(
-      readFileSync(resolve(ROOT, 'src/app/design-system/generated-token-refs.ts'), 'utf8'),
-    ).toContain('fontStyle: "var(--semantic-typography-uiItalic-font-style)"');
+    expect(repoFile('src/app/design-system/generated-token-refs.ts')).toContain(
+      'fontStyle: "var(--semantic-typography-uiItalic-font-style)"',
+    );
   });
 
   it('emits typography/uiItalic as the ui style in the italic face', () => {

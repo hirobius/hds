@@ -8,10 +8,16 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { resolveAlias } from '../../../scripts/lib/token-tree.mjs';
 
+/** The repo root, for tests that read committed files. */
+export const ROOT = resolve(__dirname, '../../..');
+
+/** A committed file's text, by its path from the repo root. */
+export function repoFile(relPath: string): string {
+  return readFileSync(resolve(ROOT, relPath), 'utf8');
+}
+
 /** The committed token source every styles contract test pins against. */
-export const TOKENS = JSON.parse(
-  readFileSync(resolve(__dirname, '../../../hirobius.tokens.json'), 'utf8'),
-) as Record<string, unknown>;
+export const TOKENS = JSON.parse(repoFile('hirobius.tokens.json')) as Record<string, unknown>;
 
 export type TokenMode = 'Light' | 'Dark';
 
