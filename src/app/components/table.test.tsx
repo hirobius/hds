@@ -209,3 +209,54 @@ describe('Table — header cell parity (hds#1009)', () => {
     }
   });
 });
+
+describe('Table — full outline and vertical centering (hds#1198)', () => {
+  const frameOf = () => screen.getByRole('region').parentElement as HTMLElement;
+  const FRAME_BORDER = [
+    'border-solid',
+    '[border-width:var(--semantic-borderWidth-default)]',
+    'border-[color:var(--semantic-color-border-default)]',
+  ];
+
+  it('outlines the frame with 1px border.default, keeps the rounded radius and clips overflow', () => {
+    render(<Table columns={columnsWith({})} rows={rows} />);
+    const frame = frameOf();
+    const classes = frame.className.split(' ');
+    for (const cls of FRAME_BORDER) expect(classes).toContain(cls);
+    // Surface's `border-none` must lose to the frame's border-solid (tailwind-merge).
+    expect(classes).not.toContain('border-none');
+    expect(classes).toContain('rounded-lg');
+    expect(frame.style.overflow).toBe('hidden');
+  });
+
+  it('draws no divider under the last row, so the bottom edge is not doubled', () => {
+    render(<Table columns={columnsWith({})} rows={rows} />);
+    const cells = screen.getAllByRole('cell');
+    const divider = (el: HTMLElement) => el.className.includes('[border-bottom:');
+    expect(divider(cells[0])).toBe(true);
+    const last = cells.slice(-2);
+    for (const cell of last) expect(divider(cell)).toBe(false);
+  });
+
+  it('drops the header rule when there are no rows, so the frame line is not doubled', () => {
+    render(<Table columns={columnsWith({})} rows={[]} />);
+    for (const header of screen.getAllByRole('columnheader')) {
+      expect(header.className.includes('[border-bottom:')).toBe(false);
+    }
+  });
+
+  it('centers every cell vertically with equal top and bottom density padding', () => {
+    for (const density of ['comfortable', 'compact'] as const) {
+      const { unmount } = render(<Table columns={columnsWith({})} rows={rows} density={density} />);
+      for (const cell of [...screen.getAllByRole('cell'), ...screen.getAllByRole('columnheader')]) {
+        const classes = cell.className.split(' ');
+        expect(classes).toContain('flex');
+        expect(classes).toContain('items-center');
+        // One `py-*` class (equal top and bottom), no separate pt-/pb-.
+        expect(classes.filter((c) => c.startsWith('py-')).length).toBe(1);
+        expect(classes.some((c) => /^p[tb]-/.test(c))).toBe(false);
+      }
+      unmount();
+    }
+  });
+});

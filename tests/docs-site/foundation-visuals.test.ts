@@ -150,6 +150,8 @@ describe('colorGalleries swatch fills (hds#846)', () => {
   const swatches = colorGalleries(tokens, { cobalt }).flatMap((g) =>
     g.groups.flatMap((group) => group.swatches),
   );
+  /** Semantic colours computed by scripts/lib/raised-edge.mjs (EDGE_COMPUTED_TOKENS). */
+  const COMPUTED = new Set(['semantic.color.edge.primary']);
   const varName = (fill: string | null) => /^var\((--[\w-]+)\)$/.exec(fill ?? '')?.[1];
 
   it('fills every swatch from a shipped --primitive-color-* variable, not a copied value', () => {
@@ -157,7 +159,10 @@ describe('colorGalleries swatch fills (hds#846)', () => {
     for (const s of swatches) {
       for (const fill of s.darkFill === null ? [s.fill] : [s.fill, s.darkFill]) {
         const name = varName(fill);
-        expect(name, `${s.token} fill ${fill}`).toMatch(/^--primitive-color-/);
+        // A computed edge (raw oklch, no primitive to alias) fills from its own variable.
+        const own = `--${s.token.replaceAll('.', '-')}`;
+        if (COMPUTED.has(s.token)) expect(name, `${s.token} fill ${fill}`).toBe(own);
+        else expect(name, `${s.token} fill ${fill}`).toMatch(/^--primitive-color-/);
         expect(shipped, `${name} is not in tokens.generated.css`).toContain(`${name}:`);
       }
     }

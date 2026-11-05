@@ -298,6 +298,12 @@ declare module 'react' {
     '--semantic-color-border-accent'?: string | undefined;
     '--semantic-color-border-success'?: string | undefined;
     '--semantic-color-border-warning'?: string | undefined;
+    '--semantic-color-edge-primary'?: string | undefined;
+    '--semantic-color-edge-neutral'?: string | undefined;
+    '--semantic-color-edge-danger'?: string | undefined;
+    '--semantic-color-edge-success'?: string | undefined;
+    '--semantic-color-edge-warning'?: string | undefined;
+    '--semantic-color-edge-info'?: string | undefined;
     '--semantic-color-shadow-hard'?: string | undefined;
     '--semantic-color-feedback-error'?: string | undefined;
     '--semantic-color-feedback-success'?: string | undefined;
@@ -574,6 +580,7 @@ declare module 'react' {
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;
     '--component-button-bgPressed'?: string | undefined;
+    '--component-button-edge-primary'?: string | undefined;
     '--component-button-edge-secondary'?: string | undefined;
     '--component-button-edge-danger'?: string | undefined;
     '--component-button-edge-success'?: string | undefined;

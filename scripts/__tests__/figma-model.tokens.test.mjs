@@ -185,7 +185,7 @@ describe('focus ring variables', () => {
   it.each([
     ['semantic:focus/ring/width', 'FLOAT', 'primitive.borderWidth.sm'],
     ['semantic:focus/gap/width', 'FLOAT', 'primitive.borderWidth.sm'],
-    ['semantic:focus/ring/color', 'COLOR', 'semantic.color.border.accent'],
+    ['semantic:focus/ring/color', 'COLOR', null],
     ['semantic:focus/radius/md/ringRadius', 'FLOAT', 'primitive.radius.12'],
     ['component:button/focus/gapRadius', 'FLOAT', 'primitive.radius.10'],
     ['component:button/focus/ringRadius', 'FLOAT', 'primitive.radius.12'],
@@ -198,6 +198,14 @@ describe('focus ring variables', () => {
     expect(v, key).toBeDefined();
     expect(v.resolvedType).toBe(type);
     if (alias) for (const mode of Object.values(v.valuesByMode)) expect(mode.alias).toBe(alias);
+  });
+  it('the focus ring colour holds the accent border primitives, per theme', () => {
+    const v = byName.get('semantic:focus/ring/color');
+    const aliases = Object.values(v.valuesByMode).map((m) => m.alias);
+    expect(aliases.sort()).toEqual([
+      'primitive.color.graphite.300',
+      'primitive.color.graphite.700',
+    ]);
   });
   it('focus radii are scoped to corner radius', () => {
     expect(byName.get('component:button/focus/ringRadius').scopes).toEqual(['CORNER_RADIUS']);

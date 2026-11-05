@@ -240,7 +240,8 @@ describe('Touch targets (item 6, and the highlight fill of item 21)', () => {
     expect(src(file)).toContain(cls);
     expect(src(file)).toMatch(touch);
   });
-  it.each(['combobox.tsx', 'combobox-creatable.tsx', 'command-palette.tsx'])(
+  // Combobox options render through the shared listbox-option.tsx row (hds#1145).
+  it.each(['listbox-option.tsx', 'command-palette.tsx'])(
     '%s marks its active option with the shared listbox-nav look',
     (file) => {
       expect(src(file)).toContain('ACTIVE_OPTION_CLASS');
@@ -248,7 +249,8 @@ describe('Touch targets (item 6, and the highlight fill of item 21)', () => {
     },
   );
   it('combobox chip remove and options both use them', () => {
-    expect((src('combobox.tsx').match(/hds-touch-row/g) ?? []).length).toBeGreaterThanOrEqual(2);
+    expect(src('combobox.tsx')).toContain('hds-touch-row');
+    expect(src('listbox-option.tsx')).toContain('hds-touch-row');
   });
   // Combobox and CommandPalette take the active-row look from listbox-nav.ts.
   it.each(['menu.tsx', 'select.tsx', 'listbox-nav.ts'])(

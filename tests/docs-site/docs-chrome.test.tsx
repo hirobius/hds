@@ -220,10 +220,12 @@ describe('sidebar group labels and drawer header (hds#860)', () => {
     expect(body).not.toMatch(/\d+(px|rem)/);
   });
 
-  it('labels every top-level group, the first one included', () => {
+  // Adrian 2026-11-05 replaced hds#860's "label the first group too": a "Docs" label above
+  // "Overview" only repeats what the whole site is, so the top group starts with its pages.
+  it('starts the sidebar with a page, not a group label', () => {
     const pages = JSON.parse(read('content/docs/meta.json')).pages as string[];
-    expect(pages[0]).toMatch(/^---.+---$/);
-    expect(pages).toContain('---Explore---');
+    expect(pages[0]).toBe('index');
+    expect(pages).not.toContain('---Docs---');
   });
 
   it('holds the drawer header controls at one touch height', () => {

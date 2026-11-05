@@ -1839,6 +1839,80 @@
           }
         }
       },
+      "edge": {
+        "primary": {
+          "$value": "oklch(0.0875 0.0215 266.83)",
+          "$description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "oklch(0.0875 0.0215 266.83)",
+                "Dark": "oklch(0.7253 0.0044 271.35)"
+              }
+            }
+          }
+        },
+        "neutral": {
+          "$value": "{primitive.color.neutral.400}",
+          "$description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.400}",
+                "Dark": "{primitive.color.neutral.725}"
+              }
+            }
+          }
+        },
+        "danger": {
+          "$value": "{primitive.color.red.400}",
+          "$description": "Hard raised edge under danger-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.red.400}",
+                "Dark": "{primitive.color.red.700}"
+              }
+            }
+          }
+        },
+        "success": {
+          "$value": "{primitive.color.green.400}",
+          "$description": "Hard raised edge under success-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.green.400}",
+                "Dark": "{primitive.color.green.700}"
+              }
+            }
+          }
+        },
+        "warning": {
+          "$value": "{primitive.color.amber.400}",
+          "$description": "Hard raised edge under warning-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.amber.400}",
+                "Dark": "{primitive.color.amber.800}"
+              }
+            }
+          }
+        },
+        "info": {
+          "$value": "{primitive.color.blue.300}",
+          "$description": "Hard raised edge under info-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.blue.300}",
+                "Dark": "{primitive.color.blue.500}"
+              }
+            }
+          }
+        }
+      },
       "shadow": {
         "hard": {
           "$value": "{primitive.color.shadow.ink}",
@@ -2769,8 +2843,16 @@
         },
         "color": {
           "$type": "color",
-          "$value": "{semantic.color.border.accent}",
-          "$description": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour."
+          "$value": "{primitive.color.graphite.700}",
+          "$description": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.graphite.700}",
+                "Dark": "{primitive.color.graphite.300}"
+              }
+            }
+          }
         }
       },
       "gap": {
@@ -3248,70 +3330,35 @@
         "$description": "Primary button pressed fill (hds#748)."
       },
       "edge": {
+        "primary": {
+          "$type": "color",
+          "$value": "{semantic.color.edge.primary}",
+          "$description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897)."
+        },
         "secondary": {
           "$type": "color",
-          "$value": "{primitive.color.neutral.400}",
-          "$description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{primitive.color.neutral.400}",
-                "Dark": "{primitive.color.neutral.725}"
-              }
-            }
-          }
+          "$value": "{semantic.color.edge.neutral}",
+          "$description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral (hds#897)."
         },
         "danger": {
           "$type": "color",
-          "$value": "{primitive.color.red.400}",
-          "$description": "Hard raised edge under a danger-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{primitive.color.red.400}",
-                "Dark": "{primitive.color.red.700}"
-              }
-            }
-          }
+          "$value": "{semantic.color.edge.danger}",
+          "$description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger (hds#897)."
         },
         "success": {
           "$type": "color",
-          "$value": "{primitive.color.green.400}",
-          "$description": "Hard raised edge under a success-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{primitive.color.green.400}",
-                "Dark": "{primitive.color.green.700}"
-              }
-            }
-          }
+          "$value": "{semantic.color.edge.success}",
+          "$description": "Hard raised edge under a success Button; aliases semantic.color.edge.success (hds#897)."
         },
         "warning": {
           "$type": "color",
-          "$value": "{primitive.color.amber.400}",
-          "$description": "Hard raised edge under a warning-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{primitive.color.amber.400}",
-                "Dark": "{primitive.color.amber.800}"
-              }
-            }
-          }
+          "$value": "{semantic.color.edge.warning}",
+          "$description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning (hds#897)."
         },
         "info": {
           "$type": "color",
-          "$value": "{primitive.color.blue.300}",
-          "$description": "Hard raised edge under an info-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-          "$extensions": {
-            "com.figma.variables": {
-              "modes": {
-                "Light": "{primitive.color.blue.300}",
-                "Dark": "{primitive.color.blue.500}"
-              }
-            }
-          }
+          "$value": "{semantic.color.edge.info}",
+          "$description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897)."
         }
       },
       "text": {

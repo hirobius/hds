@@ -182,8 +182,17 @@ export default defineConfig({
         /^lenis(\/.*)?$/,
       ],
       output: {
-        // Stable chunk names for shared internal helpers between entries.
-        chunkFileNames: 'chunks/[name]-[hash].js',
+        // One output file per source module (hds#1145). package.json#sideEffects
+        // marks every JS file side-effect free, so a consumer's bundler drops a
+        // whole module it does not import. With shared chunks it could not:
+        // esbuild and webpack keep every top-level statement they cannot prove
+        // pure (a `hds.typeStyles.ui` read, a cva() call), so a Button-only
+        // import carried most of a 84 kB chunk. Entries keep their names
+        // (dist/hirobius-ui.js, ...); the modules they re-export go under
+        // dist/m/, by source path.
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        entryFileNames: (chunk) => (chunk.isEntry ? `${chunk.name}.js` : 'm/[name].js'),
         // Pin the CSS bundle name. (Vite otherwise derives from the package
         // name `@hirobius/design-system` and emits `design-system.css`,
         // which would not match the size-limit + package.json#exports paths.)

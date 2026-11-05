@@ -51,9 +51,15 @@ const COLUMN_FLOOR = { true: 'min-w-[var(--semantic-size-tile)]', false: '' } as
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableHeaderCellVariants = /* @__PURE__ */ cva(
-  'flex items-center bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-surface-padding)] [border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-default)] break-words',
+  'flex items-center bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-surface-padding)] break-words',
   {
     variants: {
+      // The rule under the header band. Off when the table has no body rows, so the
+      // header's bottom edge is the frame's own outline, not a doubled line.
+      divider: {
+        true: '[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-default)]',
+        false: '',
+      },
       align: {
         left: 'justify-start text-left',
         center: 'justify-center text-center',
@@ -77,7 +83,13 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
       },
       floor: COLUMN_FLOOR,
     },
-    defaultVariants: { align: 'left', sticky: false, columnDivider: false, floor: true },
+    defaultVariants: {
+      align: 'left',
+      divider: true,
+      sticky: false,
+      columnDivider: false,
+      floor: true,
+    },
   },
 );
 
@@ -103,8 +115,8 @@ const tableSortButtonVariants = /* @__PURE__ */ cva(
   },
 );
 
-// Body rows breathe more than the header (scale.sm, 16px, where the header keeps
-// component.medium) and carry thin rules both ways: `divider` under every row but the
+// Body rows breathe more than the header (scale.sm: 20px at the comfortable density;
+// compact rows drop to scale.xs, 8px), where the header keeps component.medium and carry thin rules both ways: `divider` under every row but the
 // last, `columnDivider` before every cell but the first. No zebra fill.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + row/column divider border tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableDataCellVariants = /* @__PURE__ */ cva(
@@ -157,10 +169,14 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
   },
 );
 
-// The frame (a Surface with no fill) owns the rounded corners; the scroll region inside it
-// owns the scrolling. No outer border (hds#891 soft surfaces): the raised header and the row
-// dividers inside carry the structure.
-const tableFrameClass = 'bg-transparent';
+// The frame (a Surface with no fill) owns the full outline and the rounded corners, and clips
+// its content to them; the scroll region inside it owns the scrolling. Table is the one
+// container that keeps a resting outline (owner decision hds#1198, reversing hds#891 for
+// Table only): 1px border.default all round. The raised header and the row dividers stay
+// inside it, and the last row draws no divider, so the bottom edge is the frame's line alone.
+// `border-solid` replaces Surface's `border-none` (tailwind-merge keeps the later style).
+const tableFrameClass =
+  'bg-transparent border-solid [border-width:var(--semantic-borderWidth-default)] border-[color:var(--semantic-color-border-default)]';
 
 // `relative` makes the region the containing block for absolutely positioned content
 // (a link's `sr-only` label): without it that content escapes the scroller and widens
@@ -283,6 +299,7 @@ function TableHeaderCell({
   columnIndex,
   density,
   stickyHeader,
+  hasRows,
   ariaSort,
   children,
 }: {
@@ -290,6 +307,7 @@ function TableHeaderCell({
   columnIndex: number;
   density: TableDensity | undefined;
   stickyHeader: boolean | undefined;
+  hasRows: boolean;
   ariaSort?: TableSortDirection;
   children: ReactNode;
 }) {
@@ -301,6 +319,7 @@ function TableHeaderCell({
         tableHeaderCellVariants({
           align: column.align ?? 'left',
           density: density ?? 'follow',
+          divider: hasRows,
           sticky: Boolean(stickyHeader),
           columnDivider: columnIndex > 0,
           floor: !column.width,
@@ -441,7 +460,13 @@ export function Table({
              */}
             <div role="row" style={{ display: 'contents' }}>
               {columns.map((column, columnIndex) => {
-                const cellProps = { column, columnIndex, density, stickyHeader };
+                const cellProps = {
+                  column,
+                  columnIndex,
+                  density,
+                  stickyHeader,
+                  hasRows: rows.length > 0,
+                };
                 if (!column.sortable) {
                   return (
                     <TableHeaderCell key={column.key} {...cellProps}>
