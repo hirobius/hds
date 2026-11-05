@@ -45,6 +45,8 @@ node scripts/check-tests-with-code.mjs
 # Tiered gate (ops#1057; rule in scripts/lib/gate-tier.mjs): docs-only diffs
 # run no tests; small diffs run eslint on changed files + typecheck + vitest
 # related; deps, build/test config, tokens/theme, scripts/, >25 files or
-# HDS_FULL_GATE=1 run the full chain (check:fast + pnpm test + smoke:consumer).
-echo "Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + test + smoke)…"
+# HDS_FULL_GATE=1 run the full tier (check:fast + tests + smoke:consumer). The
+# full tier's tests are only the ones the diff reaches (scripts/lib/test-lanes.mjs,
+# hds#1090); shared config, tokens, generators or hooks still run the whole suite.
+echo "Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + affected tests + smoke)…"
 node scripts/pre-push-gate.mjs

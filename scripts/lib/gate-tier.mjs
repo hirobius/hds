@@ -6,9 +6,11 @@
  *   fast  small, low-risk diff: eslint on changed files + typecheck + `vitest related`.
  *   full  check:fast + the test stage + smoke:consumer. Fires on any FULL_GATE_PATTERNS
  *         match, more than FULL_GATE_FILE_LIMIT files, HDS_FULL_GATE=1, or an unknown diff.
- *         The test stage is the shared lane selection (lib/test-lanes.mjs, #1090):
- *         fast lane + path-triggered heavy subsets, failing safe to the whole
- *         suite (`pnpm test`) when the diff touches the gate mechanism itself.
+ *         The test stage is the shared selection (lib/test-lanes.mjs, #1090):
+ *         pretest + only the tests the diff reaches (vitest related, tests that
+ *         name a changed file, path-triggered heavy files), failing safe to the
+ *         whole suite (`pnpm test` = `pnpm test:full`) on shared config, tokens, generators,
+ *         test setup or the gate/hook mechanism.
  *
  * @module gate-tier
  */
@@ -16,7 +18,7 @@
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { planTestCommands, readHeavyFiles } from './test-lanes.mjs';
+import { planTestCommands, readHeavyFiles, readTestIndex } from './test-lanes.mjs';
 
 export const FULL_GATE_FILE_LIMIT = 25;
 
@@ -98,7 +100,8 @@ export function planGate(tier, files) {
     // merge-base lookup failed) — pass null so the lane selection fails
     // safe to the whole suite. A genuinely empty diff classifies as docs
     // and never reaches this branch.
-    const { commands } = planTestCommands(files?.length ? files : null, readHeavyFiles());
+    const known = files?.length ? files : null;
+    const { commands } = planTestCommands(known, readHeavyFiles(), known ? readTestIndex() : []);
     return ['pnpm check:fast', ...commands, 'pnpm smoke:consumer'];
   }
   if (tier === 'docs') return [];
