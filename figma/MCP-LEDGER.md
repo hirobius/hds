@@ -863,18 +863,183 @@ Calls logged for 2026-11-04: 6 of 200 (6).
 
 Draw CommandPalette and Sheet (with Sheet.Trigger, Sheet.Title, Sheet.Description, Sheet.Close) for the hds#801 coverage gate. Staging draft `C85ZXnwtVc4AteeIOZfXRC`, then ingest to the library `2VgBbVpKiDnu0aftJEVyBQ`. No publish, no delete in the library.
 
-| #   | Time (UTC) | Tool                                                | Kind | Purpose                                                                                                                              | Result |
+| # | Time (UTC) | Tool | Kind | Purpose | Result |
 | --- | ---------- | --------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | 17:25      | `get_figma_skill` (figma-use SKILL.md)              | read | Mandatory skill load                                                                                                                 |        | OK                                                                                                                                                 |
-| 2   | 17:25      | `get_figma_skill` (figma-generate-library SKILL.md) | read | Skill load required by figma/README.md                                                                                               |        | OK                                                                                                                                                 |
-| 3   | 17:25      | `create_session`                                    | read | Open the file session (HDS Staging C85ZXnwtVc4AteeIOZfXRC)                                                                           |        | OK; session 98f4658b                                                                                                                               |
-| 4   | 17:25      | `use_figma`                                         | read | Library 2VgBbVpKiDnu0aftJEVyBQ: list pages; read Dialog 93:27 and Menu structure, bindings, styles and variable keys                 |        | OK. Pages Sheet 2265:2 and CommandPalette 2264:2 exist; Dialog 93:27 conventions read                                                              |
-| 5   | 17:26      | `use_figma`                                         | read | Library: list top-level nodes on page Sheet 2265:2                                                                                   |        | OK. Sheet set 2265:119 (4 variants) and parts 2265:3, 2265:14, 2265:16, 2265:18 already drawn                                                      |
-| 6   | 17:26      | `use_figma`                                         | read | Library: list top-level nodes on page CommandPalette 2264:2                                                                          |        | OK. CommandPalette set 2264:67 (3 variants) and spec sheet 2335:6392 already drawn                                                                 |
-| 7   | 17:26      | `get_screenshot`                                    | read | Library: Sheet page 2265:2 (existing Sheet 2265:119 and parts 2265:3, :14, :16, :18), check against code                             |        | OK; matches code (Phone and Desktop, Actions and Footer)                                                                                           |
-| 8   | 17:26      | `get_screenshot`                                    | read | Library: CommandPalette set 2264:67, check against code                                                                              |        | OK; matches code (Results, Empty, Argument)                                                                                                        |
-| 9   | 17:26      | `use_figma`                                         | read | Library: full descriptions, variant names, defaultVariant and text styles of 2265:119, 2265:3, 2265:14, 2265:16, 2265:18 and 2264:67 |        | OK. 0 raw solid fills, 0 unstyled text; defaults Layout=Phone, Content=Actions and State=Results. No draw needed, so no staging draft and no write |
+| 1 | 17:25 | `get_figma_skill` (figma-use SKILL.md) | read | Mandatory skill load | | OK |
+| 2 | 17:25 | `get_figma_skill` (figma-generate-library SKILL.md) | read | Skill load required by figma/README.md | | OK |
+| 3 | 17:25 | `create_session` | read | Open the file session (HDS Staging C85ZXnwtVc4AteeIOZfXRC) | | OK; session 98f4658b |
+| 4 | 17:25 | `use_figma` | read | Library 2VgBbVpKiDnu0aftJEVyBQ: list pages; read Dialog 93:27 and Menu structure, bindings, styles and variable keys | | OK. Pages Sheet 2265:2 and CommandPalette 2264:2 exist; Dialog 93:27 conventions read |
+| 5 | 17:26 | `use_figma` | read | Library: list top-level nodes on page Sheet 2265:2 | | OK. Sheet set 2265:119 (4 variants) and parts 2265:3, 2265:14, 2265:16, 2265:18 already drawn |
+| 6 | 17:26 | `use_figma` | read | Library: list top-level nodes on page CommandPalette 2264:2 | | OK. CommandPalette set 2264:67 (3 variants) and spec sheet 2335:6392 already drawn |
+| 7 | 17:26 | `get_screenshot` | read | Library: Sheet page 2265:2 (existing Sheet 2265:119 and parts 2265:3, :14, :16, :18), check against code | | OK; matches code (Phone and Desktop, Actions and Footer) |
+| 8 | 17:26 | `get_screenshot` | read | Library: CommandPalette set 2264:67, check against code | | OK; matches code (Results, Empty, Argument) |
+| 9 | 17:26 | `use_figma` | read | Library: full descriptions, variant names, defaultVariant and text styles of 2265:119, 2265:3, 2265:14, 2265:16, 2265:18 and 2264:67 | | OK. 0 raw solid fills, 0 unstyled text; defaults Layout=Phone, Content=Actions and State=Results. No draw needed, so no staging draft and no write |
 
 **Session total: 9 calls** (0 writes).
 
 Calls logged for 2026-11-05: 9 of 200 (9).
+
+## 2026-11-05 · hds#801 collect Sync receipt on 0.33.0 main 7b649a2 (library `2VgBbVpKiDnu0aftJEVyBQ`)
+
+| #   | Time (UTC) | Tool             | Kind | Purpose             | Result                                                             |
+| --- | ---------- | ---------------- | ---- | ------------------- | ------------------------------------------------------------------ |
+| 1   | 17:23      | `create_session` | read | open file session   | OK                                                                 |
+| 2   | 17:24      | `use_figma`      | read | `receipt.js` PAGE 0 | OK; head pages 1, post 814a6e39, base 737344cb, live 603 variables |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-05: 2 of 200 (2).
+
+### 2026-11-05 — prune pre-check (session 9b0192f2), read-only
+
+| #   | Time (UTC) | Tool             | Kind | Purpose                                           | Result                                                                                |
+| --- | ---------- | ---------------- | ---- | ------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| 1   | —          | `create_session` | read | open file session                                 | OK                                                                                    |
+| 2   | —          | `use_figma`      | read | find nav/* + button/edge/primary, aliases, styles | OK; 8 targets (incl. nav/paddingY), 2 aliases from Button tone primary/edge, 0 styles |
+| 3   | —          | `use_figma`      | read | bound nodes on NavList page                       | OK; 0                                                                                 |
+| 4   | —          | `use_figma`      | read | bound nodes on Button page                        | OK; 1056 bindings                                                                     |
+
+Session total: 4 calls. No writes. No deletes.
+
+Calls logged for 2026-11-05: 6 of 200.
+
+### 2026-11-05 — Button v2 swap (session 3d0f1afd), writes approved by Adrian
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                    | Result                                                |
+| --- | ---------- | ---------------- | ----- | ---------------------------------------------------------- | ----------------------------------------------------- |
+| 1   | —          | `create_session` | read  | open file session                                          | OK                                                    |
+| 2   | —          | `use_figma`      | read  | list pages; inspect 28:138, 2399:11077, 2399:26744         | OK; 84 pages                                          |
+| 3   | —          | `use_figma`      | read  | variant options, Button tone collection                    | OK; 6 tone modes                                      |
+| 4   | —          | `use_figma`      | read  | inventory old Button instances (getInstancesAsync)         | OK; 200 instances (160 top, 40 nested), 14 icon-only  |
+| 5   | —          | `use_figma`      | write | swap top-level old Button instances to v2 / IconButton     | OK; 160 swapped (149 Button, 11 IconButton), 0 errors |
+| 6   | —          | `use_figma`      | read  | verify 0 old instances left; list nav/* vars               | OK; 0 left; 7 nav vars                                |
+| 7   | —          | `use_figma`      | read  | scan all pages for nav/* bindings                          | OK; 16 nodes (2 Disclosure, 14 Archive)               |
+| 8   | —          | `use_figma`      | write | create page "Archive / Deprecated" 2482:37190; move 28:138 | OK                                                    |
+| 9   | —          | `use_figma`      | read  | find sheet frames for screenshots                          | OK                                                    |
+| 10  | —          | `get_screenshot` | read  | Toast 93:367                                               | OK                                                    |
+| 11  | —          | `get_screenshot` | read  | FormActions 2075:87                                        | OK                                                    |
+| 12  | —          | `get_screenshot` | read  | ListItem 2352:301                                          | OK                                                    |
+
+Session total: 12 calls (1 create_session, 8 use_figma: 6 read + 2 write, 3 get_screenshot). No publish. No variable deleted. 0 rebinds.
+
+## Session ea973289 (11-05) — owner-approved clean slate 11-05
+
+| # | tool | kind | target | reason | result |
+| 1 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | owner-approved clean slate 11-05 | OK |
+| 2 | `use_figma` | read | 14 _NavItem IDs, parents, nav vars | owner-approved clean slate 11-05 | OK. Page mismatch found. STOPPED before writes. |
+| 3 | `use_figma` | read | all pages: bindings to VariableID:14:3-14:8 + NavItem/NavGroup instances | owner-approved clean slate 11-05 | OK. 2 _NavGroup instances (86:333, 86:352 in 86:332) still bound. STOPPED before writes. |
+| 4 | `use_figma` | write | delete 86:333, 86:352, 86:332 (_SideNav, empty), 86:258, 86:304; delete vars 14:3-14:8 | owner-approved clean slate 11-05 | OK. 0 bindings left. Kept nav/paddingY, button/edge/primary. |
+| 5 | `get_screenshot` | read | Disclosure 2337:1257 | owner-approved clean slate 11-05 | OK |
+| 6 | `get_screenshot` | read | Button v2 2399:11077 | owner-approved clean slate 11-05 | OK |
+Session total: 6 calls (1 create_session, 3 use_figma: 2 read + 1 write, 2 get_screenshot). 5 nodes deleted. 6 variables deleted. No publish.
+
+## Session fd1a0881 (11-05) — spec-sheet table style unify (STOPPED before writes)
+
+| # | tool | kind | target | reason | result |
+| 1 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | unify spec-sheet tables to code Table default | OK |
+| 2 | `use_figma` | read | page list | find sheets and kit | OK |
+| 3 | `use_figma` | read | Spec sheet kit 2290:804 tree | find shared table masters | OK. Kit says: do not edit unless task names _SpecSheet/* explicitly. |
+| 4 | `use_figma` | read | KeyMap 2315:22, TableHeaderRow 2290:831, TableRow 2290:842 | compare to code | OK |
+| 5 | `use_figma` | read | instance counts of 3 masters | scope | OK. KeyMap 31, HeaderRow 661, Row 2713. |
+Session total: 5 calls (1 create_session, 4 use_figma read). 0 writes. No publish. Stopped: kit guard + code mismatch need owner decision.
+
+## 2026-11-05 · read-only scrub audit (session 9cae8d07), library `2VgBbVpKiDnu0aftJEVyBQ`
+
+Audit: overrides, raw values, unstyled text, variable values vs code, Button props vs code, Figma-only styles and variables. All pages except "Archive" and "Archive / Deprecated". No writes. No publish.
+
+| #     | Tool              | Kind | Purpose                                                        | Result                                                |
+| ----- | ----------------- | ---- | -------------------------------------------------------------- | ----------------------------------------------------- |
+| 1     | `get_figma_skill` | read | figma-use SKILL.md                                             | OK                                                    |
+| 2     | `create_session`  | read | open file session                                              | OK; 9cae8d07                                          |
+| 3     | `use_figma`       | read | pages, collections, styles                                     | OK; 84 pages, 8 collections, 14 text, 8 effect styles |
+| 4     | `use_figma`       | read | dump all variables                                             | Refused: result over 48 KB. Nothing changed           |
+| 5-6   | `use_figma`       | read | dump variables in two parts                                    | OK; 597 variables                                     |
+| 7     | `use_figma`       | read | hash-compare every variable with the code model                | OK; 0 value differences vs full model                 |
+| 8     | `use_figma`       | read | text and effect style values                                   | OK; 14 text match; shadow/hard not in model           |
+| 9-20  | `use_figma`       | read | node scan, 82 pages in 12 calls                                | OK                                                    |
+| 21-23 | `use_figma`       | read | classify instance overrides (bound vs raw)                     | OK; 65 raw itemSpacing, 18 raw strokeWeight           |
+| 24    | `use_figma`       | read | inspect raw override samples                                   | OK                                                    |
+| 25-26 | `use_figma`       | read | Button v2 2399:11077 and IconButton 2399:26744 props, bindings | OK; match contracts; default variant differs          |
+
+Session total: 26 calls (1 skill, 1 create_session, 24 use_figma reads). No writes. No publish.
+
+## Session f22d2fd4 (11-05) — apply scrub fixes on live components, library `2VgBbVpKiDnu0aftJEVyBQ`
+
+Source: scratchpad figma-scrub.md. Spec sheet kit, 65 sheet gap overrides, Button tone, shadow/hard, button/edge/primary: not touched.
+| # | tool | kind | target | reason | result |
+| 1 | `get_figma_skill` | read | figma-use SKILL.md | load skill | OK |
+| 2 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | scrub fixes | OK; f22d2fd4 |
+| 3 | `use_figma` | read | 19 live components, 2399:11077, 2399:26744 | dry-run raw values, default variant | OK |
+| 4 | `use_figma` | write | 2399:10725, 2399:26564 layer order | default variant by layer order | No effect (default = top-left position) |
+| 5 | `use_figma` | write | same 2 nodes | restore layer index 16; read layout | OK; restored |
+| 6 | `use_figma` | read | variant grid positions | plan re-layout | OK |
+| 7 | `use_figma` | write | 2399:11077 (40 moved), 2399:26744 (32 moved) | rows secondary-first, columns md-first | OK; default = secondary/md/rest on both |
+| 8 | `use_figma` | write | 118 nodes in 18 components | bind 180 raw fields (borderWidth/xs,sm; space/*; radius/12, radius/full) | OK |
+| 9-11 | `use_figma` | read | same components | re-check, binding keys, black colour vars | OK |
+Session total: 11 calls (1 skill, 1 create_session, 6 read, 3 write). No publish.
+
+## 2026-11-05 · session clip-fix (Figma session d0ada18d)
+
+Fix bottom clipping of hard-shadow buttons. File 2VgBbVpKiDnu0aftJEVyBQ. No publish. _SpecSheet kit masters not touched.
+
+| # | tool | kind | target | reason | result |
+| 1 | `get_figma_skill` | read | figma-use SKILL.md | load skill | OK |
+| 2 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | clip fix | OK; d0ada18d |
+| 3 | `use_figma` | read | all pages | list pages | OK; 80 pages |
+| 4-7 | `use_figma` x4 | read | pages in 4 groups (no Archive, no Spec sheet kit) | scan clip overflow | 0 hits; absoluteRenderBounds is already clipped, so scan invalid |
+| 8 | `use_figma` | read | Composer 2201:277 Send ancestors | diagnose | Face drop shadow y3 clipped by Footer (clip, h44) |
+| 9-12 | `use_figma` x4 | read | same 4 page groups | rescan with bounds + effect extent | OK; 78 clip ancestors found, triaged |
+| 13 | `use_figma` | read | local variables space/* | find padding token | |
+Resumed fd1a0881 after Adrian's change: full outline + centered cells, then explicit approval to edit _SpecSheet/KeyMap, TableHeaderRow, TableRow.
+| 6 | `use_figma` | read | radius vars, Cell set, row masters | plan | OK. Masters already CENTER/HUG. |
+| 7 | `use_figma` | read | Slider anatomy rows | find cause | OK. Rows sat loose in Section Content slot (gap 40), no table frame. |
+| 8-9 | `use_figma` | write | KeyMap 2315:22 radius -> radius/scale/md, clip | full outline | OK (#8 failed on null parent, retried). |
+| 10 | `use_figma` | write | Slider: outlined Content slots | first try | Wrong target (slot). Undone in #12. |
+| 11 | `use_figma` | read | Slider row detail | debug | OK |
+| 12 | `use_figma` | write | Slider: wrap row runs in "Table" frames, outline, center | fix | OK. 6 tables. |
+| 13 | `use_figma` | write | Breadcrumb tables | fix | OK. 9 tables. |
+| 14-15 | `use_figma` | read | table count per page | scope | OK. 48 pages. |
+| 16-17 | `use_figma` | write | Icon, Button, Badge | fix | #16 failed (empty text), #17 OK. |
+| 18-21 | `use_figma` | write | other 43 pages, 4 batches | fix | OK |
+| 22 | `use_figma` | read | padding vars, text styles | plan | OK |
+| 23 | `use_figma` | write | masters 2290:831, 2290:842, KeyMap Header 2315:23, KeyMapRow 2315:17: padding surface/padding x, component/medium (head) / scale/sm (body) y; header text 2290:808, 2315:24, 2315:25 -> typography/ui, content/primary | code values | OK |
+| 24-25 | `use_figma` | read | screenshots Breadcrumb 2337:17469, Slider I2335:8267;2290:909 | verify | OK |
+Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 failed and retried). 413 tables outlined on 48 pages, 281 new Table frames. No publish.
+
+## 2026-11-05 Clip fix retry (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+- get_figma_skill figma-use, figma-generate-library: OK
+- create_session: OK, sessionId 5d88a2f0-9a1c-4099-bbfd-afaf2a9fe77c
+- use_figma (read) list pages: OK, 80 pages
+- use_figma (read) x6 inspect PageHeader/Composer: OK (first scan used renderBounds; it found 0; rewrote scan to add drop-shadow and outside-stroke extents)
+- use_figma (read) x6 parallel full scan, 79 pages (Archive 2083:2 and Archive / Deprecated 2482:37190 skipped): OK, 2879 clipping nodes, 16 flagged
+- use_figma (read) x4 inspect Callout, Form example, InlineLink, variables: OK
+- get_screenshot x6 before: OK -> shots/*-before.png
+- use_figma (write) 2121:19 clip off: OK
+- use_figma (write) 2075:119, 2075:177 clip off: OK
+- use_figma (write) Deprecated 82:260, 2075:4, 2075:14, 2075:54, 2075:60, 2075:66, 2075:71, 2075:77, 2075:82, 85:121 clip off: OK
+- use_figma (write) Form 2169:138 width FILL, 2169:102 clip off: OK
+- use_figma (write) Callout 2157:817 and set 88:85 height HUG (88:85 744 -> 933): OK
+- use_figma (write) InlineLink set 89:161 padding bound to space/px2 (2), HUG: OK
+- use_figma (read) rescan: 1 false positive left (hidden External icon in 89:161)
+- use_figma (write) 89:157, 89:159, 2295:2542 HUG (no size change): OK
+- use_figma (read) icon visibility check: OK
+- get_screenshot x6 after: OK -> shots/*-after.png
+  No publish. No _SpecSheet kit master changed.
+  Follow-up hds#1206 (body text weight 400):
+  | 26 | `use_figma` | write | Cell Body 2290:811, Body muted 2290:814, KeyMapRow Action 2315:21: bind fontWeight typography/weight/regular | code weight | No effect: text style kept 500. |
+  | 27 | `use_figma` | write | same 3 texts: remove typography/ui style, rebind ui size/lh/family/letter-spacing vars, font Regular, weight -> typography/weight/regular | code weight | OK. 400. |
+  | 28 | `use_figma` | read | Breadcrumb 2337:17469 weights + screenshot | verify | OK. 15 texts at 400, header at 500. |
+  Session total now: 28 calls. No publish.
+
+## 2026-11-05 — snapshot after release 9f57805 (#1189)
+
+| #                                                                                                      | Tool        | Kind  | Target                                                                                                                      | Why              | Result                                                                         |
+| ------------------------------------------------------------------------------------------------------ | ----------- | ----- | --------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------ |
+| 1                                                                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js (variables meta/version, meta/commit)                                              | release meta     | Refused: library 1e5a1b33 is not committed snapshot bd4c74f9. Nothing written. |
+| 2                                                                                                      | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: snapshot-diff.js                                                                            | refresh snapshot | Not made: stopped after refusal #1.                                            |
+| Re-base approved by the coordinator (cause: #1196 shadow/hover 2399:10131, shadow/pressed 2399:10132): |
+| 3                                                                                                      | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: snapshot-diff.js                                                                            | re-base snapshot | OK. live 959ed271: shadow/hover, shadow/pressed, effect style shadow/hard.     |
+| 4                                                                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 959ed271 (VariableID:2419:24 meta/version, VariableID:2475:51 meta/commit) | release meta     | OK. updated 2; post 59be756b; receipt written.                                 |
+| 5                                                                                                      | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: snapshot-diff.js against 959ed271                                                           | final snapshot   | OK. live e14b048c: meta/commit, meta/version, lastPush.                        |
+| Session total: 4 use_figma calls (1 refused write, 1 write, 2 reads). No publish.                      |

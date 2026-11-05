@@ -1,15 +1,15 @@
 {
-  "checksum": "bd4c74f9",
+  "checksum": "e14b048c",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-05T21:32:06.918Z",
+    "takenAt": "2026-11-05T22:14:02.019Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "de7d6cd7",
-      "pushedAt": "2026-11-05T21:15:12.430Z",
+      "modelHash": "ad1f26c8",
+      "pushedAt": "2026-11-05T22:11:48.942Z",
       "scope": null
     },
     "collections": [
@@ -13057,22 +13057,22 @@
             "codeSyntax": {},
             "valuesByMode": {
               "neutral": {
-                "value": 4
+                "value": 2
               },
               "quiet": {
-                "value": 4
+                "value": 2
               },
               "danger": {
-                "value": 4
+                "value": 2
               },
               "success": {
-                "value": 4
+                "value": 2
               },
               "warning": {
-                "value": 4
+                "value": 2
               },
               "info": {
-                "value": 4
+                "value": 2
               }
             }
           },
@@ -13089,22 +13089,22 @@
             "codeSyntax": {},
             "valuesByMode": {
               "neutral": {
-                "value": 1
+                "value": 0
               },
               "quiet": {
-                "value": 1
+                "value": 0
               },
               "danger": {
-                "value": 1
+                "value": 0
               },
               "success": {
-                "value": 1
+                "value": 0
               },
               "warning": {
-                "value": 1
+                "value": 0
               },
               "info": {
-                "value": 1
+                "value": 0
               }
             }
           },
@@ -13383,7 +13383,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "4e08d69"
+                "value": "9f57805"
               }
             }
           },
@@ -13468,7 +13468,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "0.33.0"
+                "value": "0.33.1"
               }
             }
           }
@@ -14034,7 +14034,7 @@
         "id": "S:8678f2e20aea1886758c0805c80f68e98cdbf429,",
         "name": "shadow/hard",
         "path": null,
-        "description": "Button shadow=\"hard\" (code default, primary + secondary, all tones; never tertiary or link). 0 3px 0, colour color/shadow/hard. Hover 4px, pressed 1px, disabled none (theme.css .hds-btn-hard).",
+        "description": "Button shadow=&quot;hard&quot; (code default, primary + secondary, all tones; never tertiary or link). 0 3px 0, colour color/shadow/hard. Hover 4px, pressed 1px, disabled none (theme.css .hds-btn-hard).",
         "effects": [
           {
             "type": "DROP_SHADOW",
