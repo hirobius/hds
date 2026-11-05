@@ -43,10 +43,12 @@ describe('dark surface ladder', () => {
     expect(contrastRatio(fg, tokenHex(surface, 'Dark'))).toBeGreaterThanOrEqual(4.5);
   });
 
-  it('leaves light mode alone', () => {
+  // Light was re-spaced on purpose in hds#522 (raised 1.04:1 -> 1.2:1);
+  // light-surfaces.test.ts owns the light ladder. These pins catch a drift.
+  it('pins the light page, raised and overlay', () => {
     expect(tokenHex(PAGE, 'Light')).toBe('#ffffff');
-    expect(tokenHex(RAISED, 'Light')).toBe('#f9fafc');
-    expect(tokenHex(OVERLAY, 'Light')).toBe('#f4f5f7');
+    expect(tokenHex(RAISED, 'Light')).toBe('#e9eaec');
+    expect(tokenHex(OVERLAY, 'Light')).toBe('#dddee0');
   });
 });
 
@@ -81,10 +83,10 @@ describe('dark state steps on the lighter raised surface', () => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 
-  it('leaves the light steps alone', () => {
-    expect(tokenHex(HOVER, 'Light')).toBe('#f4f5f7');
-    expect(tokenHex(MUTED, 'Light')).toBe('#f4f5f7');
-    expect(tokenHex(PRESSED, 'Light')).toBe('#e4e5e7');
+  it('pins the light steps (re-spaced in hds#522)', () => {
+    expect(tokenHex(HOVER, 'Light')).toBe('#dddee0');
+    expect(tokenHex(MUTED, 'Light')).toBe('#dddee0');
+    expect(tokenHex(PRESSED, 'Light')).toBe('#d3d4d6');
     expect(tokenHex(BORDER_SUBTLE, 'Light')).toBe('#f4f5f7');
   });
 });

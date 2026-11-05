@@ -129,6 +129,10 @@
       "source": "src/app/components/list.tsx",
       "cva": "listRowsVariants"
     },
+    "pagination": {
+      "source": "src/app/components/pagination.tsx",
+      "cva": "paginationListVariants"
+    },
     "card": {
       "source": "src/app/components/card.tsx",
       "cva": "cardVariants",
@@ -161,6 +165,36 @@
             "token": "semantic.space.scale.sm",
             "evidence": "gap = 'tight'",
             "note": "Card gaps through resolveSpacingValue(); its default gap='tight' is LAYOUT_GAP_NAMES.tight = SPACE_SCALE.sm."
+          }
+        }
+      ]
+    },
+    "inlineLink": {
+      "$comment": "size.*.iconSize are the Figma-side px of the icon (Figma variables have no em). Code draws iconSize (0.75em) at every size, so those three read UNUSED by design.",
+      "source": "src/app/components/inline-link.tsx",
+      "rules": [
+        {
+          "match": "size.sm.fontSize",
+          "declared": {
+            "token": "primitive.typography.size.base",
+            "evidence": "sm: 'ui'",
+            "note": "InlineLink size=sm sets the ui role through the hds-type-ui class (SIZE_ROLE), whose font-size is this step."
+          }
+        },
+        {
+          "match": "size.md.fontSize",
+          "declared": {
+            "token": "primitive.typography.size.lg",
+            "evidence": "md: 'body'",
+            "note": "InlineLink size=md sets the body role through the hds-type-body class (SIZE_ROLE), whose font-size is this step."
+          }
+        },
+        {
+          "match": "size.lg.fontSize",
+          "declared": {
+            "token": "primitive.typography.size.title",
+            "evidence": "lg: 'title'",
+            "note": "InlineLink size=lg sets the title role through the hds-type-title class (SIZE_ROLE), whose font-size is this step."
           }
         }
       ]

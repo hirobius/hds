@@ -1,4 +1,4 @@
-// motion-ok: motion delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs. The toggle label crossfade below is the one motion/react piece, timed through useHdsMotion.
+// Motion: delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs. The toggle label crossfade below is the one motion/react piece, timed through useHdsMotion.
 /**
  * @category Actions
  * @tier primitive
@@ -175,7 +175,26 @@ const buttonVariants = /* @__PURE__ */ cva(
           'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
-      { variant: 'link', className: 'px-0' },
+      // A link is plain text in every tone (owner decision 2026-11-05): a status tone keeps its
+      // text colour, but its fill, hover brightness and pressed wash are swapped out, and the
+      // base disabled fill too. Compound classes come after tone classes, so these win the merge.
+      {
+        variant: 'link',
+        className:
+          'px-0 bg-transparent hover:bg-transparent active:bg-transparent disabled:bg-transparent hover:brightness-100 dark:hover:brightness-100 active:inset-shadow-transparent',
+      },
+      // Link focus (hds#1167, matches the Figma Focus drawing): with px-0 the base box-shadow
+      // ring sat right on the glyphs and the underline. A link instead paints its ring on an
+      // ::after box that reaches space.scale.2xs (4px) past the label on each side, with the
+      // control radius (4px), then the 2px gap and the 2px role.ring outline. The ::after is
+      // absolutely positioned and the classes that draw it are all focus-visible:, so the rest
+      // box (width, padding, radius) never moves, with no negative margin. An outline also
+      // survives forced-colors mode, where a box-shadow ring is dropped.
+      {
+        variant: 'link',
+        className:
+          'relative after:pointer-events-none after:absolute after:inset-y-0 after:-inset-x-scale-2xs after:rounded-[var(--semantic-radius-control)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:after:outline-solid focus-visible:after:outline-[length:var(--hds-borderWidth-thick)] focus-visible:after:outline-ring focus-visible:after:outline-offset-2',
+      },
       {
         iconOnly: true,
         size: 'sm',
@@ -298,7 +317,7 @@ const BUTTON_EDGE = {
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
  * @a11y component required a11y:button.label-crossfade When a toggle button's text label changes, the old label is aria-hidden while it fades out, so the accessible name is the new label from the moment it changes.
  * @a11y component required gate:check-reduced-motion The toggle label crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the label swaps instantly with no overlap.
- * @a11y component required a11y:button.quiet-focus-ring The quiet tone, flush and the link variant keep the focus-visible ring of every Button.
+ * @a11y component required a11y:button.quiet-focus-ring Quiet, flush and link keep a visible focus ring (hds#1167).
  * @a11y component required a11y:button.quiet-contrast Quiet text is content.secondary and clears 4.5:1 at rest (page, raised), hovered (surface.hover) and pressed (the 5% wash), in light and dark.
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.

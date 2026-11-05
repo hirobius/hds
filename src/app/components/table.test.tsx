@@ -170,3 +170,42 @@ describe('Table — layout and restyle', () => {
     expect(region.tabIndex).toBe(0);
   });
 });
+
+describe('Table — header cell parity (hds#1009)', () => {
+  it('a sortable header cell carries the same classes and type style as a plain one in the same slot', () => {
+    for (const stickyHeader of [false, true]) {
+      for (const align of ['left', 'right'] as const) {
+        const plain = render(
+          <Table
+            stickyHeader={stickyHeader}
+            density="compact"
+            columns={[
+              { key: 'a', label: 'A' },
+              { key: 'b', label: 'B', align, width: '8rem' },
+            ]}
+            rows={rows}
+          />,
+        );
+        const plainCell = plain.container.querySelectorAll('[role="columnheader"]')[1];
+        const sorted = render(
+          <Table
+            stickyHeader={stickyHeader}
+            density="compact"
+            columns={[
+              { key: 'a', label: 'A' },
+              { key: 'b', label: 'B', align, width: '8rem', sortable: true, onSort: () => {} },
+            ]}
+            rows={rows}
+          />,
+        );
+        const sortedCell = sorted.container.querySelectorAll('[role="columnheader"]')[1];
+        expect(sortedCell.className).toBe(plainCell.className);
+        expect(sortedCell.getAttribute('style')).toBe(plainCell.getAttribute('style'));
+        expect(plainCell.getAttribute('aria-sort')).toBeNull();
+        expect(sortedCell.getAttribute('aria-sort')).toBe('none');
+        plain.unmount();
+        sorted.unmount();
+      }
+    }
+  });
+});

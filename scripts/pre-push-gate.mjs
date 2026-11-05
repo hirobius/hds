@@ -2,7 +2,7 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
  * pre-push-gate.mjs — runs the tier of the pre-push gate this branch needs.
- * Tier rule: scripts/lib/gate-tier.mjs. Force the full gate: HDS_FULL_GATE=1 git push.
+ * Tier rule: scripts/lib/gate-tier.mjs. Force the full gate and whole suite: HDS_FULL_GATE=1 git push.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -23,6 +23,7 @@ const { tier, reason } = classifyGateTier(files, process.env);
 const cmds = planGate(
   tier,
   (files ?? []).filter((f) => existsSync(f)),
+  process.env,
 );
 console.log(`pre-push gate: ${tier} tier (${reason})${cmds.length ? '' : ' — no tests to run'}`);
 for (const cmd of cmds) {

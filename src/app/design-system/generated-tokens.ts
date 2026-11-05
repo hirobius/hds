@@ -9,8 +9,11 @@ export const tokens = {
       neutral: {
         "50": "var(--primitive-color-neutral-50)",
         "100": "var(--primitive-color-neutral-100)",
+        "150": "var(--primitive-color-neutral-150)",
         "200": "var(--primitive-color-neutral-200)",
+        "250": "var(--primitive-color-neutral-250)",
         "300": "var(--primitive-color-neutral-300)",
+        "325": "var(--primitive-color-neutral-325)",
         "350": "var(--primitive-color-neutral-350)",
         "400": "var(--primitive-color-neutral-400)",
         "450": "var(--primitive-color-neutral-450)",
@@ -57,6 +60,7 @@ export const tokens = {
         "50": "var(--primitive-color-graphite-50)",
         "100": "var(--primitive-color-graphite-100)",
         "200": "var(--primitive-color-graphite-200)",
+        "250": "var(--primitive-color-graphite-250)",
         "300": "var(--primitive-color-graphite-300)",
         "400": "var(--primitive-color-graphite-400)",
         "500": "var(--primitive-color-graphite-500)",
@@ -286,6 +290,7 @@ export const tokens = {
         "280": "var(--primitive-size-width-280)",
         "512": "var(--primitive-size-width-512)",
         "760": "var(--primitive-size-width-760)",
+        "1180": "var(--primitive-size-width-1180)",
         "1200": "var(--primitive-size-width-1200)",
         "50ch": "var(--primitive-size-width-50ch)"
       }
@@ -306,6 +311,10 @@ export const tokens = {
     underline: {
       offset: "var(--primitive-underline-offset)"
     },
+    inlineIcon: {
+      size: "var(--primitive-inlineIcon-size)",
+      gap: "var(--primitive-inlineIcon-gap)"
+    },
     borderWidth: {
       xs: "var(--primitive-borderWidth-xs)",
       sm: "var(--primitive-borderWidth-sm)",
@@ -314,6 +323,7 @@ export const tokens = {
     strokeWidth: {
       "100": "var(--primitive-strokeWidth-100)",
       "150": "var(--primitive-strokeWidth-150)",
+      "175": "var(--primitive-strokeWidth-175)",
       "200": "var(--primitive-strokeWidth-200)",
       "250": "var(--primitive-strokeWidth-250)"
     }
@@ -431,7 +441,8 @@ export const tokens = {
     layout: {
       width: {
         content: "var(--semantic-layout-width-content)",
-        max: "var(--semantic-layout-width-max)"
+        max: "var(--semantic-layout-width-max)",
+        shell: "var(--semantic-layout-width-shell)"
       },
       container: {
         maxWidth: "var(--semantic-layout-container-maxWidth)"
@@ -505,6 +516,7 @@ export const tokens = {
       icon: {
         thin: "var(--semantic-borderWidth-icon-thin)",
         light: "var(--semantic-borderWidth-icon-light)",
+        medium: "var(--semantic-borderWidth-icon-medium)",
         regular: "var(--semantic-borderWidth-icon-regular)",
         bold: "var(--semantic-borderWidth-icon-bold)"
       }
@@ -695,6 +707,27 @@ export const tokens = {
       rowPadding: "var(--component-list-rowPadding)",
       rowMinHeight: "var(--component-list-rowMinHeight)",
       leadingSize: "var(--component-list-leadingSize)"
+    },
+    inlineLink: {
+      iconSize: "var(--component-inlineLink-iconSize)",
+      iconGap: "var(--component-inlineLink-iconGap)",
+      size: {
+        sm: {
+          fontSize: "var(--component-inlineLink-size-sm-fontSize)",
+          iconSize: "var(--component-inlineLink-size-sm-iconSize)"
+        },
+        md: {
+          fontSize: "var(--component-inlineLink-size-md-fontSize)",
+          iconSize: "var(--component-inlineLink-size-md-iconSize)"
+        },
+        lg: {
+          fontSize: "var(--component-inlineLink-size-lg-fontSize)",
+          iconSize: "var(--component-inlineLink-size-lg-iconSize)"
+        }
+      }
+    },
+    pagination: {
+      compactControlSize: "var(--component-pagination-compactControlSize)"
     }
   },
   role: {

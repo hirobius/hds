@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "An external InlineLink's icon now nudges up-right on hover and focus; nothing to change, and reduced motion keeps it still."
+}

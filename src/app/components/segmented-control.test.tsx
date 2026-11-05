@@ -99,3 +99,53 @@ describe('SegmentedControl overflow (hds#823)', () => {
     expect(scrollTo.mock.calls[0][0]).toEqual({ left: 180, behavior: 'auto' }); // spacing-ok: asserted scrollTo offset, not layout
   });
 });
+
+describe('SegmentedControl — indicator and description share one state (hds#1009)', () => {
+  const DESCRIBED = [
+    { value: 'list', label: 'List', description: 'Rows' },
+    { value: 'grid', label: 'Grid', description: 'Tiles' },
+  ];
+
+  function parts(name: string) {
+    const radio = screen.getByRole('radio', { name: new RegExp(name) });
+    const indicator = radio.querySelector('[aria-hidden="true"]') as HTMLElement;
+    const description = [...radio.querySelectorAll('span')].find((s) =>
+      s.className.includes('hds-type-caption'),
+    ) as HTMLElement;
+    return { indicator: indicator.className, description: description.className };
+  }
+
+  it('primary: the selected segment paints the accent fill and onAccent description', () => {
+    render(
+      <SegmentedControl aria-label="View" value="list" onChange={() => {}} options={DESCRIBED} />,
+    );
+    const on = parts('List');
+    expect(on.indicator).toContain('bg-[var(--semantic-accent-rest)]');
+    expect(on.indicator).toContain('shadow-[inset_0_-3px_0_var(--hds-edge-primary)]');
+    expect(on.indicator).not.toContain('bg-transparent');
+    expect(on.description).toContain('text-[var(--semantic-color-content-onAccent)]');
+    expect(on.description).not.toContain('text-[var(--semantic-color-content-secondary)]');
+    const off = parts('Grid');
+    expect(off.indicator).toContain('bg-transparent');
+    expect(off.description).toContain('text-[var(--semantic-color-content-secondary)]');
+  });
+
+  it('secondary: the selected segment paints the page fill and keeps the secondary description', () => {
+    render(
+      <SegmentedControl
+        aria-label="View"
+        variant="secondary"
+        value="list"
+        onChange={() => {}}
+        options={DESCRIBED}
+      />,
+    );
+    const on = parts('List');
+    expect(on.indicator).toContain('bg-[var(--semantic-color-surface-page)]');
+    expect(on.indicator).toContain(
+      'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive)]',
+    );
+    expect(on.description).toContain('text-[var(--semantic-color-content-secondary)]');
+    expect(on.description).not.toContain('onAccent');
+  });
+});

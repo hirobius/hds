@@ -317,7 +317,7 @@
     "Container": {
       "kind": "value",
       "signatures": [
-        "({ children, maxWidth, padding, style, className, }: ContainerProps): Element"
+        "({ children, maxWidth, gutter, padding, style, className, }: ContainerProps): Element"
       ]
     },
     "ContainerProps": {
@@ -539,10 +539,13 @@
     "InlineLink": {
       "kind": "value",
       "signatures": [
-        "({ href, children, externalIcon, standalone, }: InlineLinkProps): Element"
+        "({ href, children, externalIcon, standalone, size, }: InlineLinkProps): Element"
       ]
     },
     "InlineLinkProps": {
+      "kind": "type"
+    },
+    "InlineLinkSize": {
       "kind": "type"
     },
     "Input": {
@@ -930,7 +933,7 @@
     "TabsList": {
       "kind": "value",
       "signatures": [
-        "(props: Omit<TabsListProps & RefAttributes<HTMLDivElement>, \"ref\"> & RefAttributes<HTMLDivElement>): ReactNode"
+        "(props: Omit<TabsListProps & RefAttributes<HTMLDivElement> & { align?: \"start\" | undefined; }, \"ref\"> & RefAttributes<HTMLDivElement>): ReactNode"
       ]
     },
     "TabsTrigger": {
@@ -1526,6 +1529,19 @@
         "component.inlineCode.bg.$description",
         "component.inlineCode.bg.$type",
         "component.inlineCode.bg.$value",
+        "component.inlineLink",
+        "component.inlineLink.iconGap",
+        "component.inlineLink.iconGap.$description",
+        "component.inlineLink.iconGap.$type",
+        "component.inlineLink.iconGap.$value",
+        "component.inlineLink.iconSize",
+        "component.inlineLink.iconSize.$description",
+        "component.inlineLink.iconSize.$type",
+        "component.inlineLink.iconSize.$value",
+        "component.inlineLink.size",
+        "component.inlineLink.size.lg",
+        "component.inlineLink.size.md",
+        "component.inlineLink.size.sm",
         "component.input",
         "component.input.bg",
         "component.input.bg.$type",
@@ -1574,6 +1590,11 @@
         "component.nav.paddingY.$description",
         "component.nav.paddingY.$type",
         "component.nav.paddingY.$value",
+        "component.pagination",
+        "component.pagination.compactControlSize",
+        "component.pagination.compactControlSize.$description",
+        "component.pagination.compactControlSize.$type",
+        "component.pagination.compactControlSize.$value",
         "component.tag",
         "component.tag.activeBackground",
         "component.tag.activeBackground.$description",
@@ -1707,6 +1728,7 @@
         "primitive.color.graphite.$description",
         "primitive.color.graphite.100",
         "primitive.color.graphite.200",
+        "primitive.color.graphite.250",
         "primitive.color.graphite.300",
         "primitive.color.graphite.400",
         "primitive.color.graphite.50",
@@ -1759,8 +1781,11 @@
         "primitive.color.neutral",
         "primitive.color.neutral.$description",
         "primitive.color.neutral.100",
+        "primitive.color.neutral.150",
         "primitive.color.neutral.200",
+        "primitive.color.neutral.250",
         "primitive.color.neutral.300",
+        "primitive.color.neutral.325",
         "primitive.color.neutral.350",
         "primitive.color.neutral.400",
         "primitive.color.neutral.450",
@@ -1839,6 +1864,15 @@
         "primitive.grid.columns.1",
         "primitive.grid.columns.2",
         "primitive.grid.columns.3",
+        "primitive.inlineIcon",
+        "primitive.inlineIcon.$description",
+        "primitive.inlineIcon.$type",
+        "primitive.inlineIcon.gap",
+        "primitive.inlineIcon.gap.$description",
+        "primitive.inlineIcon.gap.$value",
+        "primitive.inlineIcon.size",
+        "primitive.inlineIcon.size.$description",
+        "primitive.inlineIcon.size.$value",
         "primitive.radius",
         "primitive.radius.$type",
         "primitive.radius.0",
@@ -1944,6 +1978,7 @@
         "primitive.size.interactive.min",
         "primitive.size.interactive.minCompact",
         "primitive.size.width",
+        "primitive.size.width.1180",
         "primitive.size.width.1200",
         "primitive.size.width.280",
         "primitive.size.width.50ch",
@@ -2002,6 +2037,9 @@
         "primitive.strokeWidth.150",
         "primitive.strokeWidth.150.$description",
         "primitive.strokeWidth.150.$value",
+        "primitive.strokeWidth.175",
+        "primitive.strokeWidth.175.$description",
+        "primitive.strokeWidth.175.$value",
         "primitive.strokeWidth.200",
         "primitive.strokeWidth.200.$description",
         "primitive.strokeWidth.200.$value",
@@ -2216,6 +2254,7 @@
         "semantic.borderWidth.icon.$type",
         "semantic.borderWidth.icon.bold",
         "semantic.borderWidth.icon.light",
+        "semantic.borderWidth.icon.medium",
         "semantic.borderWidth.icon.regular",
         "semantic.borderWidth.icon.thin",
         "semantic.color",
@@ -2303,6 +2342,7 @@
         "semantic.layout.width",
         "semantic.layout.width.content",
         "semantic.layout.width.max",
+        "semantic.layout.width.shell",
         "semantic.link",
         "semantic.link.$type",
         "semantic.link.underlineOffset",
@@ -3230,6 +3270,9 @@
         "(props: PageHeaderProps & RefAttributes<HTMLElement>): ReactNode"
       ]
     },
+    "PageHeaderDescriptionPlacement": {
+      "kind": "type"
+    },
     "PageHeaderLevel": {
       "kind": "type"
     },
@@ -3700,6 +3743,7 @@
         "primitive.color.graphite",
         "primitive.color.graphite.100",
         "primitive.color.graphite.200",
+        "primitive.color.graphite.250",
         "primitive.color.graphite.300",
         "primitive.color.graphite.400",
         "primitive.color.graphite.50",
@@ -3748,8 +3792,11 @@
         "primitive.color.mauve.950",
         "primitive.color.neutral",
         "primitive.color.neutral.100",
+        "primitive.color.neutral.150",
         "primitive.color.neutral.200",
+        "primitive.color.neutral.250",
         "primitive.color.neutral.300",
+        "primitive.color.neutral.325",
         "primitive.color.neutral.350",
         "primitive.color.neutral.400",
         "primitive.color.neutral.450",
@@ -3805,6 +3852,9 @@
         "primitive.grid.columns.1",
         "primitive.grid.columns.2",
         "primitive.grid.columns.3",
+        "primitive.inlineIcon",
+        "primitive.inlineIcon.gap",
+        "primitive.inlineIcon.size",
         "primitive.radius",
         "primitive.radius.0",
         "primitive.radius.12",
@@ -3840,6 +3890,7 @@
         "primitive.size.interactive.min",
         "primitive.size.interactive.minCompact",
         "primitive.size.width",
+        "primitive.size.width.1180",
         "primitive.size.width.1200",
         "primitive.size.width.280",
         "primitive.size.width.50ch",
@@ -3869,6 +3920,7 @@
         "primitive.strokeWidth",
         "primitive.strokeWidth.100",
         "primitive.strokeWidth.150",
+        "primitive.strokeWidth.175",
         "primitive.strokeWidth.200",
         "primitive.strokeWidth.250",
         "primitive.typography",

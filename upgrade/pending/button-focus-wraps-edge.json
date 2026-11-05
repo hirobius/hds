@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A focused hard-edge Button keeps its edge and its focus ring now wraps the edge too; no code change is needed."
+}

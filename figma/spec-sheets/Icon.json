@@ -51,6 +51,7 @@
       "values": [
         "fill",
         "bold",
+        "medium",
         "light",
         "thin",
         "regular",
