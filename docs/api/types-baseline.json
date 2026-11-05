@@ -317,7 +317,7 @@
     "Container": {
       "kind": "value",
       "signatures": [
-        "({ children, maxWidth, padding, style, className, }: ContainerProps): Element"
+        "({ children, maxWidth, gutter, padding, style, className, }: ContainerProps): Element"
       ]
     },
     "ContainerProps": {
@@ -933,7 +933,7 @@
     "TabsList": {
       "kind": "value",
       "signatures": [
-        "(props: Omit<TabsListProps & RefAttributes<HTMLDivElement>, \"ref\"> & RefAttributes<HTMLDivElement>): ReactNode"
+        "(props: Omit<TabsListProps & RefAttributes<HTMLDivElement> & { align?: \"start\" | undefined; }, \"ref\"> & RefAttributes<HTMLDivElement>): ReactNode"
       ]
     },
     "TabsTrigger": {
@@ -1720,6 +1720,7 @@
         "primitive.color.graphite.$description",
         "primitive.color.graphite.100",
         "primitive.color.graphite.200",
+        "primitive.color.graphite.250",
         "primitive.color.graphite.300",
         "primitive.color.graphite.400",
         "primitive.color.graphite.50",
@@ -1772,8 +1773,11 @@
         "primitive.color.neutral",
         "primitive.color.neutral.$description",
         "primitive.color.neutral.100",
+        "primitive.color.neutral.150",
         "primitive.color.neutral.200",
+        "primitive.color.neutral.250",
         "primitive.color.neutral.300",
+        "primitive.color.neutral.325",
         "primitive.color.neutral.350",
         "primitive.color.neutral.400",
         "primitive.color.neutral.450",
@@ -1966,6 +1970,7 @@
         "primitive.size.interactive.min",
         "primitive.size.interactive.minCompact",
         "primitive.size.width",
+        "primitive.size.width.1180",
         "primitive.size.width.1200",
         "primitive.size.width.280",
         "primitive.size.width.50ch",
@@ -2324,6 +2329,7 @@
         "semantic.layout.width",
         "semantic.layout.width.content",
         "semantic.layout.width.max",
+        "semantic.layout.width.shell",
         "semantic.link",
         "semantic.link.$type",
         "semantic.link.underlineOffset",
@@ -3707,6 +3713,7 @@
         "primitive.color.graphite",
         "primitive.color.graphite.100",
         "primitive.color.graphite.200",
+        "primitive.color.graphite.250",
         "primitive.color.graphite.300",
         "primitive.color.graphite.400",
         "primitive.color.graphite.50",
@@ -3755,8 +3762,11 @@
         "primitive.color.mauve.950",
         "primitive.color.neutral",
         "primitive.color.neutral.100",
+        "primitive.color.neutral.150",
         "primitive.color.neutral.200",
+        "primitive.color.neutral.250",
         "primitive.color.neutral.300",
+        "primitive.color.neutral.325",
         "primitive.color.neutral.350",
         "primitive.color.neutral.400",
         "primitive.color.neutral.450",
@@ -3850,6 +3860,7 @@
         "primitive.size.interactive.min",
         "primitive.size.interactive.minCompact",
         "primitive.size.width",
+        "primitive.size.width.1180",
         "primitive.size.width.1200",
         "primitive.size.width.280",
         "primitive.size.width.50ch",

@@ -13,8 +13,11 @@ declare module 'react' {
   interface CSSProperties {
     '--primitive-color-neutral-50'?: string | undefined;
     '--primitive-color-neutral-100'?: string | undefined;
+    '--primitive-color-neutral-150'?: string | undefined;
     '--primitive-color-neutral-200'?: string | undefined;
+    '--primitive-color-neutral-250'?: string | undefined;
     '--primitive-color-neutral-300'?: string | undefined;
+    '--primitive-color-neutral-325'?: string | undefined;
     '--primitive-color-neutral-350'?: string | undefined;
     '--primitive-color-neutral-400'?: string | undefined;
     '--primitive-color-neutral-450'?: string | undefined;
@@ -53,6 +56,7 @@ declare module 'react' {
     '--primitive-color-graphite-50'?: string | undefined;
     '--primitive-color-graphite-100'?: string | undefined;
     '--primitive-color-graphite-200'?: string | undefined;
+    '--primitive-color-graphite-250'?: string | undefined;
     '--primitive-color-graphite-300'?: string | undefined;
     '--primitive-color-graphite-400'?: string | undefined;
     '--primitive-color-graphite-500'?: string | undefined;
@@ -229,6 +233,7 @@ declare module 'react' {
     '--primitive-size-width-280'?: string | undefined;
     '--primitive-size-width-512'?: string | undefined;
     '--primitive-size-width-760'?: string | undefined;
+    '--primitive-size-width-1180'?: string | undefined;
     '--primitive-size-width-1200'?: string | undefined;
     '--primitive-size-width-50ch'?: string | undefined;
     '--primitive-grid-columns-1'?: string | undefined;
@@ -329,6 +334,7 @@ declare module 'react' {
     '--semantic-space-sidebar-railPadding'?: string | undefined;
     '--semantic-layout-width-content'?: string | undefined;
     '--semantic-layout-width-max'?: string | undefined;
+    '--semantic-layout-width-shell'?: string | undefined;
     '--semantic-layout-container-maxWidth'?: string | undefined;
     '--semantic-layout-content-maxWidth'?: string | undefined;
     '--semantic-layout-prose-maxWidth'?: string | undefined;

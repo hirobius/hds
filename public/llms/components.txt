@@ -286,7 +286,8 @@ Composer — prompt and capture box that grows with its text and folds long past
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
   - children: ReactNode
   - className: string
-  - maxWidth: 'content' | 'max' = max
+  - gutter: boolean = false
+  - maxWidth: 'content' | 'shell' | 'max' = max
   - padding: string = var(--semantic-space-surface-padding)
   - style: CSSProperties
 
@@ -804,6 +805,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
 
 ### TabsList
 The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look absent. The …
+  - align: "start"
   - asChild: boolean
   - loop: boolean
 

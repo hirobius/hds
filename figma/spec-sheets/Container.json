@@ -1,6 +1,6 @@
 {
   "component": "Container",
-  "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+  "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'shell' (1180px app shell) | 'max' (1200px full layout) - gutter: inline padding from the region gutter token (40px comfortable, 24px compact, smaller below sm) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
   "docsPage": "/docs/components/utilities",
   "figmaLink": null,
   "anatomy": [
@@ -26,10 +26,16 @@
       "optional": true
     },
     {
+      "name": "gutter",
+      "type": "boolean",
+      "default": false
+    },
+    {
       "name": "maxWidth",
       "type": "enum",
       "values": [
         "content",
+        "shell",
         "max"
       ],
       "default": "max"

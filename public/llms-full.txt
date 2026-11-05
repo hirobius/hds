@@ -970,7 +970,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (505 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (511 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 
@@ -1244,7 +1244,8 @@ Composer — prompt and capture box that grows with its text and folds long past
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
   - children: ReactNode
   - className: string
-  - maxWidth: 'content' | 'max' = max
+  - gutter: boolean = false
+  - maxWidth: 'content' | 'shell' | 'max' = max
   - padding: string = var(--semantic-space-surface-padding)
   - style: CSSProperties
 
@@ -1762,6 +1763,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
 
 ### TabsList
 The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look absent. The …
+  - align: "start"
   - asChild: boolean
   - loop: boolean
 

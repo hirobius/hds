@@ -1213,11 +1213,18 @@
       "values": null,
       "default": null
     },
+    "gutter": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
+    },
     "maxWidth": {
-      "type": "'content' | 'max'",
+      "type": "'content' | 'shell' | 'max'",
       "optional": true,
       "values": [
         "content",
+        "shell",
         "max"
       ],
       "default": "max"
@@ -3649,6 +3656,14 @@
     }
   },
   "TabsList": {
+    "align": {
+      "type": "\"start\"",
+      "optional": true,
+      "values": [
+        "start"
+      ],
+      "default": null
+    },
     "asChild": {
       "type": "boolean",
       "optional": true,

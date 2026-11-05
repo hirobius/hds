@@ -333,42 +333,45 @@
       "id": "value-changed/--semantic-color-surface-muted",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Dark muted fills (surface.muted) moved to the new neutral.750 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode.",
+      "plain": "Dark muted fills (surface.muted) moved to the new neutral.750 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode; light muted fills also moved a step darker (neutral.250).",
       "detect": {
         "cssVars": ["--semantic-color-surface-muted"],
         "cssVarWrites": ["--semantic-color-surface-muted"]
       },
       "facts": [
         "css-var-changed:--semantic-color-surface-muted:[data-theme=\"dark\"]",
-        "css-var-changed:--semantic-color-surface-muted:[data-theme=dark]"
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-muted::root"
       ]
     },
     {
       "id": "value-changed/--semantic-color-surface-selected",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Dark selected fills (surface.selected: the active tab, a checked row) moved to the new neutral.725 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode.",
+      "plain": "Dark selected fills (surface.selected: the active tab, a checked row) moved to the new neutral.725 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode; light selected fills also moved darker (neutral.325).",
       "detect": {
         "cssVars": ["--semantic-color-surface-selected"],
         "cssVarWrites": ["--semantic-color-surface-selected"]
       },
       "facts": [
         "css-var-changed:--semantic-color-surface-selected:[data-theme=\"dark\"]",
-        "css-var-changed:--semantic-color-surface-selected:[data-theme=dark]"
+        "css-var-changed:--semantic-color-surface-selected:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-selected::root"
       ]
     },
     {
       "id": "value-changed/--semantic-color-surface-raised",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Dark cards (surface.raised) moved to the new neutral.825 step so they stay distinct from the midnight page; if you set this variable yourself, check your cards in dark mode.",
+      "plain": "Dark cards (surface.raised) moved to the new neutral.825 step so they stay distinct from the midnight page; if you set this variable yourself, check your cards in dark mode; light cards also moved a step darker (neutral.150) so they read against the page.",
       "detect": {
         "cssVars": ["--semantic-color-surface-raised"],
         "cssVarWrites": ["--semantic-color-surface-raised"]
       },
       "facts": [
         "css-var-changed:--semantic-color-surface-raised:[data-theme=\"dark\"]",
-        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]"
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-raised::root"
       ]
     }
   ]
