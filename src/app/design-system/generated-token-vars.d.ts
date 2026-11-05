@@ -245,6 +245,7 @@ declare module 'react' {
     '--primitive-borderWidth-md'?: string | undefined;
     '--primitive-strokeWidth-100'?: string | undefined;
     '--primitive-strokeWidth-150'?: string | undefined;
+    '--primitive-strokeWidth-175'?: string | undefined;
     '--primitive-strokeWidth-200'?: string | undefined;
     '--primitive-strokeWidth-250'?: string | undefined;
     '--hds-motion-productive-duration'?: string | undefined;
@@ -448,6 +449,7 @@ declare module 'react' {
     '--semantic-borderWidth-emphasis'?: string | undefined;
     '--semantic-borderWidth-icon-thin'?: string | undefined;
     '--semantic-borderWidth-icon-light'?: string | undefined;
+    '--semantic-borderWidth-icon-medium'?: string | undefined;
     '--semantic-borderWidth-icon-regular'?: string | undefined;
     '--semantic-borderWidth-icon-bold'?: string | undefined;
     '--semantic-link-underlineThickness'?: string | undefined;

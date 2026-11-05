@@ -316,6 +316,7 @@ export const tokenValues = {
     strokeWidth: {
       "100": "1px",
       "150": "1.5px",
+      "175": "1.75px",
       "200": "2px",
       "250": "2.5px"
     }

@@ -483,7 +483,7 @@ Icon — semantic icon wrapper for Lucide icons.
   - icon: LucideIcon
   - size: IconSize = small
   - style: CSSProperties
-  - weight: "fill" | "bold" | "light" | "thin" | "regular" | "duotone"
+  - weight: "fill" | "bold" | "medium" | "light" | "thin" | "regular" | "duotone"
 
 ### InlineCode
 InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
