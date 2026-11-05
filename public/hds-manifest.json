@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T09:33:54.680Z",
+  "generated": "2026-11-05T08:46:52.011Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -1381,6 +1381,7 @@
           "values": [
             "fill",
             "bold",
+            "medium",
             "light",
             "thin",
             "regular",
@@ -1402,6 +1403,7 @@
           "values": [
             "fill",
             "bold",
+            "medium",
             "light",
             "thin",
             "regular",
@@ -14575,6 +14577,13 @@
         "value": "1.5px"
       },
       {
+        "path": "primitive.strokeWidth.175",
+        "cssVar": "--primitive-strokeWidth-175",
+        "type": "dimension",
+        "description": "1.75-unit stroke.",
+        "value": "1.75px"
+      },
+      {
         "path": "primitive.strokeWidth.200",
         "cssVar": "--primitive-strokeWidth-200",
         "type": "dimension",
@@ -15865,6 +15874,14 @@
         "description": "Light icon stroke (1.5).",
         "alias": "{primitive.strokeWidth.150}",
         "resolvedValue": "1.5px"
+      },
+      {
+        "path": "semantic.borderWidth.icon.medium",
+        "cssVar": "--semantic-borderWidth-icon-medium",
+        "type": "dimension",
+        "description": "Medium icon stroke (1.75), between light and regular.",
+        "alias": "{primitive.strokeWidth.175}",
+        "resolvedValue": "1.75px"
       },
       {
         "path": "semantic.borderWidth.icon.regular",
