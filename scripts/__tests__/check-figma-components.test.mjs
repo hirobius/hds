@@ -24,9 +24,7 @@ const contract = buildContract('Button');
 
 describe('check-figma-components', () => {
   it('committed contract is what code generates', () => {
-    expect(readFileSync(path.join(REPO, 'figma/contracts/Button.json'), 'utf8')).toBe(
-      JSON.stringify(contract, null, 2) + '\n',
-    );
+    expect(json(path.join(REPO, 'figma/contracts/Button.json'))).toEqual(contract);
   });
 
   it('contract encodes the condensed shape', () => {

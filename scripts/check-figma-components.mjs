@@ -335,7 +335,11 @@ export function run(argv, { log = console.log, error = console.error } = {}) {
   for (const n of names) {
     const contract = buildContract(n, { root });
     const cPath = join(root, 'figma/contracts', `${n}.json`);
-    if (!existsSync(cPath) || readFileSync(cPath, 'utf8') !== pretty(contract)) {
+    // Compared as data, not text: lint-staged reformats committed JSON.
+    if (
+      !existsSync(cPath) ||
+      JSON.stringify(stable(readJson(cPath))) !== JSON.stringify(contract)
+    ) {
       error(
         `${n}: figma/contracts/${n}.json is stale or missing. Run: node scripts/check-figma-components.mjs --write`,
       );
