@@ -578,11 +578,9 @@ html[data-docs-corners='sharp'] {
   --component-badge-radius: 0px;
   --component-card-radius: 0px;
 }
-/* HDS's rounded-lg is calc(--role-radius + 4px) (and .hds-card the same), so Corners=Sharp still
-   leaves 4px on HDS Card, Alert and SegmentedControl; plain `rounded` is the --hds-radius-4
-   primitive (Kbd, Skeleton text). Square just those, docs-only (hds#806). The Fumadocs chrome and
-   every other rounded-* class follow the tokens above. */
-html[data-docs-corners='sharp'] :is(.rounded, .rounded-lg, .hds-card) {
+/* Plain `rounded` is the --hds-radius-4 primitive (Kbd, Skeleton text), so square it here.
+   rounded-lg and .hds-card follow --role-radius (0 above), like every other rounded-* class. */
+html[data-docs-corners='sharp'] .rounded {
   border-radius: 0;
 }
 

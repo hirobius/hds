@@ -132,7 +132,12 @@ export function evalCss(expr, env) {
       return value ?? 'NaNpx';
     });
     if (bad) return { value: null };
-    const m = /^\s*(-?[\d.]+)px\s*(?:([+-])\s*(-?[\d.]+)px\s*)?$/.exec(flat);
+    // min()/max() of px values (rounded-lg clamps its +4px step, hds#806).
+    const folded = flat.replace(
+      /\b(min|max)\(\s*(-?[\d.]+)px\s*,\s*(-?[\d.]+)px\s*\)/g,
+      (_, fn, x, y) => `${Math[fn](Number(x), Number(y))}px`,
+    );
+    const m = /^\s*(-?[\d.]+)px\s*(?:([+-])\s*(-?[\d.]+)px\s*)?$/.exec(folded);
     if (!m) return { value: null };
     const a = Number(m[1]);
     const b = m[3] === undefined ? 0 : Number(m[3]);

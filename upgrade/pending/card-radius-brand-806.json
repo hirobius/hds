@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Cards and other rounded-lg containers are now square when your tenant sets --role-radius to 0; other radii are unchanged."
+}
