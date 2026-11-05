@@ -4,8 +4,7 @@
  * check-docs-axe.mjs
  *
  * Scans the live demo of every /docs/components/* and /docs/patterns/* page, the full
- * <main> of every other /docs page (guides, engineering, section landings; hds#710),
- * and the /tour product screen (hds#795), of
+ * <main> of every other /docs page (guides, engineering, section landings; hds#710), of
  * the built docs site (docs-site/out) in light and dark with axe-core
  * (wcag2a, wcag2aa, wcag21aa, wcag22aa), scoped to the demo frame
  * (.hds-demo-frame) on demo pages so Fumadocs chrome does not count there. Fails on
