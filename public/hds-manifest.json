@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T08:44:26.069Z",
+  "generated": "2026-11-05T09:33:54.680Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -16964,6 +16964,14 @@
         "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
         "alias": "{primitive.size.20}",
         "resolvedValue": "20px"
+      },
+      {
+        "path": "component.pagination.compactControlSize",
+        "cssVar": "--component-pagination-compactControlSize",
+        "type": "dimension",
+        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
+        "alias": "{semantic.size.row.compact}",
+        "resolvedValue": "40px"
       }
     ],
     "role": [

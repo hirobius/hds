@@ -852,6 +852,9 @@ export const tokenRefs = {
           iconSize: "var(--component-inlineLink-size-lg-iconSize)"
         }
       }
+    },
+    pagination: {
+      compactControlSize: "var(--component-pagination-compactControlSize)"
     }
   },
   role: {

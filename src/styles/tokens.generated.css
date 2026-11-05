@@ -606,6 +606,7 @@
   --component-inlineLink-size-md-iconSize: var(--primitive-size-12);
   --component-inlineLink-size-lg-fontSize: var(--primitive-typography-size-title);
   --component-inlineLink-size-lg-iconSize: var(--primitive-size-20);
+  --component-pagination-compactControlSize: var(--semantic-size-row-compact);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
   --role-background: var(--semantic-color-surface-page);

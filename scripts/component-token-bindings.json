@@ -129,6 +129,10 @@
       "source": "src/app/components/list.tsx",
       "cva": "listRowsVariants"
     },
+    "pagination": {
+      "source": "src/app/components/pagination.tsx",
+      "cva": "paginationListVariants"
+    },
     "card": {
       "source": "src/app/components/card.tsx",
       "cva": "cardVariants",
