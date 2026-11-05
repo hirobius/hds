@@ -1,0 +1,29 @@
+lockfileVersion: '9.0'
+
+importers:
+  .:
+    devDependencies:
+      left-pad:
+        specifier: 1.3.0
+        version: 1.3.0
+      evil:
+        specifier: https://example.com/evil-1.0.0.tgz
+        version: '@https://example.com/evil-1.0.0.tgz'
+
+packages:
+  left-pad@1.3.0:
+    resolution: { integrity: sha1-W4o6d2Xf4AEmHd6RVYnngvjJTR4= }
+
+  evil@https://example.com/evil-1.0.0.tgz:
+    resolution: { tarball: https://example.com/evil-1.0.0.tgz }
+    version: 1.0.0
+
+  forked@git+https://github.com/someone/forked.git#abc123:
+    resolution: { commit: abc123, repo: https://github.com/someone/forked.git, type: git }
+    version: 1.0.0
+
+  bare@1.0.0:
+    engines: { node: '>=8' }
+
+snapshots:
+  left-pad@1.3.0: {}
