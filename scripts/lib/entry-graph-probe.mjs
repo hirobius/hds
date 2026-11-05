@@ -17,21 +17,26 @@ import { gzipSync } from 'node:zlib';
 import { resolveEsbuild } from './button-probe-esbuild.mjs';
 
 /**
- * Each budgeted JS entry, the export statement its probe uses (manifest has
- * only a default export) and the probe file .size-limit.cjs measures.
+ * Each budgeted JS entry, the export statements its probe uses (every name
+ * the entry exports: `export *` skips a default export) and the probe file
+ * .size-limit.cjs measures.
  */
 export const ENTRY_GRAPHS = [
   {
     entry: 'dist/hirobius-ui.js',
-    reexport: 'export *',
+    reexports: ['export *'],
     probe: 'dist/probe/hirobius-ui.graph.js',
   },
   {
     entry: 'dist/manifest.js',
-    reexport: 'export { default }',
+    reexports: ['export { default }'],
     probe: 'dist/probe/manifest.graph.js',
   },
-  { entry: 'dist/tokens.js', reexport: 'export *', probe: 'dist/probe/tokens.graph.js' },
+  {
+    entry: 'dist/tokens.js',
+    reexports: ['export *', 'export { default }'],
+    probe: 'dist/probe/tokens.graph.js',
+  },
 ];
 
 /**

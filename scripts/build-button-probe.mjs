@@ -97,9 +97,10 @@ try {
 
 // Entry-graph probes (hds#1145): dist/<entry>.js is only re-exports since the
 // build keeps one file per module, so the entry budgets measure these.
-for (const { entry, reexport, probe } of ENTRY_GRAPHS) {
+for (const { entry, reexports, probe } of ENTRY_GRAPHS) {
   const stub = join(PROBE_DIR, 'graph-entry.js');
-  writeFileSync(stub, `${reexport} from '../${entry.replace(/^dist\//, '')}';\n`);
+  const from = `'../${entry.replace(/^dist\//, '')}'`;
+  writeFileSync(stub, reexports.map((r) => `${r} from ${from};\n`).join(''));
   try {
     const out = await bundleEntryGraph({ entry: stub, outfile: join(ROOT, probe) });
     console.log(

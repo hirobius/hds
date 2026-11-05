@@ -171,8 +171,9 @@
 /*
  * hds#1145 (2026-11-05): the library build keeps one output file per source
  * module (vite.config.lib.ts, preserveModules), so a consumer's bundler drops
- * the modules it does not import. dist/hirobius-ui.js, dist/manifest.js and
- * dist/tokens.js are now re-export stubs, so their budgets measure an
+ * the modules it does not import. dist/hirobius-ui.js and dist/manifest.js
+ * are now re-export stubs, and dist/tokens.js imports its token values from
+ * dist/m/, so the per-file numbers miss code. These budgets measure an
  * entry-graph probe instead (scripts/lib/entry-graph-probe.mjs): the entry
  * bundled with packages external, which is all the code HDS ships for it.
  * That also counts what the old per-file numbers missed. Before this change
