@@ -338,6 +338,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
@@ -1587,6 +1588,15 @@
         "href": {
           "type": "string"
         },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
         "standalone": {
           "type": "boolean",
           "default": false
@@ -1601,6 +1611,14 @@
         },
         "href": {
           "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
         },
         "standalone": {
           "type": "boolean"
@@ -1644,13 +1662,25 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineLink.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "docsPage": "/docs/components/inline-link",
       "publicDataAttributes": [],
+      "tokens": {
+        "iconSize": "component.inlineLink.iconSize",
+        "iconGap": "component.inlineLink.iconGap"
+      },
+      "figmaPropertyMapping": {
+        "size": "Size"
+      },
+      "states": [
+        "default"
+      ],
       "usage": {
         "when": "Link to a route or external URL from inside body copy.",
         "whenNot": "An action that changes something, or a control that needs button styling.",
@@ -4009,7 +4039,7 @@
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "The quiet tone, flush and the link variant keep the focus-visible ring of every Button.",
+          "rule": "Quiet, flush and link keep a visible focus ring (hds#1167).",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.quiet-focus-ring"
@@ -14469,6 +14499,20 @@
         "value": "0.2em"
       },
       {
+        "path": "primitive.inlineIcon.size",
+        "cssVar": "--primitive-inlineIcon-size",
+        "type": "dimension",
+        "description": "Inline icon size: three quarters of the font size.",
+        "value": "0.75em"
+      },
+      {
+        "path": "primitive.inlineIcon.gap",
+        "cssVar": "--primitive-inlineIcon-gap",
+        "type": "dimension",
+        "description": "Gap between the text and an inline icon: a quarter of the font size.",
+        "value": "0.25em"
+      },
+      {
         "path": "primitive.borderWidth.xs",
         "cssVar": "--primitive-borderWidth-xs",
         "type": "dimension",
@@ -16841,6 +16885,70 @@
         "description": "Width and height of a List row's leading icon tile or logo (40px).",
         "alias": "{semantic.size.avatar}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "component.inlineLink.iconSize",
+        "cssVar": "--component-inlineLink-iconSize",
+        "type": "dimension",
+        "description": "External-link icon size, in em so it scales with the link text at any font size.",
+        "alias": "{primitive.inlineIcon.size}",
+        "resolvedValue": "0.75em"
+      },
+      {
+        "path": "component.inlineLink.iconGap",
+        "cssVar": "--component-inlineLink-iconGap",
+        "type": "dimension",
+        "description": "Gap between the link text and its external-link icon, in em.",
+        "alias": "{primitive.inlineIcon.gap}",
+        "resolvedValue": "0.25em"
+      },
+      {
+        "path": "component.inlineLink.size.sm.fontSize",
+        "cssVar": "--component-inlineLink-size-sm-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "component.inlineLink.size.sm.iconSize",
+        "cssVar": "--component-inlineLink-size-sm-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.md.fontSize",
+        "cssVar": "--component-inlineLink-size-md-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.lg}",
+        "resolvedValue": "18px"
+      },
+      {
+        "path": "component.inlineLink.size.md.iconSize",
+        "cssVar": "--component-inlineLink-size-md-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.fontSize",
+        "cssVar": "--component-inlineLink-size-lg-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.title}",
+        "resolvedValue": "28px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.iconSize",
+        "cssVar": "--component-inlineLink-size-lg-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
       }
     ],
     "role": [

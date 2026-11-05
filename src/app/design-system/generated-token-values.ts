@@ -312,6 +312,10 @@ export const tokenValues = {
     underline: {
       offset: "0.2em"
     },
+    inlineIcon: {
+      size: "0.75em",
+      gap: "0.25em"
+    },
     borderWidth: {
       xs: "1px",
       sm: "2px",

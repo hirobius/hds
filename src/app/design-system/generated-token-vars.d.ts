@@ -244,6 +244,8 @@ declare module 'react' {
     '--primitive-zIndex-100'?: string | undefined;
     '--primitive-zIndex-1000'?: string | undefined;
     '--primitive-underline-offset'?: string | undefined;
+    '--primitive-inlineIcon-size'?: string | undefined;
+    '--primitive-inlineIcon-gap'?: string | undefined;
     '--primitive-borderWidth-xs'?: string | undefined;
     '--primitive-borderWidth-sm'?: string | undefined;
     '--primitive-borderWidth-md'?: string | undefined;
@@ -589,6 +591,14 @@ declare module 'react' {
     '--component-list-rowPadding'?: string | undefined;
     '--component-list-rowMinHeight'?: string | undefined;
     '--component-list-leadingSize'?: string | undefined;
+    '--component-inlineLink-iconSize'?: string | undefined;
+    '--component-inlineLink-iconGap'?: string | undefined;
+    '--component-inlineLink-size-sm-fontSize'?: string | undefined;
+    '--component-inlineLink-size-sm-iconSize'?: string | undefined;
+    '--component-inlineLink-size-md-fontSize'?: string | undefined;
+    '--component-inlineLink-size-md-iconSize'?: string | undefined;
+    '--component-inlineLink-size-lg-fontSize'?: string | undefined;
+    '--component-inlineLink-size-lg-iconSize'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;
     '--role-card'?: string | undefined;

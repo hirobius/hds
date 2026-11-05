@@ -246,6 +246,8 @@
   --primitive-zIndex-100: 100;
   --primitive-zIndex-1000: 1000;
   --primitive-underline-offset: 0.2em;
+  --primitive-inlineIcon-size: 0.75em;
+  --primitive-inlineIcon-gap: 0.25em;
   --primitive-borderWidth-xs: 1px;
   --primitive-borderWidth-sm: 2px;
   --primitive-borderWidth-md: 4px;
@@ -598,6 +600,14 @@
   --component-list-rowPadding: var(--semantic-space-scale-sm);
   --component-list-rowMinHeight: var(--semantic-size-listRow);
   --component-list-leadingSize: var(--semantic-size-avatar);
+  --component-inlineLink-iconSize: var(--primitive-inlineIcon-size);
+  --component-inlineLink-iconGap: var(--primitive-inlineIcon-gap);
+  --component-inlineLink-size-sm-fontSize: var(--primitive-typography-size-base);
+  --component-inlineLink-size-sm-iconSize: var(--primitive-size-12);
+  --component-inlineLink-size-md-fontSize: var(--primitive-typography-size-lg);
+  --component-inlineLink-size-md-iconSize: var(--primitive-size-12);
+  --component-inlineLink-size-lg-fontSize: var(--primitive-typography-size-title);
+  --component-inlineLink-size-lg-iconSize: var(--primitive-size-20);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
   --role-background: var(--semantic-color-surface-page);

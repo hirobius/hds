@@ -78,25 +78,38 @@ describe('ThemeContext', () => {
     vi.restoreAllMocks();
   });
 
-  it('system mode: switching OS preference to dark flips isDark to true', async () => {
-    // Mock matchMedia with light preference initially
-    const { mockFn: mockMatchMedia, mqObject } = buildMatchMedia(false);
+  // Installs the matchMedia mock on window and returns the mutable mqObject.
+  function installMatchMedia(defaultMatches: boolean): { matches: boolean } {
+    const { mockFn, mqObject } = buildMatchMedia(defaultMatches);
     Object.defineProperty(window, 'matchMedia', {
-      value: mockMatchMedia,
+      value: mockFn,
       writable: true,
       configurable: true,
     });
+    return mqObject;
+  }
 
-    // Import ThemeProvider dynamically to pick up the mocked matchMedia
+  // Simulates the OS switching colour scheme:
+  // 1. Update the mutable matches property so mq.matches returns the new value
+  // 2. Fire the listeners (ThemeContext's onChange reads mq.matches directly)
+  async function fireOsChange(mqObject: { matches: boolean }, matches: boolean) {
+    await act(async () => {
+      mqObject.matches = matches;
+      for (const listener of mqListeners) {
+        listener({ matches });
+      }
+    });
+  }
+
+  // Renders ThemeProvider around a consumer and returns a live view of its context.
+  // Imported dynamically to pick up the mocked matchMedia.
+  async function renderTheme() {
     const { ThemeProvider, useTheme } = await import('../ThemeContext');
-
-    let isDark: boolean | undefined;
+    let ctx: ReturnType<typeof useTheme> | undefined;
     function Consumer() {
-      const ctx = useTheme();
-      isDark = ctx.isDark;
+      ctx = useTheme();
       return null;
     }
-
     await act(async () => {
       root.render(
         <ThemeProvider>
@@ -104,67 +117,37 @@ describe('ThemeContext', () => {
         </ThemeProvider>,
       );
     });
+    return () => ctx!;
+  }
+
+  it('system mode: switching OS preference to dark flips isDark to true', async () => {
+    // Mock matchMedia with light preference initially
+    const mqObject = installMatchMedia(false);
+    const theme = await renderTheme();
 
     // In system mode with matches=false → isDark should be false
-    expect(isDark).toBe(false);
+    expect(theme().isDark).toBe(false);
 
-    // Simulate OS switching to dark mode:
-    // 1. Update the mutable matches property so mq.matches returns true
-    // 2. Fire the listeners (ThemeContext's onChange reads mq.matches directly)
-    await act(async () => {
-      mqObject.matches = true;
-      for (const listener of mqListeners) {
-        listener({ matches: true });
-      }
-    });
+    await fireOsChange(mqObject, true);
 
-    expect(isDark).toBe(true);
+    expect(theme().isDark).toBe(true);
   });
 
   it('light mode: OS change events do not affect isDark', async () => {
-    const { mockFn: mockMatchMedia, mqObject } = buildMatchMedia(false);
-    Object.defineProperty(window, 'matchMedia', {
-      value: mockMatchMedia,
-      writable: true,
-      configurable: true,
-    });
-
-    const { ThemeProvider, useTheme } = await import('../ThemeContext');
-
-    let isDark: boolean | undefined;
-    let setMode: ((m: import('../ThemeContext').ThemeMode) => void) | undefined;
-
-    function Consumer() {
-      const ctx = useTheme();
-      isDark = ctx.isDark;
-      setMode = ctx.setMode;
-      return null;
-    }
-
-    await act(async () => {
-      root.render(
-        <ThemeProvider>
-          <Consumer />
-        </ThemeProvider>,
-      );
-    });
+    const mqObject = installMatchMedia(false);
+    const theme = await renderTheme();
 
     // Switch to explicit light mode
     await act(async () => {
-      setMode?.('light');
+      theme().setMode('light');
     });
-    expect(isDark).toBe(false);
+    expect(theme().isDark).toBe(false);
 
     // Simulate OS switching to dark — should NOT change isDark in light mode
-    await act(async () => {
-      mqObject.matches = true;
-      for (const listener of mqListeners) {
-        listener({ matches: true });
-      }
-    });
+    await fireOsChange(mqObject, true);
 
     // Still false — OS events are ignored in non-system mode
-    expect(isDark).toBe(false);
+    expect(theme().isDark).toBe(false);
   });
 });
 
@@ -205,17 +188,14 @@ describe('LanguageContext', () => {
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
   });
 
-  it('toggleDirection flips html[dir] from ltr to rtl', async () => {
+  // Renders LanguageProvider around a consumer and returns a live view of its context.
+  async function renderLanguage() {
     const { LanguageProvider, useLanguage } = await import('../LanguageContext');
-
-    let toggle: (() => void) | undefined;
-
+    let ctx: ReturnType<typeof useLanguage> | undefined;
     function Consumer() {
-      const ctx = useLanguage();
-      toggle = ctx.toggleDirection;
+      ctx = useLanguage();
       return null;
     }
-
     await act(async () => {
       root.render(
         <LanguageProvider>
@@ -223,11 +203,16 @@ describe('LanguageContext', () => {
         </LanguageProvider>,
       );
     });
+    return () => ctx!;
+  }
+
+  it('toggleDirection flips html[dir] from ltr to rtl', async () => {
+    const language = await renderLanguage();
 
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
 
     await act(async () => {
-      toggle?.();
+      language().toggleDirection();
     });
 
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
@@ -235,61 +220,27 @@ describe('LanguageContext', () => {
   });
 
   it('setDirection("rtl") sets html[dir="rtl"] and isRtl=true', async () => {
-    const { LanguageProvider, useLanguage } = await import('../LanguageContext');
-
-    let isRtl: boolean | undefined;
-    let setDirection: ((d: 'ltr' | 'rtl') => void) | undefined;
-
-    function Consumer() {
-      const ctx = useLanguage();
-      isRtl = ctx.isRtl;
-      setDirection = ctx.setDirection;
-      return null;
-    }
+    const language = await renderLanguage();
 
     await act(async () => {
-      root.render(
-        <LanguageProvider>
-          <Consumer />
-        </LanguageProvider>,
-      );
+      language().setDirection('rtl');
     });
 
-    await act(async () => {
-      setDirection?.('rtl');
-    });
-
-    expect(isRtl).toBe(true);
+    expect(language().isRtl).toBe(true);
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
   });
 
   it('toggleDirection from rtl back to ltr resets html[dir]', async () => {
-    const { LanguageProvider, useLanguage } = await import('../LanguageContext');
-
-    let toggle: (() => void) | undefined;
-
-    function Consumer() {
-      const ctx = useLanguage();
-      toggle = ctx.toggleDirection;
-      return null;
-    }
-
-    await act(async () => {
-      root.render(
-        <LanguageProvider>
-          <Consumer />
-        </LanguageProvider>,
-      );
-    });
+    const language = await renderLanguage();
 
     // toggle to rtl, then back to ltr
     await act(async () => {
-      toggle?.();
+      language().toggleDirection();
     });
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
 
     await act(async () => {
-      toggle?.();
+      language().toggleDirection();
     });
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
   });

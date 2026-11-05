@@ -2113,6 +2113,16 @@
       "values": null,
       "default": null
     },
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "optional": true,
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": null
+    },
     "standalone": {
       "type": "boolean",
       "optional": true,

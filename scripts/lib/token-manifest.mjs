@@ -291,6 +291,19 @@ const COMPONENT_SPEC_SEEDS = {
     componentProperties: [],
     states: ['default'],
   },
+  // Size is the Figma variant for the `size` prop (sm/md/lg = ui/body/title).
+  // The icon binds to component/inlineLink/size/<size>/iconSize in Figma; code
+  // draws it at iconSize (0.75em) so it follows any font size.
+  InlineLink: {
+    tokens: {
+      iconSize: 'component.inlineLink.iconSize',
+      iconGap: 'component.inlineLink.iconGap',
+    },
+    figmaPropertyMapping: { size: 'Size' },
+    variantAxes: ['size'],
+    componentProperties: [],
+    states: ['default'],
+  },
 };
 
 /**

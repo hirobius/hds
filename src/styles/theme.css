@@ -580,13 +580,16 @@
 }
 
 @layer components {
+  /* The follow and snap-back use the `translate` property, not `transform`:
+     the motion/react enter (toast.tsx, hds#751) leaves an inline transform,
+     which would beat a stylesheet transform; separate properties compose. */
   .hds-toast[data-swipe='move'] {
-    transform: translate(var(--radix-toast-swipe-move-x, 0), var(--radix-toast-swipe-move-y, 0));
+    translate: var(--radix-toast-swipe-move-x, 0) var(--radix-toast-swipe-move-y, 0);
   }
 
   .hds-toast[data-swipe='cancel'] {
-    transform: translate(0, 0);
-    transition: transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+    translate: 0 0;
+    transition: translate var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
   }
 
   .hds-toast:is([data-swipe='end'], [data-state='closed'])[data-swipe-direction] {
@@ -623,6 +626,7 @@
       animation: none;
       transition: none;
       transform: none;
+      translate: none;
     }
   }
 }

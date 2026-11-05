@@ -1456,6 +1456,7 @@ InlineLink ” inline navigation and external-link primitive for body copy.
   - children: ReactNode
   - externalIcon: boolean = true
   - href: string
+  - size: 'sm' | 'md' | 'lg'
   - standalone: boolean = false
 
 ### Input
