@@ -25,6 +25,7 @@ import {
   InlineLink,
   Kbd,
   NavList,
+  List,
   Pin,
   Sidebar,
   Stack,
@@ -40,7 +41,7 @@ import {
   VisuallyHidden,
 } from '@hirobius/design-system';
 import { AppShell, Page, PageHeader } from '@hirobius/design-system/patterns';
-import { Search } from '@hirobius/design-system/icons';
+import { FileText, Search } from '@hirobius/design-system/icons';
 import type { TourData } from '../../lib/tour-data';
 import { TOUR_SECTIONS } from '../../lib/tour-sections';
 import { TourBlock } from './tour-caption';
@@ -203,6 +204,20 @@ export function TourConsole({ data }: { data: TourData }) {
                             </NavList.Item>
                             <NavList.Item href="/docs/components/nav-list">NavList</NavList.Item>
                           </NavList>
+                          <List variant="plain">
+                            <List.Group title="Tour pages" count={1} headingLevel={3}>
+                              <List.Item
+                                href="/docs/components/list"
+                                leading={<List.Tile icon={FileText} />}
+                                title="List"
+                                description="Inset grouped rows"
+                                trailing="chevron"
+                              />
+                            </List.Group>
+                            <List.Group title="Empty" headingLevel={3}>
+                              <List.Empty title="Nothing here yet" />
+                            </List.Group>
+                          </List>
                           <Text variant="ui">
                             Search the{' '}
                             <InlineLink href="/docs/components">component index</InlineLink>

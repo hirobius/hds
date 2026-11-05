@@ -444,6 +444,41 @@
       "kind": "leaf",
       "probe": true
     },
+    "List": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "ListEmpty": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "ListGroup": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "ListItem": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
+    "ListTile": {
+      "width": "hug",
+      "height": "hug",
+      "pads": false,
+      "kind": "leaf",
+      "probe": true
+    },
     "Menu": {
       "width": "hug",
       "height": "hug",
