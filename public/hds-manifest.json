@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T01:11:08.963Z",
+  "generated": "2026-11-05T07:35:03.660Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -1580,6 +1580,15 @@
         "href": {
           "type": "string"
         },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
         "standalone": {
           "type": "boolean",
           "default": false
@@ -1594,6 +1603,14 @@
         },
         "href": {
           "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
         },
         "standalone": {
           "type": "boolean"
@@ -1637,7 +1654,9 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineLink.tsx",
@@ -1658,7 +1677,17 @@
           }
         ]
       },
-      "core": true
+      "core": true,
+      "tokens": {
+        "iconSize": "component.inlineLink.iconSize",
+        "iconGap": "component.inlineLink.iconGap"
+      },
+      "figmaPropertyMapping": {
+        "size": "Size"
+      },
+      "states": [
+        "default"
+      ]
     },
     "Input": {
       "category": "Inputs",
@@ -9201,7 +9230,8 @@
         "src/app/components/control-color-fade.ts",
         "src/app/components/control-label.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle.tsx"
+        "src/app/components/toggle.tsx",
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -14419,6 +14449,20 @@
         "value": "0.2em"
       },
       {
+        "path": "primitive.inlineIcon.size",
+        "cssVar": "--primitive-inlineIcon-size",
+        "type": "dimension",
+        "description": "Inline icon size: three quarters of the font size.",
+        "value": "0.75em"
+      },
+      {
+        "path": "primitive.inlineIcon.gap",
+        "cssVar": "--primitive-inlineIcon-gap",
+        "type": "dimension",
+        "description": "Gap between the text and an inline icon: a quarter of the font size.",
+        "value": "0.25em"
+      },
+      {
         "path": "primitive.borderWidth.xs",
         "cssVar": "--primitive-borderWidth-xs",
         "type": "dimension",
@@ -16768,6 +16812,70 @@
         "description": "Width and height of a List row's leading icon tile or logo (40px).",
         "alias": "{semantic.size.avatar}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "component.inlineLink.iconSize",
+        "cssVar": "--component-inlineLink-iconSize",
+        "type": "dimension",
+        "description": "External-link icon size, in em so it scales with the link text at any font size.",
+        "alias": "{primitive.inlineIcon.size}",
+        "resolvedValue": "0.75em"
+      },
+      {
+        "path": "component.inlineLink.iconGap",
+        "cssVar": "--component-inlineLink-iconGap",
+        "type": "dimension",
+        "description": "Gap between the link text and its external-link icon, in em.",
+        "alias": "{primitive.inlineIcon.gap}",
+        "resolvedValue": "0.25em"
+      },
+      {
+        "path": "component.inlineLink.size.sm.fontSize",
+        "cssVar": "--component-inlineLink-size-sm-fontSize",
+        "type": "dimension",
+        "description": "Size sm link text: the ui role, 16px.",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "component.inlineLink.size.sm.iconSize",
+        "cssVar": "--component-inlineLink-size-sm-iconSize",
+        "type": "dimension",
+        "description": "Size sm external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px). Code draws it at iconSize (em).",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.md.fontSize",
+        "cssVar": "--component-inlineLink-size-md-fontSize",
+        "type": "dimension",
+        "description": "Size md link text: the body role, 18px.",
+        "alias": "{primitive.typography.size.lg}",
+        "resolvedValue": "18px"
+      },
+      {
+        "path": "component.inlineLink.size.md.iconSize",
+        "cssVar": "--component-inlineLink-size-md-iconSize",
+        "type": "dimension",
+        "description": "Size md external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px (13.5px in code)). Code draws it at iconSize (em).",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.fontSize",
+        "cssVar": "--component-inlineLink-size-lg-fontSize",
+        "type": "dimension",
+        "description": "Size lg link text: the title role, 28px.",
+        "alias": "{primitive.typography.size.title}",
+        "resolvedValue": "28px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.iconSize",
+        "cssVar": "--component-inlineLink-size-lg-iconSize",
+        "type": "dimension",
+        "description": "Size lg external icon in Figma, the nearest grid step to 0.75em of the font size (icon 20px (21px in code)). Code draws it at iconSize (em).",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
       }
     ],
     "role": [

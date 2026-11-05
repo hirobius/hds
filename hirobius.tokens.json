@@ -1270,6 +1270,24 @@
         }
       }
     },
+    "inlineIcon": {
+      "$type": "dimension",
+      "$description": "An icon set inside a line of text, sized in em so it follows the font size (hds InlineLink).",
+      "size": {
+        "$value": {
+          "value": 0.75,
+          "unit": "em"
+        },
+        "$description": "Inline icon size: three quarters of the font size."
+      },
+      "gap": {
+        "$value": {
+          "value": 0.25,
+          "unit": "em"
+        },
+        "$description": "Gap between the text and an inline icon: a quarter of the font size."
+      }
+    },
     "borderWidth": {
       "$type": "dimension",
       "xs": {
@@ -3335,6 +3353,56 @@
         "$type": "dimension",
         "$value": "{semantic.size.avatar}",
         "$description": "Width and height of a List row's leading icon tile or logo (40px)."
+      }
+    },
+    "inlineLink": {
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{primitive.inlineIcon.size}",
+        "$description": "External-link icon size, in em so it scales with the link text at any font size."
+      },
+      "iconGap": {
+        "$type": "dimension",
+        "$value": "{primitive.inlineIcon.gap}",
+        "$description": "Gap between the link text and its external-link icon, in em."
+      },
+      "size": {
+        "sm": {
+          "fontSize": {
+            "$type": "dimension",
+            "$value": "{primitive.typography.size.base}",
+            "$description": "Size sm link text: the ui role, 16px."
+          },
+          "iconSize": {
+            "$type": "dimension",
+            "$value": "{primitive.size.12}",
+            "$description": "Size sm external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px). Code draws it at iconSize (em)."
+          }
+        },
+        "md": {
+          "fontSize": {
+            "$type": "dimension",
+            "$value": "{primitive.typography.size.lg}",
+            "$description": "Size md link text: the body role, 18px."
+          },
+          "iconSize": {
+            "$type": "dimension",
+            "$value": "{primitive.size.12}",
+            "$description": "Size md external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px (13.5px in code)). Code draws it at iconSize (em)."
+          }
+        },
+        "lg": {
+          "fontSize": {
+            "$type": "dimension",
+            "$value": "{primitive.typography.size.title}",
+            "$description": "Size lg link text: the title role, 28px."
+          },
+          "iconSize": {
+            "$type": "dimension",
+            "$value": "{primitive.size.20}",
+            "$description": "Size lg external icon in Figma, the nearest grid step to 0.75em of the font size (icon 20px (21px in code)). Code draws it at iconSize (em)."
+          }
+        }
       }
     }
   },
