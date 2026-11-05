@@ -301,6 +301,18 @@ const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
 const segmentedControlLabelVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.zIndex.10, reached as hds.zIndex.focus, has no semantic alias — same primitive ref the pre-Tailwind inline style used
   'relative z-[var(--primitive-zIndex-10)] max-w-[60ch] hds-type-ui text-current',
+  {
+    variants: {
+      // hds#1214: the ui role's 24px line box overflowed the 22px sm segment, so the sm rail
+      // grew to 34px instead of Button sm's 32px. A 1x line box fits; the glyphs stay 16px.
+      // type-ramp-ok: the ui role's size and weight stay; only the sm line box drops to the semantic lineHeight.none token (hds#1214)
+      size: { sm: 'leading-[var(--semantic-typography-lineHeight-none)]', md: '' },
+      // The selected primary segment paints a 3px edge inset at its bottom, so its visible
+      // face is 3px shorter and the label read low on it. Lift the label onto the face.
+      lifted: { true: '-translate-y-px', false: '' },
+    },
+    defaultVariants: { size: 'md', lifted: false },
+  },
 );
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -498,7 +510,14 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                     // other multi-source className in this file.
                     className={cn(segmentedControlIndicatorVariants(segmentState))}
                   />
-                  <span className={segmentedControlLabelVariants()}>{option.label}</span>
+                  <span
+                    className={segmentedControlLabelVariants({
+                      size,
+                      lifted: active && variant === 'primary',
+                    })}
+                  >
+                    {option.label}
+                  </span>
                   {option.description && (
                     <span
                       // Same cascade hazard as the indicator above (base

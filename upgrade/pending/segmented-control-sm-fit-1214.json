@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A size=\"sm\" SegmentedControl is 2px shorter (32px, like Button sm), and the selected primary label sits 1px higher. If you padded or offset around it to fix its height, remove that."
+}
