@@ -840,6 +840,13 @@
           },
           "$description": "Display role size (hds#847): the page's one hero heading, a clear step above title."
         },
+        "hero": {
+          "$value": {
+            "value": 120,
+            "unit": "px"
+          },
+          "$description": "Hero size (ADR-052 addendum): covers and marketing headers only, a step above display."
+        },
         "6xl": {
           "$value": {
             "value": 60,
@@ -2220,7 +2227,17 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; h1-h3 and eyebrow are deprecated aliases.",
+      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; hero is marketing-only; h1-h3, eyebrow deprecated.",
+      "hero": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.display}",
+          "fontSize": "{primitive.typography.size.hero}",
+          "fontWeight": "{primitive.typography.weight.display}",
+          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
+          "lineHeight": "{primitive.typography.lineHeight.display}"
+        },
+        "$description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700."
+      },
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
@@ -2283,6 +2300,29 @@
           }
         }
       },
+      "bodyStrong": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.primary}",
+          "fontSize": "{primitive.typography.size.lg}",
+          "fontWeight": "{primitive.typography.weight.bold}",
+          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "lineHeight": "{primitive.typography.lineHeight.body}",
+          "maxWidth": {
+            "value": 60,
+            "unit": "ch"
+          }
+        },
+        "$description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "$extensions": {
+          "com.figma.variables": {
+            "modes": {
+              "Compact": {
+                "fontSize": "{primitive.typography.size.compactBody}"
+              }
+            }
+          }
+        }
+      },
       "ui": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
@@ -2296,6 +2336,30 @@
           }
         },
         "$description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
+        "$extensions": {
+          "com.figma.variables": {
+            "modes": {
+              "Compact": {
+                "fontSize": "{primitive.typography.size.sm}"
+              }
+            }
+          }
+        }
+      },
+      "uiItalic": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.primary}",
+          "fontSize": "{primitive.typography.size.base}",
+          "fontWeight": "{primitive.typography.weight.medium}",
+          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "lineHeight": "{primitive.typography.lineHeight.normal}",
+          "maxWidth": {
+            "value": 60,
+            "unit": "ch"
+          },
+          "fontStyle": "italic"
+        },
+        "$description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {

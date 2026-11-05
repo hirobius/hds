@@ -84,7 +84,7 @@ describe('colorGalleries accent themes', () => {
 describe('typeSpecimens', () => {
   const specimens = typeSpecimens(tokens);
 
-  it('lists the live ramp in order and skips deprecated aliases', () => {
+  it('lists the live ramp in order and skips deprecated aliases and marketing-only hero', () => {
     expect(specimens.map((s) => s.role)).toEqual([
       'display',
       'title',

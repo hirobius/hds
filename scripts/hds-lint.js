@@ -105,6 +105,8 @@ const ALLOWED_TYPOGRAPHY_TOKENS = new Set([
   'title',
   'titleSm',
   'body',
+  'bodyStrong',
+  'uiItalic',
   'ui',
   'caption',
   'mono',

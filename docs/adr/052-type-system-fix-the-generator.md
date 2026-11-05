@@ -114,3 +114,39 @@ at".
 - `14eb027` feat(tokens): cut the type ramp to 5 roles plus mono (#521; hds#483, hds#479)
 - `8edd926` feat(tokens): replace Geist Mono with IBM Plex Mono 400 as the code font (#535)
 - hds#283: the type issue every Sept commit cites as "Part of #283" (body not read)
+
+## Addendum (2026-11-05): hero, a marketing-only extension above the ramp
+
+Adrian approved a `hero` type style for covers and marketing headers, above
+`display`. Adding it as an eighth role would reopen the cut this ADR records, so
+it is an extension outside the ramp instead.
+
+- **Token.** `semantic.typography.hero` is `display` set larger: the display
+  family (Sora), `weight.display` (700), `letterSpacing.tight`, and
+  `lineHeight.display` (1.05) at a new primitive `typography.size.hero` (120px).
+  Its `$description` starts "Marketing-only".
+- **Scope.** `check-type-ramp` lists it in `MARKETING_ROLES`. The token file may
+  hold it live beside the seven roles; `src/` may not use it (`typeStyles.hero`,
+  `--semantic-typography-hero-*` and `typography.hero` fail as
+  `marketing-only`). The one exempted line is its display-dial font-family in
+  `theme.css`, so a tenant's display face reaches it too. There is no
+  `<Text variant="hero">` and no `.hds-type-hero` class: product UI keeps the
+  seven roles, and marketing surfaces read the token.
+- **Figma.** The model emits it as the text style `typography/hero` with five
+  bound variables, so the next Sync creates it.
+- **Text-style variants, same day.** So Figma's text styles are 1:1 with what
+  code renders, two variants of a role are tokens too. `bodyStrong` is `body` at
+  `weight.bold` (700), what `<Text variant="body" weight="bold">` sets.
+  `uiItalic` is `ui` with `fontStyle: italic`, what EmptyState's inline message
+  sets. They are not roles. `check-type-ramp` lists them in `VARIANTS` and fails
+  (`variant-drift`) when one stops equalling its role apart from that one
+  property, or loses the role's Compact mode. The emitter gained an optional
+  `fontStyle` key (`--semantic-typography-uiItalic-font-style`), and the Figma
+  model maps italic to the font's italic instance (`Medium Italic`). The docs
+  specimen shows neither, because it shows the ramp. No italic face ships in
+  `fonts.css`, so browsers synthesize it, as EmptyState already does.
+- **Adding another extension** follows the same path: a name in
+  `MARKETING_ROLES`, a "Marketing-only" description, and an addendum here.
+
+Pinned by `src/styles/__tests__/hero-type.test.ts` and
+`src/styles/__tests__/text-style-variants.test.ts`.

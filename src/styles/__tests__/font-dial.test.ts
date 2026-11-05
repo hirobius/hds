@@ -52,9 +52,9 @@ function blockBody(css: string, selector: string): string | null {
 }
 
 const isMono = (name: string) => /mono/.test(name);
-/** Display, title, title-sm and the deprecated h1-h3 aliases ride the display dial. */
+/** Display, title, title-sm, hero and the deprecated h1-h3 aliases ride the display dial. */
 const isDisplay = (name: string) =>
-  /family-display$|semantic-typography-(display|title|titleSm|h[1-3])-font-family$/.test(name);
+  /family-display$|semantic-typography-(display|title|titleSm|hero|h[1-3])-font-family$/.test(name);
 const dialFor = (name: string) =>
   isMono(name)
     ? '--hds-font-family-mono'

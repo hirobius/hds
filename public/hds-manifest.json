@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T11:50:42.843Z",
+  "generated": "2026-11-05T11:59:35.660Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3435,6 +3435,7 @@
         "src/app/components/table.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
+        "src/app/design-system/tokens.ts",
         "src/brand/overlay.ts",
         "src/styles/__tests__/glyph-outlines.ts"
       ],
@@ -4236,7 +4237,8 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/components/list.tsx"
+        "src/app/components/list.tsx",
+        "src/app/design-system/tokens.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -14095,6 +14097,13 @@
         "value": "56px"
       },
       {
+        "path": "primitive.typography.size.hero",
+        "cssVar": "--primitive-typography-size-hero",
+        "type": "dimension",
+        "description": "Hero size (ADR-052 addendum): covers and marketing headers only, a step above display.",
+        "value": "120px"
+      },
+      {
         "path": "primitive.typography.size.6xl",
         "cssVar": "--primitive-typography-size-6xl",
         "type": "dimension",
@@ -15480,6 +15489,19 @@
         "resolvedValue": "3"
       },
       {
+        "path": "semantic.typography.hero",
+        "cssVar": "--semantic-typography-hero",
+        "type": "typography",
+        "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+        "composite": {
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "120px",
+          "fontWeight": "700",
+          "letterSpacing": "-0.01em",
+          "lineHeight": "1.05"
+        }
+      },
+      {
         "path": "semantic.typography.display",
         "cssVar": "--semantic-typography-display",
         "type": "typography",
@@ -15545,6 +15567,26 @@
         }
       },
       {
+        "path": "semantic.typography.bodyStrong",
+        "cssVar": "--semantic-typography-bodyStrong",
+        "type": "typography",
+        "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "18px",
+          "fontWeight": "700",
+          "letterSpacing": "0em",
+          "lineHeight": "1.6",
+          "maxWidth": "60ch"
+        },
+        "compact": {
+          "fontSize": {
+            "alias": "{primitive.typography.size.compactBody}",
+            "resolvedValue": "15px"
+          }
+        }
+      },
+      {
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
@@ -15556,6 +15598,27 @@
           "letterSpacing": "0em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
+        },
+        "compact": {
+          "fontSize": {
+            "alias": "{primitive.typography.size.sm}",
+            "resolvedValue": "14px"
+          }
+        }
+      },
+      {
+        "path": "semantic.typography.uiItalic",
+        "cssVar": "--semantic-typography-uiItalic",
+        "type": "typography",
+        "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "1.5",
+          "maxWidth": "60ch",
+          "fontStyle": "italic"
         },
         "compact": {
           "fontSize": {

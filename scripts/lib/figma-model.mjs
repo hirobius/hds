@@ -436,7 +436,7 @@ function expandTypography(graph, token) {
   for (const key of Object.keys(v)) {
     const entry = NOT_IN_FIGMA.find((e) => e.subProperty === key);
     if (entry) excluded.push([entry.id, at(key)]);
-    else if (!(key in TYPOGRAPHY_VARIABLES) && key !== 'textTransform') {
+    else if (!(key in TYPOGRAPHY_VARIABLES) && key !== 'textTransform' && key !== 'fontStyle') {
       throw new Error(
         `No Figma mapping for ${at(key)} — map the typography key in scripts/lib/figma-model.mjs or declare it in NOT_IN_FIGMA with a reason.`,
       );
@@ -470,8 +470,18 @@ function expandTypography(graph, token) {
   // Figma text styles name a font instance, so the variable-font weight 450
   // take the Regular / Medium / Bold instance the library's Plus Jakarta Sans ships; the
   // exact value stays in the variable.
+  const upright = FONT_STYLE_BY_WEIGHT[weight] ?? FONT_STYLE_BY_WEIGHT[FIGMA_STYLE_WEIGHT[weight]];
+  // CSS font-style italic → the font's italic instance: "Italic" for Regular,
+  // "<Weight> Italic" otherwise (Google Fonts naming, e.g. "Medium Italic").
+  const cssStyle = v.fontStyle ?? 'normal';
+  if (cssStyle !== 'normal' && cssStyle !== 'italic')
+    throw new Error(`No Figma font style for fontStyle "${cssStyle}" at ${at('fontStyle')}`);
   const fontStyle =
-    FONT_STYLE_BY_WEIGHT[weight] ?? FONT_STYLE_BY_WEIGHT[FIGMA_STYLE_WEIGHT[weight]];
+    upright && cssStyle === 'italic'
+      ? upright === 'Regular'
+        ? 'Italic'
+        : `${upright} Italic`
+      : upright;
   const textCase = TEXT_CASE[v.textTransform ?? 'none'];
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);

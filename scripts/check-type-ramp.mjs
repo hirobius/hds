@@ -20,7 +20,15 @@
  *     `semantic.typography.eyebrow`, `<Text variant="heading1">` and the rest.
  *     They still resolve (so no consumer breaks) and are removed in 1.0.0.
  *
- * It also checks hirobius.tokens.json: exactly six live composites under
+ * Text-style variants (VARIANTS: bodyStrong, uiItalic) are a role with one
+ * property changed; the token file must keep each equal to its role otherwise.
+ *
+ * Marketing-only extensions (MARKETING_ROLES: hero, ADR-052 addendum) are live
+ * tokens for covers and marketing headers. They sit outside the ramp, so src/
+ * may not use them: `typeStyles.hero` or `--semantic-typography-hero-*` fails
+ * as `marketing-only` (the display dial line in theme.css is exempted inline).
+ *
+ * It also checks hirobius.tokens.json: exactly the live composites under
  * semantic.typography, and each deprecated alias (h1, h2, h3 to title, eyebrow
  * to caption) holding the same value as the role it points at.
  *
@@ -63,6 +71,22 @@ export const ROLES = Object.freeze([
   'mono',
 ]);
 
+/**
+ * Marketing-only extensions above the ramp (ADR-052 addendum, 2026-11-05).
+ * Live in the token file and in Figma; never used by product UI in src/.
+ */
+export const MARKETING_ROLES = Object.freeze(['hero']);
+
+/**
+ * Text-style variants (ADR-052 addendum, 2026-11-05): a role with one property
+ * changed, so Figma's text styles are 1:1 with what code renders. Each must
+ * equal its role except for `set`, and carry the role's $extensions (modes).
+ */
+export const VARIANTS = Object.freeze({
+  bodyStrong: { of: 'body', set: { fontWeight: '{primitive.typography.weight.bold}' } },
+  uiItalic: { of: 'ui', set: { fontStyle: 'italic' } },
+});
+
 /** Deprecated composite to the role it now points at (semantic.typography.*). */
 export const TOKEN_ALIASES = Object.freeze({
   h1: 'title',
@@ -71,7 +95,7 @@ export const TOKEN_ALIASES = Object.freeze({
   eyebrow: 'caption',
 });
 
-const ROLE_ALT = ROLES.join('|');
+const ROLE_ALT = [...ROLES, ...Object.keys(VARIANTS)].join('|');
 const DEPRECATED_TYPE_STYLES =
   'h1|h2|h3|heading1|heading2|heading3|headingHero|headingSection|display1|display2|displayXl|' +
   'body2|bodyLarge|small|bodySmall|label|labelDescriptive|eyebrow|badge|micro|' +
@@ -126,6 +150,13 @@ const DEPRECATED_PATTERNS = [
   ],
 ];
 
+const MARKETING_ALT = MARKETING_ROLES.join('|');
+const MARKETING_PATTERNS = [
+  new RegExp(`typeStyles(?:\\.(?:${MARKETING_ALT})\\b|\\[\\s*['"](?:${MARKETING_ALT})['"])`, 'g'),
+  new RegExp(`--semantic-typography-(?:${MARKETING_ALT})-[\\w-]+`, 'g'),
+  new RegExp(`typography\\.(?:${MARKETING_ALT})\\b`, 'g'),
+];
+
 const PROPERTY =
   /(?<![\w-])(font-size|fontSize|font-weight|fontWeight|line-height|lineHeight)\s*:\s*([^;,}\n\]]*)/g;
 // A role var (or a template literal that builds one) and the CSS-wide keywords.
@@ -135,7 +166,7 @@ const ALLOWED_VALUE = new RegExp(
 
 /**
  * Violations in one file's text: { file, line, rule, message, sample }.
- * Rules: off-ramp-style, deprecated-composite.
+ * Rules: off-ramp-style, deprecated-composite, marketing-only.
  */
 export function findViolationsInText(text, file) {
   const raw = text.split('\n');
@@ -179,6 +210,15 @@ export function findViolationsInText(text, file) {
         ]);
       }
     }
+    for (const re of MARKETING_PATTERNS) {
+      for (const m of line.matchAll(re)) {
+        found.push([
+          m.index,
+          'marketing-only',
+          `${m[0].trim()}: marketing-only extension (ADR-052 addendum), product UI uses a role (${ROLES.join(', ')})`,
+        ]);
+      }
+    }
     found.sort((a, b) => a[0] - b[0]);
     for (const [col, rule, message] of found) push(i, col, rule, message);
   });
@@ -186,12 +226,18 @@ export function findViolationsInText(text, file) {
 }
 
 /**
- * Violations in the token file: the live composites must be exactly the six
- * roles, and each deprecated alias must still equal its role.
+ * Violations in the token file: the live composites must be exactly the seven
+ * roles plus the marketing-only extensions, and each deprecated alias must
+ * still equal its role.
  * @param {object} tokens parsed hirobius.tokens.json
  * @param {Record<string,string>} [aliases] alias name to role name
  */
-export function findTokenViolations(tokens, aliases = TOKEN_ALIASES) {
+export function findTokenViolations(
+  tokens,
+  aliases = TOKEN_ALIASES,
+  extensions = MARKETING_ROLES,
+  variants = VARIANTS,
+) {
   const file = 'hirobius.tokens.json';
   const typo = tokens?.semantic?.typography ?? {};
   const out = [];
@@ -200,15 +246,44 @@ export function findTokenViolations(tokens, aliases = TOKEN_ALIASES) {
       !k.startsWith('$') && v && typeof v === 'object' && v.$value && typeof v.$value === 'object',
   );
   const live = composites.filter(([, v]) => !v.$deprecated).map(([k]) => k);
-  const unexpected = live.filter((k) => !ROLES.includes(k));
+  const unexpected = live.filter(
+    (k) => !ROLES.includes(k) && !extensions.includes(k) && !(k in variants),
+  );
   const missing = ROLES.filter((r) => !live.includes(r));
   if (unexpected.length || missing.length) {
     out.push({
       file,
       line: null,
       rule: 'ramp-size',
-      message: `semantic.typography must hold exactly ${ROLES.join(', ')}; unexpected: [${unexpected.join(', ')}], missing: [${missing.join(', ')}]`,
+      message: `semantic.typography must hold exactly ${ROLES.join(', ')} (plus marketing-only ${extensions.join(', ') || 'none'}); unexpected: [${unexpected.join(', ')}], missing: [${missing.join(', ')}]`,
     });
+  }
+  for (const [name, { of, set }] of Object.entries(variants)) {
+    const a = typo[name];
+    const r = typo[of];
+    if (!a || !r) continue;
+    const want = { ...r.$value, ...set };
+    const same = (x, y) => JSON.stringify(x ?? null) === JSON.stringify(y ?? null);
+    const keys = new Set([...Object.keys(want), ...Object.keys(a.$value)]);
+    const exact = [...keys].every((k) => same(a.$value[k], want[k]));
+    if (!exact || !same(a.$extensions, r.$extensions)) {
+      out.push({
+        file,
+        line: null,
+        rule: 'variant-drift',
+        message: `semantic.typography.${name} must equal ${of} except ${Object.keys(set).join(', ')} (and share its $extensions)`,
+      });
+    }
+  }
+  for (const ext of extensions) {
+    if (typo[ext] && !/marketing-only/i.test(typo[ext].$description ?? '')) {
+      out.push({
+        file,
+        line: null,
+        rule: 'extension-unscoped',
+        message: `semantic.typography.${ext} must say "Marketing-only" in its $description`,
+      });
+    }
   }
   for (const [alias, role] of Object.entries(aliases)) {
     const a = typo[alias];
