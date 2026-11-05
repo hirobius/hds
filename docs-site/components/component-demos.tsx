@@ -39,6 +39,7 @@ import {
   MetaLine,
   Menu,
   NavList,
+  List,
   Pagination,
   Popover,
   Progress,
@@ -72,6 +73,7 @@ import {
 import {
   ArrowRight,
   Banknote,
+  Bell,
   Briefcase,
   CircleCheck,
   Copy,
@@ -849,6 +851,68 @@ function MetaLineDemo() {
   );
 }
 
+function ListDemo() {
+  return (
+    <div className="flex max-w-xl flex-col">
+      <List>
+        <List.Group title="Saved roles" count={2} action={<Button variant="link">See all</Button>}>
+          <List.Item
+            href="#"
+            leading={<List.Tile icon={Briefcase} />}
+            title="Design systems lead"
+            description="Acme Cloud, remote, full time"
+            meta="Saved 2 days ago"
+            trailing="chevron"
+          />
+          <List.Item
+            href="#"
+            leading={<List.Tile icon={Briefcase} />}
+            title="Staff front-end engineer"
+            description="Northwind, hybrid"
+            meta="Saved last week"
+            actions={
+              <>
+                <Menu.Item onSelect={() => {}}>Archive</Menu.Item>
+                <Menu.Item onSelect={() => {}}>Copy link</Menu.Item>
+              </>
+            }
+          />
+        </List.Group>
+        <List.Group title="Alerts" count={1}>
+          <List.Item
+            href="#"
+            leading={<List.Tile icon={Bell} />}
+            title="New roles this week"
+            description="Matches for design systems lead"
+            trailing={4}
+          />
+        </List.Group>
+        <List.Group title="Applied" count={0}>
+          <List.Empty title="No applications yet" description="Roles you apply to show here." />
+        </List.Group>
+      </List>
+      <List variant="plain" divider="none" defaultStatus="open">
+        <List.Group title="Pipeline" count={2}>
+          <List.Item
+            href="#"
+            title="Acme Cloud"
+            meta="Updated today"
+            status={{ value: 'open', label: 'Open' }}
+          />
+          <List.Item
+            href="#"
+            title="Northwind"
+            meta="Updated Monday"
+            status={{ value: 'interview', label: 'Interview' }}
+            statusIn="trailing"
+            trailing="chevron"
+          />
+        </List.Group>
+      </List>
+    </div>
+  );
+}
+
 function NavListDemo() {
   const jobs = [
     { title: 'Design systems lead', meta: ['Acme Cloud', 'Remote'] as [string, string] },
@@ -1421,6 +1485,7 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   Kbd: KbdDemo,
   MetaLine: MetaLineDemo,
   NavList: NavListDemo,
+  List: ListDemo,
   Pagination: PaginationDemo,
   Popover: PopoverDemo,
   Progress: ProgressDemo,

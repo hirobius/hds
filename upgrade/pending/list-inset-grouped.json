@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Nothing to change: to show grouped rows of records, import `List` and compose `List.Group` and `List.Item` instead of building rows from Card or NavList."
+}

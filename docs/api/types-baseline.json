@@ -566,6 +566,66 @@
     "KbdProps": {
       "kind": "type"
     },
+    "List": {
+      "kind": "value",
+      "signatures": [
+        "(props: ListProps & RefAttributes<HTMLDivElement>): ReactNode"
+      ],
+      "members": [
+        "Empty",
+        "Group",
+        "Item",
+        "Tile"
+      ]
+    },
+    "ListEmpty": {
+      "kind": "value",
+      "signatures": [
+        "(props: ListEmptyProps): Element"
+      ]
+    },
+    "ListEmptyProps": {
+      "kind": "type"
+    },
+    "ListGroup": {
+      "kind": "value",
+      "signatures": [
+        "(props: ListGroupProps & RefAttributes<HTMLElement>): ReactNode"
+      ]
+    },
+    "ListGroupProps": {
+      "kind": "type"
+    },
+    "ListItem": {
+      "kind": "value",
+      "signatures": [
+        "(props: ListItemProps): Element"
+      ]
+    },
+    "ListItemProps": {
+      "kind": "type"
+    },
+    "ListItemStatus": {
+      "kind": "type"
+    },
+    "ListItemTrailing": {
+      "kind": "type"
+    },
+    "ListProps": {
+      "kind": "type"
+    },
+    "ListTile": {
+      "kind": "value",
+      "signatures": [
+        "({ icon, className }: ListTileProps): Element"
+      ]
+    },
+    "ListTileProps": {
+      "kind": "type"
+    },
+    "ListVariant": {
+      "kind": "type"
+    },
     "Menu": {
       "kind": "value",
       "signatures": [
@@ -1485,6 +1545,27 @@
         "component.input.text",
         "component.input.text.$type",
         "component.input.text.$value",
+        "component.list",
+        "component.list.groupGap",
+        "component.list.groupGap.$description",
+        "component.list.groupGap.$type",
+        "component.list.groupGap.$value",
+        "component.list.headingGap",
+        "component.list.headingGap.$description",
+        "component.list.headingGap.$type",
+        "component.list.headingGap.$value",
+        "component.list.leadingSize",
+        "component.list.leadingSize.$description",
+        "component.list.leadingSize.$type",
+        "component.list.leadingSize.$value",
+        "component.list.rowMinHeight",
+        "component.list.rowMinHeight.$description",
+        "component.list.rowMinHeight.$type",
+        "component.list.rowMinHeight.$value",
+        "component.list.rowPadding",
+        "component.list.rowPadding.$description",
+        "component.list.rowPadding.$type",
+        "component.list.rowPadding.$value",
         "component.nav",
         "component.nav.paddingY",
         "component.nav.paddingY.$description",
@@ -1835,6 +1916,10 @@
         "primitive.size.52.$description",
         "primitive.size.52.$type",
         "primitive.size.52.$value",
+        "primitive.size.56",
+        "primitive.size.56.$description",
+        "primitive.size.56.$type",
+        "primitive.size.56.$value",
         "primitive.size.64",
         "primitive.size.64.$description",
         "primitive.size.64.$type",
@@ -2286,6 +2371,9 @@
         "semantic.size.icon.lg",
         "semantic.size.icon.md",
         "semantic.size.icon.sm",
+        "semantic.size.listRow",
+        "semantic.size.listRow.$description",
+        "semantic.size.listRow.$value",
         "semantic.size.row",
         "semantic.size.row.$description",
         "semantic.size.row.comfortable",
@@ -3725,6 +3813,7 @@
         "primitive.size.44",
         "primitive.size.48",
         "primitive.size.52",
+        "primitive.size.56",
         "primitive.size.64",
         "primitive.size.8",
         "primitive.size.80",

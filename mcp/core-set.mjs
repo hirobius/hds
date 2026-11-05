@@ -67,6 +67,8 @@ export const CORE_COMPONENTS = [
   'MetaLine',
   // hds#817
   'NavList',
+  // job-hunt request: inset grouped list
+  'List',
   // hds#638
   'CommandPalette',
   // hds#637
