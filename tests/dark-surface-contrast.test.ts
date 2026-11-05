@@ -25,14 +25,15 @@ describe('dark-mode surface contrast', () => {
     expect(ratio).toBeGreaterThanOrEqual(1.3);
   });
 
-  it('leaves light mode as it was', () => {
-    // border.default Light moved to graphite.200 on purpose (divider contrast,
-    // 2026-10-22; floor pinned in src/styles/__tests__/divider-contrast.test.ts).
+  it('pins the light values', () => {
+    // Light moved on purpose: border.default to graphite.200 (divider contrast,
+    // 2026-10-22), then the hds#522 ladder re-space moved it to graphite.250 and
+    // sunken to neutral.300 (light-surfaces.test.ts owns the ladder).
     expect(hex('semantic.color.border.default', 'Light')).toBe(
-      hex('primitive.color.graphite.200', 'Light'),
+      hex('primitive.color.graphite.250', 'Light'),
     );
     expect(hex('semantic.color.surface.sunken', 'Light')).toBe(
-      hex('primitive.color.neutral.200', 'Light'),
+      hex('primitive.color.neutral.300', 'Light'),
     );
   });
 });

@@ -13,8 +13,11 @@ declare module 'react' {
   interface CSSProperties {
     '--primitive-color-neutral-50'?: string | undefined;
     '--primitive-color-neutral-100'?: string | undefined;
+    '--primitive-color-neutral-150'?: string | undefined;
     '--primitive-color-neutral-200'?: string | undefined;
+    '--primitive-color-neutral-250'?: string | undefined;
     '--primitive-color-neutral-300'?: string | undefined;
+    '--primitive-color-neutral-325'?: string | undefined;
     '--primitive-color-neutral-350'?: string | undefined;
     '--primitive-color-neutral-400'?: string | undefined;
     '--primitive-color-neutral-450'?: string | undefined;
@@ -53,6 +56,7 @@ declare module 'react' {
     '--primitive-color-graphite-50'?: string | undefined;
     '--primitive-color-graphite-100'?: string | undefined;
     '--primitive-color-graphite-200'?: string | undefined;
+    '--primitive-color-graphite-250'?: string | undefined;
     '--primitive-color-graphite-300'?: string | undefined;
     '--primitive-color-graphite-400'?: string | undefined;
     '--primitive-color-graphite-500'?: string | undefined;
