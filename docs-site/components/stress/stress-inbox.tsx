@@ -39,7 +39,7 @@ const DROPS = [
     id: 'd3',
     from: 'Lena Fischer',
     subject: 'Sample boards: oak and terrazzo',
-    preview: 'Three finishes for the reception desk. Courier arrives Thursday.',
+    preview: 'Three finishes for the reception desk. Delivery arrives Thursday.',
     project: 'Materials library',
     received: '2026-11-02T11:05:00Z',
     status: { value: 'filed', label: 'Filed' },

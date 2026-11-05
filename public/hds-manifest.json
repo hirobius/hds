@@ -338,6 +338,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
@@ -4036,7 +4037,7 @@
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "The quiet tone, flush and the link variant keep the focus-visible ring of every Button.",
+          "rule": "Quiet, flush and link keep a visible focus ring (hds#1167).",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.quiet-focus-ring"
