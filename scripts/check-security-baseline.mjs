@@ -32,14 +32,14 @@ const ROOT = process.cwd();
 const PACKAGE_JSON = join(INPUT_ROOT, 'package.json');
 const LOCKFILE = join(INPUT_ROOT, 'pnpm-lock.yaml');
 
-const BLOCKED_FILES = [
-  '.env',
-  '.env.local',
-  '.env.production',
-  '.env.development',
-  '.env.test',
-  '.npmrc',
-];
+const BLOCKED_FILES = ['.env', '.env.local', '.env.production', '.env.development', '.env.test'];
+
+// .npmrc is committed on purpose (supply-chain policy, hds#1000: save-exact and
+// friends). What must never be committed is a credential in it, so the gate
+// blocks a tracked .npmrc only when it carries an auth setting.
+const NPMRC = '.npmrc';
+const NPMRC_CREDENTIAL =
+  /^\s*(?:\/\/[^\s=]*:)?(?:_auth|_authToken|_password|password|username|email|certfile|keyfile)\s*=/im;
 
 const TEXT_EXTENSIONS = new Set([
   '.md',
@@ -138,6 +138,17 @@ for (const blocked of BLOCKED_FILES) {
   const full = join(INPUT_ROOT, blocked);
   if (existsSync(full) && isGitTracked(blocked)) {
     violations.push(`blocked file committed: ${blocked}`);
+  }
+}
+
+{
+  const full = join(INPUT_ROOT, NPMRC);
+  if (
+    existsSync(full) &&
+    isGitTracked(NPMRC) &&
+    NPMRC_CREDENTIAL.test(readFileSync(full, 'utf8'))
+  ) {
+    violations.push(`credential committed in ${NPMRC}`);
   }
 }
 
