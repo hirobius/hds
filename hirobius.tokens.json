@@ -2346,6 +2346,29 @@
           }
         }
       },
+      "uiRegular": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.primary}",
+          "fontSize": "{primitive.typography.size.base}",
+          "fontWeight": "{primitive.typography.weight.regular}",
+          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "lineHeight": "{primitive.typography.lineHeight.normal}",
+          "maxWidth": {
+            "value": 60,
+            "unit": "ch"
+          }
+        },
+        "$description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "$extensions": {
+          "com.figma.variables": {
+            "modes": {
+              "Compact": {
+                "fontSize": "{primitive.typography.size.sm}"
+              }
+            }
+          }
+        }
+      },
       "uiItalic": {
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",

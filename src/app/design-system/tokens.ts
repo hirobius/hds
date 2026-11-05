@@ -217,6 +217,8 @@ const hds = {
     /** body at weight 700, as `<Text variant="body" weight="bold">` (ADR-052 addendum). */
     bodyStrong: tokenRefs.semantic.typography.bodyStrong as React.CSSProperties,
     ui: tokenRefs.semantic.typography.ui as React.CSSProperties,
+    /** ui at weight 400, as Table body cells (ADR-052 addendum, hds#1198). */
+    uiRegular: tokenRefs.semantic.typography.uiRegular as React.CSSProperties,
     /** ui in italic, as EmptyState's inline message (ADR-052 addendum). */
     uiItalic: tokenRefs.semantic.typography.uiItalic as React.CSSProperties,
     caption: tokenRefs.semantic.typography.caption as React.CSSProperties,

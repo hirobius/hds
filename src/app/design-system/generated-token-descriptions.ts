@@ -268,6 +268,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.typography.body": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
   "semantic.typography.bodyStrong": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
   "semantic.typography.ui": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
+  "semantic.typography.uiRegular": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
   "semantic.typography.uiItalic": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
   "semantic.typography.caption": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
   "semantic.typography.mono": "Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.",

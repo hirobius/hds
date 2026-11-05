@@ -38,8 +38,8 @@ describe('ROLES', () => {
 });
 
 describe('VARIANTS (ADR-052 addendum)', () => {
-  it('are bodyStrong and uiItalic', () => {
-    expect(Object.keys(VARIANTS)).toEqual(['bodyStrong', 'uiItalic']);
+  it('are bodyStrong, uiRegular and uiItalic', () => {
+    expect(Object.keys(VARIANTS)).toEqual(['bodyStrong', 'uiRegular', 'uiItalic']);
   });
 
   it('accepts a variant var as a role value', () => {

@@ -400,6 +400,13 @@
   --semantic-typography-ui-letter-spacing: var(--primitive-typography-letterSpacing-normal);
   --semantic-typography-ui-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-ui-max-width: 60ch;
+  /* semantic.typography.uiRegular */
+  --semantic-typography-uiRegular-font-family: var(--primitive-typography-family-primary);
+  --semantic-typography-uiRegular-font-size: var(--primitive-typography-size-base);
+  --semantic-typography-uiRegular-font-weight: var(--primitive-typography-weight-regular);
+  --semantic-typography-uiRegular-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-uiRegular-line-height: var(--primitive-typography-lineHeight-normal);
+  --semantic-typography-uiRegular-max-width: 60ch;
   /* semantic.typography.uiItalic */
   --semantic-typography-uiItalic-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-uiItalic-font-size: var(--primitive-typography-size-base);
@@ -834,6 +841,7 @@
   --semantic-typography-body-font-size: var(--primitive-typography-size-compactBody);
   --semantic-typography-bodyStrong-font-size: var(--primitive-typography-size-compactBody);
   --semantic-typography-ui-font-size: var(--primitive-typography-size-sm);
+  --semantic-typography-uiRegular-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-uiItalic-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-caption-font-size: var(--primitive-typography-size-compactCaption);
   /* @deprecated hds#483, removed in 1.0.0 — use semantic.typography.title */

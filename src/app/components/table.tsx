@@ -190,12 +190,7 @@ export type TableSortDirection = 'ascending' | 'descending' | 'none';
  * @public
  */
 export type TableColumnWidth =
-  | 'auto'
-  | 'min-content'
-  | 'max-content'
-  | `${number}fr`
-  | `minmax(${string})`
-  | `var(--${string})`;
+  'auto' | 'min-content' | 'max-content' | `${number}fr` | `minmax(${string})` | `var(--${string})`;
 
 export type TableColumn = {
   key: string;
@@ -257,12 +252,9 @@ type TableDensity = 'compact' | 'comfortable';
 // (see Text primitive, src/app/components/text.tsx), so this mirrors the
 // established `style={hds.typeStyles.X}` pattern used by already-converted
 // cva components like Breadcrumb.
-// Body text is the ui size at the regular weight, so the medium-weight header and an
-// emphasised first column read as the stronger voices.
-const BODY_TEXT: CSSProperties = {
-  ...hds.typeStyles.ui,
-  fontWeight: 'var(--semantic-typography-body-font-weight)',
-};
+// Body text is uiRegular (ui at weight 400, hds#1198), so the medium-weight header and
+// an emphasised first column read as the stronger voices.
+const BODY_TEXT: CSSProperties = hds.typeStyles.uiRegular;
 const HEADER_TEXT: CSSProperties = hds.typeStyles.ui;
 const EMPHASIS: CSSProperties = { fontWeight: 'var(--semantic-typography-ui-font-weight)' };
 
