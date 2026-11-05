@@ -667,6 +667,132 @@
           },
           "description": "package.json#files."
         },
+        "props": {
+          "description": "hds#461: every component prop (scripts/upgrade/props.mjs); absent for a release older than the props baseline.",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "optional": {
+                  "type": "boolean"
+                },
+                "values": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "default": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "optional",
+                "values",
+                "default"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "types": {
+          "description": "Each JS entry: the type shape of every export (scripts/upgrade/types.mjs); absent for a release older than the types baseline.",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "value",
+                    "type"
+                  ]
+                },
+                "signatures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "keys": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "dom": {
+          "description": "hds#468: each docs demo, its element outline and what a screen reader speaks (scripts/upgrade/dom.mjs); absent for a release older than the DOM baseline.",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "dom": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "reader": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "dom",
+              "reader"
+            ],
+            "additionalProperties": false
+          }
+        },
         "css": {
           "description": "The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.",
           "$ref": "#/$defs/cssContract"

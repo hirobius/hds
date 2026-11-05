@@ -18,7 +18,7 @@ import { rulesFromSteps, runCodemod, transformSource } from '../../codemods/toke
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CODEMOD = join(REPO, 'codemods/token-keys.mjs');
 const FIXTURES = join(REPO, 'codemods/__fixtures__/token-keys');
-const NOTE = join(REPO, 'upgrade/pending/token-keys-955.json');
+const NOTE = join(REPO, 'upgrade/sources/0.33.0/notes/token-keys-955.json');
 const PKG = '@hirobius/design-system';
 
 const STEPS = [
