@@ -179,8 +179,8 @@ export function buildEdgeCSS(raw) {
   const dark = keys.filter((k) => e.Dark[k] !== e.Light[k]);
   return (
     `/* Raised edges (hds#897): computed fills stepped darker (C2); Button tones alias component.button.edge.*. scripts/lib/raised-edge.mjs */\n` +
-    `:root{${decls(e.Light, keys)}${Object.entries(EDGE_TOKENS)
-      .map(([k, p]) => `--hds-edge-${k}:${tokenVar(p)};`)
+    `:root{${decls(e.Light, keys)}${Object.keys(EDGE_TOKENS)
+      .map((k) => `--hds-edge-${k}:${tokenVar(`component.button.edge.${k}`)};`)
       .join('')}}\n[data-theme="dark"]{${decls(e.Dark, dark)}}\n`
   );
 }
