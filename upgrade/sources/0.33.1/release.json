@@ -1,0 +1,54 @@
+{
+  "$comment": "Frozen inputs of the 0.33.1 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.33.1 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.33.1",
+  "previous": "0.33.0",
+  "date": "2026-11-05",
+  "summary": "1 change to make by hand and 13 that look different.",
+  "backfilled": false,
+  "notes": {
+    "button-compress-1196": {
+      "needle": "9645731: Button (hard shadow): hover and",
+      "source": "CHANGELOG.md:19"
+    },
+    "button-edge-primary-token": {
+      "needle": "794dec4: Add `semantic.color.edge.primary`",
+      "source": "CHANGELOG.md:20"
+    },
+    "button-motion-tokens-1145": {
+      "needle": "da9df7c: The `hds.motion.*` records move",
+      "source": "CHANGELOG.md:21"
+    },
+    "deps-tooling": {
+      "needle": "862046d: Tooling bump (eslint, typescript-eslint,",
+      "source": "CHANGELOG.md:22"
+    },
+    "focus-ring-primitive": {
+      "needle": "d5894a6: Button edge variables now alias",
+      "source": "CHANGELOG.md:23"
+    },
+    "green-main-033": {
+      "needle": "4991b90: `upgrade/schema.json` now accepts",
+      "source": "CHANGELOG.md:24"
+    },
+    "listbox-row-memo": {
+      "needle": "537d86d: CommandPalette and Combobox: moving",
+      "source": "CHANGELOG.md:25"
+    },
+    "preserve-modules-1145": {
+      "needle": "da9df7c: The library build now keeps one",
+      "source": "CHANGELOG.md:26"
+    },
+    "safe-link-href": {
+      "needle": "26f86e0: Security (hds#1145): InlineLink,",
+      "source": "CHANGELOG.md:27"
+    },
+    "segmented-control-sm-fit-1214": {
+      "needle": "873b743: SegmentedControl: the `sm` rail",
+      "source": "CHANGELOG.md:28"
+    },
+    "table-full-outline": {
+      "needle": "89f5485: Table: the frame now has a full",
+      "source": "CHANGELOG.md:29"
+    }
+  }
+}

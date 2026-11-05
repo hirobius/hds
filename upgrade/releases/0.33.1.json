@@ -1,0 +1,248 @@
+{
+  "version": "0.33.1",
+  "date": "2026-11-05",
+  "bump": "patch",
+  "summary": "1 change to make by hand and 13 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.33.1/value-changed/--component-button-edge-danger",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-danger now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": [
+          "--component-button-edge-danger"
+        ],
+        "cssVarWrites": [
+          "--component-button-edge-danger"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-danger::root",
+        "css-var-changed:--component-button-edge-danger:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-danger:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.1/value-changed/--component-button-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-info now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": [
+          "--component-button-edge-info"
+        ],
+        "cssVarWrites": [
+          "--component-button-edge-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-info::root",
+        "css-var-changed:--component-button-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.1/value-changed/--component-button-edge-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-secondary now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": [
+          "--component-button-edge-secondary"
+        ],
+        "cssVarWrites": [
+          "--component-button-edge-secondary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-secondary::root",
+        "css-var-changed:--component-button-edge-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-secondary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.1/value-changed/--component-button-edge-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-success now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": [
+          "--component-button-edge-success"
+        ],
+        "cssVarWrites": [
+          "--component-button-edge-success"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-success::root",
+        "css-var-changed:--component-button-edge-success:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-success:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.1/value-changed/--component-button-edge-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-warning now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": [
+          "--component-button-edge-warning"
+        ],
+        "cssVarWrites": [
+          "--component-button-edge-warning"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-warning::root",
+        "css-var-changed:--component-button-edge-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-warning:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.1/value-changed/--font-sans",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Tailwind 4.3 changed the default --font-sans in @layer theme to a system UI stack; text that reads var(--font-sans) can render in a different system font.",
+      "detect": {
+        "cssVars": [
+          "--font-sans"
+        ],
+        "cssVarWrites": [
+          "--font-sans"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--font-sans:@layer theme :root,:host"
+      ],
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.33.1/value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-primary is now var(--component-button-edge-primary) in both themes (same colours); to restyle the primary Button edge, override --component-button-edge-primary or keep your --hds-edge-primary override.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.33.1/value-changed/--semantic-focus-ring-color",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-focus-ring-color no longer follows --semantic-color-border-accent; if you override the accent border, set the focus ring colour too.",
+      "detect": {
+        "cssVars": [
+          "--semantic-focus-ring-color"
+        ],
+        "cssVarWrites": [
+          "--semantic-focus-ring-color"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-focus-ring-color::root",
+        "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.1/look/Button-compress",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Button hover moves the face down 1px onto a 2px edge and press moves it down 3px onto a 0px edge; remove any custom hover lift you added to match the old 4px hover edge.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Button"
+            ]
+          }
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.33.1/look/segmented-control-sm-fit-1214",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A size=\"sm\" SegmentedControl is now 32px tall like Button sm, with the selected primary label 1px higher, so remove any padding or offset you added to fix its height.",
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.33.1/look/table-full-outline",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Every Table now shows a 1px outline round its frame; if you added your own border or ring round a Table, remove it so the edge is not doubled.",
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.33.1/behavior/safe-link-href",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one.",
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.33.1/tenant/accent-lilac",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-lilac brand (data-brand=\"accent-lilac\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-focus-ring-color::root",
+        "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.1/tenant/accent-pair-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-focus-ring-color::root",
+        "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:23"
+    }
+  ]
+}

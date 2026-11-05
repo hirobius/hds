@@ -13,7 +13,7 @@
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.33.0",
+  "version": "0.33.1",
   "generatedAt": "2026-11-05",
   "modules": {
     "(barrel)": [
