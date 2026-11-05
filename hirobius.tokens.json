@@ -1364,6 +1364,13 @@
         },
         "$description": "1.5-unit stroke."
       },
+      "175": {
+        "$value": {
+          "value": 1.75,
+          "unit": "px"
+        },
+        "$description": "1.75-unit stroke."
+      },
       "200": {
         "$value": {
           "value": 2,
@@ -2650,6 +2657,10 @@
         "light": {
           "$value": "{primitive.strokeWidth.150}",
           "$description": "Light icon stroke (1.5)."
+        },
+        "medium": {
+          "$value": "{primitive.strokeWidth.175}",
+          "$description": "Medium icon stroke (1.75), between light and regular."
         },
         "regular": {
           "$value": "{primitive.strokeWidth.200}",

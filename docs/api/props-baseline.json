@@ -2045,11 +2045,12 @@
       "default": null
     },
     "weight": {
-      "type": "\"fill\" | \"bold\" | \"light\" | \"thin\" | \"regular\" | \"duotone\"",
+      "type": "\"fill\" | \"bold\" | \"medium\" | \"light\" | \"thin\" | \"regular\" | \"duotone\"",
       "optional": true,
       "values": [
         "fill",
         "bold",
+        "medium",
         "light",
         "thin",
         "regular",

@@ -22,16 +22,10 @@ import type { InputHTMLAttributes } from 'react';
 import { motion } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import {
-  forwardFocusHandlers,
-  forwardPointerHandlers,
-  useInteractionState,
-  type InteractionVisualState,
-} from '../hooks/useInteractionState';
+import { forwardFocusHandlers, forwardPointerHandlers } from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
-import { ControlLabel, ControlLabelText } from './control-label';
+import { ControlLabel, ControlLabelText, useControlInteraction } from './control-label';
 
 /** Radio — radio button with animated selection indicator. */
 export type HdsRadioDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
@@ -191,12 +185,9 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
   },
   ref,
 ) {
-  const frozenState = useFrozenState();
   // Shared single-element interaction machine (ADR-015), identical to Toggle.
-  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
-    disabled,
-    frozenState: frozenState as InteractionVisualState | null,
-  });
+  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } =
+    useControlInteraction(disabled);
   const productiveMotion = useHdsMotion('productive');
   const expressiveMotion = useHdsMotion('expressive');
 

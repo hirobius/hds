@@ -85,7 +85,7 @@ describe('2. docs links are InlineLink', () => {
 
   it('renders an external link as InlineLink, with the icon and the new-tab notice', () => {
     const out = html('https://example.com/');
-    expect(out).toContain('class="hds-focus hds-link"');
+    expect(out).toContain('class="group hds-focus hds-link"');
     expect(out).toContain('<svg');
     expect(out).toContain('(opens in new tab)');
   });

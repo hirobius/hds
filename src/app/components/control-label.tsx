@@ -15,7 +15,8 @@ import type { ReactNode } from 'react';
 import { motion, type TargetAndTransition } from 'motion/react';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import type { useInteractionState } from '../hooks/useInteractionState';
+import { useFrozenState } from '../context/DemoStateContext';
+import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
 
 type PointerHandlers = Pick<
   ReturnType<typeof useInteractionState>['handlers'],
@@ -96,4 +97,19 @@ export function ControlLabelText({
       {children}
     </motion.span>
   );
+}
+
+/**
+ * The shared single-element interaction machine (ADR-015) as Checkbox, Toggle
+ * and Radio read it: the real `disabled` prop plus the frozen demo state from
+ * the nearest FreezeState (hds#1009).
+ */
+export function useControlInteraction(
+  disabled: boolean | undefined,
+): ReturnType<typeof useInteractionState> {
+  const frozenState = useFrozenState();
+  return useInteractionState({
+    disabled,
+    frozenState: frozenState as InteractionVisualState | null,
+  });
 }

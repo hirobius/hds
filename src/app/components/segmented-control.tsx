@@ -30,7 +30,7 @@
  * @a11y component required gate:check-reduced-motion The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.
  * @a11y consumer required Give the control a label or an aria-label so the group has a name.
  */
-// motion-ok: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
+// Motion: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
 import { forwardRef, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';

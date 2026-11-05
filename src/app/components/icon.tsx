@@ -23,6 +23,7 @@ const STROKE = tokenValues.primitive.strokeWidth;
 const WEIGHT_TO_STROKE: Record<string, number> = {
   thin: parseFloat(STROKE['100']), // semantic.borderWidth.icon.thin
   light: parseFloat(STROKE['150']), // semantic.borderWidth.icon.light
+  medium: parseFloat(STROKE['175']), // semantic.borderWidth.icon.medium
   regular: parseFloat(STROKE['200']), // semantic.borderWidth.icon.regular
   bold: parseFloat(STROKE['250']), // semantic.borderWidth.icon.bold
   fill: parseFloat(STROKE['200']),
@@ -54,9 +55,9 @@ export interface IconProps {
   style?: React.CSSProperties;
   /**
    * Stroke weight shim for backward compatibility with former Phosphor weight prop.
-   * Maps to Lucide's `strokeWidth` (thin=1, light=1.5, regular=2, bold=2.5).
+   * Maps to Lucide's `strokeWidth` (thin=1, light=1.5, medium=1.75, regular=2, bold=2.5).
    */
-  weight?: 'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duotone';
+  weight?: 'thin' | 'light' | 'medium' | 'regular' | 'bold' | 'fill' | 'duotone';
   /** `aria-hidden` defaults to true because HDS icons are decorative by default. */
   'aria-hidden'?: boolean | 'true' | 'false';
 }

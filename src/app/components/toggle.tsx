@@ -22,15 +22,10 @@ import { motion } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import hds, { tokenValues } from '../design-system/tokens';
 import { cn } from '../../lib/utils';
-import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import {
-  forwardFocusHandlers,
-  useInteractionState,
-  type InteractionVisualState,
-} from '../hooks/useInteractionState';
+import { forwardFocusHandlers } from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
-import { ControlLabel, ControlLabelText } from './control-label';
+import { ControlLabel, ControlLabelText, useControlInteraction } from './control-label';
 
 /** Toggle — boolean on/off toggle with animated thumb. */
 export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
@@ -195,13 +190,10 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
   { label, checked, onChange, onFocus, onKeyDown, onBlur, disabled, ...rest },
   ref,
 ) {
-  const frozenState = useFrozenState();
   // Shared single-element interaction machine (ADR-015). The hook honors the
   // real `disabled` prop as well as the frozen demo state.
-  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
-    disabled,
-    frozenState: frozenState as InteractionVisualState | null,
-  });
+  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } =
+    useControlInteraction(disabled);
   const productiveMotion = useHdsMotion('productive');
 
   return (
