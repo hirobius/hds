@@ -10,8 +10,12 @@
  *      component.* must alias semantic.* or component.* (not primitive.* directly)
  *      primitive.* must not use aliases
  *
- * 2. Theme coverage gaps — a token with $extensions["com.figma.variables"].modes
- *    must define values for BOTH Light and Dark.
+ * 2. Theme coverage gaps — a token that declares a THEME mode (Light or Dark)
+ *    in $extensions["com.figma.variables"].modes must define BOTH. The same
+ *    modes map also carries the independent density axis (Compact, ADR-022;
+ *    see scripts/lib/token-modes.mjs and figma-model.mjs "Brand and density
+ *    axes"): a Compact-only token is density-scoped, not themed, and giving it
+ *    Light/Dark copies would wrongly turn it into a themed Figma variable.
  *
  * 3. Non-monotonic ordered scales — a sibling group of leaves whose keys are ALL
  *    drawn from the shared t-shirt-size step vocabulary (2xs..9xl) must resolve
@@ -133,6 +137,9 @@ function getTier(path) {
 // (industry standard — Material Design 3, IBM Carbon, Atlassian allow this for
 // non-semantic properties that don't change between themes or densities).
 // See docs/adr/029-decisions-carried-over.md.
+// Theme axis vs density axis (ADR-022): both live in the one modes map.
+const THEME_MODES = new Set(['Light', 'Dark']);
+const DENSITY_MODES = new Set(['Compact']);
 const COLOR_CROSS_TIER_TYPES = new Set(['color']);
 
 function checkNode({ path: parts, node, type: effectiveType, isLeaf }) {
@@ -194,7 +201,18 @@ function checkNode({ path: parts, node, type: effectiveType, isLeaf }) {
     const ext = node['$extensions'];
     if (ext && ext['com.figma.variables'] && ext['com.figma.variables']['modes']) {
       const modes = ext['com.figma.variables']['modes'];
-      if (!('Light' in modes)) {
+      const themed = 'Light' in modes || 'Dark' in modes;
+      const known = Object.keys(modes).every((m) => THEME_MODES.has(m) || DENSITY_MODES.has(m));
+      if (!known) {
+        violations.push({
+          type: 'coverage',
+          path,
+          missing: 'Light',
+          fix: `unknown mode name(s) ${Object.keys(modes).join(', ')}; use Light/Dark (theme) or Compact (density)`,
+        });
+      } else if (!themed) {
+        // density-only token (e.g. Compact) — theme coverage does not apply
+      } else if (!('Light' in modes)) {
         violations.push({
           type: 'coverage',
           path,
@@ -202,7 +220,7 @@ function checkNode({ path: parts, node, type: effectiveType, isLeaf }) {
           fix: `add a Light mode value in $extensions["com.figma.variables"]["modes"]["Light"]`,
         });
       }
-      if (!('Dark' in modes)) {
+      if (themed && known && !('Dark' in modes)) {
         violations.push({
           type: 'coverage',
           path,
