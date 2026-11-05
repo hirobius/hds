@@ -1,4 +1,4 @@
 {
   "impact": "look",
-  "plain": "A focused Button variant=\"link\" now shows a rounded outline with a 2px gap around the text; drop any local focus-visible outline or ring classes added to work around the old tight ring."
+  "plain": "A focused Button variant=\"link\" now shows a rounded ring 4px past the label with a 2px gap, and the link is position: relative; drop any local focus-visible outline or ring classes added to work around the old tight ring, and check a parent with overflow: hidden does not clip the ring."
 }

@@ -4,8 +4,9 @@ import { openThemed } from './theme';
 /**
  * Button variant="link" focus ring (hds#1167). The link variant has no inline
  * padding, so the base box-shadow ring (ring-2 + ring-offset-2 on the md radius) hugged the
- * glyphs and the underline. It now draws an outline: role.ring colour, the thick border width,
- * a 2px offset and the control radius, on :focus-visible only, so the rest box never moves.
+ * glyphs and the underline. It now paints on an ::after box that reaches space.scale.2xs (4px)
+ * past the label on each side, on the control radius (4px), then a 2px gap and a 2px role.ring
+ * outline (the Figma Focus drawing). The rest box never moves.
  *
  * Reads computed styles from the built docs page. Needs `pnpm docs:publish` first.
  */
@@ -31,7 +32,8 @@ async function box(btn: Locator) {
 async function focusStyle(btn: Locator) {
   return btn.evaluate((el) => {
     (el as HTMLElement).focus();
-    const s = getComputedStyle(el);
+    const own = getComputedStyle(el);
+    const s = getComputedStyle(el, '::after');
     const probe = document.createElement('span');
     probe.style.color = 'var(--role-ring)';
     el.parentElement!.appendChild(probe);
@@ -39,12 +41,18 @@ async function focusStyle(btn: Locator) {
     probe.remove();
     return {
       focusVisible: el.matches(':focus-visible'),
+      ownOutline: own.outlineStyle,
+      ownShadow: own.boxShadow,
+      position: s.position,
+      left: s.left,
+      right: s.right,
+      top: s.top,
+      bottom: s.bottom,
       outlineStyle: s.outlineStyle,
       outlineWidth: s.outlineWidth,
       outlineOffset: s.outlineOffset,
       outlineColor: s.outlineColor,
       borderRadius: s.borderTopLeftRadius,
-      boxShadow: s.boxShadow,
       ring,
     };
   });
@@ -64,14 +72,21 @@ for (const theme of ['light', 'dark'] as const) {
 
     const f = await focusStyle(btn);
     expect(f.focusVisible).toBe(true);
+    // The ring box: 4px (space.scale.2xs) past the label on each side, full height, 4px radius.
+    expect(f.position).toBe('absolute');
+    expect(f.left).toBe('-4px');
+    expect(f.right).toBe('-4px');
+    expect(f.top).toBe('0px');
+    expect(f.bottom).toBe('0px');
+    expect(f.borderRadius).toBe('4px');
+    // Then the 2px gap and the 2px role.ring outline.
     expect(f.outlineStyle).toBe('solid');
     expect(f.outlineWidth).toBe('2px');
     expect(f.outlineOffset).toBe('2px');
     expect(f.outlineColor).toBe(f.ring);
-    // semantic.radius.control (4px), not the md action radius sized for a padded fill.
-    expect(f.borderRadius).toBe('4px');
-    // No box-shadow ring left over to hug the glyphs.
-    expect(f.boxShadow).not.toMatch(/0px 0px 0px [1-9]/);
+    // The button itself paints no outline and no box-shadow ring.
+    expect(f.ownOutline).toBe('none');
+    expect(f.ownShadow).not.toMatch(/0px 0px 0px [1-9]/);
 
     // Focus changes paint only: the box, padding and margins stay put.
     expect(await box(btn)).toEqual(rest);

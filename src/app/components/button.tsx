@@ -175,17 +175,18 @@ const buttonVariants = /* @__PURE__ */ cva(
           'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
-      // Link focus (hds#1167): with px-0 the base box-shadow ring and its
-      // 2px offset sat right on the glyphs and the underline, on the md radius of a box only as
-      // wide as the text. A link draws an outline instead: role.ring colour, the thick border
-      // width, a 2px offset (the shared .hds-focus ring InlineLink uses) and the control radius,
-      // set only on :focus-visible, so the rest box (width, padding, radius) never moves. An
-      // outline also survives forced-colors mode, where a box-shadow ring is dropped.
+      // Link focus (hds#1167, matches the Figma Focus drawing): with px-0 the base box-shadow
+      // ring sat right on the glyphs and the underline. A link instead paints its ring on an
+      // ::after box that reaches space.scale.2xs (4px) past the label on each side, with the
+      // control radius (4px), then the 2px gap and the 2px role.ring outline. The ::after is
+      // absolutely positioned and the classes that draw it are all focus-visible:, so the rest
+      // box (width, padding, radius) never moves, with no negative margin. An outline also
+      // survives forced-colors mode, where a box-shadow ring is dropped.
       { variant: 'link', className: 'px-0' },
       {
         variant: 'link',
         className:
-          'focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-solid focus-visible:outline-[length:var(--hds-borderWidth-thick)] focus-visible:outline-ring focus-visible:outline-offset-2 focus-visible:rounded-[var(--semantic-radius-control)]',
+          'relative after:pointer-events-none after:absolute after:inset-y-0 after:-inset-x-scale-2xs after:rounded-[var(--semantic-radius-control)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:after:outline-solid focus-visible:after:outline-[length:var(--hds-borderWidth-thick)] focus-visible:after:outline-ring focus-visible:after:outline-offset-2',
       },
       {
         iconOnly: true,
@@ -309,7 +310,7 @@ const BUTTON_EDGE = {
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
  * @a11y component required a11y:button.label-crossfade When a toggle button's text label changes, the old label is aria-hidden while it fades out, so the accessible name is the new label from the moment it changes.
  * @a11y component required gate:check-reduced-motion The toggle label crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the label swaps instantly with no overlap.
- * @a11y component required a11y:button.quiet-focus-ring The quiet tone and flush keep the focus-visible ring of every Button; the link variant draws a focus-visible outline with a 2px gap and the control radius instead (hds#1167).
+ * @a11y component required a11y:button.quiet-focus-ring The quiet tone and flush keep the focus-visible ring of every Button; the link variant draws a focus-visible outline 4px past the label, on the control radius, with a 2px gap (hds#1167).
  * @a11y component required a11y:button.quiet-contrast Quiet text is content.secondary and clears 4.5:1 at rest (page, raised), hovered (surface.hover) and pressed (the 5% wash), in light and dark.
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.
