@@ -71,7 +71,7 @@ describe('link href safety (hds#1145)', () => {
     const Link: HdsLinkComponent = forwardRef(function TestLink({ to, children, ...rest }, ref) {
       seen.push(to);
       return (
-        <a ref={ref} href={to} {...rest}>
+        <a ref={ref} href={to} className="hds-focus" {...rest}>
           {children}
         </a>
       );
