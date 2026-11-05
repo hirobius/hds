@@ -39,7 +39,6 @@
 
 import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFileSync } from 'node:fs';
 import {
   scanSources,
   suppressionFor,
@@ -47,6 +46,7 @@ import {
   isSpecFile,
   reportLineViolations,
   gateContext,
+  textViolations,
 } from './lib/source-scan.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
@@ -247,11 +247,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
           skipDirs: SKIP_DIRS,
         }).filter((f) => !isExempt(relative(ROOT, f).replace(/\\/g, '/')));
 
-  const violations = [];
-  for (const f of files) {
-    const rel = relative(ROOT, f).replace(/\\/g, '/');
-    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
-  }
+  const violations = textViolations(ROOT, files, findViolationsInText);
   if (!(isFixtureMode && fixtureFile)) {
     violations.push(...findTokenViolations(readTokenSource(join(ROOT, 'hirobius.tokens.json'))));
   }

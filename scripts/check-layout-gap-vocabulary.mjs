@@ -55,12 +55,17 @@
  * Or:  pnpm check:layout-gap-vocabulary
  */
 
-import { readFileSync } from 'fs';
 import { extname, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import ts from 'typescript';
 import { emitResult } from './lib/gate-output.mjs';
-import { scanSources, suppressionFor, isSpecFile, gateContext } from './lib/source-scan.mjs';
+import {
+  scanSources,
+  suppressionFor,
+  isSpecFile,
+  gateContext,
+  textViolations,
+} from './lib/source-scan.mjs';
 import { unwrap } from './lib/ts-ast.mjs';
 
 const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
@@ -255,11 +260,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
           includeSpecs: true,
         }).filter((file) => !isExempt(relative(ROOT, file).replace(/\\/g, '/')));
 
-  const violations = [];
-  for (const file of files) {
-    const rel = relative(ROOT, file).replace(/\\/g, '/');
-    violations.push(...findViolationsInText(readFileSync(file, 'utf-8'), rel));
-  }
+  const violations = textViolations(ROOT, files, findViolationsInText);
 
   if (jsonMode) {
     const canonical = violations.map((v) => ({

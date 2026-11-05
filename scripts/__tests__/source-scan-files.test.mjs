@@ -5,7 +5,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { resolve } from 'node:path';
-import { fileLines, gateFiles, isCommentLine } from '../lib/source-scan.mjs';
+import { fileLines, gateFiles, isCommentLine, textViolations } from '../lib/source-scan.mjs';
 
 describe('gateFiles', () => {
   it('returns only the resolved fixture file in fixture mode', () => {
@@ -47,5 +47,22 @@ describe('isCommentLine', () => {
   });
   it('treats code as code', () => {
     expect(isCommentLine('const a = 1; // c')).toBe(false);
+  });
+});
+
+describe('textViolations', () => {
+  it('runs the finder on each file with its text and root-relative posix path, in order', () => {
+    const calls = [];
+    const find = (text, rel) => {
+      calls.push(rel);
+      return text.startsWith('/** @internal') ? [{ rel }] : [];
+    };
+    const files = [resolve('scripts/lib/source-scan.mjs'), resolve('scripts/lib/gate-output.mjs')];
+    const out = textViolations(resolve('.'), files, find);
+    expect(calls).toEqual(['scripts/lib/source-scan.mjs', 'scripts/lib/gate-output.mjs']);
+    expect(out[0]).toEqual({ rel: 'scripts/lib/source-scan.mjs' });
+  });
+  it('returns an empty list for no files', () => {
+    expect(textViolations('/nowhere', [], () => [{ x: 1 }])).toEqual([]);
   });
 });
