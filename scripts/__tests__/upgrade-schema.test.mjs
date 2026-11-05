@@ -337,21 +337,29 @@ describe('Snapshot', () => {
     }
   });
 
-  it('takes the props, types and dom sections snapshot.mjs writes, and still refuses an unknown key', () => {
-    const snapshot = JSON.parse(readFileSync(join(REPO, 'docs/api/releases/0.32.0.json'), 'utf8'));
-    const sections = {
-      props: {
-        Button: {
-          size: { type: "'sm' | 'md'", optional: true, values: ['sm', 'md'], default: 'md' },
-        },
+  const withSections = () => ({
+    ...JSON.parse(readFileSync(join(REPO, 'docs/api/releases/0.32.0.json'), 'utf8')),
+    props: {
+      Button: {
+        size: { type: "'sm' | 'md'", optional: true, values: ['sm', 'md'], default: 'md' },
       },
-      types: {
-        '.': { Button: { kind: 'value', signatures: ['(props: ButtonProps): ReactNode'] } },
-      },
-      dom: { Button: { dom: ['button data-size="md"'] } },
-    };
-    expect(Snapshot.safeParse({ ...snapshot, ...sections }).error?.issues ?? []).toEqual([]);
-    expect(Snapshot.safeParse({ ...snapshot, unknownSection: {} }).success).toBe(false);
+    },
+    types: { '.': { Button: { kind: 'value', signatures: ['(props: ButtonProps): ReactNode'] } } },
+    dom: { Button: { dom: ['button data-size="md"'], reader: [] } },
+  });
+
+  it('takes the props, types and dom sections snapshot.mjs writes', () => {
+    expect(Snapshot.safeParse(withSections()).error?.issues ?? []).toEqual([]);
+  });
+
+  it('still refuses an unknown key or a malformed section entry', () => {
+    expect(Snapshot.safeParse({ ...withSections(), unknownSection: {} }).success).toBe(false);
+    const badKind = withSections();
+    badKind.types['.'].Button.kind = 'function';
+    expect(Snapshot.safeParse(badKind).success).toBe(false);
+    const badProp = withSections();
+    badProp.props.Button.size.optional = 'yes';
+    expect(Snapshot.safeParse(badProp).success).toBe(false);
   });
 });
 
