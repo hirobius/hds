@@ -51,7 +51,7 @@ export function lockfileViolations(text, file = 'pnpm-lock.yaml') {
   }
 
   let inPackages = false;
-  /** @type {{key: string, line: number, resolution: string|null} | null} */
+  /** @type {{key: string, line: number, resolution: string|null, inResolution: boolean} | null} */
   let entry = null;
   const close = () => {
     if (!entry) return;
@@ -77,11 +77,25 @@ export function lockfileViolations(text, file = 'pnpm-lock.yaml') {
     const key = raw.match(/^ {2}(\S.*):\s*$/);
     if (key) {
       close();
-      entry = { key: key[1].replace(/^'|'$/g, ''), line: i + 1, resolution: null };
+      entry = {
+        key: key[1].replace(/^'|'$/g, ''),
+        line: i + 1,
+        resolution: null,
+        inResolution: false,
+      };
       return;
     }
+    if (!entry) return;
     const res = raw.match(/^ {4}resolution:\s*(.*)$/);
-    if (res && entry) entry.resolution = res[1].trim();
+    if (res) {
+      entry.resolution = res[1].trim();
+      entry.inResolution = true;
+    } else if (entry.inResolution && /^ {5,}\S/.test(raw)) {
+      // A formatter may wrap the flow map over several deeper-indented lines.
+      entry.resolution = `${entry.resolution} ${raw.trim()}`.trim();
+    } else {
+      entry.inResolution = false;
+    }
   });
   close();
   return out;

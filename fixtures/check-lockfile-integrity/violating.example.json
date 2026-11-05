@@ -1,1 +1,4 @@
-{ "scenario": "LOCKFILE_DRIFT", "description": "package.json was edited to add 'fake-new-dep' but pnpm-lock.yaml was not regenerated." }
+{
+  "scenario": "LOCKFILE_DRIFT",
+  "description": "package.json was edited to add 'fake-new-dep' but pnpm-lock.yaml was not regenerated."
+}

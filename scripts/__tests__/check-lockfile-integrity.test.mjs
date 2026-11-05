@@ -41,6 +41,27 @@ describe('check-lockfile-integrity (hds#1145)', () => {
     expect(lockfileViolations(lock)).toEqual([]);
   });
 
+  it('reads a resolution a formatter wrapped over several lines', () => {
+    const lock = [
+      "lockfileVersion: '9.0'",
+      'packages:',
+      '  a@1.0.0:',
+      '    resolution:',
+      '      {',
+      '        integrity: sha1-AAAA,',
+      '      }',
+      '    engines: {node: x}',
+      '  b@1.0.0:',
+      '    resolution:',
+      '      {',
+      '        integrity: sha512-BBBB,',
+      '      }',
+    ].join('\n');
+    expect(lockfileViolations(lock).map((v) => `${v.rule} ${v.line}`)).toEqual([
+      'WEAK_INTEGRITY 3',
+    ]);
+  });
+
   it('fails a lock with no lockfileVersion', () => {
     expect(lockfileViolations('packages:\n').map((v) => v.rule)).toEqual(['NO_LOCKFILE_VERSION']);
   });
