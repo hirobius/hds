@@ -36,10 +36,16 @@
  * Exit codes: 0 = clean, 1 = violations.
  */
 
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readdirSync, existsSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scanSources, isSpecFile, gateContext, reportLineViolations } from './lib/source-scan.mjs';
+import {
+  scanSources,
+  isSpecFile,
+  gateContext,
+  reportLineViolations,
+  textViolations,
+} from './lib/source-scan.mjs';
 import { findUppercase } from '../bin/lib/visual-rules.mjs';
 
 const { ROOT, jsonMode, isFixtureMode, fixtureFile } = gateContext(import.meta.url);
@@ -102,11 +108,7 @@ function defaultFiles() {
 // ── CLI entry ─────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const files = isFixtureMode && fixtureFile ? [resolve(fixtureFile)] : defaultFiles();
-  const violations = [];
-  for (const f of files) {
-    const rel = relative(ROOT, f).replace(/\\/g, '/');
-    violations.push(...findViolationsInText(readFileSync(f, 'utf-8'), rel));
-  }
+  const violations = textViolations(ROOT, files, findViolationsInText);
 
   process.exit(
     reportLineViolations(violations, jsonMode, {
