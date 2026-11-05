@@ -24,6 +24,8 @@
     "card.gap": "LITERAL-MATCH",
     "card.padding": "LITERAL-MATCH",
     "card.radius": "LITERAL-MATCH",
+    "input.border": "LITERAL-MATCH",
+    "input.borderError": "LITERAL-MATCH",
     "input.paddingX": "LITERAL-MATCH",
     "input.radius": "LITERAL-MATCH",
     "tag.fontSize": "LITERAL-MATCH",

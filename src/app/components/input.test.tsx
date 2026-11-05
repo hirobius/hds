@@ -89,9 +89,7 @@ describe('Input prefix and suffix slots (hds#393)', () => {
     render(<Input label="Weight" suffix="kg" error />);
     const field = screen.getByLabelText('Weight');
     const frame = screen.getByText('kg').parentElement as HTMLElement;
-    expect(frame.className).toMatch(
-      /(^|\s)border-\[color:var\(--component-input-borderError\)\](\s|$)/,
-    );
+    expect(frame.className).toMatch(/(^|\s)border-destructive(\s|$)/);
     expect(field.className).toMatch(/(^|\s)border-0(\s|$)/);
   });
 
@@ -115,7 +113,7 @@ describe('Input prefix and suffix slots (hds#393)', () => {
     const { container } = render(<Input label="Plain" />);
     const field = screen.getByLabelText('Plain');
     // The field keeps its own chrome and sits directly in the positioning wrapper.
-    expect(field.className).toMatch(/(^|\s)border-\[color:var\(--component-input-border\)\](\s|$)/);
+    expect(field.className).toMatch(/(^|\s)border-input(\s|$)/);
     expect(field.parentElement?.parentElement).toBe(container.firstElementChild);
   });
 });

@@ -415,18 +415,18 @@ describe('CLI modes', () => {
 // ── The repo itself (acceptance fixture: audit at origin/main 7895210) ───────
 
 describe('repo counts', () => {
-  it('counts after Input binds bg, text, border and borderError and Button lg binds its paddingX (hds#595): 57 BOUND / 28 LITERAL-MATCH / 0 LITERAL-MISMATCH / 8 UNUSED of 93 (was 52/33/0/8 after Button bound its five edge tokens, hds#897; was 47/33/0/8 of 88 after Button bound its heights and the new fontWeight, hds#760; was 43/36/0/8 of 87 after the 0.20.0 orphan tokens went, hds#431: lightbox and 7 nav tokens, all UNUSED; was 16 UNUSED of 95 after Badge paddingShift, hds#757; was 42 BOUND of 94 after the C2 ghost, tertiary binds bg.hover/pressed; was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is rounded-sm (role.radius - 2px) since hds#757, the action radius through rounded-md since bug bash 24; button.bgPressed bound, hds#748)', () => {
+  it('counts after Input binds bg and text and Button lg binds its paddingX (hds#595): 55 BOUND / 30 LITERAL-MATCH / 0 LITERAL-MISMATCH / 8 UNUSED of 93 (was 52/33/0/8 after Button bound its five edge tokens, hds#897; was 47/33/0/8 of 88 after Button bound its heights and the new fontWeight, hds#760; was 43/36/0/8 of 87 after the 0.20.0 orphan tokens went, hds#431: lightbox and 7 nav tokens, all UNUSED; was 16 UNUSED of 95 after Badge paddingShift, hds#757; was 42 BOUND of 94 after the C2 ghost, tertiary binds bg.hover/pressed; was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is rounded-sm (role.radius - 2px) since hds#757, the action radius through rounded-md since bug bash 24; button.bgPressed bound, hds#748)', () => {
     const r = cli(['--json']);
     expect(r.status).toBe(0);
     const { summary } = JSON.parse(r.out);
     expect(summary.total).toBe(93);
     expect(summary.counts).toMatchObject({
-      BOUND: 57,
-      'LITERAL-MATCH': 28,
+      BOUND: 55,
+      'LITERAL-MATCH': 30,
       'LITERAL-MISMATCH': 0,
       UNUSED: 8,
     });
-    expect(summary.matchKinds).toEqual({ alias: 11, 'type-role': 8, literal: 9 });
+    expect(summary.matchKinds).toEqual({ alias: 13, 'type-role': 8, literal: 9 });
   });
 
   it('--enforce passes on the committed baseline', () => {

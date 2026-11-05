@@ -46,8 +46,8 @@ const inputVariants = /* @__PURE__ */ cva(
         mono: 'font-mono',
       },
       invalid: {
-        true: 'border-[color:var(--component-input-borderError)] focus-visible:ring-destructive',
-        false: 'border-[color:var(--component-input-border)]',
+        true: 'border-destructive focus-visible:ring-destructive',
+        false: 'border-input',
       },
     },
     defaultVariants: {
@@ -77,8 +77,8 @@ const inputShellVariants = /* @__PURE__ */ cva(
         mono: 'font-mono',
       },
       invalid: {
-        true: 'border-[color:var(--component-input-borderError)] has-[input:focus-visible]:ring-destructive',
-        false: 'border-[color:var(--component-input-border)] has-[input:focus-visible]:ring-ring',
+        true: 'border-destructive has-[input:focus-visible]:ring-destructive',
+        false: 'border-input has-[input:focus-visible]:ring-ring',
       },
     },
     defaultVariants: {
