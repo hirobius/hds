@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T03:16:52.202Z",
+  "generated": "2026-11-05T03:13:32.409Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -9213,7 +9213,8 @@
         "src/app/components/control-color-fade.ts",
         "src/app/components/control-label.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle.tsx"
+        "src/app/components/toggle.tsx",
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -12992,6 +12993,13 @@
         "value": "#f4f5f7"
       },
       {
+        "path": "primitive.color.neutral.150",
+        "cssVar": "--primitive-color-neutral-150",
+        "type": "color",
+        "description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522).",
+        "value": "#e9eaec"
+      },
+      {
         "path": "primitive.color.neutral.200",
         "cssVar": "--primitive-color-neutral-200",
         "type": "color",
@@ -12999,11 +13007,25 @@
         "value": "#e4e5e7"
       },
       {
+        "path": "primitive.color.neutral.250",
+        "cssVar": "--primitive-color-neutral-250",
+        "type": "color",
+        "description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522).",
+        "value": "#dddee0"
+      },
+      {
         "path": "primitive.color.neutral.300",
         "cssVar": "--primitive-color-neutral-300",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
         "value": "#d3d4d6"
+      },
+      {
+        "path": "primitive.color.neutral.325",
+        "cssVar": "--primitive-color-neutral-325",
+        "type": "color",
+        "description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522).",
+        "value": "#c7c9cc"
       },
       {
         "path": "primitive.color.neutral.350",
@@ -13037,7 +13059,7 @@
         "path": "primitive.color.neutral.550",
         "cssVar": "--primitive-color-neutral-550",
         "type": "color",
-        "description": "Dark surface.softHover (C2).",
+        "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522).",
         "value": "#5e626a"
       },
       {
@@ -13270,6 +13292,13 @@
         "type": "color",
         "description": "Graphite accent — light midnight grey.",
         "value": "#c4c8cf"
+      },
+      {
+        "path": "primitive.color.graphite.250",
+        "cssVar": "--primitive-color-graphite-250",
+        "type": "color",
+        "description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522).",
+        "value": "#b3b8c0"
       },
       {
         "path": "primitive.color.graphite.300",
@@ -14550,8 +14579,8 @@
         "cssVar": "--semantic-color-surface-raised",
         "type": "color",
         "description": "Subtle elevated surface (cards, sections)",
-        "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#f9fafc",
+        "alias": "{primitive.color.neutral.150}",
+        "resolvedValue": "#e9eaec",
         "dark": {
           "alias": "{primitive.color.neutral.825}",
           "resolvedValue": "#1b202a"
@@ -14562,8 +14591,8 @@
         "cssVar": "--semantic-color-surface-overlay",
         "type": "color",
         "description": "Deeper surface layer",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
           "resolvedValue": "#212630"
@@ -14634,8 +14663,8 @@
         "cssVar": "--semantic-color-surface-hover",
         "type": "color",
         "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
           "resolvedValue": "#3b404a"
@@ -14646,8 +14675,8 @@
         "cssVar": "--semantic-color-surface-pressed",
         "type": "color",
         "description": "Background for an actively pressed interactive surface.",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
           "resolvedValue": "#060a13"
@@ -14658,8 +14687,8 @@
         "cssVar": "--semantic-color-surface-selected",
         "type": "color",
         "description": "Background for a persistently selected item (active tab, checked row).",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.325}",
+        "resolvedValue": "#c7c9cc",
         "dark": {
           "alias": "{primitive.color.neutral.725}",
           "resolvedValue": "#272c36"
@@ -14670,8 +14699,8 @@
         "cssVar": "--semantic-color-surface-muted",
         "type": "color",
         "description": "Muted background for low-emphasis content blocks.",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.750}",
           "resolvedValue": "#252a34"
@@ -14682,8 +14711,8 @@
         "cssVar": "--semantic-color-surface-sunken",
         "type": "color",
         "description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
           "resolvedValue": "#3b404a"
@@ -14694,8 +14723,8 @@
         "cssVar": "--semantic-color-surface-soft",
         "type": "color",
         "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -14706,8 +14735,8 @@
         "cssVar": "--semantic-color-surface-softHover",
         "type": "color",
         "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "alias": "{primitive.color.neutral.325}",
+        "resolvedValue": "#c7c9cc",
         "dark": {
           "alias": "{primitive.color.neutral.550}",
           "resolvedValue": "#5e626a"
@@ -14740,8 +14769,8 @@
         "cssVar": "--semantic-color-content-tertiary",
         "type": "color",
         "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
-        "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#6f737b",
+        "alias": "{primitive.color.neutral.550}",
+        "resolvedValue": "#5e626a",
         "dark": {
           "alias": "{primitive.color.neutral.450}",
           "resolvedValue": "#8d9096"
@@ -14751,8 +14780,8 @@
         "path": "semantic.color.content.disabled",
         "cssVar": "--semantic-color-content-disabled",
         "type": "color",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "alias": "{primitive.color.neutral.350}",
+        "resolvedValue": "#b2b4b8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -14834,8 +14863,8 @@
         "cssVar": "--semantic-color-border-default",
         "type": "color",
         "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
-        "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#c4c8cf",
+        "alias": "{primitive.color.graphite.250}",
+        "resolvedValue": "#b3b8c0",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -15839,7 +15868,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#e9eaec"
           },
           "shadow": {
             "alias": "{semantic.shadow.subtle}",
@@ -15856,7 +15885,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#e9eaec"
           },
           "shadow": {
             "alias": "{semantic.shadow.floating}",
@@ -15881,7 +15910,7 @@
           },
           "border": {
             "alias": "{semantic.color.border.default}",
-            "resolvedValue": "#c4c8cf"
+            "resolvedValue": "#b3b8c0"
           }
         }
       },
@@ -16013,7 +16042,7 @@
         "type": "color",
         "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.tag.text",
@@ -16029,7 +16058,7 @@
         "type": "color",
         "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.tag.radius",
@@ -16169,7 +16198,7 @@
         "type": "color",
         "description": "Neutral badge fill.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.badge.neutral.text",
@@ -16336,8 +16365,8 @@
         "cssVar": "--component-button-edge-secondary",
         "type": "color",
         "description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-        "alias": "{primitive.color.neutral.350}",
-        "resolvedValue": "#b2b4b8",
+        "alias": "{primitive.color.neutral.400}",
+        "resolvedValue": "#a0a3a8",
         "dark": {
           "alias": "{primitive.color.neutral.725}",
           "resolvedValue": "#272c36"
@@ -16581,7 +16610,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#b2b4b8"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -16589,7 +16618,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -16597,7 +16626,7 @@
         "type": "color",
         "description": "Secondary button fill: soft tonal, no border (hds#891).",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.bg.hover",
@@ -16605,7 +16634,7 @@
         "type": "color",
         "description": "Secondary button hover fill (the wipe layer's colour).",
         "alias": "{semantic.color.surface.softHover}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#c7c9cc"
       },
       {
         "path": "component.button.secondary.bg.pressed",
@@ -16613,7 +16642,7 @@
         "type": "color",
         "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -16637,7 +16666,7 @@
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "component.button.secondary.text",
@@ -16653,7 +16682,7 @@
         "type": "color",
         "description": "Ghost button hover (wipe) fill.",
         "alias": "{semantic.color.surface.hover}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.button.tertiary.bg.pressed",
@@ -16661,7 +16690,7 @@
         "type": "color",
         "description": "Ghost button pressed fill.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.input.bg",
@@ -16717,14 +16746,14 @@
         "cssVar": "--component-card-bg",
         "type": "color",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "component.card.border",
         "cssVar": "--component-card-border",
         "type": "color",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "component.card.radius",
@@ -16754,7 +16783,7 @@
         "type": "color",
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.list.groupGap",
@@ -16820,7 +16849,7 @@
         "type": "color",
         "description": "Card surface. shadcn role: card.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "role.card-foreground",
@@ -16884,7 +16913,7 @@
         "type": "color",
         "description": "Secondary action surface. shadcn role: secondary.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "role.secondary-foreground",
@@ -16900,7 +16929,7 @@
         "type": "color",
         "description": "Muted/quiet bg (skeletons, disabled inputs). shadcn role: muted.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "role.muted-foreground",
@@ -16948,7 +16977,7 @@
         "type": "color",
         "description": "Default border. shadcn role: border.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "role.input",

@@ -15,6 +15,10 @@
  * rest-fill floor on a raised card (hover-fill.contrast.test.tsx, hds#522), which 800 no
  * longer does once raised is 825.
  *
+ * The light ladder (hds#522) added neutral.150 (light surface.raised, 1.2:1 on white),
+ * neutral.250 (overlay/hover/muted), neutral.325 (selected) and graphite.250
+ * (border.default, weight halfway between 200 and 300); light-surfaces.test.ts pins them.
+ *
  * hirobius.tokens.json holds the results as hex (the contrast gate reads hex only);
  * scripts/__tests__/midnight-tint.test.mjs recomputes them from SOURCE.
  */
@@ -28,6 +32,7 @@ export const SOURCE = {
     50: '#f5f4f4',
     100: '#e9e7e8',
     200: '#cbc6c9',
+    250: '#bab6b8',
     300: '#b2abae',
     400: '#8b8488',
     500: '#655e62',
@@ -40,8 +45,11 @@ export const SOURCE = {
   neutral: {
     50: '#fafafa',
     100: '#f5f5f5',
+    150: '#eaeaea',
     200: '#e5e5e5',
+    250: '#dedede',
     300: '#d4d4d4',
+    325: '#c9c9c9',
     350: '#b4b4b4',
     400: '#a3a3a3',
     450: '#909090',
@@ -65,6 +73,7 @@ const GRAPHITE_WEIGHT = {
   50: 0.15,
   100: 0.2,
   200: 0.3,
+  250: 0.375,
   300: 0.45,
   400: 0.6,
   500: 0.75,
