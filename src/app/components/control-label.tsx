@@ -104,7 +104,9 @@ export function ControlLabelText({
  * and Radio read it: the real `disabled` prop plus the frozen demo state from
  * the nearest FreezeState (hds#1009).
  */
-export function useControlInteraction(disabled: boolean | undefined) {
+export function useControlInteraction(
+  disabled: boolean | undefined,
+): ReturnType<typeof useInteractionState> {
   const frozenState = useFrozenState();
   return useInteractionState({
     disabled,
