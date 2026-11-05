@@ -668,7 +668,7 @@
           "description": "package.json#files."
         },
         "props": {
-          "description": "Every component prop, by component then prop (scripts/upgrade/props.mjs, hds#461); absent for a release older than docs/api/props-baseline.json.",
+          "description": "Every component prop, by component then prop (scripts/upgrade/props.mjs); absent for a release older than docs/api/props-baseline.json.",
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -678,11 +678,47 @@
             "propertyNames": {
               "type": "string"
             },
-            "additionalProperties": {}
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "optional": {
+                  "type": "boolean"
+                },
+                "values": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "default": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "optional",
+                "values",
+                "default"
+              ],
+              "additionalProperties": false
+            }
           }
         },
         "types": {
-          "description": "Each exports entry, its names as the TypeScript checker sees them (scripts/upgrade/types.mjs, hds#467); absent for a release older than docs/api/types-baseline.json.",
+          "description": "Each exports entry, its names as the TypeScript checker sees them (scripts/upgrade/types.mjs); absent for a release older than docs/api/types-baseline.json.",
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -692,16 +728,69 @@
             "propertyNames": {
               "type": "string"
             },
-            "additionalProperties": {}
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "value",
+                    "type"
+                  ]
+                },
+                "signatures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "keys": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "additionalProperties": false
+            }
           }
         },
         "dom": {
-          "description": "Each component, the DOM its stories render (scripts/upgrade/dom.mjs, hds#468); absent for a snapshot without a DOM baseline.",
+          "description": "Each component, the DOM its stories render (scripts/upgrade/dom.mjs); absent for a snapshot without a DOM baseline.",
           "type": "object",
           "propertyNames": {
             "type": "string"
           },
-          "additionalProperties": {}
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "dom": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "reader": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "dom"
+            ],
+            "additionalProperties": false
+          }
         },
         "css": {
           "description": "The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.",
