@@ -33,7 +33,7 @@ import { FORM_CONTROL_WIDTH } from './form-control';
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-disabled has no named Tailwind-theme utility; var()-based so still token-driven (matches button/segmented disabled)
 const inputVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-background text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
+  'flex w-full rounded-md border bg-[color:var(--component-input-bg)] text-[color:var(--component-input-text)] ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       size: {
@@ -46,8 +46,8 @@ const inputVariants = /* @__PURE__ */ cva(
         mono: 'font-mono',
       },
       invalid: {
-        true: 'border-destructive focus-visible:ring-destructive',
-        false: 'border-input',
+        true: 'border-[color:var(--component-input-borderError)] focus-visible:ring-destructive',
+        false: 'border-[color:var(--component-input-border)]',
       },
     },
     defaultVariants: {
@@ -64,7 +64,7 @@ const inputVariants = /* @__PURE__ */ cva(
 // slots; a focused clear button keeps its own ring.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- productive motion token duration/easing (var()-based, no named utility)
 const inputShellVariants = /* @__PURE__ */ cva(
-  'relative flex w-full items-center rounded-md border bg-background text-foreground ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted',
+  'relative flex w-full items-center rounded-md border bg-[color:var(--component-input-bg)] text-[color:var(--component-input-text)] ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted',
   {
     variants: {
       size: {
@@ -77,8 +77,8 @@ const inputShellVariants = /* @__PURE__ */ cva(
         mono: 'font-mono',
       },
       invalid: {
-        true: 'border-destructive has-[input:focus-visible]:ring-destructive',
-        false: 'border-input has-[input:focus-visible]:ring-ring',
+        true: 'border-[color:var(--component-input-borderError)] has-[input:focus-visible]:ring-destructive',
+        false: 'border-[color:var(--component-input-border)] has-[input:focus-visible]:ring-ring',
       },
     },
     defaultVariants: {

@@ -127,7 +127,7 @@ const buttonVariants = /* @__PURE__ */ cva(
       size: {
         sm: 'h-[var(--component-button-size-sm-height)] px-fixed-xs hds-type-caption hds-touch-row [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
         md: 'h-[var(--component-button-size-md-height)] px-fixed-sm py-scale-xs hds-type-ui [&_svg]:size-[var(--component-button-size-md-iconSize)]',
-        lg: 'h-[var(--component-button-size-lg-height)] px-fixed-md hds-type-ui [&_svg]:size-[var(--component-button-size-lg-iconSize)]',
+        lg: 'h-[var(--component-button-size-lg-height)] px-[var(--component-button-size-lg-paddingX)] hds-type-ui [&_svg]:size-[var(--component-button-size-lg-iconSize)]',
       },
       iconOnly: {
         true: 'p-0',
