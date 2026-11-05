@@ -2234,6 +2234,193 @@
       "default": "md"
     }
   },
+  "List": {
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "defaultStatus": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "divider": {
+      "type": "\"none\" | \"inset\"",
+      "optional": true,
+      "values": [
+        "none",
+        "inset"
+      ],
+      "default": "inset"
+    },
+    "variant": {
+      "type": "\"inset\" | \"plain\"",
+      "optional": true,
+      "values": [
+        "inset",
+        "plain"
+      ],
+      "default": "inset"
+    }
+  },
+  "ListEmpty": {
+    "action": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "description": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "icon": {
+      "type": "LucideIcon",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "italic": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "ListGroup": {
+    "action": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "count": {
+      "type": "number",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "headingLevel": {
+      "type": "3 | 4 | 2",
+      "optional": true,
+      "values": null,
+      "default": "2"
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
+  "ListItem": {
+    "actions": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "description": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "href": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "leading": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "meta": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "onSelect": {
+      "type": "(() => void)",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "status": {
+      "type": "ListItemStatus",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "statusIn": {
+      "type": "\"meta\" | \"trailing\"",
+      "optional": true,
+      "values": [
+        "meta",
+        "trailing"
+      ],
+      "default": null
+    },
+    "title": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "trailing": {
+      "type": "ListItemTrailing",
+      "optional": true,
+      "values": null,
+      "default": null
+    }
+  },
+  "ListTile": {
+    "className": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "icon": {
+      "type": "LucideIcon",
+      "optional": false,
+      "values": null,
+      "default": null
+    }
+  },
   "Menu": {
     "children": {
       "type": "React.ReactNode",

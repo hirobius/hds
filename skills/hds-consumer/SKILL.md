@@ -64,10 +64,10 @@ Subpath exports:
 
 ## Core set
 
-The 47 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
+The 48 components of the ratified core set (`core: true` in the manifest): brand-neutral and composable. Compose a screen from these first; reach for the rest of the allow-list, or `@hirobius/design-system/patterns` for composed product surfaces, only when none fits.
 
 - **Actions:** `Button`
-- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `Table`, `Timeline`
+- **Display:** `Avatar`, `Card`, `EmptyState`, `Field`, `Icon`, `Kbd`, `List`, `Table`, `Timeline`
 - **Feedback:** `Alert`, `Badge`, `Progress`, `Skeleton`, `Spinner`, `ToastProvider`
 - **Inputs:** `Checkbox`, `Combobox`, `Input`, `Radio`, `SegmentedControl`, `Select`, `Slider`, `Tag`, `Textarea`, `Toggle`
 - **Layout:** `Box`, `Container`, `Disclosure`, `Divider`, `Grid`, `Stack`, `Surface`
@@ -107,6 +107,11 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Icon` — Icon — semantic icon wrapper for Lucide icons.
 - `InlineCode` — InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
 - `Kbd` — Renders a keyboard key or shortcut token, e.g. `<Kbd>⌘K</Kbd>`.
+- `List` — List - an inset grouped list: titled groups of tappable rows on a raised surface.
+- `ListEmpty` — The empty state of a group: an EmptyState in a row.
+- `ListGroup` — A group: the heading outside the surface, the rows inside it.
+- `ListItem` — One row: the whole row is the link (or button); an icon button or overflow menu sits beside it.
+- `ListTile` — The leading icon tile: a sunken rounded square at component.list.leadingSize.
 - `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
@@ -299,6 +304,7 @@ The `data-*` attributes each component renders for you to select on:
 - `FormActions`: `data-slot`
 - `Input`: `data-size`, `data-state`
 - `Kbd`: `data-size`
+- `List`: `data-leading`, `data-slot`, `data-variant`
 - `Menu`: `data-state`
 - `MetaLine`: `data-meta-separator`
 - `NavList`: `data-slot`

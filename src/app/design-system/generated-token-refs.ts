@@ -279,6 +279,7 @@ export const tokenRefs = {
       "44": "var(--primitive-size-44)",
       "48": "var(--primitive-size-48)",
       "52": "var(--primitive-size-52)",
+      "56": "var(--primitive-size-56)",
       "64": "var(--primitive-size-64)",
       "80": "var(--primitive-size-80)",
       "96": "var(--primitive-size-96)",
@@ -663,7 +664,8 @@ export const tokenRefs = {
       row: {
         compact: "var(--semantic-size-row-compact)",
         comfortable: "var(--semantic-size-row-comfortable)"
-      }
+      },
+      listRow: "var(--semantic-size-listRow)"
     },
     zIndex: {
       control: "var(--semantic-zIndex-control)",
@@ -815,6 +817,13 @@ export const tokenRefs = {
     },
     inlineCode: {
       bg: "var(--component-inlineCode-bg)"
+    },
+    list: {
+      groupGap: "var(--component-list-groupGap)",
+      headingGap: "var(--component-list-headingGap)",
+      rowPadding: "var(--component-list-rowPadding)",
+      rowMinHeight: "var(--component-list-rowMinHeight)",
+      leadingSize: "var(--component-list-leadingSize)"
     }
   },
   role: {

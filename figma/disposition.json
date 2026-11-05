@@ -22,14 +22,14 @@
     }
   },
   "summary": {
-    "total": 126,
+    "total": 131,
     "byClass": {
-      "library": 74,
-      "slot": 30,
+      "library": 75,
+      "slot": 34,
       "layout": 10,
       "internal": 12
     },
-    "libraryLinked": 68,
+    "libraryLinked": 69,
     "libraryMissing": 6,
     "unexpectedlyLinked": 0
   },
@@ -611,6 +611,46 @@
       "category": "Display",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9"
+    },
+    {
+      "name": "List",
+      "class": "library",
+      "parent": null,
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315"
+    },
+    {
+      "name": "ListEmpty",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "ListGroup",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "ListItem",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
+    },
+    {
+      "name": "ListTile",
+      "class": "slot",
+      "parent": "List",
+      "category": "Display",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "Menu",
