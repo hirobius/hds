@@ -60,6 +60,7 @@ const PAGE_GROUPS: Record<string, string> = {
   radius: 'semantic.radius',
   elevation: 'semantic.shadow',
   'soft-surfaces': 'semantic.color.surface',
+  icons: 'semantic.size.icon',
 };
 
 export const TOKEN_PAGES = Object.keys(PAGE_GROUPS);

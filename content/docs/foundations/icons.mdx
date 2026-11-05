@@ -1,0 +1,54 @@
+---
+title: 'Icons'
+description: 'A curated Lucide set, drawn by Icon at three token sizes and hidden from assistive tech unless it carries meaning.'
+status: 'stable'
+since: '0.1.0'
+---
+
+## Tokens
+
+{/* generated: tokens */}
+
+## Import
+
+The package ships a curated subset of [Lucide](https://lucide.dev), so you install nothing extra. Import the glyph from the `icons` entry and draw it with `Icon`:
+
+```tsx
+import { Icon } from '@hirobius/design-system';
+import { Star } from '@hirobius/design-system/icons';
+
+export const Favourite = () => <Icon icon={Star} size="medium" />;
+```
+
+## Sizes
+
+`Icon` takes `size="small"` (16px, the default), `"medium"` (20px) or `"large"` (24px). These are the `semantic.size.icon.sm`, `md` and `lg` boxes in the table above. Icon sizes come from the size scale, not the type ramp, so an icon keeps its size when text scales.
+
+`weight` sets the stroke: `thin`, `light`, `medium`, `regular` (the default) or `bold`, from the `semantic.borderWidth.icon.*` tokens. `color` defaults to `currentColor`, so an icon takes the colour of its text.
+
+## Accessibility
+
+- **Decoration:** `Icon` sets `aria-hidden` by default. Use this when text next to the icon already says the same thing, such as a Save button with a save icon.
+- **Meaning:** when the icon is the only thing that tells the user what something does, give the control a name. For an icon-only button, use `Button` with `iconOnly` and an `aria-label`. For a status icon with no visible text, put the meaning in text next to it, for example in `VisuallyHidden`.
+- Don't put `aria-label` on the `svg`. Name the control or the text, not the glyph.
+
+## Gallery
+
+Every icon the `icons` entry exports. Search by name; the name is the import.
+
+<IconGallery />
+
+<PrinciplesAndPractices>
+
+### Principle
+
+- **One set.** Every HDS icon comes from the `icons` entry, so the stroke and shape stay the same across products.
+- **Sizes are tokens.** Use the three `size` values, not pixel numbers.
+
+### Best practices
+
+- Hide decorative icons; name the control when the icon carries meaning.
+- Don't import from `lucide-react` directly. Add the icon to the `icons` entry (one line) so the set stays curated.
+- Don't set an icon colour by hand. Let it inherit, or pass a semantic token variable.
+
+</PrinciplesAndPractices>
