@@ -144,8 +144,8 @@ const buttonVariants = /* @__PURE__ */ cva(
         wipe: 'hds-btn-wipe relative isolate',
       },
       // Hard (zero-blur) edge, theme.css `.hds-btn-hard` (hds#888, C2 fixed base): the face
-      // lifts 1px on hover and sinks 2px on press while the edge under it grows or shrinks
-      // by the same amount. `none` opts out. Tertiary (ghost) never takes it.
+      // sinks 1px on hover and 3px on press while the edge under it shrinks by the same
+      // amount, so the button compresses (hds#1196). `none` opts out. Tertiary (ghost) never takes it.
       shadow: {
         hard: 'hds-btn-hard',
         none: '',
