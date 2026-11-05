@@ -11,7 +11,7 @@ Install: `pnpm add @hirobius/design-system`. Upgrading: [UPGRADING.md](UPGRADING
 <!-- auto:start:front-door-counts -->
 
 - **63** public component modules, exported from `src/index.ts`
-- **497** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **501** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 
