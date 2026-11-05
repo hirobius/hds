@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Nothing to change: a disabled Tag's label now uses the disabled content colour, so it no longer looks like a Default tag."
+}

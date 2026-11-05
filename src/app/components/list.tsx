@@ -420,7 +420,14 @@ const ListRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, ListProps>(fun
   );
 });
 
-/** @public */
+// @figma is tagged here rather than in the file block, so the parts that share
+// this module (List.Group, List.Item, List.Empty, List.Tile) are not claimed by
+// the List node. The Figma ListGroup and ListItem sets sit on the same page.
+/**
+ * List - an inset grouped list: titled groups of tappable rows on a raised surface.
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315
+ * @public
+ */
 export const List: ListComponent = /* @__PURE__ */ Object.assign(ListRoot, {
   Group: ListGroup,
   Item: ListItem,
