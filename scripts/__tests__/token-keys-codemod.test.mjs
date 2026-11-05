@@ -18,7 +18,6 @@ import { rulesFromSteps, runCodemod, transformSource } from '../../codemods/toke
 const REPO = resolve(fileURLToPath(import.meta.url), '../../..');
 const CODEMOD = join(REPO, 'codemods/token-keys.mjs');
 const FIXTURES = join(REPO, 'codemods/__fixtures__/token-keys');
-// The note froze into the 0.33.0 sources when that release was cut.
 const NOTE = join(REPO, 'upgrade/sources/0.33.0/notes/token-keys-955.json');
 const PKG = '@hirobius/design-system';
 

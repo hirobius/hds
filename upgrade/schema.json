@@ -668,7 +668,7 @@
           "description": "package.json#files."
         },
         "props": {
-          "description": "Every component prop, by component then prop (scripts/upgrade/props.mjs); absent for a release older than docs/api/props-baseline.json.",
+          "description": "hds#461: every component prop (scripts/upgrade/props.mjs); absent for a release older than the props baseline.",
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -718,7 +718,7 @@
           }
         },
         "types": {
-          "description": "Each exports entry, its names as the TypeScript checker sees them (scripts/upgrade/types.mjs); absent for a release older than docs/api/types-baseline.json.",
+          "description": "Each JS entry: the type shape of every export (scripts/upgrade/types.mjs); absent for a release older than the types baseline.",
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -765,7 +765,7 @@
           }
         },
         "dom": {
-          "description": "Each component, the DOM its stories render (scripts/upgrade/dom.mjs); absent for a snapshot without a DOM baseline.",
+          "description": "hds#468: each docs demo, its element outline and what a screen reader speaks (scripts/upgrade/dom.mjs); absent for a release older than the DOM baseline.",
           "type": "object",
           "propertyNames": {
             "type": "string"
@@ -787,7 +787,8 @@
               }
             },
             "required": [
-              "dom"
+              "dom",
+              "reader"
             ],
             "additionalProperties": false
           }

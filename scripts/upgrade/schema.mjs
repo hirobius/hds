@@ -536,34 +536,6 @@ export const CssContract = z
     'dist/css-contract.json (scripts/build-css-contract.mjs, hds#449): the CSS surface of the stylesheets a release ships.',
   );
 
-/** One prop in a snapshot's props section (scripts/upgrade/props.mjs). */
-const SnapshotProp = z
-  .object({
-    type: z.string(),
-    optional: z.boolean(),
-    values: z.array(z.string()).nullable(),
-    default: z.string().nullable(),
-  })
-  .strict();
-
-/** One export name in a snapshot's types section (scripts/upgrade/types.mjs). */
-const SnapshotTypeName = z
-  .object({
-    kind: z.enum(['value', 'type']),
-    signatures: z.array(z.string()).optional(),
-    members: z.array(z.string()).optional(),
-    keys: z.array(z.string()).optional(),
-  })
-  .strict();
-
-/** One component in a snapshot's dom section (scripts/upgrade/dom.mjs). */
-const SnapshotDom = z
-  .object({
-    dom: z.array(z.string()),
-    reader: z.array(z.string()).optional(),
-  })
-  .strict();
-
 export const Snapshot = z
   .object({
     format: z.literal(1),
@@ -583,26 +555,52 @@ export const Snapshot = z
     engines: z.record(z.string(), z.string()),
     bin: z.record(z.string(), z.string()),
     files: z.array(z.string()).describe('package.json#files.'),
-    // snapshot.mjs adds these three sections when the package carries their
-    // baselines (0.33.0 is the first release that does). The schema had no
-    // key for them, so `.strict()` rejected every snapshot that held them.
     props: z
-      .record(z.string(), z.record(z.string(), SnapshotProp))
+      .record(
+        z.string(),
+        z.record(
+          z.string(),
+          z
+            .object({
+              type: z.string(),
+              optional: z.boolean(),
+              values: z.array(z.string()).nullable(),
+              default: z.string().nullable(),
+            })
+            .strict(),
+        ),
+      )
       .optional()
       .describe(
-        'Every component prop, by component then prop (scripts/upgrade/props.mjs); absent for a release older than docs/api/props-baseline.json.',
+        'hds#461: every component prop (scripts/upgrade/props.mjs); absent for a release older than the props baseline.',
       ),
     types: z
-      .record(z.string(), z.record(z.string(), SnapshotTypeName))
+      .record(
+        z.string(),
+        z.record(
+          z.string(),
+          z
+            .object({
+              kind: z.enum(['value', 'type']),
+              signatures: z.array(z.string()).optional(),
+              members: z.array(z.string()).optional(),
+              keys: z.array(z.string()).optional(),
+            })
+            .strict(),
+        ),
+      )
       .optional()
       .describe(
-        'Each exports entry, its names as the TypeScript checker sees them (scripts/upgrade/types.mjs); absent for a release older than docs/api/types-baseline.json.',
+        'Each JS entry: the type shape of every export (scripts/upgrade/types.mjs); absent for a release older than the types baseline.',
       ),
     dom: z
-      .record(z.string(), SnapshotDom)
+      .record(
+        z.string(),
+        z.object({ dom: z.array(z.string()), reader: z.array(z.string()) }).strict(),
+      )
       .optional()
       .describe(
-        'Each component, the DOM its stories render (scripts/upgrade/dom.mjs); absent for a snapshot without a DOM baseline.',
+        'hds#468: each docs demo, its element outline and what a screen reader speaks (scripts/upgrade/dom.mjs); absent for a release older than the DOM baseline.',
       ),
     css: CssContract.optional().describe(
       'The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.',

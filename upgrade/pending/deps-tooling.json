@@ -1,0 +1,17 @@
+{
+  "impact": "look",
+  "plain": "If your CSS reads var(--font-sans) from the Tailwind theme layer, it now resolves to the system UI stack (-apple-system, Segoe UI, Roboto and others); HDS text keeps its own font tokens.",
+  "steps": [
+    {
+      "id": "value-changed/--font-sans",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Tailwind 4.3 changed the default --font-sans in @layer theme to a system UI stack; text that reads var(--font-sans) can render in a different system font.",
+      "detect": {
+        "cssVars": ["--font-sans"],
+        "cssVarWrites": ["--font-sans"]
+      },
+      "facts": ["css-var-changed:--font-sans:@layer theme :root,:host"]
+    }
+  ]
+}
