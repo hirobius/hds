@@ -877,8 +877,6 @@ Draw CommandPalette and Sheet (with Sheet.Trigger, Sheet.Title, Sheet.Descriptio
 
 **Session total: 9 calls** (0 writes).
 
-Calls logged for 2026-11-05: 9 of 200 (9).
-
 ## 2026-11-05 · hds#801 collect Sync receipt on 0.33.0 main 7b649a2 (library `2VgBbVpKiDnu0aftJEVyBQ`)
 
 | #   | Time (UTC) | Tool             | Kind | Purpose             | Result                                                             |
@@ -888,9 +886,7 @@ Calls logged for 2026-11-05: 9 of 200 (9).
 
 Session total: 2 calls
 
-Calls logged for 2026-11-05: 2 of 200 (2).
-
-### 2026-11-05 — prune pre-check (session 9b0192f2), read-only
+## 2026-11-05 · prune pre-check (session 9b0192f2), read-only
 
 | #   | Time (UTC) | Tool             | Kind | Purpose                                           | Result                                                                                |
 | --- | ---------- | ---------------- | ---- | ------------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -901,9 +897,7 @@ Calls logged for 2026-11-05: 2 of 200 (2).
 
 Session total: 4 calls. No writes. No deletes.
 
-Calls logged for 2026-11-05: 6 of 200.
-
-### 2026-11-05 — Button v2 swap (session 3d0f1afd), writes approved by Adrian
+## 2026-11-05 · Button v2 swap (session 3d0f1afd), writes approved by Adrian
 
 | #   | Time (UTC) | Tool             | Kind  | Purpose                                                    | Result                                                |
 | --- | ---------- | ---------------- | ----- | ---------------------------------------------------------- | ----------------------------------------------------- |
@@ -922,7 +916,7 @@ Calls logged for 2026-11-05: 6 of 200.
 
 Session total: 12 calls (1 create_session, 8 use_figma: 6 read + 2 write, 3 get_screenshot). No publish. No variable deleted. 0 rebinds.
 
-## Session ea973289 (11-05) — owner-approved clean slate 11-05
+## 2026-11-05 · owner-approved clean slate (session ea973289)
 
 | # | tool | kind | target | reason | result |
 | 1 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | owner-approved clean slate 11-05 | OK |
@@ -933,7 +927,7 @@ Session total: 12 calls (1 create_session, 8 use_figma: 6 read + 2 write, 3 get_
 | 6 | `get_screenshot` | read | Button v2 2399:11077 | owner-approved clean slate 11-05 | OK |
 Session total: 6 calls (1 create_session, 3 use_figma: 2 read + 1 write, 2 get_screenshot). 5 nodes deleted. 6 variables deleted. No publish.
 
-## Session fd1a0881 (11-05) — spec-sheet table style unify (STOPPED before writes)
+## 2026-11-05 · spec-sheet table style unify (session fd1a0881, STOPPED before writes)
 
 | # | tool | kind | target | reason | result |
 | 1 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | unify spec-sheet tables to code Table default | OK |
@@ -963,7 +957,7 @@ Audit: overrides, raw values, unstyled text, variable values vs code, Button pro
 
 Session total: 26 calls (1 skill, 1 create_session, 24 use_figma reads). No writes. No publish.
 
-## Session f22d2fd4 (11-05) — apply scrub fixes on live components, library `2VgBbVpKiDnu0aftJEVyBQ`
+## 2026-11-05 · apply scrub fixes on live components (session f22d2fd4), library `2VgBbVpKiDnu0aftJEVyBQ`
 
 Source: scratchpad figma-scrub.md. Spec sheet kit, 65 sheet gap overrides, Button tone, shadow/hard, button/edge/primary: not touched.
 | # | tool | kind | target | reason | result |
@@ -1006,7 +1000,7 @@ Resumed fd1a0881 after Adrian's change: full outline + centered cells, then expl
 | 24-25 | `use_figma` | read | screenshots Breadcrumb 2337:17469, Slider I2335:8267;2290:909 | verify | OK |
 Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 failed and retried). 413 tables outlined on 48 pages, 281 new Table frames. No publish.
 
-## 2026-11-05 Clip fix retry (file 2VgBbVpKiDnu0aftJEVyBQ)
+## 2026-11-05 · Clip fix retry (file 2VgBbVpKiDnu0aftJEVyBQ)
 
 - get_figma_skill figma-use, figma-generate-library: OK
 - create_session: OK, sessionId 5d88a2f0-9a1c-4099-bbfd-afaf2a9fe77c
@@ -1030,9 +1024,9 @@ Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 f
   | 26 | `use_figma` | write | Cell Body 2290:811, Body muted 2290:814, KeyMapRow Action 2315:21: bind fontWeight typography/weight/regular | code weight | No effect: text style kept 500. |
   | 27 | `use_figma` | write | same 3 texts: remove typography/ui style, rebind ui size/lh/family/letter-spacing vars, font Regular, weight -> typography/weight/regular | code weight | OK. 400. |
   | 28 | `use_figma` | read | Breadcrumb 2337:17469 weights + screenshot | verify | OK. 15 texts at 400, header at 500. |
-  Session total now: 28 calls. No publish.
+  Session total: 28 calls. No publish.
 
-## 2026-11-05 — snapshot after release 9f57805 (#1189)
+## 2026-11-05 · snapshot after release 9f57805 (#1189)
 
 | #                                                                                                      | Tool        | Kind  | Target                                                                                                                      | Why              | Result                                                                         |
 | ------------------------------------------------------------------------------------------------------ | ----------- | ----- | --------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------ |
@@ -1043,3 +1037,5 @@ Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 f
 | 4                                                                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 959ed271 (VariableID:2419:24 meta/version, VariableID:2475:51 meta/commit) | release meta     | OK. updated 2; post 59be756b; receipt written.                                 |
 | 5                                                                                                      | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: snapshot-diff.js against 959ed271                                                           | final snapshot   | OK. live e14b048c: meta/commit, meta/version, lastPush.                        |
 | Session total: 4 use_figma calls (1 refused write, 1 write, 2 reads). No publish.                      |
+
+Calls logged for 2026-11-05: 132 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28 and 4).

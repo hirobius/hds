@@ -1,4 +1,20 @@
 {
   "impact": "behavior",
-  "plain": "Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one."
+  "plain": "Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one.",
+  "steps": [
+    {
+      "id": "behavior/safe-link-href",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": ["InlineLink", "Breadcrumb", "NavList", "NavListItem", "List", "useHdsRouter"]
+          }
+        ]
+      }
+    }
+  ]
 }

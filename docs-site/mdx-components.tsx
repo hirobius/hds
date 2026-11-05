@@ -7,6 +7,7 @@ import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
 import { MdxPre } from './components/mdx-code-block';
 import { MdxLink } from './components/mdx-link';
+import { OverviewActions } from './components/overview-actions';
 import { MdxCode, MdxImg, MdxTable } from './components/mdx-prose';
 import { Mermaid } from './components/mermaid';
 import { PrinciplesAndPractices } from './components/principles-and-practices';
@@ -57,6 +58,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ComponentTokens,
     ComponentPreview,
     ComponentIndex,
+    OverviewActions,
     Mermaid,
     PrinciplesAndPractices,
     ReleaseLedger,

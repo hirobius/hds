@@ -19,7 +19,10 @@
  *   meta/npmName     package.json "name"
  *
  * A value that cannot be read (no package.json, no git, as in fixture
- * mini-roots) is left out, and so is its variable.
+ * mini-roots) is left out, and so is its variable. In a shallow clone
+ * (actions/checkout fetches depth 1) the oldest commit present looks like it
+ * added every file, so when the last synced-input commit is that boundary
+ * meta/commit is unknowable and is left out too: deepenSyncedHistory first.
  */
 
 import { existsSync, readFileSync } from 'fs';
@@ -71,6 +74,33 @@ export function runGit(root, args) {
   }
 }
 
+/**
+ * The last commit to SYNCED_INPUTS. `complete` is false when that commit is a
+ * shallow-clone boundary (no parents present), where git cannot tell whether
+ * it really changed the inputs: a depth-1 checkout always names HEAD.
+ * @returns {{ sha: string, complete: boolean } | null}  null without git.
+ */
+export function syncedInputsCommit(root, { git = runGit } = {}) {
+  const sha = git(root, ['log', '-1', '--format=%H', '--', ...SYNCED_INPUTS]);
+  if (!sha) return null;
+  if (git(root, ['rev-parse', '--is-shallow-repository']) !== 'true') {
+    return { sha, complete: true };
+  }
+  const line = git(root, ['rev-list', '--parents', '-n', '1', sha]) ?? sha;
+  return { sha, complete: line.split(/\s+/).length > 1 };
+}
+
+/**
+ * Fetches the full history of a shallow clone so meta/commit can be read.
+ * No-op on a full clone. Talks to the remote: callers are release gates only.
+ * @returns {boolean} true when the history is complete afterwards.
+ */
+export function deepenSyncedHistory(root) {
+  if (runGit(root, ['rev-parse', '--is-shallow-repository']) !== 'true') return true;
+  spawnSync('git', ['fetch', '--unshallow', '--quiet'], { cwd: root, stdio: 'ignore' });
+  return runGit(root, ['rev-parse', '--is-shallow-repository']) === 'false';
+}
+
 function releaseDate(root, version, git) {
   const ledger = join(root, 'upgrade', 'releases', `${version}.json`);
   if (existsSync(ledger)) {
@@ -105,7 +135,8 @@ export function readFigmaMeta(root, { git = runGit } = {}) {
   const pkgPath = join(root, 'package.json');
   if (!existsSync(pkgPath)) return {};
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
-  const sha = git(root, ['log', '-1', '--format=%H', '--', ...SYNCED_INPUTS]);
+  const synced = syncedInputsCommit(root, { git });
+  const sha = synced?.complete ? synced.sha : null;
   const meta = {
     version: pkg.version ?? null,
     releasedAt: pkg.version ? releaseDate(root, pkg.version, git) : null,

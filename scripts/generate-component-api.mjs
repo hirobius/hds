@@ -399,6 +399,29 @@ function tryResolveLiteralUnion(typeName, aliases, trail = new Set()) {
   return [...new Set(resolved)].join(' | ');
 }
 
+/**
+ * `(A | B)` -> `A | B` when the parens wrap the whole type. Radix 1.3+ prints
+ * some unions this way, which hid their literals from every reader.
+ */
+function stripOuterParens(text) {
+  let out = text.trim();
+  while (out.startsWith('(') && out.endsWith(')')) {
+    let depth = 0;
+    let wrapsAll = true;
+    for (let i = 0; i < out.length; i += 1) {
+      if (out[i] === '(') depth += 1;
+      else if (out[i] === ')') depth -= 1;
+      if (depth === 0 && i < out.length - 1) {
+        wrapsAll = false;
+        break;
+      }
+    }
+    if (!wrapsAll) break;
+    out = out.slice(1, -1).trim();
+  }
+  return out;
+}
+
 function formatType(type, aliases = new Map()) {
   if (!type) return 'unknown';
 
@@ -701,7 +724,7 @@ function extractObservedTokens(source) {
 }
 
 function toPropRow(propName, prop, aliases, expandAlias = () => undefined) {
-  const type = formatType(prop.type, aliases);
+  const type = stripOuterParens(formatType(prop.type, aliases));
   return {
     name: propName,
     type: expandAlias(type) ?? type,

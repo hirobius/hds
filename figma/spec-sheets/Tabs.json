@@ -37,7 +37,11 @@
     },
     {
       "name": "dir",
-      "type": "\"ltr\" | \"rtl\"",
+      "type": "enum",
+      "values": [
+        "ltr",
+        "rtl"
+      ],
       "optional": true
     },
     {

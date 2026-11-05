@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url';
 import { evaluateScan, validateAllowlist } from '../lib/axe-gate.mjs';
 import {
   DEMO_SELECTOR,
-  TOUR_SELECTOR,
   MAIN_SELECTOR,
   discoverAxeRoutes,
   discoverMainPages,
@@ -25,15 +24,11 @@ function site(files) {
   return dir;
 }
 
-describe('docs axe gate: the /tour screen (hds#795)', () => {
-  it('adds /tour to the scanned routes only when the build has it, and scopes it to its own root', () => {
-    const without = site(['docs/components/button.html']);
-    expect(discoverAxeRoutes(without)).toEqual(['/docs/components/button']);
-    const withTour = site(['docs/components/button.html', 'tour.html']);
-    expect(discoverAxeRoutes(withTour)).toEqual(['/docs/components/button', '/tour']);
-    expect(discoverPages(withTour)).toEqual(['/docs/components/button']);
-    expect(selectorFor('/tour')).toBe(TOUR_SELECTOR);
-    expect(selectorFor('/docs/components/button')).toBe(DEMO_SELECTOR);
+describe('docs axe gate: pages outside /docs', () => {
+  it('scans /docs pages only; a stray top-level page (the removed /tour) is not a route', () => {
+    const built = site(['docs/components/button.html', 'tour.html']);
+    expect(discoverAxeRoutes(built)).toEqual(['/docs/components/button']);
+    expect(discoverPages(built)).toEqual(['/docs/components/button']);
   });
 });
 
@@ -66,7 +61,7 @@ describe('docs axe gate: every other /docs page (hds#710)', () => {
     const routes = discoverAxeRoutes(site(files));
     expect(routes).toContain('/docs/components/button');
     expect(routes).toContain('/docs/engineering');
-    expect(routes).toContain('/tour');
+    expect(routes).not.toContain('/tour');
     expect(new Set(routes).size).toBe(routes.length);
     expect(selectorFor('/docs/components/button')).toBe(DEMO_SELECTOR);
     expect(selectorFor('/docs/components')).toBe(MAIN_SELECTOR);

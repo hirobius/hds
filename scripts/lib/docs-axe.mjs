@@ -6,17 +6,12 @@ import path from 'node:path';
 /** The live-demo wrapper rendered by docs-site/components/component-demos.tsx (DemoFrame). */
 export const DEMO_SELECTOR = '.hds-demo-frame';
 export const PAGE_SECTIONS = ['components', 'patterns'];
-/** The /tour product screen (hds#795): scanned whole, scoped to its HdsThemeProvider root. */
-export const TOUR_ROUTE = '/tour';
-export const TOUR_SELECTOR = '.hds-tour';
-
 /** Every other /docs page (guides, engineering, section landings, foundations…): scanned across the whole <main> (hds#710). */
 export const MAIN_SELECTOR = 'main';
 
-/** Demo pages (components/patterns leaves) scan their frame, the tour its root, every other page <main>. */
+/** Demo pages (components/patterns leaves) scan their frame, every other page <main>. */
 const DEMO_ROUTE = new RegExp(`^/docs/(${PAGE_SECTIONS.join('|')})/[^/]+$`);
 export function selectorFor(route) {
-  if (route === TOUR_ROUTE) return TOUR_SELECTOR;
   return DEMO_ROUTE.test(route) ? DEMO_SELECTOR : MAIN_SELECTOR;
 }
 
@@ -69,13 +64,9 @@ export function discoverMainPages(outDir) {
   return [...routes].filter((r) => !DEMO_ROUTE.test(r)).sort();
 }
 
-/** Demo pages, every other /docs page, plus /tour when the build has it. The visual spec keeps discoverPages: it has no demo frame. */
+/** Demo pages and every other /docs page. The visual spec keeps discoverPages: it has no demo frame. */
 export function discoverAxeRoutes(outDir) {
-  const routes = [...discoverPages(outDir), ...discoverMainPages(outDir)].sort();
-  const hasTour = ['tour.html', path.join('tour', 'index.html')].some((f) =>
-    fs.existsSync(path.join(outDir, f)),
-  );
-  return hasTour ? [...routes, TOUR_ROUTE] : routes;
+  return [...discoverPages(outDir), ...discoverMainPages(outDir)].sort();
 }
 
 /**
