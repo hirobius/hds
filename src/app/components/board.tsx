@@ -20,7 +20,7 @@ import { VisuallyHidden } from './visually-hidden';
  *   wraps, so no column is orphaned on a second row.
  */
 const ROOT_CLASS = '@container overflow-x-auto';
-// arbitrary-ok: the 16rem column floor has no spacing token; it is the one width the Board owns, and the variant is a container query that tokens cannot express.
+// The 16rem column floor has no spacing token; it is the one width the Board owns, and the variant is a container query that tokens cannot express.
 const TRACK_CLASS =
   'relative grid @max-3xl:grid-cols-1 gap-[var(--semantic-space-scale-lg)] @3xl:grid-flow-col @3xl:auto-cols-[minmax(16rem,1fr)]';
 

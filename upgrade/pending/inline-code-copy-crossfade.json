@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A copyable InlineCode now crossfades its Copy and Check glyphs; nothing to change, and reduced motion still swaps instantly."
+}

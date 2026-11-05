@@ -637,7 +637,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/container.tsx",
-      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'shell' (1180px app shell) | 'max' (1200px full layout) - gutter: inline padding from the region gutter token (40px comfortable, 24px compact, smaller below sm) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -659,10 +659,15 @@
           "type": "string",
           "optional": true
         },
+        "gutter": {
+          "type": "boolean",
+          "default": false
+        },
         "maxWidth": {
           "type": "enum",
           "values": [
             "content",
+            "shell",
             "max"
           ],
           "default": "max"
@@ -707,7 +712,7 @@
           }
         ]
       },
-      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. For a horizontal gutter, which Container does not support, put a Box with `style={{ paddingInline }}` inside it.",
+      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'shell' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. For the page gutter, pass `gutter`: it pads inline from semantic.space.region.gutter, which retunes per viewport and density.",
       "core": true
     },
     "Disclosure": {
@@ -5191,7 +5196,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge.",
+      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge. `align=\"start\"` pulls the strip back by the trigger inset, so the first tab's label lines up flush with the column start (headings, cards) above it.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5205,6 +5210,13 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "start"
+          ],
+          "optional": true
+        },
         "asChild": {
           "type": "boolean",
           "optional": true
@@ -14387,6 +14399,13 @@
         "value": "760px"
       },
       {
+        "path": "primitive.size.width.1180",
+        "cssVar": "--primitive-size-width-1180",
+        "type": "dimension",
+        "description": "App shell max width: a 1180px column for app pages (hds#863).",
+        "value": "1180px"
+      },
+      {
         "path": "primitive.size.width.1200",
         "cssVar": "--primitive-size-width-1200",
         "type": "dimension",
@@ -15290,6 +15309,14 @@
         "description": "Max width for full-layout containers (1200px). Use with HdsContainer for page layouts.",
         "alias": "{primitive.size.width.1200}",
         "resolvedValue": "1200px"
+      },
+      {
+        "path": "semantic.layout.width.shell",
+        "cssVar": "--semantic-layout-width-shell",
+        "type": "dimension",
+        "description": "Max width for app shells (1180px). Use with Container maxWidth shell and a gutter.",
+        "alias": "{primitive.size.width.1180}",
+        "resolvedValue": "1180px"
       },
       {
         "path": "semantic.layout.container.maxWidth",

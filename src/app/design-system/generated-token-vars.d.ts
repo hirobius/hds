@@ -233,6 +233,7 @@ declare module 'react' {
     '--primitive-size-width-280'?: string | undefined;
     '--primitive-size-width-512'?: string | undefined;
     '--primitive-size-width-760'?: string | undefined;
+    '--primitive-size-width-1180'?: string | undefined;
     '--primitive-size-width-1200'?: string | undefined;
     '--primitive-size-width-50ch'?: string | undefined;
     '--primitive-grid-columns-1'?: string | undefined;
@@ -331,6 +332,7 @@ declare module 'react' {
     '--semantic-space-sidebar-railPadding'?: string | undefined;
     '--semantic-layout-width-content'?: string | undefined;
     '--semantic-layout-width-max'?: string | undefined;
+    '--semantic-layout-width-shell'?: string | undefined;
     '--semantic-layout-container-maxWidth'?: string | undefined;
     '--semantic-layout-content-maxWidth'?: string | undefined;
     '--semantic-layout-prose-maxWidth'?: string | undefined;

@@ -1226,6 +1226,14 @@
             "unit": "px"
           }
         },
+        "1180": {
+          "$type": "dimension",
+          "$value": {
+            "value": 1180,
+            "unit": "px"
+          },
+          "$description": "App shell max width: a 1180px column for app pages (hds#863)."
+        },
         "1200": {
           "$type": "dimension",
           "$value": {
@@ -2111,6 +2119,11 @@
           "$type": "dimension",
           "$value": "{primitive.size.width.1200}",
           "$description": "Max width for full-layout containers (1200px). Use with HdsContainer for page layouts."
+        },
+        "shell": {
+          "$type": "dimension",
+          "$value": "{primitive.size.width.1180}",
+          "$description": "Max width for app shells (1180px). Use with Container maxWidth shell and a gutter."
         }
       },
       "container": {

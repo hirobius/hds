@@ -83,6 +83,14 @@ describe('AppShell regions and landmarks', () => {
 });
 
 describe('AppShell rail (lg and up)', () => {
+  it('eases the rail width on the duration token', () => {
+    stubViewport(true);
+    render(<Shell />);
+    const grid = screen.getByRole('navigation', { name: 'Main' }).parentElement as HTMLElement;
+    expect(grid.style.transition).toContain('grid-template-columns');
+    expect(grid.style.transition).toContain('var(--hds-motion-productive-duration)');
+  });
+
   it('starts expanded and collapses with the toggle', async () => {
     stubViewport(true);
     render(<Shell />);

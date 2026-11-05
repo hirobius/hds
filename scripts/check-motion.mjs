@@ -113,6 +113,7 @@ const MOTION_PATTERNS = [
   /["'\s]transition(?:-(?:all|colors|opacity|transform|shadow))?["'\s]/,
   /["'\s]animate-[a-z]/, // Tailwind animation utilities
   /var\(--(?:primitive|semantic)-duration-/, // duration token as a raw CSS var
+  /var\(--hds-motion-[a-z]+-duration\)/, // motion-intent duration (theme.css zeroes it under reduced motion)
 ];
 
 // ── Per-file exemption ────────────────────────────────────────────────────────

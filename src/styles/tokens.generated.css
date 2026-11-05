@@ -235,6 +235,7 @@
   --primitive-size-width-280: 280px;
   --primitive-size-width-512: 512px;
   --primitive-size-width-760: 760px;
+  --primitive-size-width-1180: 1180px;
   --primitive-size-width-1200: 1200px;
   --primitive-size-width-50ch: 50ch;
   --primitive-grid-columns-1: 1;
@@ -339,6 +340,7 @@
   --semantic-space-sidebar-railPadding: var(--primitive-space-5);
   --semantic-layout-width-content: var(--primitive-size-width-760);
   --semantic-layout-width-max: var(--primitive-size-width-1200);
+  --semantic-layout-width-shell: var(--primitive-size-width-1180);
   --semantic-layout-container-maxWidth: var(--primitive-size-width-1200);
   --semantic-layout-content-maxWidth: var(--primitive-size-width-760);
   --semantic-layout-prose-maxWidth: var(--primitive-size-width-50ch);
