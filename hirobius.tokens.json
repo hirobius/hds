@@ -2159,7 +2159,7 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; hero is a marketing-only extension (ADR-052 addendum); h1-h3 and eyebrow are deprecated aliases.",
+      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; hero is marketing-only; h1-h3, eyebrow deprecated.",
       "hero": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
