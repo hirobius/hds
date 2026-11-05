@@ -157,11 +157,11 @@ describe('theme.css hard shadow', () => {
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });
 
-  it('C2 fixed base: hover lifts onto a 4px edge (hover pointers only), press sinks onto 1px', () => {
-    expect(rule('.hds-btn-hard:hover')).toContain('--hds-hs: 4px;');
+  it('C2 fixed base compresses: hover sinks onto a 2px edge (hover pointers only), press onto 0px', () => {
+    expect(rule('.hds-btn-hard:hover')).toContain('--hds-hs: 2px;');
     const hoverAt = theme.indexOf('.hds-btn-hard:hover');
     expect(theme.slice(hoverAt - 40, hoverAt)).toContain('(hover: hover)');
-    expect(rule('.hds-btn-hard:active')).toContain('--hds-hs: 1px;');
+    expect(rule('.hds-btn-hard:active')).toContain('--hds-hs: 0px;');
   });
 
   it('lives in the components layer, so a consumer shadow utility still wins', () => {
