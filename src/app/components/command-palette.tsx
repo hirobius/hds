@@ -2,6 +2,7 @@
  * CommandPalette — ⌘K search and command box: a modal search field over grouped results.
  * @category Overlays
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2264-67
  * @usage Let people jump to a page or run a command from anywhere by typing, opened with ⌘K or Ctrl+K.
  * @whenNot Picking a value for a form field, or a short action list on a button.
  * @useInstead Combobox picking a value for a form field
