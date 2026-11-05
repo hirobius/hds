@@ -101,6 +101,7 @@ describe('focus ring in components', () => {
     'token-field',
     'tag',
     'segmented-control',
+    'combobox-creatable',
   ])('%s uses the shared ring, not a Tailwind box-shadow ring', (f) => {
     const s = src(f);
     expect(s).toMatch(/hds-focus/);
