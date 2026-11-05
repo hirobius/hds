@@ -138,7 +138,8 @@ export function typeSpecimens(tokens: Json): TypeSpecimen[] {
     children(group)
       .filter(([, node]) => isNode(node.$value) && 'fontSize' in node.$value)
       // A marketing-only extension (hero, ADR-052 addendum) sits outside the ramp.
-      .filter(([, node]) => !/^Marketing-only/.test(String(node.$description ?? '')))
+      // Nor is a text-style variant of a role (bodyStrong, uiItalic).
+      .filter(([, node]) => !/^(Marketing-only|Variant of)/.test(String(node.$description ?? '')))
       .map(([role, node]) => {
         const v = node.$value as Node;
         const field = (k: string) => (k in v ? resolveTokenValue(tokens, v[k]) : '');

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T07:14:38.432Z",
+  "generated": "2026-11-05T07:38:52.741Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3397,6 +3397,7 @@
         "src/app/components/table.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
+        "src/app/design-system/tokens.ts",
         "src/brand/overlay.ts",
         "src/styles/__tests__/glyph-outlines.ts"
       ],
@@ -4197,7 +4198,8 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/components/list.tsx"
+        "src/app/components/list.tsx",
+        "src/app/design-system/tokens.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -15411,6 +15413,26 @@
         }
       },
       {
+        "path": "semantic.typography.bodyStrong",
+        "cssVar": "--semantic-typography-bodyStrong",
+        "type": "typography",
+        "description": "Variant of body: weight 700, what Text weight=\"bold\" renders. Matches Figma typography/bodyStrong.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "18px",
+          "fontWeight": "700",
+          "letterSpacing": "0em",
+          "lineHeight": "1.6",
+          "maxWidth": "60ch"
+        },
+        "compact": {
+          "fontSize": {
+            "alias": "{primitive.typography.size.compactBody}",
+            "resolvedValue": "15px"
+          }
+        }
+      },
+      {
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
@@ -15422,6 +15444,27 @@
           "letterSpacing": "0em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
+        },
+        "compact": {
+          "fontSize": {
+            "alias": "{primitive.typography.size.sm}",
+            "resolvedValue": "14px"
+          }
+        }
+      },
+      {
+        "path": "semantic.typography.uiItalic",
+        "cssVar": "--semantic-typography-uiItalic",
+        "type": "typography",
+        "description": "Variant of ui: italic, what EmptyState's inline message renders. Matches Figma typography/uiItalic.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "1.5",
+          "maxWidth": "60ch",
+          "fontStyle": "italic"
         },
         "compact": {
           "fontSize": {

@@ -1,4 +1,4 @@
 {
   "impact": "additive",
-  "plain": "New hero type style (120px Sora 700) for covers and marketing headers: use `hds.typeStyles.hero` or `--semantic-typography-hero-*` there, and keep `display` for product pages."
+  "plain": "New type styles: use `hds.typeStyles.hero` for covers and marketing headers only, and `bodyStrong` or `uiItalic` where you set body bold or ui italic by hand."
 }

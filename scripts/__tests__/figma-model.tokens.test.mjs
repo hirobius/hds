@@ -148,12 +148,17 @@ describe('not-in-Figma accounting', () => {
     expect(doubled).toEqual([]);
   });
 
-  it('accounts for every typography composite key: bound variable, text case, or declared exclusion', () => {
+  it('accounts for every typography composite key: bound variable, text case, italic face, or declared exclusion', () => {
     for (const leaf of leaves.filter((l) => l.type === 'typography')) {
       const style = model.textStyles.find((s) => s.path === leaf.path);
       for (const key of Object.keys(leaf.value)) {
         const home =
-          key in style.boundVariables || (key === 'textTransform' && style.textCase !== 'ORIGINAL')
+          key in style.boundVariables ||
+          (key === 'textTransform' && style.textCase !== 'ORIGINAL') ||
+          // Italic is carried by the style's font instance ("Medium Italic").
+          (key === 'fontStyle' &&
+            leaf.value.fontStyle === 'italic' &&
+            /Italic$/.test(style.fontStyle))
             ? 'style'
             : declared.get(`${leaf.path}.${key}`);
         expect(home, `${leaf.path}.${key}`).toBeTruthy();

@@ -270,6 +270,8 @@
   --semantic-typography-h3-font-family: var(--hds-font-family-display);
   --semantic-typography-body-font-family: var(--hds-font-family);
   --semantic-typography-ui-font-family: var(--hds-font-family);
+  --semantic-typography-bodyStrong-font-family: var(--hds-font-family);
+  --semantic-typography-uiItalic-font-family: var(--hds-font-family);
   --semantic-typography-caption-font-family: var(--hds-font-family);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
   --semantic-typography-eyebrow-font-family: var(--hds-font-family);

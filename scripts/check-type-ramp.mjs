@@ -20,6 +20,9 @@
  *     `semantic.typography.eyebrow`, `<Text variant="heading1">` and the rest.
  *     They still resolve (so no consumer breaks) and are removed in 1.0.0.
  *
+ * Text-style variants (VARIANTS: bodyStrong, uiItalic) are a role with one
+ * property changed; the token file must keep each equal to its role otherwise.
+ *
  * Marketing-only extensions (MARKETING_ROLES: hero, ADR-052 addendum) are live
  * tokens for covers and marketing headers. They sit outside the ramp, so src/
  * may not use them: `typeStyles.hero` or `--semantic-typography-hero-*` fails
@@ -74,6 +77,16 @@ export const ROLES = Object.freeze([
  */
 export const MARKETING_ROLES = Object.freeze(['hero']);
 
+/**
+ * Text-style variants (ADR-052 addendum, 2026-11-05): a role with one property
+ * changed, so Figma's text styles are 1:1 with what code renders. Each must
+ * equal its role except for `set`, and carry the role's $extensions (modes).
+ */
+export const VARIANTS = Object.freeze({
+  bodyStrong: { of: 'body', set: { fontWeight: '{primitive.typography.weight.bold}' } },
+  uiItalic: { of: 'ui', set: { fontStyle: 'italic' } },
+});
+
 /** Deprecated composite to the role it now points at (semantic.typography.*). */
 export const TOKEN_ALIASES = Object.freeze({
   h1: 'title',
@@ -82,7 +95,7 @@ export const TOKEN_ALIASES = Object.freeze({
   eyebrow: 'caption',
 });
 
-const ROLE_ALT = ROLES.join('|');
+const ROLE_ALT = [...ROLES, ...Object.keys(VARIANTS)].join('|');
 const DEPRECATED_TYPE_STYLES =
   'h1|h2|h3|heading1|heading2|heading3|headingHero|headingSection|display1|display2|displayXl|' +
   'body2|bodyLarge|small|bodySmall|label|labelDescriptive|eyebrow|badge|micro|' +
@@ -219,7 +232,12 @@ export function findViolationsInText(text, file) {
  * @param {object} tokens parsed hirobius.tokens.json
  * @param {Record<string,string>} [aliases] alias name to role name
  */
-export function findTokenViolations(tokens, aliases = TOKEN_ALIASES, extensions = MARKETING_ROLES) {
+export function findTokenViolations(
+  tokens,
+  aliases = TOKEN_ALIASES,
+  extensions = MARKETING_ROLES,
+  variants = VARIANTS,
+) {
   const file = 'hirobius.tokens.json';
   const typo = tokens?.semantic?.typography ?? {};
   const out = [];
@@ -228,7 +246,9 @@ export function findTokenViolations(tokens, aliases = TOKEN_ALIASES, extensions 
       !k.startsWith('$') && v && typeof v === 'object' && v.$value && typeof v.$value === 'object',
   );
   const live = composites.filter(([, v]) => !v.$deprecated).map(([k]) => k);
-  const unexpected = live.filter((k) => !ROLES.includes(k) && !extensions.includes(k));
+  const unexpected = live.filter(
+    (k) => !ROLES.includes(k) && !extensions.includes(k) && !(k in variants),
+  );
   const missing = ROLES.filter((r) => !live.includes(r));
   if (unexpected.length || missing.length) {
     out.push({
@@ -237,6 +257,23 @@ export function findTokenViolations(tokens, aliases = TOKEN_ALIASES, extensions 
       rule: 'ramp-size',
       message: `semantic.typography must hold exactly ${ROLES.join(', ')} (plus marketing-only ${extensions.join(', ') || 'none'}); unexpected: [${unexpected.join(', ')}], missing: [${missing.join(', ')}]`,
     });
+  }
+  for (const [name, { of, set }] of Object.entries(variants)) {
+    const a = typo[name];
+    const r = typo[of];
+    if (!a || !r) continue;
+    const want = { ...r.$value, ...set };
+    const same = (x, y) => JSON.stringify(x ?? null) === JSON.stringify(y ?? null);
+    const keys = new Set([...Object.keys(want), ...Object.keys(a.$value)]);
+    const exact = [...keys].every((k) => same(a.$value[k], want[k]));
+    if (!exact || !same(a.$extensions, r.$extensions)) {
+      out.push({
+        file,
+        line: null,
+        rule: 'variant-drift',
+        message: `semantic.typography.${name} must equal ${of} except ${Object.keys(set).join(', ')} (and share its $extensions)`,
+      });
+    }
   }
   for (const ext of extensions) {
     if (typo[ext] && !/marketing-only/i.test(typo[ext].$description ?? '')) {

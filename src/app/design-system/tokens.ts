@@ -214,7 +214,11 @@ const hds = {
     title: tokenRefs.semantic.typography.title as React.CSSProperties,
     titleSm: tokenRefs.semantic.typography.titleSm as React.CSSProperties,
     body: tokenRefs.semantic.typography.body as React.CSSProperties,
+    /** body at weight 700, as `<Text variant="body" weight="bold">` (ADR-052 addendum). */
+    bodyStrong: tokenRefs.semantic.typography.bodyStrong as React.CSSProperties,
     ui: tokenRefs.semantic.typography.ui as React.CSSProperties,
+    /** ui in italic, as EmptyState's inline message (ADR-052 addendum). */
+    uiItalic: tokenRefs.semantic.typography.uiItalic as React.CSSProperties,
     caption: tokenRefs.semantic.typography.caption as React.CSSProperties,
     mono: tokenRefs.semantic.typography.mono as React.CSSProperties,
     /**

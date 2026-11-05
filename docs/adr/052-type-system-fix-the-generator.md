@@ -134,7 +134,19 @@ it is an extension outside the ramp instead.
   seven roles, and marketing surfaces read the token.
 - **Figma.** The model emits it as the text style `typography/hero` with five
   bound variables, so the next Sync creates it.
+- **Text-style variants, same day.** So Figma's text styles are 1:1 with what
+  code renders, two variants of a role are tokens too. `bodyStrong` is `body` at
+  `weight.bold` (700), what `<Text variant="body" weight="bold">` sets.
+  `uiItalic` is `ui` with `fontStyle: italic`, what EmptyState's inline message
+  sets. They are not roles. `check-type-ramp` lists them in `VARIANTS` and fails
+  (`variant-drift`) when one stops equalling its role apart from that one
+  property, or loses the role's Compact mode. The emitter gained an optional
+  `fontStyle` key (`--semantic-typography-uiItalic-font-style`), and the Figma
+  model maps italic to the font's italic instance (`Medium Italic`). The docs
+  specimen shows neither, because it shows the ramp. No italic face ships in
+  `fonts.css`, so browsers synthesize it, as EmptyState already does.
 - **Adding another extension** follows the same path: a name in
   `MARKETING_ROLES`, a "Marketing-only" description, and an addendum here.
 
-Pinned by `src/styles/__tests__/hero-type.test.ts`.
+Pinned by `src/styles/__tests__/hero-type.test.ts` and
+`src/styles/__tests__/text-style-variants.test.ts`.

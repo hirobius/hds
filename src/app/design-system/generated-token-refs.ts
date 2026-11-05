@@ -515,6 +515,14 @@ export const tokenRefs = {
         lineHeight: "var(--semantic-typography-body-line-height)",
         maxWidth: "var(--semantic-typography-body-max-width)"
       },
+      bodyStrong: {
+        fontFamily: "var(--semantic-typography-bodyStrong-font-family)",
+        fontSize: "var(--semantic-typography-bodyStrong-font-size)",
+        fontWeight: "var(--semantic-typography-bodyStrong-font-weight)",
+        letterSpacing: "var(--semantic-typography-bodyStrong-letter-spacing)",
+        lineHeight: "var(--semantic-typography-bodyStrong-line-height)",
+        maxWidth: "var(--semantic-typography-bodyStrong-max-width)"
+      },
       ui: {
         fontFamily: "var(--semantic-typography-ui-font-family)",
         fontSize: "var(--semantic-typography-ui-font-size)",
@@ -522,6 +530,15 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-ui-letter-spacing)",
         lineHeight: "var(--semantic-typography-ui-line-height)",
         maxWidth: "var(--semantic-typography-ui-max-width)"
+      },
+      uiItalic: {
+        fontFamily: "var(--semantic-typography-uiItalic-font-family)",
+        fontSize: "var(--semantic-typography-uiItalic-font-size)",
+        fontWeight: "var(--semantic-typography-uiItalic-font-weight)",
+        letterSpacing: "var(--semantic-typography-uiItalic-letter-spacing)",
+        lineHeight: "var(--semantic-typography-uiItalic-line-height)",
+        maxWidth: "var(--semantic-typography-uiItalic-max-width)",
+        fontStyle: "var(--semantic-typography-uiItalic-font-style)"
       },
       caption: {
         fontFamily: "var(--semantic-typography-caption-font-family)",
