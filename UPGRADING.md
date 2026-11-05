@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.32.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.33.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,113 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.33.0
+
+Released 2026-11-05 (minor). 19 changes to make by hand (16 breaking), 9 fixed for you by a codemod, 91 that look different and 1 deprecation.
+
+### Fixed for you
+
+The upgrade command runs these codemods for you.
+
+- --semantic-color-border-subdued is removed; use --semantic-color-border-default (Dark is neutral.600, was neutral.800; Light is the same), which the codemod writes for you. Codemod: `hds-token-aliases`.
+- --semantic-space-component-gap is removed; use --semantic-space-scale-xs, which the codemod writes for you. Codemod: `hds-token-aliases`.
+- --semantic-space-component-padding is removed; use --semantic-space-surface-padding, which the codemod writes for you. Codemod: `hds-token-aliases`.
+- --semantic-space-layout-gutter is removed; use --semantic-space-region-gutter, which the codemod writes for you. Codemod: `hds-token-aliases`.
+- --semantic-space-layout-inset is removed; use --semantic-space-scale-lg, which the codemod writes for you. Codemod: `hds-token-aliases`.
+- --semantic-space-layout-normal is removed; use --semantic-space-scale-md, which the codemod writes for you. Codemod: `hds-token-aliases`.
+- --semantic-space-layout-spacious is removed; use --semantic-space-scale-xl, which the codemod writes for you. Codemod: `hds-token-aliases`.
+- --semantic-space-layout-tight is removed; use --semantic-space-scale-sm, which the codemod writes for you. Codemod: `hds-token-aliases`.
+- hds.semantic.space.component and hds.semantic.space.layout.gutter, the Tailwind spacing keys component-gap/padding and layout-\* (p-, m-, gap-, w-, inset- and every other spacing utility, and theme(spacing.\*)), and Box sx 'border.subdued' are removed; the codemod rewrites them. Codemod: `hds-token-aliases`.
+
+### Looks different
+
+- --component-badge-height is now 22px (was 20px); check fixed-height rows that hold badges.
+- --component-badge-minWidth is now 22px (was 20px), so a one-digit count badge is 2px wider.
+- --component-badge-radius is now a fixed 6px (was the action radius); Badge itself renders role.radius minus 2px, so read that instead if you matched its corner.
+- The deprecated --component-button-secondary-border-disabled follows border.default: the same graphite in Light, neutral.600 in Dark (was neutral.800); Button has not drawn it since hds#891.
+- --component-button-size-lg-height is now 52px (was 48px); a container or sibling sized to match the lg Button should follow the variable, not a fixed px.
+- --component-button-size-md-height is now 44px (was 40px); a container or sibling sized to match the md Button should follow the variable, not a fixed px.
+- --component-button-size-sm-height is now 36px (was 32px); a container or sibling sized to match the sm Button should follow the variable, not a fixed px.
+- Spinners built on the --hds-anim-spin preset now rotate at a constant speed instead of pulsing with the expressive spring; no action is needed unless a design relied on the pulsing motion.
+- --hds-edge-danger now aliases --component-button-edge-danger (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of danger-tone Buttons.
+- --hds-edge-info now aliases --component-button-edge-info (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of info-tone Buttons.
+- The raised edge under buttons and Kbd follows the tinted fills; nothing to change unless you override each of these: `--hds-edge-kbd` and `--hds-edge-secondary`.
+- The primary edge (--hds-edge-primary) is now #020203 in light (was #292427) and #a4a4a4 in dark (was #8a8789), so primary borders read stronger; re-take border screenshots.
+- --hds-edge-success now aliases --component-button-edge-success (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of success-tone Buttons.
+- --hds-edge-warning now aliases --component-button-edge-warning (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of warning-tone Buttons.
+- This grey keeps its lightness but leans toward midnight blue; if you read each of these directly next to your own greys, check that they still match: `--primitive-color-graphite-100`, `--primitive-color-graphite-200`, `--primitive-color-graphite-300`, `--primitive-color-graphite-400`, `--primitive-color-graphite-50`, `--primitive-color-graphite-500`, `--primitive-color-graphite-600`, `--primitive-color-graphite-700`, `--primitive-color-graphite-800`, `--primitive-color-graphite-900`, `--primitive-color-graphite-950`, `--primitive-color-neutral-100`, `--primitive-color-neutral-200`, `--primitive-color-neutral-300`, `--primitive-color-neutral-350`, `--primitive-color-neutral-400`, `--primitive-color-neutral-450`, `--primitive-color-neutral-50`, `--primitive-color-neutral-500`, `--primitive-color-neutral-550`, `--primitive-color-neutral-600`, `--primitive-color-neutral-700`, `--primitive-color-neutral-800`, `--primitive-color-neutral-850`, `--primitive-color-neutral-900` and `--primitive-color-neutral-950`.
+- neutral.black is now #060a13 (midnight), not #000000; use your own #000000 where you need true black.
+- --primitive-easing-elastic is now a valid linear() spring curve with about 11% overshoot, where the old spring(300, 20, 1) value was invalid CSS and the browser dropped it, so animations using it now overshoot slightly instead of falling back to their default easing.
+- The concrete-creations block no longer sets each of these, so a page on that slug gets the base value unless the app compiles its own overlay: `--semantic-accent-content`, `--semantic-accent-hover`, `--semantic-accent-subtle`, `--semantic-color-border-accent`, `--semantic-color-content-onAccent` and `--semantic-color-surface-accentSubtle`.
+- The concrete-creations block no longer sets --semantic-accent-pressed, and in dark mode the base pressed fill now steps darker from the near-white rest (graphite.200, was graphite.50), so a page on that slug gets the new base value unless the app compiles its own overlay.
+- The concrete-creations block no longer sets --semantic-accent-rest, and in dark mode the base rest fill is now graphite.50 (was graphite.200), so a page on that slug gets the new base value unless the app compiles its own overlay.
+- Light default borders and dividers are a step darker (--semantic-color-border-default in :root moved from --primitive-color-graphite-200 to --primitive-color-graphite-250), so re-take light-theme screenshots.
+- Light disabled text is a step darker (--semantic-color-content-disabled in :root moved from --primitive-color-neutral-300 to --primitive-color-neutral-350), so re-take light-theme screenshots.
+- Light tertiary text is a step darker (--semantic-color-content-tertiary in :root moved from --primitive-color-neutral-500 to --primitive-color-neutral-550), so re-take light-theme screenshots.
+- The concrete-creations block no longer sets --semantic-color-surface-accent, and the base accent fill is now graphite.950 in light (was #4a4146) and graphite.50 in dark (was #cbc6c9), so a page on that slug gets the new base fill unless the app compiles its own overlay.
+- Light hover fills are darker (--semantic-color-surface-hover in :root moved from --primitive-color-neutral-100 to --primitive-color-neutral-250), so re-take light-theme screenshots.
+- Dark muted fills (surface.muted) moved to the new neutral.750 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode; light muted fills also moved a step darker (neutral.250).
+- Light overlay surfaces are darker (--semantic-color-surface-overlay in :root moved from --primitive-color-neutral-100 to --primitive-color-neutral-250), so re-take light-theme screenshots.
+- Light pressed fills are a step darker (--semantic-color-surface-pressed in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.
+- Dark cards (surface.raised) moved to the new neutral.825 step so they stay distinct from the midnight page; if you set this variable yourself, check your cards in dark mode; light cards also moved a step darker (neutral.150) so they read against the page.
+- Dark selected fills (surface.selected: the active tab, a checked row) moved to the new neutral.725 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode; light selected fills also moved darker (neutral.325).
+- Light soft fills are a step darker (--semantic-color-surface-soft in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.
+- Light soft hover fills are slightly darker (--semantic-color-surface-softHover in :root moved from --primitive-color-neutral-300 to --primitive-color-neutral-325), so re-take light-theme screenshots.
+- Light sunken surfaces are a step darker (--semantic-color-surface-sunken in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.
+- Button labels are weight 600 (component.button.fontWeight); if you forced font-weight on a Button, drop it or set it through that variable.
+- Board columns now keep their full width from tablet width up (the first column no longer collapses) and off-screen column counts no longer widen the page, so remove any local CSS override that worked around either.
+- A focused hard-edge Button keeps its edge and its focus ring now wraps the edge too; no code change is needed.
+- A focused Button variant="link" now shows a rounded ring 4px past the label with a 2px gap, and the link is position: relative; drop any local focus-visible outline or ring classes added to work around the old tight ring, and check a parent with overflow: hidden does not clip the ring.
+- A Button with variant="link" and a status tone (danger, success, warning or info) is now coloured, underlined text with no tinted background, so re-take screenshots of toned link buttons and drop any local class that cleared their fill.
+- Cards and other rounded-lg containers are now square when your tenant sets --role-radius to 0; other radii are unchanged.
+- Combobox chips and the Dialog and Sheet close buttons now change fill on hover in light and dark; drop any local CSS that added a hover fill to them.
+- A toggle Button's label and AsyncState's status blocks now fade through each other instead of swapping at once; nothing to change, and both swap instantly under reduced motion.
+- Every focus ring is now one 2px outline 2px off the edge (Checkbox's moved out, invalid fields ring in the error colour), so re-take focus screenshots and restyle it with the --semantic-focus-\* variables.
+- A FormField error message now eases in and fades out; nothing to change, and reduced motion still shows it instantly.
+- A copyable InlineCode now crossfades its Copy and Check glyphs; nothing to change, and reduced motion still swaps instantly.
+- An external InlineLink's icon now nudges up-right on hover and focus; nothing to change, and reduced motion keeps it still.
+- InlineLink's external icon now follows the link's font size (12px in 16px text, was 11px) and InlineLink takes size="sm" | "md" | "lg"; drop local CSS that resized the icon or the link text and set size instead.
+- Compact Pagination's Previous and Next buttons grow from 36px to 40px squares; the default Pagination is unchanged.
+- Compact Pagination's Previous and Next now draw an outline and a disabled end stays outlined and faded instead of grey-filled, so drop any local CSS that bordered them or cleared the disabled fill.
+- Avatar, AvatarGroup's +N bubble, Kbd, the accent Callout and the active Tab and its panel now have a fill that shows on a Card and on the page; drop any local CSS that darkened them.
+- A Tabs panel now fades and rises in when it becomes active; nothing to change, and it stays still under reduced motion.
+- A disabled Tag's label now uses the disabled content colour, so re-take screenshots of pages that show disabled tags.
+- A new toast now eases up into the stack; nothing to change, and reduced motion still shows it at rest.
+- Toasts now follow a swipe and slide out toward the swipe edge when dismissed — button and timer dismissals slide the same way and reduced-motion settings still dismiss instantly — so drop any local CSS that animated toast swipe or exit.
+- On a phone or touch screen, text fields show 16px text so iOS does not zoom on focus, and a filled Input with a clear button has 44px end padding at every size; drop local CSS that raised field text to 16px or widened that padding.
+- On a touch tablet, small controls (sm Button, Tabs, SegmentedControl, Tag, Disclosure, Input clear) now grow to 44px: re-check dense toolbars there, and delete any host CSS that raised them yourself.
+- Pages themed with the accent-lilac brand (data-brand="accent-lilac") may look different, so check them after upgrading.
+- Pages themed with the accent-pair-demo brand (data-brand="accent-pair-demo") no longer get its nav active colors and its accent fill is now near-black/near-white, so check them after upgrading.
+- Pages themed with the brutalist-demo brand (data-brand="brutalist-demo") no longer get its surface padding override, so check them after upgrading.
+- The package no longer ships the concrete-creations brand block, so a page with data-brand="concrete-creations" shows the base accent until the app compiles its own overlay.
+- Pages themed with the soft-demo brand (data-brand="soft-demo") may look different (badge radius, and --semantic-space-component-padding no longer overridden), so check them after upgrading; its light cards also follow the darker surface.raised.
+
+### Coming next
+
+- hds.density is deprecated; the upgrade command rewrites hds.density.sm to hds.semantic.space.scale.xs (md to sm, lg to md, xl to lg, xl2 to xl), the same pixels. density.xs, xl3 and xl4 have no scale step: use hds.space.px4, px64 or px80, which do not shrink under compact density. Removed in 1.0.0.
+
+### Do by hand
+
+- Replace var(--component-lightbox-backdrop-blur) and hds.effect.blur.lightboxBackdrop with var(--primitive-blur-16), the same 16px.
+- Replace var(--component-nav-bg) with var(--semantic-color-surface-page), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.
+- Replace var(--component-nav-bgActive) with var(--semantic-accent-subtle), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.
+- Replace var(--component-nav-borderActive) with var(--semantic-color-surface-accent), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.
+- Replace var(--component-nav-height) with var(--primitive-space-16), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.
+- Replace var(--component-nav-paddingX) with var(--primitive-space-6), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.
+- Replace var(--component-nav-text) with var(--semantic-color-content-secondary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.
+- Replace var(--component-nav-textActive) with var(--semantic-color-content-primary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.
+- Replace var(--semantic-space-sidebar-railWidth) and the sidebar-railWidth Tailwind key with var(--primitive-size-width-280), the same 280px.
+- Import hdsMuiThemeOptions by name from @hirobius/design-system/mui; the default export is gone.
+- The bundled manifest no longer carries componentSpecs consumers (HDS repo file paths) or a11yRules testId (HDS test ids).
+- The bundled manifest no longer carries componentSpecs figmaLink; read figmaUrl, which holds the same URL.
+- Declare any of these Tailwind theme variables your own CSS reads (or use the HDS token for the same role); no HDS component read them.
+- If your app uses react-router below 7.18.2, upgrade it to 7.18.2 or later (older 7.x releases have security advisories).
+- An \`interface X extends TextProps\` no longer compiles because TextProps is a union (truncate and lineClamp exclude each other): write \`type X = TextProps & { … }\`.
+- A wrapper that spreads an \`Omit\<TextProps, …>\` into Text can fail to compile: keep \`truncate\` and \`lineClamp\` out of the Omit, or cast the spread to \`TextProps\`.
+- If \`hds/no-nested-cards\` now fails your lint, drop the outer surface and head the group with a section title and count on a plain region, or list your own card wrappers in its \`cards\` / \`surfaces\` options.
+- \`cn()\` now treats named spacing classes like \`p-surface-padding\` or \`px-fixed-sm\` as spacing, so a later \`p-4\` or \`px-6\` replaces them instead of both staying; check any className that relied on both applying.
+- Compile any of these utilities your own markup still uses with your own Tailwind build; HDS components never used them.
 
 ## 0.32.0
 
@@ -490,7 +597,7 @@ The upgrade command runs these codemods for you.
 - StatusDot still works but is removed in 0.21.0; use Badge dot with the same tone, size and label, and move any style prop to a wrapper or a className first.
 - StatusDotProps is removed in 0.21.0; use BadgeProps instead.
 - hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs. Removed in 1.0.0.
-- Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind. Removed in 1.0.0.
+- Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind. `pb-8`, `p-16`, `h-3.5`, `w-3.5`, `inline-block`, `opacity-100`, `text-muted-foreground/70`, `transition-[transform,opacity]`, `text-foreground`, `text-foreground`, `var(--semantic-color-feedback-bg-warning)]`, `var(--semantic-color-feedback-warning)]/40` and `var(--semantic-color-feedback-warning)]` were removed in [0.33.0](#0330); the rest is removed in 1.0.0.
 
 ### Do by hand
 
@@ -579,13 +686,13 @@ Released 2026-09-30 (minor). Adds /patterns and the standard type ramp; root pat
 - HdsSlider still works but is deprecated; use Slider, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
 - HdsToggle still works but is deprecated; use Toggle, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
 - HdsTooltip still works but is deprecated; use Tooltip, the same component under its bare name. Removed early, in [0.20.0](#0200) (planned for 1.0.0).
-- The spacing token semantic.space.component.gap (--semantic-space-component-gap) still works but is deprecated; use semantic.space.scale.xs, the same 8px at the default density. Removed in 1.0.0.
-- The spacing token semantic.space.component.padding (--semantic-space-component-padding) still works but is deprecated; use semantic.space.surface.padding, which it now aliases. Removed in 1.0.0.
-- The spacing token semantic.space.layout.gutter (--semantic-space-layout-gutter) still works but is deprecated; use semantic.space.region.gutter, which it now aliases. Removed in 1.0.0.
-- The spacing token semantic.space.layout.inset (--semantic-space-layout-inset) still works but is deprecated; use semantic.space.scale.lg, the same 32px at the default density. Removed in 1.0.0.
-- The spacing token semantic.space.layout.normal (--semantic-space-layout-normal) still works but is deprecated; use semantic.space.scale.md, the same 24px at the default density. Removed in 1.0.0.
-- The spacing token semantic.space.layout.spacious (--semantic-space-layout-spacious) still works but is deprecated; use semantic.space.scale.xl, the same 48px at the default density. Removed in 1.0.0.
-- The spacing token semantic.space.layout.tight (--semantic-space-layout-tight) still works but is deprecated; use semantic.space.scale.sm, the same 16px at the default density. Removed in 1.0.0.
+- The spacing token semantic.space.component.gap (--semantic-space-component-gap) still works but is deprecated; use semantic.space.scale.xs, the same 8px at the default density. Removed early, in [0.33.0](#0330) (planned for 1.0.0).
+- The spacing token semantic.space.component.padding (--semantic-space-component-padding) still works but is deprecated; use semantic.space.surface.padding, which it now aliases. Removed early, in [0.33.0](#0330) (planned for 1.0.0).
+- The spacing token semantic.space.layout.gutter (--semantic-space-layout-gutter) still works but is deprecated; use semantic.space.region.gutter, which it now aliases. Removed early, in [0.33.0](#0330) (planned for 1.0.0).
+- The spacing token semantic.space.layout.inset (--semantic-space-layout-inset) still works but is deprecated; use semantic.space.scale.lg, the same 32px at the default density. Removed early, in [0.33.0](#0330) (planned for 1.0.0).
+- The spacing token semantic.space.layout.normal (--semantic-space-layout-normal) still works but is deprecated; use semantic.space.scale.md, the same 24px at the default density. Removed early, in [0.33.0](#0330) (planned for 1.0.0).
+- The spacing token semantic.space.layout.spacious (--semantic-space-layout-spacious) still works but is deprecated; use semantic.space.scale.xl, the same 48px at the default density. Removed early, in [0.33.0](#0330) (planned for 1.0.0).
+- The spacing token semantic.space.layout.tight (--semantic-space-layout-tight) still works but is deprecated; use semantic.space.scale.sm, the same 16px at the default density. Removed early, in [0.33.0](#0330) (planned for 1.0.0).
 
 ### Do by hand
 
