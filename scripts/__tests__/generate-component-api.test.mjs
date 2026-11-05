@@ -92,6 +92,12 @@ describe('generate-component-api: named alias expansion (hds#406)', () => {
     expect(literals(type('Input', 'size')).sort()).toEqual(['lg', 'md', 'sm']);
   });
 
+  it('drops the outer parens Radix puts on a literal union (Tabs.orientation, Tabs.dir)', () => {
+    expect(type('Tabs', 'orientation')).toBe('"horizontal" | "vertical"');
+    expect(type('Tabs', 'activationMode')).toBe('"automatic" | "manual"');
+    expect(type('Tabs', 'dir')).toBe('"ltr" | "rtl"');
+  });
+
   it('expands an imported alias (Card.padding, Surface.padding) to its literals', () => {
     for (const component of ['Card', 'Surface']) {
       expect(literals(type(component, 'padding')).sort()).toEqual(

@@ -5080,7 +5080,11 @@
           "optional": true
         },
         "dir": {
-          "type": "\"ltr\" | \"rtl\"",
+          "type": "enum",
+          "values": [
+            "ltr",
+            "rtl"
+          ],
           "optional": true
         },
         "onValueChange": {
@@ -8404,6 +8408,10 @@
           "type": "HTMLElement",
           "optional": true
         },
+        "deferPointerDownOutside": {
+          "type": "boolean",
+          "optional": true
+        },
         "forceMount": {
           "type": "true",
           "optional": true
@@ -8904,7 +8912,11 @@
           "optional": true
         },
         "dir": {
-          "type": "\"ltr\" | \"rtl\"",
+          "type": "enum",
+          "values": [
+            "ltr",
+            "rtl"
+          ],
           "optional": true
         },
         "modal": {
