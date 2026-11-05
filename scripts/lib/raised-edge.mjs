@@ -29,12 +29,14 @@ export const EDGE_FILLS = {
  * a fixed primitive per theme, kept at least EDGE_MIN_CONTRAST against the fill it sits under.
  * --hds-edge-<key> aliases the token's CSS variable, which switches with the theme itself.
  */
+// Where each Button edge's Light/Dark modes live; component.button.edge.<key>
+// aliases these so component colors never skip the semantic tier.
 export const EDGE_TOKENS = {
-  secondary: 'component.button.edge.secondary',
-  danger: 'component.button.edge.danger',
-  success: 'component.button.edge.success',
-  warning: 'component.button.edge.warning',
-  info: 'component.button.edge.info',
+  secondary: 'semantic.color.edge.neutral',
+  danger: 'semantic.color.edge.danger',
+  success: 'semantic.color.edge.success',
+  warning: 'semantic.color.edge.warning',
+  info: 'semantic.color.edge.info',
 };
 
 /** The fill each token edge sits under (for the contrast floor). */
