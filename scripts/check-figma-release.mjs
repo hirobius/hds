@@ -41,7 +41,12 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { runDriftCheck } from './check-figma-drift.mjs';
 import { parseSnapshotFile, tokensFileHash } from './lib/figma-snapshot.mjs';
-import { readFigmaMeta, metaGaps } from './lib/figma-meta.mjs';
+import {
+  readFigmaMeta,
+  metaGaps,
+  syncedInputsCommit,
+  deepenSyncedHistory,
+} from './lib/figma-meta.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BEHIND = 'Figma is behind code';
@@ -88,14 +93,23 @@ export function metaVersionGap(root, options = {}) {
  * no package.json (a fixture mini-root) builds no meta, so it has none.
  */
 function metaProblems(root, options) {
-  return metaReleaseGaps(root, options)
-    .filter((g) => !g.ok)
-    .map((g) => {
-      const subject = g.key === 'version' ? 'this release is' : 'code says';
-      return g.actual === null
-        ? `there is no ${g.name} in Figma (figma/snapshot.json) but ${subject} ${g.expected}.`
-        : `${g.name} is ${g.actual} in Figma but ${subject} ${g.expected}.`;
-    });
+  const synced = existsSync(join(root, 'package.json')) ? syncedInputsCommit(root, options) : null;
+  const shallow =
+    synced && !synced.complete
+      ? [
+          'this is a shallow clone: meta/commit cannot be read from the history. Run git fetch --unshallow, then run this check again.',
+        ]
+      : [];
+  return shallow.concat(
+    metaReleaseGaps(root, options)
+      .filter((g) => !g.ok)
+      .map((g) => {
+        const subject = g.key === 'version' ? 'this release is' : 'code says';
+        return g.actual === null
+          ? `there is no ${g.name} in Figma (figma/snapshot.json) but ${subject} ${g.expected}.`
+          : `${g.name} is ${g.actual} in Figma but ${subject} ${g.expected}.`;
+      }),
+  );
 }
 
 /**
@@ -242,6 +256,12 @@ export function runReleaseGate({ root, ...options }) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  // CI checks out at depth 1, where meta/commit would read as HEAD: fetch the
+  // history first. If that fails, the gate names the shallow clone and refuses.
+  const synced = syncedInputsCommit(ROOT);
+  if (synced && !synced.complete && !deepenSyncedHistory(ROOT)) {
+    console.error('check-figma-release: could not fetch the full git history (shallow clone).');
+  }
   const gate = process.argv.includes('--meta') ? runMetaGate : runReleaseGate;
   const { exitCode, output } = gate({ root: ROOT });
   (exitCode === 0 ? console.log : console.error)(output);
