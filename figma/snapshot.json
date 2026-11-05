@@ -1,8 +1,8 @@
 {
-  "checksum": "e11b63d8",
+  "checksum": "737344cb",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-04T23:16:02.758Z",
+    "takenAt": "2026-11-05T03:54:00.427Z",
     "file": {
       "name": "HDS Tokens & Components (Copy)",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
@@ -28,7 +28,7 @@
             "name": "blur/16",
             "path": "primitive.blur.16",
             "resolvedType": "FLOAT",
-            "description": "Fullscreen backdrop blur for portfolio lightbox overlays.",
+            "description": "Large backdrop blur for fullscreen overlays.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -487,7 +487,7 @@
             "name": "color/cobalt/300",
             "path": "primitive.color.cobalt.300",
             "resolvedType": "COLOR",
-            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.86:1 on black).",
+            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.41:1 on black).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -663,7 +663,7 @@
             "name": "color/graphite/100",
             "path": "primitive.color.graphite.100",
             "resolvedType": "COLOR",
-            "description": "Graphite accent — very light warm tint.",
+            "description": "Graphite accent — very light midnight tint.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -672,9 +672,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.913725,
-                  "g": 0.905882,
-                  "b": 0.909804,
+                  "r": 0.898039,
+                  "g": 0.909804,
+                  "b": 0.929412,
                   "a": 1
                 }
               }
@@ -685,7 +685,7 @@
             "name": "color/graphite/200",
             "path": "primitive.color.graphite.200",
             "resolvedType": "COLOR",
-            "description": "Graphite accent — light warm-grey, a touch softer since 0.27; dark-mode rest accent fill.",
+            "description": "Graphite accent — light midnight grey.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -694,9 +694,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.796078,
-                  "g": 0.776471,
-                  "b": 0.788235,
+                  "r": 0.768627,
+                  "g": 0.784314,
+                  "b": 0.811765,
                   "a": 1
                 }
               }
@@ -716,9 +716,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.698039,
-                  "g": 0.670588,
-                  "b": 0.682353,
+                  "r": 0.658824,
+                  "g": 0.682353,
+                  "b": 0.721569,
                   "a": 1
                 }
               }
@@ -729,7 +729,7 @@
             "name": "color/graphite/400",
             "path": "primitive.color.graphite.400",
             "resolvedType": "COLOR",
-            "description": "Graphite accent — mid warm-grey step.",
+            "description": "Graphite accent — mid midnight-grey step.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -738,9 +738,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.545098,
-                  "g": 0.517647,
-                  "b": 0.533333,
+                  "r": 0.498039,
+                  "g": 0.529412,
+                  "b": 0.580392,
                   "a": 1
                 }
               }
@@ -751,7 +751,7 @@
             "name": "color/graphite/50",
             "path": "primitive.color.graphite.50",
             "resolvedType": "COLOR",
-            "description": "Graphite accent tint — faintest step.",
+            "description": "Graphite accent tint — faintest step; dark rest fill.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -760,9 +760,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.960784,
+                  "r": 0.94902,
                   "g": 0.956863,
-                  "b": 0.956863,
+                  "b": 0.972549,
                   "a": 1
                 }
               }
@@ -782,9 +782,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.396078,
-                  "g": 0.368627,
-                  "b": 0.384314,
+                  "r": 0.345098,
+                  "g": 0.380392,
+                  "b": 0.439216,
                   "a": 1
                 }
               }
@@ -804,9 +804,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.329412,
-                  "g": 0.301961,
-                  "b": 0.317647,
+                  "r": 0.27451,
+                  "g": 0.313725,
+                  "b": 0.380392,
                   "a": 1
                 }
               }
@@ -817,7 +817,7 @@
             "name": "color/graphite/700",
             "path": "primitive.color.graphite.700",
             "resolvedType": "COLOR",
-            "description": "Graphite accent rest — the warm charcoal brand accent, a touch lighter since 0.27; white text as a fill (AAA).",
+            "description": "Graphite accent — midnight charcoal; light-mode accent text.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -826,9 +826,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.290196,
-                  "g": 0.254902,
-                  "b": 0.27451,
+                  "r": 0.227451,
+                  "g": 0.266667,
+                  "b": 0.341176,
                   "a": 1
                 }
               }
@@ -848,9 +848,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.207843,
-                  "g": 0.180392,
-                  "b": 0.196078,
+                  "r": 0.14902,
+                  "g": 0.188235,
+                  "b": 0.262745,
                   "a": 1
                 }
               }
@@ -870,9 +870,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.164706,
-                  "g": 0.141176,
-                  "b": 0.156863,
+                  "r": 0.109804,
+                  "g": 0.14902,
+                  "b": 0.219608,
                   "a": 1
                 }
               }
@@ -883,7 +883,7 @@
             "name": "color/graphite/950",
             "path": "primitive.color.graphite.950",
             "resolvedType": "COLOR",
-            "description": "Graphite accent — near-black warm substrate.",
+            "description": "Graphite accent — near-black; light rest fill.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -892,9 +892,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.098039,
-                  "g": 0.086275,
-                  "b": 0.101961,
+                  "r": 0.058824,
+                  "g": 0.090196,
+                  "b": 0.14902,
                   "a": 1
                 }
               }
@@ -1640,9 +1640,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.960784,
+                  "r": 0.956863,
                   "g": 0.960784,
-                  "b": 0.960784,
+                  "b": 0.968627,
                   "a": 1
                 }
               }
@@ -1662,9 +1662,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.898039,
+                  "r": 0.894118,
                   "g": 0.898039,
-                  "b": 0.898039,
+                  "b": 0.905882,
                   "a": 1
                 }
               }
@@ -1684,9 +1684,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.831373,
+                  "r": 0.827451,
                   "g": 0.831373,
-                  "b": 0.831373,
+                  "b": 0.839216,
                   "a": 1
                 }
               }
@@ -1706,9 +1706,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.705882,
+                  "r": 0.698039,
                   "g": 0.705882,
-                  "b": 0.705882,
+                  "b": 0.721569,
                   "a": 1
                 }
               }
@@ -1728,9 +1728,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.639216,
+                  "r": 0.627451,
                   "g": 0.639216,
-                  "b": 0.639216,
+                  "b": 0.658824,
                   "a": 1
                 }
               }
@@ -1741,7 +1741,7 @@
             "name": "color/neutral/450",
             "path": "primitive.color.neutral.450",
             "resolvedType": "COLOR",
-            "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.5:1 on neutral.850, 6.6:1 on black).",
+            "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1750,9 +1750,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.564706,
+                  "r": 0.552941,
                   "g": 0.564706,
-                  "b": 0.564706,
+                  "b": 0.588235,
                   "a": 1
                 }
               }
@@ -1772,9 +1772,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.980392,
+                  "r": 0.976471,
                   "g": 0.980392,
-                  "b": 0.980392,
+                  "b": 0.988235,
                   "a": 1
                 }
               }
@@ -1794,9 +1794,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.45098,
+                  "r": 0.435294,
                   "g": 0.45098,
-                  "b": 0.45098,
+                  "b": 0.482353,
                   "a": 1
                 }
               }
@@ -1816,9 +1816,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.384314,
+                  "r": 0.368627,
                   "g": 0.384314,
-                  "b": 0.384314,
+                  "b": 0.415686,
                   "a": 1
                 }
               }
@@ -1838,9 +1838,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.321569,
+                  "r": 0.301961,
                   "g": 0.321569,
-                  "b": 0.321569,
+                  "b": 0.356863,
                   "a": 1
                 }
               }
@@ -1860,9 +1860,53 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.25098,
+                  "r": 0.231373,
                   "g": 0.25098,
-                  "b": 0.25098,
+                  "b": 0.290196,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2364:2146",
+            "name": "color/neutral/725",
+            "path": "primitive.color.neutral.725",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-725)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.152941,
+                  "g": 0.172549,
+                  "b": 0.211765,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2371:2",
+            "name": "color/neutral/750",
+            "path": "primitive.color.neutral.750",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-750)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.145098,
+                  "g": 0.164706,
+                  "b": 0.203922,
                   "a": 1
                 }
               }
@@ -1882,9 +1926,31 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.14902,
+                  "r": 0.129412,
                   "g": 0.14902,
-                  "b": 0.14902,
+                  "b": 0.188235,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2371:3",
+            "name": "color/neutral/825",
+            "path": "primitive.color.neutral.825",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-825)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.105882,
+                  "g": 0.12549,
+                  "b": 0.164706,
                   "a": 1
                 }
               }
@@ -1904,9 +1970,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.101961,
+                  "r": 0.082353,
                   "g": 0.101961,
-                  "b": 0.101961,
+                  "b": 0.141176,
                   "a": 1
                 }
               }
@@ -1926,9 +1992,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.066667,
+                  "r": 0.047059,
                   "g": 0.066667,
-                  "b": 0.066667,
+                  "b": 0.105882,
                   "a": 1
                 }
               }
@@ -1948,9 +2014,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.039216,
+                  "r": 0.023529,
                   "g": 0.039216,
-                  "b": 0.039216,
+                  "b": 0.07451,
                   "a": 1
                 }
               }
@@ -1970,9 +2036,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0,
-                  "g": 0,
-                  "b": 0,
+                  "r": 0.023529,
+                  "g": 0.039216,
+                  "b": 0.07451,
                   "a": 1
                 }
               }
@@ -2783,7 +2849,7 @@
           {
             "id": "VariableID:2272:2",
             "name": "size/36",
-            "path": null,
+            "path": "primitive.size.36",
             "resolvedType": "FLOAT",
             "description": "36px size step.",
             "scopes": [],
@@ -2817,7 +2883,7 @@
           {
             "id": "VariableID:2272:3",
             "name": "size/44",
-            "path": null,
+            "path": "primitive.size.44",
             "resolvedType": "FLOAT",
             "description": "44px size step.",
             "scopes": [],
@@ -2851,7 +2917,7 @@
           {
             "id": "VariableID:2272:4",
             "name": "size/52",
-            "path": null,
+            "path": "primitive.size.52",
             "resolvedType": "FLOAT",
             "description": "52px size step.",
             "scopes": [],
@@ -2862,6 +2928,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 52
+              }
+            }
+          },
+          {
+            "id": "VariableID:2350:2",
+            "name": "size/56",
+            "path": "primitive.size.56",
+            "resolvedType": "FLOAT",
+            "description": "56px size step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-56)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 56
               }
             }
           },
@@ -3021,7 +3104,7 @@
           {
             "id": "VariableID:2347:6",
             "name": "size/width/512",
-            "path": null,
+            "path": "primitive.size.width.512",
             "resolvedType": "FLOAT",
             "description": "512px width step: the default (md) Dialog max width, max-w-lg.",
             "scopes": [],
@@ -3395,7 +3478,7 @@
           {
             "id": "VariableID:2347:2",
             "name": "strokeWidth/100",
-            "path": null,
+            "path": "primitive.strokeWidth.100",
             "resolvedType": "FLOAT",
             "description": "1-unit stroke.",
             "scopes": [],
@@ -3412,7 +3495,7 @@
           {
             "id": "VariableID:2347:3",
             "name": "strokeWidth/150",
-            "path": null,
+            "path": "primitive.strokeWidth.150",
             "resolvedType": "FLOAT",
             "description": "1.5-unit stroke.",
             "scopes": [],
@@ -3429,7 +3512,7 @@
           {
             "id": "VariableID:2347:4",
             "name": "strokeWidth/200",
-            "path": null,
+            "path": "primitive.strokeWidth.200",
             "resolvedType": "FLOAT",
             "description": "2-unit stroke, Lucide's default.",
             "scopes": [],
@@ -3446,7 +3529,7 @@
           {
             "id": "VariableID:2347:5",
             "name": "strokeWidth/250",
-            "path": null,
+            "path": "primitive.strokeWidth.250",
             "resolvedType": "FLOAT",
             "description": "2.5-unit stroke.",
             "scopes": [],
@@ -3850,6 +3933,23 @@
                 "value": 400
               }
             }
+          },
+          {
+            "id": "VariableID:2371:4",
+            "name": "typography/weight/semibold",
+            "path": "primitive.typography.weight.semibold",
+            "resolvedType": "FLOAT",
+            "description": "Button label weight (hds#760).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-weight-semibold)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 600
+              }
+            }
           }
         ]
       },
@@ -4046,7 +4146,7 @@
             "name": "accent/hover",
             "path": "semantic.accent.hover",
             "resolvedType": "COLOR",
-            "description": "Accent fill on pointer hover. Dark steps lighter than rest (graphite.100 vs 200) so onAccent text stays AA (hds#748).",
+            "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4096,7 +4196,7 @@
             "name": "accent/pressed",
             "path": "semantic.accent.pressed",
             "resolvedType": "COLOR",
-            "description": "Accent fill during active press. Dark steps lighter than hover (graphite.50 vs 100) so onAccent text stays AA (hds#748).",
+            "description": "Accent fill on press (graphite.900 / 200).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4111,8 +4211,8 @@
                 "to": "Hirobius/Primitives: color/graphite/900"
               },
               "Dark": {
-                "alias": "VariableID:2146:2",
-                "to": "Hirobius/Primitives: color/graphite/50"
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
               }
             }
           },
@@ -4121,7 +4221,7 @@
             "name": "accent/rest",
             "path": "semantic.accent.rest",
             "resolvedType": "COLOR",
-            "description": "Default accent fill for interactive elements at rest — warm graphite. Inverts per theme; pair with content.onAccent.",
+            "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4132,12 +4232,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2146:12",
+                "to": "Hirobius/Primitives: color/graphite/950"
               },
               "Dark": {
-                "alias": "VariableID:2146:4",
-                "to": "Hirobius/Primitives: color/graphite/200"
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
               }
             }
           },
@@ -4242,7 +4342,7 @@
           {
             "id": "VariableID:2347:10",
             "name": "borderWidth/icon/bold",
-            "path": null,
+            "path": "semantic.borderWidth.icon.bold",
             "resolvedType": "FLOAT",
             "description": "Bold icon stroke (2.5).",
             "scopes": [
@@ -4266,7 +4366,7 @@
           {
             "id": "VariableID:2347:8",
             "name": "borderWidth/icon/light",
-            "path": null,
+            "path": "semantic.borderWidth.icon.light",
             "resolvedType": "FLOAT",
             "description": "Light icon stroke (1.5).",
             "scopes": [
@@ -4290,7 +4390,7 @@
           {
             "id": "VariableID:2347:9",
             "name": "borderWidth/icon/regular",
-            "path": null,
+            "path": "semantic.borderWidth.icon.regular",
             "resolvedType": "FLOAT",
             "description": "Regular icon stroke (2), the default when no weight is set.",
             "scopes": [
@@ -4314,7 +4414,7 @@
           {
             "id": "VariableID:2347:7",
             "name": "borderWidth/icon/thin",
-            "path": null,
+            "path": "semantic.borderWidth.icon.thin",
             "resolvedType": "FLOAT",
             "description": "Thin icon stroke (1).",
             "scopes": [
@@ -4338,64 +4438,50 @@
           {
             "id": "VariableID:2273:1151",
             "name": "button/edge/danger",
-            "path": null,
+            "path": "component.button.edge.danger",
             "resolvedType": "COLOR",
-            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "description": "Hard raised edge under a danger-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
             "scopes": [
-              "EFFECT_COLOR"
+              "ALL_FILLS",
+              "STROKE_COLOR"
             ],
             "hiddenFromPublishing": false,
             "codeSyntax": {
-              "WEB": "var(--hds-edge-danger)"
+              "WEB": "var(--component-button-edge-danger)"
             },
             "valuesByMode": {
               "Light": {
-                "value": {
-                  "r": 0.831373,
-                  "g": 0.8,
-                  "b": 0.8,
-                  "a": 1
-                }
+                "alias": "VariableID:3:28",
+                "to": "Hirobius/Primitives: color/red/400"
               },
               "Dark": {
-                "value": {
-                  "r": 0.207843,
-                  "g": 0.05098,
-                  "b": 0.043137,
-                  "a": 1
-                }
+                "alias": "VariableID:3:29",
+                "to": "Hirobius/Primitives: color/red/700"
               }
             }
           },
           {
             "id": "VariableID:2273:1154",
             "name": "button/edge/info",
-            "path": null,
+            "path": "component.button.edge.info",
             "resolvedType": "COLOR",
-            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "description": "Hard raised edge under an info-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
             "scopes": [
-              "EFFECT_COLOR"
+              "ALL_FILLS",
+              "STROKE_COLOR"
             ],
             "hiddenFromPublishing": false,
             "codeSyntax": {
-              "WEB": "var(--hds-edge-info)"
+              "WEB": "var(--component-button-edge-info)"
             },
             "valuesByMode": {
               "Light": {
-                "value": {
-                  "r": 0.768627,
-                  "g": 0.796078,
-                  "b": 0.85098,
-                  "a": 1
-                }
+                "alias": "VariableID:3:19",
+                "to": "Hirobius/Primitives: color/blue/300"
               },
               "Dark": {
-                "value": {
-                  "r": 0.047059,
-                  "g": 0.07451,
-                  "b": 0.141176,
-                  "a": 1
-                }
+                "alias": "VariableID:3:22",
+                "to": "Hirobius/Primitives: color/blue/500"
               }
             }
           },
@@ -4434,96 +4520,75 @@
           {
             "id": "VariableID:2273:1150",
             "name": "button/edge/secondary",
-            "path": null,
+            "path": "component.button.edge.secondary",
             "resolvedType": "COLOR",
-            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
             "scopes": [
-              "EFFECT_COLOR"
+              "ALL_FILLS",
+              "STROKE_COLOR"
             ],
             "hiddenFromPublishing": false,
             "codeSyntax": {
-              "WEB": "var(--hds-edge-secondary)"
+              "WEB": "var(--component-button-edge-secondary)"
             },
             "valuesByMode": {
               "Light": {
-                "value": {
-                  "r": 0.741176,
-                  "g": 0.745098,
-                  "b": 0.752941,
-                  "a": 1
-                }
+                "alias": "VariableID:2182:2",
+                "to": "Hirobius/Primitives: color/neutral/350"
               },
               "Dark": {
-                "value": {
-                  "r": 0.239216,
-                  "g": 0.254902,
-                  "b": 0.278431,
-                  "a": 1
-                }
+                "alias": "VariableID:2364:2146",
+                "to": "Hirobius/Primitives: color/neutral/725"
               }
             }
           },
           {
             "id": "VariableID:2273:1152",
             "name": "button/edge/success",
-            "path": null,
+            "path": "component.button.edge.success",
             "resolvedType": "COLOR",
-            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "description": "Hard raised edge under a success-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
             "scopes": [
-              "EFFECT_COLOR"
+              "ALL_FILLS",
+              "STROKE_COLOR"
             ],
             "hiddenFromPublishing": false,
             "codeSyntax": {
-              "WEB": "var(--hds-edge-success)"
+              "WEB": "var(--component-button-edge-success)"
             },
             "valuesByMode": {
               "Light": {
-                "value": {
-                  "r": 0.784314,
-                  "g": 0.831373,
-                  "b": 0.807843,
-                  "a": 1
-                }
+                "alias": "VariableID:3:32",
+                "to": "Hirobius/Primitives: color/green/400"
               },
               "Dark": {
-                "value": {
-                  "r": 0.031373,
-                  "g": 0.137255,
-                  "b": 0.109804,
-                  "a": 1
-                }
+                "alias": "VariableID:3:33",
+                "to": "Hirobius/Primitives: color/green/700"
               }
             }
           },
           {
             "id": "VariableID:2273:1153",
             "name": "button/edge/warning",
-            "path": null,
+            "path": "component.button.edge.warning",
             "resolvedType": "COLOR",
-            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
+            "description": "Hard raised edge under a warning-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
             "scopes": [
-              "EFFECT_COLOR"
+              "ALL_FILLS",
+              "STROKE_COLOR"
             ],
             "hiddenFromPublishing": false,
             "codeSyntax": {
-              "WEB": "var(--hds-edge-warning)"
+              "WEB": "var(--component-button-edge-warning)"
             },
             "valuesByMode": {
               "Light": {
-                "value": {
-                  "r": 0.839216,
-                  "g": 0.827451,
-                  "b": 0.784314,
-                  "a": 1
-                }
+                "alias": "VariableID:3:40",
+                "to": "Hirobius/Primitives: color/amber/400"
               },
               "Dark": {
-                "value": {
-                  "r": 0.211765,
-                  "g": 0.094118,
-                  "b": 0.035294,
-                  "a": 1
-                }
+                "alias": "VariableID:3:41",
+                "to": "Hirobius/Primitives: color/amber/800"
               }
             }
           },
@@ -4556,7 +4621,7 @@
             "name": "color/border/default",
             "path": "semantic.color.border.default",
             "resolvedType": "COLOR",
-            "description": "Hairline and divider border. Light is warm graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+            "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -5260,7 +5325,7 @@
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
             "resolvedType": "COLOR",
-            "description": "Accent fill, warm graphite. Dark in light mode, light warm-grey in dark mode; pair with content.onAccent.",
+            "description": "Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -5271,12 +5336,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2146:12",
+                "to": "Hirobius/Primitives: color/graphite/950"
               },
               "Dark": {
-                "alias": "VariableID:2146:4",
-                "to": "Hirobius/Primitives: color/graphite/200"
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
               }
             }
           },
@@ -5400,8 +5465,8 @@
                 "to": "Hirobius/Primitives: color/neutral/100"
               },
               "Dark": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:2371:2",
+                "to": "Hirobius/Primitives: color/neutral/750"
               }
             }
           },
@@ -5500,8 +5565,8 @@
                 "to": "Hirobius/Primitives: color/neutral/50"
               },
               "Dark": {
-                "alias": "VariableID:3:11",
-                "to": "Hirobius/Primitives: color/neutral/850"
+                "alias": "VariableID:2371:3",
+                "to": "Hirobius/Primitives: color/neutral/825"
               }
             }
           },
@@ -5550,8 +5615,8 @@
                 "to": "Hirobius/Primitives: color/neutral/200"
               },
               "Dark": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:2364:2146",
+                "to": "Hirobius/Primitives: color/neutral/725"
               }
             }
           },
@@ -6333,6 +6398,30 @@
             }
           },
           {
+            "id": "VariableID:2350:3",
+            "name": "size/listRow",
+            "path": "semantic.size.listRow",
+            "resolvedType": "FLOAT",
+            "description": "Minimum height of a List row: a title over one description line.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-size-listRow)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2350:2",
+                "to": "Hirobius/Primitives: size/56"
+              },
+              "Dark": {
+                "alias": "VariableID:2350:2",
+                "to": "Hirobius/Primitives: size/56"
+              }
+            }
+          },
+          {
             "id": "VariableID:2061:895",
             "name": "size/row/comfortable",
             "path": "semantic.size.row.comfortable",
@@ -6401,6 +6490,30 @@
               "Dark": {
                 "alias": "VariableID:2071:2",
                 "to": "Hirobius/Primitives: size/120"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2372:2",
+            "name": "size/touchTarget",
+            "path": "semantic.size.touchTarget",
+            "resolvedType": "FLOAT",
+            "description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750).",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-size-touchTarget)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:7:37",
+                "to": "Hirobius/Primitives: size/interactive/min"
+              },
+              "Dark": {
+                "alias": "VariableID:7:37",
+                "to": "Hirobius/Primitives: size/interactive/min"
               }
             }
           },
@@ -8796,6 +8909,26 @@
             }
           },
           {
+            "id": "VariableID:2372:806",
+            "name": "button/fontWeight",
+            "path": "component.button.fontWeight",
+            "resolvedType": "FLOAT",
+            "description": "Button label weight.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-fontWeight)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2371:4",
+                "to": "Hirobius/Primitives: typography/weight/semibold"
+              }
+            }
+          },
+          {
             "id": "VariableID:14:38",
             "name": "button/paddingX",
             "path": "component.button.paddingX",
@@ -9068,7 +9201,7 @@
             "name": "button/size/lg/height",
             "path": "component.button.size.lg.height",
             "resolvedType": "FLOAT",
-            "description": "Large button height (48px).",
+            "description": "Large button height (52px).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -9188,7 +9321,7 @@
             "name": "button/size/md/height",
             "path": "component.button.size.md.height",
             "resolvedType": "FLOAT",
-            "description": "Medium button height (40px).",
+            "description": "Medium button height (44px).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -9268,7 +9401,7 @@
             "name": "button/size/md/paddingY",
             "path": "component.button.size.md.paddingY",
             "resolvedType": "FLOAT",
-            "description": "Medium button vertical padding (8px; the 40px height drives the box).",
+            "description": "Medium button vertical padding (8px; the 44px height drives the box).",
             "scopes": [
               "GAP"
             ],
@@ -9308,7 +9441,7 @@
             "name": "button/size/sm/height",
             "path": "component.button.size.sm.height",
             "resolvedType": "FLOAT",
-            "description": "Small button height (32px).",
+            "description": "Small button height (36px).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -9729,6 +9862,106 @@
               "Default": {
                 "alias": "VariableID:10:8",
                 "to": "Hirobius/Semantic: color/content/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2350:9",
+            "name": "list/groupGap",
+            "path": "component.list.groupGap",
+            "resolvedType": "FLOAT",
+            "description": "Gap between List groups, the largest step of the list rhythm (32px compact).",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-list-groupGap)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2061:882",
+                "to": "Hirobius/Semantic: space/scale/xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2350:10",
+            "name": "list/headingGap",
+            "path": "component.list.headingGap",
+            "resolvedType": "FLOAT",
+            "description": "Gap from a List group heading down to its surface (16px).",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-list-headingGap)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2229:16",
+                "to": "Hirobius/Semantic: space/fixed/sm"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2350:13",
+            "name": "list/leadingSize",
+            "path": "component.list.leadingSize",
+            "resolvedType": "FLOAT",
+            "description": "Width and height of a List row's leading icon tile or logo (40px).",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-list-leadingSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2061:893",
+                "to": "Hirobius/Semantic: size/avatar"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2350:12",
+            "name": "list/rowMinHeight",
+            "path": "component.list.rowMinHeight",
+            "resolvedType": "FLOAT",
+            "description": "Minimum height of a List row (56px).",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-list-rowMinHeight)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2350:3",
+                "to": "Hirobius/Semantic: size/listRow"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2350:11",
+            "name": "list/rowPadding",
+            "path": "component.list.rowPadding",
+            "resolvedType": "FLOAT",
+            "description": "Inset inside each List row (12px compact).",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-list-rowPadding)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2061:879",
+                "to": "Hirobius/Semantic: space/scale/sm"
               }
             }
           },
@@ -11648,5 +11881,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:4b95a9e0aed5b03d0b9098f985e3ce08fb3ec6394afff42d107d8a54e74f4e9d"
+  "tokensHash": "sha256:8faacc6b04fc760f0aaa3b220908d21100eae8896a2e64bceb8b17c3ac571ff2"
 }
