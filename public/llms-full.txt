@@ -1317,6 +1317,7 @@ Dialog — modal dialog (shadcn baseline, compound parts).
 Dialog — modal dialog (shadcn baseline, compound parts).
   - asChild: boolean
   - container: HTMLElement | null
+  - deferPointerDownOutside: boolean
   - forceMount: true
   - hideClose: boolean = false
   - onCloseAutoFocus: ((event: Event) => void)
@@ -1776,12 +1777,12 @@ Table - structured data table primitive for documentation and compact UI matrice
 
 ### Tabs
 The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-l…
-  - activationMode: "automatic" | "manual"
+  - activationMode: ("automatic" | "manual")
   - asChild: boolean
   - defaultValue: string
   - dir: ("ltr" | "rtl")
   - onValueChange: ((value: string) => void)
-  - orientation: "horizontal" | "vertical"
+  - orientation: ("horizontal" | "vertical")
   - value: string
 
 ### TabsContent

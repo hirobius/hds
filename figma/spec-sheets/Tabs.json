@@ -18,11 +18,7 @@
   "props": [
     {
       "name": "activationMode",
-      "type": "enum",
-      "values": [
-        "automatic",
-        "manual"
-      ],
+      "type": "\"automatic\" | \"manual\"",
       "optional": true
     },
     {
@@ -47,11 +43,7 @@
     },
     {
       "name": "orientation",
-      "type": "enum",
-      "values": [
-        "horizontal",
-        "vertical"
-      ],
+      "type": "\"horizontal\" | \"vertical\"",
       "optional": true
     },
     {

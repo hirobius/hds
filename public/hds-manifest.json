@@ -5063,11 +5063,7 @@
       "componentProperties": [],
       "props": {
         "activationMode": {
-          "type": "enum",
-          "values": [
-            "automatic",
-            "manual"
-          ],
+          "type": "\"automatic\" | \"manual\"",
           "optional": true
         },
         "asChild": {
@@ -5087,11 +5083,7 @@
           "optional": true
         },
         "orientation": {
-          "type": "enum",
-          "values": [
-            "horizontal",
-            "vertical"
-          ],
+          "type": "\"horizontal\" | \"vertical\"",
           "optional": true
         },
         "value": {
@@ -8400,6 +8392,10 @@
         },
         "container": {
           "type": "HTMLElement",
+          "optional": true
+        },
+        "deferPointerDownOutside": {
+          "type": "boolean",
           "optional": true
         },
         "forceMount": {

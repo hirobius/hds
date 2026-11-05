@@ -1396,6 +1396,12 @@
       "values": null,
       "default": null
     },
+    "deferPointerDownOutside": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
     "forceMount": {
       "type": "true",
       "optional": true,
@@ -3600,12 +3606,9 @@
   },
   "Tabs": {
     "activationMode": {
-      "type": "\"automatic\" | \"manual\"",
+      "type": "(\"automatic\" | \"manual\")",
       "optional": true,
-      "values": [
-        "automatic",
-        "manual"
-      ],
+      "values": null,
       "default": null
     },
     "asChild": {
@@ -3633,12 +3636,9 @@
       "default": null
     },
     "orientation": {
-      "type": "\"horizontal\" | \"vertical\"",
+      "type": "(\"horizontal\" | \"vertical\")",
       "optional": true,
-      "values": [
-        "horizontal",
-        "vertical"
-      ],
+      "values": null,
       "default": null
     },
     "value": {
