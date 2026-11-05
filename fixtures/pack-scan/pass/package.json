@@ -1,0 +1,7 @@
+{
+  "name": "pack-scan-pass",
+  "version": "1.0.0",
+  "files": [
+    "dist"
+  ]
+}
