@@ -1,4 +1,66 @@
 {
   "impact": "look",
-  "plain": "Secondary and tone Buttons show a slightly different hard edge colour, so re-take screenshots; to restyle an edge, set --component-button-edge-<tone> or --hds-btn-edge."
+  "plain": "Secondary and tone Buttons show a slightly different hard edge colour, so re-take screenshots; to restyle an edge, set --component-button-edge-<tone> or --hds-btn-edge.",
+  "steps": [
+    {
+      "id": "value-changed/--hds-edge-danger",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-danger now aliases --component-button-edge-danger (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of danger-tone Buttons.",
+      "detect": {
+        "cssVars": ["--hds-edge-danger"],
+        "cssVarWrites": ["--hds-edge-danger"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-danger::root",
+        "css-var-changed:--hds-edge-danger:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-danger:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-info now aliases --component-button-edge-info (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of info-tone Buttons.",
+      "detect": {
+        "cssVars": ["--hds-edge-info"],
+        "cssVarWrites": ["--hds-edge-info"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-info::root",
+        "css-var-changed:--hds-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-info:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-edge-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-success now aliases --component-button-edge-success (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of success-tone Buttons.",
+      "detect": {
+        "cssVars": ["--hds-edge-success"],
+        "cssVarWrites": ["--hds-edge-success"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-success::root",
+        "css-var-changed:--hds-edge-success:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-success:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--hds-edge-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-warning now aliases --component-button-edge-warning (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of warning-tone Buttons.",
+      "detect": {
+        "cssVars": ["--hds-edge-warning"],
+        "cssVarWrites": ["--hds-edge-warning"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-warning::root",
+        "css-var-changed:--hds-edge-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-warning:[data-theme=dark]"
+      ]
+    }
+  ]
 }
