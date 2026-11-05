@@ -703,6 +703,31 @@
   }
 }
 
+/* Focus wraps face AND edge (Adrian 11-04): the gap and the ring are drawn twice, on the
+ * border box and offset by the edge height (--hds-hs, so it tracks hover and press), so
+ * they follow the face-plus-edge shape and the edge stays visible. Tertiary and disabled
+ * have no .hds-btn-hard here and keep Tailwind's plain ring. Unlayered, so it outranks
+ * Button's focus-visible:ring-* utilities; a consumer shadow-* still rides --tw-shadow. */
+.hds-btn-hard:not(:disabled, [aria-disabled='true']):focus-visible {
+  box-shadow:
+    var(--tw-inset-shadow),
+    var(--tw-inset-ring-shadow),
+    var(--tw-shadow),
+    0 0 0 2px var(--role-background),
+    0 var(--hds-hs, 3px) 0 2px var(--role-background),
+    0 0 0 4px var(--role-ring),
+    0 var(--hds-hs, 3px) 0 4px var(--role-ring);
+}
+
+/* Forced colors drop box-shadow, and Button's focus-visible:outline-none sits in the
+ * utilities layer, so an unlayered system-colour outline keeps hard-edge focus visible. */
+@media (forced-colors: active) {
+  .hds-btn-hard:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
 /* Button hoverEffect="wipe" (the default since hds#888; "none" opts out): the variant's
  * own hover fill is a layer behind the label (`relative isolate` on the button). The layer
  * takes the button's radius (border-radius: inherit) and wipes with clip-path, so its corners
