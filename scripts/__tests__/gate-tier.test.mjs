@@ -110,20 +110,29 @@ describe('planGate', () => {
     expect(planGate('full', [])).toEqual(['pnpm check:fast', 'pnpm test', 'pnpm smoke:consumer']);
   });
 
-  it('full tier runs the lane selection for a known diff (#1090)', () => {
-    // src-only diff at the full tier: pretest + fast lane, no heavy subset.
-    expect(planGate('full', ['package.json'])).toEqual([
-      'pnpm check:fast',
-      'pnpm run pretest',
-      'pnpm test:fast',
-      'pnpm smoke:consumer',
-    ]);
+  it('full tier runs only the affected tests for a known diff (#1090)', () => {
+    // A scripts/ change takes the full tier but not the full suite.
+    const cmds = planGate('full', ['scripts/check-record-freshness.mjs']);
+    expect(cmds[0]).toBe('pnpm check:fast');
+    expect(cmds[1]).toBe('pnpm run pretest');
+    expect(cmds[2]).toMatch(
+      /^pnpm exec vitest related --run --passWithNoTests scripts\/check-record-freshness\.mjs/,
+    );
+    // The real test index finds the test that spawns the script by path (no import).
+    expect(cmds[2]).toContain('scripts/__tests__/check-record-freshness.test.mjs');
+    expect(cmds.join(' ')).not.toMatch(/test:fast|pnpm test\b/);
+    expect(cmds.at(-1)).toBe('pnpm smoke:consumer');
+  });
+
+  it('HDS_FULL_GATE=1 still runs the whole suite, not just affected tests (#1090)', () => {
+    expect(
+      planGate('full', ['scripts/check-record-freshness.mjs'], { HDS_FULL_GATE: '1' }),
+    ).toEqual(['pnpm check:fast', 'pnpm test', 'pnpm smoke:consumer']);
   });
 
   it('full tier adds the path-triggered heavy subset (#1090)', () => {
     const cmds = planGate('full', ['scripts/upgrade/compile.mjs']);
     expect(cmds[0]).toBe('pnpm check:fast');
-    expect(cmds).toContain('pnpm test:fast');
     expect(cmds.some((c) => c.includes('scripts/__tests__/upgrade-command.test.mjs'))).toBe(true);
     expect(cmds.at(-1)).toBe('pnpm smoke:consumer');
   });
@@ -139,6 +148,15 @@ describe('planGate', () => {
       'pnpm test',
       'pnpm smoke:consumer',
     ]);
+    // Shared config, tokens, generators and hooks fall back to the full lane too.
+    for (const f of [
+      'package.json',
+      'hirobius.tokens.json',
+      'scripts/build-tokens.mjs',
+      '.husky/pre-push',
+    ]) {
+      expect(planGate('full', [f])).toContain('pnpm test');
+    }
   });
 });
 

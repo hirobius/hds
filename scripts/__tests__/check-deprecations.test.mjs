@@ -10,6 +10,7 @@
  * (package.json + src/), never the real tree.
  */
 import { describe, it, expect } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -264,8 +265,7 @@ describe('check-deprecations', () => {
   });
 
   it('runs in pretest, as the registry declares (hds#389 D6)', () => {
-    const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
-    expect(pkg.scripts.pretest).toContain('node scripts/check-deprecations.mjs');
+    expect(readLaneScripts(ROOT).pretest).toContain('node scripts/check-deprecations.mjs');
     const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
     expect(registry.gates.find((g) => g.id === 'check-deprecations').firingChannel).toBe(
       'pnpm-meta',

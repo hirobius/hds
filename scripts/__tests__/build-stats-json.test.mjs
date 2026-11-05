@@ -16,6 +16,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { collectStats, STATS_PATH } from '../build-stats-json.mjs';
 import { readClaims } from '../build-readme-counts.mjs';
 
@@ -171,7 +172,7 @@ describe('wiring', () => {
   it('is generated with the README counts and checked in pretest', () => {
     expect(pkg.scripts['stats:build']).toBe('node scripts/build-stats-json.mjs');
     expect(pkg.scripts.tokens).toContain('node scripts/build-stats-json.mjs');
-    expect(pkg.scripts.pretest).toContain('node scripts/build-stats-json.mjs --check');
+    expect(readLaneScripts(ROOT).pretest).toContain('node scripts/build-stats-json.mjs --check');
   });
 
   it('ships in the package and resolves as @hirobius/design-system/stats.json', () => {

@@ -7,6 +7,7 @@
  * that a case changes the way a pull request would, then runs the gate on.
  */
 import { describe, it, expect, afterEach } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { spawnSync } from 'node:child_process';
 import { rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -759,7 +760,6 @@ describe('check-upgrade-ledger.mjs CLI', () => {
   }, 60_000);
 
   it('runs in pretest, so pnpm test fails a change without its step', () => {
-    const pkg = readPkg(REPO);
-    expect(pkg.scripts.pretest).toContain('node scripts/check-upgrade-ledger.mjs');
+    expect(readLaneScripts(REPO).pretest).toContain('node scripts/check-upgrade-ledger.mjs');
   });
 });

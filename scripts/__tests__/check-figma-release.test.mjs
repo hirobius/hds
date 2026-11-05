@@ -9,7 +9,13 @@ import { describe, it, expect } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync, cpSync, readFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { runReleaseGate, componentCoverageGaps } from '../check-figma-release.mjs';
+import {
+  runReleaseGate,
+  componentCoverageGaps,
+  metaVersionGap,
+  runMetaGate,
+  metaReleaseGaps,
+} from '../check-figma-release.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import {
   parseSnapshotFile,
@@ -33,7 +39,12 @@ function writeDisposition(dir, components, overrides = []) {
 }
 
 /** A mini-root holding the fixture tokens and a snapshot of Figma pushed from them. */
-async function root({ pushed = true, hash = 'current', components = LINKED } = {}) {
+async function root({
+  pushed = true,
+  hash = 'current',
+  components = LINKED,
+  dropToken = false,
+} = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'figma-release-'));
   cpSync(FIXTURE_TOKENS_PATH, join(dir, 'hirobius.tokens.json'));
   mkdirSync(join(dir, 'figma'));
@@ -45,6 +56,12 @@ async function root({ pushed = true, hash = 'current', components = LINKED } = {
     await hdsRunPush(figma, payload, checksum);
   }
   const taken = await hdsRunSnapshot(figma);
+  if (dropToken) {
+    // Code deleted a token Figma still holds: one `extra`, which only a prune clears.
+    const tokens = JSON.parse(readFileSync(join(dir, 'hirobius.tokens.json'), 'utf8'));
+    delete tokens.component.button.height;
+    writeFileSync(join(dir, 'hirobius.tokens.json'), JSON.stringify(tokens, null, 2));
+  }
   const tokensHash = hash === 'current' ? tokensFileHash(dir) : hash;
   writeFileSync(
     join(dir, 'figma', 'snapshot.json'),
@@ -85,6 +102,46 @@ describe('runReleaseGate', () => {
     const r = runReleaseGate({ root: dir });
     expect(r.exitCode).toBe(1);
     expect(r.output).toMatch(/Figma is behind code/);
+  });
+});
+
+function writeBaseline(dir, accepted) {
+  writeFileSync(
+    join(dir, 'figma', 'release-drift-baseline.json'),
+    JSON.stringify({ accepted }, null, 2),
+  );
+}
+
+describe('drift baseline (extras only Adrian can prune)', () => {
+  it('fails on an unbaselined extra and names the baseline route', async () => {
+    const r = runReleaseGate({ root: await root({ dropToken: true }) });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/1 drift item/);
+  });
+
+  it('passes when every drift item is an extra in the baseline', async () => {
+    const dir = await root({ dropToken: true });
+    const extra = runReleaseGate({ root: dir }).output.match(/extra\s+(\S+)/)[1];
+    writeBaseline(dir, [{ kind: 'extra', name: extra, reason: 'awaiting prune' }]);
+    const r = runReleaseGate({ root: dir });
+    expect(r.output).toMatch(/baselined/);
+    expect(r.exitCode).toBe(0);
+  });
+
+  it('fails on a stale baseline entry that is no longer drift', async () => {
+    const dir = await root();
+    writeBaseline(dir, [{ kind: 'extra', name: 'space/gone', reason: 'pruned' }]);
+    const r = runReleaseGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/stale.*space\/gone/);
+  });
+
+  it('refuses to baseline anything but an extra', async () => {
+    const dir = await root({ pushed: false });
+    writeBaseline(dir, [{ kind: 'missing', name: 'space/2', reason: 'later' }]);
+    const r = runReleaseGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/only `extra` items can be baselined/);
   });
 });
 
@@ -141,5 +198,101 @@ describe('ingest records tokensHash', () => {
     expect(written.tokensHash).toMatch(/^sha256:[0-9a-f]{64}$/);
     expect(written.tokensHash).toBe(tokensFileHash(dir));
     expect(written).not.toHaveProperty('matchesCommit');
+  });
+});
+
+describe('meta/version (the library cover)', () => {
+  /** A root pushed while package.json said `pushed`, now saying `version`. */
+  async function versioned(version, pushed = version) {
+    const dir = mkdtempSync(join(tmpdir(), 'figma-release-'));
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version: pushed }));
+    const built = await root();
+    cpSync(join(built, 'figma'), join(dir, 'figma'), { recursive: true });
+    cpSync(join(built, 'hirobius.tokens.json'), join(dir, 'hirobius.tokens.json'));
+    const { model } = loadFigmaInputs(dir);
+    const figma = newFixtureFile();
+    const { payload, checksum } = buildPushPayload(model);
+    await hdsRunPush(figma, payload, checksum);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...(await hdsRunSnapshot(figma)), tokensHash: tokensFileHash(dir) }),
+    );
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version }));
+    return dir;
+  }
+
+  it('passes when Figma meta/version is the version being released', async () => {
+    const dir = await versioned('1.0.0');
+    expect(metaVersionGap(dir)).toEqual({ expected: '1.0.0', actual: '1.0.0', ok: true });
+    expect(runReleaseGate({ root: dir }).exitCode).toBe(0);
+    const only = runMetaGate({ root: dir });
+    expect(only.exitCode).toBe(0);
+    expect(only.output).toMatch(/Hirobius\/Meta matches code \(meta\/version 1\.0\.0\)/);
+  });
+
+  it('fails the gate on a mismatch, with a reminder and the snapshot-diff route', async () => {
+    const dir = await versioned('1.1.0', '1.0.0');
+    expect(metaVersionGap(dir)).toEqual({ expected: '1.1.0', actual: '1.0.0', ok: false });
+    for (const r of [runReleaseGate({ root: dir }), runMetaGate({ root: dir })]) {
+      expect(r.exitCode).toBe(1);
+      expect(r.output).toMatch(/meta\/version is 1\.0\.0 in Figma but this release is 1\.1\.0/);
+      expect(r.output).toMatch(/Reminder/);
+      expect(r.output).toMatch(/snapshot-diff\.js.*pnpm figma:snapshot --from-diff/s);
+    }
+  });
+
+  it('fails when the snapshot has no meta/version', async () => {
+    const dir = await root();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version: '1.0.0' }));
+    expect(metaVersionGap(dir)).toEqual({ expected: '1.0.0', actual: null, ok: false });
+    const r = runMetaGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/no meta\/version in Figma/);
+  });
+});
+
+describe('meta gate covers every Hirobius/Meta value', () => {
+  const noGit = { git: () => null };
+  it('fails on a stale meta/npmName even when meta/version matches', async () => {
+    const dir = await root();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'a', version: '1.0.0' }));
+    const { model } = loadFigmaInputs(dir);
+    const figma = newFixtureFile();
+    const { payload, checksum } = buildPushPayload(model);
+    await hdsRunPush(figma, payload, checksum);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...(await hdsRunSnapshot(figma)), tokensHash: tokensFileHash(dir) }),
+    );
+    expect(runMetaGate({ root: dir, ...noGit }).exitCode).toBe(0);
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'b', version: '1.0.0' }));
+    const gaps = metaReleaseGaps(dir, noGit);
+    expect(gaps.filter((g) => !g.ok).map((g) => g.name)).toEqual(['meta/npmName']);
+    const r = runMetaGate({ root: dir, ...noGit });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/meta\/npmName is a in Figma but code says b/);
+    expect(runReleaseGate({ root: dir, ...noGit }).exitCode).toBe(1);
+  });
+
+  it('fails when meta/commit moved on (a synced input changed after the push)', async () => {
+    const dir = await root();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version: '1.0.0' }));
+    const at = (sha) => ({ git: (_r, args) => (args.includes('--format=%H') ? sha : null) });
+    const { readFigmaMeta } = await import('../lib/figma-meta.mjs');
+    const { buildFigmaModel } = await import('../lib/figma-model.mjs');
+    const { readFileSync: read } = await import('fs');
+    const tokens = JSON.parse(read(join(dir, 'hirobius.tokens.json'), 'utf8'));
+    const model = buildFigmaModel(tokens, { meta: readFigmaMeta(dir, at('1111111aaaa')) });
+    const figma = newFixtureFile();
+    const { payload, checksum } = buildPushPayload(model);
+    await hdsRunPush(figma, payload, checksum);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...(await hdsRunSnapshot(figma)), tokensHash: tokensFileHash(dir) }),
+    );
+    expect(runMetaGate({ root: dir, ...at('1111111aaaa') }).exitCode).toBe(0);
+    const r = runMetaGate({ root: dir, ...at('2222222bbbb') });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/meta\/commit is 1111111 in Figma but code says 2222222/);
   });
 });

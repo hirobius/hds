@@ -2,15 +2,15 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T04:07:10.279Z",
+  "generated": "2026-11-05T17:41:44.613Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
-  "packageVersion": "0.32.0",
+  "packageVersion": "0.33.0",
   "upgrade": {
     "command": "npx @hirobius/design-system@latest upgrade"
   },
-  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.32.0/llms.txt",
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.33.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -338,6 +338,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
@@ -637,7 +638,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/container.tsx",
-      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'shell' (1180px app shell) | 'max' (1200px full layout) - gutter: inline padding from the region gutter token (40px comfortable, 24px compact, smaller below sm) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -659,10 +660,15 @@
           "type": "string",
           "optional": true
         },
+        "gutter": {
+          "type": "boolean",
+          "default": false
+        },
         "maxWidth": {
           "type": "enum",
           "values": [
             "content",
+            "shell",
             "max"
           ],
           "default": "max"
@@ -707,7 +713,7 @@
           }
         ]
       },
-      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. For a horizontal gutter, which Container does not support, put a Box with `style={{ paddingInline }}` inside it.",
+      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'shell' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. For the page gutter, pass `gutter`: it pads inline from semantic.space.region.gutter, which retunes per viewport and density.",
       "core": true
     },
     "Disclosure": {
@@ -1329,6 +1335,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
@@ -1374,6 +1381,7 @@
           "values": [
             "fill",
             "bold",
+            "medium",
             "light",
             "thin",
             "regular",
@@ -1395,6 +1403,7 @@
           "values": [
             "fill",
             "bold",
+            "medium",
             "light",
             "thin",
             "regular",
@@ -1580,6 +1589,15 @@
         "href": {
           "type": "string"
         },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
         "standalone": {
           "type": "boolean",
           "default": false
@@ -1594,6 +1612,14 @@
         },
         "href": {
           "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
         },
         "standalone": {
           "type": "boolean"
@@ -1637,13 +1663,25 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineLink.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "docsPage": "/docs/components/inline-link",
       "publicDataAttributes": [],
+      "tokens": {
+        "iconSize": "component.inlineLink.iconSize",
+        "iconGap": "component.inlineLink.iconGap"
+      },
+      "figmaPropertyMapping": {
+        "size": "Size"
+      },
+      "states": [
+        "default"
+      ],
       "usage": {
         "when": "Link to a route or external URL from inside body copy.",
         "whenNot": "An action that changes something, or a control that needs button styling.",
@@ -3397,6 +3435,7 @@
         "src/app/components/table.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
+        "src/app/design-system/tokens.ts",
         "src/brand/overlay.ts",
         "src/styles/__tests__/glyph-outlines.ts"
       ],
@@ -3772,6 +3811,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
@@ -3948,7 +3988,7 @@
           "testId": "a11y:button.keyboard-activate"
         },
         {
-          "rule": "Keyboard focus draws a visible ring from the focus-visible utilities; the outline is never removed without it.",
+          "rule": "Keyboard focus draws the shared .hds-focus ring (semantic.focus.* width, gap and colour); nothing removes the outline.",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.focus-ring"
@@ -4002,7 +4042,7 @@
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "The quiet tone, flush and the link variant keep the focus-visible ring of every Button.",
+          "rule": "Quiet, flush and link keep a visible focus ring (hds#1167).",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.quiet-focus-ring"
@@ -4197,7 +4237,8 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/data-table-section.tsx",
-        "src/app/components/list.tsx"
+        "src/app/components/list.tsx",
+        "src/app/design-system/tokens.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -5191,7 +5232,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge.",
+      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge. `align=\"start\"` pulls the strip back by the trigger inset, so the first tab's label lines up flush with the column start (headings, cards) above it.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5205,6 +5246,13 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "start"
+          ],
+          "optional": true
+        },
         "asChild": {
           "type": "boolean",
           "optional": true
@@ -8836,6 +8884,7 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/list.tsx",
         "src/app/components/nav-list.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/components/sheet.tsx"
@@ -9480,6 +9529,14 @@
           "type": "ReactNode",
           "optional": true
         },
+        "descriptionPlacement": {
+          "type": "enum",
+          "values": [
+            "below",
+            "title"
+          ],
+          "default": "below"
+        },
         "level": {
           "type": "PageHeaderLevel",
           "default": 1
@@ -9494,6 +9551,14 @@
         },
         "title": {
           "type": "ReactNode"
+        },
+        "titleMenu": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "titleMenuLabel": {
+          "type": "string",
+          "default": "Title options"
         }
       },
       "allowedChildren": [
@@ -9501,7 +9566,20 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The title menu button is named by titleMenuLabel and sits beside the heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:page-header.title-menu-named"
+        },
+        {
+          "rule": "Tab reaches the title menu button; Enter opens it; Escape closes it and returns focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:page-header.title-menu-keyboard"
+        }
+      ],
       "docsPage": "/docs/patterns/page-header",
       "publicDataAttributes": [
         "data-slot"
@@ -12981,6 +13059,13 @@
         "value": "#f4f5f7"
       },
       {
+        "path": "primitive.color.neutral.150",
+        "cssVar": "--primitive-color-neutral-150",
+        "type": "color",
+        "description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522).",
+        "value": "#e9eaec"
+      },
+      {
         "path": "primitive.color.neutral.200",
         "cssVar": "--primitive-color-neutral-200",
         "type": "color",
@@ -12988,11 +13073,25 @@
         "value": "#e4e5e7"
       },
       {
+        "path": "primitive.color.neutral.250",
+        "cssVar": "--primitive-color-neutral-250",
+        "type": "color",
+        "description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522).",
+        "value": "#dddee0"
+      },
+      {
         "path": "primitive.color.neutral.300",
         "cssVar": "--primitive-color-neutral-300",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
         "value": "#d3d4d6"
+      },
+      {
+        "path": "primitive.color.neutral.325",
+        "cssVar": "--primitive-color-neutral-325",
+        "type": "color",
+        "description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522).",
+        "value": "#c7c9cc"
       },
       {
         "path": "primitive.color.neutral.350",
@@ -13026,7 +13125,7 @@
         "path": "primitive.color.neutral.550",
         "cssVar": "--primitive-color-neutral-550",
         "type": "color",
-        "description": "Dark surface.softHover (C2).",
+        "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522).",
         "value": "#5e626a"
       },
       {
@@ -13259,6 +13358,13 @@
         "type": "color",
         "description": "Graphite accent — light midnight grey.",
         "value": "#c4c8cf"
+      },
+      {
+        "path": "primitive.color.graphite.250",
+        "cssVar": "--primitive-color-graphite-250",
+        "type": "color",
+        "description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522).",
+        "value": "#b3b8c0"
       },
       {
         "path": "primitive.color.graphite.300",
@@ -13841,10 +13947,24 @@
         "value": "8px"
       },
       {
+        "path": "primitive.radius.10",
+        "cssVar": "--primitive-radius-10",
+        "type": "dimension",
+        "description": "Focus-ring step: an 8px radius plus the 2px focus gap.",
+        "value": "10px"
+      },
+      {
         "path": "primitive.radius.12",
         "cssVar": "--primitive-radius-12",
         "type": "dimension",
         "value": "12px"
+      },
+      {
+        "path": "primitive.radius.14",
+        "cssVar": "--primitive-radius-14",
+        "type": "dimension",
+        "description": "Focus-ring step: a 12px radius plus the 2px focus gap.",
+        "value": "14px"
       },
       {
         "path": "primitive.radius.16",
@@ -13975,6 +14095,13 @@
         "type": "dimension",
         "description": "Display role size (hds#847): the page's one hero heading, a clear step above title.",
         "value": "56px"
+      },
+      {
+        "path": "primitive.typography.size.hero",
+        "cssVar": "--primitive-typography-size-hero",
+        "type": "dimension",
+        "description": "Hero size (ADR-052 addendum): covers and marketing headers only, a step above display.",
+        "value": "120px"
       },
       {
         "path": "primitive.typography.size.6xl",
@@ -14360,6 +14487,13 @@
         "value": "760px"
       },
       {
+        "path": "primitive.size.width.1180",
+        "cssVar": "--primitive-size-width-1180",
+        "type": "dimension",
+        "description": "App shell max width: a 1180px column for app pages (hds#863).",
+        "value": "1180px"
+      },
+      {
         "path": "primitive.size.width.1200",
         "cssVar": "--primitive-size-width-1200",
         "type": "dimension",
@@ -14420,6 +14554,20 @@
         "value": "0.2em"
       },
       {
+        "path": "primitive.inlineIcon.size",
+        "cssVar": "--primitive-inlineIcon-size",
+        "type": "dimension",
+        "description": "Inline icon size: three quarters of the font size.",
+        "value": "0.75em"
+      },
+      {
+        "path": "primitive.inlineIcon.gap",
+        "cssVar": "--primitive-inlineIcon-gap",
+        "type": "dimension",
+        "description": "Gap between the text and an inline icon: a quarter of the font size.",
+        "value": "0.25em"
+      },
+      {
         "path": "primitive.borderWidth.xs",
         "cssVar": "--primitive-borderWidth-xs",
         "type": "dimension",
@@ -14450,6 +14598,13 @@
         "type": "dimension",
         "description": "1.5-unit stroke.",
         "value": "1.5px"
+      },
+      {
+        "path": "primitive.strokeWidth.175",
+        "cssVar": "--primitive-strokeWidth-175",
+        "type": "dimension",
+        "description": "1.75-unit stroke.",
+        "value": "1.75px"
       },
       {
         "path": "primitive.strokeWidth.200",
@@ -14532,8 +14687,8 @@
         "cssVar": "--semantic-color-surface-raised",
         "type": "color",
         "description": "Subtle elevated surface (cards, sections)",
-        "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#f9fafc",
+        "alias": "{primitive.color.neutral.150}",
+        "resolvedValue": "#e9eaec",
         "dark": {
           "alias": "{primitive.color.neutral.825}",
           "resolvedValue": "#1b202a"
@@ -14544,8 +14699,8 @@
         "cssVar": "--semantic-color-surface-overlay",
         "type": "color",
         "description": "Deeper surface layer",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
           "resolvedValue": "#212630"
@@ -14616,8 +14771,8 @@
         "cssVar": "--semantic-color-surface-hover",
         "type": "color",
         "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
           "resolvedValue": "#3b404a"
@@ -14628,8 +14783,8 @@
         "cssVar": "--semantic-color-surface-pressed",
         "type": "color",
         "description": "Background for an actively pressed interactive surface.",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
           "resolvedValue": "#060a13"
@@ -14640,8 +14795,8 @@
         "cssVar": "--semantic-color-surface-selected",
         "type": "color",
         "description": "Background for a persistently selected item (active tab, checked row).",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.325}",
+        "resolvedValue": "#c7c9cc",
         "dark": {
           "alias": "{primitive.color.neutral.725}",
           "resolvedValue": "#272c36"
@@ -14652,8 +14807,8 @@
         "cssVar": "--semantic-color-surface-muted",
         "type": "color",
         "description": "Muted background for low-emphasis content blocks.",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.750}",
           "resolvedValue": "#252a34"
@@ -14664,8 +14819,8 @@
         "cssVar": "--semantic-color-surface-sunken",
         "type": "color",
         "description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
           "resolvedValue": "#3b404a"
@@ -14676,8 +14831,8 @@
         "cssVar": "--semantic-color-surface-soft",
         "type": "color",
         "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -14688,8 +14843,8 @@
         "cssVar": "--semantic-color-surface-softHover",
         "type": "color",
         "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "alias": "{primitive.color.neutral.325}",
+        "resolvedValue": "#c7c9cc",
         "dark": {
           "alias": "{primitive.color.neutral.550}",
           "resolvedValue": "#5e626a"
@@ -14722,8 +14877,8 @@
         "cssVar": "--semantic-color-content-tertiary",
         "type": "color",
         "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
-        "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#6f737b",
+        "alias": "{primitive.color.neutral.550}",
+        "resolvedValue": "#5e626a",
         "dark": {
           "alias": "{primitive.color.neutral.450}",
           "resolvedValue": "#8d9096"
@@ -14733,8 +14888,8 @@
         "path": "semantic.color.content.disabled",
         "cssVar": "--semantic-color-content-disabled",
         "type": "color",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "alias": "{primitive.color.neutral.350}",
+        "resolvedValue": "#b2b4b8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -14816,8 +14971,8 @@
         "cssVar": "--semantic-color-border-default",
         "type": "color",
         "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
-        "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#c4c8cf",
+        "alias": "{primitive.color.graphite.250}",
+        "resolvedValue": "#b3b8c0",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -14899,8 +15054,8 @@
         "cssVar": "--semantic-color-edge-neutral",
         "type": "color",
         "description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
-        "alias": "{primitive.color.neutral.350}",
-        "resolvedValue": "#b2b4b8",
+        "alias": "{primitive.color.neutral.400}",
+        "resolvedValue": "#a0a3a8",
         "dark": {
           "alias": "{primitive.color.neutral.725}",
           "resolvedValue": "#272c36"
@@ -15325,6 +15480,14 @@
         "resolvedValue": "1200px"
       },
       {
+        "path": "semantic.layout.width.shell",
+        "cssVar": "--semantic-layout-width-shell",
+        "type": "dimension",
+        "description": "Max width for app shells (1180px). Use with Container maxWidth shell and a gutter.",
+        "alias": "{primitive.size.width.1180}",
+        "resolvedValue": "1180px"
+      },
+      {
         "path": "semantic.layout.container.maxWidth",
         "cssVar": "--semantic-layout-container-maxWidth",
         "type": "dimension",
@@ -15384,6 +15547,19 @@
         "type": "number",
         "alias": "{primitive.grid.columns.3}",
         "resolvedValue": "3"
+      },
+      {
+        "path": "semantic.typography.hero",
+        "cssVar": "--semantic-typography-hero",
+        "type": "typography",
+        "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+        "composite": {
+          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "120px",
+          "fontWeight": "700",
+          "letterSpacing": "-0.01em",
+          "lineHeight": "1.05"
+        }
       },
       {
         "path": "semantic.typography.display",
@@ -15451,6 +15627,26 @@
         }
       },
       {
+        "path": "semantic.typography.bodyStrong",
+        "cssVar": "--semantic-typography-bodyStrong",
+        "type": "typography",
+        "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "18px",
+          "fontWeight": "700",
+          "letterSpacing": "0em",
+          "lineHeight": "1.6",
+          "maxWidth": "60ch"
+        },
+        "compact": {
+          "fontSize": {
+            "alias": "{primitive.typography.size.compactBody}",
+            "resolvedValue": "15px"
+          }
+        }
+      },
+      {
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
@@ -15462,6 +15658,27 @@
           "letterSpacing": "0em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
+        },
+        "compact": {
+          "fontSize": {
+            "alias": "{primitive.typography.size.sm}",
+            "resolvedValue": "14px"
+          }
+        }
+      },
+      {
+        "path": "semantic.typography.uiItalic",
+        "cssVar": "--semantic-typography-uiItalic",
+        "type": "typography",
+        "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
+        "composite": {
+          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "letterSpacing": "0em",
+          "lineHeight": "1.5",
+          "maxWidth": "60ch",
+          "fontStyle": "italic"
         },
         "compact": {
           "fontSize": {
@@ -15796,6 +16013,14 @@
         "resolvedValue": "1.5px"
       },
       {
+        "path": "semantic.borderWidth.icon.medium",
+        "cssVar": "--semantic-borderWidth-icon-medium",
+        "type": "dimension",
+        "description": "Medium icon stroke (1.75), between light and regular.",
+        "alias": "{primitive.strokeWidth.175}",
+        "resolvedValue": "1.75px"
+      },
+      {
         "path": "semantic.borderWidth.icon.regular",
         "cssVar": "--semantic-borderWidth-icon-regular",
         "type": "dimension",
@@ -15810,6 +16035,110 @@
         "description": "Bold icon stroke (2.5).",
         "alias": "{primitive.strokeWidth.250}",
         "resolvedValue": "2.5px"
+      },
+      {
+        "path": "semantic.focus.ring.width",
+        "cssVar": "--semantic-focus-ring-width",
+        "type": "dimension",
+        "description": "Focus ring stroke width (2px).",
+        "alias": "{primitive.borderWidth.sm}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.focus.ring.color",
+        "cssVar": "--semantic-focus-ring-color",
+        "type": "color",
+        "description": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour.",
+        "alias": "{semantic.color.border.accent}",
+        "resolvedValue": "#3a4457"
+      },
+      {
+        "path": "semantic.focus.gap.width",
+        "cssVar": "--semantic-focus-gap-width",
+        "type": "dimension",
+        "description": "Space between the element edge and the focus ring (2px, the outline offset).",
+        "alias": "{primitive.borderWidth.sm}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.focus.radius.control.gapRadius",
+        "cssVar": "--semantic-focus-radius-control-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.6}",
+        "resolvedValue": "6px"
+      },
+      {
+        "path": "semantic.focus.radius.control.ringRadius",
+        "cssVar": "--semantic-focus-radius-control-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.8}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.focus.radius.sm.gapRadius",
+        "cssVar": "--semantic-focus-radius-sm-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a rounded-sm (6px) element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.8}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.focus.radius.sm.ringRadius",
+        "cssVar": "--semantic-focus-radius-sm-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a rounded-sm (6px) element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "semantic.focus.radius.md.gapRadius",
+        "cssVar": "--semantic-focus-radius-md-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "semantic.focus.radius.md.ringRadius",
+        "cssVar": "--semantic-focus-radius-md-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "semantic.focus.radius.lg.gapRadius",
+        "cssVar": "--semantic-focus-radius-lg-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a rounded-lg (12px) element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.14}",
+        "resolvedValue": "14px"
+      },
+      {
+        "path": "semantic.focus.radius.lg.ringRadius",
+        "cssVar": "--semantic-focus-radius-lg-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a rounded-lg (12px) element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.16}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.focus.radius.pill.gapRadius",
+        "cssVar": "--semantic-focus-radius-pill-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a fully round element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
+      },
+      {
+        "path": "semantic.focus.radius.pill.ringRadius",
+        "cssVar": "--semantic-focus-radius-pill-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a fully round element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
       },
       {
         "path": "semantic.link.underlineThickness",
@@ -15873,7 +16202,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#e9eaec"
           },
           "shadow": {
             "alias": "{semantic.shadow.subtle}",
@@ -15890,7 +16219,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#e9eaec"
           },
           "shadow": {
             "alias": "{semantic.shadow.floating}",
@@ -15915,7 +16244,7 @@
           },
           "border": {
             "alias": "{semantic.color.border.default}",
-            "resolvedValue": "#c4c8cf"
+            "resolvedValue": "#b3b8c0"
           }
         }
       },
@@ -16047,7 +16376,7 @@
         "type": "color",
         "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.tag.text",
@@ -16063,13 +16392,29 @@
         "type": "color",
         "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.tag.radius",
         "cssVar": "--component-tag-radius",
         "type": "dimension",
         "description": "Pill radius for the tag surface.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
+      },
+      {
+        "path": "component.tag.focus.gapRadius",
+        "cssVar": "--component-tag-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: the Tag pill radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
+      },
+      {
+        "path": "component.tag.focus.ringRadius",
+        "cssVar": "--component-tag-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: the Tag pill radius + gap width + semantic.focus.ring.width.",
         "alias": "{primitive.radius.full}",
         "resolvedValue": "9999px"
       },
@@ -16203,7 +16548,7 @@
         "type": "color",
         "description": "Neutral badge fill.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.badge.neutral.text",
@@ -16371,7 +16716,7 @@
         "type": "color",
         "description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral (hds#897).",
         "alias": "{semantic.color.edge.neutral}",
-        "resolvedValue": "#b2b4b8"
+        "resolvedValue": "#a0a3a8"
       },
       {
         "path": "component.button.edge.danger",
@@ -16420,6 +16765,22 @@
         "description": "Button corner radius.",
         "alias": "{semantic.radius.action}",
         "resolvedValue": "8px"
+      },
+      {
+        "path": "component.button.focus.gapRadius",
+        "cssVar": "--component-button-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: the Button (8px) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "component.button.focus.ringRadius",
+        "cssVar": "--component-button-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: the Button (8px) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
       },
       {
         "path": "component.button.paddingX",
@@ -16595,7 +16956,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#b2b4b8"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -16603,7 +16964,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -16611,7 +16972,7 @@
         "type": "color",
         "description": "Secondary button fill: soft tonal, no border (hds#891).",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.bg.hover",
@@ -16619,7 +16980,7 @@
         "type": "color",
         "description": "Secondary button hover fill (the wipe layer's colour).",
         "alias": "{semantic.color.surface.softHover}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#c7c9cc"
       },
       {
         "path": "component.button.secondary.bg.pressed",
@@ -16627,7 +16988,7 @@
         "type": "color",
         "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -16651,7 +17012,7 @@
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "component.button.secondary.text",
@@ -16667,7 +17028,7 @@
         "type": "color",
         "description": "Ghost button hover (wipe) fill.",
         "alias": "{semantic.color.surface.hover}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.button.tertiary.bg.pressed",
@@ -16675,7 +17036,7 @@
         "type": "color",
         "description": "Ghost button pressed fill.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.input.bg",
@@ -16713,6 +17074,22 @@
         "resolvedValue": "8px"
       },
       {
+        "path": "component.input.focus.gapRadius",
+        "cssVar": "--component-input-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: the Input (8px) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "component.input.focus.ringRadius",
+        "cssVar": "--component-input-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: the Input (8px) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
+      },
+      {
         "path": "component.input.paddingX",
         "cssVar": "--component-input-paddingX",
         "type": "dimension",
@@ -16731,14 +17108,14 @@
         "cssVar": "--component-card-bg",
         "type": "color",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "component.card.border",
         "cssVar": "--component-card-border",
         "type": "color",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "component.card.radius",
@@ -16746,6 +17123,22 @@
         "type": "dimension",
         "alias": "{primitive.radius.12}",
         "resolvedValue": "12px"
+      },
+      {
+        "path": "component.card.focus.gapRadius",
+        "cssVar": "--component-card-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: an interactive Card (12px) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.14}",
+        "resolvedValue": "14px"
+      },
+      {
+        "path": "component.card.focus.ringRadius",
+        "cssVar": "--component-card-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: an interactive Card (12px) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.16}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.card.padding",
@@ -16768,7 +17161,7 @@
         "type": "color",
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.list.groupGap",
@@ -16809,6 +17202,78 @@
         "description": "Width and height of a List row's leading icon tile or logo (40px).",
         "alias": "{semantic.size.avatar}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "component.inlineLink.iconSize",
+        "cssVar": "--component-inlineLink-iconSize",
+        "type": "dimension",
+        "description": "External-link icon size, in em so it scales with the link text at any font size.",
+        "alias": "{primitive.inlineIcon.size}",
+        "resolvedValue": "0.75em"
+      },
+      {
+        "path": "component.inlineLink.iconGap",
+        "cssVar": "--component-inlineLink-iconGap",
+        "type": "dimension",
+        "description": "Gap between the link text and its external-link icon, in em.",
+        "alias": "{primitive.inlineIcon.gap}",
+        "resolvedValue": "0.25em"
+      },
+      {
+        "path": "component.inlineLink.size.sm.fontSize",
+        "cssVar": "--component-inlineLink-size-sm-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "component.inlineLink.size.sm.iconSize",
+        "cssVar": "--component-inlineLink-size-sm-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.md.fontSize",
+        "cssVar": "--component-inlineLink-size-md-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.lg}",
+        "resolvedValue": "18px"
+      },
+      {
+        "path": "component.inlineLink.size.md.iconSize",
+        "cssVar": "--component-inlineLink-size-md-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.fontSize",
+        "cssVar": "--component-inlineLink-size-lg-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.title}",
+        "resolvedValue": "28px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.iconSize",
+        "cssVar": "--component-inlineLink-size-lg-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
+      },
+      {
+        "path": "component.pagination.compactControlSize",
+        "cssVar": "--component-pagination-compactControlSize",
+        "type": "dimension",
+        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
+        "alias": "{semantic.size.row.compact}",
+        "resolvedValue": "40px"
       }
     ],
     "role": [
@@ -16834,7 +17299,7 @@
         "type": "color",
         "description": "Card surface. shadcn role: card.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "role.card-foreground",
@@ -16898,7 +17363,7 @@
         "type": "color",
         "description": "Secondary action surface. shadcn role: secondary.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "role.secondary-foreground",
@@ -16914,7 +17379,7 @@
         "type": "color",
         "description": "Muted/quiet bg (skeletons, disabled inputs). shadcn role: muted.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "role.muted-foreground",
@@ -16962,7 +17427,7 @@
         "type": "color",
         "description": "Default border. shadcn role: border.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "role.input",

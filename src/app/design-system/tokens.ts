@@ -214,9 +214,19 @@ const hds = {
     title: tokenRefs.semantic.typography.title as React.CSSProperties,
     titleSm: tokenRefs.semantic.typography.titleSm as React.CSSProperties,
     body: tokenRefs.semantic.typography.body as React.CSSProperties,
+    /** body at weight 700, as `<Text variant="body" weight="bold">` (ADR-052 addendum). */
+    bodyStrong: tokenRefs.semantic.typography.bodyStrong as React.CSSProperties,
     ui: tokenRefs.semantic.typography.ui as React.CSSProperties,
+    /** ui in italic, as EmptyState's inline message (ADR-052 addendum). */
+    uiItalic: tokenRefs.semantic.typography.uiItalic as React.CSSProperties,
     caption: tokenRefs.semantic.typography.caption as React.CSSProperties,
     mono: tokenRefs.semantic.typography.mono as React.CSSProperties,
+    /**
+     * Marketing-only extension above the ramp (ADR-052 addendum): covers and
+     * marketing headers, 120px / 1.05 / Sora 700. Product UI uses `display`;
+     * check-type-ramp fails on this name in src/.
+     */
+    hero: tokenRefs.semantic.typography.hero as React.CSSProperties,
     // ── Deprecated aliases → the six roles ────────────────────────────────────
     // Every pre-cut name still resolves, to the role it now points at.
     /**

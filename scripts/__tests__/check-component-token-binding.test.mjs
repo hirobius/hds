@@ -12,7 +12,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { analyze, ratchet, summarize } from '../lib/component-token-binding.mjs';
+import { analyze, evalCss, ratchet, summarize } from '../lib/component-token-binding.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SCRIPT = join(ROOT, 'scripts/check-component-token-binding.mjs');
@@ -94,6 +94,18 @@ function run(component, classes, extra = {}) {
 const byId = (analysis, id) => analysis.results.find((r) => r.id === id);
 
 // ── Classes ──────────────────────────────────────────────────────────────────
+
+describe('evalCss min()/max() (hds#806)', () => {
+  const env = (r) => ({
+    mode: 'light',
+    tokens: { varIndex: new Map([['--role-radius', 'role.radius']]), resolveToken: () => r },
+  });
+  const lg = 'calc(var(--role-radius) + min(var(--role-radius), 4px))';
+  it('folds the clamped rounded-lg step: 8px -> 12px, 0px -> 0px', () => {
+    expect(evalCss(lg, env('8px')).value).toBe('12px');
+    expect(evalCss(lg, env('0px')).value).toBe('0px');
+  });
+});
 
 describe('classification', () => {
   it('BOUND: the source names var(--component-<leaf>)', () => {
@@ -415,18 +427,19 @@ describe('CLI modes', () => {
 // ── The repo itself (acceptance fixture: audit at origin/main 7895210) ───────
 
 describe('repo counts', () => {
-  it('counts after Input binds bg and text and Button lg binds its paddingX (hds#595): 60 BOUND / 30 LITERAL-MATCH / 0 LITERAL-MISMATCH / 8 UNUSED of 98 (was 57/33/0/8 after List binds its five rhythm tokens; was 52 BOUND of 93 after Button binds its five edge tokens, hds#897; was 47/33/0/8 of 88 after Button bound its heights and the new fontWeight, hds#760; was 43/36/0/8 of 87 after the 0.20.0 orphan tokens went, hds#431: lightbox and 7 nav tokens, all UNUSED; was 16 UNUSED of 95 after Badge paddingShift, hds#757; was 42 BOUND of 94 after the C2 ghost, tertiary binds bg.hover/pressed; was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is rounded-sm (role.radius - 2px) since hds#757, the action radius through rounded-md since bug bash 24; button.bgPressed bound, hds#748)', () => {
+  it('counts after the focus ring tokens (hds#1176): 63 BOUND / 35 LITERAL-MATCH / 6 LITERAL-MISMATCH / 11 UNUSED of 115 (button, input and card focus.{gapRadius,ringRadius} are binding-ok mismatches: the .hds-focus outline derives them from the element radius, the tokens are the Figma binding; tag.focus.* match radius.full) (was 63/33/0/11 of 107 after compact Pagination binds its control size, hds#1150; was 62 BOUND of 106 after InlineLink adds its icon and size tokens, hds#1164); iconSize and iconGap bound, the three size fontSizes declared through the type roles, the three Figma-only size iconSizes unused (was 60/30/0/8 of 98 after Input binds bg and text and Button lg binds its paddingX, hds#595; was 57/33/0/8 after List binds its five rhythm tokens; was 52 BOUND of 93 after Button binds its five edge tokens, hds#897; was 47/33/0/8 of 88 after Button bound its heights and the new fontWeight, hds#760; was 43/36/0/8 of 87 after the 0.20.0 orphan tokens went, hds#431: lightbox and 7 nav tokens, all UNUSED; was 16 UNUSED of 95 after Badge paddingShift, hds#757; was 42 BOUND of 94 after the C2 ghost, tertiary binds bg.hover/pressed; was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is rounded-sm (role.radius - 2px) since hds#757, the action radius through rounded-md since bug bash 24; button.bgPressed bound, hds#748)', () => {
     const r = cli(['--json']);
     expect(r.status).toBe(0);
     const { summary } = JSON.parse(r.out);
-    expect(summary.total).toBe(98);
+    expect(summary.total).toBe(115);
     expect(summary.counts).toMatchObject({
-      BOUND: 60,
-      'LITERAL-MATCH': 30,
-      'LITERAL-MISMATCH': 0,
-      UNUSED: 8,
+      BOUND: 63,
+      'LITERAL-MATCH': 35,
+      'LITERAL-MISMATCH': 6,
+      UNUSED: 11,
     });
-    expect(summary.matchKinds).toEqual({ alias: 13, 'type-role': 8, literal: 9 });
+    expect(summary.allowed).toBe(9);
+    expect(summary.matchKinds).toEqual({ alias: 18, 'type-role': 8, literal: 9 });
   });
 
   it('--enforce passes on the committed baseline', () => {

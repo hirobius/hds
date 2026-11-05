@@ -90,7 +90,7 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
 // carries no padding for a fill and the header already rests at full contrast.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing and productive-motion duration/easing tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const tableSortButtonVariants = /* @__PURE__ */ cva(
-  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-muted-foreground hds-focus',
   {
     variants: {
       align: {
@@ -166,18 +166,15 @@ const tableFrameClass = 'bg-transparent';
 // (a link's `sr-only` label): without it that content escapes the scroller and widens
 // the page when a column runs past the frame.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding token has no Tailwind-theme utility; var()-based so still token-driven
-const tableRegionVariants = /* @__PURE__ */ cva(
-  'relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
-  {
-    variants: {
-      flush: {
-        true: 'p-0',
-        false: 'p-[var(--semantic-space-surface-padding)]',
-      },
+const tableRegionVariants = /* @__PURE__ */ cva('relative hds-focus-inset', {
+  variants: {
+    flush: {
+      true: 'p-0',
+      false: 'p-[var(--semantic-space-surface-padding)]',
     },
-    defaultVariants: { flush: true },
   },
-);
+  defaultVariants: { flush: true },
+});
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -286,6 +283,43 @@ const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   badge: hds.typeStyles.caption,
   action: BODY_TEXT,
 };
+
+// One header cell: the plain and sortable branches share every class and
+// the type style; only the sortable one adds aria-sort and a button (hds#1009).
+function TableHeaderCell({
+  column,
+  columnIndex,
+  density,
+  stickyHeader,
+  ariaSort,
+  children,
+}: {
+  column: TableColumn;
+  columnIndex: number;
+  density: TableDensity | undefined;
+  stickyHeader: boolean | undefined;
+  ariaSort?: TableSortDirection;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      role="columnheader"
+      aria-sort={ariaSort}
+      className={cn(
+        tableHeaderCellVariants({
+          align: column.align ?? 'left',
+          density: density ?? 'follow',
+          sticky: Boolean(stickyHeader),
+          columnDivider: columnIndex > 0,
+          floor: !column.width,
+        }),
+      )}
+      style={HEADER_TEXT}
+    >
+      {children}
+    </div>
+  );
+}
 
 export function Table({
   columns,
@@ -415,24 +449,12 @@ export function Table({
              */}
             <div role="row" style={{ display: 'contents' }}>
               {columns.map((column, columnIndex) => {
+                const cellProps = { column, columnIndex, density, stickyHeader };
                 if (!column.sortable) {
                   return (
-                    <div
-                      key={column.key}
-                      role="columnheader"
-                      className={cn(
-                        tableHeaderCellVariants({
-                          align: column.align ?? 'left',
-                          density: density ?? 'follow',
-                          sticky: Boolean(stickyHeader),
-                          columnDivider: columnIndex > 0,
-                          floor: !column.width,
-                        }),
-                      )}
-                      style={HEADER_TEXT}
-                    >
+                    <TableHeaderCell key={column.key} {...cellProps}>
                       {column.label}
-                    </div>
+                    </TableHeaderCell>
                   );
                 }
 
@@ -445,21 +467,7 @@ export function Table({
                       : ArrowUpDown;
 
                 return (
-                  <div
-                    key={column.key}
-                    role="columnheader"
-                    aria-sort={direction}
-                    className={cn(
-                      tableHeaderCellVariants({
-                        align: column.align ?? 'left',
-                        density: density ?? 'follow',
-                        sticky: Boolean(stickyHeader),
-                        columnDivider: columnIndex > 0,
-                        floor: !column.width,
-                      }),
-                    )}
-                    style={HEADER_TEXT}
-                  >
+                  <TableHeaderCell key={column.key} {...cellProps} ariaSort={direction}>
                     <button
                       type="button"
                       onClick={column.onSort}
@@ -468,7 +476,7 @@ export function Table({
                       {column.label}
                       <Icon icon={DirectionIcon} size="small" aria-hidden />
                     </button>
-                  </div>
+                  </TableHeaderCell>
                 );
               })}
             </div>

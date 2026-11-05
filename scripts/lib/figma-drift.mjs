@@ -16,6 +16,8 @@
 
 import { hdsHex, hdsPlan } from './figma-runtime.mjs';
 import { modelHash } from './figma-scripts.mjs';
+import { metaValuesOf } from './figma-model.mjs';
+import { metaGaps } from './figma-meta.mjs';
 
 /** A mode entry as a person reads it: `→ path`, `#rrggbb`, a number or a quoted string. */
 function formatEntry(entry) {
@@ -151,6 +153,8 @@ export function figmaDrift(model, snapshotFile, { renames = {} } = {}) {
     // drift may be a push still to come. null: no push is recorded in the file.
     // false: Figma was pushed from this exact model, so drift was made in Figma.
     pushedFromOtherModel: snapshot.lastPush ? snapshot.lastPush.modelHash !== hash : null,
+    // The library cover's facts (Hirobius/Meta): each named on its own line.
+    meta: metaGaps(metaValuesOf(model), snapshot),
     unmanagedCollections: plan.unmanagedCollections,
     totals: {
       variables: model.collections.reduce((n, c) => n + c.variables.length, 0),
@@ -200,6 +204,11 @@ export function formatDrift(report, { snapshotLabel = 'figma/snapshot.json' } = 
   } else if (!report.ok) {
     lines.push(
       `⚠ Figma was last pushed from this exact model (${report.modelHash} at ${snapshot.lastPush.pushedAt}), so the drift below was made in Figma after that push.`,
+    );
+  }
+  for (const gap of report.meta.filter((g) => !g.ok)) {
+    lines.push(
+      `✗ ${gap.name}: Figma ${gap.actual === null ? 'has none' : `shows ${gap.actual}`}, code is ${gap.expected}. The library cover is stale: push (pnpm figma:push), then refresh the snapshot.`,
     );
   }
   if (report.unmanagedCollections.length) {

@@ -46,7 +46,7 @@ const config = {
         ring: 'var(--role-ring)',
       },
       borderRadius: {
-        lg: 'calc(var(--role-radius) + 4px)',
+        lg: 'calc(var(--role-radius) + min(var(--role-radius), 4px))',
         md: 'var(--role-radius)',
         sm: 'calc(var(--role-radius) - 2px)',
         'scale-sm': 'var(--semantic-radius-scale-sm)',
@@ -136,6 +136,7 @@ const config = {
         '4xl': 'var(--primitive-typography-size-4xl)',
         '5xl': 'var(--primitive-typography-size-5xl)',
         display: 'var(--primitive-typography-size-display)',
+        hero: 'var(--primitive-typography-size-hero)',
         '6xl': 'var(--primitive-typography-size-6xl)',
         code: 'var(--primitive-typography-size-code)',
       },

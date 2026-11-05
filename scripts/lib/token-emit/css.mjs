@@ -210,12 +210,15 @@ export const TYPO_PROPS = [
   // textTransform extends the DTCG schema; optional, composites without it emit
   // no var line. Never `uppercase`: the system is sentence case (check-no-uppercase).
   ['text-transform', 'textTransform', 'string'],
+  // fontStyle: optional, `italic` only today (semantic.typography.uiItalic,
+  // ADR-052 addendum). Composites without it emit no var line.
+  ['font-style', 'fontStyle', 'string'],
 ];
 
 // Typography composite keys that are optional. Composites may omit these; the
 // emitter skips them silently (no CSS var line, no ref leaf, no var name). All
 // other TYPO_PROPS entries are required.
-export const TYPO_OPTIONAL_KEYS = new Set(['maxWidth', 'textTransform']);
+export const TYPO_OPTIONAL_KEYS = new Set(['maxWidth', 'textTransform', 'fontStyle']);
 
 export const MOTION_PROPS = [
   ['duration', 'duration', 'duration'],

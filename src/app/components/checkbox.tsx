@@ -22,15 +22,10 @@ import type { InputHTMLAttributes } from 'react';
 import { motion } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { Check, Minus } from 'lucide-react';
-import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import {
-  forwardFocusHandlers,
-  useInteractionState,
-  type InteractionVisualState,
-} from '../hooks/useInteractionState';
+import { forwardFocusHandlers } from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
-import { ControlLabel, ControlLabelText } from './control-label';
+import { ControlLabel, ControlLabelText, useControlInteraction } from './control-label';
 import { Icon } from './icon';
 
 /** Checkbox — custom-drawn checkbox with check / indeterminate glyph. */
@@ -79,15 +74,15 @@ const checkboxInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-
 /** Glyph box — border/background driven by `state` (interaction) x `on` (checked/indeterminate). */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/color; var()-based, no Tailwind-theme utility exists
 const checkboxGlyphVariants = /* @__PURE__ */ cva(
-  'inline-flex shrink-0 items-center justify-center w-[var(--semantic-size-control-md)] h-[var(--semantic-size-control-md)] rounded-[var(--semantic-radius-control)] border-solid border-[length:var(--semantic-borderWidth-emphasis)] outline-offset-2',
+  'inline-flex shrink-0 items-center justify-center w-[var(--semantic-size-control-md)] h-[var(--semantic-size-control-md)] rounded-[var(--semantic-radius-control)] border-solid border-[length:var(--semantic-borderWidth-emphasis)]',
   {
     variants: {
       state: {
         rest: '',
         hover: '',
         focused:
-          // tier-ok: semantic-borderWidth-emphasis resolves to var(--primitive-borderWidth-sm) exactly (tokens.generated.css) — mechanical alias swap, hds#186
-          '[outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
+          // The shared ring (semantic.focus.*), drawn from the interaction state.
+          'hds-focus-ring',
         pressed: '',
         disabled: '',
       },
@@ -163,13 +158,9 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
     ref,
   ) {
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const frozenState = useFrozenState();
     // Shared single-element interaction machine (ADR-015) — same seam as Toggle/Radio.
     const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } =
-      useInteractionState({
-        disabled,
-        frozenState: frozenState as InteractionVisualState | null,
-      });
+      useControlInteraction(disabled);
 
     // `indeterminate` is a DOM property, not an attribute — set it imperatively.
     useEffect(() => {

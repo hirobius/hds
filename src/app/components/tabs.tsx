@@ -56,11 +56,16 @@ export const Tabs = TabsPrimitive.Root;
  * absent. The fade is a mask, so it needs no colour and holds in light and dark.
  * The selected tab is kept in view: on mount, and on change (smooth unless the
  * user prefers reduced motion), so a selected tab is never left past the edge.
+ * `align="start"` pulls the strip back by the trigger inset, so the first tab's
+ * label lines up flush with the column start (headings, cards) above it.
  */
 export const TabsList = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentProps<typeof TabsPrimitive.List>
->(function TabsList({ className, onScroll, style, ...props }, forwardedRef) {
+  React.ComponentProps<typeof TabsPrimitive.List> & {
+    /** `start` aligns the first tab label flush with the column start. Omit for the default inset. */
+    align?: 'start';
+  }
+>(function TabsList({ className, onScroll, style, align, ...props }, forwardedRef) {
   const { ref: innerRef, overflow, update } = useScrollEdgeFade<HTMLDivElement>();
   useKeepSelectedInView(innerRef, '[role="tab"][data-state="active"]');
 
@@ -77,6 +82,7 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
     <TabsPrimitive.List
       ref={setRefs}
       data-overflow={overflow}
+      data-align={align}
       style={{ ...scrollEdgeFadeStyle(overflow), ...style }}
       onScroll={(event) => {
         update();
@@ -85,6 +91,7 @@ export const TabsList = /* @__PURE__ */ React.forwardRef<
       className={cn(
         'flex h-10 items-center gap-fixed-md overflow-x-auto whitespace-nowrap',
         'mb-fixed-md',
+        align === 'start' && '-ms-fixed-xs',
         '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
         className,
       )}
@@ -104,7 +111,7 @@ export function TabsTrigger({
         // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
         'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
         'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-[var(--semantic-color-surface-selected)]',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+        'hds-focus-inset',
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,
       )}

@@ -18,8 +18,11 @@ export const tokenValues = {
       neutral: {
         "50": "#f9fafc",
         "100": "#f4f5f7",
+        "150": "#e9eaec",
         "200": "#e4e5e7",
+        "250": "#dddee0",
         "300": "#d3d4d6",
+        "325": "#c7c9cc",
         "350": "#b2b4b8",
         "400": "#a0a3a8",
         "450": "#8d9096",
@@ -66,6 +69,7 @@ export const tokenValues = {
         "50": "#f2f4f8",
         "100": "#e5e8ed",
         "200": "#c4c8cf",
+        "250": "#b3b8c0",
         "300": "#a8aeb8",
         "400": "#7f8794",
         "500": "#586170",
@@ -186,7 +190,9 @@ export const tokenValues = {
       "4": "4px",
       "6": "6px",
       "8": "8px",
+      "10": "10px",
       "12": "12px",
+      "14": "14px",
       "16": "16px",
       "24": "24px",
       full: "9999px"
@@ -211,6 +217,7 @@ export const tokenValues = {
         "4xl": "36px",
         "5xl": "48px",
         display: "56px",
+        hero: "120px",
         "6xl": "60px",
         code: "15px"
       },
@@ -287,6 +294,7 @@ export const tokenValues = {
         "280": "280px",
         "512": "512px",
         "760": "760px",
+        "1180": "1180px",
         "1200": "1200px",
         "50ch": "50ch"
       }
@@ -307,6 +315,10 @@ export const tokenValues = {
     underline: {
       offset: "0.2em"
     },
+    inlineIcon: {
+      size: "0.75em",
+      gap: "0.25em"
+    },
     borderWidth: {
       xs: "1px",
       sm: "2px",
@@ -315,6 +327,7 @@ export const tokenValues = {
     strokeWidth: {
       "100": "1px",
       "150": "1.5px",
+      "175": "1.75px",
       "200": "2px",
       "250": "2.5px"
     }

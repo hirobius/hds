@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New type styles: use `hds.typeStyles.hero` for covers and marketing headers only, and `bodyStrong` or `uiItalic` where you set body bold or ui italic by hand."
+}

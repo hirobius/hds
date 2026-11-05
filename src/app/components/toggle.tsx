@@ -22,15 +22,10 @@ import { motion } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import hds, { tokenValues } from '../design-system/tokens';
 import { cn } from '../../lib/utils';
-import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import {
-  forwardFocusHandlers,
-  useInteractionState,
-  type InteractionVisualState,
-} from '../hooks/useInteractionState';
+import { forwardFocusHandlers } from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
-import { ControlLabel, ControlLabelText } from './control-label';
+import { ControlLabel, ControlLabelText, useControlInteraction } from './control-label';
 
 /** Toggle — boolean on/off toggle with animated thumb. */
 export type HdsToggleDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
@@ -64,14 +59,13 @@ const TOGGLE_THUMB_TRAVEL = TOGGLE_TRACK_WIDTH - TOGGLE_THUMB_SIZE - TOGGLE_TRAC
  * input below, hover/press tint, focus ring, cursor affordance. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
 const toggleRootVariants = /* @__PURE__ */ cva(
-  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] outline-offset-2 select-none hds-touch-row',
+  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] select-none hds-touch-row',
   {
     variants: {
       state: {
         rest: 'cursor-pointer bg-transparent',
         hover: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
-        focused:
-          'cursor-pointer bg-transparent [outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
+        focused: 'cursor-pointer bg-transparent hds-focus-ring',
         pressed: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
         disabled: 'cursor-default bg-transparent',
       },
@@ -196,13 +190,10 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
   { label, checked, onChange, onFocus, onKeyDown, onBlur, disabled, ...rest },
   ref,
 ) {
-  const frozenState = useFrozenState();
   // Shared single-element interaction machine (ADR-015). The hook honors the
   // real `disabled` prop as well as the frozen demo state.
-  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } = useInteractionState({
-    disabled,
-    frozenState: frozenState as InteractionVisualState | null,
-  });
+  const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } =
+    useControlInteraction(disabled);
   const productiveMotion = useHdsMotion('productive');
 
   return (

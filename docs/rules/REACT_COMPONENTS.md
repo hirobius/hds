@@ -77,7 +77,7 @@ Every item below is a build error. If an AI agent or human produces any of these
 
 - **No `linear-gradient` on card background** — card background is always `var(--semantic-color-surface-raised)`, a flat token-mapped color. Never a gradient, never `radial-gradient`, never a CSS custom property that resolves to a gradient.
 - **Card elevation via role tokens** — Cards default to `elevation.flat` (border, no shadow). Cards lift to `elevation.raised` on hover or when interactively elevated. Never use raw box-shadow values; always bind to a `semantic.elevation.{role}` role bundle.
-- **One container radius** — cards and every other container use `rounded-lg`, which is `role.radius` + 4 px (12 px by default, 4 px under `brutalist-demo`), so it follows the direction's or brand's radius. `var(--component-card-radius)`, hard-coded pixel values, `rounded-xl`, `rounded-2xl`, `rounded-full`, or any ad hoc radius are wrong.
+- **One container radius** — cards and every other container use `rounded-lg`, which is `role.radius` + 4 px (12 px by default, 0 under `brutalist-demo`), so it follows the direction's or brand's radius. `var(--component-card-radius)`, hard-coded pixel values, `rounded-xl`, `rounded-2xl`, `rounded-full`, or any ad hoc radius are wrong.
 - **No colored or tinted card surfaces** — backgrounds like `rgba(59,130,246,0.1)`, `hsl(220 80% 96%)`, or any non-neutral token are forbidden. Cards must read as neutral surfaces.
 - **No decorative chrome inside cards** — no glow rings, no shimmer overlays, no `backdrop-filter: blur(...)` frosted glass, no gradient borders (`border-image`, pseudo-element gradients), no patterned fills, no AI-aesthetic particle or noise effects.
 - **No hover fill changes** — interactive cards respond to hover with `transform: scale(1.02)` only. Never change `background-color`, `opacity`, or `border-color` on hover as the primary interaction signal.
@@ -134,7 +134,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 
 - Follows the same border, radius, and focus rules as `Input`:
   - Border at rest: `1px solid var(--semantic-color-border-default)`.
-  - Border on focus: `1px solid var(--semantic-color-border-accent)` + `2px` outline offset.
+  - Keyboard focus: the shared `.hds-focus` ring (`semantic.focus.ring.width` in `semantic.focus.ring.color`, `semantic.focus.gap.width` off the edge; a field shell uses `.hds-focus-within`). Never hand-roll a ring.
   - Border radius: `4px` (`semantic.radius.action`).
   - Background: no filled background by default (`surface.raised` only).
 - Never hardcode border or background colors; use component or semantic tokens.

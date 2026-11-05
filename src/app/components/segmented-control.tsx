@@ -30,7 +30,7 @@
  * @a11y component required gate:check-reduced-motion The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.
  * @a11y consumer required Give the control a label or an aria-label so the group has a name.
  */
-// motion-ok: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
+// Motion: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
 import { forwardRef, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
@@ -170,17 +170,27 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
   },
 );
 
+// The indicator and the description read the same per-segment state; their
+// axes carry no classes of their own, only compound variants (hds#1009).
+const SEGMENT_STATE_AXES = {
+  variant: { primary: '', secondary: '' },
+  active: { true: '', false: '' },
+  interaction: { rest: '', hover: '', pressed: '' },
+  disabled: { true: '', false: '' },
+};
+const SEGMENT_STATE_DEFAULTS = {
+  variant: 'primary',
+  active: false,
+  interaction: 'rest',
+  disabled: false,
+} as const;
+
 // The absolutely-positioned background/ring indicator behind each segment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- indicator background/ring colors are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
   'pointer-events-none absolute inset-0 z-0 rounded-md bg-transparent shadow-none',
   {
-    variants: {
-      variant: { primary: '', secondary: '' },
-      active: { true: '', false: '' },
-      interaction: { rest: '', hover: '', pressed: '' },
-      disabled: { true: '', false: '' },
-    },
+    variants: SEGMENT_STATE_AXES,
     compoundVariants: [
       // Background.
       // Secondary selected: the page fill with a 1px border.interactive edge, which reads
@@ -261,7 +271,7 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
         className: 'bg-[var(--semantic-color-surface-raised)] shadow-none',
       },
     ],
-    defaultVariants: { variant: 'primary', active: false, interaction: 'rest', disabled: false },
+    defaultVariants: SEGMENT_STATE_DEFAULTS,
   },
 );
 
@@ -270,12 +280,7 @@ const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
   // tier-ok: primitive.zIndex.10 (the discrete 0/10/100/1000 stacking scale, reached as hds.zIndex.focus) has no semantic alias — same primitive ref the pre-Tailwind inline style used
   'relative z-[var(--primitive-zIndex-10)] hds-type-caption text-[var(--semantic-color-content-secondary)]',
   {
-    variants: {
-      variant: { primary: '', secondary: '' },
-      active: { true: '', false: '' },
-      interaction: { rest: '', hover: '', pressed: '' },
-      disabled: { true: '', false: '' },
-    },
+    variants: SEGMENT_STATE_AXES,
     compoundVariants: [
       {
         active: true,
@@ -285,26 +290,7 @@ const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
       },
       { disabled: true, className: 'text-[var(--semantic-color-content-disabled)]' },
     ],
-    defaultVariants: { variant: 'primary', active: false, interaction: 'rest', disabled: false },
-  },
-);
-
-// Demo-forced focus ring — real keyboard focus is handled entirely by the
-// shared `.hds-focus` utility class; this only fires when a docs matrix
-// freezes the visual state to "focused" (`:focus-visible` can't be faked
-// without real keyboard focus).
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- outline width/offset/color are semantic tokens with no Tailwind-theme utility
-const segmentedControlFocusRingVariants = /* @__PURE__ */ cva(
-  // tier-ok: primitive.borderWidth.sm (the 2px accent/selection-ring weight) has no semantic alias — same primitive ref the pre-Tailwind inline style used
-  'outline outline-[length:var(--primitive-borderWidth-sm)] outline-offset-[length:var(--semantic-space-subgrid-gap)]',
-  {
-    variants: {
-      variant: {
-        primary: 'outline-[color:var(--semantic-color-border-accent)]',
-        secondary: 'outline-[color:var(--semantic-color-border-default)]',
-      },
-    },
-    defaultVariants: { variant: 'primary' },
+    defaultVariants: SEGMENT_STATE_DEFAULTS,
   },
 );
 
@@ -442,6 +428,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
               VariantProps<typeof segmentedControlIndicatorVariants>['interaction']
             > = showPressed ? 'pressed' : showHover ? 'hover' : 'rest';
             const demoFocusRing = Boolean(demoState) && showFocused;
+            const segmentState = { variant, active, interaction, disabled: showDisabled };
 
             return (
               <ToggleGroup.Item
@@ -487,7 +474,9 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                       interaction,
                       disabled: showDisabled,
                     }),
-                    demoFocusRing && segmentedControlFocusRingVariants({ variant }),
+                    // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
+                    // keyboard focus (:focus-visible can't be faked).
+                    demoFocusRing && 'hds-focus-ring',
                   )}
                   // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
                   style={
@@ -507,28 +496,14 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                     // `cn()` (clsx + tailwind-merge) makes the last conflicting
                     // utility in the string win deterministically, same as every
                     // other multi-source className in this file.
-                    className={cn(
-                      segmentedControlIndicatorVariants({
-                        variant,
-                        active,
-                        interaction,
-                        disabled: showDisabled,
-                      }),
-                    )}
+                    className={cn(segmentedControlIndicatorVariants(segmentState))}
                   />
                   <span className={segmentedControlLabelVariants()}>{option.label}</span>
                   {option.description && (
                     <span
                       // Same cascade hazard as the indicator above (base
                       // `text-[...secondary]` vs. compound `text-[...onAccent]`).
-                      className={cn(
-                        segmentedControlDescriptionVariants({
-                          variant,
-                          active,
-                          interaction,
-                          disabled: showDisabled,
-                        }),
-                      )}
+                      className={cn(segmentedControlDescriptionVariants(segmentState))}
                     >
                       {option.description}
                     </span>

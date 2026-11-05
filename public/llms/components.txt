@@ -1,6 +1,6 @@
 # Hirobius Design System - components slice
 
-Version: 0.32.0
+Version: 0.33.0
 
 See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 
@@ -286,7 +286,8 @@ Composer — prompt and capture box that grows with its text and folds long past
 Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px pr…
   - children: ReactNode
   - className: string
-  - maxWidth: 'content' | 'max' = max
+  - gutter: boolean = false
+  - maxWidth: 'content' | 'shell' | 'max' = max
   - padding: string = var(--semantic-space-surface-padding)
   - style: CSSProperties
 
@@ -482,7 +483,7 @@ Icon — semantic icon wrapper for Lucide icons.
   - icon: LucideIcon
   - size: IconSize = small
   - style: CSSProperties
-  - weight: "fill" | "bold" | "light" | "thin" | "regular" | "duotone"
+  - weight: "fill" | "bold" | "medium" | "light" | "thin" | "regular" | "duotone"
 
 ### InlineCode
 InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
@@ -497,6 +498,7 @@ InlineLink ” inline navigation and external-link primitive for body copy.
   - children: ReactNode
   - externalIcon: boolean = true
   - href: string
+  - size: 'sm' | 'md' | 'lg'
   - standalone: boolean = false
 
 ### Input
@@ -610,10 +612,13 @@ Screen header: breadcrumb slot, the title at the one canonical page-title size (
   - actions: ReactNode
   - breadcrumb: ReactNode
   - description: ReactNode
+  - descriptionPlacement: 'below' | 'title' = below
   - level: PageHeaderLevel = 1
   - metadata: ReactNode
   - status: ReactNode
   - title: ReactNode
+  - titleMenu: ReactNode
+  - titleMenuLabel: string = Title options
 
 ### Pagination
 Paged navigation with first/last anchors, sibling pages, and ellipses.
@@ -803,6 +808,7 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
 
 ### TabsList
 The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow="start" | "end" | "both"`), so tabs past the edge do not look absent. The …
+  - align: "start"
   - asChild: boolean
   - loop: boolean
 

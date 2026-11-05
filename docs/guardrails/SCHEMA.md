@@ -9,9 +9,20 @@ automated quality gate in the Hirobius repo.
 {
   "version": "1.0.0",
   "generated": "<ISO 8601 timestamp>",
+  "lanes": { "<lane name>": [ "<shell command>", ... ] },
   "gates": [ <GateEntry>, ... ]
 }
 ```
+
+`lanes` (hds#1095) holds the named command lists that used to be `&&` chains
+in `package.json`: `check:fast`, `check:full` and `pretest`. `package.json` calls
+`node scripts/run-lane.mjs <lane>`, which runs the commands in order and stops
+at the first failure. The `ralph-gate` lane holds the steps `ralph/gate.sh`
+runs (it reads them with `run-lane.mjs ralph-gate --dry-run`). `check-validator-wiring`
+expands lane calls in package.json and in `ralph/gate.sh` back to the lane's
+commands, so a gate run only from a lane still counts as wired.
+`scripts/__tests__/gate-lanes.test.mjs` pins each lane to the chain it
+replaced.
 
 ## GateEntry fields
 

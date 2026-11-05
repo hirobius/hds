@@ -6,7 +6,7 @@ const css = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8')
 
 describe('theme.css focus ring', () => {
   it('paints .hds-focus:focus-visible without an input-modality gate', () => {
-    expect(css).toMatch(/^\.hds-focus:focus-visible\s*\{/m);
+    expect(css).toMatch(/^\.hds-focus:focus-visible\s*[,{]/m);
   });
 
   it('has no rule that requires html[data-input-modality] to show the ring', () => {

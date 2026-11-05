@@ -108,14 +108,19 @@ describe('runSteps', () => {
     expect(runSteps(false)[1]).toEqual(audit);
     expect(runSteps(true)[1]).toEqual(audit);
   });
+  it('checks Figma Hirobius/Meta against the release before building', () => {
+    const gate = ['node', ['scripts/check-figma-release.mjs', '--meta']];
+    expect(runSteps(false)[2]).toEqual(gate);
+    expect(runSteps(true)[2]).toEqual(gate);
+  });
   it('then builds, smokes, scans the tarball, and ends with the publish step', () => {
     const steps = runSteps(true);
-    expect(steps.slice(2, 5)).toEqual([
+    expect(steps.slice(3, 6)).toEqual([
       ['pnpm', ['build:lib']],
       ['pnpm', ['smoke:consumer', '--skip-build']],
       ['node', ['scripts/check-pack-scan.mjs']],
     ]);
-    expect(steps[5]).toEqual(publishStep(true));
+    expect(steps[6]).toEqual(publishStep(true));
   });
 });
 

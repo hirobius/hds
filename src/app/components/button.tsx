@@ -1,4 +1,4 @@
-// motion-ok: motion delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs. The toggle label crossfade below is the one motion/react piece, timed through useHdsMotion.
+// Motion: delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs. The toggle label crossfade below is the one motion/react piece, timed through useHdsMotion.
 /**
  * @category Actions
  * @tier primitive
@@ -27,10 +27,10 @@ import { installWipeListeners } from './button-wipe';
  * light, white in dark; the 5% alpha lives in the class, like `bg-scrim/60`),
  * not the brightness filter it replaces (95% in light, 110% in dark), which
  * had no token behind it and no Figma equivalent. Why an inset shadow and not
- * a pseudo-element: Tailwind v4 composes `--tw-inset-shadow` with the
- * `focus-visible:ring-*` and any consumer `shadow-*` into one `box-shadow`
- * list, so the focus ring, an outer shadow and the press wash all render at
- * once with no `relative`/`after:` classes and no extra DOM; the
+ * a pseudo-element: Tailwind v4 composes `--tw-inset-shadow` with any
+ * consumer `shadow-*` into one `box-shadow` list, and the focus ring is the
+ * `.hds-focus` outline, so the ring, an outer shadow and the press wash all
+ * render at once with no `relative`/`after:` classes and no extra DOM; the
  * `inset-shadow-[0_0_0_9999px]` spread fills the padding box, so it works on
  * a transparent tertiary fill and respects the radius. `disabled:pointer-events-none`
  * keeps a disabled control from ever matching `:active`. The wash snaps on
@@ -67,9 +67,11 @@ import { installWipeListeners } from './button-wipe';
 // Icon sizes bind `component.button.size.<s>.iconSize` so code cannot drift from the token (hds#539);
 // heights (and the icon-only width) bind `size.<s>.height`, and the label weight binds
 // `component.button.fontWeight`, which beats the hds-type-* role's weight (utilities layer, hds#760).
+// binding-ok: button.focus.gapRadius drawn by the .hds-focus outline, which follows the button radius (radius + semantic.focus.gap.width); the token is the Figma binding
+// binding-ok: button.focus.ringRadius drawn by the .hds-focus outline (radius + gap + semantic.focus.ring.width); the token is the Figma binding
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for transition-[colors,filter]), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
-  'inline-flex items-center justify-center gap-scale-xs whitespace-nowrap rounded-md [font-weight:var(--component-button-fontWeight)] transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0', // type-ramp-ok: component.button.fontWeight (600) is the button's own label weight over its type role (hds#760)
+  'inline-flex items-center justify-center gap-scale-xs whitespace-nowrap rounded-md [font-weight:var(--component-button-fontWeight)] transition-[color,background-color,border-color,filter,box-shadow,translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hds-focus disabled:pointer-events-none disabled:bg-[var(--component-button-primary-bgDisabled)] disabled:text-[var(--component-button-primary-textDisabled)] active:inset-shadow-[0_0_0_9999px] active:inset-shadow-pressed-overlay/5 [&_svg]:pointer-events-none [&_svg]:shrink-0', // type-ramp-ok: component.button.fontWeight (600) is the button's own label weight over its type role (hds#760)
   {
     variants: {
       variant: {
@@ -175,7 +177,25 @@ const buttonVariants = /* @__PURE__ */ cva(
           'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
-      { variant: 'link', className: 'px-0' },
+      // A link is plain text in every tone (owner decision 2026-11-05): a status tone keeps its
+      // text colour, but its fill, hover brightness and pressed wash are swapped out, and the
+      // base disabled fill too. Compound classes come after tone classes, so these win the merge.
+      {
+        variant: 'link',
+        className:
+          'px-0 bg-transparent hover:bg-transparent active:bg-transparent disabled:bg-transparent hover:brightness-100 dark:hover:brightness-100 active:inset-shadow-transparent',
+      },
+      // Link focus (hds#1167, matches the Figma Focus drawing): with px-0 a ring on the button
+      // would sit right on the glyphs and the underline. A link instead paints the shared ring
+      // (.hds-focus-after: semantic.focus.ring.width, gap.width and ring.color) on an ::after
+      // box that reaches space.scale.2xs (4px) past the label on each side, with the control
+      // radius (4px), so the ring corners are semantic.focus.radius.control (6 / 8). The ::after
+      // is absolutely positioned, so the rest box (width, padding, radius) never moves.
+      {
+        variant: 'link',
+        className:
+          'relative hds-focus-after after:pointer-events-none after:absolute after:inset-y-0 after:-inset-x-scale-2xs after:rounded-[var(--semantic-radius-control)]',
+      },
       {
         iconOnly: true,
         size: 'sm',
@@ -289,7 +309,7 @@ const BUTTON_EDGE = {
  * @whenNot Navigating to another page, where a link is the correct element.
  * @useInstead InlineLink navigation to another page
  * @a11y component required a11y:button.keyboard-activate Enter and Space activate it, and it takes part in the Tab order.
- * @a11y component required a11y:button.focus-ring Keyboard focus draws a visible ring from the focus-visible utilities; the outline is never removed without it.
+ * @a11y component required a11y:button.focus-ring Keyboard focus draws the shared .hds-focus ring (semantic.focus.* width, gap and colour); nothing removes the outline.
  * @a11y component required a11y:button.loading-busy loading sets aria-busy and disables the button, and the spinner is hidden from assistive technology.
  * @a11y component required a11y:button.toggle-pressed A toggle button reports its state with aria-pressed and flips it on activation.
  * @a11y component required a11y:button.aschild-disabled A disabled asChild link is aria-disabled and leaves the tab order, since a link cannot be natively disabled.
@@ -298,7 +318,7 @@ const BUTTON_EDGE = {
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
  * @a11y component required a11y:button.label-crossfade When a toggle button's text label changes, the old label is aria-hidden while it fades out, so the accessible name is the new label from the moment it changes.
  * @a11y component required gate:check-reduced-motion The toggle label crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the label swaps instantly with no overlap.
- * @a11y component required a11y:button.quiet-focus-ring The quiet tone, flush and the link variant keep the focus-visible ring of every Button.
+ * @a11y component required a11y:button.quiet-focus-ring Quiet, flush and link keep a visible focus ring (hds#1167).
  * @a11y component required a11y:button.quiet-contrast Quiet text is content.secondary and clears 4.5:1 at rest (page, raised), hovered (surface.hover) and pressed (the 5% wash), in light and dark.
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.

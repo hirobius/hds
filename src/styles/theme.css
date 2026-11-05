@@ -260,6 +260,8 @@
   --semantic-typography-display-font-family: var(--hds-font-family-display);
   --semantic-typography-title-font-family: var(--hds-font-family-display);
   --semantic-typography-titleSm-font-family: var(--hds-font-family-display);
+  /* type-ramp-ok: marketing-only hero (ADR-052 addendum) follows the display dial */
+  --semantic-typography-hero-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
   --semantic-typography-h1-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
@@ -268,6 +270,8 @@
   --semantic-typography-h3-font-family: var(--hds-font-family-display);
   --semantic-typography-body-font-family: var(--hds-font-family);
   --semantic-typography-ui-font-family: var(--hds-font-family);
+  --semantic-typography-bodyStrong-font-family: var(--hds-font-family);
+  --semantic-typography-uiItalic-font-family: var(--hds-font-family);
   --semantic-typography-caption-font-family: var(--hds-font-family);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
   --semantic-typography-eyebrow-font-family: var(--hds-font-family);
@@ -580,13 +584,16 @@
 }
 
 @layer components {
+  /* The follow and snap-back use the `translate` property, not `transform`:
+     the motion/react enter (toast.tsx, hds#751) leaves an inline transform,
+     which would beat a stylesheet transform; separate properties compose. */
   .hds-toast[data-swipe='move'] {
-    transform: translate(var(--radix-toast-swipe-move-x, 0), var(--radix-toast-swipe-move-y, 0));
+    translate: var(--radix-toast-swipe-move-x, 0) var(--radix-toast-swipe-move-y, 0);
   }
 
   .hds-toast[data-swipe='cancel'] {
-    transform: translate(0, 0);
-    transition: transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+    translate: 0 0;
+    transition: translate var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
   }
 
   .hds-toast:is([data-swipe='end'], [data-state='closed'])[data-swipe-direction] {
@@ -623,6 +630,7 @@
       animation: none;
       transition: none;
       transform: none;
+      translate: none;
     }
   }
 }
@@ -700,6 +708,31 @@
   .hds-btn-hard:active {
     --hds-ty: 2px;
     --hds-hs: 1px;
+  }
+}
+
+/* Focus wraps face AND edge (Adrian 11-04): the gap and the ring are drawn twice, on the
+ * border box and offset by the edge height (--hds-hs, so it tracks hover and press), so
+ * they follow the face-plus-edge shape and the edge stays visible. Tertiary and disabled
+ * have no .hds-btn-hard here and keep Tailwind's plain ring. Unlayered, so it outranks
+ * Button's focus-visible:ring-* utilities; a consumer shadow-* still rides --tw-shadow. */
+.hds-btn-hard:not(:disabled, [aria-disabled='true']):focus-visible {
+  box-shadow:
+    var(--tw-inset-shadow),
+    var(--tw-inset-ring-shadow),
+    var(--tw-shadow),
+    0 0 0 2px var(--role-background),
+    0 var(--hds-hs, 3px) 0 2px var(--role-background),
+    0 0 0 4px var(--role-ring),
+    0 var(--hds-hs, 3px) 0 4px var(--role-ring);
+}
+
+/* Forced colors drop box-shadow, and Button's focus-visible:outline-none sits in the
+ * utilities layer, so an unlayered system-colour outline keeps hard-edge focus visible. */
+@media (forced-colors: active) {
+  .hds-btn-hard:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }
 
@@ -872,12 +905,52 @@ input[data-search-input='true'] {
   }
 }
 
-/* --- Focus ring utility ------------------------------------------------------- */
-.hds-focus:focus-visible {
-  outline: var(--hds-borderWidth-thick) solid var(--semantic-color-border-accent);
-  outline-offset: 2px;
+/* --- Focus ring (semantic.focus.*) ---------------------------------------------
+ * One ring for every focusable HDS element: a semantic.focus.ring.width stroke in
+ * semantic.focus.ring.color, semantic.focus.gap.width away from the element edge.
+ * It is an outline, which follows the element's border-radius outward, so the corners
+ * obey the focus radius rule on their own:
+ *   gap radius  = element radius + gap width
+ *   ring radius = element radius + gap width + ring width
+ * semantic.focus.radius.* and component.*.focus.{gapRadius,ringRadius} carry the same
+ * steps for Figma (tests/focus-ring-tokens.test.ts pins both). An outline, unlike a
+ * box-shadow ring, survives forced-colors mode.
+ *   .hds-focus         the ring outside the element (the default)
+ *   .hds-focus-ring    the same ring, always on: for controls that track focus-visible
+ *                      in state (Checkbox, Radio, Toggle) and frozen docs states
+ *   .hds-focus-within  a field shell rings while its input or textarea has focus
+ *   .hds-focus-after   with .hds-focus: the ring moves to the element's ::after box (which
+ *                      the component sizes and rounds), for zero-padding links (hds#1167)
+ *   .hds-focus-inset   inside the edge, for rows and tabs a scroller or list would clip;
+ *                      also marks a highlighted menu or select item
+ *   --hds-focus-color  per-element colour override (invalid fields: feedback.error) */
+.hds-focus:focus-visible,
+.hds-focus-after:focus-visible::after,
+.hds-focus-ring,
+.hds-focus-within:has(:is(input, textarea):focus-visible),
+.hds-focus-inset:focus-visible,
+.hds-focus-inset[data-highlighted] {
+  outline: var(--semantic-focus-ring-width) solid
+    var(--hds-focus-color, var(--semantic-focus-ring-color));
+  outline-offset: var(--semantic-focus-gap-width);
   /* Deliberately no positioning: making it relative overrode absolute/fixed and moved the control on keyboard
      focus (Dialog content, Radio/Toggle inputs, CodeBlock copy button; bug bash 24, items 1-2). */
+}
+.hds-focus-inset:focus-visible,
+.hds-focus-inset[data-highlighted] {
+  outline-offset: calc(-1 * var(--semantic-focus-ring-width));
+}
+.hds-focus-after:focus-visible {
+  outline: none;
+}
+@media (forced-colors: active) {
+  /* System Highlight beats every per-element colour, the invalid-field override included. */
+  .hds-focus,
+  .hds-focus-ring,
+  .hds-focus-within,
+  .hds-focus-inset {
+    --hds-focus-color: Highlight;
+  }
 }
 
 /* --- Theme toggle (ThemeToggle) ------------------------------------------------

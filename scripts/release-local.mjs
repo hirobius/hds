@@ -110,6 +110,10 @@ export function runSteps(publish) {
     // dependencies must carry no high+ advisories. Runs before the build so a
     // dirty graph fails the release in seconds, not after the smoke.
     ['pnpm', ['audit', '--prod', '--audit-level', 'high']],
+    // The Figma library cover shows Hirobius/Meta (meta/version and friends):
+    // refuse a release Figma does not show yet (check-figma-release step 4).
+    // The rest of that gate stays in `pnpm release`.
+    ['node', ['scripts/check-figma-release.mjs', '--meta']],
     ['pnpm', ['build:lib']],
     ['pnpm', ['smoke:consumer', '--skip-build']],
     // Tarball scan (ops#27): 0.12/0.13 shipped client PII. Packs the real

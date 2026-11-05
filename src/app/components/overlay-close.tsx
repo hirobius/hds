@@ -30,7 +30,7 @@ export function OverlayClose({ placement, className }: OverlayCloseProps) {
         'items-center justify-center rounded-sm text-muted-foreground transition-colors',
         // Hover steps to surface.sunken: `bg-accent` was 1.10:1 on the white popover in light (hds#522).
         'hover:bg-[var(--semantic-color-surface-sunken)] hover:text-foreground',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'hds-focus',
         className,
       )}
     >

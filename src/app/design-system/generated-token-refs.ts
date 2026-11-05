@@ -17,8 +17,11 @@ export const tokenRefs = {
       neutral: {
         "50": "var(--primitive-color-neutral-50)",
         "100": "var(--primitive-color-neutral-100)",
+        "150": "var(--primitive-color-neutral-150)",
         "200": "var(--primitive-color-neutral-200)",
+        "250": "var(--primitive-color-neutral-250)",
         "300": "var(--primitive-color-neutral-300)",
+        "325": "var(--primitive-color-neutral-325)",
         "350": "var(--primitive-color-neutral-350)",
         "400": "var(--primitive-color-neutral-400)",
         "450": "var(--primitive-color-neutral-450)",
@@ -65,6 +68,7 @@ export const tokenRefs = {
         "50": "var(--primitive-color-graphite-50)",
         "100": "var(--primitive-color-graphite-100)",
         "200": "var(--primitive-color-graphite-200)",
+        "250": "var(--primitive-color-graphite-250)",
         "300": "var(--primitive-color-graphite-300)",
         "400": "var(--primitive-color-graphite-400)",
         "500": "var(--primitive-color-graphite-500)",
@@ -192,7 +196,9 @@ export const tokenRefs = {
       "4": "var(--primitive-radius-4)",
       "6": "var(--primitive-radius-6)",
       "8": "var(--primitive-radius-8)",
+      "10": "var(--primitive-radius-10)",
       "12": "var(--primitive-radius-12)",
+      "14": "var(--primitive-radius-14)",
       "16": "var(--primitive-radius-16)",
       "24": "var(--primitive-radius-24)",
       full: "var(--primitive-radius-full)"
@@ -217,6 +223,7 @@ export const tokenRefs = {
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
         display: "var(--primitive-typography-size-display)",
+        hero: "var(--primitive-typography-size-hero)",
         "6xl": "var(--primitive-typography-size-6xl)",
         code: "var(--primitive-typography-size-code)"
       },
@@ -293,6 +300,7 @@ export const tokenRefs = {
         "280": "var(--primitive-size-width-280)",
         "512": "var(--primitive-size-width-512)",
         "760": "var(--primitive-size-width-760)",
+        "1180": "var(--primitive-size-width-1180)",
         "1200": "var(--primitive-size-width-1200)",
         "50ch": "var(--primitive-size-width-50ch)"
       }
@@ -313,6 +321,10 @@ export const tokenRefs = {
     underline: {
       offset: "var(--primitive-underline-offset)"
     },
+    inlineIcon: {
+      size: "var(--primitive-inlineIcon-size)",
+      gap: "var(--primitive-inlineIcon-gap)"
+    },
     borderWidth: {
       xs: "var(--primitive-borderWidth-xs)",
       sm: "var(--primitive-borderWidth-sm)",
@@ -321,6 +333,7 @@ export const tokenRefs = {
     strokeWidth: {
       "100": "var(--primitive-strokeWidth-100)",
       "150": "var(--primitive-strokeWidth-150)",
+      "175": "var(--primitive-strokeWidth-175)",
       "200": "var(--primitive-strokeWidth-200)",
       "250": "var(--primitive-strokeWidth-250)"
     }
@@ -461,7 +474,8 @@ export const tokenRefs = {
     layout: {
       width: {
         content: "var(--semantic-layout-width-content)",
-        max: "var(--semantic-layout-width-max)"
+        max: "var(--semantic-layout-width-max)",
+        shell: "var(--semantic-layout-width-shell)"
       },
       container: {
         maxWidth: "var(--semantic-layout-container-maxWidth)"
@@ -485,6 +499,13 @@ export const tokenRefs = {
       }
     },
     typography: {
+      hero: {
+        fontFamily: "var(--semantic-typography-hero-font-family)",
+        fontSize: "var(--semantic-typography-hero-font-size)",
+        fontWeight: "var(--semantic-typography-hero-font-weight)",
+        letterSpacing: "var(--semantic-typography-hero-letter-spacing)",
+        lineHeight: "var(--semantic-typography-hero-line-height)"
+      },
       display: {
         fontFamily: "var(--semantic-typography-display-font-family)",
         fontSize: "var(--semantic-typography-display-font-size)",
@@ -514,6 +535,14 @@ export const tokenRefs = {
         lineHeight: "var(--semantic-typography-body-line-height)",
         maxWidth: "var(--semantic-typography-body-max-width)"
       },
+      bodyStrong: {
+        fontFamily: "var(--semantic-typography-bodyStrong-font-family)",
+        fontSize: "var(--semantic-typography-bodyStrong-font-size)",
+        fontWeight: "var(--semantic-typography-bodyStrong-font-weight)",
+        letterSpacing: "var(--semantic-typography-bodyStrong-letter-spacing)",
+        lineHeight: "var(--semantic-typography-bodyStrong-line-height)",
+        maxWidth: "var(--semantic-typography-bodyStrong-max-width)"
+      },
       ui: {
         fontFamily: "var(--semantic-typography-ui-font-family)",
         fontSize: "var(--semantic-typography-ui-font-size)",
@@ -521,6 +550,15 @@ export const tokenRefs = {
         letterSpacing: "var(--semantic-typography-ui-letter-spacing)",
         lineHeight: "var(--semantic-typography-ui-line-height)",
         maxWidth: "var(--semantic-typography-ui-max-width)"
+      },
+      uiItalic: {
+        fontFamily: "var(--semantic-typography-uiItalic-font-family)",
+        fontSize: "var(--semantic-typography-uiItalic-font-size)",
+        fontWeight: "var(--semantic-typography-uiItalic-font-weight)",
+        letterSpacing: "var(--semantic-typography-uiItalic-letter-spacing)",
+        lineHeight: "var(--semantic-typography-uiItalic-line-height)",
+        maxWidth: "var(--semantic-typography-uiItalic-max-width)",
+        fontStyle: "var(--semantic-typography-uiItalic-font-style)"
       },
       caption: {
         fontFamily: "var(--semantic-typography-caption-font-family)",
@@ -619,8 +657,40 @@ export const tokenRefs = {
       icon: {
         thin: "var(--semantic-borderWidth-icon-thin)",
         light: "var(--semantic-borderWidth-icon-light)",
+        medium: "var(--semantic-borderWidth-icon-medium)",
         regular: "var(--semantic-borderWidth-icon-regular)",
         bold: "var(--semantic-borderWidth-icon-bold)"
+      }
+    },
+    focus: {
+      ring: {
+        width: "var(--semantic-focus-ring-width)",
+        color: "var(--semantic-focus-ring-color)"
+      },
+      gap: {
+        width: "var(--semantic-focus-gap-width)"
+      },
+      radius: {
+        control: {
+          gapRadius: "var(--semantic-focus-radius-control-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-control-ringRadius)"
+        },
+        sm: {
+          gapRadius: "var(--semantic-focus-radius-sm-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-sm-ringRadius)"
+        },
+        md: {
+          gapRadius: "var(--semantic-focus-radius-md-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-md-ringRadius)"
+        },
+        lg: {
+          gapRadius: "var(--semantic-focus-radius-lg-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-lg-ringRadius)"
+        },
+        pill: {
+          gapRadius: "var(--semantic-focus-radius-pill-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-pill-ringRadius)"
+        }
       }
     },
     link: {
@@ -688,6 +758,10 @@ export const tokenRefs = {
       text: "var(--component-tag-text)",
       border: "var(--component-tag-border)",
       radius: "var(--component-tag-radius)",
+      focus: {
+        gapRadius: "var(--component-tag-focus-gapRadius)",
+        ringRadius: "var(--component-tag-focus-ringRadius)"
+      },
       fontSize: "var(--component-tag-fontSize)",
       fontWeight: "var(--component-tag-fontWeight)",
       lineHeight: "var(--component-tag-lineHeight)",
@@ -751,6 +825,10 @@ export const tokenRefs = {
       },
       text: "var(--component-button-text)",
       radius: "var(--component-button-radius)",
+      focus: {
+        gapRadius: "var(--component-button-focus-gapRadius)",
+        ringRadius: "var(--component-button-focus-ringRadius)"
+      },
       paddingX: "var(--component-button-paddingX)",
       paddingY: "var(--component-button-paddingY)",
       fontWeight: "var(--component-button-fontWeight)",
@@ -812,6 +890,10 @@ export const tokenRefs = {
       border: "var(--component-input-border)",
       borderError: "var(--component-input-borderError)",
       radius: "var(--component-input-radius)",
+      focus: {
+        gapRadius: "var(--component-input-focus-gapRadius)",
+        ringRadius: "var(--component-input-focus-ringRadius)"
+      },
       paddingX: "var(--component-input-paddingX)",
       paddingY: "var(--component-input-paddingY)"
     },
@@ -819,6 +901,10 @@ export const tokenRefs = {
       bg: "var(--component-card-bg)",
       border: "var(--component-card-border)",
       radius: "var(--component-card-radius)",
+      focus: {
+        gapRadius: "var(--component-card-focus-gapRadius)",
+        ringRadius: "var(--component-card-focus-ringRadius)"
+      },
       padding: "var(--component-card-padding)",
       gap: "var(--component-card-gap)"
     },
@@ -831,6 +917,27 @@ export const tokenRefs = {
       rowPadding: "var(--component-list-rowPadding)",
       rowMinHeight: "var(--component-list-rowMinHeight)",
       leadingSize: "var(--component-list-leadingSize)"
+    },
+    inlineLink: {
+      iconSize: "var(--component-inlineLink-iconSize)",
+      iconGap: "var(--component-inlineLink-iconGap)",
+      size: {
+        sm: {
+          fontSize: "var(--component-inlineLink-size-sm-fontSize)",
+          iconSize: "var(--component-inlineLink-size-sm-iconSize)"
+        },
+        md: {
+          fontSize: "var(--component-inlineLink-size-md-fontSize)",
+          iconSize: "var(--component-inlineLink-size-md-iconSize)"
+        },
+        lg: {
+          fontSize: "var(--component-inlineLink-size-lg-fontSize)",
+          iconSize: "var(--component-inlineLink-size-lg-iconSize)"
+        }
+      }
+    },
+    pagination: {
+      compactControlSize: "var(--component-pagination-compactControlSize)"
     }
   },
   role: {

@@ -6,6 +6,7 @@
  * last file that named it.
  */
 import { afterEach, describe, expect, it } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -127,7 +128,8 @@ describe('build-utility-safelist.mjs CLI', () => {
     const theme = readFileSync(join(REPO, 'src/styles/theme.css'), 'utf8');
     expect(theme).toContain("@import './utility-safelist.generated.css';");
     expect(theme).not.toMatch(/^@source inline/m);
-    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    expect(pkg.scripts.pretest).toContain('node scripts/build-utility-safelist.mjs --check');
+    expect(readLaneScripts(REPO).pretest).toContain(
+      'node scripts/build-utility-safelist.mjs --check',
+    );
   });
 });

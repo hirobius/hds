@@ -3,21 +3,25 @@
 `hirobius.tokens.json` is the source of truth. Sync runs one way, code → Figma.
 A hand edit in Figma is drift, not a change to the source.
 
+The ordered agent procedure (limits, re-base, extras, push, ingest, release
+gate and its drift baseline) is [`SYNC-PROCEDURE.md`](SYNC-PROCEDURE.md).
+
 On a Figma Professional plan nothing in CI can read or write variables (the REST
 variables API is Enterprise-only), so every Figma step is a local command that a
 person, or an agent with Figma access, runs on purpose. Drift detection compares
 the model against a committed snapshot of the file, not the live file.
 
-| Command                      | What it does                                                                                                                                                                                                                                                                                            | Talks to Figma?        |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `pnpm figma:model`           | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles, plus Brand and Density from `figma/brand-modes.json`                                                                                                                                                            | No                     |
-| `pnpm figma:push`            | Writes the code that upserts the model into a file, to `figma/push/`; `--bundle <out>` writes the sync bundle the Sync plugin fetches; `--delta` writes `delta.js` (below)                                                                                                                              | No (you run it)        |
-| `pnpm figma:snapshot`        | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`; `--from-receipt <files...>` rebuilds it from a Sync's receipt                                                                                                                                           | No (you run it)        |
-| `pnpm check:figma-drift`     | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                                                                                                                                                                                       | No                     |
-| `pnpm check:figma-release`   | The release gate (hds#801): `pnpm release` runs it first. Fails on any drift, or when `hirobius.tokens.json` no longer matches the snapshot's `tokensHash` (its sha256 at `--ingest`; no git history needed, so squash merges are fine). An older snapshot without it fails until you re-run `--ingest` | No                     |
-| `pnpm check:figma-fallbacks` | Fails when `figma/snapshot.json` records a colour binding whose raw fallback colour is not the variable's value ([below](#bound-colour-fallbacks)); runs in `pretest`                                                                                                                                   | No                     |
-| `pnpm figma:native-import`   | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                                                                                                                                                                                      | No                     |
-| `pnpm figma:links`           | Writes `docs/DESIGN_LINKS.md`, and to `figma/links/` the steps that add dev resources and component descriptions in Figma                                                                                                                                                                               | Only `--dev-resources` |
+| Command                       | What it does                                                                                                                                                                                                                                                                                            | Talks to Figma?                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `pnpm figma:model`            | Builds `figma/model.json`: collections × modes × variables, text styles, effect styles, plus Brand and Density from `figma/brand-modes.json`                                                                                                                                                            | No                                   |
+| `pnpm figma:push`             | Writes the code that upserts the model into a file, to `figma/push/`; `--bundle <out>` writes the sync bundle the Sync plugin fetches; `--delta` writes `delta.js` (below)                                                                                                                              | No (you run it)                      |
+| `pnpm figma:snapshot`         | Prints how to take a snapshot; `--ingest <file>` verifies one and writes `figma/snapshot.json`; `--from-receipt <files...>` rebuilds it from a Sync's receipt                                                                                                                                           | No (you run it)                      |
+| `pnpm check:figma-drift`      | Model vs `figma/snapshot.json`: missing, extra, changed, per mode                                                                                                                                                                                                                                       | No                                   |
+| `pnpm check:figma-release`    | The release gate (hds#801): `pnpm release` runs it first. Fails on any drift, or when `hirobius.tokens.json` no longer matches the snapshot's `tokensHash` (its sha256 at `--ingest`; no git history needed, so squash merges are fine). An older snapshot without it fails until you re-run `--ingest` | No                                   |
+| `pnpm check:figma-fallbacks`  | Fails when `figma/snapshot.json` records a colour binding whose raw fallback colour is not the variable's value ([below](#bound-colour-fallbacks)); runs in `pretest`                                                                                                                                   | No                                   |
+| `pnpm check:figma-components` | Component parity: generates `figma/contracts/Button.json` and `IconButton.json` from code (`--write`) and diffs each against its read-only Figma snapshot in `figma/components/`; `--report` runs in `pretest` and never fails, `--check` fails on a stale contract or any difference                   | Only via `--emit-script` (read-only) |
+| `pnpm figma:native-import`    | Fallback: DTCG files for Figma's own Variables ▸ Import, to `figma/native-import/`                                                                                                                                                                                                                      | No                                   |
+| `pnpm figma:links`            | Writes `docs/DESIGN_LINKS.md`, and to `figma/links/` the steps that add dev resources and component descriptions in Figma                                                                                                                                                                               | Only `--dev-resources`               |
 
 `figma/model.json`, `figma/push/` and `figma/native-import/` are generated and
 gitignored, and the sync bundle is generated by the Vercel build, never
@@ -642,6 +646,33 @@ it may be a change waiting for someone with Figma access, and a PR made without
 Figma access cannot push. The rule compares model hashes, not commit dates, so a
 branch whose token commit predates a snapshot committed later is not blamed.
 Until a snapshot is committed the step only adds a notice.
+
+### Hirobius/Meta (the library cover)
+
+The cover binds the STRING variables in the `Hirobius/Meta` collection (hidden
+from publishing, scope Text content, mode Default). Code owns every value
+(`scripts/lib/figma-meta.mjs`); a push writes them (chunk `04-role`). Never type
+them into Figma.
+
+| Variable          | Value, read at build time                                                                                             |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `meta/version`    | package.json `version`                                                                                                |
+| `meta/releasedAt` | `upgrade/releases/<version>.json` date, else its CHANGELOG.md heading date, else the version commit's date            |
+| `meta/commit`     | short SHA (7) of the last commit to the synced inputs (tokens, `figma/brand-modes.json`, `directions/`, package.json) |
+| `meta/docsUrl`    | package.json `homepage`                                                                                               |
+| `meta/repoUrl`    | package.json `repository`, as an https URL                                                                            |
+| `meta/npmName`    | package.json `name`                                                                                                   |
+
+No value comes from the clock, so the same commit always builds the same
+values. No counts. `meta/commit` names a commit on the branch you push from:
+push from main, since a squash merge gives a branch commit a new SHA on main.
+
+`pnpm check:figma-drift` names each one that differs on its own line.
+`pnpm check:figma-release` fails on them, and `pnpm release:local` runs that
+check alone (`check-figma-release.mjs --meta`) before the build. After a
+version bump: push, refresh the snapshot by the snapshot-diff route
+([re-base](#agent-re-base-after-an-out-of-band-change-snapshot-diff)), commit
+`figma/snapshot.json`, and Adrian publishes the library.
 
 ## Bound-colour fallbacks
 

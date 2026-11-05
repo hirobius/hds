@@ -13,8 +13,8 @@
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.32.0",
-  "generatedAt": "2026-10-31",
+  "version": "0.33.0",
+  "generatedAt": "2026-11-05",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -84,6 +84,7 @@
     "./app/components/container": ["Container", "ContainerProps"],
     "./app/components/dialog": [
       "Dialog",
+      "DialogBody",
       "DialogClose",
       "DialogContent",
       "DialogContentProps",
@@ -104,7 +105,7 @@
     "./app/components/board": ["Board", "BoardColumn", "BoardColumnProps", "BoardProps"],
     "./app/components/icon": ["Icon", "IconColor", "IconProps", "IconSize"],
     "./app/components/inline-code": ["InlineCode", "InlineCodeProps"],
-    "./app/components/inline-link": ["InlineLink", "InlineLinkProps"],
+    "./app/components/inline-link": ["InlineLink", "InlineLinkProps", "InlineLinkSize"],
     "./app/components/input": ["Input", "InputProps", "InputSize"],
     "./app/components/textarea": ["Textarea", "TextareaProps", "TextareaResize"],
     "./app/components/composer": [
@@ -115,6 +116,8 @@
     ],
     "./app/components/command-palette": [
       "CommandPalette",
+      "CommandPaletteArgument",
+      "CommandPaletteArgumentOption",
       "CommandPaletteItem",
       "CommandPaletteProps"
     ],
@@ -161,6 +164,21 @@
       "NavListProps",
       "NavListSelectItemProps"
     ],
+    "./app/components/list": [
+      "List",
+      "ListEmpty",
+      "ListEmptyProps",
+      "ListGroup",
+      "ListGroupProps",
+      "ListItem",
+      "ListItemProps",
+      "ListItemStatus",
+      "ListItemTrailing",
+      "ListProps",
+      "ListTile",
+      "ListTileProps",
+      "ListVariant"
+    ],
     "./app/components/token-field": [
       "TokenField",
       "TokenFieldHandle",
@@ -182,7 +200,7 @@
       "TimelineProps",
       "TimelineTone"
     ],
-    "./app/components/empty-state": ["EmptyState", "EmptyStateProps"],
+    "./app/components/empty-state": ["EmptyState", "EmptyStateProps", "EmptyStateVariant"],
     "./app/components/tabs": ["Tabs", "TabsContent", "TabsContentProps", "TabsList", "TabsTrigger"],
     "./app/components/breadcrumb": ["Breadcrumb", "BreadcrumbItem", "BreadcrumbProps"],
     "./app/components/combobox": [
@@ -249,6 +267,9 @@
       "useScrollProgress"
     ],
     "@subpath/patterns": [
+      "AppShell",
+      "AppShellProps",
+      "AppShellSidebarState",
       "AssetImg",
       "AssetImgProps",
       "AsyncState",
@@ -280,6 +301,7 @@
       "MetricTilesProps",
       "Page",
       "PageHeader",
+      "PageHeaderDescriptionPlacement",
       "PageHeaderLevel",
       "PageHeaderProps",
       "PageProps",

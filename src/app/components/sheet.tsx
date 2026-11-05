@@ -165,7 +165,7 @@ const SheetActions = /* @__PURE__ */ React.forwardRef<
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- the hover fill is the semantic surface.sunken token, like Menu's highlight; it has no Tailwind-theme utility. Never the accent: an accent fill hid tertiary labels in dark mode (hds#690).
 const sheetActionVariants = /* @__PURE__ */ cva(
-  'flex w-full cursor-pointer select-none items-center gap-scale-xs rounded-sm px-scale-xs py-subgrid-gap text-left hds-type-ui hds-touch-row outline-none transition-colors hover:bg-[var(--semantic-color-surface-sunken)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+  'flex w-full cursor-pointer select-none items-center gap-scale-xs rounded-sm px-scale-xs py-subgrid-gap text-left hds-type-ui hds-touch-row outline-none transition-colors hover:bg-[var(--semantic-color-surface-sunken)] hds-focus-inset disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       tone: {
