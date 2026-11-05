@@ -52,7 +52,12 @@ import { Dialog } from './dialog';
 import { Icon } from './icon';
 import { Kbd } from './kbd';
 import { Tag } from './tag';
-import { ACTIVE_OPTION_CLASS, nextEnabledIndex, useResetActiveOnListChange } from './listbox-nav';
+import {
+  ACTIVE_OPTION_CLASS,
+  nextEnabledIndex,
+  useLatestCallback,
+  useResetActiveOnListChange,
+} from './listbox-nav';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -153,6 +158,63 @@ interface CollectedArgument {
   value: string;
   label: string;
 }
+
+/** One listbox row. Memoized: moving the active row re-renders only the two rows it touches. */
+const PaletteOption = /* @__PURE__ */ React.memo(function PaletteOption({
+  item,
+  index,
+  id,
+  active,
+  onActivate,
+  onChoose,
+}: {
+  item: PaletteRow;
+  index: number;
+  id: string;
+  active: boolean;
+  onActivate: (index: number) => void;
+  onChoose: (row: PaletteRow) => void;
+}) {
+  const labelId = `${id}-label`;
+  const keysId = `${id}-keys`;
+  const shortcut = 'shortcut' in item ? item.shortcut : undefined;
+  return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- keys are handled on the search field, which owns focus (aria-activedescendant)
+    <div
+      id={id}
+      role="option"
+      tabIndex={-1}
+      aria-selected={active}
+      aria-disabled={item.disabled || undefined}
+      aria-labelledby={labelId}
+      aria-describedby={shortcut?.length ? keysId : undefined}
+      data-active={active ? 'true' : undefined}
+      onMouseMove={() => {
+        if (!item.disabled) onActivate(index);
+      }}
+      onClick={() => onChoose(item)}
+      className={cn(
+        'flex cursor-pointer items-center justify-between gap-scale-xs rounded-sm px-scale-xs py-fixed-2xs hds-type-ui hds-touch-row text-foreground outline-none transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+        ACTIVE_OPTION_CLASS,
+        'aria-disabled:cursor-not-allowed aria-disabled:text-[var(--semantic-color-content-disabled)]',
+      )}
+    >
+      <span id={labelId} className="truncate">
+        {item.label}
+      </span>
+      {shortcut?.length ? (
+        <span id={keysId} className="flex shrink-0 items-center gap-fixed-2xs">
+          {shortcut.map((key, k) => (
+            <React.Fragment key={k}>
+              {k > 0 ? ' ' : null}
+              <Kbd size="sm">{key}</Kbd>
+            </React.Fragment>
+          ))}
+        </span>
+      ) : null}
+    </div>
+  );
+});
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
@@ -328,6 +390,12 @@ export const CommandPalette = /* @__PURE__ */ React.forwardRef<HTMLDivElement, C
       setActiveIndex(next);
     }
 
+    // Stable identities, so a memoized row re-renders only when its own props change.
+    const activateRow = useLatestCallback((index: number) => {
+      if (index !== activeIndex) setActiveIndex(index);
+    });
+    const chooseRow = useLatestCallback(choose);
+
     function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
       if (e.key === 'Backspace' && query === '' && pendingItem) {
         e.preventDefault();
@@ -446,49 +514,17 @@ export const CommandPalette = /* @__PURE__ */ React.forwardRef<HTMLDivElement, C
                       {group.name}
                     </div>
                   ) : null}
-                  {group.rows.map(({ item, index }) => {
-                    const isActive = index === activeIndex && !item.disabled;
-                    const labelId = `${optionId(index)}-label`;
-                    const keysId = `${optionId(index)}-keys`;
-                    const shortcut = 'shortcut' in item ? item.shortcut : undefined;
-                    return (
-                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- keys are handled on the search field, which owns focus (aria-activedescendant)
-                      <div
-                        key={item.id}
-                        id={optionId(index)}
-                        role="option"
-                        tabIndex={-1}
-                        aria-selected={isActive}
-                        aria-disabled={item.disabled || undefined}
-                        aria-labelledby={labelId}
-                        aria-describedby={shortcut?.length ? keysId : undefined}
-                        data-active={isActive ? 'true' : undefined}
-                        onMouseMove={() => {
-                          if (!item.disabled && index !== activeIndex) setActiveIndex(index);
-                        }}
-                        onClick={() => choose(item)}
-                        className={cn(
-                          'flex cursor-pointer items-center justify-between gap-scale-xs rounded-sm px-scale-xs py-fixed-2xs hds-type-ui hds-touch-row text-foreground outline-none transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
-                          ACTIVE_OPTION_CLASS,
-                          'aria-disabled:cursor-not-allowed aria-disabled:text-[var(--semantic-color-content-disabled)]',
-                        )}
-                      >
-                        <span id={labelId} className="truncate">
-                          {item.label}
-                        </span>
-                        {shortcut?.length ? (
-                          <span id={keysId} className="flex shrink-0 items-center gap-fixed-2xs">
-                            {shortcut.map((key, k) => (
-                              <React.Fragment key={k}>
-                                {k > 0 ? ' ' : null}
-                                <Kbd size="sm">{key}</Kbd>
-                              </React.Fragment>
-                            ))}
-                          </span>
-                        ) : null}
-                      </div>
-                    );
-                  })}
+                  {group.rows.map(({ item, index }) => (
+                    <PaletteOption
+                      key={item.id}
+                      item={item}
+                      index={index}
+                      id={optionId(index)}
+                      active={index === activeIndex && !item.disabled}
+                      onActivate={activateRow}
+                      onChoose={chooseRow}
+                    />
+                  ))}
                 </div>
               );
             })}
