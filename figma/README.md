@@ -643,17 +643,29 @@ Figma access cannot push. The rule compares model hashes, not commit dates, so a
 branch whose token commit predates a snapshot committed later is not blamed.
 Until a snapshot is committed the step only adds a notice.
 
-### meta/version (the library cover)
+### Hirobius/Meta (the library cover)
 
-The cover's version text binds `meta/version`, the one STRING variable in the
-`Hirobius/Meta` collection (hidden from publishing, scope Text content, mode
-Default). Code owns it: the model sets it to package.json's `"version"` at build
-time (`loadFigmaInputs`), and a push writes it (chunk `04-role`). Never type the
-version into Figma.
+The cover binds the STRING variables in the `Hirobius/Meta` collection (hidden
+from publishing, scope Text content, mode Default). Code owns every value
+(`scripts/lib/figma-meta.mjs`); a push writes them (chunk `04-role`). Never type
+them into Figma.
 
-`pnpm check:figma-drift` names it on its own line when Figma's value differs.
-`pnpm check:figma-release` fails on it, and `pnpm release:local` runs that check
-alone (`check-figma-release.mjs --meta-version`) before the build. After a
+| Variable          | Value, read at build time                                                                                             |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `meta/version`    | package.json `version`                                                                                                |
+| `meta/releasedAt` | `upgrade/releases/<version>.json` date, else its CHANGELOG.md heading date, else the version commit's date            |
+| `meta/commit`     | short SHA (7) of the last commit to the synced inputs (tokens, `figma/brand-modes.json`, `directions/`, package.json) |
+| `meta/docsUrl`    | package.json `homepage`                                                                                               |
+| `meta/repoUrl`    | package.json `repository`, as an https URL                                                                            |
+| `meta/npmName`    | package.json `name`                                                                                                   |
+
+No value comes from the clock, so the same commit always builds the same
+values. No counts. `meta/commit` names a commit on the branch you push from:
+push from main, since a squash merge gives a branch commit a new SHA on main.
+
+`pnpm check:figma-drift` names each one that differs on its own line.
+`pnpm check:figma-release` fails on them, and `pnpm release:local` runs that
+check alone (`check-figma-release.mjs --meta`) before the build. After a
 version bump: push, refresh the snapshot by the snapshot-diff route
 ([re-base](#agent-re-base-after-an-out-of-band-change-snapshot-diff)), commit
 `figma/snapshot.json`, and Adrian publishes the library.

@@ -3,8 +3,9 @@
  * Hirobius Design System — what every Figma sync command reads from the repo:
  * the Figma model built from hirobius.tokens.json plus the directions
  * figma/brand-modes.json lists (refused when it breaks an invariant), and the
- * renames in TOKEN_MIGRATION.md. The model's meta/version is package.json's
- * "version" (absent when the root has no package.json, as fixture roots do).
+ * renames in TOKEN_MIGRATION.md. The model's Hirobius/Meta values come from
+ * readFigmaMeta (package.json, the release ledger, git); a fixture root with
+ * no package.json has none.
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -14,13 +15,7 @@ import { loadBrandModes } from './figma-brand-modes.mjs';
 import { validateFigmaModel } from './figma-model-invariants.mjs';
 import { parseMigrationRenames } from '../check-token-renames.mjs';
 import { readTokenSource } from './token-source.mjs';
-
-/** package.json's "version" at `root`, or null. */
-export function packageVersion(root) {
-  const path = join(root, 'package.json');
-  if (!existsSync(path)) return null;
-  return JSON.parse(readFileSync(path, 'utf8')).version ?? null;
-}
+import { readFigmaMeta } from './figma-meta.mjs';
 
 /**
  * @param {string} root  A repo root (or a fixture mini-root) holding hirobius.tokens.json
@@ -31,7 +26,7 @@ export function loadFigmaInputs(root) {
   const raw = readTokenSource(join(root, 'hirobius.tokens.json'));
   const model = buildFigmaModel(raw, {
     brands: loadBrandModes(root, raw),
-    version: packageVersion(root),
+    meta: readFigmaMeta(root),
   });
   const violations = validateFigmaModel(model);
   if (violations.length > 0) {

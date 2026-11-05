@@ -13,7 +13,8 @@ import {
   runReleaseGate,
   componentCoverageGaps,
   metaVersionGap,
-  runMetaVersionGate,
+  runMetaGate,
+  metaReleaseGaps,
 } from '../check-figma-release.mjs';
 import { ingestSnapshot } from '../figma-snapshot.mjs';
 import {
@@ -173,15 +174,15 @@ describe('meta/version (the library cover)', () => {
     const dir = await versioned('1.0.0');
     expect(metaVersionGap(dir)).toEqual({ expected: '1.0.0', actual: '1.0.0', ok: true });
     expect(runReleaseGate({ root: dir }).exitCode).toBe(0);
-    const only = runMetaVersionGate({ root: dir });
+    const only = runMetaGate({ root: dir });
     expect(only.exitCode).toBe(0);
-    expect(only.output).toMatch(/meta\/version 1\.0\.0/);
+    expect(only.output).toMatch(/Hirobius\/Meta matches code \(meta\/version 1\.0\.0\)/);
   });
 
   it('fails the gate on a mismatch, with a reminder and the snapshot-diff route', async () => {
     const dir = await versioned('1.1.0', '1.0.0');
     expect(metaVersionGap(dir)).toEqual({ expected: '1.1.0', actual: '1.0.0', ok: false });
-    for (const r of [runReleaseGate({ root: dir }), runMetaVersionGate({ root: dir })]) {
+    for (const r of [runReleaseGate({ root: dir }), runMetaGate({ root: dir })]) {
       expect(r.exitCode).toBe(1);
       expect(r.output).toMatch(/meta\/version is 1\.0\.0 in Figma but this release is 1\.1\.0/);
       expect(r.output).toMatch(/Reminder/);
@@ -193,8 +194,54 @@ describe('meta/version (the library cover)', () => {
     const dir = await root();
     writeFileSync(join(dir, 'package.json'), JSON.stringify({ version: '1.0.0' }));
     expect(metaVersionGap(dir)).toEqual({ expected: '1.0.0', actual: null, ok: false });
-    const r = runMetaVersionGate({ root: dir });
+    const r = runMetaGate({ root: dir });
     expect(r.exitCode).toBe(1);
     expect(r.output).toMatch(/no meta\/version in Figma/);
+  });
+});
+
+describe('meta gate covers every Hirobius/Meta value', () => {
+  const noGit = { git: () => null };
+  it('fails on a stale meta/npmName even when meta/version matches', async () => {
+    const dir = await root();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'a', version: '1.0.0' }));
+    const { model } = loadFigmaInputs(dir);
+    const figma = newFixtureFile();
+    const { payload, checksum } = buildPushPayload(model);
+    await hdsRunPush(figma, payload, checksum);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...(await hdsRunSnapshot(figma)), tokensHash: tokensFileHash(dir) }),
+    );
+    expect(runMetaGate({ root: dir, ...noGit }).exitCode).toBe(0);
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'b', version: '1.0.0' }));
+    const gaps = metaReleaseGaps(dir, noGit);
+    expect(gaps.filter((g) => !g.ok).map((g) => g.name)).toEqual(['meta/npmName']);
+    const r = runMetaGate({ root: dir, ...noGit });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/meta\/npmName is a in Figma but code says b/);
+    expect(runReleaseGate({ root: dir, ...noGit }).exitCode).toBe(1);
+  });
+
+  it('fails when meta/commit moved on (a synced input changed after the push)', async () => {
+    const dir = await root();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ version: '1.0.0' }));
+    const at = (sha) => ({ git: (_r, args) => (args.includes('--format=%H') ? sha : null) });
+    const { readFigmaMeta } = await import('../lib/figma-meta.mjs');
+    const { buildFigmaModel } = await import('../lib/figma-model.mjs');
+    const { readFileSync: read } = await import('fs');
+    const tokens = JSON.parse(read(join(dir, 'hirobius.tokens.json'), 'utf8'));
+    const model = buildFigmaModel(tokens, { meta: readFigmaMeta(dir, at('1111111aaaa')) });
+    const figma = newFixtureFile();
+    const { payload, checksum } = buildPushPayload(model);
+    await hdsRunPush(figma, payload, checksum);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...(await hdsRunSnapshot(figma)), tokensHash: tokensFileHash(dir) }),
+    );
+    expect(runMetaGate({ root: dir, ...at('1111111aaaa') }).exitCode).toBe(0);
+    const r = runMetaGate({ root: dir, ...at('2222222bbbb') });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/meta\/commit is 1111111 in Figma but code says 2222222/);
   });
 });

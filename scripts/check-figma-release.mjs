@@ -13,17 +13,19 @@
  *      (hds#801 step 3, folds in #762). Slot, layout and internal components
  *      are absent from Figma on purpose (hds#235) and never count. The table's
  *      freshness is pretest's `figma:disposition --check`, not this gate's.
- *   4. Figma's meta/version (the library cover's version text) is not
- *      package.json's "version", the version being released. Named on its own
- *      line, with a reminder, even though step 1 counts it as drift too.
+ *   4. a Hirobius/Meta value in Figma (the library cover: meta/version,
+ *      releasedAt, commit, docsUrl, repoUrl, npmName; scripts/lib/figma-meta.mjs)
+ *      differs from what code reads now, above all meta/version against the
+ *      version being released. Each named on its own line, with a reminder,
+ *      even though step 1 counts it as drift too.
  *
- * --meta-version runs step 4 alone: `pnpm release:local` runs it before the
- * build, so a laptop release cannot ship with a stale cover.
+ * --meta runs step 4 alone: `pnpm release:local` runs it before the build,
+ * so a laptop release cannot ship with a stale cover.
  *
  * `pnpm release` (the script release.yml publishes through) runs this first.
  * Exit 0 clean · 1 refuse to publish. Never talks to Figma.
  *
- * Usage: node scripts/check-figma-release.mjs [--meta-version]
+ * Usage: node scripts/check-figma-release.mjs [--meta]
  */
 
 import { existsSync, readFileSync } from 'fs';
@@ -31,8 +33,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { runDriftCheck } from './check-figma-drift.mjs';
 import { parseSnapshotFile, tokensFileHash } from './lib/figma-snapshot.mjs';
-import { packageVersion } from './lib/figma-inputs.mjs';
-import { snapshotMetaVersion } from './lib/figma-drift.mjs';
+import { readFigmaMeta, metaGaps } from './lib/figma-meta.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BEHIND = 'Figma is behind code';
@@ -43,56 +44,70 @@ const COVERAGE_FIX =
   'Fix: draw each in the library through use_figma, add its node as an @figma tag in the component JSDoc (or a figma/mapping-overrides.json entry), then pnpm manifest:generate && pnpm figma:disposition --write.';
 
 const META_FIX =
-  'Reminder: the library cover reads meta/version. Push it (pnpm figma:push, or figma/push delta.js through use_figma), refresh the snapshot by the snapshot-diff route (figma/push/use-figma/snapshot-diff.js through use_figma, then pnpm figma:snapshot --from-diff <file>), commit figma/snapshot.json, and publish the library.';
+  'Reminder: the library cover reads Hirobius/Meta. Push it from main (pnpm figma:push, or figma/push delta.js through use_figma), refresh the snapshot by the snapshot-diff route (figma/push/use-figma/snapshot-diff.js through use_figma, then pnpm figma:snapshot --from-diff <file>), commit figma/snapshot.json, and publish the library.';
 
 /**
- * Figma's meta/version (from figma/snapshot.json) against package.json's
- * "version", the version being released. `actual` is null when the snapshot
- * is missing or holds no meta/version.
+ * Every Hirobius/Meta value code sets (readFigmaMeta) against Figma's, from
+ * figma/snapshot.json. `actual` is null when the snapshot is missing or holds
+ * no such variable.
  * @param {string} root
- * @returns {{ expected: string|null, actual: string|null, ok: boolean }}
+ * @param {{ git?: Function }} [options]  passed to readFigmaMeta.
+ * @returns {Array<{ key: string, name: string, expected: string, actual: string|null, ok: boolean }>}
  */
-export function metaVersionGap(root) {
-  const expected = packageVersion(root);
+export function metaReleaseGaps(root, options = {}) {
   const snapshotPath = join(root, 'figma', 'snapshot.json');
-  let actual = null;
+  let snapshot = { collections: [] };
   if (existsSync(snapshotPath)) {
     try {
-      actual = snapshotMetaVersion(parseSnapshotFile(readFileSync(snapshotPath, 'utf8')).snapshot);
+      snapshot = parseSnapshotFile(readFileSync(snapshotPath, 'utf8')).snapshot;
     } catch {
-      /* unreadable snapshot: no version to read */
+      /* unreadable snapshot: nothing to read */
     }
   }
-  return { expected, actual, ok: expected !== null && actual === expected };
+  return metaGaps(readFigmaMeta(root, options), snapshot);
+}
+
+/** meta/version alone: `{ expected, actual, ok }`, expected null without a package.json. */
+export function metaVersionGap(root, options = {}) {
+  const gap = metaReleaseGaps(root, options).find((g) => g.key === 'version');
+  return gap
+    ? { expected: gap.expected, actual: gap.actual, ok: gap.ok }
+    : { expected: null, actual: null, ok: false };
 }
 
 /**
- * The step-4 problem line, or null when meta/version matches. A root with no
- * package.json version (a fixture mini-root) builds no meta/version, so it has
- * nothing to compare.
+ * The step-4 problem lines (empty when every meta value matches). A root with
+ * no package.json (a fixture mini-root) builds no meta, so it has none.
  */
-function metaVersionProblem(root) {
-  const gap = metaVersionGap(root);
-  if (gap.ok || gap.expected === null) return null;
-  return gap.actual === null
-    ? `there is no meta/version in Figma (figma/snapshot.json) but this release is ${gap.expected}.`
-    : `meta/version is ${gap.actual} in Figma but this release is ${gap.expected}.`;
+function metaProblems(root, options) {
+  return metaReleaseGaps(root, options)
+    .filter((g) => !g.ok)
+    .map((g) => {
+      const subject = g.key === 'version' ? 'this release is' : 'code says';
+      return g.actual === null
+        ? `there is no ${g.name} in Figma (figma/snapshot.json) but ${subject} ${g.expected}.`
+        : `${g.name} is ${g.actual} in Figma but ${subject} ${g.expected}.`;
+    });
 }
 
 /**
- * Step 4 alone (`--meta-version`).
- * @param {{ root: string }} options
+ * Step 4 alone (`--meta`).
+ * @param {{ root: string, git?: Function }} options
  * @returns {{ exitCode: 0|1, output: string }}
  */
-export function runMetaVersionGate({ root }) {
-  const problem = metaVersionProblem(root);
-  if (!problem) {
+export function runMetaGate({ root, ...options }) {
+  const problems = metaProblems(root, options);
+  if (!problems.length) {
+    const version = metaVersionGap(root, options).expected;
     return {
       exitCode: 0,
-      output: `✓ check-figma-release — Figma meta/version ${metaVersionGap(root).expected} matches this release`,
+      output: `✓ check-figma-release — Figma Hirobius/Meta matches code (meta/version ${version})`,
     };
   }
-  return { exitCode: 1, output: `✗ ${BEHIND}: refusing to publish.\n- ${problem}\n${META_FIX}` };
+  return {
+    exitCode: 1,
+    output: `✗ ${BEHIND}: refusing to publish.\n- ${problems.join('\n- ')}\n${META_FIX}`,
+  };
 }
 
 /**
@@ -124,10 +139,10 @@ export function componentCoverageGaps(root) {
 }
 
 /**
- * @param {{ root: string }} options
+ * @param {{ root: string, git?: Function }} options  git: passed to readFigmaMeta.
  * @returns {{ exitCode: 0|1, output: string }}
  */
-export function runReleaseGate({ root }) {
+export function runReleaseGate({ root, ...options }) {
   const problems = [];
   const drift = runDriftCheck({ root });
   if (drift.exitCode === 2 || !existsSync(join(root, 'figma', 'snapshot.json'))) {
@@ -157,8 +172,8 @@ export function runReleaseGate({ root }) {
     }
   }
   const tokenProblems = problems.length;
-  const metaProblem = metaVersionProblem(root);
-  if (metaProblem) problems.push(metaProblem);
+  const meta = metaProblems(root, options);
+  problems.push(...meta);
   const coverage = componentCoverageGaps(root);
   if (!coverage.table) {
     problems.push(
@@ -173,12 +188,12 @@ export function runReleaseGate({ root }) {
     return { exitCode: 0, output: '✓ check-figma-release — Figma matches code' };
   return {
     exitCode: 1,
-    output: `✗ ${BEHIND}: refusing to publish.\n- ${problems.join('\n- ')}${tokenProblems ? `\n${FIX}` : ''}${metaProblem ? `\n${META_FIX}` : ''}`,
+    output: `✗ ${BEHIND}: refusing to publish.\n- ${problems.join('\n- ')}${tokenProblems ? `\n${FIX}` : ''}${meta.length ? `\n${META_FIX}` : ''}`,
   };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const gate = process.argv.includes('--meta-version') ? runMetaVersionGate : runReleaseGate;
+  const gate = process.argv.includes('--meta') ? runMetaGate : runReleaseGate;
   const { exitCode, output } = gate({ root: ROOT });
   (exitCode === 0 ? console.log : console.error)(output);
   process.exit(exitCode);

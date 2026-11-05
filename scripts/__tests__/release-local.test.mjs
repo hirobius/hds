@@ -108,8 +108,8 @@ describe('runSteps', () => {
     expect(runSteps(false)[1]).toEqual(audit);
     expect(runSteps(true)[1]).toEqual(audit);
   });
-  it('checks Figma meta/version against the release before building', () => {
-    const gate = ['node', ['scripts/check-figma-release.mjs', '--meta-version']];
+  it('checks Figma Hirobius/Meta against the release before building', () => {
+    const gate = ['node', ['scripts/check-figma-release.mjs', '--meta']];
     expect(runSteps(false)[2]).toEqual(gate);
     expect(runSteps(true)[2]).toEqual(gate);
   });
