@@ -460,6 +460,26 @@ export function fileLines(root, file) {
   };
 }
 
+/**
+ * Run a text-scoped gate's finder over its files (hds#1010): each file's
+ * text and repo-relative posix path go to `find`, and the violations are
+ * concatenated in file order.
+ *
+ * @template V
+ * @param {string} root
+ * @param {string[]} files  absolute paths
+ * @param {(text: string, rel: string) => V[]} find
+ * @returns {V[]}
+ */
+export function textViolations(root, files, find) {
+  const out = [];
+  for (const file of files) {
+    const rel = path.relative(root, file).replace(/\\/g, '/');
+    out.push(...find(readFileSync(file, 'utf-8'), rel));
+  }
+  return out;
+}
+
 /** Whether a source line is a `//` or block-comment `*` line (hds#1010). */
 export function isCommentLine(line) {
   const t = line.trim();
