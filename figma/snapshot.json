@@ -1,15 +1,15 @@
 {
-  "checksum": "737344cb",
+  "checksum": "bd4c74f9",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-05T03:54:00.427Z",
+    "takenAt": "2026-11-05T21:32:06.918Z",
     "file": {
-      "name": "HDS Tokens & Components (Copy)",
+      "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "56376cd8",
-      "pushedAt": "2026-10-27T16:01:36.150Z",
+      "modelHash": "de7d6cd7",
+      "pushedAt": "2026-11-05T21:15:12.430Z",
       "scope": null
     },
     "collections": [
@@ -697,6 +697,28 @@
                   "r": 0.768627,
                   "g": 0.784314,
                   "b": 0.811765,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:53",
+            "name": "color/graphite/250",
+            "path": "primitive.color.graphite.250",
+            "resolvedType": "COLOR",
+            "description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-graphite-250)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.701961,
+                  "g": 0.721569,
+                  "b": 0.752941,
                   "a": 1
                 }
               }
@@ -1649,6 +1671,28 @@
             }
           },
           {
+            "id": "VariableID:2477:50",
+            "name": "color/neutral/150",
+            "path": "primitive.color.neutral.150",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-150)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.913725,
+                  "g": 0.917647,
+                  "b": 0.92549,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:3:4",
             "name": "color/neutral/200",
             "path": "primitive.color.neutral.200",
@@ -1671,6 +1715,28 @@
             }
           },
           {
+            "id": "VariableID:2477:51",
+            "name": "color/neutral/250",
+            "path": "primitive.color.neutral.250",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-250)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.866667,
+                  "g": 0.870588,
+                  "b": 0.878431,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:3:5",
             "name": "color/neutral/300",
             "path": "primitive.color.neutral.300",
@@ -1687,6 +1753,28 @@
                   "r": 0.827451,
                   "g": 0.831373,
                   "b": 0.839216,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:52",
+            "name": "color/neutral/325",
+            "path": "primitive.color.neutral.325",
+            "resolvedType": "COLOR",
+            "description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-325)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.780392,
+                  "g": 0.788235,
+                  "b": 0.8,
                   "a": 1
                 }
               }
@@ -1807,7 +1895,7 @@
             "name": "color/neutral/550",
             "path": "primitive.color.neutral.550",
             "resolvedType": "COLOR",
-            "description": "Dark surface.softHover (C2).",
+            "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2575,6 +2663,23 @@
             }
           },
           {
+            "id": "VariableID:2477:54",
+            "name": "radius/10",
+            "path": "primitive.radius.10",
+            "resolvedType": "FLOAT",
+            "description": "Focus-ring step: an 8px radius plus the 2px focus gap.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-radius-10)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 10
+              }
+            }
+          },
+          {
             "id": "VariableID:5:29",
             "name": "radius/12",
             "path": "primitive.radius.12",
@@ -2588,6 +2693,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 12
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:55",
+            "name": "radius/14",
+            "path": "primitive.radius.14",
+            "resolvedType": "FLOAT",
+            "description": "Focus-ring step: a 12px radius plus the 2px focus gap.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-radius-14)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 14
               }
             }
           },
@@ -3051,6 +3173,23 @@
             }
           },
           {
+            "id": "VariableID:2477:57",
+            "name": "size/width/1180",
+            "path": "primitive.size.width.1180",
+            "resolvedType": "FLOAT",
+            "description": "App shell max width: a 1180px column for app pages (hds#863).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-size-width-1180)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 1180
+              }
+            }
+          },
+          {
             "id": "VariableID:7:40",
             "name": "size/width/1200",
             "path": "primitive.size.width.1200",
@@ -3510,6 +3649,23 @@
             }
           },
           {
+            "id": "VariableID:2477:58",
+            "name": "strokeWidth/175",
+            "path": "primitive.strokeWidth.175",
+            "resolvedType": "FLOAT",
+            "description": "1.75-unit stroke.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-strokeWidth-175)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 1.75
+              }
+            }
+          },
+          {
             "id": "VariableID:2347:4",
             "name": "strokeWidth/200",
             "path": "primitive.strokeWidth.200",
@@ -3761,6 +3917,23 @@
             "valuesByMode": {
               "Default": {
                 "value": 56
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:56",
+            "name": "typography/size/hero",
+            "path": "primitive.typography.size.hero",
+            "resolvedType": "FLOAT",
+            "description": "Hero size (ADR-052 addendum): covers and marketing headers only, a step above display.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-typography-size-hero)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 120
               }
             }
           },
@@ -4388,6 +4561,30 @@
             }
           },
           {
+            "id": "VariableID:2477:75",
+            "name": "borderWidth/icon/medium",
+            "path": "semantic.borderWidth.icon.medium",
+            "resolvedType": "FLOAT",
+            "description": "Medium icon stroke (1.75), between light and regular.",
+            "scopes": [
+              "STROKE_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-borderWidth-icon-medium)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:58",
+                "to": "Hirobius/Primitives: strokeWidth/175"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:58",
+                "to": "Hirobius/Primitives: strokeWidth/175"
+              }
+            }
+          },
+          {
             "id": "VariableID:2347:9",
             "name": "borderWidth/icon/regular",
             "path": "semantic.borderWidth.icon.regular",
@@ -4436,163 +4633,6 @@
             }
           },
           {
-            "id": "VariableID:2273:1151",
-            "name": "button/edge/danger",
-            "path": "component.button.edge.danger",
-            "resolvedType": "COLOR",
-            "description": "Hard raised edge under a danger-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-edge-danger)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:3:28",
-                "to": "Hirobius/Primitives: color/red/400"
-              },
-              "Dark": {
-                "alias": "VariableID:3:29",
-                "to": "Hirobius/Primitives: color/red/700"
-              }
-            }
-          },
-          {
-            "id": "VariableID:2273:1154",
-            "name": "button/edge/info",
-            "path": "component.button.edge.info",
-            "resolvedType": "COLOR",
-            "description": "Hard raised edge under an info-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-edge-info)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:3:19",
-                "to": "Hirobius/Primitives: color/blue/300"
-              },
-              "Dark": {
-                "alias": "VariableID:3:22",
-                "to": "Hirobius/Primitives: color/blue/500"
-              }
-            }
-          },
-          {
-            "id": "VariableID:2273:1149",
-            "name": "button/edge/primary",
-            "path": null,
-            "resolvedType": "COLOR",
-            "description": "Raised edge, computed by scripts/lib/raised-edge.mjs (hds#897). No DTCG token yet.",
-            "scopes": [
-              "EFFECT_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--hds-edge-primary)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "value": {
-                  "r": 0.003922,
-                  "g": 0.007843,
-                  "b": 0.027451,
-                  "a": 1
-                }
-              },
-              "Dark": {
-                "value": {
-                  "r": 0.647059,
-                  "g": 0.65098,
-                  "b": 0.662745,
-                  "a": 1
-                }
-              }
-            }
-          },
-          {
-            "id": "VariableID:2273:1150",
-            "name": "button/edge/secondary",
-            "path": "component.button.edge.secondary",
-            "resolvedType": "COLOR",
-            "description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-edge-secondary)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:2182:2",
-                "to": "Hirobius/Primitives: color/neutral/350"
-              },
-              "Dark": {
-                "alias": "VariableID:2364:2146",
-                "to": "Hirobius/Primitives: color/neutral/725"
-              }
-            }
-          },
-          {
-            "id": "VariableID:2273:1152",
-            "name": "button/edge/success",
-            "path": "component.button.edge.success",
-            "resolvedType": "COLOR",
-            "description": "Hard raised edge under a success-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-edge-success)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:3:32",
-                "to": "Hirobius/Primitives: color/green/400"
-              },
-              "Dark": {
-                "alias": "VariableID:3:33",
-                "to": "Hirobius/Primitives: color/green/700"
-              }
-            }
-          },
-          {
-            "id": "VariableID:2273:1153",
-            "name": "button/edge/warning",
-            "path": "component.button.edge.warning",
-            "resolvedType": "COLOR",
-            "description": "Hard raised edge under a warning-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897). Themed, so it lives in Hirobius/Semantic, the one Light/Dark collection.",
-            "scopes": [
-              "ALL_FILLS",
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-button-edge-warning)"
-            },
-            "valuesByMode": {
-              "Light": {
-                "alias": "VariableID:3:40",
-                "to": "Hirobius/Primitives: color/amber/400"
-              },
-              "Dark": {
-                "alias": "VariableID:3:41",
-                "to": "Hirobius/Primitives: color/amber/800"
-              }
-            }
-          },
-          {
             "id": "VariableID:10:18",
             "name": "color/border/accent",
             "path": "semantic.color.border.accent",
@@ -4631,8 +4671,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:4",
-                "to": "Hirobius/Primitives: color/graphite/200"
+                "alias": "VariableID:2477:53",
+                "to": "Hirobius/Primitives: color/graphite/250"
               },
               "Dark": {
                 "alias": "VariableID:3:8",
@@ -4829,8 +4869,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:5",
-                "to": "Hirobius/Primitives: color/neutral/300"
+                "alias": "VariableID:2182:2",
+                "to": "Hirobius/Primitives: color/neutral/350"
               },
               "Dark": {
                 "alias": "VariableID:3:8",
@@ -4985,8 +5025,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:7",
-                "to": "Hirobius/Primitives: color/neutral/500"
+                "alias": "VariableID:2240:2",
+                "to": "Hirobius/Primitives: color/neutral/550"
               },
               "Dark": {
                 "alias": "VariableID:2182:3",
@@ -5017,6 +5057,164 @@
               "Dark": {
                 "alias": "VariableID:3:40",
                 "to": "Hirobius/Primitives: color/amber/400"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6890",
+            "name": "color/edge/danger",
+            "path": "semantic.color.edge.danger",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under danger-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-edge-danger)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:28",
+                "to": "Hirobius/Primitives: color/red/400"
+              },
+              "Dark": {
+                "alias": "VariableID:3:29",
+                "to": "Hirobius/Primitives: color/red/700"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6893",
+            "name": "color/edge/info",
+            "path": "semantic.color.edge.info",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under info-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-edge-info)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:19",
+                "to": "Hirobius/Primitives: color/blue/300"
+              },
+              "Dark": {
+                "alias": "VariableID:3:22",
+                "to": "Hirobius/Primitives: color/blue/500"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6889",
+            "name": "color/edge/neutral",
+            "path": "semantic.color.edge.neutral",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-edge-neutral)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:6",
+                "to": "Hirobius/Primitives: color/neutral/400"
+              },
+              "Dark": {
+                "alias": "VariableID:2364:2146",
+                "to": "Hirobius/Primitives: color/neutral/725"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2507:6930",
+            "name": "color/edge/primary",
+            "path": "semantic.color.edge.primary",
+            "resolvedType": "COLOR",
+            "description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-edge-primary)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": {
+                  "r": 0.003919,
+                  "g": 0.007835,
+                  "b": 0.027408,
+                  "a": 1
+                }
+              },
+              "Dark": {
+                "value": {
+                  "r": 0.647158,
+                  "g": 0.651038,
+                  "b": 0.662675,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6891",
+            "name": "color/edge/success",
+            "path": "semantic.color.edge.success",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under success-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-edge-success)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:32",
+                "to": "Hirobius/Primitives: color/green/400"
+              },
+              "Dark": {
+                "alias": "VariableID:3:33",
+                "to": "Hirobius/Primitives: color/green/700"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6892",
+            "name": "color/edge/warning",
+            "path": "semantic.color.edge.warning",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under warning-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-edge-warning)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:3:40",
+                "to": "Hirobius/Primitives: color/amber/400"
+              },
+              "Dark": {
+                "alias": "VariableID:3:41",
+                "to": "Hirobius/Primitives: color/amber/800"
               }
             }
           },
@@ -5411,8 +5609,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2477:51",
+                "to": "Hirobius/Primitives: color/neutral/250"
               },
               "Dark": {
                 "alias": "VariableID:3:9",
@@ -5461,8 +5659,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2477:51",
+                "to": "Hirobius/Primitives: color/neutral/250"
               },
               "Dark": {
                 "alias": "VariableID:2371:2",
@@ -5486,8 +5684,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:3",
-                "to": "Hirobius/Primitives: color/neutral/100"
+                "alias": "VariableID:2477:51",
+                "to": "Hirobius/Primitives: color/neutral/250"
               },
               "Dark": {
                 "alias": "VariableID:3:10",
@@ -5536,8 +5734,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:3:5",
+                "to": "Hirobius/Primitives: color/neutral/300"
               },
               "Dark": {
                 "alias": "VariableID:3:15",
@@ -5561,8 +5759,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:2",
-                "to": "Hirobius/Primitives: color/neutral/50"
+                "alias": "VariableID:2477:50",
+                "to": "Hirobius/Primitives: color/neutral/150"
               },
               "Dark": {
                 "alias": "VariableID:2371:3",
@@ -5611,8 +5809,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:2477:52",
+                "to": "Hirobius/Primitives: color/neutral/325"
               },
               "Dark": {
                 "alias": "VariableID:2364:2146",
@@ -5636,8 +5834,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:3:5",
+                "to": "Hirobius/Primitives: color/neutral/300"
               },
               "Dark": {
                 "alias": "VariableID:3:8",
@@ -5661,8 +5859,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:5",
-                "to": "Hirobius/Primitives: color/neutral/300"
+                "alias": "VariableID:2477:52",
+                "to": "Hirobius/Primitives: color/neutral/325"
               },
               "Dark": {
                 "alias": "VariableID:2240:2",
@@ -5686,8 +5884,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:4",
-                "to": "Hirobius/Primitives: color/neutral/200"
+                "alias": "VariableID:3:5",
+                "to": "Hirobius/Primitives: color/neutral/300"
               },
               "Dark": {
                 "alias": "VariableID:3:9",
@@ -5764,6 +5962,318 @@
               "Dark": {
                 "alias": "VariableID:2061:882",
                 "to": "Hirobius/Semantic: space/scale/xl"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:124",
+            "name": "focus/gap/width",
+            "path": "semantic.focus.gap.width",
+            "resolvedType": "FLOAT",
+            "description": "Space between the element edge and the focus ring (2px, the outline offset).",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-gap-width)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:7:50",
+                "to": "Hirobius/Primitives: borderWidth/sm"
+              },
+              "Dark": {
+                "alias": "VariableID:7:50",
+                "to": "Hirobius/Primitives: borderWidth/sm"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:125",
+            "name": "focus/radius/control/gapRadius",
+            "path": "semantic.focus.radius.control.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-control-gapRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2241:2",
+                "to": "Hirobius/Primitives: radius/6"
+              },
+              "Dark": {
+                "alias": "VariableID:2241:2",
+                "to": "Hirobius/Primitives: radius/6"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:126",
+            "name": "focus/radius/control/ringRadius",
+            "path": "semantic.focus.radius.control.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-control-ringRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:28",
+                "to": "Hirobius/Primitives: radius/8"
+              },
+              "Dark": {
+                "alias": "VariableID:5:28",
+                "to": "Hirobius/Primitives: radius/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:131",
+            "name": "focus/radius/lg/gapRadius",
+            "path": "semantic.focus.radius.lg.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: a rounded-lg (12px) element radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-lg-gapRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:55",
+                "to": "Hirobius/Primitives: radius/14"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:55",
+                "to": "Hirobius/Primitives: radius/14"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:132",
+            "name": "focus/radius/lg/ringRadius",
+            "path": "semantic.focus.radius.lg.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: a rounded-lg (12px) element radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-lg-ringRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2229:3",
+                "to": "Hirobius/Primitives: radius/16"
+              },
+              "Dark": {
+                "alias": "VariableID:2229:3",
+                "to": "Hirobius/Primitives: radius/16"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:129",
+            "name": "focus/radius/md/gapRadius",
+            "path": "semantic.focus.radius.md.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-md-gapRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:54",
+                "to": "Hirobius/Primitives: radius/10"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:54",
+                "to": "Hirobius/Primitives: radius/10"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:130",
+            "name": "focus/radius/md/ringRadius",
+            "path": "semantic.focus.radius.md.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-md-ringRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:29",
+                "to": "Hirobius/Primitives: radius/12"
+              },
+              "Dark": {
+                "alias": "VariableID:5:29",
+                "to": "Hirobius/Primitives: radius/12"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:133",
+            "name": "focus/radius/pill/gapRadius",
+            "path": "semantic.focus.radius.pill.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: a fully round element radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-pill-gapRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
+              },
+              "Dark": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:134",
+            "name": "focus/radius/pill/ringRadius",
+            "path": "semantic.focus.radius.pill.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: a fully round element radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-pill-ringRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
+              },
+              "Dark": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:127",
+            "name": "focus/radius/sm/gapRadius",
+            "path": "semantic.focus.radius.sm.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: a rounded-sm (6px) element radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-sm-gapRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:28",
+                "to": "Hirobius/Primitives: radius/8"
+              },
+              "Dark": {
+                "alias": "VariableID:5:28",
+                "to": "Hirobius/Primitives: radius/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:128",
+            "name": "focus/radius/sm/ringRadius",
+            "path": "semantic.focus.radius.sm.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: a rounded-sm (6px) element radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-radius-sm-ringRadius)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:54",
+                "to": "Hirobius/Primitives: radius/10"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:54",
+                "to": "Hirobius/Primitives: radius/10"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:123",
+            "name": "focus/ring/color",
+            "path": "semantic.focus.ring.color",
+            "resolvedType": "COLOR",
+            "description": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight.",
+            "scopes": [
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-ring-color)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "Dark": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2473:122",
+            "name": "focus/ring/width",
+            "path": "semantic.focus.ring.width",
+            "resolvedType": "FLOAT",
+            "description": "Focus ring stroke width (2px).",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-focus-ring-width)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:7:50",
+                "to": "Hirobius/Primitives: borderWidth/sm"
+              },
+              "Dark": {
+                "alias": "VariableID:7:50",
+                "to": "Hirobius/Primitives: borderWidth/sm"
               }
             }
           },
@@ -6004,6 +6514,30 @@
               "Dark": {
                 "alias": "VariableID:7:40",
                 "to": "Hirobius/Primitives: size/width/1200"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:59",
+            "name": "layout/width/shell",
+            "path": "semantic.layout.width.shell",
+            "resolvedType": "FLOAT",
+            "description": "Max width for app shells (1180px). Use with Container maxWidth shell and a gutter.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-layout-width-shell)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:57",
+                "to": "Hirobius/Primitives: size/width/1180"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:57",
+                "to": "Hirobius/Primitives: size/width/1180"
               }
             }
           },
@@ -7234,6 +7768,122 @@
             }
           },
           {
+            "id": "VariableID:2477:65",
+            "name": "typography/bodyStrong/font-family",
+            "path": "semantic.typography.bodyStrong.font-family",
+            "resolvedType": "STRING",
+            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-bodyStrong-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:31",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              },
+              "Dark": {
+                "alias": "VariableID:5:31",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:66",
+            "name": "typography/bodyStrong/font-size",
+            "path": "semantic.typography.bodyStrong.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong. Varies by density: its value comes from Hirobius/Density.",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-bodyStrong-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:91",
+                "to": "Hirobius/Density: semantic/typography/bodyStrong/font-size"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:91",
+                "to": "Hirobius/Density: semantic/typography/bodyStrong/font-size"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:67",
+            "name": "typography/bodyStrong/font-weight",
+            "path": "semantic.typography.bodyStrong.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-bodyStrong-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:49",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              },
+              "Dark": {
+                "alias": "VariableID:5:49",
+                "to": "Hirobius/Primitives: typography/weight/bold"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:68",
+            "name": "typography/bodyStrong/letter-spacing",
+            "path": "semantic.typography.bodyStrong.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from 0em at 18px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-bodyStrong-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 0
+              },
+              "Dark": {
+                "value": 0
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:69",
+            "name": "typography/bodyStrong/line-height",
+            "path": "semantic.typography.bodyStrong.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from 1.6 × 18px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-bodyStrong-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 28.799999
+              },
+              "Dark": {
+                "value": 28.799999
+              }
+            }
+          },
+          {
             "id": "VariableID:2018:739",
             "name": "typography/caption/font-family",
             "path": "semantic.typography.caption.font-family",
@@ -7930,6 +8580,122 @@
             }
           },
           {
+            "id": "VariableID:2477:60",
+            "name": "typography/hero/font-family",
+            "path": "semantic.typography.hero.font-family",
+            "resolvedType": "STRING",
+            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-hero-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:32",
+                "to": "Hirobius/Primitives: typography/family/display"
+              },
+              "Dark": {
+                "alias": "VariableID:5:32",
+                "to": "Hirobius/Primitives: typography/family/display"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:61",
+            "name": "typography/hero/font-size",
+            "path": "semantic.typography.hero.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-hero-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:56",
+                "to": "Hirobius/Primitives: typography/size/hero"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:56",
+                "to": "Hirobius/Primitives: typography/size/hero"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:62",
+            "name": "typography/hero/font-weight",
+            "path": "semantic.typography.hero.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-hero-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
+              },
+              "Dark": {
+                "alias": "VariableID:2187:19",
+                "to": "Hirobius/Primitives: typography/weight/display"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:63",
+            "name": "typography/hero/letter-spacing",
+            "path": "semantic.typography.hero.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700. Converted from -0.01em at 120px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-hero-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": -1.2
+              },
+              "Dark": {
+                "value": -1.2
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:64",
+            "name": "typography/hero/line-height",
+            "path": "semantic.typography.hero.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700. Converted from 1.05 × 120px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-hero-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 126
+              },
+              "Dark": {
+                "value": 126
+              }
+            }
+          },
+          {
             "id": "VariableID:13:27",
             "name": "typography/mono/font-family",
             "path": "semantic.typography.mono.font-family",
@@ -8383,6 +9149,122 @@
             "hiddenFromPublishing": false,
             "codeSyntax": {
               "WEB": "var(--semantic-typography-ui-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 24
+              },
+              "Dark": {
+                "value": 24
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:70",
+            "name": "typography/uiItalic/font-family",
+            "path": "semantic.typography.uiItalic.font-family",
+            "resolvedType": "STRING",
+            "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiItalic-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:31",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              },
+              "Dark": {
+                "alias": "VariableID:5:31",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:71",
+            "name": "typography/uiItalic/font-size",
+            "path": "semantic.typography.uiItalic.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic. Varies by density: its value comes from Hirobius/Density.",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiItalic-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2477:92",
+                "to": "Hirobius/Density: semantic/typography/uiItalic/font-size"
+              },
+              "Dark": {
+                "alias": "VariableID:2477:92",
+                "to": "Hirobius/Density: semantic/typography/uiItalic/font-size"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:72",
+            "name": "typography/uiItalic/font-weight",
+            "path": "semantic.typography.uiItalic.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiItalic-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:47",
+                "to": "Hirobius/Primitives: typography/weight/medium"
+              },
+              "Dark": {
+                "alias": "VariableID:5:47",
+                "to": "Hirobius/Primitives: typography/weight/medium"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:73",
+            "name": "typography/uiItalic/letter-spacing",
+            "path": "semantic.typography.uiItalic.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic. Converted from 0em at 16px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiItalic-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 0
+              },
+              "Dark": {
+                "value": 0
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:74",
+            "name": "typography/uiItalic/line-height",
+            "path": "semantic.typography.uiItalic.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic. Converted from 1.5 × 16px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiItalic-line-height)"
             },
             "valuesByMode": {
               "Light": {
@@ -8905,6 +9787,172 @@
               "Default": {
                 "alias": "VariableID:12:23",
                 "to": "Hirobius/Semantic: accent/pressed"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6895",
+            "name": "button/edge/danger",
+            "path": "component.button.edge.danger",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-edge-danger)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2501:6890",
+                "to": "Hirobius/Semantic: color/edge/danger"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6898",
+            "name": "button/edge/info",
+            "path": "component.button.edge.info",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-edge-info)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2501:6893",
+                "to": "Hirobius/Semantic: color/edge/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2507:6931",
+            "name": "button/edge/primary",
+            "path": "component.button.edge.primary",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-edge-primary)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2507:6930",
+                "to": "Hirobius/Semantic: color/edge/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6894",
+            "name": "button/edge/secondary",
+            "path": "component.button.edge.secondary",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-edge-secondary)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2501:6889",
+                "to": "Hirobius/Semantic: color/edge/neutral"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6896",
+            "name": "button/edge/success",
+            "path": "component.button.edge.success",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-edge-success)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2501:6891",
+                "to": "Hirobius/Semantic: color/edge/success"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2501:6897",
+            "name": "button/edge/warning",
+            "path": "component.button.edge.warning",
+            "resolvedType": "COLOR",
+            "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning (hds#897).",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-edge-warning)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2501:6892",
+                "to": "Hirobius/Semantic: color/edge/warning"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:78",
+            "name": "button/focus/gapRadius",
+            "path": "component.button.focus.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: the Button (8px) radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-focus-gapRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2477:54",
+                "to": "Hirobius/Primitives: radius/10"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:79",
+            "name": "button/focus/ringRadius",
+            "path": "component.button.focus.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: the Button (8px) radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-focus-ringRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:29",
+                "to": "Hirobius/Primitives: radius/12"
               }
             }
           },
@@ -9642,6 +10690,46 @@
             }
           },
           {
+            "id": "VariableID:2477:82",
+            "name": "card/focus/gapRadius",
+            "path": "component.card.focus.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: an interactive Card (12px) radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-card-focus-gapRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2477:55",
+                "to": "Hirobius/Primitives: radius/14"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:83",
+            "name": "card/focus/ringRadius",
+            "path": "component.card.focus.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: an interactive Card (12px) radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-card-focus-ringRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2229:3",
+                "to": "Hirobius/Primitives: radius/16"
+              }
+            }
+          },
+          {
             "id": "VariableID:15:39",
             "name": "card/gap",
             "path": "component.card.gap",
@@ -9723,6 +10811,126 @@
             }
           },
           {
+            "id": "VariableID:2477:88",
+            "name": "inlineLink/size/lg/fontSize",
+            "path": "component.inlineLink.size.lg.fontSize",
+            "resolvedType": "FLOAT",
+            "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-inlineLink-size-lg-fontSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2229:7",
+                "to": "Hirobius/Primitives: typography/size/title"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:89",
+            "name": "inlineLink/size/lg/iconSize",
+            "path": "component.inlineLink.size.lg.iconSize",
+            "resolvedType": "FLOAT",
+            "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-inlineLink-size-lg-iconSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:7:29",
+                "to": "Hirobius/Primitives: size/20"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:86",
+            "name": "inlineLink/size/md/fontSize",
+            "path": "component.inlineLink.size.md.fontSize",
+            "resolvedType": "FLOAT",
+            "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-inlineLink-size-md-fontSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:38",
+                "to": "Hirobius/Primitives: typography/size/lg"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:87",
+            "name": "inlineLink/size/md/iconSize",
+            "path": "component.inlineLink.size.md.iconSize",
+            "resolvedType": "FLOAT",
+            "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-inlineLink-size-md-iconSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:7:27",
+                "to": "Hirobius/Primitives: size/12"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:84",
+            "name": "inlineLink/size/sm/fontSize",
+            "path": "component.inlineLink.size.sm.fontSize",
+            "resolvedType": "FLOAT",
+            "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-inlineLink-size-sm-fontSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:85",
+            "name": "inlineLink/size/sm/iconSize",
+            "path": "component.inlineLink.size.sm.iconSize",
+            "resolvedType": "FLOAT",
+            "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-inlineLink-size-sm-iconSize)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:7:27",
+                "to": "Hirobius/Primitives: size/12"
+              }
+            }
+          },
+          {
             "id": "VariableID:15:28",
             "name": "input/bg",
             "path": "component.input.bg",
@@ -9780,6 +10988,46 @@
               "Default": {
                 "alias": "VariableID:10:19",
                 "to": "Hirobius/Semantic: color/feedback/error"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:80",
+            "name": "input/focus/gapRadius",
+            "path": "component.input.focus.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: the Input (8px) radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-input-focus-gapRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2477:54",
+                "to": "Hirobius/Primitives: radius/10"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:81",
+            "name": "input/focus/ringRadius",
+            "path": "component.input.focus.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: the Input (8px) radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-input-focus-ringRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:29",
+                "to": "Hirobius/Primitives: radius/12"
               }
             }
           },
@@ -9966,87 +11214,6 @@
             }
           },
           {
-            "id": "VariableID:14:3",
-            "name": "nav/bgActive",
-            "path": "component.nav.bgActive",
-            "resolvedType": "COLOR",
-            "description": "Nav item background fill when active or selected.",
-            "scopes": [
-              "FRAME_FILL",
-              "SHAPE_FILL"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-nav-bgActive)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:12:28",
-                "to": "Hirobius/Semantic: accent/subtle"
-              }
-            }
-          },
-          {
-            "id": "VariableID:14:4",
-            "name": "nav/borderActive",
-            "path": "component.nav.borderActive",
-            "resolvedType": "COLOR",
-            "description": "Nav item border color when active or selected.",
-            "scopes": [
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-nav-borderActive)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:10:6",
-                "to": "Hirobius/Semantic: color/surface/accent"
-              }
-            }
-          },
-          {
-            "id": "VariableID:14:7",
-            "name": "nav/height",
-            "path": "component.nav.height",
-            "resolvedType": "FLOAT",
-            "description": "Nav bar height.",
-            "scopes": [
-              "WIDTH_HEIGHT"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-nav-height)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:5:15",
-                "to": "Hirobius/Primitives: space/16"
-              }
-            }
-          },
-          {
-            "id": "VariableID:14:8",
-            "name": "nav/paddingX",
-            "path": "component.nav.paddingX",
-            "resolvedType": "FLOAT",
-            "description": "Horizontal padding inside nav items.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-nav-paddingX)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:5:10",
-                "to": "Hirobius/Primitives: space/6"
-              }
-            }
-          },
-          {
             "id": "VariableID:14:9",
             "name": "nav/paddingY",
             "path": "component.nav.paddingY",
@@ -10067,46 +11234,22 @@
             }
           },
           {
-            "id": "VariableID:14:5",
-            "name": "nav/text",
-            "path": "component.nav.text",
-            "resolvedType": "COLOR",
-            "description": "Nav item text color at rest.",
+            "id": "VariableID:2477:90",
+            "name": "pagination/compactControlSize",
+            "path": "component.pagination.compactControlSize",
+            "resolvedType": "FLOAT",
+            "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
             "scopes": [
-              "SHAPE_FILL",
-              "TEXT_FILL",
-              "STROKE_COLOR"
+              "WIDTH_HEIGHT"
             ],
             "hiddenFromPublishing": false,
             "codeSyntax": {
-              "WEB": "var(--component-nav-text)"
+              "WEB": "var(--component-pagination-compactControlSize)"
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:9",
-                "to": "Hirobius/Semantic: color/content/secondary"
-              }
-            }
-          },
-          {
-            "id": "VariableID:14:6",
-            "name": "nav/textActive",
-            "path": "component.nav.textActive",
-            "resolvedType": "COLOR",
-            "description": "Nav item text color when active or selected.",
-            "scopes": [
-              "SHAPE_FILL",
-              "TEXT_FILL",
-              "STROKE_COLOR"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-nav-textActive)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:10:8",
-                "to": "Hirobius/Semantic: color/content/primary"
+                "alias": "VariableID:2061:894",
+                "to": "Hirobius/Semantic: size/row/compact"
               }
             }
           },
@@ -10232,6 +11375,46 @@
               "Default": {
                 "alias": "VariableID:2018:731",
                 "to": "Hirobius/Semantic: color/surface/muted"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:76",
+            "name": "tag/focus/gapRadius",
+            "path": "component.tag.focus.gapRadius",
+            "resolvedType": "FLOAT",
+            "description": "Inner edge of the focus ring: the Tag pill radius + semantic.focus.gap.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-tag-focus-gapRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2477:77",
+            "name": "tag/focus/ringRadius",
+            "path": "component.tag.focus.ringRadius",
+            "resolvedType": "FLOAT",
+            "description": "Outer edge of the focus ring: the Tag pill radius + gap width + semantic.focus.ring.width.",
+            "scopes": [
+              "CORNER_RADIUS"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-tag-focus-ringRadius)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:30",
+                "to": "Hirobius/Primitives: radius/full"
               }
             }
           },
@@ -11121,6 +12304,26 @@
             }
           },
           {
+            "id": "VariableID:2477:91",
+            "name": "semantic/typography/bodyStrong/font-size",
+            "path": "density.semantic.typography.bodyStrong.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.bodyStrong.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:38",
+                "to": "Hirobius/Primitives: typography/size/lg"
+              },
+              "Compact": {
+                "alias": "VariableID:2229:6",
+                "to": "Hirobius/Primitives: typography/size/compactBody"
+              }
+            }
+          },
+          {
             "id": "VariableID:2231:4",
             "name": "semantic/typography/caption/font-size",
             "path": "density.semantic.typography.caption.font-size",
@@ -11259,6 +12462,1015 @@
                 "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
+          },
+          {
+            "id": "VariableID:2477:92",
+            "name": "semantic/typography/uiItalic/font-size",
+            "path": "density.semantic.typography.uiItalic.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.uiItalic.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
+              },
+              "Compact": {
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "VariableCollectionId:2399:10128",
+        "name": "Button tone",
+        "key": null,
+        "hiddenFromPublishing": false,
+        "defaultMode": "neutral",
+        "modes": [
+          "neutral",
+          "quiet",
+          "danger",
+          "success",
+          "warning",
+          "info"
+        ],
+        "variables": [
+          {
+            "id": "VariableID:2399:10148",
+            "name": "link/bg/hover",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "quiet": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "danger": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "success": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "warning": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "info": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10149",
+            "name": "link/bg/pressed",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "quiet": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "danger": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "success": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "warning": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "info": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10147",
+            "name": "link/bg/rest",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "quiet": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "danger": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "success": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "warning": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "info": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10150",
+            "name": "link/text",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2018:747",
+                "to": "Hirobius/Role: foreground"
+              },
+              "quiet": {
+                "alias": "VariableID:2018:757",
+                "to": "Hirobius/Role: muted-foreground"
+              },
+              "danger": {
+                "alias": "VariableID:10:19",
+                "to": "Hirobius/Semantic: color/feedback/error"
+              },
+              "success": {
+                "alias": "VariableID:10:20",
+                "to": "Hirobius/Semantic: color/feedback/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:21",
+                "to": "Hirobius/Semantic: color/feedback/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:22",
+                "to": "Hirobius/Semantic: color/feedback/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10134",
+            "name": "primary/bg/hover",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:14:35",
+                "to": "Hirobius/Component: button/bgHover"
+              },
+              "quiet": {
+                "alias": "VariableID:14:35",
+                "to": "Hirobius/Component: button/bgHover"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10135",
+            "name": "primary/bg/pressed",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2191:6",
+                "to": "Hirobius/Component: button/bgPressed"
+              },
+              "quiet": {
+                "alias": "VariableID:2191:6",
+                "to": "Hirobius/Component: button/bgPressed"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10133",
+            "name": "primary/bg/rest",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:14:34",
+                "to": "Hirobius/Component: button/bg"
+              },
+              "quiet": {
+                "alias": "VariableID:14:34",
+                "to": "Hirobius/Component: button/bg"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10137",
+            "name": "primary/edge",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2507:6931",
+                "to": "Hirobius/Component: button/edge/primary"
+              },
+              "quiet": {
+                "alias": "VariableID:2507:6931",
+                "to": "Hirobius/Component: button/edge/primary"
+              },
+              "danger": {
+                "alias": "VariableID:2501:6895",
+                "to": "Hirobius/Component: button/edge/danger"
+              },
+              "success": {
+                "alias": "VariableID:2501:6896",
+                "to": "Hirobius/Component: button/edge/success"
+              },
+              "warning": {
+                "alias": "VariableID:2501:6897",
+                "to": "Hirobius/Component: button/edge/warning"
+              },
+              "info": {
+                "alias": "VariableID:2501:6898",
+                "to": "Hirobius/Component: button/edge/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10136",
+            "name": "primary/text",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:14:36",
+                "to": "Hirobius/Component: button/text"
+              },
+              "quiet": {
+                "alias": "VariableID:14:36",
+                "to": "Hirobius/Component: button/text"
+              },
+              "danger": {
+                "alias": "VariableID:10:19",
+                "to": "Hirobius/Semantic: color/feedback/error"
+              },
+              "success": {
+                "alias": "VariableID:10:20",
+                "to": "Hirobius/Semantic: color/feedback/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:21",
+                "to": "Hirobius/Semantic: color/feedback/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:22",
+                "to": "Hirobius/Semantic: color/feedback/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10139",
+            "name": "secondary/bg/hover",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:15:21",
+                "to": "Hirobius/Component: button/secondary/bg/hover"
+              },
+              "quiet": {
+                "alias": "VariableID:15:21",
+                "to": "Hirobius/Component: button/secondary/bg/hover"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10140",
+            "name": "secondary/bg/pressed",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:15:22",
+                "to": "Hirobius/Component: button/secondary/bg/pressed"
+              },
+              "quiet": {
+                "alias": "VariableID:15:22",
+                "to": "Hirobius/Component: button/secondary/bg/pressed"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10138",
+            "name": "secondary/bg/rest",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:15:20",
+                "to": "Hirobius/Component: button/secondary/bg/rest"
+              },
+              "quiet": {
+                "alias": "VariableID:15:20",
+                "to": "Hirobius/Component: button/secondary/bg/rest"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10142",
+            "name": "secondary/edge",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "EFFECT_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2501:6894",
+                "to": "Hirobius/Component: button/edge/secondary"
+              },
+              "quiet": {
+                "alias": "VariableID:2501:6894",
+                "to": "Hirobius/Component: button/edge/secondary"
+              },
+              "danger": {
+                "alias": "VariableID:2501:6895",
+                "to": "Hirobius/Component: button/edge/danger"
+              },
+              "success": {
+                "alias": "VariableID:2501:6896",
+                "to": "Hirobius/Component: button/edge/success"
+              },
+              "warning": {
+                "alias": "VariableID:2501:6897",
+                "to": "Hirobius/Component: button/edge/warning"
+              },
+              "info": {
+                "alias": "VariableID:2501:6898",
+                "to": "Hirobius/Component: button/edge/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10141",
+            "name": "secondary/text",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2018:747",
+                "to": "Hirobius/Role: foreground"
+              },
+              "quiet": {
+                "alias": "VariableID:2018:747",
+                "to": "Hirobius/Role: foreground"
+              },
+              "danger": {
+                "alias": "VariableID:10:19",
+                "to": "Hirobius/Semantic: color/feedback/error"
+              },
+              "success": {
+                "alias": "VariableID:10:20",
+                "to": "Hirobius/Semantic: color/feedback/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:21",
+                "to": "Hirobius/Semantic: color/feedback/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:22",
+                "to": "Hirobius/Semantic: color/feedback/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10131",
+            "name": "shadow/hover",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "Hard edge offset, theme.css .hds-btn-hard --hds-hs (hover).",
+            "scopes": [
+              "EFFECT_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "value": 4
+              },
+              "quiet": {
+                "value": 4
+              },
+              "danger": {
+                "value": 4
+              },
+              "success": {
+                "value": 4
+              },
+              "warning": {
+                "value": 4
+              },
+              "info": {
+                "value": 4
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10132",
+            "name": "shadow/pressed",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "Hard edge offset, theme.css .hds-btn-hard --hds-hs (pressed).",
+            "scopes": [
+              "EFFECT_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "value": 1
+              },
+              "quiet": {
+                "value": 1
+              },
+              "danger": {
+                "value": 1
+              },
+              "success": {
+                "value": 1
+              },
+              "warning": {
+                "value": 1
+              },
+              "info": {
+                "value": 1
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10130",
+            "name": "shadow/rest",
+            "path": null,
+            "resolvedType": "FLOAT",
+            "description": "Hard edge offset, theme.css .hds-btn-hard --hds-hs (rest).",
+            "scopes": [
+              "EFFECT_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "value": 3
+              },
+              "quiet": {
+                "value": 3
+              },
+              "danger": {
+                "value": 3
+              },
+              "success": {
+                "value": 3
+              },
+              "warning": {
+                "value": 3
+              },
+              "info": {
+                "value": 3
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10144",
+            "name": "tertiary/bg/hover",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2240:3",
+                "to": "Hirobius/Component: button/tertiary/bg/hover"
+              },
+              "quiet": {
+                "alias": "VariableID:2240:3",
+                "to": "Hirobius/Component: button/tertiary/bg/hover"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10145",
+            "name": "tertiary/bg/pressed",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2240:4",
+                "to": "Hirobius/Component: button/tertiary/bg/pressed"
+              },
+              "quiet": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10143",
+            "name": "tertiary/bg/rest",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "quiet": {
+                "alias": "VariableID:2399:10129",
+                "to": "Button tone: transparent"
+              },
+              "danger": {
+                "alias": "VariableID:10:24",
+                "to": "Hirobius/Semantic: color/feedback/bg/error"
+              },
+              "success": {
+                "alias": "VariableID:10:25",
+                "to": "Hirobius/Semantic: color/feedback/bg/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:26",
+                "to": "Hirobius/Semantic: color/feedback/bg/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:27",
+                "to": "Hirobius/Semantic: color/feedback/bg/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10146",
+            "name": "tertiary/text",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "alias": "VariableID:2018:747",
+                "to": "Hirobius/Role: foreground"
+              },
+              "quiet": {
+                "alias": "VariableID:2018:757",
+                "to": "Hirobius/Role: muted-foreground"
+              },
+              "danger": {
+                "alias": "VariableID:10:19",
+                "to": "Hirobius/Semantic: color/feedback/error"
+              },
+              "success": {
+                "alias": "VariableID:10:20",
+                "to": "Hirobius/Semantic: color/feedback/success"
+              },
+              "warning": {
+                "alias": "VariableID:10:21",
+                "to": "Hirobius/Semantic: color/feedback/warning"
+              },
+              "info": {
+                "alias": "VariableID:10:22",
+                "to": "Hirobius/Semantic: color/feedback/info"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2399:10129",
+            "name": "transparent",
+            "path": null,
+            "resolvedType": "COLOR",
+            "description": "Transparent fill (tertiary/link rest). theme: bg-transparent.",
+            "scopes": [
+              "FRAME_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "neutral": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                }
+              },
+              "quiet": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                }
+              },
+              "danger": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                }
+              },
+              "success": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                }
+              },
+              "warning": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                }
+              },
+              "info": {
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
+                  "a": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "VariableCollectionId:2419:23",
+        "name": "Hirobius/Meta",
+        "key": "meta",
+        "hiddenFromPublishing": true,
+        "defaultMode": "Default",
+        "modes": [
+          "Default"
+        ],
+        "variables": [
+          {
+            "id": "VariableID:2475:51",
+            "name": "meta/commit",
+            "path": "meta.commit",
+            "resolvedType": "STRING",
+            "description": "Short SHA of the commit the library is synced from. Written by pnpm figma:push; never edit by hand.",
+            "scopes": [
+              "TEXT_CONTENT"
+            ],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Default": {
+                "value": "4e08d69"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2419:34754",
+            "name": "meta/docsUrl",
+            "path": "meta.docsUrl",
+            "resolvedType": "STRING",
+            "description": "The documentation URL (package.json homepage). Written by pnpm figma:push; never edit by hand.",
+            "scopes": [
+              "TEXT_CONTENT"
+            ],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Default": {
+                "value": "https://github.com/hirobius/hds#readme"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2419:34756",
+            "name": "meta/npmName",
+            "path": "meta.npmName",
+            "resolvedType": "STRING",
+            "description": "The npm package name (package.json name). Written by pnpm figma:push; never edit by hand.",
+            "scopes": [
+              "TEXT_CONTENT"
+            ],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Default": {
+                "value": "@hirobius/design-system"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2475:50",
+            "name": "meta/releasedAt",
+            "path": "meta.releasedAt",
+            "resolvedType": "STRING",
+            "description": "The version's release date (upgrade/releases, else CHANGELOG.md, else the version commit's date). Written by pnpm figma:push; never edit by hand.",
+            "scopes": [
+              "TEXT_CONTENT"
+            ],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Default": {
+                "value": "2026-11-05"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2419:34755",
+            "name": "meta/repoUrl",
+            "path": "meta.repoUrl",
+            "resolvedType": "STRING",
+            "description": "The source repository (package.json repository). Written by pnpm figma:push; never edit by hand.",
+            "scopes": [
+              "TEXT_CONTENT"
+            ],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Default": {
+                "value": "https://github.com/hirobius/hds"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2419:24",
+            "name": "meta/version",
+            "path": "meta.version",
+            "resolvedType": "STRING",
+            "description": "The package version (package.json), shown on the library cover. Written by pnpm figma:push; never edit by hand.",
+            "scopes": [
+              "TEXT_CONTENT"
+            ],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Default": {
+                "value": "0.33.0"
+              }
+            }
           }
         ]
       }
@@ -11287,6 +13499,31 @@
           "fontWeight": "VariableID:13:14",
           "letterSpacing": "VariableID:13:15",
           "lineHeight": "VariableID:13:16"
+        }
+      },
+      {
+        "id": "S:cf3faa60606fd8f7f7843dbd56f40744ba3bb31a,",
+        "name": "typography/bodyStrong",
+        "path": "semantic.typography.bodyStrong",
+        "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "fontFamily": "Plus Jakarta Sans",
+        "fontStyle": "Bold",
+        "fontSize": 18,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 28.799999
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": 0
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:2477:65",
+          "fontSize": "VariableID:2477:66",
+          "fontWeight": "VariableID:2477:67",
+          "letterSpacing": "VariableID:2477:68",
+          "lineHeight": "VariableID:2477:69"
         }
       },
       {
@@ -11440,6 +13677,31 @@
         }
       },
       {
+        "id": "S:227a9b08e4556354f3fbaa4cc39e9a8e3ea167a0,",
+        "name": "typography/hero",
+        "path": "semantic.typography.hero",
+        "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+        "fontFamily": "Sora",
+        "fontStyle": "Bold",
+        "fontSize": 120,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 126
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": -1.2
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:2477:60",
+          "fontSize": "VariableID:2477:61",
+          "fontWeight": "VariableID:2477:62",
+          "letterSpacing": "VariableID:2477:63",
+          "lineHeight": "VariableID:2477:64"
+        }
+      },
+      {
         "id": "S:3152dfb215c24e851e1a06cc92bb552a9c58b7e5,",
         "name": "typography/mono",
         "path": "semantic.typography.mono",
@@ -11537,6 +13799,31 @@
           "fontWeight": "VariableID:13:19",
           "letterSpacing": "VariableID:13:20",
           "lineHeight": "VariableID:13:21"
+        }
+      },
+      {
+        "id": "S:a8ac3f7bc35252f671c80b7bc541d8fcda30a368,",
+        "name": "typography/uiItalic",
+        "path": "semantic.typography.uiItalic",
+        "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
+        "fontFamily": "Plus Jakarta Sans",
+        "fontStyle": "Medium Italic",
+        "fontSize": 16,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 24
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": 0
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:2477:70",
+          "fontSize": "VariableID:2477:71",
+          "fontWeight": "VariableID:2477:72",
+          "letterSpacing": "VariableID:2477:73",
+          "lineHeight": "VariableID:2477:74"
         }
       }
     ],
@@ -11747,7 +14034,7 @@
         "id": "S:8678f2e20aea1886758c0805c80f68e98cdbf429,",
         "name": "shadow/hard",
         "path": null,
-        "description": "Button shadow=&quot;hard&quot; (code default, primary + secondary, all tones; never tertiary or link). 0 3px 0, colour color/shadow/hard. Hover 4px, pressed 1px, disabled none (theme.css .hds-btn-hard).",
+        "description": "Button shadow=\"hard\" (code default, primary + secondary, all tones; never tertiary or link). 0 3px 0, colour color/shadow/hard. Hover 4px, pressed 1px, disabled none (theme.css .hds-btn-hard).",
         "effects": [
           {
             "type": "DROP_SHADOW",
@@ -11881,5 +14168,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:8faacc6b04fc760f0aaa3b220908d21100eae8896a2e64bceb8b17c3ac571ff2"
+  "tokensHash": "sha256:943487d17dc03dac5b314a3faef50e22d5546abc56c2f27227c62778b274e896"
 }
