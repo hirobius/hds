@@ -273,6 +273,16 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
 // lib/deprecation: that prefixes `[HDS deprecation]`, and these are misuse,
 // not deprecations — `warnOncePlain` is the same guard without the prefix.
 
+/** The hard edge each raised Button paints (theme.css `.hds-btn-hard`, hds#897). */
+const BUTTON_EDGE = {
+  primary: 'var(--hds-edge-primary)',
+  secondary: 'var(--component-button-edge-secondary)',
+  danger: 'var(--component-button-edge-danger)',
+  success: 'var(--component-button-edge-success)',
+  warning: 'var(--component-button-edge-warning)',
+  info: 'var(--component-button-edge-info)',
+} as const;
+
 /**
  * Triggers an action when activated.
  * @usage Run an action, such as submit, save or open a dialog. For an icon-only control pass iconOnly, iconLeft and label; for an on/off toggle pass pressed. For a low-priority action beside a primary one use variant="tertiary" tone="quiet"; for a back link whose icon lines up with the heading add flush; for an action that reads as a text link in a row use variant="link".
@@ -293,6 +303,7 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.
  */
+
 export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
     {
@@ -344,9 +355,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // A status tone (not quiet, which only recolours a ghost's text).
     const hasTone = tone != null && tone !== 'neutral' && tone !== 'quiet';
     // The hard shadow's colour (theme.css `.hds-btn-hard`, hds#897): the fill it sits under,
-    // stepped darker and precomputed as --hds-edge-<key>; the keys are the tone names plus
-    // primary and secondary (a pressed neutral toggle paints bg-primary, so it takes primary's
-    // edge). --hds-btn-edge still overrides.
+    // primary's is its fill stepped darker, precomputed as --hds-edge-primary; secondary and
+    // the tones read their component.button.edge.<key> token (a pressed neutral toggle paints
+    // bg-primary, so it takes primary's edge). --hds-btn-edge still overrides.
     const edgeKey = hasTone
       ? tone
       : variant === 'primary' || (isToggle && isPressed)
@@ -354,7 +365,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         : 'secondary';
     const edge =
       shadow === 'hard' && variant !== 'tertiary' && !isLink
-        ? { '--hds-edge': `var(--hds-edge-${edgeKey})` }
+        ? {
+            '--hds-edge': BUTTON_EDGE[edgeKey],
+          }
         : null;
     const wipeProps = wipe
       ? {
