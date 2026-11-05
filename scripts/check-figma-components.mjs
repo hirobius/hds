@@ -21,14 +21,15 @@
  *   node scripts/check-figma-components.mjs --check    exit 1 if a committed contract is stale
  *   node scripts/check-figma-components.mjs --report   print stale contracts and missing
  *                                                       variables; always exit 0 (pretest)
- *   add --json for a machine-readable result.
+ *   add --json to --report for a machine-readable result.
  *
  * Talks to Figma? No. Drawing the components is a separate, manual step
  * (figma/COMPONENT-DRAWING-RECIPE.md).
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { runGenerator } from './lib/generated-check.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const API_PATH = join(ROOT, 'src/app/data/component-api.json');
@@ -187,23 +188,33 @@ export function findMissingVariables(contracts, collections) {
   return found;
 }
 
-function main(argv) {
-  const check = argv.includes('--check');
+async function main(argv) {
   const report = argv.includes('--report');
   const json = argv.includes('--json');
   const contracts = buildContracts(JSON.parse(readFileSync(API_PATH, 'utf8')));
-  const file = (name) => join(OUT_DIR, `${name}.json`);
-  const read = (name) => (existsSync(file(name)) ? readFileSync(file(name), 'utf8') : null);
+  const rel = (name) => relative(ROOT, join(OUT_DIR, `${name}.json`));
 
-  if (!check && !report) {
-    mkdirSync(OUT_DIR, { recursive: true });
-    for (const [name, contract] of Object.entries(contracts)) {
-      writeFileSync(file(name), serializeContract(contract));
-      console.log(`✓ wrote ${relative(ROOT, file(name))}`);
-    }
-    return 0;
+  // Write and --check go through the shared generator runner (hds#644). The files are
+  // in .prettierignore, so the bytes are serializeContract's, unformatted.
+  if (!report) {
+    const outputs = Object.fromEntries(
+      Object.entries(contracts).map(([name, c]) => [rel(name), serializeContract(c)]),
+    );
+    const { exitCode } = await runGenerator({
+      root: ROOT,
+      outputs,
+      label: 'check-figma-components',
+      fix: 'node scripts/check-figma-components.mjs',
+      format: false,
+      argv,
+    });
+    return exitCode;
   }
 
+  const read = (name) => {
+    const file = join(ROOT, rel(name));
+    return existsSync(file) ? readFileSync(file, 'utf8') : null;
+  };
   const stale = findStaleContracts(contracts, read);
   const collections = existsSync(SNAPSHOT_PATH)
     ? (JSON.parse(readFileSync(SNAPSHOT_PATH, 'utf8')).snapshot?.collections ?? [])
@@ -214,20 +225,18 @@ function main(argv) {
     console.log(JSON.stringify({ stale, missing }, null, 2));
   } else {
     for (const name of stale) {
-      console.log(
-        `✗ figma/contracts/${name}.json is stale: run node scripts/check-figma-components.mjs`,
-      );
+      console.log(`⚠ ${rel(name)} is stale: run node scripts/check-figma-components.mjs`);
     }
     for (const line of missing) console.log(`⚠ ${line}`);
     if (!stale.length && !missing.length) {
       console.log(`✓ figma contracts: ${Object.keys(contracts).join(', ')} fresh and bound`);
-    } else if (report) {
+    } else {
       console.log('  (advisory: --report never fails; --check fails on a stale contract)');
     }
   }
-  return check && stale.length ? 1 : 0;
+  return 0;
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  process.exit(main(process.argv.slice(2)));
+  process.exitCode = await main(process.argv.slice(2));
 }
