@@ -386,7 +386,7 @@ let ok = true;
 
 // ── 3a. Bare-import audit over the installed dist ────────────────────────────
 {
-  log('auditing bare imports in dist/*.js and dist/chunks/*.js…');
+  log('auditing bare imports in every dist/**/*.js file…');
   const pkgDir = join(app, 'node_modules', ...PKG.split('/'));
   const installedPkg = JSON.parse(readFileSync(join(pkgDir, 'package.json'), 'utf8'));
   const problems = auditDistImports(pkgDir, installedPkg);
