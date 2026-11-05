@@ -59,7 +59,7 @@ const CASES = [
   },
 ] as const;
 
-const hasRing = (el: HTMLElement) => el.className.includes('[outline:');
+const hasRing = (el: HTMLElement) => el.className.split(/\s+/).includes('hds-focus-ring');
 
 describe.each(CASES)('$id $name focus ring', ({ ui, role, ring }) => {
   it('is hidden at rest', () => {

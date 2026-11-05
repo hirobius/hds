@@ -73,7 +73,7 @@ describe('InlineLink accessibility contract', () => {
   it('a11y:inline-link.focus-ring - the link carries the shared focus ring class', () => {
     render(<InlineLink href="/x">Go</InlineLink>);
     expect(screen.getByRole('link').className).toContain('hds-focus');
-    expect(themeCss).toMatch(/\.hds-focus:focus-visible\s*\{[^}]*outline/);
+    expect(themeCss).toMatch(/\.hds-focus:focus-visible[^{]*\{[^}]*outline/);
   });
 
   it('a11y:inline-link.not-colour-only - the .hds-link style underlines at rest', () => {

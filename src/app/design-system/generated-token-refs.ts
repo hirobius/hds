@@ -196,7 +196,9 @@ export const tokenRefs = {
       "4": "var(--primitive-radius-4)",
       "6": "var(--primitive-radius-6)",
       "8": "var(--primitive-radius-8)",
+      "10": "var(--primitive-radius-10)",
       "12": "var(--primitive-radius-12)",
+      "14": "var(--primitive-radius-14)",
       "16": "var(--primitive-radius-16)",
       "24": "var(--primitive-radius-24)",
       full: "var(--primitive-radius-full)"
@@ -653,6 +655,37 @@ export const tokenRefs = {
         bold: "var(--semantic-borderWidth-icon-bold)"
       }
     },
+    focus: {
+      ring: {
+        width: "var(--semantic-focus-ring-width)",
+        color: "var(--semantic-focus-ring-color)"
+      },
+      gap: {
+        width: "var(--semantic-focus-gap-width)"
+      },
+      radius: {
+        control: {
+          gapRadius: "var(--semantic-focus-radius-control-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-control-ringRadius)"
+        },
+        sm: {
+          gapRadius: "var(--semantic-focus-radius-sm-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-sm-ringRadius)"
+        },
+        md: {
+          gapRadius: "var(--semantic-focus-radius-md-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-md-ringRadius)"
+        },
+        lg: {
+          gapRadius: "var(--semantic-focus-radius-lg-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-lg-ringRadius)"
+        },
+        pill: {
+          gapRadius: "var(--semantic-focus-radius-pill-gapRadius)",
+          ringRadius: "var(--semantic-focus-radius-pill-ringRadius)"
+        }
+      }
+    },
     link: {
       underlineThickness: "var(--semantic-link-underlineThickness)",
       underlineOffset: "var(--semantic-link-underlineOffset)"
@@ -718,6 +751,10 @@ export const tokenRefs = {
       text: "var(--component-tag-text)",
       border: "var(--component-tag-border)",
       radius: "var(--component-tag-radius)",
+      focus: {
+        gapRadius: "var(--component-tag-focus-gapRadius)",
+        ringRadius: "var(--component-tag-focus-ringRadius)"
+      },
       fontSize: "var(--component-tag-fontSize)",
       fontWeight: "var(--component-tag-fontWeight)",
       lineHeight: "var(--component-tag-lineHeight)",
@@ -781,6 +818,10 @@ export const tokenRefs = {
       },
       text: "var(--component-button-text)",
       radius: "var(--component-button-radius)",
+      focus: {
+        gapRadius: "var(--component-button-focus-gapRadius)",
+        ringRadius: "var(--component-button-focus-ringRadius)"
+      },
       paddingX: "var(--component-button-paddingX)",
       paddingY: "var(--component-button-paddingY)",
       fontWeight: "var(--component-button-fontWeight)",
@@ -842,6 +883,10 @@ export const tokenRefs = {
       border: "var(--component-input-border)",
       borderError: "var(--component-input-borderError)",
       radius: "var(--component-input-radius)",
+      focus: {
+        gapRadius: "var(--component-input-focus-gapRadius)",
+        ringRadius: "var(--component-input-focus-ringRadius)"
+      },
       paddingX: "var(--component-input-paddingX)",
       paddingY: "var(--component-input-paddingY)"
     },
@@ -849,6 +894,10 @@ export const tokenRefs = {
       bg: "var(--component-card-bg)",
       border: "var(--component-card-border)",
       radius: "var(--component-card-radius)",
+      focus: {
+        gapRadius: "var(--component-card-focus-gapRadius)",
+        ringRadius: "var(--component-card-focus-ringRadius)"
+      },
       padding: "var(--component-card-padding)",
       gap: "var(--component-card-gap)"
     },

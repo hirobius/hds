@@ -294,25 +294,6 @@ const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
   },
 );
 
-// Demo-forced focus ring — real keyboard focus is handled entirely by the
-// shared `.hds-focus` utility class; this only fires when a docs matrix
-// freezes the visual state to "focused" (`:focus-visible` can't be faked
-// without real keyboard focus).
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- outline width/offset/color are semantic tokens with no Tailwind-theme utility
-const segmentedControlFocusRingVariants = /* @__PURE__ */ cva(
-  // tier-ok: primitive.borderWidth.sm (the 2px accent/selection-ring weight) has no semantic alias — same primitive ref the pre-Tailwind inline style used
-  'outline outline-[length:var(--primitive-borderWidth-sm)] outline-offset-[length:var(--semantic-space-subgrid-gap)]',
-  {
-    variants: {
-      variant: {
-        primary: 'outline-[color:var(--semantic-color-border-accent)]',
-        secondary: 'outline-[color:var(--semantic-color-border-default)]',
-      },
-    },
-    defaultVariants: { variant: 'primary' },
-  },
-);
-
 // The segment's own label text — color always follows the button's computed
 // `currentColor` (set by segmentedControlItemVariants above), so this only
 // carries the typeStyles.ui composite (16px/24px/medium/60ch) + stacking.
@@ -493,7 +474,9 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                       interaction,
                       disabled: showDisabled,
                     }),
-                    demoFocusRing && segmentedControlFocusRingVariants({ variant }),
+                    // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
+                    // keyboard focus (:focus-visible can't be faked).
+                    demoFocusRing && 'hds-focus-ring',
                   )}
                   // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
                   style={

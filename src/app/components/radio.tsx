@@ -92,8 +92,8 @@ const radioRingVariants = /* @__PURE__ */ cva(
         rest: '',
         hover: '',
         focused:
-          // tier-ok: semantic-borderWidth-emphasis resolves to var(--primitive-borderWidth-sm) exactly — same ring as checkbox's focused glyph
-          'outline-offset-2 [outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
+          // The shared ring (semantic.focus.*), drawn from the interaction state.
+          'hds-focus-ring',
         pressed: '',
         disabled: '',
       },

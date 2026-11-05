@@ -31,9 +31,11 @@ import { FORM_CONTROL_WIDTH } from './form-control';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
+// binding-ok: input.focus.gapRadius drawn by the .hds-focus outline, which follows the input radius (radius + semantic.focus.gap.width); the token is the Figma binding
+// binding-ok: input.focus.ringRadius drawn by the .hds-focus outline (radius + gap + semantic.focus.ring.width); the token is the Figma binding
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- content-disabled has no named Tailwind-theme utility; var()-based so still token-driven (matches button/segmented disabled)
 const inputVariants = /* @__PURE__ */ cva(
-  'flex w-full rounded-md border bg-[color:var(--component-input-bg)] text-[color:var(--component-input-text)] ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
+  'flex w-full rounded-md border bg-[color:var(--component-input-bg)] text-[color:var(--component-input-text)] transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       size: {
@@ -46,7 +48,7 @@ const inputVariants = /* @__PURE__ */ cva(
         mono: 'font-mono',
       },
       invalid: {
-        true: 'border-destructive focus-visible:ring-destructive',
+        true: 'border-destructive [--hds-focus-color:var(--semantic-color-feedback-error)]',
         false: 'border-input',
       },
     },
@@ -62,36 +64,16 @@ const inputVariants = /* @__PURE__ */ cva(
 // moves from the <input> to this shell, so the slots sit in flow inside one
 // frame. The ring follows keyboard focus on the input only, as it does without
 // slots; a focused clear button keeps its own ring.
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- productive motion token duration/easing (var()-based, no named utility)
-const inputShellVariants = /* @__PURE__ */ cva(
-  'relative flex w-full items-center rounded-md border bg-[color:var(--component-input-bg)] text-[color:var(--component-input-text)] ring-offset-background transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-offset-2 has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted',
-  {
-    variants: {
-      size: {
-        sm: 'h-8 hds-type-caption',
-        md: 'h-10 hds-type-ui',
-        lg: 'h-12 hds-type-body',
-      },
-      textStyle: {
-        body: 'font-sans',
-        mono: 'font-mono',
-      },
-      invalid: {
-        true: 'border-destructive has-[input:focus-visible]:ring-destructive',
-        false: 'border-input has-[input:focus-visible]:ring-ring',
-      },
-    },
-    defaultVariants: {
-      size: 'md',
-      textStyle: 'body',
-      invalid: false,
-    },
-  },
-);
+// The shell takes the field's own variants (inputVariants: size, text style, invalid,
+// surface, border; its placeholder: and disabled: classes are inert on a div) plus these.
+const INPUT_SHELL =
+  'relative items-center hds-focus-within has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted';
 
 // The <input> inside a shell drops its own chrome; the shell draws it.
+// focus-visible:outline-none drops the browser's own ring on the input: the shell's
+// .hds-focus-within ring is the one focus indicator.
 const SHELLED_INPUT =
-  'h-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 disabled:bg-transparent disabled:opacity-100';
+  'h-full border-0 bg-transparent focus-visible:outline-none disabled:bg-transparent disabled:opacity-100';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -380,7 +362,8 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           // Phone or touch screen: text up to 16px so iOS does not zoom on focus; lg is in the
           // body role (18px) already (hds#863).
           size !== 'lg' && 'hds-touch-text',
-          inShell && SHELLED_INPUT,
+          // The shell draws the ring when slots are present (hds-focus-within).
+          inShell ? SHELLED_INPUT : 'hds-focus',
           inputClassName,
         )}
         onChange={(event) => {
@@ -423,7 +406,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onClick={handleClear}
           aria-label={type === 'search' ? 'Clear search' : 'Clear input'}
           className={cn(
-            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
+            'absolute right-0 flex items-center justify-center hds-touch-target text-muted-foreground transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-foreground hds-focus rounded-sm',
             padCfg.inset,
           )}
         >
@@ -442,7 +425,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
       )}
 
       {inShell ? (
-        <div className={inputShellVariants({ size, textStyle, invalid })}>
+        <div className={cn(inputVariants({ size, textStyle, invalid }), INPUT_SHELL)}>
           {hasPrefix && <span className={cn(slotClass, padCfg.prefixPad)}>{prefix}</span>}
           {field}
           {hasSuffix && <span className={cn(slotClass, padCfg.suffixPad)}>{suffix}</span>}

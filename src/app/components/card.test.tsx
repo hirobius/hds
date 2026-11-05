@@ -138,8 +138,8 @@ describe('Card selectable (hds#393)', () => {
     // outline-offset). Selection must not land on those pixels, or a focused
     // card looks selected and focusing a selected card shows nothing (2.4.7).
     const themeCss = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8');
-    const focusRule = themeCss.match(/\.hds-focus:focus-visible\s*\{([^}]*)\}/)?.[1] ?? '';
-    expect(focusRule).toMatch(/outline-offset:\s*[1-9]/);
+    const focusRule = themeCss.match(/\.hds-focus:focus-visible[^{]*\{([^}]*)\}/)?.[1] ?? '';
+    expect(focusRule).toMatch(/outline-offset:\s*var\(--semantic-focus-gap-width\)/);
 
     render(
       <Card selectable selected onSelectedChange={() => {}}>

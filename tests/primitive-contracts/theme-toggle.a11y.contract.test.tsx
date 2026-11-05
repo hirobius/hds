@@ -77,7 +77,7 @@ describe('ThemeToggle accessibility contract', () => {
     const button = screen.getByRole('button');
     expect(button.className.split(/\s+/)).toContain('hds-focus');
     expect(rulesFor('.hds-focus:focus-visible')).toMatch(
-      /outline:\s*var\(--hds-borderWidth-thick\)/,
+      /outline:\s*var\(--semantic-focus-ring-width\)/,
     );
     expect(rulesFor('.hds-theme-toggle')).not.toMatch(/outline:\s*(none|0)/);
   });

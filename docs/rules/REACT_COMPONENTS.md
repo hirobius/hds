@@ -134,7 +134,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 
 - Follows the same border, radius, and focus rules as `Input`:
   - Border at rest: `1px solid var(--semantic-color-border-default)`.
-  - Border on focus: `1px solid var(--semantic-color-border-accent)` + `2px` outline offset.
+  - Keyboard focus: the shared `.hds-focus` ring (`semantic.focus.ring.width` in `semantic.focus.ring.color`, `semantic.focus.gap.width` off the edge; a field shell uses `.hds-focus-within`). Never hand-roll a ring.
   - Border radius: `4px` (`semantic.radius.action`).
   - Background: no filled background by default (`surface.raised` only).
 - Never hardcode border or background colors; use component or semantic tokens.

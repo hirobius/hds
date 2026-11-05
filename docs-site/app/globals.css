@@ -989,6 +989,12 @@ a code[data-density] {
   padding: var(--primitive-space-6, 1.5rem) var(--primitive-space-4, 1rem);
   overflow-wrap: anywhere;
 }
+.hds-upgrade-page :is(p, pre, section, nav) {
+  margin-block: 0 var(--primitive-space-4, 1rem);
+}
+.hds-upgrade-page h2 {
+  margin-block: var(--primitive-space-6, 1.5rem) var(--primitive-space-2, 0.5rem);
+}
 .hds-upgrade-page pre {
   white-space: pre-wrap;
   overflow-wrap: anywhere;

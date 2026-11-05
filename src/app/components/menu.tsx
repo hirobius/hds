@@ -53,7 +53,7 @@ const SURFACE =
 const NEUTRAL_TONE = 'data-[highlighted]:text-[var(--semantic-color-content-primary)]';
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- the highlight fill is the semantic surface.sunken token (dark-surface-contrast.test.ts); it has no Tailwind-theme utility, and var() keeps it token-driven.
 const menuItemVariants = /* @__PURE__ */ cva(
-  'relative flex cursor-pointer select-none items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[highlighted]:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+  'relative flex cursor-pointer select-none items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 hds-type-ui hds-touch-row outline-none data-[highlighted]:bg-[var(--semantic-color-surface-sunken)] hds-focus-inset data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
   {
     variants: {
       tone: {

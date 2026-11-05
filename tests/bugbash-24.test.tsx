@@ -39,7 +39,7 @@ afterEach(cleanup);
 
 describe('Focus never moves a control (items 1, 2)', () => {
   it('.hds-focus:focus-visible does not set position (it overrode absolute/fixed)', () => {
-    const rule = css('theme.css').match(/\.hds-focus:focus-visible\s*\{[^}]*\}/)?.[0] ?? '';
+    const rule = css('theme.css').match(/\.hds-focus:focus-visible[^{]*\{[^}]*\}/)?.[0] ?? '';
     expect(rule).toMatch(/outline/);
     expect(rule).not.toMatch(/position\s*:/);
   });

@@ -9,6 +9,7 @@
         { "match": "bg", "ctx": { "variant": "primary" } },
         { "match": "bgHover", "ctx": { "variant": "primary" } },
         { "match": "text", "ctx": { "variant": "primary" } },
+        { "match": "focus.*", "prop": "radius" },
         { "match": "radius" },
         { "match": "paddingX", "ctx": { "size": "md" } },
         { "match": "paddingY", "ctx": { "size": "md" } },
@@ -57,6 +58,7 @@
         }
       },
       "rules": [
+        { "match": "focus.*", "prop": "radius" },
         { "match": "background", "ctx": { "selected": "false" } },
         { "match": "text", "ctx": { "selected": "false" } },
         { "match": "border", "ctx": { "selected": "false" } },
@@ -107,6 +109,7 @@
       "source": "src/app/components/input.tsx",
       "cva": "inputVariants",
       "rules": [
+        { "match": "focus.*", "prop": "radius" },
         { "match": "borderError", "ctx": { "invalid": "true" } },
         { "match": "border", "ctx": { "invalid": "false" } },
         {
@@ -147,6 +150,7 @@
         }
       },
       "rules": [
+        { "match": "focus.*", "prop": "radius" },
         {
           "match": "border",
           "ctx": { "variant": "default", "tone": "neutral", "bordered": "true" }

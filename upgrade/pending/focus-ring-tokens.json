@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Every focus ring is now one 2px outline 2px off the edge (Checkbox's moved out, invalid fields ring in the error colour), so re-take focus screenshots and restyle it with the --semantic-focus-* variables."
+}
