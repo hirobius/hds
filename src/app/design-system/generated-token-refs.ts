@@ -330,6 +330,7 @@ export const tokenRefs = {
     strokeWidth: {
       "100": "var(--primitive-strokeWidth-100)",
       "150": "var(--primitive-strokeWidth-150)",
+      "175": "var(--primitive-strokeWidth-175)",
       "200": "var(--primitive-strokeWidth-200)",
       "250": "var(--primitive-strokeWidth-250)"
     }
@@ -622,6 +623,7 @@ export const tokenRefs = {
       icon: {
         thin: "var(--semantic-borderWidth-icon-thin)",
         light: "var(--semantic-borderWidth-icon-light)",
+        medium: "var(--semantic-borderWidth-icon-medium)",
         regular: "var(--semantic-borderWidth-icon-regular)",
         bold: "var(--semantic-borderWidth-icon-bold)"
       }

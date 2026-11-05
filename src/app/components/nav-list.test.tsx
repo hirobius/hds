@@ -103,6 +103,18 @@ describe('NavList', () => {
   });
 
   describe('select mode (onSelect)', () => {
+    // Two select-mode rows, Beta selected (hds#1009).
+    function renderBetaSelected() {
+      render(
+        <NavList>
+          <NavList.Item onSelect={() => {}}>Alpha</NavList.Item>
+          <NavList.Item onSelect={() => {}} selected>
+            Beta
+          </NavList.Item>
+        </NavList>,
+      );
+    }
+
     it('renders a button, not a link, and calls onSelect on click', async () => {
       const user = userEvent.setup();
       const onSelect = vi.fn();
@@ -119,14 +131,7 @@ describe('NavList', () => {
     });
 
     it('marks only the selected item with aria-current=true', () => {
-      render(
-        <NavList>
-          <NavList.Item onSelect={() => {}}>Alpha</NavList.Item>
-          <NavList.Item onSelect={() => {}} selected>
-            Beta
-          </NavList.Item>
-        </NavList>,
-      );
+      renderBetaSelected();
       expect(screen.getByRole('button', { name: 'Beta' }).getAttribute('aria-current')).toBe(
         'true',
       );
@@ -136,14 +141,7 @@ describe('NavList', () => {
     });
 
     it('uses the selected fill on the selected row and the hover fill on the rest', () => {
-      render(
-        <NavList>
-          <NavList.Item onSelect={() => {}}>Alpha</NavList.Item>
-          <NavList.Item onSelect={() => {}} selected>
-            Beta
-          </NavList.Item>
-        </NavList>,
-      );
+      renderBetaSelected();
       expect(screen.getByRole('button', { name: 'Beta' }).className).toContain('surface-selected');
       expect(screen.getByRole('button', { name: 'Alpha' }).className).toContain('surface-hover');
     });

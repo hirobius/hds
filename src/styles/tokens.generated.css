@@ -253,6 +253,7 @@
   --primitive-borderWidth-md: 4px;
   --primitive-strokeWidth-100: 1px;
   --primitive-strokeWidth-150: 1.5px;
+  --primitive-strokeWidth-175: 1.75px;
   --primitive-strokeWidth-200: 2px;
   --primitive-strokeWidth-250: 2.5px;
 
@@ -457,6 +458,7 @@
   --semantic-borderWidth-emphasis: var(--primitive-borderWidth-sm);
   --semantic-borderWidth-icon-thin: var(--primitive-strokeWidth-100);
   --semantic-borderWidth-icon-light: var(--primitive-strokeWidth-150);
+  --semantic-borderWidth-icon-medium: var(--primitive-strokeWidth-175);
   --semantic-borderWidth-icon-regular: var(--primitive-strokeWidth-200);
   --semantic-borderWidth-icon-bold: var(--primitive-strokeWidth-250);
   --semantic-link-underlineThickness: var(--primitive-borderWidth-sm);

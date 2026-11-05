@@ -18,7 +18,7 @@ const t = tokensJson as unknown as {
 };
 
 describe('icon stroke-width tokens', () => {
-  const expected = { thin: 1, light: 1.5, regular: 2, bold: 2.5 } as const;
+  const expected = { thin: 1, light: 1.5, medium: 1.75, regular: 2, bold: 2.5 } as const;
 
   it.each(Object.entries(expected))('%s resolves to %s', (weight, value) => {
     const ref = t.semantic.borderWidth.icon[weight].$value as string;
@@ -32,6 +32,13 @@ describe('icon stroke-width tokens', () => {
       <Icon icon={Star} weight={weight as keyof typeof expected} aria-hidden />,
     );
     expect(container.querySelector('svg')?.getAttribute('stroke-width')).toBe(String(value));
+  });
+});
+
+describe('Icon default stroke (hds#1150)', () => {
+  it('leaves stroke-width to Lucide (2, regular) when no weight is set', () => {
+    const { container } = render(<Icon icon={Star} aria-hidden />);
+    expect(container.querySelector('svg')?.getAttribute('stroke-width')).toBe('2');
   });
 });
 

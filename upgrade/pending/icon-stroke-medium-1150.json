@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Icon takes weight=\"medium\" for a 1.75 stroke; icons without a weight still draw at 2."
+}
