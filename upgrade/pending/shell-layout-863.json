@@ -1,4 +1,4 @@
 {
   "impact": "additive",
-  "plain": "Container takes maxWidth=\"shell\" (1180px) and gutter; TabsList takes align=\"start\". Existing usage is unchanged; nothing to change."
+  "plain": "Container takes maxWidth=\"shell\" (1180px) and gutter, and TabsList takes align=\"start\"; existing usage is unchanged."
 }
