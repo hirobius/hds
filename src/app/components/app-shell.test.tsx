@@ -88,7 +88,7 @@ describe('AppShell rail (lg and up)', () => {
     render(<Shell />);
     const grid = screen.getByRole('navigation', { name: 'Main' }).parentElement as HTMLElement;
     expect(grid.style.transition).toContain('grid-template-columns');
-    expect(grid.style.transition).toContain('var(--primitive-duration-short)');
+    expect(grid.style.transition).toContain('var(--hds-motion-productive-duration)');
   });
 
   it('starts expanded and collapses with the toggle', async () => {
