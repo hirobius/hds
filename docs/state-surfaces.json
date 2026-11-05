@@ -304,7 +304,7 @@
       "describes": "Runbook for syncing code to the Figma library",
       "kind": "editorial",
       "owner": "Adrian",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-11-05",
       "maxAgeDays": 90
     },
     {
@@ -319,6 +319,20 @@
       "kind": "generated",
       "by": "scripts/figma-snapshot.mjs",
       "check": "node scripts/check-figma-drift.mjs"
+    },
+    {
+      "path": "figma/contracts/Button.json",
+      "describes": "The Button component contract the Figma library must meet, built from code",
+      "kind": "generated",
+      "by": "scripts/check-figma-components.mjs",
+      "check": "node scripts/check-figma-components.mjs --check"
+    },
+    {
+      "path": "figma/contracts/IconButton.json",
+      "describes": "The IconButton component contract the Figma library must meet, built from code",
+      "kind": "generated",
+      "by": "scripts/check-figma-components.mjs",
+      "check": "node scripts/check-figma-components.mjs --check"
     },
     {
       "path": "figma/inventory.json",

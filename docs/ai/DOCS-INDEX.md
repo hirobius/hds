@@ -28,6 +28,8 @@ A script builds it: change its source, never the file. A named check fails when 
 - `UPGRADING.md`: What each release asks of a consumer, compiled from upgrade/releases. Built by `scripts/upgrade/compile.mjs`; fresh when `node scripts/upgrade/compile.mjs --check` passes.
 - `upgrade/index.json`: Every release with its breaking count, the floor and what is deprecated. Built by `scripts/upgrade/compile.mjs`; fresh when `node scripts/upgrade/compile.mjs --check` passes.
 - `figma/snapshot.json`: The Figma library as last recorded by the Sync plugin. Built by `scripts/figma-snapshot.mjs`; fresh when `node scripts/check-figma-drift.mjs` passes.
+- `figma/contracts/Button.json`: The Button component contract the Figma library must meet, built from code. Built by `scripts/check-figma-components.mjs`; fresh when `node scripts/check-figma-components.mjs --check` passes.
+- `figma/contracts/IconButton.json`: The IconButton component contract the Figma library must meet, built from code. Built by `scripts/check-figma-components.mjs`; fresh when `node scripts/check-figma-components.mjs --check` passes.
 - `figma/inventory.json`: Every page, component set and variant count in the Figma library. Built by `scripts/figma-inventory.mjs`; not freshness-checked.
 - `figma/disposition.json`: What becomes of each Figma component. Built by `scripts/figma-disposition.mjs`; fresh when `node scripts/figma-disposition.mjs --check` passes.
 - `figma/code-connect.json`: Code Connect templates registry. Built by `scripts/generate-code-connect.mjs`; fresh when `node scripts/check-code-connect.mjs` passes.
@@ -65,7 +67,7 @@ Written by a person; the registry carries when it was last re-read. `pnpm check:
 - `docs/CONSUMING.md`: The canonical consumption guide. Reviewed 2026-10-12, re-read within 90 days.
 - `.github/ISSUE_TEMPLATE`: Bug and feature request templates. Reviewed 2026-10-12, re-read within 120 days.
 - `.github/PULL_REQUEST_TEMPLATE.md`: Pull request template. Reviewed 2026-10-12, re-read within 120 days.
-- `figma/README.md`: Runbook for syncing code to the Figma library. Reviewed 2026-10-12, re-read within 90 days.
+- `figma/README.md`: Runbook for syncing code to the Figma library. Reviewed 2026-11-05, re-read within 90 days.
 - `figma/links.json`: Figma file keys and docs URL the sync reads. Reviewed 2026-10-12, re-read within 120 days.
 - `figma/brand-modes.json`: Directions that are modes of the Hirobius/Brand collection (ADR-035). Reviewed 2026-10-12, re-read within 120 days.
 - `figma/mapping-overrides.json`: Hand-made component to Figma mappings. Reviewed 2026-10-12, re-read within 90 days.

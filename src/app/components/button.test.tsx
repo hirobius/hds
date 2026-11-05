@@ -386,9 +386,48 @@ describe('Button quiet tone, flush and link (hds#863)', () => {
     expect(c).not.toContain('hds-btn-wipe');
     expect(c).toContain('active:inset-shadow-transparent');
     expect(
-      c.filter((x) => /^(hover:|active:)?bg-/.test(x) && x !== 'hover:bg-transparent'),
+      c.filter((x) => /^((hover|active|disabled):)?bg-/.test(x) && !x.endsWith('bg-transparent')),
     ).toEqual([]);
     expect(button.getAttribute('data-variant')).toBe('link');
+  });
+
+  // Owner decision 2026-11-05: links stay plain text in every tone. A toned link keeps the
+  // tone's text colour and the underline, with a transparent background in every state.
+  it.each(['danger', 'success', 'warning', 'info'] as const)(
+    'variant="link" tone="%s" has a transparent background and keeps the tone text',
+    async (tone) => {
+      const { Button } = await load();
+      const { getByRole } = render(
+        <Button variant="link" tone={tone}>
+          Remove
+        </Button>,
+      );
+      const c = classesOf(getByRole('button'));
+      const fills = c.filter((x) => /^((dark:)?(hover|active|disabled):)?bg-/.test(x));
+      expect(fills.sort()).toEqual(
+        [
+          'active:bg-transparent',
+          'bg-transparent',
+          'disabled:bg-transparent',
+          'hover:bg-transparent',
+        ].sort(),
+      );
+      expect(c.filter((x) => /brightness-(95|110)/.test(x))).toEqual([]);
+      expect(c).toContain('active:inset-shadow-transparent');
+      expect(c).toContain('underline');
+      expect(c).toContain(`text-feedback-${tone}`);
+    },
+  );
+
+  it('variant="link" has no disabled fill either', async () => {
+    const { Button } = await load();
+    const { getByRole } = render(
+      <Button variant="link" disabled>
+        Clear
+      </Button>,
+    );
+    const c = classesOf(getByRole('button'));
+    expect(c.filter((x) => x.startsWith('disabled:bg-'))).toEqual(['disabled:bg-transparent']);
   });
 
   it('variant="link" tone="quiet" is a secondary-text link', async () => {

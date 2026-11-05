@@ -175,7 +175,14 @@ const buttonVariants = /* @__PURE__ */ cva(
           'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
-      { variant: 'link', className: 'px-0' },
+      // A link is plain text in every tone (owner decision 2026-11-05): a status tone keeps its
+      // text colour, but its fill, hover brightness and pressed wash are swapped out, and the
+      // base disabled fill too. Compound classes come after tone classes, so these win the merge.
+      {
+        variant: 'link',
+        className:
+          'px-0 bg-transparent hover:bg-transparent active:bg-transparent disabled:bg-transparent hover:brightness-100 dark:hover:brightness-100 active:inset-shadow-transparent',
+      },
       {
         iconOnly: true,
         size: 'sm',
