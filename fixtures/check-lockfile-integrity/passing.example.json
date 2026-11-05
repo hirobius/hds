@@ -1,4 +1,0 @@
-{
-  "scenario": "clean",
-  "description": "package.json and pnpm-lock.yaml are in sync — no drift detected."
-}
