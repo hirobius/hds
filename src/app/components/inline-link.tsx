@@ -61,8 +61,16 @@ const SIZE_ROLE: Record<InlineLinkSize, 'ui' | 'body' | 'title'> = {
 // content.secondary together on hover; always underlined (links must not rely on colour
 // alone). A standalone link gets a 24px hit area (44px tall on touch).
 //
-// To change link styling site-wide: edit .hds-link in theme.css.
-// motion-ok: the hover colour transition is on .hds-link in theme.css (productive motion token)
+// To change link styling site-wide: edit .hds-link in theme.css. The hover colour
+// transition lives there (productive motion token).
+//
+// Motion (hds#751): an external link's icon nudges 0.125em up-right on hover and
+// keyboard focus, a CSS translate on the productive motion token. theme.css zeroes
+// that duration under prefers-reduced-motion, so the icon then stays still.
+// group-hover only applies on hover-capable pointers (Tailwind v4), so touch
+// never leaves the icon stuck nudged.
+const EXTERNAL_ICON_NUDGE =
+  'transition-[translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] group-hover:translate-x-[0.125em] group-hover:-translate-y-[0.125em] group-focus-visible:translate-x-[0.125em] group-focus-visible:-translate-y-[0.125em]';
 
 type LinkKind = 'internal' | 'external' | 'plain';
 
@@ -114,7 +122,7 @@ export function InlineLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`hds-focus hds-link${modifierClass}`}
+      className={`group hds-focus hds-link${modifierClass}`}
     >
       {children}
       <span className="sr-only"> (opens in new tab)</span>
@@ -124,6 +132,7 @@ export function InlineLink({
           size="var(--component-inlineLink-iconSize)"
           color="currentColor"
           aria-hidden
+          className={EXTERNAL_ICON_NUDGE}
           style={{
             display: 'inline',
             verticalAlign: 'middle',
