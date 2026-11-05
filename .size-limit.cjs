@@ -185,7 +185,10 @@ module.exports = [
   {
     name: 'main entry graph (hirobius-ui.js + the modules it re-exports)',
     path: 'dist/probe/hirobius-ui.graph.js',
-    limit: '60 kB',
+    // Owner decision 2026-11-05, ratchet down later: 60 kB -> 70 kB when this
+    // budget began to measure the full entry graph (67.64 kB). Back to 60 kB is
+    // tracked in hds#1205.
+    limit: '70 kB',
     gzip: true,
   },
   {
