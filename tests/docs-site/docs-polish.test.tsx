@@ -172,3 +172,35 @@ describe('5. long titles fit without breaking a word', () => {
     expect(CSS).not.toMatch(/#nd-page h1[^{]*\{[^}]*overflow-wrap:\s*(break-word|anywhere)/);
   });
 });
+
+// Adrian 2026-11-05: the sidebar search trigger had no visible box (surface.raised is the
+// sidebar's own fill), and the gear read darker than the sidebar's drawer toggle.
+describe('sidebar search box and icon controls', () => {
+  const bodyOf = (selector: string) =>
+    rules()
+      .filter((r) => r.selectors.includes(selector))
+      .map((r) => r.body)
+      .join(';');
+
+  it('draws the search trigger as a field: page fill and a default border', () => {
+    const body = bodyOf('.hds-docs-search');
+    expect(body).toContain('background: var(--semantic-color-surface-page)');
+    expect(body).toMatch(/border: 1px solid var\(--semantic-color-border-default\)/);
+    expect(body).not.toContain('surface-raised');
+  });
+
+  it('gives the gear and the drawer toggle the same subdued secondary tone', () => {
+    const iconSelectors = [
+      '.hds-docs-display [data-docs-switch-trigger]',
+      "#nd-sidebar button[aria-label='Collapse Sidebar']",
+      '#nd-sidebar-mobile [data-docs-switch-trigger]',
+      '#nd-sidebar-mobile div:has(> .hds-docs-display) > button',
+    ];
+    for (const sel of iconSelectors) {
+      const colors = [...bodyOf(sel).matchAll(/(?:^|[;\s])color:\s*([^;]+)/g)].map((m) =>
+        m[1]!.trim(),
+      );
+      expect(colors, sel).toEqual(['var(--semantic-color-content-secondary)']);
+    }
+  });
+});
