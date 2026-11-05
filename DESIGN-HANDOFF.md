@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 583 tokens, aliases, and TS refs in one shot.
+Checks all 585 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
