@@ -1,4 +1,4 @@
-// motion-ok: motion delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs. The toggle label crossfade below is the one motion/react piece, timed through useHdsMotion.
+// Motion: delivered via a Tailwind transition list (colours, the tone hover:brightness filter, and the C2 hard-edge translate + box-shadow) on the productive motion token; gate accepts only hds.duration refs. The toggle label crossfade below is the one motion/react piece, timed through useHdsMotion.
 /**
  * @category Actions
  * @tier primitive

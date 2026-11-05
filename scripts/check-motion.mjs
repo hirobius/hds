@@ -56,8 +56,13 @@
  *                  Arbitrary Tailwind motion values without a var(--…) token
  *                  (animate-[spin_1s_linear], [transition:all_150ms]) now fail.
  *
+ * v4 (2026-11-05, hds#751): A `// motion-ok:` exemption on a file that already
+ *                  satisfies A or B fails as stale. It claimed "no motion" over
+ *                  code that animates, and it skipped the hard-coded value check.
+ *
  * Usage: pnpm check:micromotion
- * Exempt: a `// motion-ok: <reason>` line comment anywhere in the file
+ * Exempt: a `// motion-ok: <reason>` line comment anywhere in the file, only
+ *         when the file has no motion of its own
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
@@ -147,10 +152,19 @@ const MISSING_MOTION =
   '       Example: transition: `background-color ${hds.duration.fast}s ease`\n' +
   '       Example: import { motion } from "motion/react"; → <motion.div whileHover={{ ... }}>';
 
+const STALE_EXEMPTION =
+  'Stale motion-ok exemption: this file already has motion (A or B above).\n' +
+  '       Delete the // motion-ok: line; keep the reason as a plain comment if it helps.';
+
 /** Problems in one component file's source; empty when it passes. */
 function problemsIn(content) {
-  if (EXEMPT_PATTERN.test(content)) return [];
   const code = stripComments(content);
+  const hasMotion = MOTION_PATTERNS.some((p) => p.test(code));
+  if (EXEMPT_PATTERN.test(content)) {
+    // An exemption says "no motion here"; over a file that animates it is
+    // stale, and it hid the hard-coded value check below (hds#751).
+    return hasMotion ? [STALE_EXEMPTION] : [];
+  }
   const problems = [];
   const hardCoded = [...code.matchAll(ARBITRARY_MOTION)]
     .map((m) => m[0])
@@ -162,7 +176,7 @@ function problemsIn(content) {
     );
   }
   const isInteractive = INTERACTIVE_PATTERNS.some((p) => p.test(code));
-  if (isInteractive && !MOTION_PATTERNS.some((p) => p.test(code))) problems.push(MISSING_MOTION);
+  if (isInteractive && !hasMotion) problems.push(MISSING_MOTION);
   return problems;
 }
 
