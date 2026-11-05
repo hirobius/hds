@@ -175,7 +175,17 @@ const buttonVariants = /* @__PURE__ */ cva(
           'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
-      { variant: 'link', className: 'px-0' },
+      // Link focus (owner bug, 2026-11-05): with px-0 the base box-shadow ring and its
+      // 2px offset sat right on the glyphs and the underline, on the md radius of a box only as
+      // wide as the text. A link draws an outline instead: role.ring colour, the thick border
+      // width, a 2px offset (the shared .hds-focus ring InlineLink uses) and the control radius,
+      // set only on :focus-visible, so the rest box (width, padding, radius) never moves. An
+      // outline also survives forced-colors mode, where a box-shadow ring is dropped.
+      {
+        variant: 'link',
+        className:
+          'px-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-solid focus-visible:outline-[length:var(--hds-borderWidth-thick)] focus-visible:outline-ring focus-visible:outline-offset-2 focus-visible:rounded-[var(--semantic-radius-control)]',
+      },
       {
         iconOnly: true,
         size: 'sm',

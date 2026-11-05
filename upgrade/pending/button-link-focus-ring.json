@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A focused Button variant=\"link\" now shows a rounded outline with a 2px gap around the text; drop any local focus-visible outline or ring classes added to work around the old tight ring."
+}
