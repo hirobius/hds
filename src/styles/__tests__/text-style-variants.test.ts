@@ -35,6 +35,7 @@ describe('bodyStrong (ADR-052 addendum)', () => {
 
   it('matches the weight Text weight="bold" sets', () => {
     expect(readFileSync(resolve(ROOT, 'src/app/components/text.tsx'), 'utf8')).toContain(
+      // tier-ok: asserts the string Text ships, not a style
       "bold: '[font-weight:var(--primitive-typography-weight-bold)]'",
     );
   });
