@@ -30,6 +30,9 @@ paths = [
   # Same for the pre-push secret-pii-scan fixtures (ops#943): the test commits
   # the fixture into a throwaway repo under another path, so it still fires.
   '''^fixtures\/secret-pii-scan\/''',
+  # check-pack-scan's violating package (ops#27): the test packs it and scans
+  # the unpacked copy from a temp dir, so this does not stop it firing.
+  '''^fixtures\/pack-scan\/''',
 ]
 regexes = [
   # HDS design-system token paths (not secrets)
