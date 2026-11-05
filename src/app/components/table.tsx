@@ -284,6 +284,43 @@ const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   action: BODY_TEXT,
 };
 
+// One header cell: the plain and sortable branches share every class and
+// the type style; only the sortable one adds aria-sort and a button (hds#1009).
+function TableHeaderCell({
+  column,
+  columnIndex,
+  density,
+  stickyHeader,
+  ariaSort,
+  children,
+}: {
+  column: TableColumn;
+  columnIndex: number;
+  density: TableDensity | undefined;
+  stickyHeader: boolean | undefined;
+  ariaSort?: TableSortDirection;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      role="columnheader"
+      aria-sort={ariaSort}
+      className={cn(
+        tableHeaderCellVariants({
+          align: column.align ?? 'left',
+          density: density ?? 'follow',
+          sticky: Boolean(stickyHeader),
+          columnDivider: columnIndex > 0,
+          floor: !column.width,
+        }),
+      )}
+      style={HEADER_TEXT}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function Table({
   columns,
   rows,
@@ -412,24 +449,12 @@ export function Table({
              */}
             <div role="row" style={{ display: 'contents' }}>
               {columns.map((column, columnIndex) => {
+                const cellProps = { column, columnIndex, density, stickyHeader };
                 if (!column.sortable) {
                   return (
-                    <div
-                      key={column.key}
-                      role="columnheader"
-                      className={cn(
-                        tableHeaderCellVariants({
-                          align: column.align ?? 'left',
-                          density: density ?? 'follow',
-                          sticky: Boolean(stickyHeader),
-                          columnDivider: columnIndex > 0,
-                          floor: !column.width,
-                        }),
-                      )}
-                      style={HEADER_TEXT}
-                    >
+                    <TableHeaderCell key={column.key} {...cellProps}>
                       {column.label}
-                    </div>
+                    </TableHeaderCell>
                   );
                 }
 
@@ -442,21 +467,7 @@ export function Table({
                       : ArrowUpDown;
 
                 return (
-                  <div
-                    key={column.key}
-                    role="columnheader"
-                    aria-sort={direction}
-                    className={cn(
-                      tableHeaderCellVariants({
-                        align: column.align ?? 'left',
-                        density: density ?? 'follow',
-                        sticky: Boolean(stickyHeader),
-                        columnDivider: columnIndex > 0,
-                        floor: !column.width,
-                      }),
-                    )}
-                    style={HEADER_TEXT}
-                  >
+                  <TableHeaderCell key={column.key} {...cellProps} ariaSort={direction}>
                     <button
                       type="button"
                       onClick={column.onSort}
@@ -465,7 +476,7 @@ export function Table({
                       {column.label}
                       <Icon icon={DirectionIcon} size="small" aria-hidden />
                     </button>
-                  </div>
+                  </TableHeaderCell>
                 );
               })}
             </div>

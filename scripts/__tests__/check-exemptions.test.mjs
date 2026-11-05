@@ -90,9 +90,20 @@ describe('check-exemptions', () => {
   });
 
   it('rejects a marker the shared module does not list', () => {
-    expect(EXEMPTION_MARKERS).not.toContain('widget-ok');
-    const r = runOnText('widget.ts', 'const x = 1; // widget-ok: intentional exception\n');
+    // Assembled so this file does not itself carry the unknown marker it tests.
+    const unknown = ['widget', 'ok'].join('-');
+    expect(EXEMPTION_MARKERS).not.toContain(unknown);
+    const r = runOnText('widget.ts', `const x = 1; // ${unknown}: intentional exception\n`);
     expect(r.status).toBe(1);
     expect(r.stderr).toContain('unknown exemption marker "widget-ok"');
+  });
+
+  it('does not read a CSS custom property ending in -ok as a marker', () => {
+    const r = runOnText(
+      'vars.mjs',
+      'const css = `:root { --bd-ok: #146c43; --bd-ok-soft: #e1f2e9; }`;\n',
+    );
+    expect(r.stderr).toBe('');
+    expect(r.status).toBe(0);
   });
 });

@@ -33,6 +33,12 @@ describe('check-motion', () => {
     expect(check(button('transition-colors')).ok).toBe(true);
   });
 
+  it('passes a transition on a motion-intent duration variable', () => {
+    const src =
+      "export const B = () => <button style={{ transition: 'width var(--hds-motion-productive-duration) ease' }}>Go</button>;\n";
+    expect(check(src).ok).toBe(true);
+  });
+
   it('fails a button with no motion', () => {
     expect(check(button('px-2')).ok).toBe(false);
   });

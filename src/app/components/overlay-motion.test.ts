@@ -49,7 +49,7 @@ describe('overlay hover/active fades use the productive token (zeroed under redu
     it(`${file} chip remove buttons fade their hover fill`, () => {
       const chip = read(file)
         .split('\n')
-        .find((l) => l.includes('hover:bg-[var(--semantic-color-surface-sunken)]'));
+        .find((l) => l.includes('hover:bg-[var(--semantic-color-surface-softHover)]'));
       expect(chip).toBeDefined();
       const block = read(file).split("'hds-focus hds-touch-row inline-flex h-7")[1].split(')}')[0];
       expect(block).toContain('transition-colors');

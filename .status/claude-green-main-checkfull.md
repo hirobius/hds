@@ -1,0 +1,1 @@
+Green main for check:full and closure:plan:check: AppShell rail eases on the motion-intent duration (check-motion learns var(--hds-motion-\*-duration)); check-exemptions no longer reads CSS custom properties like --bd-ok as markers; check-security-baseline blocks credentials in .npmrc rather than the policy file itself; closure plan regenerated.

@@ -1,0 +1,8 @@
+{
+  "name": "pack-scan-fail",
+  "version": "1.0.0",
+  "files": [
+    "lib",
+    ".status"
+  ]
+}

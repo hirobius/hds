@@ -183,6 +183,12 @@ describe('Button accessibility contract', () => {
       expect(document.activeElement).toBe(button);
       const cls = button.className.split(/\s+/);
       expect(cls, name).toContain('hds-focus');
+      if (name === 'Clear' || name === 'Details') {
+        // A link has no inline padding, so the same ring is drawn on an ::after box 4px past
+        // the label (.hds-focus-after, hds#1167); computed values live in
+        // tests/visual/button-link-focus.spec.ts.
+        expect(cls, name).toContain('hds-focus-after');
+      }
     }
   });
 

@@ -338,6 +338,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
@@ -637,7 +638,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/container.tsx",
-      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'max' (1200px full layout) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
+      "description": "Container — semantic width-constrained layout. Centers content horizontally and applies semantic max-width constraints. - maxWidth options: 'content' (760px prose) | 'shell' (1180px app shell) | 'max' (1200px full layout) - gutter: inline padding from the region gutter token (40px comfortable, 24px compact, smaller below sm) - No arbitrary pixel values allowed Usage: <Container maxWidth=\"max\"> <div>...</div> </Container>",
       "figmaUrl": null,
       "figmaId": null,
       "preview": {
@@ -659,10 +660,15 @@
           "type": "string",
           "optional": true
         },
+        "gutter": {
+          "type": "boolean",
+          "default": false
+        },
         "maxWidth": {
           "type": "enum",
           "values": [
             "content",
+            "shell",
             "max"
           ],
           "default": "max"
@@ -707,7 +713,7 @@
           }
         ]
       },
-      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. For a horizontal gutter, which Container does not support, put a Box with `style={{ paddingInline }}` inside it.",
+      "aiRules": "Reach for this named layout intent before Box/sx. maxWidth MUST use the semantic width scale ('content' | 'shell' | 'max'), never a raw px value. Do NOT use the deprecated `padding` prop — it is a no-op; apply padding via Surface or a Stack instead. Do NOT import Container directly inside a page under src/app/pages — use Page, which wraps Container and owns vertical rhythm. For the page gutter, pass `gutter`: it pads inline from semantic.space.region.gutter, which retunes per viewport and density.",
       "core": true
     },
     "Disclosure": {
@@ -1329,6 +1335,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
@@ -1580,6 +1587,15 @@
         "href": {
           "type": "string"
         },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "optional": true
+        },
         "standalone": {
           "type": "boolean",
           "default": false
@@ -1594,6 +1610,14 @@
         },
         "href": {
           "type": "string"
+        },
+        "size": {
+          "type": "enum",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
         },
         "standalone": {
           "type": "boolean"
@@ -1637,13 +1661,25 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineLink.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "docsPage": "/docs/components/inline-link",
       "publicDataAttributes": [],
+      "tokens": {
+        "iconSize": "component.inlineLink.iconSize",
+        "iconGap": "component.inlineLink.iconGap"
+      },
+      "figmaPropertyMapping": {
+        "size": "Size"
+      },
+      "states": [
+        "default"
+      ],
       "usage": {
         "when": "Link to a route or external URL from inside body copy.",
         "whenNot": "An action that changes something, or a control that needs button styling.",
@@ -3772,6 +3808,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
@@ -4002,7 +4039,7 @@
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "The quiet tone, flush and the link variant keep the focus-visible ring of every Button.",
+          "rule": "Quiet, flush and link keep a visible focus ring (hds#1167).",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.quiet-focus-ring"
@@ -5191,7 +5228,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/tabs.tsx",
-      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge.",
+      "description": "The tab strip. When tabs scroll out of view it fades the hidden edge (`data-overflow=\"start\" | \"end\" | \"both\"`), so tabs past the edge do not look absent. The fade is a mask, so it needs no colour and holds in light and dark. The selected tab is kept in view: on mount, and on change (smooth unless the user prefers reduced motion), so a selected tab is never left past the edge. `align=\"start\"` pulls the strip back by the trigger inset, so the first tab's label lines up flush with the column start (headings, cards) above it.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -5205,6 +5242,13 @@
       "variantAxes": [],
       "componentProperties": [],
       "props": {
+        "align": {
+          "type": "enum",
+          "values": [
+            "start"
+          ],
+          "optional": true
+        },
         "asChild": {
           "type": "boolean",
           "optional": true
@@ -8836,6 +8880,7 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/list.tsx",
         "src/app/components/nav-list.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/components/sheet.tsx"
@@ -9480,6 +9525,14 @@
           "type": "ReactNode",
           "optional": true
         },
+        "descriptionPlacement": {
+          "type": "enum",
+          "values": [
+            "below",
+            "title"
+          ],
+          "default": "below"
+        },
         "level": {
           "type": "PageHeaderLevel",
           "default": 1
@@ -9494,6 +9547,14 @@
         },
         "title": {
           "type": "ReactNode"
+        },
+        "titleMenu": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "titleMenuLabel": {
+          "type": "string",
+          "default": "Title options"
         }
       },
       "allowedChildren": [
@@ -9501,7 +9562,20 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The title menu button is named by titleMenuLabel and sits beside the heading.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:page-header.title-menu-named"
+        },
+        {
+          "rule": "Tab reaches the title menu button; Enter opens it; Escape closes it and returns focus.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:page-header.title-menu-keyboard"
+        }
+      ],
       "docsPage": "/docs/patterns/page-header",
       "publicDataAttributes": [
         "data-slot"
@@ -12981,6 +13055,13 @@
         "value": "#f4f5f7"
       },
       {
+        "path": "primitive.color.neutral.150",
+        "cssVar": "--primitive-color-neutral-150",
+        "type": "color",
+        "description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522).",
+        "value": "#e9eaec"
+      },
+      {
         "path": "primitive.color.neutral.200",
         "cssVar": "--primitive-color-neutral-200",
         "type": "color",
@@ -12988,11 +13069,25 @@
         "value": "#e4e5e7"
       },
       {
+        "path": "primitive.color.neutral.250",
+        "cssVar": "--primitive-color-neutral-250",
+        "type": "color",
+        "description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522).",
+        "value": "#dddee0"
+      },
+      {
         "path": "primitive.color.neutral.300",
         "cssVar": "--primitive-color-neutral-300",
         "type": "color",
         "description": "Specific value within the neutral range at a defined lightness step.",
         "value": "#d3d4d6"
+      },
+      {
+        "path": "primitive.color.neutral.325",
+        "cssVar": "--primitive-color-neutral-325",
+        "type": "color",
+        "description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522).",
+        "value": "#c7c9cc"
       },
       {
         "path": "primitive.color.neutral.350",
@@ -13026,7 +13121,7 @@
         "path": "primitive.color.neutral.550",
         "cssVar": "--primitive-color-neutral-550",
         "type": "color",
-        "description": "Dark surface.softHover (C2).",
+        "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522).",
         "value": "#5e626a"
       },
       {
@@ -13259,6 +13354,13 @@
         "type": "color",
         "description": "Graphite accent — light midnight grey.",
         "value": "#c4c8cf"
+      },
+      {
+        "path": "primitive.color.graphite.250",
+        "cssVar": "--primitive-color-graphite-250",
+        "type": "color",
+        "description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522).",
+        "value": "#b3b8c0"
       },
       {
         "path": "primitive.color.graphite.300",
@@ -14374,6 +14476,13 @@
         "value": "760px"
       },
       {
+        "path": "primitive.size.width.1180",
+        "cssVar": "--primitive-size-width-1180",
+        "type": "dimension",
+        "description": "App shell max width: a 1180px column for app pages (hds#863).",
+        "value": "1180px"
+      },
+      {
         "path": "primitive.size.width.1200",
         "cssVar": "--primitive-size-width-1200",
         "type": "dimension",
@@ -14432,6 +14541,20 @@
         "cssVar": "--primitive-underline-offset",
         "type": "dimension",
         "value": "0.2em"
+      },
+      {
+        "path": "primitive.inlineIcon.size",
+        "cssVar": "--primitive-inlineIcon-size",
+        "type": "dimension",
+        "description": "Inline icon size: three quarters of the font size.",
+        "value": "0.75em"
+      },
+      {
+        "path": "primitive.inlineIcon.gap",
+        "cssVar": "--primitive-inlineIcon-gap",
+        "type": "dimension",
+        "description": "Gap between the text and an inline icon: a quarter of the font size.",
+        "value": "0.25em"
       },
       {
         "path": "primitive.borderWidth.xs",
@@ -14546,8 +14669,8 @@
         "cssVar": "--semantic-color-surface-raised",
         "type": "color",
         "description": "Subtle elevated surface (cards, sections)",
-        "alias": "{primitive.color.neutral.50}",
-        "resolvedValue": "#f9fafc",
+        "alias": "{primitive.color.neutral.150}",
+        "resolvedValue": "#e9eaec",
         "dark": {
           "alias": "{primitive.color.neutral.825}",
           "resolvedValue": "#1b202a"
@@ -14558,8 +14681,8 @@
         "cssVar": "--semantic-color-surface-overlay",
         "type": "color",
         "description": "Deeper surface layer",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.800}",
           "resolvedValue": "#212630"
@@ -14630,8 +14753,8 @@
         "cssVar": "--semantic-color-surface-hover",
         "type": "color",
         "description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
           "resolvedValue": "#3b404a"
@@ -14642,8 +14765,8 @@
         "cssVar": "--semantic-color-surface-pressed",
         "type": "color",
         "description": "Background for an actively pressed interactive surface.",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.black}",
           "resolvedValue": "#060a13"
@@ -14654,8 +14777,8 @@
         "cssVar": "--semantic-color-surface-selected",
         "type": "color",
         "description": "Background for a persistently selected item (active tab, checked row).",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.325}",
+        "resolvedValue": "#c7c9cc",
         "dark": {
           "alias": "{primitive.color.neutral.725}",
           "resolvedValue": "#272c36"
@@ -14666,8 +14789,8 @@
         "cssVar": "--semantic-color-surface-muted",
         "type": "color",
         "description": "Muted background for low-emphasis content blocks.",
-        "alias": "{primitive.color.neutral.100}",
-        "resolvedValue": "#f4f5f7",
+        "alias": "{primitive.color.neutral.250}",
+        "resolvedValue": "#dddee0",
         "dark": {
           "alias": "{primitive.color.neutral.750}",
           "resolvedValue": "#252a34"
@@ -14678,8 +14801,8 @@
         "cssVar": "--semantic-color-surface-sunken",
         "type": "color",
         "description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.700}",
           "resolvedValue": "#3b404a"
@@ -14690,8 +14813,8 @@
         "cssVar": "--semantic-color-surface-soft",
         "type": "color",
         "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
-        "alias": "{primitive.color.neutral.200}",
-        "resolvedValue": "#e4e5e7",
+        "alias": "{primitive.color.neutral.300}",
+        "resolvedValue": "#d3d4d6",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -14702,8 +14825,8 @@
         "cssVar": "--semantic-color-surface-softHover",
         "type": "color",
         "description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "alias": "{primitive.color.neutral.325}",
+        "resolvedValue": "#c7c9cc",
         "dark": {
           "alias": "{primitive.color.neutral.550}",
           "resolvedValue": "#5e626a"
@@ -14736,8 +14859,8 @@
         "cssVar": "--semantic-color-content-tertiary",
         "type": "color",
         "description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
-        "alias": "{primitive.color.neutral.500}",
-        "resolvedValue": "#6f737b",
+        "alias": "{primitive.color.neutral.550}",
+        "resolvedValue": "#5e626a",
         "dark": {
           "alias": "{primitive.color.neutral.450}",
           "resolvedValue": "#8d9096"
@@ -14747,8 +14870,8 @@
         "path": "semantic.color.content.disabled",
         "cssVar": "--semantic-color-content-disabled",
         "type": "color",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "alias": "{primitive.color.neutral.350}",
+        "resolvedValue": "#b2b4b8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -14830,8 +14953,8 @@
         "cssVar": "--semantic-color-border-default",
         "type": "color",
         "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
-        "alias": "{primitive.color.graphite.200}",
-        "resolvedValue": "#c4c8cf",
+        "alias": "{primitive.color.graphite.250}",
+        "resolvedValue": "#b3b8c0",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -15277,6 +15400,14 @@
         "description": "Max width for full-layout containers (1200px). Use with HdsContainer for page layouts.",
         "alias": "{primitive.size.width.1200}",
         "resolvedValue": "1200px"
+      },
+      {
+        "path": "semantic.layout.width.shell",
+        "cssVar": "--semantic-layout-width-shell",
+        "type": "dimension",
+        "description": "Max width for app shells (1180px). Use with Container maxWidth shell and a gutter.",
+        "alias": "{primitive.size.width.1180}",
+        "resolvedValue": "1180px"
       },
       {
         "path": "semantic.layout.container.maxWidth",
@@ -15931,7 +16062,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#e9eaec"
           },
           "shadow": {
             "alias": "{semantic.shadow.subtle}",
@@ -15948,7 +16079,7 @@
         "composite": {
           "surface": {
             "alias": "{semantic.color.surface.raised}",
-            "resolvedValue": "#f9fafc"
+            "resolvedValue": "#e9eaec"
           },
           "shadow": {
             "alias": "{semantic.shadow.floating}",
@@ -15973,7 +16104,7 @@
           },
           "border": {
             "alias": "{semantic.color.border.default}",
-            "resolvedValue": "#c4c8cf"
+            "resolvedValue": "#b3b8c0"
           }
         }
       },
@@ -16105,7 +16236,7 @@
         "type": "color",
         "description": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.tag.text",
@@ -16121,7 +16252,7 @@
         "type": "color",
         "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.tag.radius",
@@ -16277,7 +16408,7 @@
         "type": "color",
         "description": "Neutral badge fill.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.badge.neutral.text",
@@ -16444,8 +16575,8 @@
         "cssVar": "--component-button-edge-secondary",
         "type": "color",
         "description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-        "alias": "{primitive.color.neutral.350}",
-        "resolvedValue": "#b2b4b8",
+        "alias": "{primitive.color.neutral.400}",
+        "resolvedValue": "#a0a3a8",
         "dark": {
           "alias": "{primitive.color.neutral.725}",
           "resolvedValue": "#272c36"
@@ -16705,7 +16836,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#b2b4b8"
       },
       {
         "path": "component.button.primary.bgDisabled",
@@ -16713,7 +16844,7 @@
         "type": "color",
         "description": "Disabled primary button fill.",
         "alias": "{semantic.color.surface.muted}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.button.secondary.bg.rest",
@@ -16721,7 +16852,7 @@
         "type": "color",
         "description": "Secondary button fill: soft tonal, no border (hds#891).",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.bg.hover",
@@ -16729,7 +16860,7 @@
         "type": "color",
         "description": "Secondary button hover fill (the wipe layer's colour).",
         "alias": "{semantic.color.surface.softHover}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#c7c9cc"
       },
       {
         "path": "component.button.secondary.bg.pressed",
@@ -16737,7 +16868,7 @@
         "type": "color",
         "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -16761,7 +16892,7 @@
         "type": "color",
         "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "component.button.secondary.text",
@@ -16777,7 +16908,7 @@
         "type": "color",
         "description": "Ghost button hover (wipe) fill.",
         "alias": "{semantic.color.surface.hover}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.button.tertiary.bg.pressed",
@@ -16785,7 +16916,7 @@
         "type": "color",
         "description": "Ghost button pressed fill.",
         "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#e4e5e7"
+        "resolvedValue": "#d3d4d6"
       },
       {
         "path": "component.input.bg",
@@ -16857,14 +16988,14 @@
         "cssVar": "--component-card-bg",
         "type": "color",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "component.card.border",
         "cssVar": "--component-card-border",
         "type": "color",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "component.card.radius",
@@ -16910,7 +17041,7 @@
         "type": "color",
         "description": "Inline code chip background.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "component.list.groupGap",
@@ -16951,6 +17082,78 @@
         "description": "Width and height of a List row's leading icon tile or logo (40px).",
         "alias": "{semantic.size.avatar}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "component.inlineLink.iconSize",
+        "cssVar": "--component-inlineLink-iconSize",
+        "type": "dimension",
+        "description": "External-link icon size, in em so it scales with the link text at any font size.",
+        "alias": "{primitive.inlineIcon.size}",
+        "resolvedValue": "0.75em"
+      },
+      {
+        "path": "component.inlineLink.iconGap",
+        "cssVar": "--component-inlineLink-iconGap",
+        "type": "dimension",
+        "description": "Gap between the link text and its external-link icon, in em.",
+        "alias": "{primitive.inlineIcon.gap}",
+        "resolvedValue": "0.25em"
+      },
+      {
+        "path": "component.inlineLink.size.sm.fontSize",
+        "cssVar": "--component-inlineLink-size-sm-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.base}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "component.inlineLink.size.sm.iconSize",
+        "cssVar": "--component-inlineLink-size-sm-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.md.fontSize",
+        "cssVar": "--component-inlineLink-size-md-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.lg}",
+        "resolvedValue": "18px"
+      },
+      {
+        "path": "component.inlineLink.size.md.iconSize",
+        "cssVar": "--component-inlineLink-size-md-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.fontSize",
+        "cssVar": "--component-inlineLink-size-lg-fontSize",
+        "type": "dimension",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
+        "alias": "{primitive.typography.size.title}",
+        "resolvedValue": "28px"
+      },
+      {
+        "path": "component.inlineLink.size.lg.iconSize",
+        "cssVar": "--component-inlineLink-size-lg-iconSize",
+        "type": "dimension",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+        "alias": "{primitive.size.20}",
+        "resolvedValue": "20px"
+      },
+      {
+        "path": "component.pagination.compactControlSize",
+        "cssVar": "--component-pagination-compactControlSize",
+        "type": "dimension",
+        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
+        "alias": "{semantic.size.row.compact}",
+        "resolvedValue": "40px"
       }
     ],
     "role": [
@@ -16976,7 +17179,7 @@
         "type": "color",
         "description": "Card surface. shadcn role: card.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "role.card-foreground",
@@ -17040,7 +17243,7 @@
         "type": "color",
         "description": "Secondary action surface. shadcn role: secondary.",
         "alias": "{semantic.color.surface.raised}",
-        "resolvedValue": "#f9fafc"
+        "resolvedValue": "#e9eaec"
       },
       {
         "path": "role.secondary-foreground",
@@ -17056,7 +17259,7 @@
         "type": "color",
         "description": "Muted/quiet bg (skeletons, disabled inputs). shadcn role: muted.",
         "alias": "{semantic.color.surface.overlay}",
-        "resolvedValue": "#f4f5f7"
+        "resolvedValue": "#dddee0"
       },
       {
         "path": "role.muted-foreground",
@@ -17104,7 +17307,7 @@
         "type": "color",
         "description": "Default border. shadcn role: border.",
         "alias": "{semantic.color.border.default}",
-        "resolvedValue": "#c4c8cf"
+        "resolvedValue": "#b3b8c0"
       },
       {
         "path": "role.input",

@@ -51,6 +51,9 @@ describe.skipIf(!CHROMIUM)('focus ring in Chromium', () => {
         html +
         `<button id="tag" class="hds-focus" style="${BOX}position:absolute;left:220px;top:40px;width:80px;height:32px;border-radius:var(--component-tag-radius)"></button>` +
         `<button id="tab" class="hds-focus-inset" style="${BOX}position:absolute;left:220px;top:140px"></button>` +
+        // Button variant="link" (hds#1167): the ring moves to an ::after box 4px past the label.
+        `<style>#link{position:absolute}#link::after{content:'';position:absolute;inset:0 -4px;border-radius:var(--semantic-radius-control)}</style>` +
+        `<button id="link" class="hds-focus hds-focus-after" style="${BOX}left:220px;top:240px;width:80px;height:24px"></button>` +
         `</body></html>`,
     );
   }, 30_000);
@@ -140,6 +143,26 @@ describe.skipIf(!CHROMIUM)('focus ring in Chromium', () => {
     const m = await ring('tab');
     expect(m.width).toBe('2px');
     expect(m.offset).toBe('-2px');
+  });
+
+  it('a link draws the same ring on its ::after box, not on itself (radius.control → 6 / 8)', async () => {
+    await keyboardFocus('link');
+    const m = await page.$eval('#link', (el) => {
+      const own = getComputedStyle(el);
+      const after = getComputedStyle(el, '::after');
+      return {
+        own: own.outlineStyle,
+        width: after.outlineWidth,
+        offset: after.outlineOffset,
+        style: after.outlineStyle,
+        radius: after.borderTopLeftRadius,
+      };
+    });
+    expect(m.own).toBe('none');
+    expect([m.style, m.width, m.offset]).toEqual(['solid', '2px', '2px']);
+    expect(px(await tokenPx('--semantic-focus-radius-control-ringRadius'))).toBe(
+      px(m.radius) + px(m.offset) + px(m.width),
+    );
   });
 
   it('forced-colors mode keeps the ring and paints it in Highlight', async () => {

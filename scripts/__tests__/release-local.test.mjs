@@ -108,13 +108,14 @@ describe('runSteps', () => {
     expect(runSteps(false)[1]).toEqual(audit);
     expect(runSteps(true)[1]).toEqual(audit);
   });
-  it('then builds, smokes, and ends with the publish step', () => {
+  it('then builds, smokes, scans the tarball, and ends with the publish step', () => {
     const steps = runSteps(true);
-    expect(steps.slice(2, 4)).toEqual([
+    expect(steps.slice(2, 5)).toEqual([
       ['pnpm', ['build:lib']],
       ['pnpm', ['smoke:consumer', '--skip-build']],
+      ['node', ['scripts/check-pack-scan.mjs']],
     ]);
-    expect(steps[4]).toEqual(publishStep(true));
+    expect(steps[5]).toEqual(publishStep(true));
   });
 });
 
@@ -136,7 +137,7 @@ describe('package.json wiring', () => {
   });
   it('builds and smokes the same way as the Actions release', () => {
     expect(pkg.scripts.release).toMatch(
-      /pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish/,
+      /pnpm build:lib && pnpm smoke:consumer --skip-build && node scripts\/check-pack-scan\.mjs && changeset publish/,
     );
   });
 });
