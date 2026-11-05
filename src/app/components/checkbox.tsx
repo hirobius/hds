@@ -22,15 +22,10 @@ import type { InputHTMLAttributes } from 'react';
 import { motion } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { Check, Minus } from 'lucide-react';
-import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
-import {
-  forwardFocusHandlers,
-  useInteractionState,
-  type InteractionVisualState,
-} from '../hooks/useInteractionState';
+import { forwardFocusHandlers } from '../hooks/useInteractionState';
 import { CONTROL_COLOR_FADE } from './control-color-fade';
-import { ControlLabel, ControlLabelText } from './control-label';
+import { ControlLabel, ControlLabelText, useControlInteraction } from './control-label';
 import { Icon } from './icon';
 
 /** Checkbox — custom-drawn checkbox with check / indeterminate glyph. */
@@ -163,13 +158,9 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
     ref,
   ) {
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const frozenState = useFrozenState();
     // Shared single-element interaction machine (ADR-015) — same seam as Toggle/Radio.
     const { visualState, isHover, isFocused, isPressed, isDisabled, handlers } =
-      useInteractionState({
-        disabled,
-        frozenState: frozenState as InteractionVisualState | null,
-      });
+      useControlInteraction(disabled);
 
     // `indeterminate` is a DOM property, not an attribute — set it imperatively.
     useEffect(() => {

@@ -68,6 +68,7 @@ import { hashPrecommit } from './lib/precommit-canonical.mjs';
 
 import { reachableScripts } from './lib/script-reachability.mjs';
 import { expandPrePushHook } from './lib/gate-tier.mjs';
+import { expandLaneScripts } from './lib/gate-lanes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -103,6 +104,16 @@ const args = new Set(process.argv.slice(2));
 const WARN = args.has('--warn');
 const REPORT = args.has('--report');
 const SELF_TEST = args.has('--self-test');
+
+/**
+ * package.json with each `run-lane.mjs <lane>` script expanded to the lane's
+ * commands from the registry (hds#1095), so a gate run only from check:fast or
+ * check:full is still seen as wired.
+ */
+function loadPkgWithLanes(registryObj) {
+  const pkg = JSON.parse(readSafe(PKG) || '{}');
+  return { ...pkg, scripts: expandLaneScripts(pkg.scripts, registryObj) };
+}
 
 function readSafe(p) {
   try {
@@ -733,7 +744,7 @@ if (SELF_TEST) {
 
   // Load the real registry for fixture testing.
   const registryObj = JSON.parse(readSafe(REGISTRY));
-  const pkgObj = JSON.parse(readSafe(PKG) || '{}');
+  const pkgObj = loadPkgWithLanes(registryObj);
   const ghActionsContent = listGhActions();
 
   // Fixture definitions: { file, expectPass }
@@ -1021,7 +1032,7 @@ if (SELF_TEST) {
 // ────────────────────────────────────────────────────────────────────────────
 
 const registryObj = JSON.parse(readSafe(REGISTRY));
-const pkgObj = JSON.parse(readSafe(PKG) || '{}');
+const pkgObj = loadPkgWithLanes(registryObj);
 const ghActionsContent = listGhActions();
 
 const { violations, summary } = runWiringCheck(

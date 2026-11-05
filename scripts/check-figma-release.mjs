@@ -22,6 +22,14 @@
  * --meta runs step 4 alone: `pnpm release:local` runs it before the build,
  * so a laptop release cannot ship with a stale cover.
  *
+ * Baseline: figma/release-drift-baseline.json may list `extra` items
+ * ({ kind: 'extra', name, reason }) the gate lets through. An extra is a
+ * variable, mode or style Figma holds that code no longer has; Sync and
+ * delta.js never delete, and the prune that does is Adrian's alone (the
+ * promote plugin), so an agent cannot clear one. Nothing else can be
+ * baselined, and an entry that is no longer drift fails as stale, so the
+ * file only ever shrinks. No file means no baseline: drift must be 0.
+ *
  * `pnpm release` (the script release.yml publishes through) runs this first.
  * Exit 0 clean · 1 refuse to publish. Never talks to Figma.
  *
@@ -110,6 +118,39 @@ export function runMetaGate({ root, ...options }) {
   };
 }
 
+const BASELINE = join('figma', 'release-drift-baseline.json');
+const key = (item) => `${item.kind} ${item.name}`;
+
+/**
+ * Splits drift items into baselined and not, and names baseline problems.
+ * @param {string} root
+ * @param {Array<{kind: string, name: string}>} items
+ * @returns {{ open: object[], baselined: object[], problems: string[] }}
+ */
+export function applyDriftBaseline(root, items) {
+  const path = join(root, BASELINE);
+  if (!existsSync(path)) return { open: items, baselined: [], problems: [] };
+  const { accepted = [] } = JSON.parse(readFileSync(path, 'utf8'));
+  const problems = [];
+  const bad = accepted.filter((e) => e.kind !== 'extra');
+  if (bad.length)
+    problems.push(
+      `${BASELINE}: only \`extra\` items can be baselined (an agent can push the rest with delta.js): ${bad.map(key).join(', ')}.`,
+    );
+  const allowed = new Set(accepted.filter((e) => e.kind === 'extra').map(key));
+  const present = new Set(items.map(key));
+  const stale = [...allowed].filter((k) => !present.has(k));
+  if (stale.length)
+    problems.push(
+      `${BASELINE} has stale entries that are no longer drift; delete them: ${stale.join(', ')}.`,
+    );
+  return {
+    open: items.filter((i) => !allowed.has(key(i))),
+    baselined: items.filter((i) => allowed.has(key(i))),
+    problems,
+  };
+}
+
 /**
  * `library` components with no Figma node. `table: false` when
  * figma/disposition.json is missing, which the gate treats as a failure.
@@ -145,11 +186,15 @@ export function componentCoverageGaps(root) {
 export function runReleaseGate({ root, ...options }) {
   const problems = [];
   const drift = runDriftCheck({ root });
+  const base = drift.report
+    ? applyDriftBaseline(root, drift.report.items)
+    : { open: null, baselined: [], problems: [] };
+  problems.push(...base.problems);
   if (drift.exitCode === 2 || !existsSync(join(root, 'figma', 'snapshot.json'))) {
     problems.push('there is no Figma snapshot (figma/snapshot.json).');
-  } else if (drift.exitCode !== 0) {
+  } else if (drift.exitCode !== 0 && !(base.open && base.open.length === 0)) {
     const count = drift.report
-      ? `${drift.report.items.length} drift item(s)`
+      ? `${base.open.length} drift item(s)${base.baselined.length ? ` (plus ${base.baselined.length} baselined)` : ''}`
       : 'a snapshot that does not verify';
     problems.push(
       `${count} between hirobius.tokens.json and figma/snapshot.json:\n${drift.output}`,
@@ -184,8 +229,12 @@ export function runReleaseGate({ root, ...options }) {
       `${coverage.missing.length} library component(s) with no Figma node: ${coverage.missing.join(', ')}. ${COVERAGE_FIX}`,
     );
   }
-  if (!problems.length)
-    return { exitCode: 0, output: '✓ check-figma-release — Figma matches code' };
+  if (!problems.length) {
+    const note = base.baselined.length
+      ? ` (${base.baselined.length} extra(s) baselined in ${BASELINE}, awaiting Adrian's prune)`
+      : '';
+    return { exitCode: 0, output: `✓ check-figma-release — Figma matches code${note}` };
+  }
   return {
     exitCode: 1,
     output: `✗ ${BEHIND}: refusing to publish.\n- ${problems.join('\n- ')}${tokenProblems ? `\n${FIX}` : ''}${meta.length ? `\n${META_FIX}` : ''}`,

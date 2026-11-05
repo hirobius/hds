@@ -36,17 +36,20 @@
  * `altText` (defaults to its label) that screen readers hear instead, since a toast never takes
  * focus: say how else to do it ("Undo from Recently removed") when the label alone is not enough.
  */
-// motion-ok: Radix Toast manages enter/exit/swipe mounting and the auto-dismiss
-// lifecycle; this module renders its themed surface + live region only. The
-// swipe-follow / slide-out visuals are CSS, in theme.css (.hds-toast): Radix
-// stamps data-swipe / data-swipe-direction and the --radix-toast-swipe-* vars,
-// theme.css turns them into transform/animation on the existing motion tokens.
+// Motion (hds#751): Radix Toast owns mounting, swipe and the auto-dismiss
+// timer. A new toast eases up into the stack (motion/react, productive token
+// through useHdsMotion, so zero under prefers-reduced-motion). The swipe
+// follow / snap-back / slide-out stay CSS in theme.css (.hds-toast): the follow
+// rides the CSS `translate` property so it composes with the enter's inline
+// transform, and the exit keyframes override it as animations do.
 
 import * as React from 'react';
 import * as ToastPrimitive from '@radix-ui/react-toast';
+import { motion } from 'motion/react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Info, CircleCheck, TriangleAlert, CircleX, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Icon } from './icon';
 import { Button } from './button';
 
@@ -152,6 +155,7 @@ export function ToastProvider({
   swipeDirection = 'right',
 }: ToastProviderProps) {
   const [toasts, setToasts] = React.useState<ToastEntry[]>([]);
+  const productiveMotion = useHdsMotion('productive');
   const idRef = React.useRef(0);
 
   const remove = React.useCallback((id: string) => {
@@ -178,6 +182,7 @@ export function ToastProvider({
           return (
             <ToastPrimitive.Root
               key={t.id}
+              asChild
               duration={t.duration ?? duration}
               onOpenChange={(open) => {
                 if (!open) remove(t.id);
@@ -191,41 +196,50 @@ export function ToastProvider({
                 'text-popover-foreground shadow-overlay hds-focus',
               )}
             >
-              <Icon
-                icon={TONE_ICON[tone]}
-                size="small"
-                color="currentColor"
-                className={toastIconVariants({ tone })}
-                aria-hidden
-              />
-              <div className="flex min-w-0 flex-col gap-fixed-2xs">
-                <ToastPrimitive.Title className="hds-type-ui">{t.title}</ToastPrimitive.Title>
-                {t.description ? (
-                  <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
-                    {t.description}
-                  </ToastPrimitive.Description>
-                ) : null}
-                {t.actions?.length ? (
-                  <div className="flex flex-wrap gap-scale-xs pt-fixed-2xs">
-                    {t.actions.map((a, i) => (
-                      <ToastPrimitive.Action key={i} altText={a.altText ?? a.label} asChild>
-                        <Button size="sm" variant="secondary" onClick={a.onSelect}>
-                          {a.label}
-                        </Button>
-                      </ToastPrimitive.Action>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-              <ToastPrimitive.Close
-                aria-label="Dismiss"
-                className={cn(
-                  'absolute right-2 top-2 inline-flex size-6 hds-touch-target items-center justify-center',
-                  'rounded-sm text-muted-foreground transition-colors hover:text-foreground hds-focus',
-                )}
+              <motion.li
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: productiveMotion.duration,
+                  ease: productiveMotion.easing,
+                }}
               >
-                <Icon icon={X} size="small" color="currentColor" aria-hidden />
-              </ToastPrimitive.Close>
+                <Icon
+                  icon={TONE_ICON[tone]}
+                  size="small"
+                  color="currentColor"
+                  className={toastIconVariants({ tone })}
+                  aria-hidden
+                />
+                <div className="flex min-w-0 flex-col gap-fixed-2xs">
+                  <ToastPrimitive.Title className="hds-type-ui">{t.title}</ToastPrimitive.Title>
+                  {t.description ? (
+                    <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
+                      {t.description}
+                    </ToastPrimitive.Description>
+                  ) : null}
+                  {t.actions?.length ? (
+                    <div className="flex flex-wrap gap-scale-xs pt-fixed-2xs">
+                      {t.actions.map((a, i) => (
+                        <ToastPrimitive.Action key={i} altText={a.altText ?? a.label} asChild>
+                          <Button size="sm" variant="secondary" onClick={a.onSelect}>
+                            {a.label}
+                          </Button>
+                        </ToastPrimitive.Action>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <ToastPrimitive.Close
+                  aria-label="Dismiss"
+                  className={cn(
+                    'absolute right-2 top-2 inline-flex size-6 hds-touch-target items-center justify-center',
+                    'rounded-sm text-muted-foreground transition-colors hover:text-foreground hds-focus',
+                  )}
+                >
+                  <Icon icon={X} size="small" color="currentColor" aria-hidden />
+                </ToastPrimitive.Close>
+              </motion.li>
             </ToastPrimitive.Root>
           );
         })}

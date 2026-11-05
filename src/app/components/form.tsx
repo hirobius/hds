@@ -30,11 +30,10 @@
  * directly (no clone); the `@hirobius/design-system/form` adapter does exactly this.
  */
 
-// motion-ok: Form/FormField are structural — a <form> wrapper and a label/error
-// field-wiring container. They host no interactive surface of their own; motion
-// belongs to the controls placed inside them.
 import * as React from 'react';
+import { AnimatePresence, motion, useIsPresent } from 'motion/react';
 import { cn } from '../../lib/utils';
+import { useHdsMotion } from '../hooks/useHdsMotion';
 
 // ── Form ─────────────────────────────────────────────────────────────────────
 
@@ -109,6 +108,36 @@ export function useFieldWiring({
   return { controlId, descriptionId, errorId, describedBy };
 }
 
+// ── Error message reveal (hds#751) ────────────────────────────────────────────
+
+/**
+ * The field's error line. It eases in (fade + a 4px drop, matching Alert) on
+ * the productive motion token and fades out when the error clears. While it
+ * fades out, AnimatePresence keeps the last message rendered, so it drops
+ * role=alert and goes aria-hidden: nothing re-announces a cleared error.
+ * useHdsMotion zeroes the duration under prefers-reduced-motion, so the
+ * message then appears and leaves instantly.
+ */
+function FieldError({ id, message }: { id: string; message: string }) {
+  const isPresent = useIsPresent();
+  const productiveMotion = useHdsMotion('productive');
+  return (
+    <motion.p
+      id={isPresent ? id : undefined}
+      role={isPresent ? 'alert' : undefined}
+      aria-hidden={isPresent ? undefined : true}
+      data-form-error=""
+      className="hds-type-caption text-destructive"
+      initial={{ opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+    >
+      {message}
+    </motion.p>
+  );
+}
+
 // ── FormFieldShell ─────────────────────────────────────────────────────────────
 
 /** @public */
@@ -156,11 +185,9 @@ export const FormFieldShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, F
             {description}
           </p>
         ) : null}
-        {error ? (
-          <p id={errorId} role="alert" className="hds-type-caption text-destructive">
-            {error}
-          </p>
-        ) : null}
+        <AnimatePresence initial={false}>
+          {error ? <FieldError key="error" id={errorId} message={error} /> : null}
+        </AnimatePresence>
       </div>
     );
   },

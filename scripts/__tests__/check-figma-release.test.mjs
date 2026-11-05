@@ -39,7 +39,12 @@ function writeDisposition(dir, components, overrides = []) {
 }
 
 /** A mini-root holding the fixture tokens and a snapshot of Figma pushed from them. */
-async function root({ pushed = true, hash = 'current', components = LINKED } = {}) {
+async function root({
+  pushed = true,
+  hash = 'current',
+  components = LINKED,
+  dropToken = false,
+} = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'figma-release-'));
   cpSync(FIXTURE_TOKENS_PATH, join(dir, 'hirobius.tokens.json'));
   mkdirSync(join(dir, 'figma'));
@@ -51,6 +56,12 @@ async function root({ pushed = true, hash = 'current', components = LINKED } = {
     await hdsRunPush(figma, payload, checksum);
   }
   const taken = await hdsRunSnapshot(figma);
+  if (dropToken) {
+    // Code deleted a token Figma still holds: one `extra`, which only a prune clears.
+    const tokens = JSON.parse(readFileSync(join(dir, 'hirobius.tokens.json'), 'utf8'));
+    delete tokens.component.button.height;
+    writeFileSync(join(dir, 'hirobius.tokens.json'), JSON.stringify(tokens, null, 2));
+  }
   const tokensHash = hash === 'current' ? tokensFileHash(dir) : hash;
   writeFileSync(
     join(dir, 'figma', 'snapshot.json'),
@@ -91,6 +102,46 @@ describe('runReleaseGate', () => {
     const r = runReleaseGate({ root: dir });
     expect(r.exitCode).toBe(1);
     expect(r.output).toMatch(/Figma is behind code/);
+  });
+});
+
+function writeBaseline(dir, accepted) {
+  writeFileSync(
+    join(dir, 'figma', 'release-drift-baseline.json'),
+    JSON.stringify({ accepted }, null, 2),
+  );
+}
+
+describe('drift baseline (extras only Adrian can prune)', () => {
+  it('fails on an unbaselined extra and names the baseline route', async () => {
+    const r = runReleaseGate({ root: await root({ dropToken: true }) });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/1 drift item/);
+  });
+
+  it('passes when every drift item is an extra in the baseline', async () => {
+    const dir = await root({ dropToken: true });
+    const extra = runReleaseGate({ root: dir }).output.match(/extra\s+(\S+)/)[1];
+    writeBaseline(dir, [{ kind: 'extra', name: extra, reason: 'awaiting prune' }]);
+    const r = runReleaseGate({ root: dir });
+    expect(r.output).toMatch(/baselined/);
+    expect(r.exitCode).toBe(0);
+  });
+
+  it('fails on a stale baseline entry that is no longer drift', async () => {
+    const dir = await root();
+    writeBaseline(dir, [{ kind: 'extra', name: 'space/gone', reason: 'pruned' }]);
+    const r = runReleaseGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/stale.*space\/gone/);
+  });
+
+  it('refuses to baseline anything but an extra', async () => {
+    const dir = await root({ pushed: false });
+    writeBaseline(dir, [{ kind: 'missing', name: 'space/2', reason: 'later' }]);
+    const r = runReleaseGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/only `extra` items can be baselined/);
   });
 });
 

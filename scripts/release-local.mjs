@@ -116,6 +116,10 @@ export function runSteps(publish) {
     ['node', ['scripts/check-figma-release.mjs', '--meta']],
     ['pnpm', ['build:lib']],
     ['pnpm', ['smoke:consumer', '--skip-build']],
+    // Tarball scan (ops#27): 0.12/0.13 shipped client PII. Packs the real
+    // tarball and scans every file in it (allowlist, gitleaks, PII) last,
+    // so nothing built after it can ship unscanned.
+    ['node', ['scripts/check-pack-scan.mjs']],
     publishStep(publish),
   ];
 }

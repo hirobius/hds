@@ -997,15 +997,20 @@
       "        span data-tone=\"neutral\"",
       "        span data-tone=\"info\"",
       "    div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
-      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
-      "        h2",
-      "        div data-slot=\"status\"",
-      "          span data-tone=\"success\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\" data-slot=\"title-group\"",
+      "        div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "          h2",
+      "          div data-slot=\"title-menu\"",
+      "            button aria-expanded=\"false\" aria-haspopup=\"menu\" aria-label=\"Acme Co options\" data-hover-effect=\"wipe\" data-size=\"sm\" data-state=\"closed\" data-variant=\"tertiary\"",
+      "              svg aria-hidden=\"true\" data-hds-icon",
+      "            span aria-hidden=\"true\" data-hds-portal-anchor",
+      "          div data-slot=\"status\"",
+      "            span data-tone=\"success\"",
+      "        p data-slot=\"description\"",
       "      div data-slot=\"actions\"",
       "        div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
       "          button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
-      "          button data-hover-effect=\"wipe\" data-variant=\"primary\"",
-      "    p data-slot=\"description\""
+      "          button data-hover-effect=\"wipe\" data-variant=\"primary\""
     ],
     "reader": [
       "banner",
@@ -1017,9 +1022,10 @@
       "current page",
       "end, current page",
       "heading, Acme Co, level 2",
+      "button, Acme Co options, not expanded, has popup menu",
+      "paragraph",
       "button, Edit",
-      "button, New project",
-      "paragraph"
+      "button, New project"
     ]
   },
   "Pagination": {
