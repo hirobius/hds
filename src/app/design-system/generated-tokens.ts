@@ -310,6 +310,10 @@ export const tokens = {
     underline: {
       offset: "var(--primitive-underline-offset)"
     },
+    inlineIcon: {
+      size: "var(--primitive-inlineIcon-size)",
+      gap: "var(--primitive-inlineIcon-gap)"
+    },
     borderWidth: {
       xs: "var(--primitive-borderWidth-xs)",
       sm: "var(--primitive-borderWidth-sm)",
@@ -700,6 +704,24 @@ export const tokens = {
       rowPadding: "var(--component-list-rowPadding)",
       rowMinHeight: "var(--component-list-rowMinHeight)",
       leadingSize: "var(--component-list-leadingSize)"
+    },
+    inlineLink: {
+      iconSize: "var(--component-inlineLink-iconSize)",
+      iconGap: "var(--component-inlineLink-iconGap)",
+      size: {
+        sm: {
+          fontSize: "var(--component-inlineLink-size-sm-fontSize)",
+          iconSize: "var(--component-inlineLink-size-sm-iconSize)"
+        },
+        md: {
+          fontSize: "var(--component-inlineLink-size-md-fontSize)",
+          iconSize: "var(--component-inlineLink-size-md-iconSize)"
+        },
+        lg: {
+          fontSize: "var(--component-inlineLink-size-lg-fontSize)",
+          iconSize: "var(--component-inlineLink-size-lg-iconSize)"
+        }
+      }
     }
   },
   role: {

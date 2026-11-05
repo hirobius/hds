@@ -539,10 +539,13 @@
     "InlineLink": {
       "kind": "value",
       "signatures": [
-        "({ href, children, externalIcon, standalone, }: InlineLinkProps): Element"
+        "({ href, children, externalIcon, standalone, size, }: InlineLinkProps): Element"
       ]
     },
     "InlineLinkProps": {
+      "kind": "type"
+    },
+    "InlineLinkSize": {
       "kind": "type"
     },
     "Input": {
@@ -1523,6 +1526,19 @@
         "component.inlineCode.bg.$description",
         "component.inlineCode.bg.$type",
         "component.inlineCode.bg.$value",
+        "component.inlineLink",
+        "component.inlineLink.iconGap",
+        "component.inlineLink.iconGap.$description",
+        "component.inlineLink.iconGap.$type",
+        "component.inlineLink.iconGap.$value",
+        "component.inlineLink.iconSize",
+        "component.inlineLink.iconSize.$description",
+        "component.inlineLink.iconSize.$type",
+        "component.inlineLink.iconSize.$value",
+        "component.inlineLink.size",
+        "component.inlineLink.size.lg",
+        "component.inlineLink.size.md",
+        "component.inlineLink.size.sm",
         "component.input",
         "component.input.bg",
         "component.input.bg.$type",
@@ -1840,6 +1856,15 @@
         "primitive.grid.columns.1",
         "primitive.grid.columns.2",
         "primitive.grid.columns.3",
+        "primitive.inlineIcon",
+        "primitive.inlineIcon.$description",
+        "primitive.inlineIcon.$type",
+        "primitive.inlineIcon.gap",
+        "primitive.inlineIcon.gap.$description",
+        "primitive.inlineIcon.gap.$value",
+        "primitive.inlineIcon.size",
+        "primitive.inlineIcon.size.$description",
+        "primitive.inlineIcon.size.$value",
         "primitive.radius",
         "primitive.radius.$type",
         "primitive.radius.0",
@@ -3800,6 +3825,9 @@
         "primitive.grid.columns.1",
         "primitive.grid.columns.2",
         "primitive.grid.columns.3",
+        "primitive.inlineIcon",
+        "primitive.inlineIcon.gap",
+        "primitive.inlineIcon.size",
         "primitive.radius",
         "primitive.radius.0",
         "primitive.radius.12",
