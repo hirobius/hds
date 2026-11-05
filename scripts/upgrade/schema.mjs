@@ -555,6 +555,27 @@ export const Snapshot = z
     engines: z.record(z.string(), z.string()),
     bin: z.record(z.string(), z.string()),
     files: z.array(z.string()).describe('package.json#files.'),
+    // snapshot.mjs adds these three sections when the package carries their
+    // baselines (0.33.0 is the first release that does). The schema had no
+    // key for them, so `.strict()` rejected every snapshot that held them.
+    props: z
+      .record(z.string(), z.record(z.string(), z.unknown()))
+      .optional()
+      .describe(
+        'Every component prop, by component then prop (scripts/upgrade/props.mjs, hds#461); absent for a release older than docs/api/props-baseline.json.',
+      ),
+    types: z
+      .record(z.string(), z.record(z.string(), z.unknown()))
+      .optional()
+      .describe(
+        'Each exports entry, its names as the TypeScript checker sees them (scripts/upgrade/types.mjs, hds#467); absent for a release older than docs/api/types-baseline.json.',
+      ),
+    dom: z
+      .record(z.string(), z.unknown())
+      .optional()
+      .describe(
+        'Each component, the DOM its stories render (scripts/upgrade/dom.mjs, hds#468); absent for a snapshot without a DOM baseline.',
+      ),
     css: CssContract.optional().describe(
       'The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.',
     ),

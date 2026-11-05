@@ -667,6 +667,42 @@
           },
           "description": "package.json#files."
         },
+        "props": {
+          "description": "Every component prop, by component then prop (scripts/upgrade/props.mjs, hds#461); absent for a release older than docs/api/props-baseline.json.",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          }
+        },
+        "types": {
+          "description": "Each exports entry, its names as the TypeScript checker sees them (scripts/upgrade/types.mjs, hds#467); absent for a release older than docs/api/types-baseline.json.",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          }
+        },
+        "dom": {
+          "description": "Each component, the DOM its stories render (scripts/upgrade/dom.mjs, hds#468); absent for a snapshot without a DOM baseline.",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {}
+        },
         "css": {
           "description": "The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.",
           "$ref": "#/$defs/cssContract"

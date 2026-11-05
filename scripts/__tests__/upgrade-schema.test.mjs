@@ -336,6 +336,23 @@ describe('Snapshot', () => {
       expect(result.error?.issues ?? [], file).toEqual([]);
     }
   });
+
+  it('takes the props, types and dom sections snapshot.mjs writes, and still refuses an unknown key', () => {
+    const snapshot = JSON.parse(readFileSync(join(REPO, 'docs/api/releases/0.32.0.json'), 'utf8'));
+    const sections = {
+      props: {
+        Button: {
+          size: { type: "'sm' | 'md'", optional: true, values: ['sm', 'md'], default: 'md' },
+        },
+      },
+      types: {
+        '.': { Button: { kind: 'value', signatures: ['(props: ButtonProps): ReactNode'] } },
+      },
+      dom: { Button: { dom: ['button data-size="md"'] } },
+    };
+    expect(Snapshot.safeParse({ ...snapshot, ...sections }).error?.issues ?? []).toEqual([]);
+    expect(Snapshot.safeParse({ ...snapshot, unknownSection: {} }).success).toBe(false);
+  });
 });
 
 describe('checkReleaseDir', () => {
