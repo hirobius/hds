@@ -169,6 +169,36 @@
         }
       ]
     },
+    "inlineLink": {
+      "$comment": "size.*.iconSize are the Figma-side px of the icon (Figma variables have no em). Code draws iconSize (0.75em) at every size, so those three read UNUSED by design.",
+      "source": "src/app/components/inline-link.tsx",
+      "rules": [
+        {
+          "match": "size.sm.fontSize",
+          "declared": {
+            "token": "primitive.typography.size.base",
+            "evidence": "sm: 'ui'",
+            "note": "InlineLink size=sm sets the ui role through the hds-type-ui class (SIZE_ROLE), whose font-size is this step."
+          }
+        },
+        {
+          "match": "size.md.fontSize",
+          "declared": {
+            "token": "primitive.typography.size.lg",
+            "evidence": "md: 'body'",
+            "note": "InlineLink size=md sets the body role through the hds-type-body class (SIZE_ROLE), whose font-size is this step."
+          }
+        },
+        {
+          "match": "size.lg.fontSize",
+          "declared": {
+            "token": "primitive.typography.size.title",
+            "evidence": "lg: 'title'",
+            "note": "InlineLink size=lg sets the title role through the hds-type-title class (SIZE_ROLE), whose font-size is this step."
+          }
+        }
+      ]
+    },
     "nav": {
       "orphan": "TopNav, NavItem and SideNav were removed in 0.20.0 (hds#394) and their tokens after 0.32.0 (hds#431). Only component.nav.paddingY stays: Disclosure's nav variant borrows it."
     }

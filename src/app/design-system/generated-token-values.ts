@@ -18,8 +18,11 @@ export const tokenValues = {
       neutral: {
         "50": "#f9fafc",
         "100": "#f4f5f7",
+        "150": "#e9eaec",
         "200": "#e4e5e7",
+        "250": "#dddee0",
         "300": "#d3d4d6",
+        "325": "#c7c9cc",
         "350": "#b2b4b8",
         "400": "#a0a3a8",
         "450": "#8d9096",
@@ -66,6 +69,7 @@ export const tokenValues = {
         "50": "#f2f4f8",
         "100": "#e5e8ed",
         "200": "#c4c8cf",
+        "250": "#b3b8c0",
         "300": "#a8aeb8",
         "400": "#7f8794",
         "500": "#586170",
@@ -307,6 +311,10 @@ export const tokenValues = {
     },
     underline: {
       offset: "0.2em"
+    },
+    inlineIcon: {
+      size: "0.75em",
+      gap: "0.25em"
     },
     borderWidth: {
       xs: "1px",

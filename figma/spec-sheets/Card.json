@@ -16,12 +16,12 @@
         {
           "name": "bg",
           "token": "component.card.bg",
-          "value": "#f9fafc"
+          "value": "#e9eaec"
         },
         {
           "name": "border",
           "token": "component.card.border",
-          "value": "#c4c8cf"
+          "value": "#b3b8c0"
         }
       ]
     }

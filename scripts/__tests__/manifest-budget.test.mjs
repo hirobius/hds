@@ -12,6 +12,10 @@
  * own figure when measured (45,657 B vs 45,797 B), so a 1% margin is applied.
  * A failure here is a performance-optimization task: cut bytes, never raise
  * the budget.
+ *
+ * hds#1150: dist/manifest.js ships slimManifestForBundle(manifest) (vite.config.lib.ts),
+ * not the raw JSON, so the estimate measures that. Measuring the raw JSON charged the
+ * bundle ~5 kB of repo-only fields (figmaLink, consumers, a11y testIds) it never ships.
  */
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -19,6 +23,7 @@ import { createRequire } from 'node:module';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
+import { slimManifestForBundle } from '../lib/manifest-bundle.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const require = createRequire(import.meta.url);
@@ -39,9 +44,9 @@ describe('manifest bundle budget (hds#413)', () => {
     expect(parseLimit(entry.limit)).toBeGreaterThan(0);
   });
 
-  it('fits public/hds-manifest.json under that budget', () => {
+  it('fits the bundled manifest (public/hds-manifest.json, slimmed as dist ships it) under that budget', () => {
     const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
-    const estimate = gzipSync(JSON.stringify(manifest)).length * 1.01;
+    const estimate = gzipSync(JSON.stringify(slimManifestForBundle(manifest))).length * 1.01;
     const limit = parseLimit(entry.limit);
     expect(
       estimate,

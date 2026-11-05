@@ -14,13 +14,25 @@
           "$value": "#f4f5f7",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "150": {
+          "$value": "#e9eaec",
+          "$description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522)."
+        },
         "200": {
           "$value": "#e4e5e7",
           "$description": "Specific value within the neutral range at a defined lightness step."
         },
+        "250": {
+          "$value": "#dddee0",
+          "$description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522)."
+        },
         "300": {
           "$value": "#d3d4d6",
           "$description": "Specific value within the neutral range at a defined lightness step."
+        },
+        "325": {
+          "$value": "#c7c9cc",
+          "$description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522)."
         },
         "400": {
           "$value": "#a0a3a8",
@@ -40,7 +52,7 @@
         },
         "550": {
           "$value": "#5e626a",
-          "$description": "Dark surface.softHover (C2)."
+          "$description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522)."
         },
         "600": {
           "$value": "#4d525b",
@@ -185,6 +197,10 @@
         "200": {
           "$value": "#c4c8cf",
           "$description": "Graphite accent — light midnight grey."
+        },
+        "250": {
+          "$value": "#b3b8c0",
+          "$description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522)."
         },
         "300": {
           "$value": "#a8aeb8",
@@ -1278,6 +1294,24 @@
         }
       }
     },
+    "inlineIcon": {
+      "$type": "dimension",
+      "$description": "An icon set inside a line of text, sized in em so it follows the font size (hds InlineLink).",
+      "size": {
+        "$value": {
+          "value": 0.75,
+          "unit": "em"
+        },
+        "$description": "Inline icon size: three quarters of the font size."
+      },
+      "gap": {
+        "$value": {
+          "value": 0.25,
+          "unit": "em"
+        },
+        "$description": "Gap between the text and an inline icon: a quarter of the font size."
+      }
+    },
     "borderWidth": {
       "$type": "dimension",
       "xs": {
@@ -1406,24 +1440,24 @@
           }
         },
         "raised": {
-          "$value": "{primitive.color.neutral.50}",
+          "$value": "{primitive.color.neutral.150}",
           "$description": "Subtle elevated surface (cards, sections)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.50}",
+                "Light": "{primitive.color.neutral.150}",
                 "Dark": "{primitive.color.neutral.825}"
               }
             }
           }
         },
         "overlay": {
-          "$value": "{primitive.color.neutral.100}",
+          "$value": "{primitive.color.neutral.250}",
           "$description": "Deeper surface layer",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.100}",
+                "Light": "{primitive.color.neutral.250}",
                 "Dark": "{primitive.color.neutral.800}"
               }
             }
@@ -1490,84 +1524,84 @@
           }
         },
         "hover": {
-          "$value": "{primitive.color.neutral.100}",
+          "$value": "{primitive.color.neutral.250}",
           "$description": "Background for a hovered interactive surface (menu items, chips, tertiary buttons).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.100}",
+                "Light": "{primitive.color.neutral.250}",
                 "Dark": "{primitive.color.neutral.700}"
               }
             }
           }
         },
         "pressed": {
-          "$value": "{primitive.color.neutral.200}",
+          "$value": "{primitive.color.neutral.300}",
           "$description": "Background for an actively pressed interactive surface.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.200}",
+                "Light": "{primitive.color.neutral.300}",
                 "Dark": "{primitive.color.neutral.black}"
               }
             }
           }
         },
         "selected": {
-          "$value": "{primitive.color.neutral.200}",
+          "$value": "{primitive.color.neutral.325}",
           "$description": "Background for a persistently selected item (active tab, checked row).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.200}",
+                "Light": "{primitive.color.neutral.325}",
                 "Dark": "{primitive.color.neutral.725}"
               }
             }
           }
         },
         "muted": {
-          "$value": "{primitive.color.neutral.100}",
+          "$value": "{primitive.color.neutral.250}",
           "$description": "Muted background for low-emphasis content blocks.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.100}",
+                "Light": "{primitive.color.neutral.250}",
                 "Dark": "{primitive.color.neutral.750}"
               }
             }
           }
         },
         "sunken": {
-          "$value": "{primitive.color.neutral.200}",
+          "$value": "{primitive.color.neutral.300}",
           "$description": "Recessed background for inset wells (inputs, code blocks, nested panels).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.200}",
+                "Light": "{primitive.color.neutral.300}",
                 "Dark": "{primitive.color.neutral.700}"
               }
             }
           }
         },
         "soft": {
-          "$value": "{primitive.color.neutral.200}",
+          "$value": "{primitive.color.neutral.300}",
           "$description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.200}",
+                "Light": "{primitive.color.neutral.300}",
                 "Dark": "{primitive.color.neutral.600}"
               }
             }
           }
         },
         "softHover": {
-          "$value": "{primitive.color.neutral.300}",
+          "$value": "{primitive.color.neutral.325}",
           "$description": "Hovered or pressed soft (tonal) control fill, one step past surface.soft.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.300}",
+                "Light": "{primitive.color.neutral.325}",
                 "Dark": "{primitive.color.neutral.550}"
               }
             }
@@ -1598,23 +1632,23 @@
           }
         },
         "tertiary": {
-          "$value": "{primitive.color.neutral.500}",
+          "$value": "{primitive.color.neutral.550}",
           "$description": "Third text level, between secondary and disabled, for helper text; meets 4.5:1 on page and raised in both themes.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.500}",
+                "Light": "{primitive.color.neutral.550}",
                 "Dark": "{primitive.color.neutral.450}"
               }
             }
           }
         },
         "disabled": {
-          "$value": "{primitive.color.neutral.300}",
+          "$value": "{primitive.color.neutral.350}",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.300}",
+                "Light": "{primitive.color.neutral.350}",
                 "Dark": "{primitive.color.neutral.600}"
               }
             }
@@ -1694,12 +1728,12 @@
       },
       "border": {
         "default": {
-          "$value": "{primitive.color.graphite.200}",
+          "$value": "{primitive.color.graphite.250}",
           "$description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.graphite.200}",
+                "Light": "{primitive.color.graphite.250}",
                 "Dark": "{primitive.color.neutral.600}"
               }
             }
@@ -3006,12 +3040,12 @@
       "edge": {
         "secondary": {
           "$type": "color",
-          "$value": "{primitive.color.neutral.350}",
+          "$value": "{primitive.color.neutral.400}",
           "$description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.350}",
+                "Light": "{primitive.color.neutral.400}",
                 "Dark": "{primitive.color.neutral.725}"
               }
             }
@@ -3348,6 +3382,56 @@
         "$type": "dimension",
         "$value": "{semantic.size.avatar}",
         "$description": "Width and height of a List row's leading icon tile or logo (40px)."
+      }
+    },
+    "inlineLink": {
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{primitive.inlineIcon.size}",
+        "$description": "External-link icon size, in em so it scales with the link text at any font size."
+      },
+      "iconGap": {
+        "$type": "dimension",
+        "$value": "{primitive.inlineIcon.gap}",
+        "$description": "Gap between the link text and its external-link icon, in em."
+      },
+      "size": {
+        "sm": {
+          "fontSize": {
+            "$type": "dimension",
+            "$value": "{primitive.typography.size.base}",
+            "$description": "Link text size: the size step's type role (sm ui, md body, lg title)."
+          },
+          "iconSize": {
+            "$type": "dimension",
+            "$value": "{primitive.size.12}",
+            "$description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize."
+          }
+        },
+        "md": {
+          "fontSize": {
+            "$type": "dimension",
+            "$value": "{primitive.typography.size.lg}",
+            "$description": "Link text size: the size step's type role (sm ui, md body, lg title)."
+          },
+          "iconSize": {
+            "$type": "dimension",
+            "$value": "{primitive.size.12}",
+            "$description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize."
+          }
+        },
+        "lg": {
+          "fontSize": {
+            "$type": "dimension",
+            "$value": "{primitive.typography.size.title}",
+            "$description": "Link text size: the size step's type role (sm ui, md body, lg title)."
+          },
+          "iconSize": {
+            "$type": "dimension",
+            "$value": "{primitive.size.20}",
+            "$description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize."
+          }
+        }
       }
     },
     "pagination": {

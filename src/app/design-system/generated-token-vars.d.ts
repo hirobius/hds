@@ -13,8 +13,11 @@ declare module 'react' {
   interface CSSProperties {
     '--primitive-color-neutral-50'?: string | undefined;
     '--primitive-color-neutral-100'?: string | undefined;
+    '--primitive-color-neutral-150'?: string | undefined;
     '--primitive-color-neutral-200'?: string | undefined;
+    '--primitive-color-neutral-250'?: string | undefined;
     '--primitive-color-neutral-300'?: string | undefined;
+    '--primitive-color-neutral-325'?: string | undefined;
     '--primitive-color-neutral-350'?: string | undefined;
     '--primitive-color-neutral-400'?: string | undefined;
     '--primitive-color-neutral-450'?: string | undefined;
@@ -53,6 +56,7 @@ declare module 'react' {
     '--primitive-color-graphite-50'?: string | undefined;
     '--primitive-color-graphite-100'?: string | undefined;
     '--primitive-color-graphite-200'?: string | undefined;
+    '--primitive-color-graphite-250'?: string | undefined;
     '--primitive-color-graphite-300'?: string | undefined;
     '--primitive-color-graphite-400'?: string | undefined;
     '--primitive-color-graphite-500'?: string | undefined;
@@ -240,6 +244,8 @@ declare module 'react' {
     '--primitive-zIndex-100'?: string | undefined;
     '--primitive-zIndex-1000'?: string | undefined;
     '--primitive-underline-offset'?: string | undefined;
+    '--primitive-inlineIcon-size'?: string | undefined;
+    '--primitive-inlineIcon-gap'?: string | undefined;
     '--primitive-borderWidth-xs'?: string | undefined;
     '--primitive-borderWidth-sm'?: string | undefined;
     '--primitive-borderWidth-md'?: string | undefined;
@@ -583,6 +589,14 @@ declare module 'react' {
     '--component-list-rowPadding'?: string | undefined;
     '--component-list-rowMinHeight'?: string | undefined;
     '--component-list-leadingSize'?: string | undefined;
+    '--component-inlineLink-iconSize'?: string | undefined;
+    '--component-inlineLink-iconGap'?: string | undefined;
+    '--component-inlineLink-size-sm-fontSize'?: string | undefined;
+    '--component-inlineLink-size-sm-iconSize'?: string | undefined;
+    '--component-inlineLink-size-md-fontSize'?: string | undefined;
+    '--component-inlineLink-size-md-iconSize'?: string | undefined;
+    '--component-inlineLink-size-lg-fontSize'?: string | undefined;
+    '--component-inlineLink-size-lg-iconSize'?: string | undefined;
     '--component-pagination-compactControlSize'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;

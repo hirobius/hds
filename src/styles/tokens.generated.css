@@ -15,8 +15,11 @@
   /* ── Primitives ────────────────────────────────────────────────────────── */
   --primitive-color-neutral-50: #f9fafc;
   --primitive-color-neutral-100: #f4f5f7;
+  --primitive-color-neutral-150: #e9eaec;
   --primitive-color-neutral-200: #e4e5e7;
+  --primitive-color-neutral-250: #dddee0;
   --primitive-color-neutral-300: #d3d4d6;
+  --primitive-color-neutral-325: #c7c9cc;
   --primitive-color-neutral-350: #b2b4b8;
   --primitive-color-neutral-400: #a0a3a8;
   --primitive-color-neutral-450: #8d9096;
@@ -55,6 +58,7 @@
   --primitive-color-graphite-50: #f2f4f8;
   --primitive-color-graphite-100: #e5e8ed;
   --primitive-color-graphite-200: #c4c8cf;
+  --primitive-color-graphite-250: #b3b8c0;
   --primitive-color-graphite-300: #a8aeb8;
   --primitive-color-graphite-400: #7f8794;
   --primitive-color-graphite-500: #586170;
@@ -242,6 +246,8 @@
   --primitive-zIndex-100: 100;
   --primitive-zIndex-1000: 1000;
   --primitive-underline-offset: 0.2em;
+  --primitive-inlineIcon-size: 0.75em;
+  --primitive-inlineIcon-gap: 0.25em;
   --primitive-borderWidth-xs: 1px;
   --primitive-borderWidth-sm: 2px;
   --primitive-borderWidth-md: 4px;
@@ -265,31 +271,31 @@
   --hds-motion-exit-easing: var(--primitive-easing-accelerate);
   --semantic-motion-distance: var(--primitive-space-6);
   --semantic-color-surface-page: var(--primitive-color-neutral-white);
-  --semantic-color-surface-raised: var(--primitive-color-neutral-50);
-  --semantic-color-surface-overlay: var(--primitive-color-neutral-100);
+  --semantic-color-surface-raised: var(--primitive-color-neutral-150);
+  --semantic-color-surface-overlay: var(--primitive-color-neutral-250);
   --semantic-color-surface-floating: var(--primitive-color-neutral-white);
   --semantic-color-surface-scrim: var(--primitive-color-neutral-900);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-black);
   --semantic-color-surface-accent: var(--primitive-color-graphite-950);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-50);
-  --semantic-color-surface-hover: var(--primitive-color-neutral-100);
-  --semantic-color-surface-pressed: var(--primitive-color-neutral-200);
-  --semantic-color-surface-selected: var(--primitive-color-neutral-200);
-  --semantic-color-surface-muted: var(--primitive-color-neutral-100);
-  --semantic-color-surface-sunken: var(--primitive-color-neutral-200);
-  --semantic-color-surface-soft: var(--primitive-color-neutral-200);
-  --semantic-color-surface-softHover: var(--primitive-color-neutral-300);
+  --semantic-color-surface-hover: var(--primitive-color-neutral-250);
+  --semantic-color-surface-pressed: var(--primitive-color-neutral-300);
+  --semantic-color-surface-selected: var(--primitive-color-neutral-325);
+  --semantic-color-surface-muted: var(--primitive-color-neutral-250);
+  --semantic-color-surface-sunken: var(--primitive-color-neutral-300);
+  --semantic-color-surface-soft: var(--primitive-color-neutral-300);
+  --semantic-color-surface-softHover: var(--primitive-color-neutral-325);
   --semantic-color-content-primary: var(--primitive-color-neutral-900);
   --semantic-color-content-secondary: var(--primitive-color-neutral-600);
-  --semantic-color-content-tertiary: var(--primitive-color-neutral-500);
-  --semantic-color-content-disabled: var(--primitive-color-neutral-300);
+  --semantic-color-content-tertiary: var(--primitive-color-neutral-550);
+  --semantic-color-content-disabled: var(--primitive-color-neutral-350);
   --semantic-color-content-inverse: var(--primitive-color-neutral-100);
   --semantic-color-content-accent: var(--primitive-color-graphite-700);
   --semantic-color-content-onAccent: var(--primitive-color-neutral-50);
   --semantic-color-content-success: var(--primitive-color-green-700);
   --semantic-color-content-warning: var(--primitive-color-amber-800);
   --semantic-color-content-danger: var(--primitive-color-red-700);
-  --semantic-color-border-default: var(--primitive-color-graphite-200);
+  --semantic-color-border-default: var(--primitive-color-graphite-250);
   --semantic-color-border-interactive: var(--primitive-color-neutral-500);
   --semantic-color-border-subtle: var(--primitive-color-neutral-100);
   --semantic-color-border-strong: var(--primitive-color-graphite-300);
@@ -533,7 +539,7 @@
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
   --component-button-bgPressed: var(--semantic-accent-pressed);
-  --component-button-edge-secondary: var(--primitive-color-neutral-350);
+  --component-button-edge-secondary: var(--primitive-color-neutral-400);
   --component-button-edge-danger: var(--primitive-color-red-400);
   --component-button-edge-success: var(--primitive-color-green-400);
   --component-button-edge-warning: var(--primitive-color-amber-400);
@@ -592,6 +598,14 @@
   --component-list-rowPadding: var(--semantic-space-scale-sm);
   --component-list-rowMinHeight: var(--semantic-size-listRow);
   --component-list-leadingSize: var(--semantic-size-avatar);
+  --component-inlineLink-iconSize: var(--primitive-inlineIcon-size);
+  --component-inlineLink-iconGap: var(--primitive-inlineIcon-gap);
+  --component-inlineLink-size-sm-fontSize: var(--primitive-typography-size-base);
+  --component-inlineLink-size-sm-iconSize: var(--primitive-size-12);
+  --component-inlineLink-size-md-fontSize: var(--primitive-typography-size-lg);
+  --component-inlineLink-size-md-iconSize: var(--primitive-size-12);
+  --component-inlineLink-size-lg-fontSize: var(--primitive-typography-size-title);
+  --component-inlineLink-size-lg-iconSize: var(--primitive-size-20);
   --component-pagination-compactControlSize: var(--semantic-size-row-compact);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
@@ -788,5 +802,5 @@
   --component-list-rowPadding: var(--semantic-space-scale-sm);
 }
 /* Raised edges (hds#897): computed fills stepped darker (C2); Button tones alias component.button.edge.*. scripts/lib/raised-edge.mjs */
-:root{--hds-edge-primary:#010207;--hds-edge-kbd:#cdcecf;--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);}
+:root{--hds-edge-primary:#010207;--hds-edge-kbd:#b7b7b9;--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);}
 [data-theme="dark"]{--hds-edge-primary:#a5a6a9;--hds-edge-kbd:#1b1f26;}

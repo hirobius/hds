@@ -16,7 +16,6 @@
  */
 import React from 'react';
 import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';
-import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { Icon } from './icon';
 
@@ -29,7 +28,22 @@ export interface InlineLinkProps {
   externalIcon?: boolean;
   /** The link stands on its own, outside running text (such as "Back to companies"): it gets a 24px hit area, 44px tall on touch, without moving the layout. */
   standalone?: boolean;
+  /**
+   * Set the link's own type role: `sm` = ui, `md` = body, `lg` = title. Leave it unset inside
+   * running text so the link inherits the surrounding size. The external icon follows either way.
+   */
+  size?: InlineLinkSize;
 }
+
+/** @public */
+export type InlineLinkSize = 'sm' | 'md' | 'lg';
+
+/** Each size's type role (`.hds-type-<role>`, semantic.typography.<role>). */
+const SIZE_ROLE: Record<InlineLinkSize, 'ui' | 'body' | 'title'> = {
+  sm: 'ui',
+  md: 'body',
+  lg: 'title',
+};
 
 // ── InlineLink ─────────────────────────────────────────────────────────────────
 // Single source of truth for all inline body text links in HDS docs.
@@ -38,7 +52,9 @@ export interface InlineLinkProps {
 // Plain links (#hash, mailto:, tel:, other relative/non-http hrefs)
 //                                            → <a> in the same tab, no external icon
 // External links (http(s):// and //host)     → <a target="_blank" rel="noopener noreferrer">
-//                                         + optional small ExternalLink icon after the label
+//                                         + optional ExternalLink icon after the label, sized and
+//                                           spaced in em (component.inlineLink.iconSize / iconGap)
+//                                           so it scales with the text at any font size
 //                                         + visually-hidden "(opens in new tab)"
 //
 // Visual contract (C2): text and underline are both content.primary at rest and turn
@@ -70,14 +86,16 @@ export function InlineLink({
   children,
   externalIcon = true,
   standalone = false,
+  size,
 }: InlineLinkProps) {
   const { LinkComponent } = useHdsRouter();
   const kind = classifyHref(href);
-  const standaloneClass = standalone ? ' hds-link-standalone' : '';
+  const modifierClass =
+    (standalone ? ' hds-link-standalone' : '') + (size ? ` hds-type-${SIZE_ROLE[size]}` : '');
 
   if (kind === 'internal') {
     return (
-      <LinkComponent to={href} className={`hds-focus hds-link${standaloneClass}`}>
+      <LinkComponent to={href} className={`hds-focus hds-link${modifierClass}`}>
         {children}
       </LinkComponent>
     );
@@ -85,7 +103,7 @@ export function InlineLink({
 
   if (kind === 'plain') {
     return (
-      <a href={href} className={`hds-focus hds-link${standaloneClass}`}>
+      <a href={href} className={`hds-focus hds-link${modifierClass}`}>
         {children}
       </a>
     );
@@ -96,21 +114,20 @@ export function InlineLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`hds-focus hds-link${standaloneClass}`}
+      className={`hds-focus hds-link${modifierClass}`}
     >
       {children}
       <span className="sr-only"> (opens in new tab)</span>
       {externalIcon && (
         <Icon
           icon={ExternalLinkIcon}
-          size={11}
+          size="var(--component-inlineLink-iconSize)"
           color="currentColor"
           aria-hidden
           style={{
             display: 'inline',
             verticalAlign: 'middle',
-            marginLeft: hds.semantic.space.subgrid.xs,
-            marginBottom: hds.semantic.space.subgrid.hairline,
+            marginLeft: 'var(--component-inlineLink-iconGap)',
           }}
         />
       )}
