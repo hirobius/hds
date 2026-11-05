@@ -65,7 +65,8 @@ const DefaultLinkComponent: HdsLinkComponent = /* @__PURE__ */ forwardRef<
   HdsLinkProps
 >(function HdsAnchorLink({ to, children, ...rest }, ref) {
   return (
-    <a ref={ref} href={safeHref(to)} {...rest}>
+    // href after the spread, so an untyped href in rest cannot replace the guard.
+    <a ref={ref} {...rest} href={safeHref(to)}>
       {children}
     </a>
   );

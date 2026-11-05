@@ -35,6 +35,11 @@ describe('safeHref (hds#1145)', () => {
     expect(safeHref(href)).toBe(BLOCKED_HREF);
   });
 
+  it('passes a nullish value through, as an untyped JS caller may send one', () => {
+    expect(safeHref(undefined as unknown as string)).toBeUndefined();
+    expect(safeHref(null as unknown as string)).toBeNull();
+  });
+
   it('does not treat a path that holds "javascript:" later as a scheme', () => {
     expect(safeHref('/search?q=javascript:alert(1)')).toBe('/search?q=javascript:alert(1)');
   });

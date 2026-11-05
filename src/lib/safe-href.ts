@@ -21,6 +21,8 @@ const UNSAFE_SCHEME = /^(?:javascript|vbscript|data):/i;
 
 /** Return `href` when it is safe to put in an anchor, else {@link BLOCKED_HREF}. */
 export function safeHref(href: string): string {
+  // JS consumers can pass null/undefined; keep the old href-less render.
+  if (typeof href !== 'string') return href;
   const normalized = href.replace(/^[\u0000- ]+/, '').replace(/[\t\n\r]/g, '');
   return UNSAFE_SCHEME.test(normalized) ? BLOCKED_HREF : href;
 }
