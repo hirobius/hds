@@ -17,7 +17,13 @@
  * `useFrozenState()`) so the hook stays a pure, context-free state machine that
  * is unit-tested directly with `renderHook` (ADR-011).
  */
-import { useState, type FocusEvent, type KeyboardEvent } from 'react';
+import {
+  useState,
+  type FocusEvent,
+  type KeyboardEvent,
+  type MouseEvent,
+  type PointerEvent,
+} from 'react';
 
 export type InteractionVisualState = 'rest' | 'hover' | 'focused' | 'pressed' | 'disabled';
 
@@ -146,6 +152,48 @@ export function forwardFocusHandlers<E extends Element>(
     onBlur: (e: FocusEvent<E>) => {
       handlers.onBlur();
       own.onBlur?.(e);
+    },
+  };
+}
+
+/**
+ * The hover / press handlers Radio forwards from its native input (Checkbox
+ * and Toggle put them on ControlLabel instead): the machine handler runs
+ * first, then the consumer's own handler with the event (hds#1009).
+ */
+export function forwardPointerHandlers<E extends Element>(
+  handlers: Pick<
+    InteractionHandlers,
+    'onMouseEnter' | 'onMouseLeave' | 'onPointerDown' | 'onPointerUp' | 'onPointerCancel'
+  >,
+  own: {
+    onMouseEnter?: (e: MouseEvent<E>) => void;
+    onMouseLeave?: (e: MouseEvent<E>) => void;
+    onPointerDown?: (e: PointerEvent<E>) => void;
+    onPointerUp?: (e: PointerEvent<E>) => void;
+    onPointerCancel?: (e: PointerEvent<E>) => void;
+  },
+) {
+  return {
+    onMouseEnter: (e: MouseEvent<E>) => {
+      handlers.onMouseEnter();
+      own.onMouseEnter?.(e);
+    },
+    onMouseLeave: (e: MouseEvent<E>) => {
+      handlers.onMouseLeave();
+      own.onMouseLeave?.(e);
+    },
+    onPointerDown: (e: PointerEvent<E>) => {
+      handlers.onPointerDown();
+      own.onPointerDown?.(e);
+    },
+    onPointerUp: (e: PointerEvent<E>) => {
+      handlers.onPointerUp();
+      own.onPointerUp?.(e);
+    },
+    onPointerCancel: (e: PointerEvent<E>) => {
+      handlers.onPointerCancel();
+      own.onPointerCancel?.(e);
     },
   };
 }
