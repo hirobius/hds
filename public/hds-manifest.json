@@ -338,6 +338,7 @@
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
+        "src/app/components/form.tsx",
         "src/app/components/text.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/toast.tsx"
