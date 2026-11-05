@@ -1,3 +1,53 @@
 {
-  "impact": "none"
+  "impact": "look",
+  "plain": "--hds-edge-primary now reads the new --component-button-edge-primary token; the colour does not change, so check only CSS that overrides it.",
+  "steps": [
+    {
+      "id": "value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-primary is now var(--component-button-edge-primary) in both themes (same colours); to restyle the primary Button edge, override --component-button-edge-primary or keep your --hds-edge-primary override.",
+      "detect": {
+        "cssVars": ["--hds-edge-primary"],
+        "cssVarWrites": ["--hds-edge-primary"]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "tenant/accent-lilac",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-lilac brand (data-brand=\"accent-lilac\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "tenant/accent-pair-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
+      ]
+    }
+  ]
 }
