@@ -317,7 +317,7 @@ const BUTTON_EDGE = {
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
  * @a11y component required a11y:button.label-crossfade When a toggle button's text label changes, the old label is aria-hidden while it fades out, so the accessible name is the new label from the moment it changes.
  * @a11y component required gate:check-reduced-motion The toggle label crossfade takes its duration from useHdsMotion, which is zero under prefers-reduced-motion, and under reduced motion the label swaps instantly with no overlap.
- * @a11y component required a11y:button.quiet-focus-ring The quiet tone and flush keep the focus-visible ring of every Button; the link variant draws a focus-visible outline 4px past the label, on the control radius, with a 2px gap (hds#1167).
+ * @a11y component required a11y:button.quiet-focus-ring Quiet, flush and link keep a visible focus ring (hds#1167).
  * @a11y component required a11y:button.quiet-contrast Quiet text is content.secondary and clears 4.5:1 at rest (page, raised), hovered (surface.hover) and pressed (the 5% wash), in light and dark.
  * @a11y consumer required Give an icon-only Button a label (or aria-label); without one it has no accessible name.
  * @a11y consumer required Use Button for actions and a link for navigation; do not put a click handler on a link-styled button to change page.

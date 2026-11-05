@@ -4037,7 +4037,7 @@
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "The quiet tone and flush keep the focus-visible ring of every Button; the link variant draws a focus-visible outline 4px past the label, on the control radius, with a 2px gap (hds#1167).",
+          "rule": "Quiet, flush and link keep a visible focus ring (hds#1167).",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.quiet-focus-ring"
