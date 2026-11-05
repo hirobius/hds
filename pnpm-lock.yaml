@@ -93,8 +93,8 @@ importers:
         specifier: ^1.64.1
         version: 1.64.1
       '@size-limit/file':
-        specifier: ^12.1.0
-        version: 12.1.0(size-limit@12.1.0(jiti@2.7.0))
+        specifier: ^14.3.0
+        version: 14.3.0(size-limit@14.3.0)
       '@stryker-mutator/core':
         specifier: 10.1.1
         version: 10.1.1(@types/node@25.6.0)
@@ -231,8 +231,8 @@ importers:
         specifier: 7.18.5
         version: 7.18.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       size-limit:
-        specifier: ^12.1.0
-        version: 12.1.0(jiti@2.7.0)
+        specifier: ^14.3.0
+        version: 14.3.0
       style-dictionary:
         specifier: ^5.4.4
         version: 5.7.1(tslib@2.9.1)
@@ -2813,11 +2813,11 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@size-limit/file@12.1.0':
-    resolution: {integrity: sha512-eGwDcIufnNnvJRzv3liDOn6MAOGgmOTUdpeGQ2KuRTlgIgO54AJH1ilvktlJc6PIjNfwpYY0dOGyap1QgM1swQ==}
-    engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
+  '@size-limit/file@14.3.0':
+    resolution: {integrity: sha512-GWKOi0rorXPbYmwbT926Z91t28rg5gd5hv8ywY1FNcaYf8NbibgK5K5YabYbLkV6KpGwuuixBRtIzl3ZpPzUfw==}
+    engines: {node: ^22.19.0 || ^24.5.0 || >=26.0.0}
     peerDependencies:
-      size-limit: 12.1.0
+      size-limit: 14.3.0
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -3524,10 +3524,6 @@ packages:
   bundle-name@4.1.1:
     resolution: {integrity: sha512-DdH81/zPLVS11EUgWq3tEu/xn+EzljlMYooDNdzWEnFha3R3NBMpMV1UqYIpjYHV/SgpFKMIX1Oh7o06SjM/oA==}
     engines: {node: '>=18'}
-
-  bytes-iec@3.1.1:
-    resolution: {integrity: sha512-fey6+4jDK7TFtFg/klGSvNKJctyU7n2aQdnM+CO0ruLPbqqMOM8Tio0Pc+deqUeVKX1tL5DQep1zQ7+37aTAsA==}
-    engines: {node: '>= 0.8'}
 
   cac@6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
@@ -4974,8 +4970,8 @@ packages:
     resolution: {integrity: sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ==}
     engines: {node: '>= 12.0.0'}
 
-  lilconfig@3.1.3:
-    resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
+  lilconfig@3.1.4:
+    resolution: {integrity: sha512-zJZyBmQhArDRefuWTypZxwDpFDIYmrj8ypSBvwGD5P13Y95s6DjzKgu4DVdGbeQa5PDEsAOCAPNk4X+QOR006w==}
     engines: {node: '>=14'}
 
   lint-staged@17.6.0:
@@ -5915,15 +5911,10 @@ packages:
     resolution: {integrity: sha512-a2B9Y0KlNXl9u/vsW6sTIu9vGEpfKu2wRV6l1H3XEas/0gUIzGzBoP/IouTcUQbm9JWZLH3COxyn03TYlFax6w==}
     engines: {node: '>=10'}
 
-  size-limit@12.1.0:
-    resolution: {integrity: sha512-VnDS2fycANrJFVPQwjaD+h+hkISY7EB3LsPsYWje4lBCjQwwsZLxjwwRwVJKHrcj2ZqyG+DdXykWm9mbZklZrw==}
-    engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
+  size-limit@14.3.0:
+    resolution: {integrity: sha512-SoT7DtEYQ9AkOIyrNmmHu8IyJyA3P/Q6EUVjUUinT0iBuaI6IOpWxwyI+teUxg8WdLwcTwbu9moKvw/LGlCE7g==}
+    engines: {node: ^22.19.0 || ^24.5.0 || >=26.0.0}
     hasBin: true
-    peerDependencies:
-      jiti: ^2.0.0
-    peerDependenciesMeta:
-      jiti:
-        optional: true
 
   skin-tone@2.0.0:
     resolution: {integrity: sha512-kUMbT1oBJCpgrnKoSr0o6wPtvRWT9W9UKvGLwfJYO2WuahZRHOpEyL1ckyMGgMWh0UdpmaoFqKKD29WTomNEGA==}
@@ -9161,9 +9152,9 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@size-limit/file@12.1.0(size-limit@12.1.0(jiti@2.7.0))':
+  '@size-limit/file@14.3.0(size-limit@14.3.0)':
     dependencies:
-      size-limit: 12.1.0(jiti@2.7.0)
+      size-limit: 14.3.0
 
   '@standard-schema/spec@1.1.0': {}
 
@@ -9950,8 +9941,6 @@ snapshots:
   bundle-name@4.1.1:
     dependencies:
       run-applescript: 7.1.0
-
-  bytes-iec@3.1.1: {}
 
   cac@6.7.14: {}
 
@@ -11545,7 +11534,7 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.32.0
       lightningcss-win32-x64-msvc: 1.32.0
 
-  lilconfig@3.1.3: {}
+  lilconfig@3.1.4: {}
 
   lint-staged@17.6.0:
     dependencies:
@@ -12666,15 +12655,10 @@ snapshots:
     dependencies:
       semver: 7.7.4
 
-  size-limit@12.1.0(jiti@2.7.0):
+  size-limit@14.3.0:
     dependencies:
-      bytes-iec: 3.1.1
-      lilconfig: 3.1.3
+      lilconfig: 3.1.4
       nanospinner: 1.2.2
-      picocolors: 1.1.1
-      tinyglobby: 0.2.16
-    optionalDependencies:
-      jiti: 2.7.0
 
   skin-tone@2.0.0:
     dependencies:
