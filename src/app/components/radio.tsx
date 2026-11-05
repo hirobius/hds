@@ -26,6 +26,7 @@ import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import {
   forwardFocusHandlers,
+  forwardPointerHandlers,
   useInteractionState,
   type InteractionVisualState,
 } from '../hooks/useInteractionState';
@@ -207,26 +208,13 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
         checked={checked}
         disabled={isDisabled}
         onChange={(e) => onChange(e.target.checked)}
-        onMouseEnter={(e) => {
-          handlers.onMouseEnter();
-          onMouseEnter?.(e);
-        }}
-        onMouseLeave={(e) => {
-          handlers.onMouseLeave();
-          onMouseLeave?.(e);
-        }}
-        onPointerDown={(e) => {
-          handlers.onPointerDown();
-          onPointerDown?.(e);
-        }}
-        onPointerUp={(e) => {
-          handlers.onPointerUp();
-          onPointerUp?.(e);
-        }}
-        onPointerCancel={(e) => {
-          handlers.onPointerCancel();
-          onPointerCancel?.(e);
-        }}
+        {...forwardPointerHandlers(handlers, {
+          onMouseEnter,
+          onMouseLeave,
+          onPointerDown,
+          onPointerUp,
+          onPointerCancel,
+        })}
         {...forwardFocusHandlers(handlers, { onFocus, onKeyDown, onBlur })}
         className={cn('hds-focus', radioInputVariants({ state: visualState }))}
         {...rest}
