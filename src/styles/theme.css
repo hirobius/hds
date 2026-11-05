@@ -670,12 +670,12 @@
   box-shadow: var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)));
 }
 /* Button (shadow="hard", the default, primary and secondary), C2 "fixed base": the face
- * moves and the edge under it grows or shrinks by the same amount, so the bottom of the
- * edge never moves. Rest translateY(0) on a 3px edge; hover (hover-capable pointers only)
- * -1px on 4px; press 2px on 1px. The face moves, so a ::after hit band reaches 2px above
- * it and over the edge below (it moves with the face, so it always spans the rest box): a
- * pointer on the top or bottom row stays on the button when it lifts or sinks, so a press
- * can't slide off and an edge hover can't flicker. The face moves with `translate` (it composes
+ * moves down and the edge under it shrinks by the same amount, so the bottom of the edge
+ * never moves and the button compresses (hds#1196). Rest translateY(0) on a 3px edge; hover
+ * (hover-capable pointers only) 1px on 2px; press 3px on 0px (fully down). The face moves,
+ * so a ::after hit band reaches 3px above it and over the edge below (it moves with the
+ * face, so it always spans the rest box): a pointer on the top row stays on the button
+ * when it sinks, so a hover can't flicker and a press can't slide off. The face moves with `translate` (it composes
  * with any consumer transform), on the productive motion token, which reduced motion
  * zeroes. Only the hard edge: no top highlight, no blurred drop shadow. The offset rides
  * --tw-shadow, so Tailwind's focus ring and the pressed inset wash compose into the same
@@ -697,17 +697,17 @@
   .hds-btn-hard:not(:disabled, [aria-disabled='true'])::after {
     content: '';
     position: absolute;
-    inset: -2px 0 -4px;
+    inset: -3px 0 -3px;
   }
   @media (hover: hover) {
     .hds-btn-hard:hover {
-      --hds-ty: -1px;
-      --hds-hs: 4px;
+      --hds-ty: 1px;
+      --hds-hs: 2px;
     }
   }
   .hds-btn-hard:active {
-    --hds-ty: 2px;
-    --hds-hs: 1px;
+    --hds-ty: 3px;
+    --hds-hs: 0px;
   }
 }
 

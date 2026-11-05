@@ -15,12 +15,12 @@ describe('Kbd shadow follows the Button light source', () => {
     );
   });
 
-  it('shipped Button rests, grows and presses straight down in its own-colour edge', () => {
+  it('shipped Button rests, compresses on hover and presses straight down in its own-colour edge', () => {
     expect(theme.replace(/\s+/g, ' ')).toContain(
       `0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, ${colour})`,
     );
-    expect(theme).toContain('--hds-hs: 4px;');
-    expect(theme).toContain('--hds-hs: 1px;');
+    expect(theme).toContain('--hds-hs: 2px;');
+    expect(theme).toContain('--hds-hs: 0px;');
   });
 
   it('every hard shadow drops straight down: no x offset anywhere', () => {

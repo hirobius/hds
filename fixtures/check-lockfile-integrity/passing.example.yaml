@@ -1,0 +1,19 @@
+lockfileVersion: '9.0'
+
+importers:
+  .:
+    devDependencies:
+      left-pad:
+        specifier: 1.3.0
+        version: 1.3.0
+
+packages:
+  left-pad@1.3.0:
+    resolution:
+      {
+        integrity: sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQ5TMH6gQp8jw8L2xndLPeKQaN2KxUkmuj2yNh+cv5cAX2UA==,
+      }
+    deprecated: use String.prototype.padStart()
+
+snapshots:
+  left-pad@1.3.0: {}

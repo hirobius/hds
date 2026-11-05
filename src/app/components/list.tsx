@@ -24,6 +24,7 @@ import { cva } from 'class-variance-authority';
 import { ChevronRight, MoreHorizontal, type LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useHdsRouter } from '../context/RouterContext';
+import { safeHref } from '../../lib/safe-href';
 import { Badge } from './badge';
 import { Button } from './button';
 import { EmptyState, type EmptyStateProps } from './empty-state';
@@ -325,7 +326,7 @@ export function ListItem(props: ListItemProps) {
           {body}
         </button>
       ) : (
-        <LinkComponent to={props.href as string} className={cn(ROW, className)} {...a11y}>
+        <LinkComponent to={safeHref(props.href as string)} className={cn(ROW, className)} {...a11y}>
           {body}
         </LinkComponent>
       )}
