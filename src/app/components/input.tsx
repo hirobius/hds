@@ -70,7 +70,10 @@ const INPUT_SHELL =
   'relative items-center hds-focus-within has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted';
 
 // The <input> inside a shell drops its own chrome; the shell draws it.
-const SHELLED_INPUT = 'h-full border-0 bg-transparent disabled:bg-transparent disabled:opacity-100';
+// focus-visible:outline-none drops the browser's own ring on the input: the shell's
+// .hds-focus-within ring is the one focus indicator.
+const SHELLED_INPUT =
+  'h-full border-0 bg-transparent focus-visible:outline-none disabled:bg-transparent disabled:opacity-100';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 

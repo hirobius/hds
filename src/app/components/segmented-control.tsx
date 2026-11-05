@@ -289,10 +289,6 @@ const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
   },
 );
 
-// Demo-forced focus ring: real keyboard focus is the shared `.hds-focus` class;
-// `.hds-focus-ring` draws the same ring when a docs matrix freezes the state to
-// "focused" (`:focus-visible` can't be faked without real keyboard focus).
-
 // The segment's own label text — color always follows the button's computed
 // `currentColor` (set by segmentedControlItemVariants above), so this only
 // carries the typeStyles.ui composite (16px/24px/medium/60ch) + stacking.
@@ -472,6 +468,8 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                       interaction,
                       disabled: showDisabled,
                     }),
+                    // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
+                    // keyboard focus (:focus-visible can't be faked).
                     demoFocusRing && 'hds-focus-ring',
                   )}
                   // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class

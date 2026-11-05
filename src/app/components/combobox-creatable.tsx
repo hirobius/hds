@@ -197,8 +197,11 @@ export const CreatableCombobox = /* @__PURE__ */ React.forwardRef<
           }}
           className={cn(
             'flex min-h-10 flex-wrap items-center gap-fixed-2xs rounded-md border bg-background px-scale-xs py-fixed-2xs',
-            'focus-within:ring-2 focus-within:ring-ring',
-            ariaInvalid ? 'border-destructive' : 'border-input',
+            // The shared ring (semantic.focus.*) while the inner input has keyboard focus.
+            'hds-focus-within',
+            ariaInvalid
+              ? 'border-destructive [--hds-focus-color:var(--semantic-color-feedback-error)]'
+              : 'border-input',
             disabled && 'cursor-not-allowed',
             FORM_CONTROL_WIDTH,
             className,
