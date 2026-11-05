@@ -5,52 +5,48 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 run_step() {
-  echo "── gate: $*"
-  if ! "$@"; then
-    echo "── gate FAILED at: $* — no PR, no done. Fix the change until green." >&2
+  echo "── gate: $1"
+  if ! bash -c "$1"; then
+    echo "── gate FAILED at: $1 — no PR, no done. Fix the change until green." >&2
     exit 1
   fi
 }
 
-# design-system: manifest:generate + audit-tokens --full first materialize the
-# gitignored-but-imported src/app/data/{component-api,token-audit-report}.json
-# a fresh clone lacks, else typecheck fails (the #138 fresh-clone bootstrap).
-# Then the standard trio. This file is the ONLY per-repo part of the gate.
-run_step pnpm manifest:generate
-run_step node scripts/audit-tokens.mjs --full
+# The steps live in docs/guardrails/registry.json, lane "ralph-gate" (hds#1095),
+# beside check:fast, check:full and pretest. Read them first so a missing lane
+# or broken registry fails here (set -e), never as an empty "all green" run.
+STEPS_TXT="$(node scripts/run-lane.mjs ralph-gate --dry-run)"
+mapfile -t STEPS <<<"$STEPS_TXT"
+if [ -z "$STEPS_TXT" ] || [ "${#STEPS[@]}" -eq 0 ]; then
+  echo "── gate FAILED: the ralph-gate lane is empty — no PR, no done." >&2
+  exit 1
+fi
 
-# Design gates (#181): a curated, cheap, high-signal slice of `check:full` —
-# NOT the whole suite (that's check:release territory) — so a contrast/focus
-# regression blocks auto-merge without materially slowing the gate. Each of
-# these is confirmed green on clean main before being wired in here; each
-# runs in well under a second. 4 of the 6 gates named in #181 have landed —
-# check-tier-bypass (#186) and check-page-shell (#187) are still red (or, for
-# page-shell, target a directory deleted in the ADR-018 Storybook migration)
-# on clean main for reasons out of scope for this change.
+# Why the lane is in this order (it is the ONLY per-repo part of the gate):
 #
-# check-reduced-motion (#185) was red on clean main because its Layer 2 check
-# targeted src/app/App.tsx, deleted in the same migration; retargeted to
-# Layer 1 (CSS @media prefers-reduced-motion) only, with Layer 2 (JS/Motion
-# per-component coverage) re-added in #190 once useHdsMotion() gave it a
-# real per-component pattern to gate on — see the script header for detail.
+# 1. design-system: manifest:generate + audit-tokens --full first materialize
+#    the gitignored-but-imported src/app/data/{component-api,token-audit-report}.json
+#    a fresh clone lacks, else typecheck fails (the #138 fresh-clone bootstrap).
 #
-# check-hardcoded-colors was archived off automatic gating in #52 (ADR-018
-# §5, pre-commit friction); this re-introduces automatic gating for it via a
-# different, lower-friction channel (PR-time via Ralph, not every human
-# commit). docs/guardrails/registry.json's firingChannel schema has no slot
-# for "also fires from ralph/gate.sh" — see #188.
-run_step pnpm check:contrast
-run_step pnpm check:focus
-run_step pnpm check:colors
-run_step pnpm check:motion
-
-run_step pnpm typecheck
-# Test stage (#1090): the shared selection — same helper the pre-push full
-# tier uses (scripts/lib/test-lanes.mjs). Pretest + only the tests the diff
-# reaches; fails safe to the whole suite on shared config, tokens, generators,
-# test setup or the gate mechanism. The full suite also runs nightly and
-# before release (see the helper header).
-run_step node scripts/lib/test-lanes.mjs run
-run_step pnpm lint
+# 2. Design gates (#181): a curated, cheap, high-signal slice of `check:full`
+#    (contrast, focus, colors, motion) — NOT the whole suite (that's
+#    check:release territory) — so a contrast/focus regression blocks
+#    auto-merge without materially slowing the gate. Each was confirmed green
+#    on clean main before being wired in; each runs in well under a second.
+#    check-tier-bypass (#186) and check-page-shell (#187) are still out: red on
+#    clean main, or (page-shell) targeting a directory deleted in the ADR-018
+#    Storybook migration. check-reduced-motion (#185) gates Layer 1 (CSS
+#    @media prefers-reduced-motion) plus Layer 2 (per-component useHdsMotion(),
+#    #190). check-hardcoded-colors was archived off automatic gating in #52
+#    (ADR-018 §5, pre-commit friction); this lane gates it at PR time via Ralph
+#    instead of every human commit (registry slot: firingChannels, #188).
+#
+# 3. typecheck, then the test stage (#1090): scripts/lib/test-lanes.mjs, the
+#    same selection the pre-push full tier uses — pretest + only the tests the
+#    diff reaches; fails safe to the whole suite on shared config, tokens,
+#    generators, test setup or the gate mechanism. Then lint.
+for step in "${STEPS[@]}"; do
+  run_step "$step"
+done
 
 echo "── gate: all green"
