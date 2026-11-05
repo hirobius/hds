@@ -2808,8 +2808,16 @@
         },
         "color": {
           "$type": "color",
-          "$value": "{semantic.color.border.accent}",
-          "$description": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour."
+          "$value": "{primitive.color.graphite.700}",
+          "$description": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.graphite.700}",
+                "Dark": "{primitive.color.graphite.300}"
+              }
+            }
+          }
         }
       },
       "gap": {

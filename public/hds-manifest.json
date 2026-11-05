@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T17:41:44.613Z",
+  "generated": "2026-11-05T18:12:30.456Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -16048,9 +16048,13 @@
         "path": "semantic.focus.ring.color",
         "cssVar": "--semantic-focus-ring-color",
         "type": "color",
-        "description": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour.",
-        "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#3a4457"
+        "description": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#3a4457",
+        "dark": {
+          "alias": "{primitive.color.graphite.300}",
+          "resolvedValue": "#a8aeb8"
+        }
       },
       {
         "path": "semantic.focus.gap.width",

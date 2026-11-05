@@ -491,7 +491,7 @@
   --semantic-borderWidth-icon-regular: var(--primitive-strokeWidth-200);
   --semantic-borderWidth-icon-bold: var(--primitive-strokeWidth-250);
   --semantic-focus-ring-width: var(--primitive-borderWidth-sm);
-  --semantic-focus-ring-color: var(--semantic-color-border-accent);
+  --semantic-focus-ring-color: var(--primitive-color-graphite-700);
   --semantic-focus-gap-width: var(--primitive-borderWidth-sm);
   --semantic-focus-radius-control-gapRadius: var(--primitive-radius-6);
   --semantic-focus-radius-control-ringRadius: var(--primitive-radius-8);
@@ -753,9 +753,9 @@
   --semantic-accent-delight-pale: var(--primitive-color-lime-50);
   /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
+  --semantic-focus-ring-color: var(--primitive-color-graphite-300);
   /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
-  --semantic-focus-ring-color: var(--semantic-color-border-accent);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
   --semantic-elevation-raised-surface: var(--semantic-color-surface-raised);

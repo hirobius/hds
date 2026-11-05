@@ -311,7 +311,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.borderWidth.icon.regular": "Regular icon stroke (2), the default when no weight is set.",
   "semantic.borderWidth.icon.bold": "Bold icon stroke (2.5).",
   "semantic.focus.ring.width": "Focus ring stroke width (2px).",
-  "semantic.focus.ring.color": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour.",
+  "semantic.focus.ring.color": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight.",
   "semantic.focus.gap.width": "Space between the element edge and the focus ring (2px, the outline offset).",
   "semantic.focus.radius.control.gapRadius": "Inner edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + semantic.focus.gap.width.",
   "semantic.focus.radius.control.ringRadius": "Outer edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + gap width + semantic.focus.ring.width.",
