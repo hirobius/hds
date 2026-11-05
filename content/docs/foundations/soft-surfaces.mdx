@@ -43,7 +43,8 @@ Card, pass `bordered`.
 
 - Secondary is a soft tonal fill (`surface.soft`), no border.
 - Primary and secondary carry the hard shadow on a **fixed base**: the bottom edge never
-  moves — 3px at rest, 4px on hover (the button lifts 1px), 1px on press (it sinks 2px).
+  moves, and the button compresses: 3px at rest, 2px on hover (the face sinks 1px), 0px on
+  press (it sinks the full 3px).
   Tertiary is the ghost: no edge, no movement, a `surface.hover` fill on hover, deeper on
   press. Kbd carries a 2px edge.
 - The edge is the item's **own fill, stepped darker** (chroma ×0.7225, same hue): primary from

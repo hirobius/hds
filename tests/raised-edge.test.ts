@@ -161,6 +161,11 @@ describe('Button edge tokens', () => {
     return (hi + 0.05) / (lo + 0.05);
   };
 
+  it.each(TOKEN_KEYS)('%s: the component token aliases its semantic edge', (key) => {
+    const token = raw.component.button.edge[key];
+    expect(token.$value).toBe(`{${EDGE_TOKENS[key]}}`);
+  });
+
   it.each(MODES.flatMap((m) => TOKEN_KEYS.map((k) => [m, k] as const)))(
     '%s %s: aliases the approved primitive',
     (mode, key) => {

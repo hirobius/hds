@@ -1,0 +1,133 @@
+{
+  "impact": "look",
+  "plain": "Button edge and focus ring variables now alias other tokens; resolved colours do not change, so check only CSS that overrides them.",
+  "steps": [
+    {
+      "id": "value-changed/--component-button-edge-danger",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-danger now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": ["--component-button-edge-danger"],
+        "cssVarWrites": ["--component-button-edge-danger"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-danger::root",
+        "css-var-changed:--component-button-edge-danger:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-danger:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-info now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": ["--component-button-edge-info"],
+        "cssVarWrites": ["--component-button-edge-info"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-info::root",
+        "css-var-changed:--component-button-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-info:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-edge-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-secondary now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": ["--component-button-edge-secondary"],
+        "cssVarWrites": ["--component-button-edge-secondary"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-secondary::root",
+        "css-var-changed:--component-button-edge-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-secondary:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-edge-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-success now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": ["--component-button-edge-success"],
+        "cssVarWrites": ["--component-button-edge-success"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-success::root",
+        "css-var-changed:--component-button-edge-success:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-success:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-button-edge-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-edge-warning now aliases a semantic.color.edge token with the same colour; if you override it, keep the override.",
+      "detect": {
+        "cssVars": ["--component-button-edge-warning"],
+        "cssVarWrites": ["--component-button-edge-warning"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-edge-warning::root",
+        "css-var-changed:--component-button-edge-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-edge-warning:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-focus-ring-color",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-focus-ring-color no longer follows --semantic-color-border-accent; if you override the accent border, set the focus ring colour too.",
+      "detect": {
+        "cssVars": ["--semantic-focus-ring-color"],
+        "cssVarWrites": ["--semantic-focus-ring-color"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-focus-ring-color::root",
+        "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "tenant/accent-lilac",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-lilac brand (data-brand=\"accent-lilac\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-focus-ring-color::root",
+        "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "tenant/accent-pair-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-focus-ring-color::root",
+        "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]"
+      ]
+    }
+  ]
+}

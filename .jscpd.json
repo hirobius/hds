@@ -3,6 +3,7 @@
     "**/node_modules/**",
     "**/dist/**",
     "**/generated-*.ts",
+    "src/styles/accents.css",
     "**/fixtures/**",
     "**/*.golden.json"
   ],
