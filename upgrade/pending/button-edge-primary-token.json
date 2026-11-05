@@ -16,38 +16,6 @@
         "css-var-changed:--hds-edge-primary:[data-theme=\"dark\"]",
         "css-var-changed:--hds-edge-primary:[data-theme=dark]"
       ]
-    },
-    {
-      "id": "tenant/accent-lilac",
-      "kind": "tenant",
-      "impact": "look",
-      "plain": "Pages themed with the accent-lilac brand (data-brand=\"accent-lilac\") may look different, so check them after upgrading.",
-      "detect": {
-        "regex": [
-          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
-          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
-        ]
-      },
-      "facts": [
-        "css-var-changed:--hds-edge-primary::root",
-        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
-      ]
-    },
-    {
-      "id": "tenant/accent-pair-demo",
-      "kind": "tenant",
-      "impact": "look",
-      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") may look different, so check them after upgrading.",
-      "detect": {
-        "regex": [
-          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])",
-          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
-        ]
-      },
-      "facts": [
-        "css-var-changed:--hds-edge-primary::root",
-        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
-      ]
     }
   ]
 }

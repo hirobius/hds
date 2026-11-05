@@ -108,7 +108,9 @@
       "facts": [
         "css-var-changed:--semantic-focus-ring-color::root",
         "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
-        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]"
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
       ]
     },
     {
@@ -126,7 +128,9 @@
       "facts": [
         "css-var-changed:--semantic-focus-ring-color::root",
         "css-var-changed:--semantic-focus-ring-color:[data-accent=cobalt]",
-        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]"
+        "css-var-changed:--semantic-focus-ring-color:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]"
       ]
     }
   ]
