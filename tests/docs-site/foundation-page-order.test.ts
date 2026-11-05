@@ -6,7 +6,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 
-const PAGES = ['color', 'typography', 'spacing', 'radius', 'elevation', 'motion'];
+const PAGES = ['color', 'typography', 'spacing', 'radius', 'elevation', 'motion', 'icons'];
 
 describe.each(PAGES)('foundations/%s.mdx', (slug) => {
   const body = readFileSync(`content/docs/foundations/${slug}.mdx`, 'utf8').replace(

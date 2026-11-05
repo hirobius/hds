@@ -763,6 +763,47 @@ div:has(> .hds-docs-display) {
   border: 1.5px solid var(--semantic-color-border-strong);
 }
 
+/* Icons (hds#1229): size boxes and the searchable gallery. */
+.hds-icon-size-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4.5rem;
+  margin-bottom: 0.25rem;
+  color: var(--semantic-color-content-primary);
+  background: var(--semantic-color-surface-muted);
+  border-radius: var(--semantic-radius-action);
+}
+.hds-icon-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--semantic-space-scale-sm);
+}
+.hds-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: var(--semantic-space-scale-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hds-icon-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--semantic-space-scale-xs);
+  min-width: 0;
+  padding: var(--semantic-space-scale-sm) var(--semantic-space-scale-xs);
+  color: var(--semantic-color-content-primary);
+  border: 1px solid var(--semantic-color-border-subtle);
+  border-radius: var(--semantic-radius-action);
+}
+.hds-icon-tile .hds-step-name {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
 /* Elevation cards: each card is drawn with its own level's tokens. */
 .hds-elevation-grid {
   display: grid;
