@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T07:49:12.774Z",
+  "generated": "2026-11-05T08:44:26.069Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -16888,7 +16888,7 @@
         "path": "component.inlineLink.size.sm.fontSize",
         "cssVar": "--component-inlineLink-size-sm-fontSize",
         "type": "dimension",
-        "description": "Size sm link text: the ui role, 16px.",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
         "alias": "{primitive.typography.size.base}",
         "resolvedValue": "16px"
       },
@@ -16896,7 +16896,7 @@
         "path": "component.inlineLink.size.sm.iconSize",
         "cssVar": "--component-inlineLink-size-sm-iconSize",
         "type": "dimension",
-        "description": "Size sm icon in Figma (12px): nearest grid step to 0.75em. Code draws 12px.",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
         "alias": "{primitive.size.12}",
         "resolvedValue": "12px"
       },
@@ -16904,7 +16904,7 @@
         "path": "component.inlineLink.size.md.fontSize",
         "cssVar": "--component-inlineLink-size-md-fontSize",
         "type": "dimension",
-        "description": "Size md link text: the body role, 18px.",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
         "alias": "{primitive.typography.size.lg}",
         "resolvedValue": "18px"
       },
@@ -16912,7 +16912,7 @@
         "path": "component.inlineLink.size.md.iconSize",
         "cssVar": "--component-inlineLink-size-md-iconSize",
         "type": "dimension",
-        "description": "Size md icon in Figma (12px): nearest grid step to 0.75em. Code draws 13.5px.",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
         "alias": "{primitive.size.12}",
         "resolvedValue": "12px"
       },
@@ -16920,7 +16920,7 @@
         "path": "component.inlineLink.size.lg.fontSize",
         "cssVar": "--component-inlineLink-size-lg-fontSize",
         "type": "dimension",
-        "description": "Size lg link text: the title role, 28px.",
+        "description": "Link text size: the size step's type role (sm ui, md body, lg title).",
         "alias": "{primitive.typography.size.title}",
         "resolvedValue": "28px"
       },
@@ -16928,7 +16928,7 @@
         "path": "component.inlineLink.size.lg.iconSize",
         "cssVar": "--component-inlineLink-size-lg-iconSize",
         "type": "dimension",
-        "description": "Size lg icon in Figma (20px): nearest grid step to 0.75em. Code draws 21px.",
+        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
         "alias": "{primitive.size.20}",
         "resolvedValue": "20px"
       }
