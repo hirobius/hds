@@ -58,7 +58,8 @@ function trackingUtilities(primitiveLetterSpacing) {
  * { DEFAULT, foreground } so utilities like bg-card / text-card-foreground
  * resolve. Flat roles (background, foreground, border, input, ring) emit as
  * top-level color strings. The radius role drives borderRadius: `md` is the
- * role radius itself and lg/sm step +4px/-2px around it, so the utility and
+ * role radius itself and lg/sm step +4px/-2px around it (lg adds at most the
+ * radius itself, so a 0 brand radius stays square), so the utility and
  * --semantic-radius-action cannot diverge. Shadow tokens map by name into
  * boxShadow.
  *
@@ -149,7 +150,7 @@ export function buildTailwindThemeExtend(roles, shadows, utilityTokens = {}) {
   // and DESIGN.md both said 12px. Containers step up from actions, not down.
   const borderRadius = radiusVar
     ? {
-        lg: `calc(${radiusVar} + 4px)`,
+        lg: `calc(${radiusVar} + min(${radiusVar}, 4px))`,
         md: radiusVar,
         sm: `calc(${radiusVar} - 2px)`,
       }

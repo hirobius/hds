@@ -1,7 +1,8 @@
 /**
  * Containers share one corner radius that follows the tenant knob (hds#338).
- * `rounded-lg` is `calc(var(--role-radius) + 4px)` (tailwind.config.tokens.cjs),
- * so a container is 12 px by default and 4 px under `brutalist-demo`.
+ * `rounded-lg` is `calc(var(--role-radius) + min(var(--role-radius), 4px))`
+ * (tailwind.config.tokens.cjs): 12 px by default, and 0 under `brutalist-demo`
+ * (radius 0), so cards follow the brand radius (hds#806).
  * `--component-card-radius` ignores tenants, so no container may read it.
  */
 import { describe, it, expect, afterEach } from 'vitest';
@@ -47,6 +48,26 @@ describe('container radius', () => {
     expect(block).not.toContain('--primitive-radius-8');
     expect(block).not.toContain('--component-card-radius');
     expect(block).toContain('var(--role-radius)');
+  });
+
+  it('rounded-lg and .hds-card share one formula that is square when the brand radius is 0', () => {
+    const formula = 'calc(var(--role-radius) + min(var(--role-radius), 4px))';
+    const css = readFileSync(resolve(__dirname, '../src/styles/static.css'), 'utf8');
+    const block = css.match(/\n\.hds-card\s*\{([^}]*)\}/)?.[1] ?? '';
+    expect(block.replace(/\s+/g, '')).toContain(formula.replace(/\s+/g, ''));
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const cfg = require('../tailwind.config.tokens.cjs');
+    expect(cfg.theme.extend.borderRadius.lg).toBe(formula);
+    // brutalist-demo (0) -> 0, soft-demo / default (8) -> 12.
+    const lg = (r: number) => r + Math.min(r, 4);
+    expect(lg(0)).toBe(0);
+    expect(lg(8)).toBe(12);
+  });
+
+  it('the docs site no longer squares cards with a .rounded-lg / .hds-card override', () => {
+    const css = readFileSync(resolve(__dirname, '../docs-site/app/globals.css'), 'utf8');
+    expect(css).not.toMatch(/\.rounded-lg\s*,\s*\.hds-card/);
+    expect(css).not.toMatch(/:is\([^)]*\.hds-card/);
   });
 
   it('the component rules doc no longer forbids the container radius', () => {
