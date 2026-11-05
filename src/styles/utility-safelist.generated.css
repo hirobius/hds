@@ -1,5 +1,5 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
-   from docs/api/releases/0.33.0.json: every Tailwind utility that release shipped stays emitted,
+   from docs/api/releases/0.33.1.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
    ./tokens.css by accident. To drop one, list utility-removed:<class> in a step
    (upgrade/pending/<changeset>.json), then run node scripts/build-utility-safelist.mjs. */
@@ -9,6 +9,7 @@
 @source inline("-mx-fixed-2xs");
 @source inline("-translate-x-1/2");
 @source inline("-translate-y-1/2");
+@source inline("-translate-y-px");
 @source inline("@3xl:auto-cols-[minmax(16rem,1fr)]");
 @source inline("@3xl:grid-flow-col");
 @source inline("@container");
@@ -39,6 +40,7 @@
 @source inline("[[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)]");
 @source inline("[[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]");
 @source inline("[border-bottom:var(--semantic-borderWidth-default)_solid_var(--semantic-color-border-default)]");
+@source inline("[border-width:var(--semantic-borderWidth-default)]");
 @source inline("[direction:ltr]");
 @source inline("[direction:rtl]");
 @source inline("[font-family:var(--semantic-typography-mono-font-family)]");
@@ -254,7 +256,6 @@
 @source inline("duration-[var(--hds-motion-productive-duration)]");
 @source inline("ease-[var(--hds-motion-productive-easing)]");
 @source inline("ease-out");
-@source inline("end");
 @source inline("fill-[var(--semantic-color-surface-inverse)]");
 @source inline("fill-current");
 @source inline("filter");
@@ -427,6 +428,7 @@
 @source inline("last:pb-0");
 @source inline("leading-[0.95]");
 @source inline("leading-[1]");
+@source inline("leading-[var(--semantic-typography-lineHeight-none)]");
 @source inline("leading-none");
 @source inline("left-0");
 @source inline("left-1/2");
@@ -719,7 +721,6 @@
 @source inline("space-y-3");
 @source inline("space-y-4");
 @source inline("sr-only");
-@source inline("start");
 @source inline("static");
 @source inline("sticky");
 @source inline("stroke-[var(--semantic-color-surface-overlay)]");

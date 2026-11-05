@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.33.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one.
+- Looks different: Each of these now aliases a semantic.color.edge token with the same colour; if you override it, keep the override: `--component-button-edge-danger`, `--component-button-edge-info`, `--component-button-edge-secondary`, `--component-button-edge-success` and `--component-button-edge-warning`.
+- Looks different: Tailwind 4.3 changed the default --font-sans in @layer theme to a system UI stack; text that reads var(--font-sans) can render in a different system font.
+- Looks different: --hds-edge-primary is now var(--component-button-edge-primary) in both themes (same colours); to restyle the primary Button edge, override --component-button-edge-primary or keep your --hds-edge-primary override.
+- And 6 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0331).
+
+### Patch Changes
+
+- 9645731: Button (hard shadow): hover and press now compress the button instead of growing it downward (hds#1196). Rest is a 3px edge; hover moves the face down 1px onto a 2px edge; press moves it down the full 3px onto a 0px edge. The bottom of the edge does not move, so the layout does not shift. Reduced motion still makes the change instant.
+- 794dec4: Add `semantic.color.edge.primary` and `component.button.edge.primary` (`--semantic-color-edge-primary`, `--component-button-edge-primary`): the primary Button's raised edge as a token, so the Figma variable `button/edge/primary` has a code source. `--hds-edge-primary` now reads `var(--component-button-edge-primary)` instead of a hard-coded hex; the colour does not change (#010207 light, #a5a6a9 dark). The token build fails if the token and the computed edge drift apart. Accents and tenants still override `--hds-edge-primary` with their own computed edge.
+- da9df7c: The `hds.motion.*` records move to an internal module, so `useHdsMotion` (and Button) no longer import the full token bridge. No public API change: `hds.motion` from `@hirobius/design-system/tokens` is the same object (hds#1145).
+- 862046d: Tooling bump (eslint, typescript-eslint, prettier, knip, Tailwind CSS 4.3 and others). Tailwind 4.3 changes its default `--font-sans` stack in the shipped `styles.css` and `tokens.css`.
+- d5894a6: Button edge variables now alias `semantic.color.edge.*` tokens (same colours). `--semantic-focus-ring-color` now holds the accent border's primitive steps (graphite.700 light, graphite.300 dark) instead of aliasing `--semantic-color-border-accent`. Resolved colours do not change. The cobalt accent re-anchors the ring to its own accent border. If you set `--semantic-color-border-accent` yourself, also set `--semantic-focus-ring-color` to keep the ring on it.
+- 4991b90: `upgrade/schema.json` now accepts the `props`, `types` and `dom` sections of a release snapshot, and four 0.33.0 steps get detectors, so `hds upgrade` no longer lists them as Do by hand for code that does not use them.
+- 537d86d: CommandPalette and Combobox: moving the active row with the arrow keys or the mouse now re-renders only the two rows it touches, not every row in the list.
+- da9df7c: The library build now keeps one file per source module under `dist/m/` instead of a few shared chunks, so a bundler drops the components you do not import. A Button-only import shrinks from 61.0 to 57.4 kB gzip, and a Tabs-only import from 10.1 to 5.2 kB. The package exports do not change. Deep imports into `dist/chunks/` were never public, and that folder is gone (hds#1145).
+- 26f86e0: Security (hds#1145): InlineLink, Breadcrumb, NavList.Item, List.Item, the router-free link and `navigate` now refuse a `javascript:`, `vbscript:` or `data:` href. The link renders `about:blank#blocked` and `navigate` does nothing. React 18 only warns on such an href, so an href built from untrusted data could run script on click.
+- 873b743: SegmentedControl: the `sm` rail is 32px again, the same as Button `sm` (hds#1214). The 16px label's 24px line box made the 22px segment grow, so the rail was 34px. The `sm` label now uses the `lineHeight.none` line box. The selected `primary` label moves up 1px so it sits centered on the face above the 3px bottom edge, not low.
+- 89f5485: Table: the frame now has a full 1px `border.default` outline by default, with the rounded container radius and clipped overflow (hds#1198, reverses the hds#891 "no outer border" choice for Table only). The raised header and row dividers stay; the last row draws no second line, and an empty table's header draws no rule. Cells center their content vertically with equal top and bottom density padding.
+
 ## 0.33.0
 
 ### Upgrade

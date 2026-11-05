@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.33.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.33.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,26 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.33.1
+
+Released 2026-11-05 (patch). 1 change to make by hand and 13 that look different.
+
+### Looks different
+
+- Each of these now aliases a semantic.color.edge token with the same colour; if you override it, keep the override: `--component-button-edge-danger`, `--component-button-edge-info`, `--component-button-edge-secondary`, `--component-button-edge-success` and `--component-button-edge-warning`.
+- Tailwind 4.3 changed the default --font-sans in @layer theme to a system UI stack; text that reads var(--font-sans) can render in a different system font.
+- --hds-edge-primary is now var(--component-button-edge-primary) in both themes (same colours); to restyle the primary Button edge, override --component-button-edge-primary or keep your --hds-edge-primary override.
+- --semantic-focus-ring-color no longer follows --semantic-color-border-accent; if you override the accent border, set the focus ring colour too.
+- Button hover moves the face down 1px onto a 2px edge and press moves it down 3px onto a 0px edge; remove any custom hover lift you added to match the old 4px hover edge.
+- A size="sm" SegmentedControl is now 32px tall like Button sm, with the selected primary label 1px higher, so remove any padding or offset you added to fix its height.
+- Every Table now shows a 1px outline round its frame; if you added your own border or ring round a Table, remove it so the edge is not doubled.
+- Pages themed with the accent-lilac brand (data-brand="accent-lilac") may look different, so check them after upgrading.
+- Pages themed with the accent-pair-demo brand (data-brand="accent-pair-demo") may look different, so check them after upgrading.
+
+### Do by hand
+
+- Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one.
 
 ## 0.33.0
 

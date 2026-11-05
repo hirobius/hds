@@ -2,7 +2,7 @@
 
 > Token-first React design system for product UIs, with machine-readable context for AI agents: which component to use for each screen need, the tokens, and the rules.
 
-Version: 0.33.0
+Version: 0.33.1
 
 ## Start here
 
