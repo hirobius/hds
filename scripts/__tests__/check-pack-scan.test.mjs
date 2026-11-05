@@ -3,7 +3,7 @@
 /**
  * Tests for scripts/check-pack-scan.mjs, the pre-release tarball scan (ops#27).
  * fixtures/pack-scan/pass is a clean package; fixtures/pack-scan/fail ships a
- * .status file, a test under dist/ and a fake GitHub token. PII that must FAIL
+ * .status file, a test under lib/ and a fake GitHub token. PII that must FAIL
  * is written to temp copies here, never committed; lines holding fake PII
  * carry `pii-allow` so pushing this file passes the pre-push scan.
  */
@@ -102,18 +102,18 @@ describe.skipIf(!hasGitleaks)('scanPackage: real pnpm pack + gitleaks', () => {
   });
   it('fails the violating fixture on every count', () => {
     const r = scanPackage(path.join(FIX, 'fail'), { config: CONFIG });
-    expect(r.stray.map((s) => s.file).sort()).toEqual(['.status', 'dist/__tests__/x.test.js']);
-    expect(r.secrets.list).toEqual(['github-pat in dist/index.js']);
+    expect(r.stray.map((s) => s.file).sort()).toEqual(['.status', 'lib/__tests__/x.test.js']);
+    expect(r.secrets.list).toEqual(['github-pat in lib/index.js']);
     expect(report(r).ok).toBe(false);
   });
   it('fails PII and client ids written into a shipped file', () => {
     const dir = makeTmp();
     cpSync(path.join(FIX, 'pass'), dir, { recursive: true });
-    appendFileSync(path.join(dir, 'dist', 'index.js'), '// jane.doe@acme-corp.io blue-heron-co\n'); // pii-allow
+    appendFileSync(path.join(dir, 'lib', 'index.js'), '// jane.doe@acme-corp.io blue-heron-co\n'); // pii-allow
     const r = scanPackage(dir, { config: CONFIG, hashes: [sha('blue-heron-co')] });
     expect(r.pii.map((p) => `${p.rule} ${p.file}`)).toEqual([
-      'email dist/index.js',
-      'client-id dist/index.js',
+      'email lib/index.js',
+      'client-id lib/index.js',
     ]);
     expect(report(r).ok).toBe(false);
   });
