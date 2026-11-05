@@ -11,16 +11,16 @@
  * useReducedMotion() is true, one fix point instead of a `MotionConfig`
  * wrapper per component.
  */
-import hds from '../design-system/tokens';
+import { motion as hdsMotion } from '../design-system/motion-tokens';
 import { useReducedMotion } from './useReducedMotion';
 
-type HdsMotionCategory = keyof typeof hds.motion;
+type HdsMotionCategory = keyof typeof hdsMotion;
 
 export function useHdsMotion<Category extends HdsMotionCategory>(
   category: Category,
-): (typeof hds.motion)[Category] {
+): (typeof hdsMotion)[Category] {
   const reduced = useReducedMotion();
-  const token = hds.motion[category];
+  const token = hdsMotion[category];
   return reduced ? { ...token, duration: 0 } : token;
 }
 
@@ -30,7 +30,7 @@ export function useHdsMotion<Category extends HdsMotionCategory>(
  * so the old node fades out while the new one fades in, on the category's
  * curve. Pair with `AnimatePresence` + `useIsPresent`.
  */
-export function crossfadeFade(motion: (typeof hds.motion)['productive']) {
+export function crossfadeFade(motion: (typeof hdsMotion)['productive']) {
   return {
     initial: { opacity: 0 },
     animate: { opacity: 1 },

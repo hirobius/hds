@@ -56,6 +56,34 @@
       "mapsTo": "NavListItem",
       "source": "src/app/components/nav-list.tsx",
       "reason": "A compound part of NavList, mapped by override as TimelineItem is. The NavList component 2209:26 is built from its instances, and the item needs its own set for the Current and State variants."
+    },
+    {
+      "nodeId": "2265:3",
+      "name": "SheetTrigger",
+      "mapsTo": "Sheet.Trigger",
+      "source": "src/app/components/sheet.tsx",
+      "reason": "Compound member of Sheet (the element that opens the sheet). Code attaches the Radix Dialog part directly (Sheet.Trigger is a Radix Dialog part), so no JSDoc block can carry an @figma tag for it. The library draws it as a small component on the Sheet page next to the Sheet set 2265:119."
+    },
+    {
+      "nodeId": "2265:14",
+      "name": "SheetTitle",
+      "mapsTo": "Sheet.Title",
+      "source": "src/app/components/sheet.tsx",
+      "reason": "Compound member of Sheet (the heading that names the sheet). Code attaches the Radix Dialog part directly (Sheet.Title is a Radix Dialog part), so no JSDoc block can carry an @figma tag for it. The library draws it as a small component on the Sheet page next to the Sheet set 2265:119."
+    },
+    {
+      "nodeId": "2265:16",
+      "name": "SheetDescription",
+      "mapsTo": "Sheet.Description",
+      "source": "src/app/components/sheet.tsx",
+      "reason": "Compound member of Sheet (the supporting text). Code attaches the Radix Dialog part directly (Sheet.Description is a Radix Dialog part), so no JSDoc block can carry an @figma tag for it. The library draws it as a small component on the Sheet page next to the Sheet set 2265:119."
+    },
+    {
+      "nodeId": "2265:18",
+      "name": "SheetClose",
+      "mapsTo": "Sheet.Close",
+      "source": "src/app/components/sheet.tsx",
+      "reason": "Compound member of Sheet (the built-in close X). Code attaches the Radix Dialog part directly (Sheet.Close is a Radix Dialog part), so no JSDoc block can carry an @figma tag for it. The library draws it as a small component on the Sheet page next to the Sheet set 2265:119."
     }
   ]
 }

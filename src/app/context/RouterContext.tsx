@@ -27,6 +27,7 @@ import {
   type AnchorHTMLAttributes,
   type ReactNode,
 } from 'react';
+import { safeHref } from '../../lib/safe-href';
 
 /** Options forwarded to a router's navigate call (state preserved for SPA nav). */
 export interface HdsNavigateOptions {
@@ -64,7 +65,8 @@ const DefaultLinkComponent: HdsLinkComponent = /* @__PURE__ */ forwardRef<
   HdsLinkProps
 >(function HdsAnchorLink({ to, children, ...rest }, ref) {
   return (
-    <a ref={ref} href={to} {...rest}>
+    // href after the spread, so an untyped href in rest cannot replace the guard.
+    <a ref={ref} {...rest} href={safeHref(to)}>
       {children}
     </a>
   );
@@ -94,11 +96,16 @@ export function useHdsRouter(): HdsRouterAdapter {
   if (ctx) return ctx;
   return {
     navigate: (href) => {
-      if (typeof window !== 'undefined') {
+      // A script-capable href would run in the page; refuse it (hds#1145).
+      if (typeof window !== 'undefined' && isSafeNavigation(href)) {
         window.location.assign(href);
       }
     },
     currentPath: typeof window !== 'undefined' ? window.location.pathname : '/',
     LinkComponent: DefaultLinkComponent,
   };
+}
+
+function isSafeNavigation(href: string): boolean {
+  return safeHref(href) === href;
 }

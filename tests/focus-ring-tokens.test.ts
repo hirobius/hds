@@ -6,7 +6,7 @@
  * (scripts/__tests__/focus-ring-computed.test.mjs measures it in Chromium). A radius or
  * width edit that leaves a focus step behind fails here.
  */
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { resolveVar, THEMES } from './helpers/token-sheet';
@@ -109,5 +109,22 @@ describe('focus ring in components', () => {
       /(focus-visible|has-\[[^\]]*\]|data-\[highlighted\]):ring-(2|ring|offset|inset|destructive)/,
     );
     expect(s).not.toMatch(/outline-offset-2|borderWidth-emphasis\)_solid/);
+  });
+});
+
+describe('overlays keep the focus ring on their accent border', () => {
+  // The base focus ring colour is a primitive (no semantic -> semantic alias,
+  // check-token-structure). An overlay that moves border.accent must re-anchor
+  // the ring too, or the ring stays graphite under that brand or accent.
+  const ROOT = resolve(__dirname, '..');
+  const overlays = ['directions', 'accents'].flatMap((dir) =>
+    readdirSync(resolve(ROOT, dir), { withFileTypes: true })
+      .filter((d) => d.isDirectory() && existsSync(resolve(ROOT, dir, d.name, 'tokens.json')))
+      .map((d) => `${dir}/${d.name}/tokens.json`),
+  );
+  it.each(overlays)('%s', (file) => {
+    const t = JSON.parse(readFileSync(resolve(ROOT, file), 'utf8'));
+    if (!t.semantic?.color?.border?.accent) return;
+    expect(t.semantic?.focus?.ring?.color?.$value, file).toBe('{semantic.color.border.accent}');
   });
 });

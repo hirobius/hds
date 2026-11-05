@@ -117,3 +117,10 @@ light (the soft shadow does the rest) and 1.5:1 in dark.
 | Dense data and structure (12)  | Table header, row and column dividers (4), Divider and `.hds-divider--strong`, Menu separator, Timeline connector, Blockquote rail, docs token-table cells, ContainerDemo dashed bounds, Avatar status cut-out ring, Spinner arc                         |
 | Kbd and demos (5)              | Kbd border (now `border.strong`) and key shadow, docs `.hds-token-swatch` edge, `.hds-radius-box`, elevation demo border level                                                                                                                           |
 | Tokens and tooling (4)         | `component.button.secondary.border.hover` (re-anchored by tenants), `component.nav.borderActive`, `component.tag.activeBorder`, `xray.css` debug outline                                                                                                 |
+
+**Amended 2026-11-05 (hds#1198, Adrian).** The Table frame gets its outline back, for Table
+only: a full 1px `semantic.color.border.default` border with the container radius and clipped
+overflow. The raised header and the row and column dividers stay; the last row draws no divider
+(and an empty table's header draws none), so no edge is doubled. Cells center their content
+vertically with equal top and bottom density padding. The `table.tsx` Frame row in the border
+audit above now reads `border-default` (kept). Every other container stays borderless.

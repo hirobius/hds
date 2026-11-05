@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@hirobius/design-system": "link:..",
-    "fumadocs-core": "16.16.2",
-    "fumadocs-mdx": "15.4.6",
-    "fumadocs-ui": "16.16.2",
+    "fumadocs-core": "16.17.10",
+    "fumadocs-mdx": "15.4.10",
+    "fumadocs-ui": "16.17.10",
     "mermaid": "11.17.2",
-    "next": "16.4.3",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@types/mdx": "^2.0.13",

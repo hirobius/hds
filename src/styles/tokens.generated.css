@@ -306,6 +306,12 @@
   --semantic-color-border-accent: var(--primitive-color-graphite-700);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
+  --semantic-color-edge-primary: oklch(0.0875 0.0215 266.83);
+  --semantic-color-edge-neutral: var(--primitive-color-neutral-400);
+  --semantic-color-edge-danger: var(--primitive-color-red-400);
+  --semantic-color-edge-success: var(--primitive-color-green-400);
+  --semantic-color-edge-warning: var(--primitive-color-amber-400);
+  --semantic-color-edge-info: var(--primitive-color-blue-300);
   --semantic-color-shadow-hard: var(--primitive-color-shadow-ink);
   --semantic-color-feedback-error: var(--primitive-color-red-700);
   --semantic-color-feedback-success: var(--primitive-color-green-700);
@@ -486,7 +492,7 @@
   --semantic-borderWidth-icon-regular: var(--primitive-strokeWidth-200);
   --semantic-borderWidth-icon-bold: var(--primitive-strokeWidth-250);
   --semantic-focus-ring-width: var(--primitive-borderWidth-sm);
-  --semantic-focus-ring-color: var(--semantic-color-border-accent);
+  --semantic-focus-ring-color: var(--primitive-color-graphite-700);
   --semantic-focus-gap-width: var(--primitive-borderWidth-sm);
   --semantic-focus-radius-control-gapRadius: var(--primitive-radius-6);
   --semantic-focus-radius-control-ringRadius: var(--primitive-radius-8);
@@ -580,11 +586,12 @@
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
   --component-button-bgPressed: var(--semantic-accent-pressed);
-  --component-button-edge-secondary: var(--primitive-color-neutral-400);
-  --component-button-edge-danger: var(--primitive-color-red-400);
-  --component-button-edge-success: var(--primitive-color-green-400);
-  --component-button-edge-warning: var(--primitive-color-amber-400);
-  --component-button-edge-info: var(--primitive-color-blue-300);
+  --component-button-edge-primary: var(--semantic-color-edge-primary);
+  --component-button-edge-secondary: var(--semantic-color-edge-neutral);
+  --component-button-edge-danger: var(--semantic-color-edge-danger);
+  --component-button-edge-success: var(--semantic-color-edge-success);
+  --component-button-edge-warning: var(--semantic-color-edge-warning);
+  --component-button-edge-info: var(--semantic-color-edge-info);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-radius: var(--semantic-radius-action);
   --component-button-focus-gapRadius: var(--primitive-radius-10);
@@ -715,6 +722,12 @@
   --semantic-color-border-accent: var(--primitive-color-graphite-300);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
+  --semantic-color-edge-primary: oklch(0.7253 0.0044 271.35);
+  --semantic-color-edge-neutral: var(--primitive-color-neutral-725);
+  --semantic-color-edge-danger: var(--primitive-color-red-700);
+  --semantic-color-edge-success: var(--primitive-color-green-700);
+  --semantic-color-edge-warning: var(--primitive-color-amber-800);
+  --semantic-color-edge-info: var(--primitive-color-blue-500);
   --semantic-color-shadow-hard: var(--primitive-color-neutral-500);
   --semantic-color-feedback-error: var(--primitive-color-red-400);
   --semantic-color-feedback-success: var(--primitive-color-green-400);
@@ -743,14 +756,9 @@
   --semantic-accent-delight-pale: var(--primitive-color-lime-50);
   /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
   --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
+  --semantic-focus-ring-color: var(--primitive-color-graphite-300);
   /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
-  --component-button-edge-secondary: var(--primitive-color-neutral-725);
-  --component-button-edge-danger: var(--primitive-color-red-700);
-  --component-button-edge-success: var(--primitive-color-green-700);
-  --component-button-edge-warning: var(--primitive-color-amber-800);
-  --component-button-edge-info: var(--primitive-color-blue-500);
-  --semantic-focus-ring-color: var(--semantic-color-border-accent);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
   --semantic-elevation-raised-surface: var(--semantic-color-surface-raised);
@@ -780,6 +788,12 @@
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
   --component-button-bgPressed: var(--semantic-accent-pressed);
+  --component-button-edge-primary: var(--semantic-color-edge-primary);
+  --component-button-edge-secondary: var(--semantic-color-edge-neutral);
+  --component-button-edge-danger: var(--semantic-color-edge-danger);
+  --component-button-edge-success: var(--semantic-color-edge-success);
+  --component-button-edge-warning: var(--semantic-color-edge-warning);
+  --component-button-edge-info: var(--semantic-color-edge-info);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
@@ -851,6 +865,6 @@
   --component-list-groupGap: var(--semantic-space-scale-xl);
   --component-list-rowPadding: var(--semantic-space-scale-sm);
 }
-/* Raised edges (hds#897): computed fills stepped darker (C2); Button tones alias component.button.edge.*. scripts/lib/raised-edge.mjs */
-:root{--hds-edge-primary:#010207;--hds-edge-kbd:#b7b7b9;--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);}
-[data-theme="dark"]{--hds-edge-primary:#a5a6a9;--hds-edge-kbd:#1b1f26;}
+/* Raised edges (hds#897): computed fills stepped darker (C2); Button edges alias component.button.edge.*. scripts/lib/raised-edge.mjs */
+:root{--hds-edge-primary:var(--component-button-edge-primary);--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);--hds-edge-kbd:#b7b7b9;}
+[data-theme="dark"]{--hds-edge-kbd:#1b1f26;}

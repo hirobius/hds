@@ -22,6 +22,7 @@ import * as React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { useHdsRouter } from '../context/RouterContext';
+import { safeHref } from '../../lib/safe-href';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `current` is a component-specific state flag (not one of the contract's four
@@ -164,7 +165,7 @@ export const NavListItem = /* @__PURE__ */ React.forwardRef<
     <NavListRow action={action}>
       <LinkComponent
         ref={ref as React.Ref<HTMLAnchorElement>}
-        to={href}
+        to={safeHref(href)}
         aria-current={current ? 'page' : undefined}
         className={cn(navListItemVariants({ current }), className)}
         {...rest}
