@@ -12,7 +12,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { analyze, ratchet, summarize } from '../lib/component-token-binding.mjs';
+import { analyze, evalCss, ratchet, summarize } from '../lib/component-token-binding.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SCRIPT = join(ROOT, 'scripts/check-component-token-binding.mjs');
@@ -94,6 +94,18 @@ function run(component, classes, extra = {}) {
 const byId = (analysis, id) => analysis.results.find((r) => r.id === id);
 
 // ── Classes ──────────────────────────────────────────────────────────────────
+
+describe('evalCss min()/max() (hds#806)', () => {
+  const env = (r) => ({
+    mode: 'light',
+    tokens: { varIndex: new Map([['--role-radius', 'role.radius']]), resolveToken: () => r },
+  });
+  const lg = 'calc(var(--role-radius) + min(var(--role-radius), 4px))';
+  it('folds the clamped rounded-lg step: 8px -> 12px, 0px -> 0px', () => {
+    expect(evalCss(lg, env('8px')).value).toBe('12px');
+    expect(evalCss(lg, env('0px')).value).toBe('0px');
+  });
+});
 
 describe('classification', () => {
   it('BOUND: the source names var(--component-<leaf>)', () => {
