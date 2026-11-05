@@ -106,6 +106,7 @@
       "node scripts/check-figma-components.mjs --report",
       "node scripts/check-guardrail-drift.mjs",
       "node scripts/check-skills-lock.mjs",
+      "node scripts/check-lockfile-integrity.mjs",
       "node scripts/check-skill-content.mjs"
     ],
     "ralph-gate": [
@@ -1194,6 +1195,17 @@
       "severity": "error",
       "gateScript": "scripts/check-skills-lock.mjs",
       "fixturePath": "fixtures/check-skills-lock",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
+    },
+    {
+      "id": "check-lockfile-integrity",
+      "description": "Fails when an entry in pnpm-lock.yaml or docs-site/pnpm-lock.yaml has no sha512 integrity, a weaker hash, or resolves from a tarball URL, git repo or directory (hds#1145). blockExoticSubdeps covers transitive deps only; this also covers direct deps. Read-only, no network. Runs in pretest, so pre-push and pnpm test fire it. Fixtures: fixtures/check-lockfile-integrity/{passing,violating}.example.yaml (FIXTURE_FILE substitutes the lock).",
+      "severity": "error",
+      "gateScript": "scripts/check-lockfile-integrity.mjs",
+      "fixturePath": "fixtures/check-lockfile-integrity",
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pnpm-meta",
