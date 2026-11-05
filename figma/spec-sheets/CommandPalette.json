@@ -2,7 +2,7 @@
   "component": "CommandPalette",
   "description": "CommandPalette — ⌘K search and command box: a modal search field over grouped results. Built from Dialog, Kbd and the Combobox listbox pattern. Items are plain data; the palette filters, groups (in first-seen order) and navigates them, and calls `onSelect` with the chosen item. `open` is controlled; the ⌘K / Ctrl+K hotkey calls `onOpenChange` unless `hotkey={false}`. An item with `args` is a multi-step command: picking it does not run it. Instead the palette walks its arguments in order — the command and each chosen argument show as Tag chips before the field — and only then calls `onSelect(item, args)` with a record of argument id to chosen value (an option's id, or the typed text for a free-text argument). Backspace on an empty field, or a chip's remove button, steps back. <CommandPalette open={open} onOpenChange={setOpen} items={commands} onSelect={(item) => run(item.id)} />",
   "docsPage": "/docs/components/command-palette",
-  "figmaLink": null,
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2264-67",
   "anatomy": [
     {
       "part": "Root"
