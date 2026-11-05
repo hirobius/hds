@@ -45,14 +45,23 @@ function setMode({ brand, density, read }: Mode) {
 test.describe('tenant matrix baselines @baseline', () => {
   // Without these, a renamed tenant or a dropped tenants.css import would leave
   // every brand snapshot identical to the default look and still pass.
-  test('each brand overlay changes the accent surface', async ({ page }) => {
+  // A brand restyles some of these, not all: soft-demo keeps the accent and
+  // changes radius and raised surfaces, so the guard checks the set (hds#1101).
+  test('each brand overlay changes its restyled tokens', async ({ page }) => {
     await openThemed(page, '/docs/components/button', 'light');
-    const read = '--semantic-color-surface-accent';
-    const base = await page.evaluate(setMode, { brand: null, density: 'comfortable', read });
-    for (const brand of BRANDS)
-      expect(await page.evaluate(setMode, { brand, density: 'comfortable', read }), brand).not.toBe(
-        base,
-      );
+    const reads = [
+      '--semantic-color-surface-accent',
+      '--semantic-radius-action',
+      '--semantic-color-surface-raised',
+    ];
+    const snapshot = async (brand: Brand | null) => {
+      const values: string[] = [];
+      for (const read of reads)
+        values.push(await page.evaluate(setMode, { brand, density: 'comfortable', read }));
+      return values.join('|');
+    };
+    const base = await snapshot(null);
+    for (const brand of BRANDS) expect(await snapshot(brand), brand).not.toBe(base);
   });
 
   test('compact density changes the type scale', async ({ page }) => {
@@ -66,7 +75,11 @@ test.describe('tenant matrix baselines @baseline', () => {
     test(`${c.route} ${c.brand} ${c.density} (${c.theme})`, async ({ page }) => {
       await seedDensity(page, c.density);
       await openThemed(page, c.route, c.theme);
+      // Set the brand only after hydration: a late hydrate pass could otherwise
+      // drop data-brand and a soft-demo shot would show the base corners (hds#1101).
+      await page.waitForLoadState('networkidle');
       await page.evaluate(setMode, { brand: c.brand, density: c.density });
+      await expect(page.locator('html')).toHaveAttribute('data-brand', c.brand);
       const demo = page.locator(DEMO_SELECTOR).first();
       await expect(demo).toBeVisible();
       await page.mouse.move(0, 0);
