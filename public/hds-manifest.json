@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T01:11:08.963Z",
+  "generated": "2026-11-05T08:13:33.074Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3948,7 +3948,7 @@
           "testId": "a11y:button.keyboard-activate"
         },
         {
-          "rule": "Keyboard focus draws a visible ring from the focus-visible utilities; the outline is never removed without it.",
+          "rule": "Keyboard focus draws the shared .hds-focus ring (semantic.focus.* width, gap and colour); nothing removes the outline.",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.focus-ring"
@@ -9201,7 +9201,8 @@
         "src/app/components/control-color-fade.ts",
         "src/app/components/control-label.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle.tsx"
+        "src/app/components/toggle.tsx",
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -13840,10 +13841,24 @@
         "value": "8px"
       },
       {
+        "path": "primitive.radius.10",
+        "cssVar": "--primitive-radius-10",
+        "type": "dimension",
+        "description": "Focus-ring step: an 8px radius plus the 2px focus gap.",
+        "value": "10px"
+      },
+      {
         "path": "primitive.radius.12",
         "cssVar": "--primitive-radius-12",
         "type": "dimension",
         "value": "12px"
+      },
+      {
+        "path": "primitive.radius.14",
+        "cssVar": "--primitive-radius-14",
+        "type": "dimension",
+        "description": "Focus-ring step: a 12px radius plus the 2px focus gap.",
+        "value": "14px"
       },
       {
         "path": "primitive.radius.16",
@@ -15751,6 +15766,110 @@
         "resolvedValue": "2.5px"
       },
       {
+        "path": "semantic.focus.ring.width",
+        "cssVar": "--semantic-focus-ring-width",
+        "type": "dimension",
+        "description": "Focus ring stroke width (2px).",
+        "alias": "{primitive.borderWidth.sm}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.focus.ring.color",
+        "cssVar": "--semantic-focus-ring-color",
+        "type": "color",
+        "description": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour.",
+        "alias": "{semantic.color.border.accent}",
+        "resolvedValue": "#3a4457"
+      },
+      {
+        "path": "semantic.focus.gap.width",
+        "cssVar": "--semantic-focus-gap-width",
+        "type": "dimension",
+        "description": "Space between the element edge and the focus ring (2px, the outline offset).",
+        "alias": "{primitive.borderWidth.sm}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.focus.radius.control.gapRadius",
+        "cssVar": "--semantic-focus-radius-control-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.6}",
+        "resolvedValue": "6px"
+      },
+      {
+        "path": "semantic.focus.radius.control.ringRadius",
+        "cssVar": "--semantic-focus-radius-control-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.8}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.focus.radius.sm.gapRadius",
+        "cssVar": "--semantic-focus-radius-sm-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a rounded-sm (6px) element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.8}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.focus.radius.sm.ringRadius",
+        "cssVar": "--semantic-focus-radius-sm-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a rounded-sm (6px) element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "semantic.focus.radius.md.gapRadius",
+        "cssVar": "--semantic-focus-radius-md-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "semantic.focus.radius.md.ringRadius",
+        "cssVar": "--semantic-focus-radius-md-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
+      },
+      {
+        "path": "semantic.focus.radius.lg.gapRadius",
+        "cssVar": "--semantic-focus-radius-lg-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a rounded-lg (12px) element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.14}",
+        "resolvedValue": "14px"
+      },
+      {
+        "path": "semantic.focus.radius.lg.ringRadius",
+        "cssVar": "--semantic-focus-radius-lg-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a rounded-lg (12px) element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.16}",
+        "resolvedValue": "16px"
+      },
+      {
+        "path": "semantic.focus.radius.pill.gapRadius",
+        "cssVar": "--semantic-focus-radius-pill-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: a fully round element radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
+      },
+      {
+        "path": "semantic.focus.radius.pill.ringRadius",
+        "cssVar": "--semantic-focus-radius-pill-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: a fully round element radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
+      },
+      {
         "path": "semantic.link.underlineThickness",
         "cssVar": "--semantic-link-underlineThickness",
         "type": "dimension",
@@ -16009,6 +16128,22 @@
         "cssVar": "--component-tag-radius",
         "type": "dimension",
         "description": "Pill radius for the tag surface.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
+      },
+      {
+        "path": "component.tag.focus.gapRadius",
+        "cssVar": "--component-tag-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: the Tag pill radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.full}",
+        "resolvedValue": "9999px"
+      },
+      {
+        "path": "component.tag.focus.ringRadius",
+        "cssVar": "--component-tag-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: the Tag pill radius + gap width + semantic.focus.ring.width.",
         "alias": "{primitive.radius.full}",
         "resolvedValue": "9999px"
       },
@@ -16381,6 +16516,22 @@
         "resolvedValue": "8px"
       },
       {
+        "path": "component.button.focus.gapRadius",
+        "cssVar": "--component-button-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: the Button (8px) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "component.button.focus.ringRadius",
+        "cssVar": "--component-button-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: the Button (8px) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
+      },
+      {
         "path": "component.button.paddingX",
         "cssVar": "--component-button-paddingX",
         "type": "dimension",
@@ -16672,6 +16823,22 @@
         "resolvedValue": "8px"
       },
       {
+        "path": "component.input.focus.gapRadius",
+        "cssVar": "--component-input-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: the Input (8px) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.10}",
+        "resolvedValue": "10px"
+      },
+      {
+        "path": "component.input.focus.ringRadius",
+        "cssVar": "--component-input-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: the Input (8px) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.12}",
+        "resolvedValue": "12px"
+      },
+      {
         "path": "component.input.paddingX",
         "cssVar": "--component-input-paddingX",
         "type": "dimension",
@@ -16705,6 +16872,22 @@
         "type": "dimension",
         "alias": "{primitive.radius.12}",
         "resolvedValue": "12px"
+      },
+      {
+        "path": "component.card.focus.gapRadius",
+        "cssVar": "--component-card-focus-gapRadius",
+        "type": "dimension",
+        "description": "Inner edge of the focus ring: an interactive Card (12px) radius + semantic.focus.gap.width.",
+        "alias": "{primitive.radius.14}",
+        "resolvedValue": "14px"
+      },
+      {
+        "path": "component.card.focus.ringRadius",
+        "cssVar": "--component-card-focus-ringRadius",
+        "type": "dimension",
+        "description": "Outer edge of the focus ring: an interactive Card (12px) radius + gap width + semantic.focus.ring.width.",
+        "alias": "{primitive.radius.16}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.card.padding",

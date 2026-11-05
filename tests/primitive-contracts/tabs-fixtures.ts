@@ -12,7 +12,7 @@ export function expectInsetFocusRing() {
   expect(screen.getByRole('tablist').className).toContain('overflow-x-auto');
   for (const tab of screen.getAllByRole('tab')) {
     const cls = tab.className.split(/\s+/);
-    expect(cls).toContain('focus-visible:ring-2');
-    expect(cls).toContain('focus-visible:ring-inset');
+    // .hds-focus-inset: the shared ring (semantic.focus.ring.width) drawn inside the edge.
+    expect(cls).toContain('hds-focus-inset');
   }
 }

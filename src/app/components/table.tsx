@@ -90,7 +90,7 @@ const tableHeaderCellVariants = /* @__PURE__ */ cva(
 // carries no padding for a fill and the header already rests at full contrast.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-gap spacing and productive-motion duration/easing tokens have no matching Tailwind-theme utility; var()-based so still token-driven
 const tableSortButtonVariants = /* @__PURE__ */ cva(
-  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+  'flex w-full cursor-pointer items-center gap-[var(--semantic-space-scale-xs)] border-0 bg-transparent p-0 text-inherit [font:inherit] transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:text-muted-foreground hds-focus',
   {
     variants: {
       align: {
@@ -166,18 +166,15 @@ const tableFrameClass = 'bg-transparent';
 // (a link's `sr-only` label): without it that content escapes the scroller and widens
 // the page when a column runs past the frame.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface-padding token has no Tailwind-theme utility; var()-based so still token-driven
-const tableRegionVariants = /* @__PURE__ */ cva(
-  'relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
-  {
-    variants: {
-      flush: {
-        true: 'p-0',
-        false: 'p-[var(--semantic-space-surface-padding)]',
-      },
+const tableRegionVariants = /* @__PURE__ */ cva('relative hds-focus-inset', {
+  variants: {
+    flush: {
+      true: 'p-0',
+      false: 'p-[var(--semantic-space-surface-padding)]',
     },
-    defaultVariants: { flush: true },
   },
-);
+  defaultVariants: { flush: true },
+});
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 

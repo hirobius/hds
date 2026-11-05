@@ -371,10 +371,10 @@
     outline: none;
   }
   .focus-visible\:ring-2:focus-visible {
-    outline: 2px solid var(--semantic-color-border-accent);
+    outline: var(--semantic-focus-ring-width) solid var(--semantic-focus-ring-color);
   }
   .focus-visible\:ring-offset-2:focus-visible {
-    outline-offset: 2px;
+    outline-offset: var(--semantic-focus-gap-width);
   }
   .focus-visible\:ring-accent:focus-visible {
     outline-color: var(--semantic-color-content-accent);

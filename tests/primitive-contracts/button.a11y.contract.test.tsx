@@ -86,10 +86,9 @@ describe('Button accessibility contract', () => {
   it('a11y:button.focus-ring - keyboard focus draws a ring from utilities and never removes the outline bare', () => {
     render(<Button>Save</Button>);
     const cls = screen.getByRole('button').className.split(/\s+/);
-    expect(cls).toContain('focus-visible:ring-2');
-    expect(cls).toContain('focus-visible:ring-ring');
-    // outline-none is only allowed because the ring replaces it
-    expect(cls).toContain('focus-visible:outline-none');
+    // .hds-focus draws the shared semantic.focus.* outline; nothing removes it.
+    expect(cls).toContain('hds-focus');
+    expect(cls).not.toContain('focus-visible:outline-none');
   });
 
   it('a11y:button.loading-busy - loading sets aria-busy, disables the button and hides the spinner', () => {
@@ -183,9 +182,7 @@ describe('Button accessibility contract', () => {
       const button = screen.getByRole('button', { name });
       expect(document.activeElement).toBe(button);
       const cls = button.className.split(/\s+/);
-      expect(cls, name).toContain('focus-visible:ring-2');
-      expect(cls, name).toContain('focus-visible:ring-ring');
-      expect(cls, name).toContain('focus-visible:ring-offset-2');
+      expect(cls, name).toContain('hds-focus');
     }
   });
 

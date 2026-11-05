@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 543 tokens, aliases, and TS refs in one shot.
+Checks all 566 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:end:token-count -->
 
@@ -489,7 +489,9 @@ Or via `useTheme().setDensity('compact')`
 | `primitive.radius.4`    | `4px`    |            |
 | `primitive.radius.6`    | `6px`    |            |
 | `primitive.radius.8`    | `8px`    |            |
+| `primitive.radius.10`   | `10px`   |            |
 | `primitive.radius.12`   | `12px`   |            |
+| `primitive.radius.14`   | `14px`   |            |
 | `primitive.radius.16`   | `16px`   |            |
 | `primitive.radius.24`   | `24px`   |            |
 | `primitive.radius.full` | `9999px` | Pills only |

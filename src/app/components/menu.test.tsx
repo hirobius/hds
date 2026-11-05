@@ -64,10 +64,9 @@ describe('Menu highlighted row ring', () => {
   it('draws a 2px inset ring on the highlighted item', () => {
     render(<Example />);
     const cls = screen.getByRole('menuitem', { name: 'Profile' }).className;
-    expect(cls).toContain('data-[highlighted]:ring-2');
-    expect(cls).toContain('data-[highlighted]:ring-inset');
+    // .hds-focus-inset[data-highlighted]: the shared ring, inside the row edge.
+    expect(cls.split(/\s+/)).toContain('hds-focus-inset');
     expect(cls.split(/\s+/)).not.toContain('hds-focus');
-    expect(cls).toContain('data-[highlighted]:ring-ring');
   });
 });
 

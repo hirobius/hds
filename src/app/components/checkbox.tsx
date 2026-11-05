@@ -79,15 +79,15 @@ const checkboxInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-
 /** Glyph box — border/background driven by `state` (interaction) x `on` (checked/indeterminate). */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven size/radius/border/color; var()-based, no Tailwind-theme utility exists
 const checkboxGlyphVariants = /* @__PURE__ */ cva(
-  'inline-flex shrink-0 items-center justify-center w-[var(--semantic-size-control-md)] h-[var(--semantic-size-control-md)] rounded-[var(--semantic-radius-control)] border-solid border-[length:var(--semantic-borderWidth-emphasis)] outline-offset-2',
+  'inline-flex shrink-0 items-center justify-center w-[var(--semantic-size-control-md)] h-[var(--semantic-size-control-md)] rounded-[var(--semantic-radius-control)] border-solid border-[length:var(--semantic-borderWidth-emphasis)]',
   {
     variants: {
       state: {
         rest: '',
         hover: '',
         focused:
-          // tier-ok: semantic-borderWidth-emphasis resolves to var(--primitive-borderWidth-sm) exactly (tokens.generated.css) — mechanical alias swap, hds#186
-          '[outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
+          // The shared ring (semantic.focus.*), drawn from the interaction state.
+          'hds-focus-ring',
         pressed: '',
         disabled: '',
       },
