@@ -52,7 +52,6 @@ pnpm tokens:verify
 <!-- auto:start:token-count -->
 
 Checks all 601 tokens, aliases, and TS refs in one shot.
-
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -327,6 +326,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 - `primitive.typography.size.hero` = **120px**
 - `primitive.typography.size.6xl` = **60px**
 - `primitive.typography.size.code` = **15px**
+
 <!-- auto:end:typography -->
 
 ---
@@ -482,7 +482,6 @@ The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; d
 
 Toggle: `document.documentElement.dataset.density = 'compact'`
 Or via `useTheme().setDensity('compact')`
-
 <!-- auto:end:density -->
 
 ---
@@ -637,6 +636,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 - **True monochromatic neutrals:** No warm/cool tint in neutral scale
 - **No drop shadows as primary depth mechanism:** Use motion (parallax, scale)
 - **Generous whitespace:** The system breathes
+
 <!-- auto:end:agent-constraints -->
 
 ---
