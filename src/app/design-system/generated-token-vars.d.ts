@@ -173,6 +173,7 @@ declare module 'react' {
     '--primitive-typography-size-4xl'?: string | undefined;
     '--primitive-typography-size-5xl'?: string | undefined;
     '--primitive-typography-size-display'?: string | undefined;
+    '--primitive-typography-size-hero'?: string | undefined;
     '--primitive-typography-size-6xl'?: string | undefined;
     '--primitive-typography-size-code'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;
@@ -335,6 +336,11 @@ declare module 'react' {
     '--semantic-layout-grid-columns-mobile'?: string | undefined;
     '--semantic-layout-grid-columns-tablet'?: string | undefined;
     '--semantic-layout-grid-columns-desktop'?: string | undefined;
+    '--semantic-typography-hero-font-family'?: string | undefined;
+    '--semantic-typography-hero-font-size'?: string | undefined;
+    '--semantic-typography-hero-font-weight'?: string | undefined;
+    '--semantic-typography-hero-letter-spacing'?: string | undefined;
+    '--semantic-typography-hero-line-height'?: string | undefined;
     '--semantic-typography-display-font-family'?: string | undefined;
     '--semantic-typography-display-font-size'?: string | undefined;
     '--semantic-typography-display-font-weight'?: string | undefined;

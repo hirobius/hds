@@ -134,23 +134,27 @@ export interface TypeSpecimen {
 export function typeSpecimens(tokens: Json): TypeSpecimen[] {
   const group = lookup(tokens, 'semantic.typography');
   if (!group) return [];
-  return children(group)
-    .filter(([, node]) => isNode(node.$value) && 'fontSize' in node.$value)
-    .map(([role, node]) => {
-      const v = node.$value as Node;
-      const field = (k: string) => (k in v ? resolveTokenValue(tokens, v[k]) : '');
-      const fontFamily = field('fontFamily');
-      return {
-        role,
-        token: `semantic.typography.${role}`,
-        family: fontFamily.split(',')[0]!.trim(),
-        fontFamily,
-        fontWeight: field('fontWeight'),
-        fontSize: field('fontSize'),
-        lineHeight: field('lineHeight'),
-        letterSpacing: field('letterSpacing') || '0em',
-      };
-    });
+  return (
+    children(group)
+      .filter(([, node]) => isNode(node.$value) && 'fontSize' in node.$value)
+      // A marketing-only extension (hero, ADR-052 addendum) sits outside the ramp.
+      .filter(([, node]) => !/^Marketing-only/.test(String(node.$description ?? '')))
+      .map(([role, node]) => {
+        const v = node.$value as Node;
+        const field = (k: string) => (k in v ? resolveTokenValue(tokens, v[k]) : '');
+        const fontFamily = field('fontFamily');
+        return {
+          role,
+          token: `semantic.typography.${role}`,
+          family: fontFamily.split(',')[0]!.trim(),
+          fontFamily,
+          fontWeight: field('fontWeight'),
+          fontSize: field('fontSize'),
+          lineHeight: field('lineHeight'),
+          letterSpacing: field('letterSpacing') || '0em',
+        };
+      })
+  );
 }
 
 export interface DimensionStep {

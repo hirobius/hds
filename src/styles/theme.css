@@ -260,6 +260,8 @@
   --semantic-typography-display-font-family: var(--hds-font-family-display);
   --semantic-typography-title-font-family: var(--hds-font-family-display);
   --semantic-typography-titleSm-font-family: var(--hds-font-family-display);
+  /* type-ramp-ok: marketing-only hero (ADR-052 addendum) follows the display dial */
+  --semantic-typography-hero-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */
   --semantic-typography-h1-font-family: var(--hds-font-family-display);
   /* type-ramp-ok: deprecated role still ships; it must follow the dial too */

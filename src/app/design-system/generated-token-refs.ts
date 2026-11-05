@@ -217,6 +217,7 @@ export const tokenRefs = {
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
         display: "var(--primitive-typography-size-display)",
+        hero: "var(--primitive-typography-size-hero)",
         "6xl": "var(--primitive-typography-size-6xl)",
         code: "var(--primitive-typography-size-code)"
       },
@@ -478,6 +479,13 @@ export const tokenRefs = {
       }
     },
     typography: {
+      hero: {
+        fontFamily: "var(--semantic-typography-hero-font-family)",
+        fontSize: "var(--semantic-typography-hero-font-size)",
+        fontWeight: "var(--semantic-typography-hero-font-weight)",
+        letterSpacing: "var(--semantic-typography-hero-letter-spacing)",
+        lineHeight: "var(--semantic-typography-hero-line-height)"
+      },
       display: {
         fontFamily: "var(--semantic-typography-display-font-family)",
         fontSize: "var(--semantic-typography-display-font-size)",

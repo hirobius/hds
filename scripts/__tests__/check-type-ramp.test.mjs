@@ -17,7 +17,13 @@ import {
   runExemptionsOn,
   runGate,
 } from './helpers/gate-runner.mjs';
-import { findViolationsInText, findTokenViolations, isExempt, ROLES } from '../check-type-ramp.mjs';
+import {
+  findViolationsInText,
+  findTokenViolations,
+  isExempt,
+  MARKETING_ROLES,
+  ROLES,
+} from '../check-type-ramp.mjs';
 
 const GATE = 'scripts/check-type-ramp.mjs';
 
@@ -27,6 +33,20 @@ const rules = (text, file) => find(text, file).map((v) => v.rule);
 describe('ROLES', () => {
   it('are the five roles plus titleSm and mono', () => {
     expect([...ROLES]).toEqual(['display', 'title', 'titleSm', 'body', 'ui', 'caption', 'mono']);
+  });
+});
+
+describe('MARKETING_ROLES (ADR-052 addendum)', () => {
+  it('is hero only', () => {
+    expect([...MARKETING_ROLES]).toEqual(['hero']);
+  });
+
+  it('flags hero in product source', () => {
+    expect(rules('<h1 style={hds.typeStyles.hero}>x</h1>')).toEqual(['marketing-only']);
+    expect(rules("const s = typeStyles['hero'];")).toEqual(['marketing-only']);
+    expect(
+      rules('.x { font-family: var(--semantic-typography-hero-font-family); }', 'a.css'),
+    ).toEqual(['marketing-only']);
   });
 });
 
@@ -161,6 +181,17 @@ describe('findTokenViolations: the token file itself', () => {
     const t = base();
     t.semantic.typography.lead = role('g');
     expect(findTokenViolations(t, {}).map((v) => v.rule)).toEqual(['ramp-size']);
+  });
+
+  it('passes a marketing-scoped hero and flags an unscoped one', () => {
+    const t = base();
+    t.semantic.typography.hero = {
+      ...role('h'),
+      $description: 'Marketing-only extension above the ramp.',
+    };
+    expect(findTokenViolations(t, {})).toEqual([]);
+    delete t.semantic.typography.hero.$description;
+    expect(findTokenViolations(t, {}).map((v) => v.rule)).toEqual(['extension-unscoped']);
   });
 
   it('flags a deprecated alias that drifted from its role', () => {

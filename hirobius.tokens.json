@@ -810,6 +810,13 @@
           },
           "$description": "Display role size (hds#847): the page's one hero heading, a clear step above title."
         },
+        "hero": {
+          "$value": {
+            "value": 120,
+            "unit": "px"
+          },
+          "$description": "Hero size (ADR-052 addendum): covers and marketing headers only, a step above display."
+        },
         "6xl": {
           "$value": {
             "value": 60,
@@ -2152,7 +2159,17 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; h1-h3 and eyebrow are deprecated aliases.",
+      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; hero is a marketing-only extension (ADR-052 addendum); h1-h3 and eyebrow are deprecated aliases.",
+      "hero": {
+        "$value": {
+          "fontFamily": "{primitive.typography.family.display}",
+          "fontSize": "{primitive.typography.size.hero}",
+          "fontWeight": "{primitive.typography.weight.display}",
+          "letterSpacing": "{primitive.typography.letterSpacing.tight}",
+          "lineHeight": "{primitive.typography.lineHeight.display}"
+        },
+        "$description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700."
+      },
       "display": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
