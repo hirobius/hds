@@ -2982,7 +2982,7 @@
         "secondary": {
           "$type": "color",
           "$value": "{primitive.color.neutral.350}",
-          "$description": "Hard raised edge under a secondary Button (hds#897): a fixed primitive step, at least 1.5:1 against the fill in both themes. The primary edge stays computed (scripts/lib/raised-edge.mjs).",
+          "$description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2995,7 +2995,7 @@
         "danger": {
           "$type": "color",
           "$value": "{primitive.color.red.400}",
-          "$description": "Hard raised edge under a danger-tone Button (hds#897): a fixed primitive step, at least 1.5:1 against the fill in both themes. The primary edge stays computed (scripts/lib/raised-edge.mjs).",
+          "$description": "Hard raised edge under a danger-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -3008,7 +3008,7 @@
         "success": {
           "$type": "color",
           "$value": "{primitive.color.green.400}",
-          "$description": "Hard raised edge under a success-tone Button (hds#897): a fixed primitive step, at least 1.5:1 against the fill in both themes. The primary edge stays computed (scripts/lib/raised-edge.mjs).",
+          "$description": "Hard raised edge under a success-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -3021,7 +3021,7 @@
         "warning": {
           "$type": "color",
           "$value": "{primitive.color.amber.400}",
-          "$description": "Hard raised edge under a warning-tone Button (hds#897): a fixed primitive step, at least 1.5:1 against the fill in both themes. The primary edge stays computed (scripts/lib/raised-edge.mjs).",
+          "$description": "Hard raised edge under a warning-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -3034,7 +3034,7 @@
         "info": {
           "$type": "color",
           "$value": "{primitive.color.blue.300}",
-          "$description": "Hard raised edge under an info-tone Button (hds#897): a fixed primitive step, at least 1.5:1 against the fill in both themes. The primary edge stays computed (scripts/lib/raised-edge.mjs).",
+          "$description": "Hard raised edge under an info-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
