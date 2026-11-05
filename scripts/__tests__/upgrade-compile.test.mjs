@@ -11,6 +11,7 @@
  * hand from the fixture ledgers, not recomputed the way the compiler does.
  */
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { NO_BACKPORTS, rollbackLines } from '../upgrade/rollback.mjs';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -1658,7 +1659,7 @@ describe('wiring', () => {
   });
 
   it('runs --check in pretest, and it passes on this repository with no network and no build', () => {
-    expect(pkg.scripts.pretest).toContain('node scripts/upgrade/compile.mjs --check');
+    expect(readLaneScripts(REPO).pretest).toContain('node scripts/upgrade/compile.mjs --check');
     const res = run(['--check']);
     expect(res.status, res.stderr).toBe(0);
   });
@@ -1678,7 +1679,7 @@ describe('wiring', () => {
         supportsJson: true,
       }),
     ]);
-    expect(pkg.scripts.pretest).toContain(`node ${script} --check`);
+    expect(readLaneScripts(REPO).pretest).toContain(`node ${script} --check`);
   });
 
   it('keeps the generated files out of Prettier, whose reflow would make them stale', () => {

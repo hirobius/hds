@@ -29,6 +29,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 import { describe, it, expect, afterEach } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 
@@ -112,7 +113,7 @@ describe('pnpm-meta requires the referencing script to actually run', () => {
     // reachable because ci.yml runs `pnpm test`, so a gate there really does run.
     const dir = workspace({
       scriptName: 'pretest',
-      scriptCmd: `${JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).scripts.pretest} && node scripts/check-fixture-dodge.mjs`,
+      scriptCmd: `${readLaneScripts(ROOT).pretest} && node scripts/check-fixture-dodge.mjs`,
       channel: 'pnpm-meta',
     });
     expect(runValidator(dir).status).toBe(0);
@@ -121,7 +122,7 @@ describe('pnpm-meta requires the referencing script to actually run', () => {
   it('REJECTS a gate in pretest that declares on-demand — the check runs both ways', () => {
     const dir = workspace({
       scriptName: 'pretest',
-      scriptCmd: `${JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).scripts.pretest} && node scripts/check-fixture-dodge.mjs`,
+      scriptCmd: `${readLaneScripts(ROOT).pretest} && node scripts/check-fixture-dodge.mjs`,
       channel: 'on-demand',
     });
     expect(runValidator(dir).status).not.toBe(0);

@@ -5,6 +5,7 @@
  * (docs/api/releases/<version>.json).
  */
 import { describe, it, expect, afterEach } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -429,7 +430,6 @@ describe('upgrade/schema.json', () => {
   });
 
   it('runs --check in pretest, so a stale schema.json fails CI', () => {
-    const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-    expect(pkg.scripts.pretest).toContain('node scripts/upgrade/schema.mjs --check');
+    expect(readLaneScripts(REPO).pretest).toContain('node scripts/upgrade/schema.mjs --check');
   });
 });

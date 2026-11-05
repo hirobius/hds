@@ -3,7 +3,7 @@
  * gate-lanes — named, ordered command lists kept in the guardrail registry
  * (`lanes` in docs/guardrails/registry.json), run by scripts/run-lane.mjs.
  *
- * hds#1095: check:fast and check:full used to be hand-written `&&` chains in
+ * hds#1095: check:fast, check:full and pretest used to be hand-written `&&` chains in
  * package.json, one of five places that defined "which gates run". A lane keeps
  * that list as data beside the gates. A lane entry is a whole shell command
  * (some carry flags, some are `pnpm typecheck` or a generator), which is why it
@@ -13,6 +13,9 @@
  * their own small runner here until ops grows a lane mode; then run-lane.mjs
  * folds into run-gates.
  */
+
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 /** The runner call package.json uses for a lane. */
 export const LANE_CALL = /^node scripts\/run-lane\.mjs (\S+)$/;
@@ -44,4 +47,13 @@ export function runLane(commands, run) {
     if (code !== 0) return code;
   }
   return 0;
+}
+
+/**
+ * `root`'s package.json scripts with lanes expanded from its registry. For
+ * tests that assert a command runs in a chain (e.g. "pretest runs X").
+ */
+export function readLaneScripts(root) {
+  const read = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
+  return expandLaneScripts(read('package.json').scripts, read('docs/guardrails/registry.json'));
 }

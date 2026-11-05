@@ -1,14 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
-const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
 const registry = JSON.parse(readFileSync(resolve(root, 'docs/guardrails/registry.json'), 'utf8'));
 
 describe('check-focus-states wiring', () => {
   it('runs in the pretest chain', () => {
-    expect(pkg.scripts.pretest).toContain('scripts/check-focus-states.mjs');
+    expect(readLaneScripts(root).pretest).toContain('scripts/check-focus-states.mjs');
   });
 
   it('is registered on the pnpm-meta channel as a blocking gate', () => {

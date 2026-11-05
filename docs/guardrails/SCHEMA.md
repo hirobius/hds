@@ -15,7 +15,7 @@ automated quality gate in the Hirobius repo.
 ```
 
 `lanes` (hds#1095) holds the named command lists that used to be `&&` chains
-in `package.json`: today `check:fast` and `check:full`. `package.json` calls
+in `package.json`: `check:fast`, `check:full` and `pretest`. `package.json` calls
 `node scripts/run-lane.mjs <lane>`, which runs the commands in order and stops
 at the first failure. `check-validator-wiring` expands those calls back to the
 lane's commands, so a gate run only from a lane still counts as wired.

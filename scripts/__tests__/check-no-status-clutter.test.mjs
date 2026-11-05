@@ -1,8 +1,9 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /** Unit tests for scripts/check-no-status-clutter.mjs (hds#759). */
 import { describe, it, expect } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { readFileSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { relative } from 'node:path';
 import { ROOT, registryEntry, runGate } from './helpers/gate-runner.mjs';
 import { findViolationsInText, defaultFiles } from '../check-no-status-clutter.mjs';
 
@@ -52,8 +53,7 @@ describe('check-no-status-clutter: registry, pretest, fixtures and the repo', ()
       severity: 'error',
       firingChannel: 'pnpm-meta',
     });
-    const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
-    expect(pkg.scripts.pretest).toContain('node scripts/check-no-status-clutter.mjs');
+    expect(readLaneScripts(ROOT).pretest).toContain('node scripts/check-no-status-clutter.mjs');
   });
 
   it('fails the violating fixture and passes the clean one', () => {
