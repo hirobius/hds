@@ -3221,6 +3221,9 @@
         "(props: PageHeaderProps & RefAttributes<HTMLElement>): ReactNode"
       ]
     },
+    "PageHeaderDescriptionPlacement": {
+      "kind": "type"
+    },
     "PageHeaderLevel": {
       "kind": "type"
     },

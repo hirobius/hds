@@ -2650,6 +2650,15 @@
       "values": null,
       "default": null
     },
+    "descriptionPlacement": {
+      "type": "'below' | 'title'",
+      "optional": true,
+      "values": [
+        "below",
+        "title"
+      ],
+      "default": "below"
+    },
     "level": {
       "type": "PageHeaderLevel",
       "optional": true,
@@ -2673,6 +2682,18 @@
       "optional": false,
       "values": null,
       "default": null
+    },
+    "titleMenu": {
+      "type": "ReactNode",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "titleMenuLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Title options"
     }
   },
   "Pagination": {

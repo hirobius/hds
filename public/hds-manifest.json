@@ -1334,6 +1334,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
@@ -3777,6 +3778,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/segmented-control.tsx",
@@ -8848,6 +8850,7 @@
         "src/app/components/data-table-section.tsx",
         "src/app/components/list.tsx",
         "src/app/components/nav-list.tsx",
+        "src/app/components/page-header.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
         "src/app/components/sheet.tsx"
@@ -9492,6 +9495,14 @@
           "type": "ReactNode",
           "optional": true
         },
+        "descriptionPlacement": {
+          "type": "enum",
+          "values": [
+            "below",
+            "title"
+          ],
+          "default": "below"
+        },
         "level": {
           "type": "PageHeaderLevel",
           "default": 1
@@ -9506,6 +9517,14 @@
         },
         "title": {
           "type": "ReactNode"
+        },
+        "titleMenu": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "titleMenuLabel": {
+          "type": "string",
+          "default": "Title options"
         }
       },
       "allowedChildren": [
@@ -9513,7 +9532,20 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "The title menu trigger is a button named by titleMenuLabel, with aria-haspopup=menu and aria-expanded, beside the heading rather than inside it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:page-header.title-menu-named"
+        },
+        {
+          "rule": "Tab reaches the title menu trigger; Enter, Space or ArrowDown opens the menu on its first item; Escape closes it and returns focus to the trigger.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:page-header.title-menu-keyboard"
+        }
+      ],
       "docsPage": "/docs/patterns/page-header",
       "publicDataAttributes": [
         "data-slot"
