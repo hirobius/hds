@@ -1,5 +1,0 @@
----
-'@hirobius/design-system': patch
----
-
-Focus ring: one token-driven ring across every focusable component. New tokens `semantic.focus.ring.width` (2px), `semantic.focus.gap.width` (2px) and `semantic.focus.ring.color`, plus focus radius steps (`semantic.focus.radius.{control,sm,md,lg,pill}` and `component.{button,input,card,tag}.focus.{gapRadius,ringRadius}`) on new `primitive.radius.10` and `.14`, so Figma can bind the ring exactly. The ring is an outline `gap.width` off the edge, so its corners follow the element radius (gap radius = radius + gap, ring radius = radius + gap + ring) and it stays visible in forced-colors mode (system Highlight). Button, Input, Textarea, TokenField, Table sort, OverlayClose and the Input clear button move from a Tailwind box-shadow ring to `.hds-focus`; Tabs, Table region, Sheet actions and highlighted Menu and Select items use `.hds-focus-inset`; Checkbox, Radio, Toggle and SegmentedControl's frozen focus state use `.hds-focus-ring`. New classes `.hds-focus-within`, `.hds-focus-inset`, `.hds-focus-ring` and the `--hds-focus-color` override.

@@ -1,0 +1,2261 @@
+{
+  "version": "0.33.0",
+  "date": "2026-11-05",
+  "bump": "minor",
+  "summary": "19 changes to make by hand (16 breaking), 9 fixed for you by a codemod, 91 that look different and 1 deprecation.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.33.0/removed/--component-lightbox-backdrop-blur",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-lightbox-backdrop-blur) and hds.effect.blur.lightboxBackdrop with var(--primitive-blur-16), the same 16px.",
+      "detect": {
+        "cssVars": [
+          "--component-lightbox-backdrop-blur"
+        ],
+        "cssVarWrites": [
+          "--component-lightbox-backdrop-blur"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-lightbox-backdrop-blur"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--component-nav-bg",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-bg) with var(--semantic-color-surface-page), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-bg"
+        ],
+        "cssVarWrites": [
+          "--component-nav-bg"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-bg"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--component-nav-bgActive",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-bgActive) with var(--semantic-accent-subtle), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-bgActive"
+        ],
+        "cssVarWrites": [
+          "--component-nav-bgActive"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-bgActive"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--component-nav-borderActive",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-borderActive) with var(--semantic-color-surface-accent), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-borderActive"
+        ],
+        "cssVarWrites": [
+          "--component-nav-borderActive"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-borderActive"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--component-nav-height",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-height) with var(--primitive-space-16), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-height"
+        ],
+        "cssVarWrites": [
+          "--component-nav-height"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-height"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--component-nav-paddingX",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-paddingX) with var(--primitive-space-6), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-paddingX"
+        ],
+        "cssVarWrites": [
+          "--component-nav-paddingX"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-paddingX"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--component-nav-text",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-text) with var(--semantic-color-content-secondary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-text"
+        ],
+        "cssVarWrites": [
+          "--component-nav-text"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-text"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--component-nav-textActive",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--component-nav-textActive) with var(--semantic-color-content-primary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it.",
+      "detect": {
+        "cssVars": [
+          "--component-nav-textActive"
+        ],
+        "cssVarWrites": [
+          "--component-nav-textActive"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-textActive"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-color-border-subdued",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-color-border-subdued is removed; use --semantic-color-border-default (Dark is neutral.600, was neutral.800; Light is the same), which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-subdued"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-subdued"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-color-border-subdued"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-component-gap",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-component-gap is removed; use --semantic-space-scale-xs, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-space-component-gap"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-component-gap"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-component-gap"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-component-padding",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-component-padding is removed; use --semantic-space-surface-padding, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-space-component-padding"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-component-padding"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-component-padding"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-layout-gutter",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-gutter is removed; use --semantic-space-region-gutter, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-gutter"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-gutter"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-layout-gutter"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-layout-inset",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-inset is removed; use --semantic-space-scale-lg, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-inset"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-inset"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-layout-inset"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-layout-normal",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-normal is removed; use --semantic-space-scale-md, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-normal"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-normal"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-layout-normal"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-layout-spacious",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-spacious is removed; use --semantic-space-scale-xl, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-spacious"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-spacious"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-layout-spacious"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-layout-tight",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "--semantic-space-layout-tight is removed; use --semantic-space-scale-sm, which the codemod writes for you.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-tight"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-tight"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-layout-tight"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/--semantic-space-sidebar-railWidth",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace var(--semantic-space-sidebar-railWidth) and the sidebar-railWidth Tailwind key with var(--primitive-size-width-280), the same 280px.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-sidebar-railWidth"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-sidebar-railWidth"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-sidebar-railWidth"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/removed/default",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Import hdsMuiThemeOptions by name from @hirobius/design-system/mui; the default export is gone.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system/mui",
+            "names": [
+              "default"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:./mui:default"
+      ],
+      "source": "CHANGELOG.md:26"
+    },
+    {
+      "id": "0.33.0/removed/manifest-consumers-testId",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The bundled manifest no longer carries componentSpecs consumers (HDS repo file paths) or a11yRules testId (HDS test ids).",
+      "source": "CHANGELOG.md:32"
+    },
+    {
+      "id": "0.33.0/removed/manifest-figmaLink",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The bundled manifest no longer carries componentSpecs figmaLink; read figmaUrl, which holds the same URL.",
+      "source": "CHANGELOG.md:32"
+    },
+    {
+      "id": "0.33.0/removed/semantic.space-aliases-js-tailwind",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "hds.semantic.space.component and hds.semantic.space.layout.gutter, the Tailwind spacing keys component-gap/padding and layout-* (p-, m-, gap-, w-, inset- and every other spacing utility, and theme(spacing.*)), and Box sx 'border.subdued' are removed; the codemod rewrites them.",
+      "auto": {
+        "codemod": "hds-token-aliases",
+        "args": []
+      },
+      "detect": {
+        "regex": [
+          "\\bsemantic\\.space\\.(?:component\\.(?:gap|padding)|layout\\.(?:gutter|tight|normal|inset|spacious))\\b",
+          "\\bsemantic\\.color\\.border\\.subdued\\b",
+          "[a-z](?:-|\\.)(?:component-(?:gap|padding)|layout-(?:gutter|tight|normal|inset|spacious))(?![\\w-])",
+          "['\"`]border\\.subdued['\"`]"
+        ]
+      },
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/removed/tailwind-theme-vars-936",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare any of these Tailwind theme variables your own CSS reads (or use the HDS token for the same role); no HDS component read them.",
+      "detect": {
+        "cssVars": [
+          "--blur-md",
+          "--blur-xs",
+          "--color-gray-100",
+          "--color-stone-900",
+          "--ease-in",
+          "--ease-in-out",
+          "--font-weight-bold",
+          "--font-weight-light",
+          "--leading-loose",
+          "--radius-2xl",
+          "--radius-xl",
+          "--text-6xl--line-height",
+          "--tracking-tight",
+          "--tracking-wide"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--blur-md",
+        "css-var-removed:--blur-xs",
+        "css-var-removed:--color-gray-100",
+        "css-var-removed:--color-stone-900",
+        "css-var-removed:--ease-in",
+        "css-var-removed:--ease-in-out",
+        "css-var-removed:--font-weight-bold",
+        "css-var-removed:--font-weight-light",
+        "css-var-removed:--leading-loose",
+        "css-var-removed:--radius-2xl",
+        "css-var-removed:--radius-xl",
+        "css-var-removed:--text-6xl--line-height",
+        "css-var-removed:--tracking-tight",
+        "css-var-removed:--tracking-wide"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.0/removed/tailwind-utilities-936",
+      "kind": "removed",
+      "impact": "look",
+      "plain": "Compile any of these utilities your own markup still uses with your own Tailwind build; HDS components never used them.",
+      "detect": {
+        "classes": [
+          "-ml-2",
+          "-mt-6",
+          "-mx-1",
+          "[&_svg]:size-[var(--component-widget-iconSize)]",
+          "[--foo:bar]",
+          "[data-docs-switch-trigger]:visible",
+          "[font-size:15px]",
+          "[test:phase1]",
+          "[text-transform:uppercase]",
+          "[ui:lint]",
+          "active:brightness-95",
+          "antialiased",
+          "backdrop-blur",
+          "backdrop-blur-xs",
+          "backdrop-filter",
+          "bg-[color:var(--semantic-color-feedback-bg-error)]",
+          "bg-[color:var(--semantic-color-feedback-bg-warning)]",
+          "bg-[var(--semantic-accent-support-subtle)]",
+          "bg-[var(--x)]",
+          "bg-black",
+          "bg-gradient-to-r",
+          "bg-gray-100",
+          "bg-white",
+          "blur-md",
+          "blur-sm",
+          "border-[color:var(--semantic-color-feedback-warning)]/40",
+          "border-[var(--x)]",
+          "border-border/40",
+          "border-collapse",
+          "border-x",
+          "border-y",
+          "capitalize",
+          "dark:active:brightness-110",
+          "data-[highlighted]:text-foreground",
+          "data-[pressed=true]:bg-accent",
+          "data-[state=checked]:text-foreground",
+          "divide-y",
+          "ease-in",
+          "ease-in-out",
+          "flex-shrink",
+          "focus-visible:outline",
+          "focus-visible:ring",
+          "font-bold",
+          "font-light",
+          "gap-0.5",
+          "gap-6",
+          "gap-7",
+          "gap-scale-md",
+          "group-hover:opacity-100",
+          "h-2.5",
+          "h-3.5",
+          "h-[var(--primitive-size-12)]",
+          "h-[var(--primitive-size-20)]",
+          "hover:[&_svg]:size-4",
+          "hover:bg-primary/90",
+          "hover:p-4",
+          "hover:text-accent-foreground",
+          "inset-2",
+          "invert",
+          "leading-5",
+          "leading-loose",
+          "line-through",
+          "m-1",
+          "max-w-[900px]",
+          "md:px-3",
+          "md:px-6",
+          "md:uppercase",
+          "mt-1",
+          "mt-2",
+          "mt-9",
+          "mt-[calc((var(--semantic-typography-titleSm-font-size)*var(--semantic-typography-titleSm-line-height)-var(--primitive-size-16))/2)]",
+          "my-1",
+          "p-13",
+          "p-16",
+          "p-5",
+          "p-6",
+          "p-[1.25rem]",
+          "p-[var(--primitive-space-4)]",
+          "p-[var(--primitive-space-6)]",
+          "pb-2",
+          "pb-8",
+          "pl-3",
+          "pl-4",
+          "pl-6",
+          "pr-1",
+          "pr-2",
+          "pr-3",
+          "pr-4",
+          "px-1",
+          "px-2",
+          "py-1",
+          "py-12",
+          "py-4",
+          "py-6",
+          "py-[var(--component-badge-paddingY)]",
+          "rounded-2xl",
+          "rounded-[…]",
+          "rounded-b",
+          "rounded-l",
+          "rounded-r",
+          "rounded-scale-lg",
+          "rounded-scale-md",
+          "rounded-scale-pill",
+          "rounded-scale-sm",
+          "rounded-scale-xl",
+          "rounded-t",
+          "rounded-xl",
+          "shadow-lg",
+          "shadow-md",
+          "shadow/color",
+          "shadow/floating",
+          "shadow/overlay",
+          "shadow/subtle",
+          "sm:gap-2",
+          "sm:inline-block",
+          "text-6xl",
+          "text-[color:var(--semantic-color-feedback-warning)]",
+          "text-[color:var(--semantic-…)]",
+          "text-black",
+          "text-muted",
+          "text-muted-foreground/70",
+          "text-stone-900",
+          "text-wrap",
+          "tracking-tight",
+          "tracking-wide",
+          "transition-[transform,opacity]",
+          "uppercase",
+          "w-3.5",
+          "w-64",
+          "w-[var(--primitive-size-12)]",
+          "w-[var(--primitive-size-20)]",
+          "w-[var(--primitive-size-40)]",
+          "w-auto",
+          "xl:px-8"
+        ]
+      },
+      "facts": [
+        "utility-removed:-ml-2",
+        "utility-removed:-mt-6",
+        "utility-removed:-mx-1",
+        "utility-removed:[&_svg]:size-[var(--component-widget-iconSize)]",
+        "utility-removed:[--foo:bar]",
+        "utility-removed:[data-docs-switch-trigger]:visible",
+        "utility-removed:[font-size:15px]",
+        "utility-removed:[test:phase1]",
+        "utility-removed:[text-transform:uppercase]",
+        "utility-removed:[ui:lint]",
+        "utility-removed:active:brightness-95",
+        "utility-removed:antialiased",
+        "utility-removed:backdrop-blur",
+        "utility-removed:backdrop-blur-xs",
+        "utility-removed:backdrop-filter",
+        "utility-removed:bg-[color:var(--semantic-color-feedback-bg-error)]",
+        "utility-removed:bg-[color:var(--semantic-color-feedback-bg-warning)]",
+        "utility-removed:bg-[var(--semantic-accent-support-subtle)]",
+        "utility-removed:bg-[var(--x)]",
+        "utility-removed:bg-black",
+        "utility-removed:bg-gradient-to-r",
+        "utility-removed:bg-gray-100",
+        "utility-removed:bg-white",
+        "utility-removed:blur-md",
+        "utility-removed:blur-sm",
+        "utility-removed:border-[color:var(--semantic-color-feedback-warning)]/40",
+        "utility-removed:border-[var(--x)]",
+        "utility-removed:border-border/40",
+        "utility-removed:border-collapse",
+        "utility-removed:border-x",
+        "utility-removed:border-y",
+        "utility-removed:capitalize",
+        "utility-removed:dark:active:brightness-110",
+        "utility-removed:data-[highlighted]:text-foreground",
+        "utility-removed:data-[pressed=true]:bg-accent",
+        "utility-removed:data-[state=checked]:text-foreground",
+        "utility-removed:divide-y",
+        "utility-removed:ease-in",
+        "utility-removed:ease-in-out",
+        "utility-removed:flex-shrink",
+        "utility-removed:focus-visible:outline",
+        "utility-removed:focus-visible:ring",
+        "utility-removed:font-bold",
+        "utility-removed:font-light",
+        "utility-removed:gap-0.5",
+        "utility-removed:gap-6",
+        "utility-removed:gap-7",
+        "utility-removed:gap-scale-md",
+        "utility-removed:group-hover:opacity-100",
+        "utility-removed:h-2.5",
+        "utility-removed:h-3.5",
+        "utility-removed:h-[var(--primitive-size-12)]",
+        "utility-removed:h-[var(--primitive-size-20)]",
+        "utility-removed:hover:[&_svg]:size-4",
+        "utility-removed:hover:bg-primary/90",
+        "utility-removed:hover:p-4",
+        "utility-removed:hover:text-accent-foreground",
+        "utility-removed:inset-2",
+        "utility-removed:invert",
+        "utility-removed:leading-5",
+        "utility-removed:leading-loose",
+        "utility-removed:line-through",
+        "utility-removed:m-1",
+        "utility-removed:max-w-[900px]",
+        "utility-removed:md:px-3",
+        "utility-removed:md:px-6",
+        "utility-removed:md:uppercase",
+        "utility-removed:mt-1",
+        "utility-removed:mt-2",
+        "utility-removed:mt-9",
+        "utility-removed:mt-[calc((var(--semantic-typography-titleSm-font-size)*var(--semantic-typography-titleSm-line-height)-var(--primitive-size-16))/2)]",
+        "utility-removed:my-1",
+        "utility-removed:p-13",
+        "utility-removed:p-16",
+        "utility-removed:p-5",
+        "utility-removed:p-6",
+        "utility-removed:p-[1.25rem]",
+        "utility-removed:p-[var(--primitive-space-4)]",
+        "utility-removed:p-[var(--primitive-space-6)]",
+        "utility-removed:pb-2",
+        "utility-removed:pb-8",
+        "utility-removed:pl-3",
+        "utility-removed:pl-4",
+        "utility-removed:pl-6",
+        "utility-removed:pr-1",
+        "utility-removed:pr-2",
+        "utility-removed:pr-3",
+        "utility-removed:pr-4",
+        "utility-removed:px-1",
+        "utility-removed:px-2",
+        "utility-removed:py-1",
+        "utility-removed:py-12",
+        "utility-removed:py-4",
+        "utility-removed:py-6",
+        "utility-removed:py-[var(--component-badge-paddingY)]",
+        "utility-removed:rounded-2xl",
+        "utility-removed:rounded-[…]",
+        "utility-removed:rounded-b",
+        "utility-removed:rounded-l",
+        "utility-removed:rounded-r",
+        "utility-removed:rounded-scale-lg",
+        "utility-removed:rounded-scale-md",
+        "utility-removed:rounded-scale-pill",
+        "utility-removed:rounded-scale-sm",
+        "utility-removed:rounded-scale-xl",
+        "utility-removed:rounded-t",
+        "utility-removed:rounded-xl",
+        "utility-removed:shadow-lg",
+        "utility-removed:shadow-md",
+        "utility-removed:shadow/color",
+        "utility-removed:shadow/floating",
+        "utility-removed:shadow/overlay",
+        "utility-removed:shadow/subtle",
+        "utility-removed:sm:gap-2",
+        "utility-removed:sm:inline-block",
+        "utility-removed:text-6xl",
+        "utility-removed:text-[color:var(--semantic-color-feedback-warning)]",
+        "utility-removed:text-[color:var(--semantic-…)]",
+        "utility-removed:text-black",
+        "utility-removed:text-muted",
+        "utility-removed:text-muted-foreground/70",
+        "utility-removed:text-stone-900",
+        "utility-removed:text-wrap",
+        "utility-removed:tracking-tight",
+        "utility-removed:tracking-wide",
+        "utility-removed:transition-[transform,opacity]",
+        "utility-removed:uppercase",
+        "utility-removed:w-3.5",
+        "utility-removed:w-64",
+        "utility-removed:w-[var(--primitive-size-12)]",
+        "utility-removed:w-[var(--primitive-size-20)]",
+        "utility-removed:w-[var(--primitive-size-40)]",
+        "utility-removed:w-auto",
+        "utility-removed:xl:px-8"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.33.0/deprecated/hds.density",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "hds.density is deprecated; the upgrade command rewrites hds.density.sm to hds.semantic.space.scale.xs (md to sm, lg to md, xl to lg, xl2 to xl), the same pixels. density.xs, xl3 and xl4 have no scale step: use hds.space.px4, px64 or px80, which do not shrink under compact density.",
+      "auto": {
+        "codemod": "hds-token-keys",
+        "args": []
+      },
+      "detect": {
+        "regex": [
+          "\\bhds\\.density\\b"
+        ]
+      },
+      "removeIn": "1.0.0",
+      "tokens": {
+        "density.sm": "semantic.space.scale.xs",
+        "density.md": "semantic.space.scale.sm",
+        "density.lg": "semantic.space.scale.md",
+        "density.xl": "semantic.space.scale.lg",
+        "density.xl2": "semantic.space.scale.xl"
+      },
+      "source": "CHANGELOG.md:99"
+    },
+    {
+      "id": "0.33.0/value-changed/--component-badge-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-badge-height is now 22px (was 20px); check fixed-height rows that hold badges.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-height"
+        ],
+        "cssVarWrites": [
+          "--component-badge-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-height::root"
+      ],
+      "source": "CHANGELOG.md:50"
+    },
+    {
+      "id": "0.33.0/value-changed/--component-badge-minWidth",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-badge-minWidth is now 22px (was 20px), so a one-digit count badge is 2px wider.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-minWidth"
+        ],
+        "cssVarWrites": [
+          "--component-badge-minWidth"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-minWidth::root"
+      ],
+      "source": "CHANGELOG.md:50"
+    },
+    {
+      "id": "0.33.0/value-changed/--component-badge-radius",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-badge-radius is now a fixed 6px (was the action radius); Badge itself renders role.radius minus 2px, so read that instead if you matched its corner.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-radius"
+        ],
+        "cssVarWrites": [
+          "--component-badge-radius"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-radius::root",
+        "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]"
+      ],
+      "source": "CHANGELOG.md:50"
+    },
+    {
+      "id": "0.33.0/value-changed/--component-button-secondary-border-disabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The deprecated --component-button-secondary-border-disabled follows border.default: the same graphite in Light, neutral.600 in Dark (was neutral.800); Button has not drawn it since hds#891.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-disabled"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-disabled"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-disabled::root",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-border-disabled:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/value-changed/--component-button-size-lg-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-size-lg-height is now 52px (was 48px); a container or sibling sized to match the lg Button should follow the variable, not a fixed px.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-lg-height"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-lg-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-lg-height::root"
+      ],
+      "source": "CHANGELOG.md:43"
+    },
+    {
+      "id": "0.33.0/value-changed/--component-button-size-md-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-size-md-height is now 44px (was 40px); a container or sibling sized to match the md Button should follow the variable, not a fixed px.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-md-height"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-md-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-md-height::root"
+      ],
+      "source": "CHANGELOG.md:43"
+    },
+    {
+      "id": "0.33.0/value-changed/--component-button-size-sm-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--component-button-size-sm-height is now 36px (was 32px); a container or sibling sized to match the sm Button should follow the variable, not a fixed px.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-sm-height"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-sm-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-sm-height::root"
+      ],
+      "source": "CHANGELOG.md:43"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-anim-spin",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Spinners built on the --hds-anim-spin preset now rotate at a constant speed instead of pulsing with the expressive spring; no action is needed unless a design relied on the pulsing motion.",
+      "detect": {
+        "cssVars": [
+          "--hds-anim-spin"
+        ],
+        "cssVarWrites": [
+          "--hds-anim-spin"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-anim-spin::root"
+      ],
+      "source": "CHANGELOG.md:90"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-edge-danger",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-danger now aliases --component-button-edge-danger (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of danger-tone Buttons.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-danger"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-danger"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-danger::root",
+        "css-var-changed:--hds-edge-danger:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-danger:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:54"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-info now aliases --component-button-edge-info (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of info-tone Buttons.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-info"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-info::root",
+        "css-var-changed:--hds-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:54"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-edge-kbd",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The raised edge under buttons and Kbd follows the tinted fills; nothing to change unless you override --hds-edge-kbd.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-kbd"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-kbd"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-kbd::root",
+        "css-var-changed:--hds-edge-kbd:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-kbd:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The primary edge (--hds-edge-primary) is now #020203 in light (was #292427) and #a4a4a4 in dark (was #8a8789), so primary borders read stronger; re-take border screenshots.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:70"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-edge-secondary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The raised edge under buttons and Kbd follows the tinted fills; nothing to change unless you override --hds-edge-secondary.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-secondary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-secondary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-secondary::root",
+        "css-var-changed:--hds-edge-secondary:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-secondary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-edge-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-success now aliases --component-button-edge-success (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of success-tone Buttons.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-success"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-success"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-success::root",
+        "css-var-changed:--hds-edge-success:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-success:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:54"
+    },
+    {
+      "id": "0.33.0/value-changed/--hds-edge-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--hds-edge-warning now aliases --component-button-edge-warning (a fixed primitive per theme) instead of a computed hex, so re-take screenshots of warning-tone Buttons.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-warning"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-warning"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-warning::root",
+        "css-var-changed:--hds-edge-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-warning:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:54"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-100",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-100 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-100"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-100"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-100::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-200",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-200 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-200"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-200"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-200::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-300",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-300 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-300"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-300"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-300::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-400",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-400 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-400"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-400"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-400::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-50 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-50::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-500",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-500 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-500"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-500"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-500::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-600",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-600 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-600"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-600"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-600::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-700",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-700 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-700"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-700"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-700::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-800",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-800 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-800"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-800"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-800::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-900",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-900 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-900"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-900"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-900::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-graphite-950",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-graphite-950 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-graphite-950"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-graphite-950"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-graphite-950::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-100",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-100 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-100"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-100"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-100::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-200",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-200 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-200"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-200"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-200::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-300",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-300 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-300"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-300"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-300::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-350",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-350 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-350"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-350"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-350::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-400",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-400 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-400"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-400"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-400::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-450",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-450 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-450"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-450"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-450::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-50 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-50::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-500",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-500 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-500"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-500"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-500::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-550",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-550 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-550"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-550"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-550::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-600",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-600 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-600"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-600"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-600::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-700",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-700 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-700"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-700"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-700::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-800",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-800 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-800"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-800"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-800::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-850",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-850 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-850"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-850"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-850::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-900",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-900 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-900"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-900"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-900::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-950",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This grey keeps its lightness but leans toward midnight blue; if you read --primitive-color-neutral-950 directly next to your own greys, check that they still match.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-950"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-950"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-950::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-color-neutral-black",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "neutral.black is now #060a13 (midnight), not #000000; use your own #000000 where you need true black.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-neutral-black"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-neutral-black"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-neutral-black::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--primitive-easing-elastic",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--primitive-easing-elastic is now a valid linear() spring curve with about 11% overshoot, where the old spring(300, 20, 1) value was invalid CSS and the browser dropped it, so animations using it now overshoot slightly instead of falling back to their default easing.",
+      "detect": {
+        "cssVars": [
+          "--primitive-easing-elastic"
+        ],
+        "cssVarWrites": [
+          "--primitive-easing-elastic"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-easing-elastic::root"
+      ],
+      "source": "CHANGELOG.md:91"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-accent-content",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-content, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-accent-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-hover, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-accent-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-pressed, and in dark mode the base pressed fill now steps darker from the near-white rest (graphite.200, was graphite.50), so a page on that slug gets the new base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=\"dark\"]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-rest, and in dark mode the base rest fill is now graphite.50 (was graphite.200), so a page on that slug gets the new base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest:[data-theme=\"dark\"]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-accent-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-accent-subtle, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-border-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-border-accent, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-border-default",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light default borders and dividers are a step darker (--semantic-color-border-default in :root moved from --primitive-color-graphite-200 to --primitive-color-graphite-250), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-default"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-default"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-default::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-content-disabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light disabled text is a step darker (--semantic-color-content-disabled in :root moved from --primitive-color-neutral-300 to --primitive-color-neutral-350), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-disabled"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-disabled"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-disabled::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-content-onAccent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-content-onAccent, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-onAccent:[data-brand=concrete-creations],[data-tenant=concrete-creations]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-content-tertiary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light tertiary text is a step darker (--semantic-color-content-tertiary in :root moved from --primitive-color-neutral-500 to --primitive-color-neutral-550), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-tertiary"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-tertiary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-tertiary::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-surface-accent, and the base accent fill is now graphite.950 in light (was #4a4146) and graphite.50 in dark (was #cbc6c9), so a page on that slug gets the new base fill unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=\"dark\"]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-accentSubtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The concrete-creations block no longer sets --semantic-color-surface-accentSubtle, so a page on that slug gets the base value unless the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "concrete-creations"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light hover fills are darker (--semantic-color-surface-hover in :root moved from --primitive-color-neutral-100 to --primitive-color-neutral-250), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-hover"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-hover::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-muted",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark muted fills (surface.muted) moved to the new neutral.750 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode; light muted fills also moved a step darker (neutral.250).",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-muted"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-muted"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-muted::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-overlay",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light overlay surfaces are darker (--semantic-color-surface-overlay in :root moved from --primitive-color-neutral-100 to --primitive-color-neutral-250), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-overlay"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-overlay"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-overlay::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light pressed fills are a step darker (--semantic-color-surface-pressed in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-pressed::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-raised",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark cards (surface.raised) moved to the new neutral.825 step so they stay distinct from the midnight page; if you set this variable yourself, check your cards in dark mode; light cards also moved a step darker (neutral.150) so they read against the page.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-raised"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-raised"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-raised::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-selected",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark selected fills (surface.selected: the active tab, a checked row) moved to the new neutral.725 step so they stay distinct from cards; if you set this variable yourself, check it in dark mode; light selected fills also moved darker (neutral.325).",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-selected"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-selected"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-selected:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-selected:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-selected::root"
+      ],
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-soft",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light soft fills are a step darker (--semantic-color-surface-soft in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-soft"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-soft"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-soft::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-softHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light soft hover fills are slightly darker (--semantic-color-surface-softHover in :root moved from --primitive-color-neutral-300 to --primitive-color-neutral-325), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-softHover"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-softHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-softHover::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/value-changed/--semantic-color-surface-sunken",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light sunken surfaces are a step darker (--semantic-color-surface-sunken in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-sunken"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-sunken"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-sunken::root"
+      ],
+      "source": "CHANGELOG.md:77"
+    },
+    {
+      "id": "0.33.0/look/Button",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Button labels are weight 600 (component.button.fontWeight); if you forced font-weight on a Button, drop it or set it through that variable.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "Button"
+            ]
+          }
+        ]
+      },
+      "source": "CHANGELOG.md:43"
+    },
+    {
+      "id": "0.33.0/look/board-first-column-1114",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Board columns now keep their full width from tablet width up (the first column no longer collapses) and off-screen column counts no longer widen the page, so remove any local CSS override that worked around either.",
+      "source": "CHANGELOG.md:52"
+    },
+    {
+      "id": "0.33.0/look/button-focus-wraps-edge",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A focused hard-edge Button keeps its edge and its focus ring now wraps the edge too; no code change is needed.",
+      "source": "CHANGELOG.md:55"
+    },
+    {
+      "id": "0.33.0/look/button-link-focus-ring",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A focused Button variant=\"link\" now shows a rounded ring 4px past the label with a 2px gap, and the link is position: relative; drop any local focus-visible outline or ring classes added to work around the old tight ring, and check a parent with overflow: hidden does not clip the ring.",
+      "source": "CHANGELOG.md:56"
+    },
+    {
+      "id": "0.33.0/look/button-link-plain-text",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A Button with variant=\"link\" and a status tone (danger, success, warning or info) is now coloured, underlined text with no tinted background, so re-take screenshots of toned link buttons and drop any local class that cleared their fill.",
+      "source": "CHANGELOG.md:57"
+    },
+    {
+      "id": "0.33.0/look/card-radius-brand-806",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Cards and other rounded-lg containers are now square when your tenant sets --role-radius to 0; other radii are unchanged.",
+      "source": "CHANGELOG.md:58"
+    },
+    {
+      "id": "0.33.0/look/combobox-chip-hover-522",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Combobox chips and the Dialog and Sheet close buttons now change fill on hover in light and dark; drop any local CSS that added a hover fill to them.",
+      "source": "CHANGELOG.md:61"
+    },
+    {
+      "id": "0.33.0/look/crossfades-938",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A toggle Button's label and AsyncState's status blocks now fade through each other instead of swapping at once; nothing to change, and both swap instantly under reduced motion.",
+      "source": "CHANGELOG.md:62"
+    },
+    {
+      "id": "0.33.0/look/focus-ring-tokens",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Every focus ring is now one 2px outline 2px off the edge (Checkbox's moved out, invalid fields ring in the error colour), so re-take focus screenshots and restyle it with the --semantic-focus-* variables.",
+      "source": "CHANGELOG.md:68"
+    },
+    {
+      "id": "0.33.0/look/form-field-error-reveal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A FormField error message now eases in and fades out; nothing to change, and reduced motion still shows it instantly.",
+      "source": "CHANGELOG.md:69"
+    },
+    {
+      "id": "0.33.0/look/inline-code-copy-crossfade",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A copyable InlineCode now crossfades its Copy and Check glyphs; nothing to change, and reduced motion still swaps instantly.",
+      "source": "CHANGELOG.md:73"
+    },
+    {
+      "id": "0.33.0/look/inline-link-icon-nudge",
+      "kind": "look",
+      "impact": "look",
+      "plain": "An external InlineLink's icon now nudges up-right on hover and focus; nothing to change, and reduced motion keeps it still.",
+      "source": "CHANGELOG.md:74"
+    },
+    {
+      "id": "0.33.0/look/inlinelink-size",
+      "kind": "look",
+      "impact": "look",
+      "plain": "InlineLink's external icon now follows the link's font size (12px in 16px text, was 11px) and InlineLink takes size=\"sm\" | \"md\" | \"lg\"; drop local CSS that resized the icon or the link text and set size instead.",
+      "source": "CHANGELOG.md:30"
+    },
+    {
+      "id": "0.33.0/look/pagination-compact-40-1150",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Compact Pagination's Previous and Next buttons grow from 36px to 40px squares; the default Pagination is unchanged.",
+      "source": "CHANGELOG.md:80"
+    },
+    {
+      "id": "0.33.0/look/pagination-compact-outlined",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Compact Pagination's Previous and Next now draw an outline and a disabled end stays outlined and faded instead of grey-filled, so drop any local CSS that bordered them or cleared the disabled fill.",
+      "source": "CHANGELOG.md:81"
+    },
+    {
+      "id": "0.33.0/look/rest-fill-contrast-522",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Avatar, AvatarGroup's +N bubble, Kbd, the accent Callout and the active Tab and its panel now have a fill that shows on a Card and on the page; drop any local CSS that darkened them.",
+      "source": "CHANGELOG.md:87"
+    },
+    {
+      "id": "0.33.0/look/tabs-change-cue-938",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A Tabs panel now fades and rises in when it becomes active; nothing to change, and it stays still under reduced motion.",
+      "source": "CHANGELOG.md:92"
+    },
+    {
+      "id": "0.33.0/look/tag-disabled-colour",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A disabled Tag's label now uses the disabled content colour, so re-take screenshots of pages that show disabled tags.",
+      "source": "CHANGELOG.md:93"
+    },
+    {
+      "id": "0.33.0/look/toast-enter-motion",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A new toast now eases up into the stack; nothing to change, and reduced motion still shows it at rest.",
+      "source": "CHANGELOG.md:97"
+    },
+    {
+      "id": "0.33.0/look/toast-swipe-exit-938",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Toasts now follow a swipe and slide out toward the swipe edge when dismissed — button and timer dismissals slide the same way and reduced-motion settings still dismiss instantly — so drop any local CSS that animated toast swipe or exit.",
+      "source": "CHANGELOG.md:98"
+    },
+    {
+      "id": "0.33.0/look/touch-field-text-863",
+      "kind": "look",
+      "impact": "look",
+      "plain": "On a phone or touch screen, text fields show 16px text so iOS does not zoom on focus, and a filled Input with a clear button has 44px end padding at every size; drop local CSS that raised field text to 16px or widened that padding.",
+      "source": "CHANGELOG.md:102"
+    },
+    {
+      "id": "0.33.0/look/touch-size-750",
+      "kind": "look",
+      "impact": "look",
+      "plain": "On a touch tablet, small controls (sm Button, Tabs, SegmentedControl, Tag, Disclosure, Input clear) now grow to 44px: re-check dense toolbars there, and delete any host CSS that raised them yourself.",
+      "source": "CHANGELOG.md:45"
+    },
+    {
+      "id": "0.33.0/behavior/no-nested-cards-1046",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "If `hds/no-nested-cards` now fails your lint, drop the outer surface and head the group with a section title and count on a plain region, or list your own card wrappers in its `cards` / `surfaces` options.",
+      "source": "CHANGELOG.md:35"
+    },
+    {
+      "id": "0.33.0/behavior/spacing-semantic-778",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "`cn()` now treats named spacing classes like `p-surface-padding` or `px-fixed-sm` as spacing, so a later `p-4` or `px-6` replaces them instead of both staying; check any className that relied on both applying.",
+      "source": "CHANGELOG.md:89"
+    },
+    {
+      "id": "0.33.0/peer/react-router",
+      "kind": "peer",
+      "impact": "breaking",
+      "plain": "If your app uses react-router below 7.18.2, upgrade it to 7.18.2 or later (older 7.x releases have security advisories).",
+      "detect": {
+        "bareImports": [
+          "react-router"
+        ]
+      },
+      "range": "^7.0.0",
+      "facts": [
+        "peer-changed:react-router"
+      ],
+      "source": "CHANGELOG.md:38"
+    },
+    {
+      "id": "0.33.0/tenant/accent-lilac",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-lilac brand (data-brand=\"accent-lilac\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:70"
+    },
+    {
+      "id": "0.33.0/tenant/accent-pair-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-pair-demo brand (data-brand=\"accent-pair-demo\") no longer get its nav active colors and its accent fill is now near-black/near-white, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--component-nav-bgActive",
+        "css-var-removed:--component-nav-borderActive",
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.33.0/tenant/brutalist-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the brutalist-demo brand (data-brand=\"brutalist-demo\") no longer get its surface padding override, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?brutalist-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--semantic-space-component-padding"
+      ],
+      "source": "CHANGELOG.md:39"
+    },
+    {
+      "id": "0.33.0/tenant/concrete-creations",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "The package no longer ships the concrete-creations brand block, so a page with data-brand=\"concrete-creations\" shows the base accent until the app compiles its own overlay.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?concrete-creations(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary::root",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--hds-edge-primary:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-content:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest:[data-theme=dark]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]",
+        "css-var-changed:--semantic-color-content-onAccent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accent::root",
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accent:[data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations],[data-tenant=concrete-creations]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=concrete-creations][data-theme=dark],[data-tenant=concrete-creations][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.33.0/tenant/soft-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the soft-demo brand (data-brand=\"soft-demo\") may look different (badge radius, and --semantic-space-component-padding no longer overridden), so check them after upgrading; its light cards also follow the darker surface.raised.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?soft-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-radius::root",
+        "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-color-surface-raised:[data-brand=soft-demo][data-theme=dark],[data-tenant=soft-demo][data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]",
+        "css-var-removed:--semantic-space-component-padding",
+        "css-var-changed:--semantic-color-surface-raised::root"
+      ],
+      "source": "CHANGELOG.md:50"
+    },
+    {
+      "id": "0.33.0/manual/TextProps-interface-extends",
+      "kind": "manual",
+      "impact": "breaking",
+      "plain": "An `interface X extends TextProps` no longer compiles because TextProps is a union (truncate and lineClamp exclude each other): write `type X = TextProps & { … }`.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TextProps"
+            ]
+          }
+        ]
+      },
+      "source": "CHANGELOG.md:44"
+    },
+    {
+      "id": "0.33.0/manual/TextProps-omit-spread",
+      "kind": "manual",
+      "impact": "breaking",
+      "plain": "A wrapper that spreads an `Omit<TextProps, …>` into Text can fail to compile: keep `truncate` and `lineClamp` out of the Omit, or cast the spread to `TextProps`.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "TextProps"
+            ]
+          }
+        ]
+      },
+      "source": "CHANGELOG.md:44"
+    }
+  ]
+}

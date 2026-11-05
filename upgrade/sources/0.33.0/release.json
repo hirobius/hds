@@ -1,0 +1,362 @@
+{
+  "$comment": "Frozen inputs of the 0.33.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.33.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.33.0",
+  "previous": "0.32.0",
+  "date": "2026-11-05",
+  "summary": "19 changes to make by hand (16 breaking), 9 fixed for you by a codemod, 91 that look different and 1 deprecation.",
+  "backfilled": false,
+  "notes": {
+    "agents-ts-rules-593": {
+      "needle": "fb638ff: The packaged `AGENTS.md` Rules now",
+      "source": "CHANGELOG.md:49"
+    },
+    "app-shell": {
+      "needle": "b3007dc: New `AppShell`: the app frame for",
+      "source": "CHANGELOG.md:19"
+    },
+    "badge-shape-757": {
+      "needle": "a6d5942: Badge is a step taller (22px, was",
+      "source": "CHANGELOG.md:50"
+    },
+    "behaviour-detectors-468": {
+      "needle": "c9c40d1: Behaviour detectors run as one local",
+      "source": "CHANGELOG.md:51"
+    },
+    "board-first-column-1114": {
+      "needle": "1428648: Board's first column no longer collapses",
+      "source": "CHANGELOG.md:52"
+    },
+    "box-sx-ssr-770": {
+      "needle": "b2b8731: Box: on React 19, `sx` rules now",
+      "source": "CHANGELOG.md:53"
+    },
+    "button-edge-tokens": {
+      "needle": "a976414: `Button`: the hard edge under secondary",
+      "source": "CHANGELOG.md:54"
+    },
+    "button-focus-wraps-edge": {
+      "needle": "92e2052: Button keeps its hard edge on keyboard",
+      "source": "CHANGELOG.md:55"
+    },
+    "button-link-focus-ring": {
+      "needle": "5132633: Button: `variant=\"link\"` draws its",
+      "source": "CHANGELOG.md:56"
+    },
+    "button-link-plain-text": {
+      "needle": "19a2454: Button: `variant=\"link\"` is plain",
+      "source": "CHANGELOG.md:57"
+    },
+    "button-quiet-flush-link-863": {
+      "needle": "d9d4dcb: Button: `tone=\"quiet\"` sets a tertiary",
+      "source": "CHANGELOG.md:20"
+    },
+    "card-radius-brand-806": {
+      "needle": "7926436: Cards follow the brand radius (hds#806):",
+      "source": "CHANGELOG.md:58"
+    },
+    "codemods-ledger-956": {
+      "needle": "e636dbc: The import codemods read their release",
+      "source": "CHANGELOG.md:59"
+    },
+    "codemods-strings-957": {
+      "needle": "fcbbed7: The codemods and the upgrade command",
+      "source": "CHANGELOG.md:60"
+    },
+    "combobox-chip-hover-522": {
+      "needle": "1197219: Hover fills that showed nothing",
+      "source": "CHANGELOG.md:61"
+    },
+    "command-palette-638": {
+      "needle": "33b02c3: New `CommandPalette`: a ⌘K / Ctrl+K",
+      "source": "CHANGELOG.md:21"
+    },
+    "command-palette-chips-962": {
+      "needle": "9f8d3e2: `CommandPalette` items can now declare",
+      "source": "CHANGELOG.md:22"
+    },
+    "crossfades-938": {
+      "needle": "c10205d: Toggle Buttons and AsyncState now",
+      "source": "CHANGELOG.md:62"
+    },
+    "css-scan-scope-936": {
+      "needle": "824e80f: `tokens.css` and `styles.css` are",
+      "source": "CHANGELOG.md:23"
+    },
+    "css-vars-codemod-459": {
+      "needle": "c740a29: New `hds-css-vars` codemod (hds#459):",
+      "source": "CHANGELOG.md:63"
+    },
+    "css-vars-contract-459": {
+      "needle": "1226b49: The upgrade command and `hds-css-vars",
+      "source": "CHANGELOG.md:64"
+    },
+    "deprecated-imports-469": {
+      "needle": "16b26cc: The ESLint plugin gains `hds/no-deprecated-import`",
+      "source": "CHANGELOG.md:65"
+    },
+    "deprecations-ship-469": {
+      "needle": "91fb33b: Deprecations reach consumers (hds#469).",
+      "source": "CHANGELOG.md:66"
+    },
+    "dialog-alert-size-863": {
+      "needle": "6f1bbc9: Dialog gains `size` (`sm | md |",
+      "source": "CHANGELOG.md:24"
+    },
+    "directions-not-tenants": {
+      "needle": "e884d95: Directions, brands and preferences",
+      "source": "CHANGELOG.md:25"
+    },
+    "dom-a11y-baseline-468": {
+      "needle": "4b3bb69: Upgrade ledger: a DOM and accessibility",
+      "source": "CHANGELOG.md:67"
+    },
+    "drop-duplicate-defaults-1007": {
+      "needle": "d604031: Remove the duplicate default export",
+      "source": "CHANGELOG.md:26"
+    },
+    "empty-state-italic-863": {
+      "needle": "0ae9df1: EmptyState: `italic` prop (default",
+      "source": "CHANGELOG.md:27"
+    },
+    "empty-state-teaching-863": {
+      "needle": "a891f2c: EmptyState: `variant=\"teaching\"`",
+      "source": "CHANGELOG.md:28"
+    },
+    "focus-ring-tokens": {
+      "needle": "def366f: Focus ring: one token-driven ring",
+      "source": "CHANGELOG.md:68"
+    },
+    "form-field-error-reveal": {
+      "needle": "81b2869: `FormField` / `FormFieldShell`:",
+      "source": "CHANGELOG.md:69"
+    },
+    "graphite-primary-emphasis": {
+      "needle": "7aecc54: Graphite primary fill reads at full",
+      "source": "CHANGELOG.md:70"
+    },
+    "hds-check-cli-664": {
+      "needle": "15660d4: New bin `hds-check` (hds#664): HDS's",
+      "source": "CHANGELOG.md:71"
+    },
+    "icon-stroke-medium-1150": {
+      "needle": "1bf9337: `Icon` takes `weight=\"medium\"`,",
+      "source": "CHANGELOG.md:29"
+    },
+    "icon-stroke-tokens": {
+      "needle": "1b4e6e1: New tokens for values code already",
+      "source": "CHANGELOG.md:72"
+    },
+    "inline-code-copy-crossfade": {
+      "needle": "33afe56: `InlineCode` copyable: the Copy",
+      "source": "CHANGELOG.md:73"
+    },
+    "inline-link-icon-nudge": {
+      "needle": "13b32cd: `InlineLink`: an external link's",
+      "source": "CHANGELOG.md:74"
+    },
+    "inlinelink-size": {
+      "needle": "a8f2cfb: InlineLink: a `size` prop (`sm`",
+      "source": "CHANGELOG.md:30"
+    },
+    "input-button-token-binding-595": {
+      "needle": "ce01108: Input now paints its background",
+      "source": "CHANGELOG.md:75"
+    },
+    "ledger-floor-0-9-462": {
+      "needle": "25065ba: Upgrade command: the oldest version",
+      "source": "CHANGELOG.md:76"
+    },
+    "light-surface-ladder-522": {
+      "needle": "cc15474: Light mode surface ladder re-spaced",
+      "source": "CHANGELOG.md:77"
+    },
+    "list-inset-grouped": {
+      "needle": "6b674e1: New `List` (with `List.Group`, `List.Item`,",
+      "source": "CHANGELOG.md:31"
+    },
+    "manifest-bundle-slim": {
+      "needle": "f02cd19: `@hirobius/design-system/manifest`",
+      "source": "CHANGELOG.md:32"
+    },
+    "midnight-tint-755": {
+      "needle": "0be7777: Graphite and neutral lean toward",
+      "source": "CHANGELOG.md:33"
+    },
+    "nav-list-action-863": {
+      "needle": "ecf673d: NavList.Item: `action` prop, a trailing",
+      "source": "CHANGELOG.md:34"
+    },
+    "navlist-data-slot-declaration": {
+      "needle": "344872f: NavList's `data-slot` is now declared",
+      "source": "CHANGELOG.md:78"
+    },
+    "next-version-deprecations-469": {
+      "needle": "e407b1d: `check-deprecations` now compares",
+      "source": "CHANGELOG.md:79"
+    },
+    "no-nested-cards-1046": {
+      "needle": "65b6857: New `hds/no-nested-cards` ESLint",
+      "source": "CHANGELOG.md:35"
+    },
+    "orphan-tokens-0-20": {
+      "needle": "13e62f4: Remove the tokens the 0.20.0 removals",
+      "source": "CHANGELOG.md:36"
+    },
+    "page-header-menu-1150": {
+      "needle": "bbdfb9e: `PageHeader` gains `descriptionPlacement`",
+      "source": "CHANGELOG.md:37"
+    },
+    "pagination-compact-40-1150": {
+      "needle": "db5f7f4: Compact `Pagination` draws its bordered",
+      "source": "CHANGELOG.md:80"
+    },
+    "pagination-compact-outlined": {
+      "needle": "19a4439: Pagination `variant=\"compact\"`:",
+      "source": "CHANGELOG.md:81"
+    },
+    "prop-map-codemod-460": {
+      "needle": "cf567c9: New `hds-prop-map` codemod (hds#460),",
+      "source": "CHANGELOG.md:82"
+    },
+    "props-baseline-461": {
+      "needle": "6a4cc5c: Upgrade ledger: a props baseline",
+      "source": "CHANGELOG.md:83"
+    },
+    "public-data-attributes-960": {
+      "needle": "98251d2: Each component's manifest entry",
+      "source": "CHANGELOG.md:84"
+    },
+    "react-router-peer-floor-970": {
+      "needle": "5e54e71: Raise the `react-router` peer floor",
+      "source": "CHANGELOG.md:38"
+    },
+    "release-yank-472": {
+      "needle": "6ddc68e: Upgrade command: skips a version",
+      "source": "CHANGELOG.md:85"
+    },
+    "remove-token-aliases": {
+      "needle": "4481d90: Breaking: remove `semantic.color.border.subdued`",
+      "source": "CHANGELOG.md:39"
+    },
+    "removed-imports-469": {
+      "needle": "6df8703: The ESLint plugin gains `hds/no-removed-import`",
+      "source": "CHANGELOG.md:86"
+    },
+    "rest-fill-contrast-522": {
+      "needle": "e54de08: Fills that blended in now show (hds#522).",
+      "source": "CHANGELOG.md:87"
+    },
+    "sheet": {
+      "needle": "1567b82: New `Sheet`: a bottom drawer on",
+      "source": "CHANGELOG.md:40"
+    },
+    "shell-layout-863": {
+      "needle": "eb67877: `Container` gains `maxWidth=\"shell\"`",
+      "source": "CHANGELOG.md:41"
+    },
+    "smoke-every-subpath-458": {
+      "needle": "a718ea6: CONSUMING.md states the TypeScript",
+      "source": "CHANGELOG.md:88"
+    },
+    "spacing-semantic-778": {
+      "needle": "043989c: Components use semantic spacing",
+      "source": "CHANGELOG.md:89"
+    },
+    "spin-linear-easing-938": {
+      "needle": "29f0f1c: fix(tokens): --hds-anim-spin now",
+      "source": "CHANGELOG.md:90"
+    },
+    "spring-easing-784": {
+      "needle": "3e875dd: Fix: `--primitive-easing-elastic`",
+      "source": "CHANGELOG.md:91"
+    },
+    "tabs-change-cue-938": {
+      "needle": "ff33309: Tabs: the panel that becomes active",
+      "source": "CHANGELOG.md:92"
+    },
+    "tag-disabled-colour": {
+      "needle": "abfed6e: `Tag`: a disabled tag now shows",
+      "source": "CHANGELOG.md:93"
+    },
+    "tag-dismiss": {
+      "needle": "0a1ab68: Tag: `onDismiss` (and `dismissLabel`)",
+      "source": "CHANGELOG.md:42"
+    },
+    "tag-dismiss-size-role": {
+      "needle": "67adf9e: Tag: the dismiss X's 40px hit area",
+      "source": "CHANGELOG.md:94"
+    },
+    "tailwind-preset-css-contract": {
+      "needle": "8e8d158: Ship the Tailwind theme preset as",
+      "source": "CHANGELOG.md:95"
+    },
+    "taller-bolder-buttons": {
+      "needle": "86dae99: Taller, bolder buttons (hds#760):",
+      "source": "CHANGELOG.md:43"
+    },
+    "text-truncate-916": {
+      "needle": "936620e: Text: new `truncate` and `lineClamp`",
+      "source": "CHANGELOG.md:44"
+    },
+    "timeline-core-637": {
+      "needle": "e5d435f: `Timeline` joins the core set (`core:",
+      "source": "CHANGELOG.md:96"
+    },
+    "toast-enter-motion": {
+      "needle": "7dc5380: `Toast`: a new toast now eases up",
+      "source": "CHANGELOG.md:97"
+    },
+    "toast-swipe-exit-938": {
+      "needle": "c45fa84: A toast now follows the pointer",
+      "source": "CHANGELOG.md:98"
+    },
+    "token-keys-955": {
+      "needle": "120124b: New `hds-token-keys` codemod (hds#955),",
+      "source": "CHANGELOG.md:99"
+    },
+    "token-removein-469": {
+      "needle": "764c7e0: Every `$deprecated` token now says",
+      "source": "CHANGELOG.md:100"
+    },
+    "token-search-size-roles": {
+      "needle": "48f53b6: New `hds-tokens` bin: `pnpm exec",
+      "source": "CHANGELOG.md:101"
+    },
+    "touch-field-text-863": {
+      "needle": "9e57c12: Text fields on a phone or touch",
+      "source": "CHANGELOG.md:102"
+    },
+    "touch-size-750": {
+      "needle": "72ba99c: Touch size for small controls (hds#750).",
+      "source": "CHANGELOG.md:45"
+    },
+    "type-hero": {
+      "needle": "98fee08: New type tokens, so Figma's text",
+      "source": "CHANGELOG.md:103"
+    },
+    "types-baseline-467": {
+      "needle": "dcee844: Upgrade ledger: a types baseline",
+      "source": "CHANGELOG.md:110"
+    },
+    "upgrade-css-classes-459": {
+      "needle": "25e0757: The upgrade command checks class",
+      "source": "CHANGELOG.md:111"
+    },
+    "upgrade-css-values-459": {
+      "needle": "5922574: The upgrade command compares the",
+      "source": "CHANGELOG.md:112"
+    },
+    "upgrade-detects-934": {
+      "needle": "f689e88: The upgrade command no longer lists",
+      "source": "CHANGELOG.md:113"
+    },
+    "upgrade-range-page-464": {
+      "needle": "f2c9897: Docs: a new /upgrade/?from=X&to=Y",
+      "source": "CHANGELOG.md:114"
+    },
+    "version-stamped-agent-docs": {
+      "needle": "d2d01ac: Agent docs name the release they",
+      "source": "CHANGELOG.md:115"
+    }
+  }
+}

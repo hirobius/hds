@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Version: 0.32.0
+Version: 0.33.0
 
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
@@ -405,7 +405,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 
 ## Upgrading
 
-This text describes @hirobius/design-system 0.32.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+This text describes @hirobius/design-system 0.33.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
 
 Every name a release removed, moved or renamed, and what to use instead:
 
@@ -652,6 +652,29 @@ Every name a release removed, moved or renamed, and what to use instead:
 | `--tracking-wider` | The stray CSS variable --tracking-wider is no longer shipped; type tracking comes from the --semantic-typography-*-letter-spacing tokens, so use a type role instead. | 0.29.0 |
 | `hds-tag-btn` | the Tag component | 0.31.0 |
 | `hds-tag-pill` | the Tag component | 0.31.0 |
+| `--component-lightbox-backdrop-blur` | Replace var(--component-lightbox-backdrop-blur) and hds.effect.blur.lightboxBackdrop with var(--primitive-blur-16), the same 16px. | 0.33.0 |
+| `--component-nav-bg` | Replace var(--component-nav-bg) with var(--semantic-color-surface-page), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it. | 0.33.0 |
+| `--component-nav-bgActive` | Replace var(--component-nav-bgActive) with var(--semantic-accent-subtle), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it. | 0.33.0 |
+| `--component-nav-borderActive` | Replace var(--component-nav-borderActive) with var(--semantic-color-surface-accent), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it. | 0.33.0 |
+| `--component-nav-height` | Replace var(--component-nav-height) with var(--primitive-space-16), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it. | 0.33.0 |
+| `--component-nav-paddingX` | Replace var(--component-nav-paddingX) with var(--primitive-space-6), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it. | 0.33.0 |
+| `--component-nav-text` | Replace var(--component-nav-text) with var(--semantic-color-content-secondary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it. | 0.33.0 |
+| `--component-nav-textActive` | Replace var(--component-nav-textActive) with var(--semantic-color-content-primary), the value it aliased; a rule that only sets it can go, since nothing in HDS reads it. | 0.33.0 |
+| `--semantic-color-border-subdued` | --semantic-color-border-default (Dark is neutral.600, was neutral.800; Light is the same), which the codemod writes for you | 0.33.0 |
+| `--semantic-space-component-gap` | --semantic-space-scale-xs, which the codemod writes for you | 0.33.0 |
+| `--semantic-space-component-padding` | --semantic-space-surface-padding, which the codemod writes for you | 0.33.0 |
+| `--semantic-space-layout-gutter` | --semantic-space-region-gutter, which the codemod writes for you | 0.33.0 |
+| `--semantic-space-layout-inset` | --semantic-space-scale-lg, which the codemod writes for you | 0.33.0 |
+| `--semantic-space-layout-normal` | --semantic-space-scale-md, which the codemod writes for you | 0.33.0 |
+| `--semantic-space-layout-spacious` | --semantic-space-scale-xl, which the codemod writes for you | 0.33.0 |
+| `--semantic-space-layout-tight` | --semantic-space-scale-sm, which the codemod writes for you | 0.33.0 |
+| `--semantic-space-sidebar-railWidth` | Replace var(--semantic-space-sidebar-railWidth) and the sidebar-railWidth Tailwind key with var(--primitive-size-width-280), the same 280px. | 0.33.0 |
+| `default` | Import hdsMuiThemeOptions by name from @hirobius/design-system/mui; the default export is gone. | 0.33.0 |
+| `manifest-consumers-testId` | The bundled manifest no longer carries componentSpecs consumers (HDS repo file paths) or a11yRules testId (HDS test ids). | 0.33.0 |
+| `manifest-figmaLink` | The bundled manifest no longer carries componentSpecs figmaLink; read figmaUrl, which holds the same URL. | 0.33.0 |
+| `semantic.space-aliases-js-tailwind` | hds.semantic.space.component and hds.semantic.space.layout.gutter, the Tailwind spacing keys component-gap/padding and layout-* (p-, m-, gap-, w-, inset- and every other spacing utility, and theme(spacing.*)), and Box sx 'border.subdued' are removed; the codemod rewrites them. | 0.33.0 |
+| `tailwind-theme-vars-936` | Declare any of these Tailwind theme variables your own CSS reads (or use the HDS token for the same role); no HDS component read them. | 0.33.0 |
+| `tailwind-utilities-936` | Compile any of these utilities your own markup still uses with your own Tailwind build; HDS components never used them. | 0.33.0 |
 
 ## Deprecated: do not use in new code
 
@@ -668,8 +691,9 @@ Still exported, but on the way out: do not write new code with them.
 - `Stat` (removed in 1.0.0): Stat is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
 - `StatusTile` (removed in 1.0.0): StatusTile still works until 1.0.0; replace it with <Card padding="item" className="border-0"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle> plus one <Card.RowNote> per note, and drop tone, which StatusTile never painted.
 - `Text-variants` (removed in 1.0.0): The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead.
-- `bg-[color:var(--semantic-color-feedback-bg-warning)]`, `border-[color:var(--semantic-color-feedback-warning)]/40`, `data-[highlighted]:text-foreground`, `data-[state=checked]:text-foreground`, `group-hover:opacity-100`, `h-3.5`, `max-w-2xl`, `p-16`, `pb-8`, `pt-1`, `sm:inline-block`, `sm:text-4xl`, `text-[color:var(--semantic-color-feedback-warning)]`, `text-muted-foreground/70`, `transition-[transform,opacity]`, `w-3.5` (removed in 1.0.0): Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind.
 - `hds.density` (removed in 1.0.0): hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs.
+- `hds.density` (removed in 1.0.0): hds.density is deprecated; the upgrade command rewrites hds.density.sm to hds.semantic.space.scale.xs (md to sm, lg to md, xl to lg, xl2 to xl), the same pixels. density.xs, xl3 and xl4 have no scale step: use hds.space.px4, px64 or px80, which do not shrink under compact density.
+- `max-w-2xl`, `pt-1`, `sm:text-4xl` (removed in 1.0.0): Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind.
 - `typeStyles-aliases` (removed in 1.0.0): The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead.
 
 Deprecated design tokens are not listed: the `hds/no-deprecated-token` lint rule flags each use and names its replacement.
