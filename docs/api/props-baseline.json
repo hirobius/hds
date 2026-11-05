@@ -47,7 +47,7 @@
       "default": null
     },
     "onOpenChange": {
-      "type": "((open: boolean) => void)",
+      "type": "(open: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -103,7 +103,7 @@
       "default": null
     },
     "onCollapsedChange": {
-      "type": "((collapsed: boolean) => void)",
+      "type": "(collapsed: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -196,31 +196,31 @@
       "default": null
     },
     "onClick": {
-      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "type": "(e: MouseEvent<Element, MouseEvent>) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onMouseDown": {
-      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "type": "(e: MouseEvent<Element, MouseEvent>) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onMouseLeave": {
-      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "type": "(e: MouseEvent<Element, MouseEvent>) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onMouseMove": {
-      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "type": "(e: MouseEvent<Element, MouseEvent>) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onMouseUp": {
-      "type": "((e: MouseEvent<Element, MouseEvent>) => void)",
+      "type": "(e: MouseEvent<Element, MouseEvent>) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -282,7 +282,7 @@
       "default": "Loading"
     },
     "onRetry": {
-      "type": "(() => void)",
+      "type": "() => void",
       "optional": true,
       "values": null,
       "default": null
@@ -598,7 +598,7 @@
       "default": "false"
     },
     "onPressedChange": {
-      "type": "((pressed: boolean) => void)",
+      "type": "(pressed: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -728,7 +728,7 @@
       "default": "false"
     },
     "onSelectedChange": {
-      "type": "((selected: boolean) => void)",
+      "type": "(selected: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -1158,19 +1158,19 @@
       "default": "Message"
     },
     "onAttachmentsChange": {
-      "type": "((attachments: ComposerAttachment[]) => void)",
+      "type": "(attachments: ComposerAttachment[]) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onSubmit": {
-      "type": "((submission: ComposerSubmission) => void)",
+      "type": "(submission: ComposerSubmission) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onValueChange": {
-      "type": "((value: string) => void)",
+      "type": "(value: string) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -1362,7 +1362,7 @@
       "default": null
     },
     "onOpenChange": {
-      "type": "((open: boolean) => void)",
+      "type": "(open: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -1415,37 +1415,37 @@
       "default": "false"
     },
     "onCloseAutoFocus": {
-      "type": "((event: Event) => void)",
+      "type": "(event: Event) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onEscapeKeyDown": {
-      "type": "((event: KeyboardEvent) => void)",
+      "type": "(event: KeyboardEvent) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onFocusOutside": {
-      "type": "((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+      "type": "(event: CustomEvent<{ originalEvent: FocusEvent; }>) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onInteractOutside": {
-      "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void)",
+      "type": "(event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalEvent: FocusEvent; }>) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onOpenAutoFocus": {
-      "type": "((event: Event) => void)",
+      "type": "(event: Event) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "onPointerDownOutside": {
-      "type": "((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)",
+      "type": "(event: CustomEvent<{ originalEvent: PointerEvent; }>) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -1581,7 +1581,7 @@
       "default": null
     },
     "onOpenChange": {
-      "type": "((open: boolean) => void)",
+      "type": "(open: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -2398,7 +2398,7 @@
       "default": null
     },
     "onSelect": {
-      "type": "(() => void)",
+      "type": "() => void",
       "optional": true,
       "values": null,
       "default": null
@@ -2459,9 +2459,12 @@
       "default": null
     },
     "dir": {
-      "type": "(\"ltr\" | \"rtl\")",
+      "type": "\"ltr\" | \"rtl\"",
       "optional": true,
-      "values": null,
+      "values": [
+        "ltr",
+        "rtl"
+      ],
       "default": null
     },
     "modal": {
@@ -2471,7 +2474,7 @@
       "default": null
     },
     "onOpenChange": {
-      "type": "((open: boolean) => void)",
+      "type": "(open: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -2597,7 +2600,7 @@
       "default": null
     },
     "onSelect": {
-      "type": "(() => void)",
+      "type": "() => void",
       "optional": true,
       "values": null,
       "default": null
@@ -2806,7 +2809,7 @@
       "default": null
     },
     "onOpenChange": {
-      "type": "((open: boolean) => void)",
+      "type": "(open: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -3070,7 +3073,7 @@
       "default": null
     },
     "onOpenChange": {
-      "type": "((open: boolean) => void)",
+      "type": "(open: boolean) => void",
       "optional": true,
       "values": null,
       "default": null
@@ -3606,9 +3609,12 @@
   },
   "Tabs": {
     "activationMode": {
-      "type": "(\"automatic\" | \"manual\")",
+      "type": "\"automatic\" | \"manual\"",
       "optional": true,
-      "values": null,
+      "values": [
+        "automatic",
+        "manual"
+      ],
       "default": null
     },
     "asChild": {
@@ -3624,21 +3630,27 @@
       "default": null
     },
     "dir": {
-      "type": "(\"ltr\" | \"rtl\")",
+      "type": "\"ltr\" | \"rtl\"",
       "optional": true,
-      "values": null,
+      "values": [
+        "ltr",
+        "rtl"
+      ],
       "default": null
     },
     "onValueChange": {
-      "type": "((value: string) => void)",
+      "type": "(value: string) => void",
       "optional": true,
       "values": null,
       "default": null
     },
     "orientation": {
-      "type": "(\"horizontal\" | \"vertical\")",
+      "type": "\"horizontal\" | \"vertical\"",
       "optional": true,
-      "values": null,
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
       "default": null
     },
     "value": {
@@ -3733,7 +3745,7 @@
       "default": null
     },
     "onDismiss": {
-      "type": "(() => void)",
+      "type": "() => void",
       "optional": true,
       "values": null,
       "default": null
@@ -3894,7 +3906,7 @@
       "default": null
     },
     "onToggle": {
-      "type": "(() => void)",
+      "type": "() => void",
       "optional": true,
       "values": null,
       "default": null
@@ -4087,7 +4099,7 @@
       "default": null
     },
     "getTokenLabel": {
-      "type": "((token: string) => string)",
+      "type": "(token: string) => string",
       "optional": true,
       "values": null,
       "default": null
@@ -4179,7 +4191,7 @@
       "default": null
     },
     "onOpenChange": {
-      "type": "((open: boolean) => void)",
+      "type": "(open: boolean) => void",
       "optional": true,
       "values": null,
       "default": null

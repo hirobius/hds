@@ -18,7 +18,11 @@
   "props": [
     {
       "name": "activationMode",
-      "type": "\"automatic\" | \"manual\"",
+      "type": "enum",
+      "values": [
+        "automatic",
+        "manual"
+      ],
       "optional": true
     },
     {
@@ -33,7 +37,11 @@
     },
     {
       "name": "dir",
-      "type": "\"ltr\" | \"rtl\"",
+      "type": "enum",
+      "values": [
+        "ltr",
+        "rtl"
+      ],
       "optional": true
     },
     {
@@ -43,7 +51,11 @@
     },
     {
       "name": "orientation",
-      "type": "\"horizontal\" | \"vertical\"",
+      "type": "enum",
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
       "optional": true
     },
     {

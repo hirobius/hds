@@ -5063,7 +5063,11 @@
       "componentProperties": [],
       "props": {
         "activationMode": {
-          "type": "\"automatic\" | \"manual\"",
+          "type": "enum",
+          "values": [
+            "automatic",
+            "manual"
+          ],
           "optional": true
         },
         "asChild": {
@@ -5075,7 +5079,11 @@
           "optional": true
         },
         "dir": {
-          "type": "\"ltr\" | \"rtl\"",
+          "type": "enum",
+          "values": [
+            "ltr",
+            "rtl"
+          ],
           "optional": true
         },
         "onValueChange": {
@@ -5083,7 +5091,11 @@
           "optional": true
         },
         "orientation": {
-          "type": "\"horizontal\" | \"vertical\"",
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
           "optional": true
         },
         "value": {
@@ -8898,7 +8910,11 @@
           "optional": true
         },
         "dir": {
-          "type": "\"ltr\" | \"rtl\"",
+          "type": "enum",
+          "values": [
+            "ltr",
+            "rtl"
+          ],
           "optional": true
         },
         "modal": {

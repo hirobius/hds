@@ -33,7 +33,7 @@ Alert - compact feedback surface with contextual severity.
 AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
   - children: React.ReactNode
   - defaultOpen: boolean
-  - onOpenChange: ((open: boolean) => void)
+  - onOpenChange: (open: boolean) => void
   - open: boolean
 
 ### AppShell
@@ -45,7 +45,7 @@ AppShell — the app frame for web apps: header, sidebar, main and an optional a
   - collapsed: boolean
   - defaultCollapsed: boolean = false
   - header: ReactNode
-  - onCollapsedChange: ((collapsed: boolean) => void)
+  - onCollapsedChange: (collapsed: boolean) => void
   - persistKey: string
   - sidebar: ReactNode | ((state: AppShellSidebarState) => ReactNode)
   - sidebarLabel: string = Main
@@ -62,11 +62,11 @@ AssetImg - responsive asset frame with fallback placeholder handling. Contexts: 
   - loading: "lazy" | "eager" = lazy
   - naturalHeight: number
   - naturalWidth: number
-  - onClick: ((e: MouseEvent<Element, MouseEvent>) => void)
-  - onMouseDown: ((e: MouseEvent<Element, MouseEvent>) => void)
-  - onMouseLeave: ((e: MouseEvent<Element, MouseEvent>) => void)
-  - onMouseMove: ((e: MouseEvent<Element, MouseEvent>) => void)
-  - onMouseUp: ((e: MouseEvent<Element, MouseEvent>) => void)
+  - onClick: (e: MouseEvent<Element, MouseEvent>) => void
+  - onMouseDown: (e: MouseEvent<Element, MouseEvent>) => void
+  - onMouseLeave: (e: MouseEvent<Element, MouseEvent>) => void
+  - onMouseMove: (e: MouseEvent<Element, MouseEvent>) => void
+  - onMouseUp: (e: MouseEvent<Element, MouseEvent>) => void
   - src: string
   - style: CSSProperties = {}
   - title: string
@@ -79,7 +79,7 @@ One wrapper for the four states of async content: `loading` (skeleton rows plus 
   - errorTitle: string = Something went wrong
   - label: string = Content
   - loadingLabel: string = Loading
-  - onRetry: (() => void)
+  - onRetry: () => void
   - rows: number = 3
   - slowAfterMs: number = 10000
   - slowNote: string = Still trying…
@@ -149,7 +149,7 @@ Triggers an action when activated.
   - iconRight: ReactNode
   - label: string
   - loading: boolean = false
-  - onPressedChange: ((pressed: boolean) => void)
+  - onPressedChange: (pressed: boolean) => void
   - pressed: boolean
   - shadow: "none" | "hard" = hard
   - size: "sm" | "md" | "lg" | null
@@ -168,7 +168,7 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - bordered: boolean = false
   - gap: "tight" | "normal" | "inset" | "spacious" | "px1" | "px2" | "px4" | "px6" | "px… = tight
   - noPadding: boolean = false
-  - onSelectedChange: ((selected: boolean) => void)
+  - onSelectedChange: (selected: boolean) => void
   - padding: "component" | "item" | "px16" | "px24" | "none" = component
   - selectable: boolean = false
   - selected: boolean = false
@@ -274,9 +274,9 @@ Composer — prompt and capture box that grows with its text and folds long past
   - defaultValue: string
   - disabled: boolean = false
   - label: string = Message
-  - onAttachmentsChange: ((attachments: ComposerAttachment[]) => void)
-  - onSubmit: ((submission: ComposerSubmission) => void)
-  - onValueChange: ((value: string) => void)
+  - onAttachmentsChange: (attachments: ComposerAttachment[]) => void
+  - onSubmit: (submission: ComposerSubmission) => void
+  - onValueChange: (value: string) => void
   - pasteFoldThreshold: number = 500
   - pending: boolean = false
   - placeholder: string
@@ -318,7 +318,7 @@ Tagged per-export, not on the file block: this module exports ten components and
   - children: ReactNode
   - defaultOpen: boolean
   - modal: boolean
-  - onOpenChange: ((open: boolean) => void)
+  - onOpenChange: (open: boolean) => void
   - open: boolean
 
 ### DialogBody
@@ -335,12 +335,12 @@ Dialog — modal dialog (shadcn baseline, compound parts).
   - deferPointerDownOutside: boolean
   - forceMount: true
   - hideClose: boolean = false
-  - onCloseAutoFocus: ((event: Event) => void)
-  - onEscapeKeyDown: ((event: KeyboardEvent) => void)
-  - onFocusOutside: ((event: CustomEvent<{ originalEvent: FocusEvent; }>) => void)
-  - onInteractOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ original…
-  - onOpenAutoFocus: ((event: Event) => void)
-  - onPointerDownOutside: ((event: CustomEvent<{ originalEvent: PointerEvent; }>) => void)
+  - onCloseAutoFocus: (event: Event) => void
+  - onEscapeKeyDown: (event: KeyboardEvent) => void
+  - onFocusOutside: (event: CustomEvent<{ originalEvent: FocusEvent; }>) => void
+  - onInteractOutside: (event: CustomEvent<{ originalEvent: PointerEvent; }> | CustomEvent<{ originalE…
+  - onOpenAutoFocus: (event: Event) => void
+  - onPointerDownOutside: (event: CustomEvent<{ originalEvent: PointerEvent; }>) => void
   - placement: 'center' | 'top' = center
   - scrollBody: boolean = false
   - size: 'sm' | 'md' | 'lg' | 'xl' = md
@@ -383,7 +383,7 @@ Disclosure - compact disclosure surface for optional explanatory content.
   - contentStyle: CSSProperties
   - defaultOpen: boolean = false
   - label: ReactNode
-  - onOpenChange: ((open: boolean) => void)
+  - onOpenChange: (open: boolean) => void
   - open: boolean
   - preview: ReactNode
   - triggerStyle: CSSProperties
@@ -556,7 +556,7 @@ One row: the whole row is the link (or button); an icon button or overflow menu 
   - href: string
   - leading: ReactNode
   - meta: ReactNode
-  - onSelect: (() => void)
+  - onSelect: () => void
   - status: ListItemStatus
   - statusIn: "meta" | "trailing"
   - title: ReactNode
@@ -571,9 +571,9 @@ The leading icon tile: a sunken rounded square at component.list.leadingSize.
 Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
   - children: React.ReactNode
   - defaultOpen: boolean
-  - dir: ("ltr" | "rtl")
+  - dir: "ltr" | "rtl"
   - modal: boolean
-  - onOpenChange: ((open: boolean) => void)
+  - onOpenChange: (open: boolean) => void
   - open: boolean
 
 ### MetaLine
@@ -597,7 +597,7 @@ One row of a NavList. With `href` it is a link routed through the HDS router sea
   - children: ReactNode
   - current: boolean
   - href: string
-  - onSelect: (() => void)
+  - onSelect: () => void
   - selected: boolean
 
 ### Page
@@ -643,7 +643,7 @@ Popover root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
   - children: React.ReactNode
   - defaultOpen: boolean
   - modal: boolean
-  - onOpenChange: ((open: boolean) => void)
+  - onOpenChange: (open: boolean) => void
   - open: boolean
 
 ### Progress
@@ -700,7 +700,7 @@ Sheet — a bottom drawer on phones, the centred dialog from `sm` up (hds#690).
   - children: ReactNode
   - defaultOpen: boolean
   - modal: boolean
-  - onOpenChange: ((open: boolean) => void)
+  - onOpenChange: (open: boolean) => void
   - open: boolean
 
 ### Sidebar
@@ -792,12 +792,12 @@ Table - structured data table primitive for documentation and compact UI matrice
 
 ### Tabs
 The tab set itself. Tagged here rather than in the file block because TabsList and TabsContent share this module and have no Figma node of their own — a file-l…
-  - activationMode: ("automatic" | "manual")
+  - activationMode: "automatic" | "manual"
   - asChild: boolean
   - defaultValue: string
-  - dir: ("ltr" | "rtl")
-  - onValueChange: ((value: string) => void)
-  - orientation: ("horizontal" | "vertical")
+  - dir: "ltr" | "rtl"
+  - onValueChange: (value: string) => void
+  - orientation: "horizontal" | "vertical"
   - value: string
 
 ### TabsContent
@@ -823,7 +823,7 @@ Tag — interactive filter and category chip. With `onDismiss` it is a static, r
   - active: boolean = false
   - children: ReactNode
   - dismissLabel: string
-  - onDismiss: (() => void)
+  - onDismiss: () => void
 
 ### Text
 Text — polymorphic typography primitive spanning the full HDS type ramp.
@@ -852,7 +852,7 @@ Textarea — multi-line text field primitive with label, helper, and error slots
 One-button light/dark switch with a sun-to-moon morph.
   - className: string
   - isDark: boolean
-  - onToggle: (() => void)
+  - onToggle: () => void
 
 ### Timeline
 The timeline itself. Tagged here rather than in the file block because TimelineItem shares this module and is only ever rendered inside it.
@@ -898,7 +898,7 @@ TokenField — a multi-line text field whose tokens, such as `[Name]`, are atomi
   - error: boolean
   - errorMessage: string
   - fieldClassName: string
-  - getTokenLabel: ((token: string) => string)
+  - getTokenLabel: (token: string) => string
   - helperText: string
   - label: string
   - name: string
@@ -916,7 +916,7 @@ Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contai
   - defaultOpen: boolean
   - delayDuration: number
   - disableHoverableContent: boolean
-  - onOpenChange: ((open: boolean) => void)
+  - onOpenChange: (open: boolean) => void
   - open: boolean
 
 ### VisuallyHidden
