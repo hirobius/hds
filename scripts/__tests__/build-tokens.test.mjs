@@ -449,7 +449,7 @@ describe('buildTailwindThemeExtend', () => {
   it('radius dimension role drives borderRadius with md pinned to the role var', () => {
     const ext = buildTailwindThemeExtend([role('radius', 'dimension')], []);
     expect(ext.borderRadius).toEqual({
-      lg: 'calc(var(--role-radius) + 4px)',
+      lg: 'calc(var(--role-radius) + min(var(--role-radius), 4px))',
       md: 'var(--role-radius)',
       sm: 'calc(var(--role-radius) - 2px)',
     });
