@@ -294,3 +294,21 @@ describe('Input loading (a11y)', () => {
     expect((screen.getByLabelText('Search') as HTMLInputElement).disabled).toBe(true);
   });
 });
+
+describe('Input focus ring (semantic.focus.*)', () => {
+  it('a bare field draws .hds-focus itself', () => {
+    render(<Input label="Name" />);
+    expect(screen.getByRole('textbox').className.split(/\s+/)).toContain('hds-focus');
+  });
+
+  it('with slots the shell rings and the input drops the browser outline, so one ring shows', () => {
+    render(<Input label="Website" prefix="https://" error />);
+    const input = screen.getByRole('textbox');
+    const cls = input.className.split(/\s+/);
+    expect(cls).not.toContain('hds-focus');
+    expect(cls).toContain('focus-visible:outline-none');
+    const shell = input.closest('.hds-focus-within') as HTMLElement;
+    expect(shell).not.toBeNull();
+    expect(shell.className).toContain('[--hds-focus-color:var(--semantic-color-feedback-error)]');
+  });
+});

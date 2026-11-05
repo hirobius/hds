@@ -60,10 +60,9 @@ describe('Select highlighted row ring', () => {
     render(<Select label="Plan" value="free" onChange={() => {}} options={OPTIONS} />);
     fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' });
     const cls = screen.getAllByRole('option')[0].className;
-    expect(cls).toContain('data-[highlighted]:ring-2');
-    expect(cls).toContain('data-[highlighted]:ring-inset');
+    // .hds-focus-inset[data-highlighted]: the shared ring, inside the row edge.
+    expect(cls.split(/\s+/)).toContain('hds-focus-inset');
     expect(cls.split(/\s+/)).not.toContain('hds-focus');
-    expect(cls).toContain('data-[highlighted]:ring-ring');
   });
 });
 

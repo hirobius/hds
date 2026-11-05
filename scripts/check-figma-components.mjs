@@ -112,7 +112,8 @@ export function buildContract(name, { root = REPO } = {}) {
   const states = STATES.filter(([, prefix]) => prefix === null || source.includes(prefix)).map(
     ([s]) => s,
   );
-  if (!source.includes('focus-visible:'))
+  // The shared ring (.hds-focus, semantic.focus.*, hds#1176) or a focus-visible: utility.
+  if (!source.includes('focus-visible:') && !/\bhds-focus\b/.test(source))
     throw new Error(`${def.source}: no focus-visible styling.`);
 
   const bindings = {};

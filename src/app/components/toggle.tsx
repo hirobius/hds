@@ -59,14 +59,13 @@ const TOGGLE_THUMB_TRAVEL = TOGGLE_TRACK_WIDTH - TOGGLE_THUMB_SIZE - TOGGLE_TRAC
  * input below, hover/press tint, focus ring, cursor affordance. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
 const toggleRootVariants = /* @__PURE__ */ cva(
-  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] outline-offset-2 select-none hds-touch-row',
+  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] select-none hds-touch-row',
   {
     variants: {
       state: {
         rest: 'cursor-pointer bg-transparent',
         hover: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
-        focused:
-          'cursor-pointer bg-transparent [outline:var(--semantic-borderWidth-emphasis)_solid_var(--semantic-color-border-accent)]',
+        focused: 'cursor-pointer bg-transparent hds-focus-ring',
         pressed: 'cursor-pointer bg-[var(--semantic-color-surface-accentSubtle)]',
         disabled: 'cursor-default bg-transparent',
       },

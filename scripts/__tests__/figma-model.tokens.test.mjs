@@ -170,3 +170,31 @@ describe('not-in-Figma accounting', () => {
     },
   );
 });
+
+// ── Focus ring (semantic.focus.*) reaches the library as variables ───────────
+describe('focus ring variables', () => {
+  const model = buildFigmaModel(raw);
+  const byName = new Map(
+    model.collections.flatMap((c) => c.variables.map((v) => [`${c.key}:${v.name}`, v])),
+  );
+  it.each([
+    ['semantic:focus/ring/width', 'FLOAT', 'primitive.borderWidth.sm'],
+    ['semantic:focus/gap/width', 'FLOAT', 'primitive.borderWidth.sm'],
+    ['semantic:focus/ring/color', 'COLOR', 'semantic.color.border.accent'],
+    ['semantic:focus/radius/md/ringRadius', 'FLOAT', 'primitive.radius.12'],
+    ['component:button/focus/gapRadius', 'FLOAT', 'primitive.radius.10'],
+    ['component:button/focus/ringRadius', 'FLOAT', 'primitive.radius.12'],
+    ['component:card/focus/gapRadius', 'FLOAT', 'primitive.radius.14'],
+    ['component:card/focus/ringRadius', 'FLOAT', 'primitive.radius.16'],
+    ['primitive:radius/10', 'FLOAT', null],
+    ['primitive:radius/14', 'FLOAT', null],
+  ])('%s', (key, type, alias) => {
+    const v = byName.get(key);
+    expect(v, key).toBeDefined();
+    expect(v.resolvedType).toBe(type);
+    if (alias) for (const mode of Object.values(v.valuesByMode)) expect(mode.alias).toBe(alias);
+  });
+  it('focus radii are scoped to corner radius', () => {
+    expect(byName.get('component:button/focus/ringRadius').scopes).toEqual(['CORNER_RADIUS']);
+  });
+});

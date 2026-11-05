@@ -676,11 +676,25 @@
           "unit": "px"
         }
       },
+      "10": {
+        "$value": {
+          "value": 10,
+          "unit": "px"
+        },
+        "$description": "Focus-ring step: an 8px radius plus the 2px focus gap."
+      },
       "12": {
         "$value": {
           "value": 12,
           "unit": "px"
         }
+      },
+      "14": {
+        "$value": {
+          "value": 14,
+          "unit": "px"
+        },
+        "$description": "Focus-ring step: a 12px radius plus the 2px focus gap."
       },
       "16": {
         "$value": {
@@ -2658,6 +2672,92 @@
         }
       }
     },
+    "focus": {
+      "$description": "Keyboard focus ring: one width, gap and colour for every focusable component.",
+      "ring": {
+        "width": {
+          "$type": "dimension",
+          "$value": "{primitive.borderWidth.sm}",
+          "$description": "Focus ring stroke width (2px)."
+        },
+        "color": {
+          "$type": "color",
+          "$value": "{semantic.color.border.accent}",
+          "$description": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour."
+        }
+      },
+      "gap": {
+        "width": {
+          "$type": "dimension",
+          "$value": "{primitive.borderWidth.sm}",
+          "$description": "Space between the element edge and the focus ring (2px, the outline offset)."
+        }
+      },
+      "radius": {
+        "$type": "dimension",
+        "$description": "Focus ring corners per element radius role, for Figma; code outlines follow border-radius.",
+        "control": {
+          "$type": "dimension",
+          "$description": "Focus ring corners around a 4px control element: radius plus gap, plus ring width.",
+          "gapRadius": {
+            "$value": "{primitive.radius.6}",
+            "$description": "Inner edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + semantic.focus.gap.width."
+          },
+          "ringRadius": {
+            "$value": "{primitive.radius.8}",
+            "$description": "Outer edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + gap width + semantic.focus.ring.width."
+          }
+        },
+        "sm": {
+          "$type": "dimension",
+          "$description": "Focus ring corners around a 6px element: radius plus gap, plus ring width.",
+          "gapRadius": {
+            "$value": "{primitive.radius.8}",
+            "$description": "Inner edge of the focus ring: a rounded-sm (6px) element radius + semantic.focus.gap.width."
+          },
+          "ringRadius": {
+            "$value": "{primitive.radius.10}",
+            "$description": "Outer edge of the focus ring: a rounded-sm (6px) element radius + gap width + semantic.focus.ring.width."
+          }
+        },
+        "md": {
+          "$type": "dimension",
+          "$description": "Focus ring corners around a 8px element: radius plus gap, plus ring width.",
+          "gapRadius": {
+            "$value": "{primitive.radius.10}",
+            "$description": "Inner edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + semantic.focus.gap.width."
+          },
+          "ringRadius": {
+            "$value": "{primitive.radius.12}",
+            "$description": "Outer edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + gap width + semantic.focus.ring.width."
+          }
+        },
+        "lg": {
+          "$type": "dimension",
+          "$description": "Focus ring corners around a 12px element: radius plus gap, plus ring width.",
+          "gapRadius": {
+            "$value": "{primitive.radius.14}",
+            "$description": "Inner edge of the focus ring: a rounded-lg (12px) element radius + semantic.focus.gap.width."
+          },
+          "ringRadius": {
+            "$value": "{primitive.radius.16}",
+            "$description": "Outer edge of the focus ring: a rounded-lg (12px) element radius + gap width + semantic.focus.ring.width."
+          }
+        },
+        "pill": {
+          "$type": "dimension",
+          "$description": "Focus ring corners around a pill element: radius plus gap, plus ring width.",
+          "gapRadius": {
+            "$value": "{primitive.radius.full}",
+            "$description": "Inner edge of the focus ring: a fully round element radius + semantic.focus.gap.width."
+          },
+          "ringRadius": {
+            "$value": "{primitive.radius.full}",
+            "$description": "Outer edge of the focus ring: a fully round element radius + gap width + semantic.focus.ring.width."
+          }
+        }
+      }
+    },
     "link": {
       "$type": "dimension",
       "underlineThickness": {
@@ -2841,6 +2941,18 @@
         "$type": "dimension",
         "$value": "{primitive.radius.full}",
         "$description": "Pill radius for the tag surface."
+      },
+      "focus": {
+        "$type": "dimension",
+        "$description": "Focus ring corners around the tag: radius plus gap, plus ring width.",
+        "gapRadius": {
+          "$value": "{primitive.radius.full}",
+          "$description": "Inner edge of the focus ring: the Tag pill radius + semantic.focus.gap.width."
+        },
+        "ringRadius": {
+          "$value": "{primitive.radius.full}",
+          "$description": "Outer edge of the focus ring: the Tag pill radius + gap width + semantic.focus.ring.width."
+        }
       },
       "fontSize": {
         "$type": "dimension",
@@ -3125,6 +3237,18 @@
         "$value": "{semantic.radius.action}",
         "$description": "Button corner radius."
       },
+      "focus": {
+        "$type": "dimension",
+        "$description": "Focus ring corners around the button: radius plus gap, plus ring width.",
+        "gapRadius": {
+          "$value": "{primitive.radius.10}",
+          "$description": "Inner edge of the focus ring: the Button (8px) radius + semantic.focus.gap.width."
+        },
+        "ringRadius": {
+          "$value": "{primitive.radius.12}",
+          "$description": "Outer edge of the focus ring: the Button (8px) radius + gap width + semantic.focus.ring.width."
+        }
+      },
       "paddingX": {
         "$type": "dimension",
         "$value": "{primitive.space.4}",
@@ -3329,6 +3453,18 @@
         "$type": "dimension",
         "$value": "{semantic.radius.action}"
       },
+      "focus": {
+        "$type": "dimension",
+        "$description": "Focus ring corners around the input: radius plus gap, plus ring width.",
+        "gapRadius": {
+          "$value": "{primitive.radius.10}",
+          "$description": "Inner edge of the focus ring: the Input (8px) radius + semantic.focus.gap.width."
+        },
+        "ringRadius": {
+          "$value": "{primitive.radius.12}",
+          "$description": "Outer edge of the focus ring: the Input (8px) radius + gap width + semantic.focus.ring.width."
+        }
+      },
       "paddingX": {
         "$type": "dimension",
         "$value": "{primitive.space.3}"
@@ -3350,6 +3486,18 @@
       "radius": {
         "$type": "dimension",
         "$value": "{primitive.radius.12}"
+      },
+      "focus": {
+        "$type": "dimension",
+        "$description": "Focus ring corners around the card: radius plus gap, plus ring width.",
+        "gapRadius": {
+          "$value": "{primitive.radius.14}",
+          "$description": "Inner edge of the focus ring: an interactive Card (12px) radius + semantic.focus.gap.width."
+        },
+        "ringRadius": {
+          "$value": "{primitive.radius.16}",
+          "$description": "Outer edge of the focus ring: an interactive Card (12px) radius + gap width + semantic.focus.ring.width."
+        }
       },
       "padding": {
         "$type": "dimension",

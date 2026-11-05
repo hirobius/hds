@@ -143,6 +143,8 @@ export type CardTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 // `neutral`) so it never fights `accent`'s border for the border-color group.
 // `selectable` adds only ring, focus and cursor classes, none in a border
 // group, so selection composes with tone unchanged.
+// binding-ok: card.focus.gapRadius drawn by the .hds-focus outline, which follows the card radius (radius + semantic.focus.gap.width); the token is the Figma binding
+// binding-ok: card.focus.ringRadius drawn by the .hds-focus outline (radius + gap + semantic.focus.ring.width); the token is the Figma binding
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven
 const cardVariants = /* @__PURE__ */ cva('flex flex-col rounded-lg bg-card text-card-foreground', {
   variants: {
