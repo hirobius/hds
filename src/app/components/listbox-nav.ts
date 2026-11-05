@@ -53,3 +53,16 @@ export function useResetActiveOnListChange<T extends NavOption>(
     setActiveIndex(firstEnabledIndex(list));
   }
 }
+
+/**
+ * A callback whose identity never changes but that always runs the latest
+ * `fn`. Memoized option rows take it, so moving the active row re-renders
+ * only the two rows whose state changed (hds#1145).
+ */
+export function useLatestCallback<A extends unknown[], R>(fn: (...args: A) => R) {
+  const ref = React.useRef(fn);
+  React.useLayoutEffect(() => {
+    ref.current = fn;
+  });
+  return React.useCallback((...args: A) => ref.current(...args), []);
+}

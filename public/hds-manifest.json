@@ -6596,6 +6596,7 @@
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/listbox-nav.ts",
+        "src/app/components/listbox-option.tsx",
         "src/app/components/select.tsx",
         "src/index.ts"
       ],
