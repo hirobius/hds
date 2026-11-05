@@ -1038,4 +1038,16 @@ Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 f
 | 5                                                                                                      | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: snapshot-diff.js against 959ed271                                                           | final snapshot   | OK. live e14b048c: meta/commit, meta/version, lastPush.                        |
 | Session total: 4 use_figma calls (1 refused write, 1 write, 2 reads). No publish.                      |
 
-Calls logged for 2026-11-05: 132 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28 and 4).
+## 2026-11-05 · Cover thumbnail padding (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                       | Tool             | Kind  | Target                         | Why              | Result                         |
+| ------------------------------------------------------- | ---------------- | ----- | ------------------------------ | ---------------- | ------------------------------ |
+| 1                                                       | `create_session` | read  | library 2VgBbVpKiDnu0aftJEVyBQ | session          | OK.                            |
+| 2                                                       | `use_figma`      | read  | Thumbnail 2419:1899 layout     | inspect          | OK. padding 128 (space/32).    |
+| 3                                                       | `use_figma`      | read  | Primitives spacing variables   | find larger step | OK. space/32 is the largest.   |
+| 4                                                       | `use_figma`      | write | Thumbnail 2419:1899 padding    | Adrian request   | OK. 192 on all sides, unbound. |
+| 5                                                       | `get_screenshot` | read  | Thumbnail 2419:1899            | check            | OK. Version label off-grid.    |
+| 6                                                       | `use_figma`      | write | Version 2422:3 position        | align            | OK. x 1583, y 192.             |
+| Session total: 6 calls (2 writes, 4 reads). No publish. |
+
+Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 and 6).
