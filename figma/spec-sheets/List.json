@@ -2,7 +2,7 @@
   "component": "List",
   "description": "List - an inset grouped list: titled groups of tappable rows on a raised surface.",
   "docsPage": "/docs/components/list",
-  "figmaLink": null,
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315",
   "anatomy": [
     {
       "part": "Root"

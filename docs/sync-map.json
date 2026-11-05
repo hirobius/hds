@@ -3,9 +3,9 @@
   "generated": "2026-11-04T15:44:09.044Z",
   "summary": {
     "components": 131,
-    "synced": 124,
+    "synced": 125,
     "byGap": {
-      "no-figma-node": 7
+      "no-figma-node": 6
     },
     "byClass": {
       "library": 75,
@@ -19,7 +19,7 @@
     },
     "figmaCoverage": {
       "expected": 75,
-      "covered": 68
+      "covered": 69
     }
   },
   "rows": [
@@ -28,18 +28,6 @@
       "class": "library",
       "filePath": "src/app/components/command-palette.tsx",
       "docsPage": "/docs/components/command-palette",
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": true,
-      "expectDocs": true,
-      "gaps": ["no-figma-node"],
-      "synced": false
-    },
-    {
-      "name": "List",
-      "class": "library",
-      "filePath": "src/app/components/list.tsx",
-      "docsPage": "/docs/components/list",
       "figmaUrl": null,
       "figmaVia": null,
       "expectFigma": true,
@@ -953,6 +941,18 @@
       "filePath": "src/app/components/kbd.tsx",
       "docsPage": "/docs/components/kbd",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2026-9",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectDocs": true,
+      "gaps": [],
+      "synced": true
+    },
+    {
+      "name": "List",
+      "class": "library",
+      "filePath": "src/app/components/list.tsx",
+      "docsPage": "/docs/components/list",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315",
       "figmaVia": "manifest",
       "expectFigma": true,
       "expectDocs": true,
