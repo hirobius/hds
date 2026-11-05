@@ -96,3 +96,36 @@ describe('SegmentedControl contract', () => {
     });
   });
 });
+
+// hds#1214: the sm label's line box must fit the 22px segment (rail 32px, Button sm), and the
+// selected primary label sits on the face above its 3px inset edge, not on the edge.
+describe('SegmentedControl label fit (hds#1214)', () => {
+  const labels = (size: 'sm' | 'md') => {
+    const { container } = render(
+      <SegmentedControl size={size} options={OPTIONS} value="a" onChange={() => {}} />,
+    );
+    return [...container.querySelectorAll('[role="radio"] > span:not([aria-hidden])')];
+  };
+
+  it('sm labels drop the 24px ui line box so the segment stays 22px', () => {
+    for (const l of labels('sm')) expect(l.className).toContain('lineHeight-none');
+  });
+
+  it('md labels keep the ui line box', () => {
+    for (const l of labels('md')) expect(l.className).not.toContain('lineHeight-none');
+  });
+
+  it('lifts only the selected primary label off the inset edge', () => {
+    const [active, ...rest] = labels('sm');
+    expect(active.className).toContain('-translate-y-px');
+    for (const l of rest) expect(l.className).not.toContain('-translate-y-px');
+  });
+
+  it('does not lift the secondary label, which has no bottom edge', () => {
+    const { container } = render(
+      <SegmentedControl variant="secondary" options={OPTIONS} value="a" onChange={() => {}} />,
+    );
+    const active = container.querySelector('[aria-checked="true"] > span:not([aria-hidden])')!;
+    expect(active.className).not.toContain('-translate-y-px');
+  });
+});

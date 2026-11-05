@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A size=\"sm\" SegmentedControl is now 32px tall like Button sm, with the selected primary label 1px higher, so remove any padding or offset you added to fix its height."
+}
