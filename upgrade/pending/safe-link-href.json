@@ -1,4 +1,4 @@
 {
   "impact": "behavior",
-  "plain": "Links no longer render a javascript:, vbscript: or data: href (they become about:blank#blocked). If you used one on purpose, use a Button with onClick instead."
+  "plain": "Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one."
 }
