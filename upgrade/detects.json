@@ -9,6 +9,27 @@
     },
     "0.27.0/tenant/data-accent-cobalt": {
       "regex": ["data-accent=[\"']?cobalt"]
+    },
+    "0.33.0/behavior/no-nested-cards-1046": {
+      "regex": ["@hirobius/design-system/eslint-plugin"]
+    },
+    "0.33.0/behavior/spacing-semantic-778": {
+      "imports": [
+        {
+          "from": "@hirobius/design-system/cn",
+          "names": ["cn"]
+        },
+        {
+          "from": "@hirobius/design-system",
+          "names": ["cn"]
+        }
+      ]
+    },
+    "0.33.0/removed/manifest-consumers-testId": {
+      "regex": ["@hirobius/design-system/manifest"]
+    },
+    "0.33.0/removed/manifest-figmaLink": {
+      "regex": ["@hirobius/design-system/manifest"]
     }
   }
 }
