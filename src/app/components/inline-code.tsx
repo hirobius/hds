@@ -9,14 +9,37 @@
  * @a11y component required a11y:inline-code.target-size The copy button is the small Button, 32px, over the 24px floor (WCAG 2.5.8).
  * @a11y consumer recommended Pass a string child when copyable; the text copied is the child.
  */
-// motion-ok: copy feedback is handled by the nested icon-only Button, while the inline code chip stays visually stable inside prose and tables
 import { useState } from 'react';
+import { AnimatePresence, motion, useIsPresent } from 'motion/react';
 import type { CSSProperties, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Copy, Check } from 'lucide-react';
 import hds from '../design-system/tokens';
+import { crossfadeFade, useHdsMotion } from '../hooks/useHdsMotion';
 import { Button } from './button';
 import { Icon } from './icon';
+
+/**
+ * One glyph of the copy button's Copy -> Check swap (hds#751). Both glyphs
+ * stack in one grid cell, so the button never changes size while they
+ * overlap; the exiting glyph is aria-hidden. Timed on the productive motion
+ * token through useHdsMotion, which is zero under prefers-reduced-motion, so
+ * reduced motion swaps the glyph instantly. The code chip itself stays still.
+ */
+function CopyGlyph({ copied }: { copied: boolean }) {
+  const isPresent = useIsPresent();
+  const productiveMotion = useHdsMotion('productive');
+  return (
+    <motion.span
+      className="col-start-1 row-start-1 flex"
+      data-copy-glyph={copied ? 'check' : 'copy'}
+      aria-hidden={!isPresent || undefined}
+      {...crossfadeFade(productiveMotion)}
+    >
+      <Icon icon={copied ? Check : Copy} size="small" />
+    </motion.span>
+  );
+}
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Non-interactive — no hover/active/focus states. `density` is the contract's
@@ -120,7 +143,13 @@ export function InlineCode({
         aria-label={copied ? 'Copied' : 'Copy'}
         onClick={handleCopy}
         style={copied ? { color: 'var(--semantic-color-content-accent)' } : undefined}
-        iconLeft={<Icon icon={copied ? Check : Copy} size="small" />}
+        iconLeft={
+          <span className="grid">
+            <AnimatePresence initial={false}>
+              <CopyGlyph key={copied ? 'check' : 'copy'} copied={copied} />
+            </AnimatePresence>
+          </span>
+        }
       />
       {codeEl}
       {/* Polite live region, always mounted: a region added with its text in it is not announced (4.1.3). */}
