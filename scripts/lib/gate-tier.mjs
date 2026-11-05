@@ -93,9 +93,15 @@ export function classifyGateTier(files, env = {}) {
   return { tier: 'fast', reason: `${files.length} file(s), none risky` };
 }
 
-/** Commands for a tier, in run order. */
-export function planGate(tier, files) {
+/**
+ * Commands for a tier, in run order.
+ * @param {'docs' | 'fast' | 'full'} tier
+ * @param {string[]} files changed paths
+ * @param {Record<string, string | undefined>} [env] HDS_FULL_GATE=1 forces the whole suite
+ */
+export function planGate(tier, files, env = {}) {
   if (tier === 'full') {
+    if (env.HDS_FULL_GATE === '1') files = [];
     // An empty file list at the full tier means the diff is unknown (the
     // merge-base lookup failed) — pass null so the lane selection fails
     // safe to the whole suite. A genuinely empty diff classifies as docs

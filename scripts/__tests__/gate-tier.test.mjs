@@ -124,6 +124,12 @@ describe('planGate', () => {
     expect(cmds.at(-1)).toBe('pnpm smoke:consumer');
   });
 
+  it('HDS_FULL_GATE=1 still runs the whole suite, not just affected tests (#1090)', () => {
+    expect(
+      planGate('full', ['scripts/check-record-freshness.mjs'], { HDS_FULL_GATE: '1' }),
+    ).toEqual(['pnpm check:fast', 'pnpm test', 'pnpm smoke:consumer']);
+  });
+
   it('full tier adds the path-triggered heavy subset (#1090)', () => {
     const cmds = planGate('full', ['scripts/upgrade/compile.mjs']);
     expect(cmds[0]).toBe('pnpm check:fast');
