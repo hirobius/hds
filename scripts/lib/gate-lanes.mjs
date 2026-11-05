@@ -57,3 +57,17 @@ export function readLaneScripts(root) {
   const read = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
   return expandLaneScripts(read('package.json').scripts, read('docs/guardrails/registry.json'));
 }
+
+/**
+ * `text` (a shell file such as ralph/gate.sh) with the commands of every lane
+ * it runs through run-lane.mjs appended, one per line, so wiring checks that
+ * grep the file see the steps the lane runs.
+ */
+export function expandLaneCalls(text, registry) {
+  const extra = [];
+  for (const [, lane] of String(text).matchAll(/run-lane\.mjs ([\w:.-]+)/g)) {
+    const cmds = laneCommands(registry, lane);
+    if (cmds) extra.push(...cmds);
+  }
+  return extra.length ? `${text}\n${extra.join('\n')}` : text;
+}

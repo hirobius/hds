@@ -107,6 +107,17 @@
       "node scripts/check-guardrail-drift.mjs",
       "node scripts/check-skills-lock.mjs",
       "node scripts/check-skill-content.mjs"
+    ],
+    "ralph-gate": [
+      "pnpm manifest:generate",
+      "node scripts/audit-tokens.mjs --full",
+      "pnpm check:contrast",
+      "pnpm check:focus",
+      "pnpm check:colors",
+      "pnpm check:motion",
+      "pnpm typecheck",
+      "node scripts/lib/test-lanes.mjs run",
+      "pnpm lint"
     ]
   },
   "gates": [

@@ -68,7 +68,7 @@ import { hashPrecommit } from './lib/precommit-canonical.mjs';
 
 import { reachableScripts } from './lib/script-reachability.mjs';
 import { expandPrePushHook } from './lib/gate-tier.mjs';
-import { expandLaneScripts } from './lib/gate-lanes.mjs';
+import { expandLaneCalls, expandLaneScripts } from './lib/gate-lanes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -481,7 +481,10 @@ function runWiringCheck(
   // The tiered gate (pre-push-gate.mjs) is read as its full tier, which runs `pnpm test`.
   const prepushContent = prepushPath ? expandPrePushHook(readSafe(prepushPath)) : '';
   const commitmsgContent = commitmsgPath ? readSafe(commitmsgPath) : '';
-  const ralphGateContent = ralphGatePath ? readSafe(ralphGatePath) : '';
+  // ralph/gate.sh reads its steps from the registry's ralph-gate lane (hds#1095).
+  const ralphGateContent = ralphGatePath
+    ? expandLaneCalls(readSafe(ralphGatePath), registryObj)
+    : '';
 
   // Detect whether run-gates.mjs is itself bypassed in pre-commit
   // (if the unified runner is in use, it must not be failure-swallowed).

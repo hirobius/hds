@@ -5,10 +5,18 @@
  * The parity block pins the exact chains package.json held before the move,
  * so this slice provably runs the same checks in the same order.
  */
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, expect, it, vi } from 'vitest';
-import { expandLaneScripts, laneCommands, readLaneScripts, runLane } from '../lib/gate-lanes.mjs';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import {
+  expandLaneCalls,
+  expandLaneScripts,
+  laneCommands,
+  readLaneScripts,
+  runLane,
+} from '../lib/gate-lanes.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..');
 const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
@@ -82,5 +90,89 @@ describe('readLaneScripts', () => {
     const scripts = readLaneScripts(ROOT);
     expect(scripts.pretest).toBe(OLD_CHAINS.pretest);
     expect(scripts.test).toBe(pkg.scripts.test);
+  });
+});
+
+// ralph/gate.sh's steps, exactly as the file ran them on main before hds#1095.
+const OLD_RALPH_STEPS = [
+  'pnpm manifest:generate',
+  'node scripts/audit-tokens.mjs --full',
+  'pnpm check:contrast',
+  'pnpm check:focus',
+  'pnpm check:colors',
+  'pnpm check:motion',
+  'pnpm typecheck',
+  'node scripts/lib/test-lanes.mjs run',
+  'pnpm lint',
+];
+
+describe('ralph-gate lane', () => {
+  it('runs the same steps, in order, that ralph/gate.sh hard-coded', () => {
+    expect(laneCommands(registry, 'ralph-gate')).toEqual(OLD_RALPH_STEPS);
+  });
+
+  it('ralph/gate.sh reads its steps from the lane and hard-codes none', () => {
+    const gate = readFileSync(join(ROOT, 'ralph/gate.sh'), 'utf8');
+    expect(gate).toContain('node scripts/run-lane.mjs ralph-gate --dry-run');
+    expect(gate).not.toMatch(/^run_step (pnpm|node) /m);
+  });
+
+  /** A throwaway repo with ralph/gate.sh, the lane runner and `lane` as ralph-gate. */
+  function gateRepo(lane) {
+    const dir = mkdtempSync(join(tmpdir(), 'hds-ralph-lane-'));
+    dirs.push(dir);
+    mkdirSync(join(dir, 'ralph'));
+    mkdirSync(join(dir, 'scripts/lib'), { recursive: true });
+    mkdirSync(join(dir, 'docs/guardrails'), { recursive: true });
+    cpSync(join(ROOT, 'ralph/gate.sh'), join(dir, 'ralph/gate.sh'));
+    for (const f of [
+      'run-lane.mjs',
+      'lib/gate-lanes.mjs',
+      'lib/guardrail-core.mjs',
+      'lib/gate-scope.mjs',
+    ])
+      cpSync(join(ROOT, 'scripts', f), join(dir, 'scripts', f));
+    const lanes = lane ? { 'ralph-gate': lane } : {};
+    writeFileSync(join(dir, 'docs/guardrails/registry.json'), JSON.stringify({ lanes, gates: [] }));
+    return spawnSync('bash', [join(dir, 'ralph/gate.sh')], { encoding: 'utf8' });
+  }
+  const dirs = [];
+  afterEach(() => dirs.splice(0).forEach((d) => rmSync(d, { recursive: true, force: true })));
+
+  it('runs each step, names it, and goes green when all pass', () => {
+    const r = gateRepo(['echo one', 'echo two']);
+    expect(r.status).toBe(0);
+    expect(r.stdout).toContain('── gate: echo one');
+    expect(r.stdout).toContain('── gate: echo two');
+    expect(r.stdout).toContain('── gate: all green');
+  });
+
+  it('fails closed at the first red step and names it', () => {
+    const r = gateRepo(['echo one', 'false', 'echo three']);
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain('── gate FAILED at: false');
+    expect(r.stdout).not.toContain('three');
+    expect(r.stdout).not.toContain('all green');
+  });
+
+  it('fails closed when the lane is missing', () => {
+    const r = gateRepo(null);
+    expect(r.status).not.toBe(0);
+    expect(r.stdout).not.toContain('all green');
+  });
+
+  it('does not let a step swallow the remaining steps from stdin', () => {
+    const r = gateRepo(['cat > /dev/null', 'echo after']);
+    expect(r.status).toBe(0);
+    expect(r.stdout).toContain('── gate: echo after');
+  });
+});
+
+describe('expandLaneCalls', () => {
+  it('appends the commands of every lane a text calls, for wiring checks', () => {
+    const reg = { lanes: { r: ['pnpm check:contrast', 'node a.mjs'] } };
+    const out = expandLaneCalls('X="$(node scripts/run-lane.mjs r --dry-run)"', reg);
+    expect(out).toContain('pnpm check:contrast\nnode a.mjs');
+    expect(expandLaneCalls('no lanes here', reg)).toBe('no lanes here');
   });
 });
