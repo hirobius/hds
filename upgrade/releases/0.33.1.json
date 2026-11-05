@@ -200,6 +200,21 @@
       "kind": "behavior",
       "impact": "behavior",
       "plain": "Links now render a javascript:, vbscript: or data: href as about:blank#blocked, so use a Button with onClick where you relied on one.",
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "InlineLink",
+              "Breadcrumb",
+              "NavList",
+              "NavListItem",
+              "List",
+              "useHdsRouter"
+            ]
+          }
+        ]
+      },
       "source": "CHANGELOG.md:27"
     },
     {
