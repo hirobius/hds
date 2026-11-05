@@ -47,17 +47,6 @@
       "facts": ["css-var-changed:--semantic-color-surface-hover::root"]
     },
     {
-      "id": "value-changed/--semantic-color-surface-muted",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "Light muted surfaces are darker (--semantic-color-surface-muted in :root moved from --primitive-color-neutral-100 to --primitive-color-neutral-250), so re-take light-theme screenshots.",
-      "detect": {
-        "cssVars": ["--semantic-color-surface-muted"],
-        "cssVarWrites": ["--semantic-color-surface-muted"]
-      },
-      "facts": ["css-var-changed:--semantic-color-surface-muted::root"]
-    },
-    {
       "id": "value-changed/--semantic-color-surface-overlay",
       "kind": "value-changed",
       "impact": "look",
@@ -78,28 +67,6 @@
         "cssVarWrites": ["--semantic-color-surface-pressed"]
       },
       "facts": ["css-var-changed:--semantic-color-surface-pressed::root"]
-    },
-    {
-      "id": "value-changed/--semantic-color-surface-raised",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "Light raised cards are a step darker so they read against the page (--semantic-color-surface-raised in :root moved from --primitive-color-neutral-50 to --primitive-color-neutral-150), so re-take light-theme screenshots.",
-      "detect": {
-        "cssVars": ["--semantic-color-surface-raised"],
-        "cssVarWrites": ["--semantic-color-surface-raised"]
-      },
-      "facts": ["css-var-changed:--semantic-color-surface-raised::root"]
-    },
-    {
-      "id": "value-changed/--semantic-color-surface-selected",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "Light selected fills are darker (--semantic-color-surface-selected in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-325), so re-take light-theme screenshots.",
-      "detect": {
-        "cssVars": ["--semantic-color-surface-selected"],
-        "cssVarWrites": ["--semantic-color-surface-selected"]
-      },
-      "facts": ["css-var-changed:--semantic-color-surface-selected::root"]
     },
     {
       "id": "value-changed/--semantic-color-surface-soft",
@@ -133,16 +100,6 @@
         "cssVarWrites": ["--semantic-color-surface-sunken"]
       },
       "facts": ["css-var-changed:--semantic-color-surface-sunken::root"]
-    },
-    {
-      "id": "tenant/soft-demo",
-      "kind": "tenant",
-      "impact": "look",
-      "plain": "Pages themed with the soft-demo brand (data-brand=\"soft-demo\") override --semantic-color-surface-raised, so check their light cards after upgrading.",
-      "detect": {
-        "regex": ["(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?soft-demo(?![\\w-])"]
-      },
-      "facts": ["css-var-changed:--semantic-color-surface-raised::root"]
     }
   ]
 }
