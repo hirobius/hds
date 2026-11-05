@@ -9,8 +9,11 @@ export const tokens = {
       neutral: {
         "50": "var(--primitive-color-neutral-50)",
         "100": "var(--primitive-color-neutral-100)",
+        "150": "var(--primitive-color-neutral-150)",
         "200": "var(--primitive-color-neutral-200)",
+        "250": "var(--primitive-color-neutral-250)",
         "300": "var(--primitive-color-neutral-300)",
+        "325": "var(--primitive-color-neutral-325)",
         "350": "var(--primitive-color-neutral-350)",
         "400": "var(--primitive-color-neutral-400)",
         "450": "var(--primitive-color-neutral-450)",
@@ -57,6 +60,7 @@ export const tokens = {
         "50": "var(--primitive-color-graphite-50)",
         "100": "var(--primitive-color-graphite-100)",
         "200": "var(--primitive-color-graphite-200)",
+        "250": "var(--primitive-color-graphite-250)",
         "300": "var(--primitive-color-graphite-300)",
         "400": "var(--primitive-color-graphite-400)",
         "500": "var(--primitive-color-graphite-500)",
@@ -305,6 +309,10 @@ export const tokens = {
     },
     underline: {
       offset: "var(--primitive-underline-offset)"
+    },
+    inlineIcon: {
+      size: "var(--primitive-inlineIcon-size)",
+      gap: "var(--primitive-inlineIcon-gap)"
     },
     borderWidth: {
       xs: "var(--primitive-borderWidth-xs)",
@@ -696,6 +704,24 @@ export const tokens = {
       rowPadding: "var(--component-list-rowPadding)",
       rowMinHeight: "var(--component-list-rowMinHeight)",
       leadingSize: "var(--component-list-leadingSize)"
+    },
+    inlineLink: {
+      iconSize: "var(--component-inlineLink-iconSize)",
+      iconGap: "var(--component-inlineLink-iconGap)",
+      size: {
+        sm: {
+          fontSize: "var(--component-inlineLink-size-sm-fontSize)",
+          iconSize: "var(--component-inlineLink-size-sm-iconSize)"
+        },
+        md: {
+          fontSize: "var(--component-inlineLink-size-md-fontSize)",
+          iconSize: "var(--component-inlineLink-size-md-iconSize)"
+        },
+        lg: {
+          fontSize: "var(--component-inlineLink-size-lg-fontSize)",
+          iconSize: "var(--component-inlineLink-size-lg-iconSize)"
+        }
+      }
     }
   },
   role: {

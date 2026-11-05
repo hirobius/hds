@@ -42,7 +42,7 @@
       "id": "tenant/soft-demo",
       "kind": "tenant",
       "impact": "look",
-      "plain": "Pages themed with the soft-demo brand (data-brand=\"soft-demo\") may look different (badge radius, and --semantic-space-component-padding no longer overridden), so check them after upgrading.",
+      "plain": "Pages themed with the soft-demo brand (data-brand=\"soft-demo\") may look different (badge radius, and --semantic-space-component-padding no longer overridden), so check them after upgrading; its light cards also follow the darker surface.raised.",
       "detect": {
         "regex": ["(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?soft-demo(?![\\w-])"]
       },
@@ -51,7 +51,8 @@
         "css-var-changed:--component-badge-radius:[data-brand=soft-demo],[data-tenant=soft-demo]",
         "css-var-changed:--semantic-color-surface-raised:[data-brand=soft-demo][data-theme=dark],[data-tenant=soft-demo][data-theme=dark]",
         "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]",
-        "css-var-removed:--semantic-space-component-padding"
+        "css-var-removed:--semantic-space-component-padding",
+        "css-var-changed:--semantic-color-surface-raised::root"
       ]
     }
   ]

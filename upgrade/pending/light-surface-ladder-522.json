@@ -1,0 +1,105 @@
+{
+  "impact": "look",
+  "plain": "Light cards, state fills, tertiary text and dividers are a step darker so a card reads against the page, so check any light screen that pairs HDS surfaces with your own hard-coded greys.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-color-border-default",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light default borders and dividers are a step darker (--semantic-color-border-default in :root moved from --primitive-color-graphite-200 to --primitive-color-graphite-250), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-default"],
+        "cssVarWrites": ["--semantic-color-border-default"]
+      },
+      "facts": ["css-var-changed:--semantic-color-border-default::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-content-disabled",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light disabled text is a step darker (--semantic-color-content-disabled in :root moved from --primitive-color-neutral-300 to --primitive-color-neutral-350), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-content-disabled"],
+        "cssVarWrites": ["--semantic-color-content-disabled"]
+      },
+      "facts": ["css-var-changed:--semantic-color-content-disabled::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-content-tertiary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light tertiary text is a step darker (--semantic-color-content-tertiary in :root moved from --primitive-color-neutral-500 to --primitive-color-neutral-550), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-content-tertiary"],
+        "cssVarWrites": ["--semantic-color-content-tertiary"]
+      },
+      "facts": ["css-var-changed:--semantic-color-content-tertiary::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light hover fills are darker (--semantic-color-surface-hover in :root moved from --primitive-color-neutral-100 to --primitive-color-neutral-250), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-hover"],
+        "cssVarWrites": ["--semantic-color-surface-hover"]
+      },
+      "facts": ["css-var-changed:--semantic-color-surface-hover::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-overlay",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light overlay surfaces are darker (--semantic-color-surface-overlay in :root moved from --primitive-color-neutral-100 to --primitive-color-neutral-250), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-overlay"],
+        "cssVarWrites": ["--semantic-color-surface-overlay"]
+      },
+      "facts": ["css-var-changed:--semantic-color-surface-overlay::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light pressed fills are a step darker (--semantic-color-surface-pressed in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-pressed"],
+        "cssVarWrites": ["--semantic-color-surface-pressed"]
+      },
+      "facts": ["css-var-changed:--semantic-color-surface-pressed::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-soft",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light soft fills are a step darker (--semantic-color-surface-soft in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-soft"],
+        "cssVarWrites": ["--semantic-color-surface-soft"]
+      },
+      "facts": ["css-var-changed:--semantic-color-surface-soft::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-softHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light soft hover fills are slightly darker (--semantic-color-surface-softHover in :root moved from --primitive-color-neutral-300 to --primitive-color-neutral-325), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-softHover"],
+        "cssVarWrites": ["--semantic-color-surface-softHover"]
+      },
+      "facts": ["css-var-changed:--semantic-color-surface-softHover::root"]
+    },
+    {
+      "id": "value-changed/--semantic-color-surface-sunken",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light sunken surfaces are a step darker (--semantic-color-surface-sunken in :root moved from --primitive-color-neutral-200 to --primitive-color-neutral-300), so re-take light-theme screenshots.",
+      "detect": {
+        "cssVars": ["--semantic-color-surface-sunken"],
+        "cssVarWrites": ["--semantic-color-surface-sunken"]
+      },
+      "facts": ["css-var-changed:--semantic-color-surface-sunken::root"]
+    }
+  ]
+}

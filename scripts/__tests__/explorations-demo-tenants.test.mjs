@@ -281,8 +281,8 @@ describe.skipIf(!hasBrowser)('soft-demo: computed, light and dark, on <html> and
 
       expect(soft.raised).toBe(expected);
       expect(soft.roleCard).toBe(expected); // the role alias follows the override, nested too
-      // Light gets the visible fill (neutral.100, was neutral.50); dark is already a fill (neutral.825 since hds#755) and is left alone.
-      expect(dflt.raised).toBe(theme === 'light' ? rgb('neutral.50') : rgb('neutral.825'));
+      // The soft demo pins its own light fill (neutral.100); the default moved to neutral.150 in hds#522. Dark is neutral.825 since hds#755.
+      expect(dflt.raised).toBe(theme === 'light' ? rgb('neutral.150') : rgb('neutral.825'));
       expect(soft.raised).not.toBe(soft.page);
     },
   );
@@ -506,7 +506,7 @@ describe.skipIf(!hasBrowser)(
       expect(soft.radiusAction).toBe('20px');
       expect(pair.radiusAction).toBe('8px'); // the pair changes colour, not shape
       expect(soft.raised).toBe(rgb('neutral.100'));
-      expect(dflt.raised).toBe(rgb('neutral.50'));
+      expect(dflt.raised).toBe(rgb('neutral.150'));
       expect(pair.accentFill).toBe(rgb('mauve.600'));
       expect(pair.supportRest).toBe(rgb('stone.600'));
       expect(dflt.supportRest).toBe(TRANSPARENT);

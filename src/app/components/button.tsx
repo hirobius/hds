@@ -175,6 +175,14 @@ const buttonVariants = /* @__PURE__ */ cva(
           'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
+      // A link is plain text in every tone (owner decision 2026-11-05): a status tone keeps its
+      // text colour, but its fill, hover brightness and pressed wash are swapped out, and the
+      // base disabled fill too. Compound classes come after tone classes, so these win the merge.
+      {
+        variant: 'link',
+        className:
+          'px-0 bg-transparent hover:bg-transparent active:bg-transparent disabled:bg-transparent hover:brightness-100 dark:hover:brightness-100 active:inset-shadow-transparent',
+      },
       // Link focus (hds#1167, matches the Figma Focus drawing): with px-0 the base box-shadow
       // ring sat right on the glyphs and the underline. A link instead paints its ring on an
       // ::after box that reaches space.scale.2xs (4px) past the label on each side, with the
@@ -182,7 +190,6 @@ const buttonVariants = /* @__PURE__ */ cva(
       // absolutely positioned and the classes that draw it are all focus-visible:, so the rest
       // box (width, padding, radius) never moves, with no negative margin. An outline also
       // survives forced-colors mode, where a box-shadow ring is dropped.
-      { variant: 'link', className: 'px-0' },
       {
         variant: 'link',
         className:
