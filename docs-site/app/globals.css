@@ -380,7 +380,7 @@ pre {
 }
 
 /* Prose tables (components/mdx-prose.tsx): a raised tonal frame from HDS tokens (no outline,
-   hds#891), so the Corners switch squares it. Fumadocs' own wrapper hard-codes an 8px radius. */
+   hds#891), so it follows the radius token. Fumadocs' own wrapper hard-codes an 8px radius. */
 .hds-docs-table {
   position: relative;
   overflow: auto;
@@ -396,7 +396,7 @@ pre {
 }
 
 /* Search dialog (the Cmd+K one): Fumadocs sets rounded-xl and shadow-2xl on it. Radius and shadow
-   come from HDS tokens, so Corners and Shadow both reach it. Keyed on the result list's id, the
+   come from HDS tokens. Keyed on the result list's id, the
    one thing only this dialog holds. */
 [role='dialog']:has(#fd-search-list) {
   border-radius: var(--semantic-radius-action);
@@ -404,15 +404,14 @@ pre {
 }
 
 /* Search result rows: Fumadocs rounds them (rounded-lg), and the dialog is portalled outside
-   #nd-docs-layout, so the layout-chrome rule below never reaches them — in the default Corners
-   setting they kept Fumadocs' radius and only the Sharp override squared them. The HDS radius
-   token reaches them in every setting (hds#806). */
+   #nd-docs-layout, so the layout-chrome rule below never reaches them and they kept Fumadocs'
+   radius. They take the HDS radius token (hds#806). */
 #fd-search-list [role='option'] {
   border-radius: var(--semantic-radius-action);
 }
 
 /* Sidebar search trigger (components/search-trigger.tsx, hds#903): a raised row with the
-   shortcut drawn by the HDS Kbd. Tokens only, so Corners reaches it. */
+   shortcut drawn by the HDS Kbd. Tokens only. */
 .hds-docs-search {
   display: inline-flex;
   align-items: center;
@@ -548,12 +547,6 @@ pre {
   white-space: nowrap;
 }
 
-/*
- * Docs preview switches (hds#794): Corners + Shadow, opened from the display-settings button
- * beside the theme switcher (components/preview-switches.tsx). Docs-only scope, set on <html>;
- * not a theming dial (ADR-023) and not in shipped styles.css. Default (attribute unset) is
- * today's look.
- */
 /* Sidebar header: the short mark and the released-version badge (site-mark.tsx). */
 .hds-site-mark {
   display: inline-flex;
@@ -573,31 +566,6 @@ div:has(> .hds-docs-display) {
   border: 0;
   background: none;
 }
-
-/* Corners: sharp. Every radius token to 0 (tag stays a pill). */
-html[data-docs-corners='sharp'] {
-  --semantic-radius-action: 0px;
-  --semantic-radius-control: 0px;
-  --role-radius: 0px;
-  --component-button-radius: 0px;
-  --component-input-radius: 0px;
-  --component-badge-radius: 0px;
-  --component-card-radius: 0px;
-}
-/* Plain `rounded` is the --hds-radius-4 primitive (Kbd, Skeleton text), so square it here.
-   rounded-lg and .hds-card follow --role-radius (0 above), like every other rounded-* class. */
-html[data-docs-corners='sharp'] .rounded {
-  border-radius: 0;
-}
-
-/* Shadow: hard. Zero-blur, straight-down offsets (x = 0) in the full-strength shadow colour. */
-html[data-docs-shadow='hard'] {
-  --semantic-shadow-subtle: 0 4px 0 hsl(var(--primitive-shadow-color));
-  --semantic-shadow-floating: 0 5px 0 hsl(var(--primitive-shadow-color));
-  --semantic-shadow-overlay: 0 8px 0 hsl(var(--primitive-shadow-color));
-}
-/* Button and Kbd hard shadows ship in the package now (hds#888, theme.css .hds-btn-hard /
-   .hds-kbd); this preview only re-points the elevation tokens. */
 
 /* MDX code fences (components/mdx-code-block.tsx) are the HDS CodeBlock. It sits outside the
    prose rules (not-prose), so it takes the spacing a prose <pre> had, and never widens the column. */
@@ -891,7 +859,7 @@ a code[data-density] {
   overflow-wrap: break-word;
 }
 
-/* MDX images (components/mdx-prose.tsx): the radius is an HDS token, so the Corners switch reaches it. */
+/* MDX images (components/mdx-prose.tsx): the radius is an HDS token. */
 .hds-docs-img {
   max-width: 100%;
   height: auto;
@@ -901,7 +869,7 @@ a code[data-density] {
 /* Fumadocs chrome (sidebar items and active item, search trigger, collapse button, nav controls,
    contents rail) draws its corners with Tailwind rounded-md/lg/xl, which carry Fumadocs' own radii.
    Inside the layout shell, outside the page body and the HDS controls, they take the HDS radius
-   token, so the Corners switch squares them. */
+   token. */
 #nd-docs-layout
   :is(.rounded-md, .rounded-lg, .rounded-xl):not(
     #nd-page *,
@@ -916,7 +884,7 @@ a code[data-density] {
 }
 
 /* Fumadocs' Tailwind shadow-lg (collapsed sidebar, its reopen button, open contents popover)
-   takes the floating shadow token; the mobile drawer is an overlay. Both follow the Shadow switch. */
+   takes the floating shadow token; the mobile drawer is an overlay. Both are shadow tokens. */
 #nd-docs-layout .shadow-lg:not(#nd-page *, #nd-sidebar-mobile) {
   box-shadow: var(--semantic-shadow-floating);
 }
@@ -977,7 +945,7 @@ a code[data-density] {
 }
 
 /* Sidebar nav items (page links and folder toggles) set in the ui role, 16px at 500, so they
-   read at the same size and weight as the theme, Corners and Shadow segmented controls
+   read at the same size and weight as the theme and display-settings segmented controls
    (hds#847). Fumadocs gives them text-sm at the inherited weight; the search trigger and the
    section labels keep theirs. */
 :is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button).wrap-anywhere {

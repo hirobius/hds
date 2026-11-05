@@ -21,8 +21,8 @@ import {
 type HeadingProps = HTMLAttributes<HTMLHeadingElement>;
 
 // Fumadocs' Callout, Card/Cards and CodeBlockTabs are dropped from the MDX map (hds#806): no
-// docs content uses them, and leaving them in would render Fumadocs chrome the Corners and
-// Shadow switches don't reach. When content first needs one, map it to the HDS Alert, Card or
+// docs content uses them, and leaving them in would render Fumadocs chrome the HDS radius and
+// shadow tokens don't reach. When content first needs one, map it to the HDS Alert, Card or
 // Tabs here instead of restoring the Fumadocs component.
 const {
   Callout: _fumadocsCallout,
@@ -45,11 +45,11 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     // per-heading copy-link button.
     h2: (props: HeadingProps) => <h2 {...props} />,
     h3: (props: HeadingProps) => <h3 {...props} />,
-    // Code fences are the HDS CodeBlock, not Fumadocs' (follows the Corners switch).
+    // Code fences are the HDS CodeBlock, not Fumadocs' (HDS radius token).
     pre: MdxPre,
     // Prose links are the HDS InlineLink: the same look as the Figma / Source and demo links.
     a: MdxLink,
-    // Prose tables, inline code and images take HDS radius tokens (follow the Corners switch).
+    // Prose tables, inline code and images take HDS radius tokens (HDS radius tokens).
     table: MdxTable,
     code: MdxCode,
     img: MdxImg,

@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 
 /**
  * MDX `table` -> a frame drawn from HDS tokens (border, radius, scroll), so prose tables follow
- * the Corners switch. Fumadocs' own wrapper hard-codes an 8px radius.
+ * the radius token. Fumadocs' own wrapper hard-codes an 8px radius.
  */
 export function MdxTable(props: ComponentProps<'table'>) {
   return (
@@ -38,7 +38,7 @@ const hasNewline = (children: unknown) => typeof children === 'string' && childr
 
 /**
  * MDX `img` -> a plain image whose corners come from the HDS radius token. Fumadocs' own `img`
- * hard-codes `rounded-lg`, which skips the Corners switch.
+ * hard-codes `rounded-lg`, which skips the radius token.
  */
 export function MdxImg({ className, alt = '', ...rest }: ComponentProps<'img'>) {
   return (

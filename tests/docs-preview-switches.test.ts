@@ -2,9 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import {
   ACCENTS,
-  CORNERS,
   DENSITIES,
-  SHADOWS,
   STORAGE_KEY,
   applySwitches,
   parseSwitches,
@@ -12,66 +10,55 @@ import {
   writeSwitches,
   // @ts-expect-error -- docs-site is outside the root tsconfig include; vitest resolves it.
 } from '../docs-site/lib/preview-switches';
+// @ts-expect-error -- docs-site is outside the root tsconfig include; vitest resolves it.
+import * as switches from '../docs-site/lib/preview-switches';
 
-describe('docs preview switches', () => {
+/**
+ * Docs display settings (hds#794): the gear holds the package's own dials only, Accent and
+ * Density. The docs-only Corners and Shadow previews were removed (Adrian, 2026-11-05): the
+ * library never shipped them.
+ */
+describe('docs display settings', () => {
   beforeEach(() => {
     localStorage.clear();
-    document.documentElement.removeAttribute('data-docs-corners');
-    document.documentElement.removeAttribute('data-docs-shadow');
     document.documentElement.removeAttribute('data-accent');
     document.documentElement.removeAttribute('data-density');
   });
 
-  it('defaults to rounded + soft (today)', () => {
-    expect(parseSwitches(null)).toEqual({
-      corners: 'rounded',
-      shadow: 'soft',
-      accent: 'graphite',
-      density: 'comfortable',
-    });
+  it('holds Accent and Density only', () => {
+    expect(parseSwitches(null)).toEqual({ accent: 'graphite', density: 'comfortable' });
+    expect(switches).not.toHaveProperty('CORNERS');
+    expect(switches).not.toHaveProperty('SHADOWS');
   });
 
-  it('ignores junk and keeps valid halves', () => {
-    expect(parseSwitches('{"corners":"sharp","shadow":"neon"}')).toEqual({
-      corners: 'sharp',
-      shadow: 'soft',
+  it('ignores junk, old Corners/Shadow keys included, and keeps valid values', () => {
+    expect(parseSwitches('{"corners":"sharp","shadow":"hard","accent":"cobalt"}')).toEqual({
+      accent: 'cobalt',
+      density: 'comfortable',
+    });
+    expect(parseSwitches('{"accent":"neon"}')).toEqual({
       accent: 'graphite',
       density: 'comfortable',
     });
-    expect(parseSwitches('not json')).toEqual({
-      corners: 'rounded',
-      shadow: 'soft',
-      accent: 'graphite',
-      density: 'comfortable',
-    });
+    expect(parseSwitches('not json')).toEqual({ accent: 'graphite', density: 'comfortable' });
   });
 
   it('exposes the allowed values', () => {
-    expect(CORNERS).toEqual(['rounded', 'sharp']);
-    expect(SHADOWS).toEqual(['soft', 'hard']);
     expect(ACCENTS).toEqual(['graphite', 'cobalt']);
     expect(DENSITIES).toEqual(['comfortable', 'compact']);
   });
 
   it('Density drives the package density dial: data-density on the root, comfortable = unset', () => {
-    const base = { corners: 'rounded', shadow: 'soft', accent: 'graphite' } as const;
-    applySwitches({ ...base, density: 'compact' });
+    applySwitches({ accent: 'graphite', density: 'compact' });
     expect(document.documentElement.getAttribute('data-density')).toBe('compact');
-    applySwitches({ ...base, density: 'comfortable' });
+    applySwitches({ accent: 'graphite', density: 'comfortable' });
     expect(document.documentElement.hasAttribute('data-density')).toBe(false);
-    expect(parseSwitches('{"density":"compact"}').density).toBe('compact');
-    expect(parseSwitches('{"density":"cozy"}').density).toBe('comfortable');
   });
 
   it('Accent drives the package accent dial: data-accent on the root, graphite = unset (hds#857)', () => {
-    applySwitches({ corners: 'rounded', shadow: 'soft', accent: 'cobalt', density: 'comfortable' });
+    applySwitches({ accent: 'cobalt', density: 'comfortable' });
     expect(document.documentElement.getAttribute('data-accent')).toBe('cobalt');
-    applySwitches({
-      corners: 'rounded',
-      shadow: 'soft',
-      accent: 'graphite',
-      density: 'comfortable',
-    });
+    applySwitches({ accent: 'graphite', density: 'comfortable' });
     expect(document.documentElement.hasAttribute('data-accent')).toBe(false);
   });
 
@@ -85,29 +72,15 @@ describe('docs preview switches', () => {
     }
   });
 
-  it('applies to the root as docs-only attributes, unsetting defaults', () => {
-    applySwitches({ corners: 'sharp', shadow: 'hard', accent: 'cobalt', density: 'comfortable' });
-    expect(document.documentElement.dataset.docsCorners).toBe('sharp');
-    expect(document.documentElement.dataset.docsShadow).toBe('hard');
-    applySwitches({
-      corners: 'rounded',
-      shadow: 'soft',
-      accent: 'graphite',
-      density: 'comfortable',
-    });
-    expect(document.documentElement.hasAttribute('data-docs-corners')).toBe(false);
-    expect(document.documentElement.hasAttribute('data-docs-shadow')).toBe(false);
+  it('no docs-only Corners or Shadow preview rule is left in the docs CSS', () => {
+    const css = readFileSync('docs-site/app/globals.css', 'utf8');
+    expect(css).not.toMatch(/data-docs-(corners|shadow)/);
   });
 
   it('round-trips through localStorage', () => {
-    writeSwitches({ corners: 'sharp', shadow: 'hard', accent: 'cobalt', density: 'comfortable' });
-    expect(localStorage.getItem(STORAGE_KEY)).toContain('sharp');
-    expect(readSwitches()).toEqual({
-      corners: 'sharp',
-      shadow: 'hard',
-      accent: 'cobalt',
-      density: 'comfortable',
-    });
+    writeSwitches({ accent: 'cobalt', density: 'compact' });
+    expect(localStorage.getItem(STORAGE_KEY)).toContain('cobalt');
+    expect(readSwitches()).toEqual({ accent: 'cobalt', density: 'compact' });
   });
 
   it('survives blocked storage', () => {
@@ -120,33 +93,11 @@ describe('docs preview switches', () => {
       throw new Error('blocked');
     };
     try {
-      expect(readSwitches()).toEqual({
-        corners: 'rounded',
-        shadow: 'soft',
-        accent: 'graphite',
-        density: 'comfortable',
-      });
-      expect(() =>
-        writeSwitches({
-          corners: 'sharp',
-          shadow: 'hard',
-          accent: 'cobalt',
-          density: 'comfortable',
-        }),
-      ).not.toThrow();
+      expect(readSwitches()).toEqual({ accent: 'graphite', density: 'comfortable' });
+      expect(() => writeSwitches({ accent: 'cobalt', density: 'comfortable' })).not.toThrow();
     } finally {
       Storage.prototype.getItem = orig;
       Storage.prototype.setItem = origSet;
     }
-  });
-});
-
-describe('docs preview switches stay docs-only (hds#794)', () => {
-  it('no data-docs-* selector or attribute appears under src/ (shipped styles.css)', async () => {
-    const { execSync } = await import('node:child_process');
-    const hits = execSync("grep -rlE 'data-docs-(corners|shadow)|hds-docs-switches' src || true", {
-      encoding: 'utf8',
-    }).trim();
-    expect(hits).toBe('');
   });
 });
