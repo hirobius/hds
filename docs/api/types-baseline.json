@@ -317,7 +317,7 @@
     "Container": {
       "kind": "value",
       "signatures": [
-        "({ children, maxWidth, padding, style, className, }: ContainerProps): Element"
+        "({ children, maxWidth, gutter, padding, style, className, }: ContainerProps): Element"
       ]
     },
     "ContainerProps": {
@@ -930,7 +930,7 @@
     "TabsList": {
       "kind": "value",
       "signatures": [
-        "(props: Omit<TabsListProps & RefAttributes<HTMLDivElement>, \"ref\"> & RefAttributes<HTMLDivElement>): ReactNode"
+        "(props: Omit<TabsListProps & RefAttributes<HTMLDivElement> & { align?: \"start\" | undefined; }, \"ref\"> & RefAttributes<HTMLDivElement>): ReactNode"
       ]
     },
     "TabsTrigger": {
@@ -1941,6 +1941,7 @@
         "primitive.size.interactive.min",
         "primitive.size.interactive.minCompact",
         "primitive.size.width",
+        "primitive.size.width.1180",
         "primitive.size.width.1200",
         "primitive.size.width.280",
         "primitive.size.width.50ch",
@@ -2299,6 +2300,7 @@
         "semantic.layout.width",
         "semantic.layout.width.content",
         "semantic.layout.width.max",
+        "semantic.layout.width.shell",
         "semantic.link",
         "semantic.link.$type",
         "semantic.link.underlineOffset",
@@ -3822,6 +3824,7 @@
         "primitive.size.interactive.min",
         "primitive.size.interactive.minCompact",
         "primitive.size.width",
+        "primitive.size.width.1180",
         "primitive.size.width.1200",
         "primitive.size.width.280",
         "primitive.size.width.50ch",
