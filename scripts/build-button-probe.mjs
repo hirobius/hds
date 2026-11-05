@@ -21,6 +21,9 @@
  * check passed while 33 @radix-ui packages still got in). It lives here rather
  * than in a sibling script so it runs in the CI "Bundle budgets" step, which
  * calls this file by name.
+ *
+ * It also writes one entry-graph probe per row of ENTRY_GRAPHS
+ * (scripts/lib/entry-graph-probe.mjs, hds#1145) for the entry budgets.
  */
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -32,6 +35,7 @@ import {
   bundleButtonOnly,
   disallowedPackages,
 } from './lib/button-probe-esbuild.mjs';
+import { ENTRY_GRAPHS, bundleEntryGraph } from './lib/entry-graph-probe.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -89,6 +93,21 @@ try {
   );
 } finally {
   rmSync(ENTRY, { force: true });
+}
+
+// Entry-graph probes (hds#1145): dist/<entry>.js is only re-exports since the
+// build keeps one file per module, so the entry budgets measure these.
+for (const { entry, reexport, probe } of ENTRY_GRAPHS) {
+  const stub = join(PROBE_DIR, 'graph-entry.js');
+  writeFileSync(stub, `${reexport} from '../${entry.replace(/^dist\//, '')}';\n`);
+  try {
+    const out = await bundleEntryGraph({ entry: stub, outfile: join(ROOT, probe) });
+    console.log(
+      `build-button-probe — wrote ${probe} (${entry} graph; ${(out.bytes / 1024).toFixed(2)} kB raw, ${(out.gzipBytes / 1024).toFixed(2)} kB gzip)`,
+    );
+  } finally {
+    rmSync(stub, { force: true });
+  }
 }
 
 // After `finally`, so the temp entry is gone on failure too (process.exit skips it).

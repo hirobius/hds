@@ -168,16 +168,28 @@
  * Architecture decisions: docs/architecture/bundle-budget-decision.md
  */
 
+/*
+ * hds#1145 (2026-11-05): the library build keeps one output file per source
+ * module (vite.config.lib.ts, preserveModules), so a consumer's bundler drops
+ * the modules it does not import. dist/hirobius-ui.js, dist/manifest.js and
+ * dist/tokens.js are now re-export stubs, so their budgets measure an
+ * entry-graph probe instead (scripts/lib/entry-graph-probe.mjs): the entry
+ * bundled with packages external, which is all the code HDS ships for it.
+ * That also counts what the old per-file numbers missed. Before this change
+ * the main entry read 57.38 kB, but that excluded the shared
+ * chunks/useBreakpoint-*.js (84 kB raw) it imports; its full graph was
+ * 64.94 kB, already over the 60 kB limit. The limits are not changed here.
+ */
 module.exports = [
   {
-    name: 'main entry (hirobius-ui.js)',
-    path: 'dist/hirobius-ui.js',
+    name: 'main entry graph (hirobius-ui.js + the modules it re-exports)',
+    path: 'dist/probe/hirobius-ui.graph.js',
     limit: '60 kB',
     gzip: true,
   },
   {
-    name: 'manifest (hds-manifest.json ESM)',
-    path: 'dist/manifest.js',
+    name: 'manifest graph (hds-manifest.json ESM)',
+    path: 'dist/probe/manifest.graph.js',
     limit: '70 kB',
     gzip: true,
   },
@@ -209,8 +221,8 @@ module.exports = [
     gzip: true,
   },
   {
-    name: 'tokens.js (token bridge constants)',
-    path: 'dist/tokens.js',
+    name: 'tokens graph (token bridge constants)',
+    path: 'dist/probe/tokens.graph.js',
     limit: '7 kB',
     gzip: true,
   },
