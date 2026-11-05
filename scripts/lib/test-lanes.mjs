@@ -1,40 +1,36 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
 /**
- * test-lanes.mjs — the ONE selection helper for the split test gate (hds#1090).
+ * test-lanes.mjs — the ONE test-selection helper for the push gates (hds#1090).
  *
- * The full vitest suite is ~940s of wall time on a clean VM, and ~79% of it
- * is a handful of scripts/__tests__ integration files that spawn whole tools
- * per test case. So the gate has two lanes:
+ * The full vitest suite is ~8,500 tests and 15–50 min of wall time, ~79% of
+ * it a handful of scripts/__tests__ integration files that spawn whole tools
+ * per test case. A push does not need all of it, so there are three lanes:
  *
- *   fast lane   `pnpm test:fast` — every test EXCEPT the heavy list
- *               (scripts/__tests__/heavy-files.txt). Target: ≤ 6 min wall.
- *   full lane   `pnpm test` / `pnpm test:full` — pretest + the whole suite,
- *               unchanged. It stops running on every push, not altogether.
+ *   affected    what a push runs: pretest (the cheap --check generators) plus
+ *               only the tests the diff can reach — `vitest related` over the
+ *               changed files (the import graph), plus every test file that
+ *               NAMES a changed file (tests that spawn a script or read a data
+ *               file by path never import it, so the graph misses them), plus
+ *               the path-triggered heavy subset (AREA_RULES). Target ≤ 6 min.
+ *   fast        `pnpm test:fast` — everything EXCEPT the heavy list
+ *               (scripts/__tests__/heavy-files.txt). On demand only.
+ *   full        `pnpm test:full` (= `pnpm test`: pretest + the whole suite).
+ *               Runs before release (`pnpm release:local` → check:release),
+ *               nightly, and on any push whose diff trips needsFullSuite().
  *
  * Both gate entry points call THIS module — scripts/lib/gate-tier.mjs
  * (pre-push full tier) imports planTestCommands(), and ralph/gate.sh runs
  * this file's CLI (`run` mode). Nobody copies the selection rules.
  *
- * Selection for a diff (planTestCommands):
- *   1. check:fast is the caller's business; this helper plans only the test
- *      stage. In lanes mode the stage is: pretest, the fast lane, then the
- *      triggered heavy subset. (Pretest is spelled out because `pnpm test`
- *      used to carry it implicitly via the npm lifecycle; lanes mode must
- *      not silently drop those 43 checkers.)
- *   2. Path-triggered heavy subsets — a diff runs the heavy files whose
- *      subject it touches:
- *        scripts/upgrade/**            → upgrade-* heavy files (+ check-upgrade-ledger)
- *        scripts/figma* or figma/**    → figma-* heavy files
- *        scripts/generate* / build-*   → generator-* / generate-* heavy files
- *        scripts/eslint-plugin-hds/**  → eslint-hds-self-lint
- *      Plus two subject rules that need no table: a changed heavy test file
- *      runs itself, and a changed scripts/<stem>.mjs runs
- *      scripts/__tests__/<stem>.test.mjs when that file is heavy-listed.
- *   3. Fail safe to the FULL suite when the diff touches the mechanism
- *      itself: the heavy list, either vitest config, this helper, or
- *      gate-tier.mjs. An unknown diff (null) is also full.
+ * Safety fallback (needsFullSuite → full lane): a diff that touches shared
+ * config (package.json, lockfile, tsconfig, vite/eslint config), tokens
+ * (token JSON, src/styles|tokens|theme), generators (scripts/generate-* and
+ * build-*), the test setup, or the gate mechanism itself (heavy list, vitest
+ * configs, this helper, gate-tier, the pre-push hook and its scripts). Those
+ * reach tests through paths neither the import graph nor a name scan sees.
+ * An unknown diff (null) is also full.
  *
- * Full-suite cadence: the fleet's overnight run executes `pnpm test` (full)
+ * Full-suite cadence: the fleet's overnight run executes `pnpm test:full`
  * once nightly, locally — GitHub Actions is off, so there is no CI nightly;
  * when Actions returns, this becomes a CI nightly job and this note is the
  * pointer. The daily gate-timing collection re-measures per-file durations:
@@ -50,8 +46,8 @@
  */
 
 import { execFileSync, spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { readdirSync, readFileSync } from 'node:fs';
+import { basename, dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(import.meta.dirname ?? dirname(fileURLToPath(import.meta.url)), '../..');
@@ -78,14 +74,118 @@ export function readHeavyFiles(root = ROOT) {
   return parseHeavyFiles(readFileSync(join(root, HEAVY_LIST_PATH), 'utf8'));
 }
 
-/** Paths that make the selection fail safe to the whole suite. */
-export const FULL_SUITE_TRIGGERS = [
-  HEAVY_LIST_PATH,
-  'vitest.config.ts',
-  'vitest.fast.config.ts',
-  'scripts/lib/test-lanes.mjs',
-  'scripts/lib/gate-tier.mjs',
+/**
+ * Paths that make the selection fail safe to the whole suite: they reach
+ * tests through routes neither `vitest related` nor the name scan can see.
+ */
+export const FULL_SUITE_PATTERNS = [
+  // The gate mechanism itself.
+  new RegExp(`^${HEAVY_LIST_PATH.replace(/[.]/g, '\\.')}$`),
+  /^vitest(\.fast)?\.config\.[^/]+$/,
+  /^scripts\/lib\/(test-lanes|gate-tier)\.mjs$/,
+  /^scripts\/(pre-push-gate|hook-run)\.mjs$/,
+  /^scripts\/hooks\//,
+  /^\.husky\//,
+  /^tests\/setup\//,
+  // Shared config.
+  /^package\.json$/,
+  /^pnpm-(lock|workspace)\.yaml$/,
+  /^tsconfig[^/]*\.json$/,
+  /^vite\.config[^/]*$/,
+  /^eslint\.config\.[^/]+$/,
+  // Tokens.
+  /^hirobius\.tokens\.json$/,
+  /^tokens\.lock\.json$/,
+  /^tailwind\.config[^/]*$/,
+  /^src\/(styles|tokens|theme)\//,
+  // Generators.
+  /^scripts\/(generate|build)-[^/]+$/,
 ];
+
+/**
+ * The first changed path that forces the full suite, or null.
+ * @param {string[]} changedFiles
+ * @returns {string | null}
+ */
+export function needsFullSuite(changedFiles) {
+  return changedFiles.find((f) => FULL_SUITE_PATTERNS.some((re) => re.test(f))) ?? null;
+}
+
+/** Vitest's include globs (vitest.config.ts), as a predicate. Playwright specs are not ours. */
+const TEST_FILE_PATTERNS = [
+  /^scripts\/__tests__\/.+\.(test|spec)\.mjs$/,
+  /^scripts\/eslint-plugin-hds\/__tests__\/.+\.test\.mjs$/,
+  /^src\/.+\.(test|spec)\.(ts|tsx|js|jsx)$/,
+  /^tests\/.+\.test\.(ts|tsx)$/,
+];
+export const isTestFile = (f) => TEST_FILE_PATTERNS.some((re) => re.test(f));
+
+/** Directories that hold vitest test files (roots of TEST_FILE_PATTERNS). */
+const TEST_ROOTS = ['scripts/__tests__', 'scripts/eslint-plugin-hds/__tests__', 'src', 'tests'];
+const SKIP_DIRS = new Set(['node_modules', 'fixtures', '__snapshots__', 'dist', 'coverage']);
+
+/**
+ * Every vitest test file with its text, for the name scan.
+ * @param {string} [root] repo root
+ * @returns {Array<[string, string]>} [repo-relative path, file text]
+ */
+export function readTestIndex(root = ROOT) {
+  const out = [];
+  const walk = (dir) => {
+    let entries;
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const e of entries) {
+      const abs = join(dir, e.name);
+      if (e.isDirectory()) {
+        if (!SKIP_DIRS.has(e.name)) walk(abs);
+        continue;
+      }
+      const rel = relative(root, abs).split('\\').join('/');
+      if (isTestFile(rel)) out.push([rel, readFileSync(abs, 'utf8')]);
+    }
+  };
+  for (const r of TEST_ROOTS) walk(join(root, r));
+  return out;
+}
+
+/** Basenames too generic to scan for: they would select half the suite. */
+const GENERIC_BASENAMES = new Set([
+  'index',
+  'types',
+  'utils',
+  'constants',
+  'package',
+  'readme',
+  'changelog',
+]);
+
+/**
+ * Test files a diff reaches by name: a changed test file selects itself, and
+ * any other changed file selects every test whose text contains its basename
+ * (`check-css-integrity.mjs`, `state-surfaces.json`). This catches tests that
+ * spawn a script or read a data file — no import, so `vitest related` misses them.
+ * @param {string[]} changedFiles
+ * @param {Array<[string, string]>} testIndex from readTestIndex()
+ * @returns {string[]} sorted test paths
+ */
+export function referencingTests(changedFiles, testIndex) {
+  const hit = new Set();
+  for (const file of changedFiles) {
+    if (isTestFile(file)) {
+      hit.add(file);
+      continue;
+    }
+    const name = basename(file);
+    const stem = name.replace(/\.[^.]+$/, '').toLowerCase();
+    if (GENERIC_BASENAMES.has(stem) || stem.length < 4) continue;
+    for (const [test, text] of testIndex) if (text.includes(name)) hit.add(test);
+  }
+  return [...hit].sort();
+}
 
 /**
  * Area rules: [changed-path pattern, heavy-file predicate]. The predicates
@@ -123,22 +223,34 @@ export function triggeredHeavyFiles(changedFiles, heavyFiles) {
   return heavyFiles.filter((h) => hit.has(h));
 }
 
+const CODE_EXT = /\.(js|mjs|cjs|ts|tsx|jsx)$/;
+
 /**
  * The test-stage commands for a diff.
  * @param {string[] | null} changedFiles null = unknown diff (fail safe: full)
  * @param {string[]} heavyFiles the heavy list
- * @returns {{ mode: 'full' | 'lanes', commands: string[], heavy: string[] }}
+ * @param {Array<[string, string]>} [testIndex] from readTestIndex(), for the name scan
+ * @returns {{ mode: 'full' | 'affected', reason: string, commands: string[], tests: string[] }}
  */
-export function planTestCommands(changedFiles, heavyFiles) {
-  if (changedFiles == null || changedFiles.some((f) => FULL_SUITE_TRIGGERS.includes(f))) {
-    return { mode: 'full', commands: ['pnpm test'], heavy: heavyFiles };
+export function planTestCommands(changedFiles, heavyFiles, testIndex = []) {
+  const trigger = changedFiles == null ? 'diff unknown' : needsFullSuite(changedFiles);
+  if (trigger) {
+    return { mode: 'full', reason: trigger, commands: ['pnpm test'], tests: [] };
   }
-  const heavy = triggeredHeavyFiles(changedFiles, heavyFiles);
-  const commands = ['pnpm run pretest', 'pnpm test:fast'];
-  if (heavy.length) {
-    commands.push(`pnpm exec vitest run --passWithNoTests ${heavy.join(' ')}`);
-  }
-  return { mode: 'lanes', commands, heavy };
+  const tests = [
+    ...new Set([
+      ...referencingTests(changedFiles, testIndex),
+      ...triggeredHeavyFiles(changedFiles, heavyFiles),
+    ]),
+  ];
+  const sources = changedFiles.filter((f) => CODE_EXT.test(f) && !isTestFile(f));
+  const commands = ['pnpm run pretest'];
+  // One vitest process: `related` runs the tests importing `sources`, and a
+  // test file passed to it runs itself.
+  const args = [...sources, ...tests];
+  if (args.length)
+    commands.push(`pnpm exec vitest related --run --passWithNoTests ${args.join(' ')}`);
+  return { mode: 'affected', reason: `${changedFiles.length} file(s)`, commands, tests };
 }
 
 /** Changed paths vs origin/main, or null when git can't answer. */
@@ -159,9 +271,14 @@ export function main(argv) {
   const filesFlag = argv.indexOf('--files');
   const changed =
     filesFlag >= 0 ? argv[filesFlag + 1].split(',').filter(Boolean) : gitChangedFiles();
-  const { mode: selection, commands, heavy } = planTestCommands(changed, readHeavyFiles());
+  const {
+    mode: selection,
+    reason,
+    commands,
+    tests,
+  } = planTestCommands(changed, readHeavyFiles(), changed ? readTestIndex() : []);
   console.log(
-    `test lanes: ${selection}${selection === 'lanes' ? ` (heavy subset: ${heavy.length ? heavy.join(', ') : 'none'})` : ''}`,
+    `test lanes: ${selection} (${reason})${selection === 'affected' ? ` — ${tests.length} named test file(s) + vitest related` : ''}`,
   );
   for (const cmd of commands) {
     console.log(`$ ${cmd}`);
