@@ -1,7 +1,7 @@
 /**
  * C2 button depth: one fixed base. The hard edge sits under the box, and the face moves
- * while the edge grows or shrinks by the same amount, so the bottom of the edge never
- * moves (rest 0 / 3px, hover -1px / 4px, press 2px / 1px). No top highlight, no soft drop
+ * while the edge shrinks by the same amount, so the bottom of the edge never moves and
+ * the button compresses (hds#1196: rest 0 / 3px, hover 1px / 2px, press 3px / 0px). No top highlight, no soft drop
  * shadow. Tertiary is the ghost: no edge, no movement. Selected states take the primary
  * fill and the primary edge.
  */
@@ -47,14 +47,20 @@ describe('fixed base: the bottom of the edge never moves', () => {
     expect(prop(base, 'translate')).toBe('0 var(--hds-ty, 0px)');
   });
 
-  it('hover lifts 1px onto a 4px edge, on hover-capable pointers only', () => {
-    expect(states.hover).toEqual({ ty: '-1px', hs: '4px' });
+  it('hover compresses: the face sinks 1px onto a 2px edge, on hover-capable pointers only', () => {
+    expect(states.hover).toEqual({ ty: '1px', hs: '2px' });
     const at = theme.indexOf('.hds-btn-hard:hover');
     expect(theme.slice(at - 40, at)).toContain('(hover: hover)');
   });
 
-  it('press sinks 2px onto a 1px edge', () => {
-    expect(states.active).toEqual({ ty: '2px', hs: '1px' });
+  it('press compresses fully: the face sinks 3px onto a 0px edge', () => {
+    expect(states.active).toEqual({ ty: '3px', hs: '0px' });
+  });
+
+  it('the edge only shrinks: rest > hover > press, and the face never rises', () => {
+    expect(px(states.rest.hs)).toBeGreaterThan(px(states.hover.hs));
+    expect(px(states.hover.hs)).toBeGreaterThan(px(states.active.hs));
+    for (const s of Object.values(states)) expect(px(s.ty)).toBeGreaterThanOrEqual(0);
   });
 
   it('translate + edge offset is the same in every state', () => {
@@ -62,11 +68,11 @@ describe('fixed base: the bottom of the edge never moves', () => {
     expect(new Set(sums)).toEqual(new Set([3]));
   });
 
-  it('a hit band over the travel keeps a lifting or sinking button under the pointer', () => {
+  it('a hit band over the travel keeps a sinking button under the pointer', () => {
     expect(prop(base, 'position')).toBe('relative');
     const band = rule(".hds-btn-hard:not(:disabled, [aria-disabled='true'])::after");
     expect(prop(band, 'position')).toBe('absolute');
-    expect(prop(band, 'inset')).toBe('-2px 0 -4px');
+    expect(prop(band, 'inset')).toBe('-3px 0 -3px');
   });
 
   it('moves on the productive motion token (zeroed under reduced motion)', () => {
