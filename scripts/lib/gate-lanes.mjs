@@ -9,6 +9,10 @@
  * (some carry flags, some are `pnpm typecheck` or a generator), which is why it
  * is a lane and not a registry gate.
  *
+ * A lane step is a shell command string, or `{ "name": "<title>", "run": "<command>" }`
+ * when a reader shows the step by name: the pre-push lane's names are the stage
+ * titles hook-run.mjs prints and CONTRIBUTING.md's gate table lists.
+ *
  * run-gates.mjs is vendored byte-identical from hirobius/ops, so lanes get
  * their own small runner here until ops grows a lane mode; then run-lane.mjs
  * folds into run-gates.
@@ -20,10 +24,40 @@ import { join } from 'node:path';
 /** The runner call package.json uses for a lane. */
 export const LANE_CALL = /^node scripts\/run-lane\.mjs (\S+)$/;
 
+/** Ordered `{ title, run }` steps of `lane` (a plain step is titled by its command), or null. */
+export function laneStages(registry, lane) {
+  const steps = registry?.lanes?.[lane];
+  if (!Array.isArray(steps)) return null;
+  return steps.map((s) =>
+    typeof s === 'string' ? { title: s, run: s } : { title: s.name ?? s.run, run: s.run },
+  );
+}
+
 /** Ordered commands of `lane`, or null when the registry has no such lane. */
 export function laneCommands(registry, lane) {
-  const cmds = registry?.lanes?.[lane];
-  return Array.isArray(cmds) ? [...cmds] : null;
+  return laneStages(registry, lane)?.map((s) => s.run) ?? null;
+}
+
+/** A hook line that hands the hook's stages to a lane. */
+const HOOK_LANE_LINE = /^\s*node scripts\/run-lane\.mjs ([\w:.-]+)\s*$/;
+
+/**
+ * Hook `text` (e.g. .husky/pre-push) with each `node scripts/run-lane.mjs <lane>`
+ * line replaced by the lane's steps in the hook's own stage shape: an
+ * `echo "<title>…"` line, then the command. hook-run.mjs, the wiring check and
+ * the CONTRIBUTING.md table test parse the result exactly as they parsed the
+ * hand-written hook. A call to an unknown lane stays as-is (so it parses to no
+ * stage, and hook-run fails closed).
+ */
+export function expandHookLanes(text, registry) {
+  return String(text)
+    .split('\n')
+    .flatMap((line) => {
+      const lane = HOOK_LANE_LINE.exec(line)?.[1];
+      const stages = lane ? laneStages(registry, lane) : null;
+      return stages ? stages.flatMap((s) => [`echo "${s.title}…"`, s.run]) : [line];
+    })
+    .join('\n');
 }
 
 /**
@@ -40,7 +74,7 @@ export function expandLaneScripts(scripts, registry) {
   return out;
 }
 
-/** Run commands in order; stop at the first non-zero exit and return it (`&&`). */
+/** Run steps (commands or lane stages) in order; stop at the first non-zero exit and return it (`&&`). */
 export function runLane(commands, run) {
   for (const cmd of commands) {
     const code = run(cmd);

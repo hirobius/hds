@@ -15,9 +15,13 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expandPrePushHook, planGate } from '../scripts/lib/gate-tier.mjs';
+import { expandHookLanes } from '../scripts/lib/gate-lanes.mjs';
 
 const ROOT = resolve(__dirname, '..');
 const read = (rel: string) => readFileSync(resolve(ROOT, rel), 'utf8');
+// The hook's stages live in the registry's pre-push lane (hds#1095).
+const hook = () =>
+  expandHookLanes(read('.husky/pre-push'), JSON.parse(read('docs/guardrails/registry.json')));
 const commands = (script: string) =>
   script
     .split('\n')
@@ -26,17 +30,15 @@ const commands = (script: string) =>
 
 describe('.husky/pre-push', () => {
   it('runs `pnpm test` so the pretest gates fire', () => {
-    expect(commands(expandPrePushHook(read('.husky/pre-push')))).toContain('pnpm test');
+    expect(commands(expandPrePushHook(hook()))).toContain('pnpm test');
   });
 
   it('does not call vitest directly', () => {
-    expect(
-      commands(expandPrePushHook(read('.husky/pre-push'))).filter((c) => /vitest/.test(c)),
-    ).toEqual([]);
+    expect(commands(expandPrePushHook(hook())).filter((c) => /vitest/.test(c))).toEqual([]);
   });
 
   it('hands off to the tiered gate, whose full tier runs `pnpm test`', () => {
-    expect(commands(read('.husky/pre-push'))).toContain('node scripts/pre-push-gate.mjs');
+    expect(commands(hook())).toContain('node scripts/pre-push-gate.mjs');
     expect(planGate('full', [])).toContain('pnpm test');
   });
 
