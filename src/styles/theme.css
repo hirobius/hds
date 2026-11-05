@@ -654,7 +654,8 @@
  * --hds-kbd-edge / --hds-btn-edge. Since hds#897 each defaults to the item's own fill
  * stepped darker in both themes (C2: two OKLCH steps in light, a third of the way to the card
  * in dark; never a lighter rim): the
- * --hds-edge-* values build-tokens.mjs computes (scripts/lib/raised-edge.mjs). Button sets
+ * --hds-edge-* values build-tokens.mjs computes (scripts/lib/raised-edge.mjs); Button's secondary
+ * and tone edges are the component.button.edge.* tokens instead. Button sets
  * --hds-edge to its variant's or tone's edge inline (secondary's when unset). Kbd sits on a 2px key edge;
  * --semantic-shadow-key still overrides it whole. box-shadow adds no layout size. */
 .hds-kbd {
@@ -675,7 +676,7 @@
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
     --tw-shadow: 0 var(--hds-hs, 3px) 0
-      var(--hds-btn-edge, var(--hds-edge, var(--hds-edge-secondary)));
+      var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)));
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);

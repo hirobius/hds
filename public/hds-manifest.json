@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-04T15:44:09.044Z",
+  "generated": "2026-11-05T01:11:08.963Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -11805,6 +11805,35 @@
       ],
       "aiRules": "Pass the nav as `sidebar` (a node, or a function of `{ collapsed }` to draw an icon-only rail) and the page as children. Do not put a second `<main>`, `<header>` or `<nav>` landmark for the same regions inside it. Structure: Stack (header over body), Grid (rail, main, aside columns) and Surface (header and rail fill). Widths are CSS lengths on local `--hds-local-appshell-*` variables; spacing and colour are HDS tokens. Structural references (no code copied): Primer PageLayout, shadcn/ui sidebar blocks, the common SaaS frame. Slice 1 of #863; a bottom tab bar variant and moving Roleforge and Ops over are follow-up slices."
     },
+    "DialogBody": {
+      "category": "Overlays",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "docExempt": true,
+      "filePath": "src/app/components/dialog.tsx",
+      "description": "Scrolling region between a pinned Header and Footer; needs `scrollBody` on Content.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "primitive",
+      "preview": {
+        "exportName": "DialogBody",
+        "sizing": "panel"
+      },
+      "consumers": [],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null
+    },
     "List": {
       "category": "Display",
       "categorySource": "jsdoc",
@@ -12458,35 +12487,6 @@
           }
         ]
       }
-    },
-    "DialogBody": {
-      "category": "Overlays",
-      "categorySource": "jsdoc",
-      "governedCategory": true,
-      "docExempt": true,
-      "filePath": "src/app/components/dialog.tsx",
-      "description": "Scrolling region between a pinned Header and Footer; needs `scrollBody` on Content.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "primitive",
-      "preview": {
-        "exportName": "DialogBody",
-        "sizing": "panel"
-      },
-      "consumers": [],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "publicDataAttributes": [],
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "docsPage": null
     },
     "HdsPhosphor": {
       "category": "Compiler",
@@ -16303,6 +16303,66 @@
         "description": "Primary button pressed fill (hds#748).",
         "alias": "{semantic.accent.pressed}",
         "resolvedValue": "#1c2638"
+      },
+      {
+        "path": "component.button.edge.secondary",
+        "cssVar": "--component-button-edge-secondary",
+        "type": "color",
+        "description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+        "alias": "{primitive.color.neutral.350}",
+        "resolvedValue": "#b2b4b8",
+        "dark": {
+          "alias": "{primitive.color.neutral.725}",
+          "resolvedValue": "#272c36"
+        }
+      },
+      {
+        "path": "component.button.edge.danger",
+        "cssVar": "--component-button-edge-danger",
+        "type": "color",
+        "description": "Hard raised edge under a danger-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+        "alias": "{primitive.color.red.400}",
+        "resolvedValue": "#f87171",
+        "dark": {
+          "alias": "{primitive.color.red.700}",
+          "resolvedValue": "#b91c1c"
+        }
+      },
+      {
+        "path": "component.button.edge.success",
+        "cssVar": "--component-button-edge-success",
+        "type": "color",
+        "description": "Hard raised edge under a success-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+        "alias": "{primitive.color.green.400}",
+        "resolvedValue": "#34d399",
+        "dark": {
+          "alias": "{primitive.color.green.700}",
+          "resolvedValue": "#047857"
+        }
+      },
+      {
+        "path": "component.button.edge.warning",
+        "cssVar": "--component-button-edge-warning",
+        "type": "color",
+        "description": "Hard raised edge under a warning-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+        "alias": "{primitive.color.amber.400}",
+        "resolvedValue": "#fbbf24",
+        "dark": {
+          "alias": "{primitive.color.amber.800}",
+          "resolvedValue": "#92400e"
+        }
+      },
+      {
+        "path": "component.button.edge.info",
+        "cssVar": "--component-button-edge-info",
+        "type": "color",
+        "description": "Hard raised edge under an info-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+        "alias": "{primitive.color.blue.300}",
+        "resolvedValue": "oklch(0.70 0.2903 266.54)",
+        "dark": {
+          "alias": "{primitive.color.blue.500}",
+          "resolvedValue": "#1E2EFD"
+        }
       },
       {
         "path": "component.button.text",

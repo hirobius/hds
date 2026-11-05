@@ -605,6 +605,13 @@ export const tokens = {
       bg: "var(--component-button-bg)",
       bgHover: "var(--component-button-bgHover)",
       bgPressed: "var(--component-button-bgPressed)",
+      edge: {
+        secondary: "var(--component-button-edge-secondary)",
+        danger: "var(--component-button-edge-danger)",
+        success: "var(--component-button-edge-success)",
+        warning: "var(--component-button-edge-warning)",
+        info: "var(--component-button-edge-info)"
+      },
       text: "var(--component-button-text)",
       radius: "var(--component-button-radius)",
       paddingX: "var(--component-button-paddingX)",

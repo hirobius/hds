@@ -2990,6 +2990,73 @@
         "$value": "{semantic.accent.pressed}",
         "$description": "Primary button pressed fill (hds#748)."
       },
+      "edge": {
+        "secondary": {
+          "$type": "color",
+          "$value": "{primitive.color.neutral.350}",
+          "$description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.350}",
+                "Dark": "{primitive.color.neutral.725}"
+              }
+            }
+          }
+        },
+        "danger": {
+          "$type": "color",
+          "$value": "{primitive.color.red.400}",
+          "$description": "Hard raised edge under a danger-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.red.400}",
+                "Dark": "{primitive.color.red.700}"
+              }
+            }
+          }
+        },
+        "success": {
+          "$type": "color",
+          "$value": "{primitive.color.green.400}",
+          "$description": "Hard raised edge under a success-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.green.400}",
+                "Dark": "{primitive.color.green.700}"
+              }
+            }
+          }
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "{primitive.color.amber.400}",
+          "$description": "Hard raised edge under a warning-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.amber.400}",
+                "Dark": "{primitive.color.amber.800}"
+              }
+            }
+          }
+        },
+        "info": {
+          "$type": "color",
+          "$value": "{primitive.color.blue.300}",
+          "$description": "Hard raised edge under an info-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.blue.300}",
+                "Dark": "{primitive.color.blue.500}"
+              }
+            }
+          }
+        }
+      },
       "text": {
         "$type": "color",
         "$value": "{semantic.color.content.onAccent}",

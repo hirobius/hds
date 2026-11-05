@@ -531,6 +531,11 @@
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
   --component-button-bgPressed: var(--semantic-accent-pressed);
+  --component-button-edge-secondary: var(--primitive-color-neutral-350);
+  --component-button-edge-danger: var(--primitive-color-red-400);
+  --component-button-edge-success: var(--primitive-color-green-400);
+  --component-button-edge-warning: var(--primitive-color-amber-400);
+  --component-button-edge-info: var(--primitive-color-blue-300);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-radius: var(--semantic-radius-action);
   --component-button-paddingX: var(--primitive-space-4);
@@ -676,6 +681,11 @@
   --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
+  --component-button-edge-secondary: var(--primitive-color-neutral-725);
+  --component-button-edge-danger: var(--primitive-color-red-700);
+  --component-button-edge-success: var(--primitive-color-green-700);
+  --component-button-edge-warning: var(--primitive-color-amber-800);
+  --component-button-edge-info: var(--primitive-color-blue-500);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
   --semantic-elevation-raised-surface: var(--semantic-color-surface-raised);
@@ -774,6 +784,6 @@
   --component-list-groupGap: var(--semantic-space-scale-xl);
   --component-list-rowPadding: var(--semantic-space-scale-sm);
 }
-/* Raised edges (hds#897): each fill stepped darker in both themes (C2). scripts/lib/raised-edge.mjs */
-:root{--hds-edge-primary:#010207;--hds-edge-secondary:#bdbec0;--hds-edge-danger:#d4cccc;--hds-edge-success:#c8d4ce;--hds-edge-warning:#d6d3c8;--hds-edge-info:#c4cbd9;--hds-edge-kbd:#cdcecf;}
-[data-theme="dark"]{--hds-edge-primary:#a5a6a9;--hds-edge-secondary:#3d4147;--hds-edge-danger:#350d0b;--hds-edge-success:#08231c;--hds-edge-warning:#361809;--hds-edge-info:#0c1324;--hds-edge-kbd:#1b1f26;}
+/* Raised edges (hds#897): computed fills stepped darker (C2); Button tones alias component.button.edge.*. scripts/lib/raised-edge.mjs */
+:root{--hds-edge-primary:#010207;--hds-edge-kbd:#cdcecf;--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);}
+[data-theme="dark"]{--hds-edge-primary:#a5a6a9;--hds-edge-kbd:#1b1f26;}
