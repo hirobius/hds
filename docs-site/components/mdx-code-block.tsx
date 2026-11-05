@@ -4,8 +4,8 @@ import { isValidElement, type ComponentProps, type ReactNode } from 'react';
 
 /**
  * MDX `pre` -> the HDS CodeBlock, so a code fence looks like the CodeBlock on
- * its component page: HDS border and radius (the Corners switch squares it) and
- * no shadow (the CodeBlock has none, so the Shadow switch leaves it flat).
+ * its component page: HDS border and radius tokens and no shadow (the CodeBlock
+ * has none).
  *
  * Fumadocs' Shiki pass is off (source.config.ts), so MDX hands this one
  * <code class="language-…"> holding the fence's raw text. That text is the

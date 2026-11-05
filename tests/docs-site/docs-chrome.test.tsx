@@ -142,13 +142,6 @@ describe('slice 2: sidebar, drawer, contents rail, images', () => {
     );
   });
 
-  it('the Sharp override is down to .rounded; cards follow --role-radius (hds#806)', () => {
-    const block = /data-docs-corners='sharp'\]\s*([^{]*)\{/g;
-    const selectors = [...css().matchAll(block)].map((m) => m[1].trim()).filter(Boolean);
-    // .rounded is the --hds-radius-4 primitive (Kbd, Skeleton text); rounded-lg/.hds-card clamp to 0.
-    expect(selectors).toEqual(['.rounded']);
-  });
-
   it('renders MDX images with the HDS radius class, not rounded-lg', () => {
     const { container } = render(<MdxImg src="/x.png" alt="x" width={10} height={10} />);
     const img = container.querySelector('img');

@@ -7,8 +7,8 @@ import { ThemeSegments } from './theme-segments';
 const noop = () => () => {};
 
 /**
- * The docs theme switch, in place of Fumadocs' ThemeSwitch (a pill that ignored the Corners
- * switch). next-themes, through Fumadocs' RootProvider, still owns the state. The selection
+ * The docs theme switch, in place of Fumadocs' ThemeSwitch (a pill that ignored the HDS radius
+ * token). next-themes, through Fumadocs' RootProvider, still owns the state. The selection
  * waits for mount: the stored theme is unknown on the server.
  */
 export function ThemeToggle() {
