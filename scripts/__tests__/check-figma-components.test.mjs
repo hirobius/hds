@@ -1,134 +1,145 @@
 /** @internal — not part of @hirobius/design-system public API surface. */
-// @vitest-environment node
 /**
- * Figma component contracts (owner decision 2026-11-05): Button drops `iconOnly`, and
- * icon-only buttons get their own IconButton contract with no link variant. The contracts
- * are generated from code (src/app/data/component-api.json), so code stays the source of
- * truth; the committed figma/contracts/*.json must match what the generator builds.
+ * Tests for scripts/check-figma-components.mjs: the Button contract is generated
+ * from code, a snapshot of the condensed Figma shape passes, and today's committed
+ * 576-variant snapshot fails listing every difference.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  buildContracts,
-  findMissingVariables,
-  findStaleContracts,
-  serializeContract,
+  buildContract,
+  diffContract,
+  buildSnapshotScript,
+  ingestResult,
+  run,
 } from '../check-figma-components.mjs';
+import { hdsChecksum } from '../lib/figma-runtime.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const readJson = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const FIX = path.join(REPO, 'fixtures/check-figma-components');
+const json = (p) => JSON.parse(readFileSync(p, 'utf8'));
+const contract = buildContract('Button');
 
-const api = {
-  components: {
-    Button: {
-      filePath: 'src/app/components/button.tsx',
-      props: [
-        { name: 'variant', type: '"link" | "primary" | "secondary" | "tertiary" | null' },
-        { name: 'size', type: '"sm" | "md" | "lg" | null' },
-        {
-          name: 'tone',
-          type: '"success" | "danger" | "warning" | "info" | "neutral" | "quiet" | null',
+describe('check-figma-components', () => {
+  it('committed contract is what code generates', () => {
+    expect(json(path.join(REPO, 'figma/contracts/Button.json'))).toEqual(contract);
+  });
+
+  it('contract encodes the condensed shape', () => {
+    expect(Object.keys(contract.variantAxes).sort()).toEqual(['Size', 'State', 'Variant']);
+    expect(contract.variantAxes.State.values).toEqual(['rest', 'hover', 'pressed', 'disabled']);
+    expect(contract.variantCount).toBe(48);
+    expect(Object.keys(contract.booleans)).toEqual(expect.arrayContaining(['Loading', 'Focus']));
+    expect(contract.modeCollections['Button tone'].modes).toContain('quiet');
+  });
+
+  // Owner decision 2026-11-05: icon-only buttons are their own IconButton component.
+  it('Button has no icon-only property; link keeps zero inline padding', () => {
+    expect(Object.keys(contract.booleans)).not.toContain('Icon only');
+    expect(JSON.stringify(contract)).not.toContain('iconOnly');
+    expect(contract.zeroPaddingXVariants).toEqual(['link']);
+  });
+
+  describe('IconButton contract', () => {
+    const icon = buildContract('IconButton');
+
+    it('committed IconButton contract is what code generates', () => {
+      expect(json(path.join(REPO, 'figma/contracts/IconButton.json'))).toEqual(icon);
+    });
+
+    it('is Variant [primary, secondary, tertiary] x Size x State, no link', () => {
+      expect(icon.variantAxes.Variant.values).toEqual(['primary', 'secondary', 'tertiary']);
+      expect(icon.variantAxes.Size.values).toEqual(['sm', 'md', 'lg']);
+      expect(icon.variantAxes.State.values).toEqual(['rest', 'hover', 'pressed', 'disabled']);
+      expect(icon.variantCount).toBe(36);
+    });
+
+    it('has Focus and Loading booleans, an Icon instance swap and the Button tone modes', () => {
+      expect(Object.keys(icon.booleans).sort()).toEqual(['Focus', 'Loading']);
+      expect(Object.keys(icon.instanceSwaps)).toEqual(['Icon']);
+      expect(icon.texts).toEqual({});
+      expect(icon.modeCollections).toEqual(contract.modeCollections);
+    });
+
+    it('binds a square root to size height, padding 0, and the Icon layer to iconSize', () => {
+      for (const s of ['sm', 'md', 'lg']) {
+        expect(icon.sizeBindings[s]).toEqual({
+          'root.width': `button/size/${s}/height`,
+          'root.height': `button/size/${s}/height`,
+          'Icon.width': `button/size/${s}/iconSize`,
+          'Icon.height': `button/size/${s}/iconSize`,
+        });
+      }
+      expect(icon.rootPadding).toBe(0);
+    });
+
+    it('a Figma IconButton with padding fails the diff; no snapshot script before it is drawn', () => {
+      const snap = {
+        variantAxes: {
+          Variant: icon.variantAxes.Variant.values,
+          Size: icon.variantAxes.Size.values,
+          State: icon.variantAxes.State.values,
         },
-        { name: 'iconOnly', type: 'boolean' },
-        { name: 'loading', type: 'boolean' },
-      ],
-    },
-  },
-};
-
-describe('buildContracts', () => {
-  const { Button, IconButton } = buildContracts(api);
-
-  it('Button has no iconOnly property and keeps the link variant', () => {
-    const names = Object.keys(Button.properties);
-    expect(names.some((n) => /icon\s*only/i.test(n))).toBe(false);
-    expect(Button.properties.Variant.values).toEqual(['primary', 'secondary', 'tertiary', 'link']);
-  });
-
-  it('IconButton is Variant [primary, secondary, tertiary] x Size x State', () => {
-    expect(IconButton.properties.Variant).toEqual({
-      type: 'VARIANT',
-      values: ['primary', 'secondary', 'tertiary'],
-    });
-    expect(IconButton.properties.Size.values).toEqual(['sm', 'md', 'lg']);
-    expect(IconButton.properties.State.values).toEqual(['rest', 'hover', 'pressed', 'disabled']);
-    expect(IconButton.variantCount).toBe(36);
-  });
-
-  it('IconButton has Focus and Loading booleans and an Icon instance swap', () => {
-    expect(IconButton.properties.Focus).toEqual({ type: 'BOOLEAN', default: false });
-    expect(IconButton.properties.Loading).toEqual({ type: 'BOOLEAN', default: false });
-    expect(IconButton.properties.Icon).toEqual({ type: 'INSTANCE_SWAP' });
-  });
-
-  it('IconButton takes the Button tone variable modes, neutral first', () => {
-    expect(IconButton.variableModes).toEqual({
-      'Button tone': ['neutral', 'quiet', 'success', 'danger', 'warning', 'info'],
+        variantCount: 36,
+        booleans: { Focus: false, Loading: false },
+        instanceSwaps: { Icon: true },
+        texts: {},
+        modeCollections: { 'Button tone': icon.modeCollections['Button tone'].modes },
+        sizeBindings: Object.fromEntries(
+          Object.entries(icon.sizeBindings).map(([s, f]) => [
+            s,
+            Object.fromEntries(Object.entries(f).map(([k, v]) => [k, [v]])),
+          ]),
+        ),
+        rootPadding: 0,
+      };
+      expect(diffContract(icon, snap)).toEqual([]);
+      expect(diffContract(icon, { ...snap, rootPadding: 8 })).toEqual([
+        'root padding: contract 0, Figma 8',
+      ]);
+      expect(() => buildSnapshotScript('IconButton')).toThrow(/not drawn/);
     });
   });
 
-  it('IconButton binds a square root to size height, padding 0, and an Icon layer to iconSize', () => {
-    for (const s of ['sm', 'md', 'lg']) {
-      expect(IconButton.sizes[s].root).toEqual({
-        width: `button/size/${s}/height`,
-        height: `button/size/${s}/height`,
-        padding: 0,
-      });
-      expect(IconButton.sizes[s].layers).toEqual({
-        Icon: { width: `button/size/${s}/iconSize`, height: `button/size/${s}/iconSize` },
-      });
-    }
+  it('pass fixture has no differences', () => {
+    expect(diffContract(contract, json(path.join(FIX, 'pass.snapshot.json')))).toEqual([]);
   });
 
-  it('a link variant on IconButton is impossible even if code adds one later', () => {
-    const more = structuredClone(api);
-    more.components.Button.props[0].type = '"link" | "primary" | "ghost" | null';
-    expect(buildContracts(more).IconButton.properties.Variant.values).toEqual(['primary', 'ghost']);
-  });
-
-  it('throws when the Button props are missing, so a renamed prop cannot pass silently', () => {
-    expect(() => buildContracts({ components: {} })).toThrow(/Button/);
-  });
-});
-
-describe('findMissingVariables', () => {
-  const contracts = buildContracts(api);
-  const collections = (names, extra = []) => [
-    { name: 'Hirobius/Component', variables: names.map((name) => ({ name })) },
-    ...extra,
-  ];
-  const all = ['sm', 'md', 'lg'].flatMap((s) =>
-    ['height', 'iconSize', 'paddingX'].map((k) => `button/size/${s}/${k}`),
-  );
-
-  it('reports nothing when every bound variable and the tone collection exist', () => {
-    const snap = collections(all, [
-      {
-        name: 'Button tone',
-        modes: ['neutral', 'quiet', 'success', 'danger', 'warning', 'info'].map((name) => ({
-          name,
-        })),
-        variables: [],
-      },
+  it('fail fixture lists each difference', () => {
+    const d = diffContract(contract, json(path.join(FIX, 'fail.snapshot.json')));
+    expect(d).toEqual([
+      'variant axis "State" values differ: contract [rest, hover, pressed, disabled], Figma [rest, hover, pressed, disabled, loading]',
+      'variant count: contract 48, Figma 60',
+      'boolean property "Loading" (code: loading) is missing',
+      'collection "Button tone" modes: contract [neutral, quiet, danger, success, warning, info], Figma [neutral, danger]',
+      'Size=md root.height binding: contract button/size/md/height, Figma (unbound)',
     ]);
-    expect(findMissingVariables(contracts, snap)).toEqual([]);
   });
 
-  it('names a missing variable and a missing mode collection', () => {
-    const snap = collections(all.filter((n) => n !== 'button/size/sm/iconSize'));
-    const found = findMissingVariables(contracts, snap);
-    expect(found).toContain('IconButton: variable button/size/sm/iconSize is not in the snapshot');
-    expect(found).toContain('IconButton: variable collection "Button tone" is not in the snapshot');
+  it('the real committed Button snapshot fails today', () => {
+    const snap = json(path.join(REPO, 'figma/components/Button.snapshot.json')).snapshot;
+    const d = diffContract(contract, snap);
+    expect(d).toContain('variant count: contract 48, Figma 576');
+    expect(d).toContain('variable-mode collection "Button tone" (code: tone) is missing');
+    const lines = [];
+    expect(run(['--check'], { log: () => {}, error: (l) => lines.push(l) })).toBe(1);
+    expect(run(['--report'], { log: () => {}, error: () => {} })).toBe(0);
   });
-});
 
-describe('the committed contracts', () => {
-  it('match what the generator builds from component-api.json', () => {
-    const built = buildContracts(readJson('src/app/data/component-api.json'));
-    const read = (name) => readFileSync(join(ROOT, 'figma/contracts', `${name}.json`), 'utf8');
-    expect(findStaleContracts(built, read)).toEqual([]);
-    expect(read('IconButton')).toBe(serializeContract(built.IconButton));
+  it('snapshot script stays under 40k chars and reads the library only', () => {
+    const s = buildSnapshotScript('Button');
+    expect(s.length).toBeLessThan(40000);
+    expect(s).toContain('Refused: this is not the HDS library');
+    expect(s).not.toMatch(/\.(set\w+|remove|createComponent|appendChild)\(/);
+  });
+
+  it('ingest verifies the checksum and passes unchanged through', () => {
+    const snapshot = json(path.join(FIX, 'pass.snapshot.json'));
+    const ok = ingestResult({ snapshot, checksum: hdsChecksum(JSON.stringify(snapshot)) });
+    expect(ok.snapshot).toEqual(snapshot);
+    expect(() => ingestResult({ snapshot, checksum: '00000000' })).toThrow(/Checksum/);
+    expect(ingestResult({ unchanged: true, checksum: 'x' })).toBeNull();
   });
 });

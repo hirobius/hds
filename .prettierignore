@@ -36,9 +36,6 @@ scripts/__tests__/fixtures/figma-model/model.golden.json
 # Figma snapshots — written by scripts/lib/figma-snapshot.mjs and verified by
 # checksum; let the writer own the layout so a re-ingest diffs only real changes.
 figma/snapshot.json
-# Figma component contracts — written by scripts/check-figma-components.mjs, which
-# fails --check on any byte change, so Prettier must not reflow them.
-figma/contracts/
 fixtures/check-figma-drift/**/snapshot.json
 fixtures/check-figma-fallbacks/**/snapshot.json
 # Figma spec-sheet data (hds#598) — written by scripts/generate-spec-sheets.mjs,

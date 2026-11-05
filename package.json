@@ -346,7 +346,7 @@
     "promote": "node scripts/promote.mjs",
     "readme:counts": "node scripts/build-readme-counts.mjs",
     "regen": "node scripts/regen.mjs",
-    "release": "pnpm check:figma-release && pnpm audit --prod --audit-level high && pnpm build:lib && pnpm smoke:consumer --skip-build && changeset publish",
+    "release": "pnpm check:figma-release && pnpm audit --prod --audit-level high && pnpm build:lib && pnpm smoke:consumer --skip-build && node scripts/check-pack-scan.mjs && changeset publish",
     "release:local": "node scripts/release-local.mjs",
     "release:yank": "node scripts/upgrade/yank.mjs",
     "scaffold:component": "node scripts/scaffold-component.mjs",

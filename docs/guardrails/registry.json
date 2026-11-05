@@ -275,14 +275,14 @@
     },
     {
       "id": "check-figma-components",
-      "description": "Builds the Figma component contracts from code (src/app/data/component-api.json) into figma/contracts/<Name>.json: Button (Variant x Size x State, no iconOnly) and IconButton (Variant without link x Size x State, Focus and Loading booleans, an Icon instance swap, the \"Button tone\" variable modes, a square root bound to button/size/<s>/height with padding 0 and an Icon layer bound to button/size/<s>/iconSize; owner decision 2026-11-05). --report lists stale contracts and any bound variable or mode collection figma/snapshot.json lacks, and always exits 0 (advisory, in pretest); --check exits 1 on a stale contract; no flag rewrites the files. Never talks to Figma.",
+      "description": "Code <-> Figma component parity (hds#1160). Generates figma/contracts/<Name>.json from the component source and its spec sheet: Button (Variant x Size x State; tone as the \"Button tone\" mode collection; Loading and Focus booleans; no icon-only property) and IconButton (owner decision 2026-11-05: Button's Variant axis minus link x Size x State, Focus and Loading booleans, an Icon instance swap, the Button tone modes, a square root bound to button/size/<s>/height with padding 0 and an Icon layer bound to button/size/<s>/iconSize; not drawn yet). Diffs each contract against the committed read-only Figma snapshot (figma/components/<Name>.snapshot.json). --report (pretest) is advisory and exits 0; --check exits 1 on a stale contract or any difference; --write regenerates; --emit-script and --ingest take the snapshot. Never writes to Figma.",
       "severity": "warn",
       "gateScript": "scripts/check-figma-components.mjs",
-      "fixturePath": null,
+      "fixturePath": "fixtures/check-figma-components",
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "pnpm-meta",
-      "supportsJson": true
+      "supportsJson": false
     },
     {
       "id": "check-figma-mapping",

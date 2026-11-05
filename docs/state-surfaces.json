@@ -321,20 +321,6 @@
       "check": "node scripts/check-figma-drift.mjs"
     },
     {
-      "path": "figma/contracts/Button.json",
-      "describes": "The Button component contract the Figma library must meet, built from code",
-      "kind": "generated",
-      "by": "scripts/check-figma-components.mjs",
-      "check": "node scripts/check-figma-components.mjs --check"
-    },
-    {
-      "path": "figma/contracts/IconButton.json",
-      "describes": "The IconButton component contract the Figma library must meet, built from code",
-      "kind": "generated",
-      "by": "scripts/check-figma-components.mjs",
-      "check": "node scripts/check-figma-components.mjs --check"
-    },
-    {
       "path": "figma/inventory.json",
       "describes": "Every page, component set and variant count in the Figma library",
       "kind": "generated",
