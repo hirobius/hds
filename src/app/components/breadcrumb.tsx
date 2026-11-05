@@ -21,6 +21,7 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useHdsRouter } from '../context/RouterContext';
+import { safeHref } from '../../lib/safe-href';
 import { Icon } from './icon';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -76,7 +77,7 @@ export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, Breadcru
               <li key={`${item.label}-${index}`} className="inline-flex items-center gap-scale-xs">
                 {linkable ? (
                   <LinkComponent
-                    to={item.href as string}
+                    to={safeHref(item.href as string)}
                     style={hds.typeStyles.ui}
                     className="hds-focus hds-touch-row inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
                   >

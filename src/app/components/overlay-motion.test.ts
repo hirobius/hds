@@ -18,9 +18,11 @@ const RADIX_OWNED = [
   'select.tsx',
   'combobox.tsx',
   'combobox-creatable.tsx',
+  'listbox-option.tsx',
   'command-palette.tsx',
 ];
-const FADING = ['combobox.tsx', 'combobox-creatable.tsx', 'command-palette.tsx'];
+// Combobox options render through the shared listbox-option.tsx row (hds#1145).
+const FADING = ['listbox-option.tsx', 'command-palette.tsx'];
 
 describe('overlay family carries no motion-ok exemption', () => {
   for (const file of RADIX_OWNED) {

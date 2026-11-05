@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T13:57:56.804Z",
+  "generated": "2026-11-05T19:21:08.447Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3819,6 +3819,7 @@
         "src/app/components/sheet.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
+        "src/app/design-system/motion-tokens.ts",
         "src/app/hooks/useHdsMotion.ts",
         "src/form/index.ts",
         "src/index.ts",
@@ -6595,6 +6596,7 @@
         "src/app/components/form.tsx",
         "src/app/components/input.tsx",
         "src/app/components/listbox-nav.ts",
+        "src/app/components/listbox-option.tsx",
         "src/app/components/select.tsx",
         "src/index.ts"
       ],
@@ -11127,9 +11129,9 @@
           "source": "jsdoc"
         }
       ],
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2265-119",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2265-119",
       "tier": "primitive",
       "preview": {
         "exportName": "Sheet",
@@ -11642,9 +11644,9 @@
           "owner": "consumer"
         }
       ],
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2264-67",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2264-67",
       "tier": "pattern",
       "preview": {
         "exportName": "CommandPalette",
@@ -15050,6 +15052,77 @@
         }
       },
       {
+        "path": "semantic.color.edge.primary",
+        "cssVar": "--semantic-color-edge-primary",
+        "type": "color",
+        "description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
+        "value": "oklch(0.0875 0.0215 266.83)",
+        "dark": {
+          "alias": "oklch(0.7253 0.0044 271.35)",
+          "resolvedValue": "oklch(0.7253 0.0044 271.35)"
+        }
+      },
+      {
+        "path": "semantic.color.edge.neutral",
+        "cssVar": "--semantic-color-edge-neutral",
+        "type": "color",
+        "description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "alias": "{primitive.color.neutral.400}",
+        "resolvedValue": "#a0a3a8",
+        "dark": {
+          "alias": "{primitive.color.neutral.725}",
+          "resolvedValue": "#272c36"
+        }
+      },
+      {
+        "path": "semantic.color.edge.danger",
+        "cssVar": "--semantic-color-edge-danger",
+        "type": "color",
+        "description": "Hard raised edge under danger-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "alias": "{primitive.color.red.400}",
+        "resolvedValue": "#f87171",
+        "dark": {
+          "alias": "{primitive.color.red.700}",
+          "resolvedValue": "#b91c1c"
+        }
+      },
+      {
+        "path": "semantic.color.edge.success",
+        "cssVar": "--semantic-color-edge-success",
+        "type": "color",
+        "description": "Hard raised edge under success-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "alias": "{primitive.color.green.400}",
+        "resolvedValue": "#34d399",
+        "dark": {
+          "alias": "{primitive.color.green.700}",
+          "resolvedValue": "#047857"
+        }
+      },
+      {
+        "path": "semantic.color.edge.warning",
+        "cssVar": "--semantic-color-edge-warning",
+        "type": "color",
+        "description": "Hard raised edge under warning-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "alias": "{primitive.color.amber.400}",
+        "resolvedValue": "#fbbf24",
+        "dark": {
+          "alias": "{primitive.color.amber.800}",
+          "resolvedValue": "#92400e"
+        }
+      },
+      {
+        "path": "semantic.color.edge.info",
+        "cssVar": "--semantic-color-edge-info",
+        "type": "color",
+        "description": "Hard raised edge under info-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "alias": "{primitive.color.blue.300}",
+        "resolvedValue": "oklch(0.70 0.2903 266.54)",
+        "dark": {
+          "alias": "{primitive.color.blue.500}",
+          "resolvedValue": "#1E2EFD"
+        }
+      },
+      {
         "path": "semantic.color.shadow.hard",
         "cssVar": "--semantic-color-shadow-hard",
         "type": "color",
@@ -15988,9 +16061,13 @@
         "path": "semantic.focus.ring.color",
         "cssVar": "--semantic-focus-ring-color",
         "type": "color",
-        "description": "Focus ring colour. Forced-colors mode swaps it for the system Highlight colour.",
-        "alias": "{semantic.color.border.accent}",
-        "resolvedValue": "#3a4457"
+        "description": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#3a4457",
+        "dark": {
+          "alias": "{primitive.color.graphite.300}",
+          "resolvedValue": "#a8aeb8"
+        }
       },
       {
         "path": "semantic.focus.gap.width",
@@ -16651,64 +16728,52 @@
         "resolvedValue": "#1c2638"
       },
       {
+        "path": "component.button.edge.primary",
+        "cssVar": "--component-button-edge-primary",
+        "type": "color",
+        "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
+        "alias": "{semantic.color.edge.primary}",
+        "resolvedValue": "oklch(0.0875 0.0215 266.83)"
+      },
+      {
         "path": "component.button.edge.secondary",
         "cssVar": "--component-button-edge-secondary",
         "type": "color",
-        "description": "Hard raised edge under a secondary Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-        "alias": "{primitive.color.neutral.400}",
-        "resolvedValue": "#a0a3a8",
-        "dark": {
-          "alias": "{primitive.color.neutral.725}",
-          "resolvedValue": "#272c36"
-        }
+        "description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral (hds#897).",
+        "alias": "{semantic.color.edge.neutral}",
+        "resolvedValue": "#a0a3a8"
       },
       {
         "path": "component.button.edge.danger",
         "cssVar": "--component-button-edge-danger",
         "type": "color",
-        "description": "Hard raised edge under a danger-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-        "alias": "{primitive.color.red.400}",
-        "resolvedValue": "#f87171",
-        "dark": {
-          "alias": "{primitive.color.red.700}",
-          "resolvedValue": "#b91c1c"
-        }
+        "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger (hds#897).",
+        "alias": "{semantic.color.edge.danger}",
+        "resolvedValue": "#f87171"
       },
       {
         "path": "component.button.edge.success",
         "cssVar": "--component-button-edge-success",
         "type": "color",
-        "description": "Hard raised edge under a success-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-        "alias": "{primitive.color.green.400}",
-        "resolvedValue": "#34d399",
-        "dark": {
-          "alias": "{primitive.color.green.700}",
-          "resolvedValue": "#047857"
-        }
+        "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success (hds#897).",
+        "alias": "{semantic.color.edge.success}",
+        "resolvedValue": "#34d399"
       },
       {
         "path": "component.button.edge.warning",
         "cssVar": "--component-button-edge-warning",
         "type": "color",
-        "description": "Hard raised edge under a warning-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-        "alias": "{primitive.color.amber.400}",
-        "resolvedValue": "#fbbf24",
-        "dark": {
-          "alias": "{primitive.color.amber.800}",
-          "resolvedValue": "#92400e"
-        }
+        "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning (hds#897).",
+        "alias": "{semantic.color.edge.warning}",
+        "resolvedValue": "#fbbf24"
       },
       {
         "path": "component.button.edge.info",
         "cssVar": "--component-button-edge-info",
         "type": "color",
-        "description": "Hard raised edge under an info-tone Button : a fixed primitive step, at least 1.5:1 against its fill (hds#897).",
-        "alias": "{primitive.color.blue.300}",
-        "resolvedValue": "oklch(0.70 0.2903 266.54)",
-        "dark": {
-          "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
-        }
+        "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897).",
+        "alias": "{semantic.color.edge.info}",
+        "resolvedValue": "oklch(0.70 0.2903 266.54)"
       },
       {
         "path": "component.button.text",

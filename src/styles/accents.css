@@ -76,6 +76,9 @@
   --semantic-color-content-onAccent: var(
     --primitive-color-neutral-white
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-focus-ring-color: var(
+    --semantic-color-border-accent
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --hds-edge-primary: #081c98; /* css-ok: raised edge (hds#897) */
 }
 [data-accent='cobalt'][data-theme='dark'] {

@@ -25,16 +25,28 @@ export const EDGE_FILLS = {
 };
 
 /**
+ * Computed edges that also ship as tokens, so Figma (button/edge/primary) has a code source.
+ * The token holds this script's output per mode; buildEdgeCSS throws if they drift, and the
+ * base --hds-edge-<key> reads component.button.edge.<key> instead of a hard-coded hex.
+ * Accents and tenants still get computed overrides (overlayEdgeVars), since they move the fill.
+ */
+export const EDGE_COMPUTED_TOKENS = {
+  primary: 'semantic.color.edge.primary',
+};
+
+/**
  * Button edges that are tokens, not computed (Adrian approved): component.button.edge.<key>,
  * a fixed primitive per theme, kept at least EDGE_MIN_CONTRAST against the fill it sits under.
  * --hds-edge-<key> aliases the token's CSS variable, which switches with the theme itself.
  */
+// Where each Button edge's Light/Dark modes live; component.button.edge.<key>
+// aliases these so component colors never skip the semantic tier.
 export const EDGE_TOKENS = {
-  secondary: 'component.button.edge.secondary',
-  danger: 'component.button.edge.danger',
-  success: 'component.button.edge.success',
-  warning: 'component.button.edge.warning',
-  info: 'component.button.edge.info',
+  secondary: 'semantic.color.edge.neutral',
+  danger: 'semantic.color.edge.danger',
+  success: 'semantic.color.edge.success',
+  warning: 'semantic.color.edge.warning',
+  info: 'semantic.color.edge.info',
 };
 
 /** The fill each token edge sits under (for the contrast floor). */
@@ -167,19 +179,41 @@ export function computeEdges(tree) {
   return out;
 }
 
+/**
+ * Every computed edge token whose Light/Dark value differs from what this script computes.
+ * @returns {string[]} one message per drifted mode; empty when they agree
+ */
+export function edgeTokenDrift(tree) {
+  const e = computeEdges(tree);
+  return Object.entries(EDGE_COMPUTED_TOKENS).flatMap(([k, path]) =>
+    ['Light', 'Dark'].flatMap((mode) => {
+      const v = resolveHex(tree, path, mode);
+      return v === e[mode][k]
+        ? []
+        : [`${path} (${mode}) is ${v}; raised-edge computes ${e[mode][k]}`];
+    }),
+  );
+}
+
 const decls = (edges, keys) => keys.map((k) => `--hds-edge-${k}:${edges[k]};`).join('');
 const tokenVar = (path) => `var(--${path.replaceAll('.', '-')})`;
 
 /** The base CSS: light edges on :root, only the changed ones under [data-theme="dark"]. */
 export function buildEdgeCSS(raw) {
+  const drift = edgeTokenDrift(raw);
+  if (drift.length)
+    throw new Error(
+      `raised-edge: edge token drift; set the token to the computed value:\n  ${drift.join('\n  ')}`,
+    );
   const e = computeEdges(raw);
-  const keys = Object.keys(EDGE_FILLS);
+  const keys = Object.keys(EDGE_FILLS).filter((k) => !(k in EDGE_COMPUTED_TOKENS));
   const dark = keys.filter((k) => e.Dark[k] !== e.Light[k]);
+  const aliased = [...Object.keys(EDGE_COMPUTED_TOKENS), ...Object.keys(EDGE_TOKENS)];
   return (
-    `/* Raised edges (hds#897): computed fills stepped darker (C2); Button tones alias component.button.edge.*. scripts/lib/raised-edge.mjs */\n` +
-    `:root{${decls(e.Light, keys)}${Object.entries(EDGE_TOKENS)
-      .map(([k, p]) => `--hds-edge-${k}:${tokenVar(p)};`)
-      .join('')}}\n[data-theme="dark"]{${decls(e.Dark, dark)}}\n`
+    `/* Raised edges (hds#897): computed fills stepped darker (C2); Button edges alias component.button.edge.*. scripts/lib/raised-edge.mjs */\n` +
+    `:root{${aliased
+      .map((k) => `--hds-edge-${k}:${tokenVar(`component.button.edge.${k}`)};`)
+      .join('')}${decls(e.Light, keys)}}\n[data-theme="dark"]{${decls(e.Dark, dark)}}\n`
   );
 }
 

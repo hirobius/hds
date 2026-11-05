@@ -1,0 +1,15 @@
+{
+  "impact": "look",
+  "plain": "Hard-shadow Buttons now compress on hover and press (the face moves down onto a smaller edge) instead of growing downward; no code change needed unless you set --hds-hs or --hds-ty yourself.",
+  "steps": [
+    {
+      "id": "look/Button-compress",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Button hover moves the face down 1px onto a 2px edge and press moves it down 3px onto a 0px edge; remove any custom hover lift you added to match the old 4px hover edge.",
+      "detect": {
+        "imports": [{ "from": "@hirobius/design-system", "names": ["Button"] }]
+      }
+    }
+  ]
+}

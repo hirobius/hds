@@ -74,10 +74,10 @@ import { Icon } from './icon';
 import { Popover } from './popover';
 import { FORM_CONTROL_WIDTH } from './form-control';
 import { CreatableCombobox } from './combobox-creatable';
-import { ACTIVE_OPTION_CLASS, nextEnabledIndex, useResetActiveOnListChange } from './listbox-nav';
+import { nextEnabledIndex, useLatestCallback, useResetActiveOnListChange } from './listbox-nav';
+import { ListboxOption } from './listbox-option';
 import {
   ListboxFooter,
-  OptionCheck,
   outsideTarget,
   resultCount,
   useComboboxList,
@@ -285,6 +285,12 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
       }
     }
 
+    // Stable identity, so a memoized row re-renders only when its own props change.
+    const pickRow = useLatestCallback((index: number) => {
+      const option = filtered[index];
+      if (option) commit(option);
+    });
+
     const activeOptionId = filtered[activeIndex] ? optionId(activeIndex) : undefined;
     useScrollActiveIntoView(scrollActiveIntoView, open ? activeOptionId : undefined);
 
@@ -389,33 +395,19 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             aria-multiselectable={selection.multiple || undefined}
             className={cn('max-h-60 overflow-y-auto', filtered.length > 0 && 'p-fixed-2xs')}
           >
-            {filtered.map((option, i) => {
-              const isSelected = values.includes(option.value);
-              const isActive = i === activeIndex;
-              return (
-                <li key={option.value} role="none">
-                  <button // audit-ok: never focused; the search field keeps focus and shows the active row via data-active ring
-                    type="button"
-                    id={optionId(i)}
-                    role="option"
-                    tabIndex={-1}
-                    aria-selected={isSelected}
-                    data-active={isActive ? 'true' : undefined}
-                    disabled={option.disabled}
-                    onMouseEnter={() => setActiveIndex(i)}
-                    onClick={() => commit(option)}
-                    className={cn(
-                      'flex w-full items-center gap-scale-xs rounded-sm px-scale-xs py-1.5 text-left hds-type-ui hds-touch-row outline-none transition-colors duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
-                      ACTIVE_OPTION_CLASS,
-                      'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
-                    )}
-                  >
-                    <OptionCheck selected={isSelected} />
-                    <span className="truncate">{option.label}</span>
-                  </button>
-                </li>
-              );
-            })}
+            {filtered.map((option, i) => (
+              <ListboxOption
+                key={option.value}
+                id={optionId(i)}
+                index={i}
+                label={option.label}
+                selected={values.includes(option.value)}
+                active={i === activeIndex}
+                disabled={option.disabled}
+                onActivate={setActiveIndex}
+                onPick={pickRow}
+              />
+            ))}
           </ul>
           <ListboxFooter
             empty={filtered.length === 0}

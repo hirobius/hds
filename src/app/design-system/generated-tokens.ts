@@ -373,6 +373,14 @@ export const tokens = {
         success: "var(--semantic-color-border-success)",
         warning: "var(--semantic-color-border-warning)"
       },
+      edge: {
+        primary: "var(--semantic-color-edge-primary)",
+        neutral: "var(--semantic-color-edge-neutral)",
+        danger: "var(--semantic-color-edge-danger)",
+        success: "var(--semantic-color-edge-success)",
+        warning: "var(--semantic-color-edge-warning)",
+        info: "var(--semantic-color-edge-info)"
+      },
       shadow: {
         hard: "var(--semantic-color-shadow-hard)"
       },
@@ -656,6 +664,7 @@ export const tokens = {
       bgHover: "var(--component-button-bgHover)",
       bgPressed: "var(--component-button-bgPressed)",
       edge: {
+        primary: "var(--component-button-edge-primary)",
         secondary: "var(--component-button-edge-secondary)",
         danger: "var(--component-button-edge-danger)",
         success: "var(--component-button-edge-success)",
