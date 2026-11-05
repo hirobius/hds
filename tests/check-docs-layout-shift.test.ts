@@ -27,11 +27,6 @@ describe('evaluateLayout', () => {
     ]);
     expect(p.map((x: { route: string }) => x.route)).toEqual(['/a', '/b']);
   });
-  it('compares /tour against its own chrome, not the landing page', () => {
-    expect(evaluateLayout([scan('/'), scan('/tour', 0, null)])).toEqual([]);
-    const p = evaluateLayout([scan('/tour'), scan('/tour/x', 0, null)]);
-    expect(p).toHaveLength(1);
-  });
   it('compares /upgrade against its own chrome, not the landing page', () => {
     expect(evaluateLayout([scan('/'), scan('/upgrade', 0, null)])).toEqual([]);
   });

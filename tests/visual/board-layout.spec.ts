@@ -4,11 +4,14 @@ import { test, expect } from '@playwright/test';
  * Regression (hds#1114): at the Board's @3xl container width and wider, the first
  * BoardColumn must keep its 16rem floor (it collapsed to ~0 under the leftover
  * `grid-cols-1` track), and the visually-hidden count text must not widen the page.
- * Below @3xl the columns stack at the full Board width. Uses the Board on /tour.
+ * Below @3xl the columns stack at the full Board width. It used the Board on /tour; the tour
+ * is gone and Board has no docs page yet, so the spec waits on hds#1220 (test.fixme below).
  *
  * Run: `pnpm docs:build && pnpm exec playwright test tests/visual/board-layout.spec.ts`
  */
+// hds#1220: point at Board's docs page once it exists, then drop the fixme.
 const route = '/tour';
+test.fixme(true, 'hds#1220: Board has no docs page since /tour was removed');
 
 for (const width of [1440, 1280, 390]) {
   test(`Board lays out its columns at ${width}px without widening the page`, async ({ page }) => {
