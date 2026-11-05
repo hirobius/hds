@@ -1,0 +1,1 @@
+check-token-structure is green: Button edge colors route through new semantic.color.edge.\* tokens (component → semantic → primitive; --hds-edge-<tone> aliases component.button.edge.\*), and the gate checks theme coverage on the theme axis only (Compact is the density axis, ADR-022).

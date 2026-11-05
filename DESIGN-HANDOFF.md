@@ -51,8 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 601 tokens, aliases, and TS refs in one shot.
-
+Checks all 606 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -260,6 +259,11 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.border.accent`          | {primitive.color.graphite.700}  | {primitive.color.graphite.300}  | Accent border — graphite, dark enough to read as a boundary on page and card surfaces.                                               |
 | `semantic.color.border.success`         | {primitive.color.green.400}     | {primitive.color.green.400}     | Success-toned border for status outlines and success-state inputs.                                                                   |
 | `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                                   |
+| `semantic.color.edge.neutral`           | {primitive.color.neutral.400}   | {primitive.color.neutral.725}   | Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).              |
+| `semantic.color.edge.danger`            | {primitive.color.red.400}       | {primitive.color.red.700}       | Hard raised edge under danger-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).               |
+| `semantic.color.edge.success`           | {primitive.color.green.400}     | {primitive.color.green.700}     | Hard raised edge under success-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).              |
+| `semantic.color.edge.warning`           | {primitive.color.amber.400}     | {primitive.color.amber.800}     | Hard raised edge under warning-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).              |
+| `semantic.color.edge.info`              | {primitive.color.blue.300}      | {primitive.color.blue.500}      | Hard raised edge under info-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).                 |
 | `semantic.color.shadow.hard`            | {primitive.color.shadow.ink}    | {primitive.color.neutral.500}   | Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).                 |
 | `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                                      |
 | `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                                      |
@@ -327,6 +331,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 - `primitive.typography.size.hero` = **120px**
 - `primitive.typography.size.6xl` = **60px**
 - `primitive.typography.size.code` = **15px**
+
 <!-- auto:end:typography -->
 
 ---
@@ -482,7 +487,6 @@ The `--hds-space-{xs…4xl}` vars are a legacy bridge that no component reads; d
 
 Toggle: `document.documentElement.dataset.density = 'compact'`
 Or via `useTheme().setDensity('compact')`
-
 <!-- auto:end:density -->
 
 ---
@@ -637,6 +641,7 @@ Mirror of the "Screen Patterns" section in `DESIGN.md` (source: `DESIGN.source.m
 - **True monochromatic neutrals:** No warm/cool tint in neutral scale
 - **No drop shadows as primary depth mechanism:** Use motion (parallax, scale)
 - **Generous whitespace:** The system breathes
+
 <!-- auto:end:agent-constraints -->
 
 ---

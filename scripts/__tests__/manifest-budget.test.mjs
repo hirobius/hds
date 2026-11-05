@@ -37,9 +37,10 @@ function parseLimit(text) {
 
 describe('manifest bundle budget (hds#413)', () => {
   const entries = require(join(ROOT, '.size-limit.cjs'));
-  const entry = entries.find((e) => e.path === 'dist/manifest.js');
+  // hds#1145: the budget measures the manifest entry's graph probe.
+  const entry = entries.find((e) => e.path === 'dist/probe/manifest.graph.js');
 
-  it('has a gzip budget for dist/manifest.js', () => {
+  it('has a gzip budget for the dist/manifest.js graph', () => {
     expect(entry?.gzip).toBe(true);
     expect(parseLimit(entry.limit)).toBeGreaterThan(0);
   });

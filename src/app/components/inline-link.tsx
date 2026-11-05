@@ -17,6 +17,7 @@
 import React from 'react';
 import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';
 import { useHdsRouter } from '../context/RouterContext';
+import { safeHref } from '../../lib/safe-href';
 import { Icon } from './icon';
 
 export interface InlineLinkProps {
@@ -98,12 +99,13 @@ export function InlineLink({
 }: InlineLinkProps) {
   const { LinkComponent } = useHdsRouter();
   const kind = classifyHref(href);
+  const safe = safeHref(href);
   const modifierClass =
     (standalone ? ' hds-link-standalone' : '') + (size ? ` hds-type-${SIZE_ROLE[size]}` : '');
 
   if (kind === 'internal') {
     return (
-      <LinkComponent to={href} className={`hds-focus hds-link${modifierClass}`}>
+      <LinkComponent to={safe} className={`hds-focus hds-link${modifierClass}`}>
         {children}
       </LinkComponent>
     );
@@ -111,7 +113,7 @@ export function InlineLink({
 
   if (kind === 'plain') {
     return (
-      <a href={href} className={`hds-focus hds-link${modifierClass}`}>
+      <a href={safe} className={`hds-focus hds-link${modifierClass}`}>
         {children}
       </a>
     );
@@ -119,7 +121,7 @@ export function InlineLink({
 
   return (
     <a
-      href={href}
+      href={safe}
       target="_blank"
       rel="noopener noreferrer"
       className={`group hds-focus hds-link${modifierClass}`}

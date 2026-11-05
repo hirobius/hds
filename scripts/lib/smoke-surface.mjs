@@ -4,7 +4,7 @@
  *
  * - smokeSubpaths: the resolve and import lists, read from package.json#exports
  *   so a new subpath is smoked the day it ships.
- * - auditDistImports: every bare specifier in dist/*.js and dist/chunks/*.js is a
+ * - auditDistImports: every bare specifier in any .js file under dist/ is a
  *   dependency or a peer, and an optional peer is reachable only from its own
  *   subpath (a root import must not need react-hook-form).
  * - importEverySubpath: imports each JS subpath in a clean Node process with no

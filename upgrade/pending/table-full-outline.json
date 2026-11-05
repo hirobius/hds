@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Every Table now shows a 1px outline round its frame; if you added your own border or ring round a Table, remove it so the edge is not doubled."
+}

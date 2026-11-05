@@ -11,29 +11,10 @@
 import React from 'react';
 import { tokenValues } from './generated-token-values';
 import { tokenRefs } from './generated-token-refs';
+import { motion } from './motion-tokens';
 
 const FONT_FAMILY_PRIMARY = 'var(--primitive-typography-family-primary)';
 const FONT_FAMILY_MONO = 'var(--primitive-typography-family-mono)';
-const msToSeconds = (value: string) => parseFloat(value) / 1000;
-
-const motion = {
-  productive: {
-    duration: msToSeconds(tokenValues.primitive.duration.short),
-    easing: [0, 0, 0.2, 1] as [number, number, number, number],
-  },
-  expressive: {
-    duration: msToSeconds(tokenValues.primitive.duration.medium),
-    easing: { type: 'spring', stiffness: 300, damping: 20, mass: 1 } as const,
-  },
-  spatial: {
-    duration: msToSeconds(tokenValues.primitive.duration.long),
-    easing: [0.4, 0, 0.2, 1] as [number, number, number, number],
-  },
-  exit: {
-    duration: msToSeconds(tokenValues.primitive.duration.instant),
-    easing: [0.4, 0, 1, 1] as [number, number, number, number],
-  },
-} as const;
 
 const hds = {
   // ── Colors ──────────────────────────────────────────────────────────────────

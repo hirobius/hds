@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-11-04",
+  "generatedAt": "2026-11-05",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -29,8 +29,8 @@
       "layout": 10,
       "internal": 12
     },
-    "libraryLinked": 69,
-    "libraryMissing": 6,
+    "libraryLinked": 75,
+    "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
   "components": [
@@ -288,7 +288,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2264-67"
     },
     {
       "name": "Composer",
@@ -798,7 +798,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2265-119"
     },
     {
       "name": "SheetAction",

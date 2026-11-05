@@ -249,6 +249,7 @@ interface SheetComponent extends React.FC<SheetProps> {
  * @useInstead Dialog long content or a desktop-first modal
  * @useInstead AlertDialog confirming a destructive or irreversible action
  * @useInstead Menu a desktop dropdown of actions
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2265-119
  * @slot trigger The element that opens the sheet (Sheet.Trigger).
  * @slot surface The sheet panel, with its grab handle on phones (Sheet.Content).
  * @slot header Groups the title and description (Sheet.Header).
