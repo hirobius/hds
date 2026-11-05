@@ -92,4 +92,56 @@ describe('PageHeader', () => {
     const { container } = render(<PageHeader title="Acme" />);
     expect(container.querySelector('[data-slot="metadata"]')).toBeNull();
   });
+  it('places the description below the title row by default, after the actions (hds#1150)', () => {
+    const { container } = render(
+      <PageHeader
+        title="Acme"
+        description="Seed round"
+        actions={<button type="button">Edit</button>}
+      />,
+    );
+    const description = container.querySelector('[data-slot="description"]') as HTMLElement;
+    const actions = container.querySelector('[data-slot="actions"]') as HTMLElement;
+    expect(
+      actions.compareDocumentPosition(description) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(container.querySelector('[data-slot="title-group"]')?.contains(description)).toBe(false);
+  });
+
+  it('descriptionPlacement="title" puts the description under the title, before the actions (hds#1150)', () => {
+    const { container } = render(
+      <PageHeader
+        title="Acme"
+        description="Seed round"
+        descriptionPlacement="title"
+        actions={<button type="button">Edit</button>}
+      />,
+    );
+    const description = container.querySelector('[data-slot="description"]') as HTMLElement;
+    const actions = container.querySelector('[data-slot="actions"]') as HTMLElement;
+    const group = container.querySelector('[data-slot="title-group"]') as HTMLElement;
+    expect(group.contains(description)).toBe(true);
+    expect(group.contains(screen.getByRole('heading', { name: 'Acme' }))).toBe(true);
+    expect(
+      description.compareDocumentPosition(actions) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('renders the title menu trigger right after the heading, and none without titleMenu (hds#1150)', () => {
+    const { container, rerender } = render(<PageHeader title="Acme" />);
+    expect(container.querySelector('[data-slot="title-menu"]')).toBeNull();
+    rerender(
+      <PageHeader
+        title="Acme"
+        titleMenu={<span>item</span>}
+        titleMenuLabel="Acme options"
+        status={<span>Live</span>}
+      />,
+    );
+    const heading = screen.getByRole('heading', { name: 'Acme' });
+    const slot = container.querySelector('[data-slot="title-menu"]') as HTMLElement;
+    const status = container.querySelector('[data-slot="status"]') as HTMLElement;
+    expect(heading.compareDocumentPosition(slot) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(slot.compareDocumentPosition(status) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
 });

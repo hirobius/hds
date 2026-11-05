@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "PageHeader takes descriptionPlacement=\"title\" and a titleMenu (with titleMenuLabel); existing headers are unchanged."
+}

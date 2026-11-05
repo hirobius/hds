@@ -1281,7 +1281,15 @@ function PageHeaderDemo() {
         </>
       }
       title="Acme Co"
+      titleMenu={
+        <>
+          <Menu.Item>Rename client</Menu.Item>
+          <Menu.Item>Switch client</Menu.Item>
+        </>
+      }
+      titleMenuLabel="Acme Co options"
       description="Brand refresh and the spring campaign site."
+      descriptionPlacement="title"
       status={<Badge tone="success">Active</Badge>}
       actions={
         <>

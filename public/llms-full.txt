@@ -1570,10 +1570,13 @@ Screen header: breadcrumb slot, the title at the one canonical page-title size (
   - actions: ReactNode
   - breadcrumb: ReactNode
   - description: ReactNode
+  - descriptionPlacement: 'below' | 'title' = below
   - level: PageHeaderLevel = 1
   - metadata: ReactNode
   - status: ReactNode
   - title: ReactNode
+  - titleMenu: ReactNode
+  - titleMenuLabel: string = Title options
 
 ### Pagination
 Paged navigation with first/last anchors, sibling pages, and ellipses.
