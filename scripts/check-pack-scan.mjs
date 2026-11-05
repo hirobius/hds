@@ -16,11 +16,13 @@
  *   3. Secrets: gitleaks `dir` with the repo's .gitleaks.toml over the unpacked
  *      package. It runs from inside the package so `dist/...` paths stay
  *      relative and the config's `/dist/` path allowlist (meant for build
- *      output in the repo) does not skip the bundle. gitleaks missing FAILS.
+ *      output in the repo) does not skip the bundle. gitleaks missing FAILS,
+ *      except in CI, where it installs a pinned one (install-gitleaks.sh).
  *   4. PII: every file through the pre-push scanner's rules
  *      (scripts/hooks/secret-pii-scan.mjs: emails, US phones, SSNs), plus the
- *      ops#27 client identifiers. Those are kept here only as SHA-256 hashes,
- *      because a list of client names in a public package would be the leak.
+ *      links to Google Docs/Drive files, plus the ops#27 client identifiers.
+ *      Those are kept here only as SHA-256 hashes, because a list of client
+ *      names in a public package would be the leak.
  *      More terms (contact names): a file outside the repo, one term per line,
  *      named by HDS_PII_DENYLIST.
  *
@@ -125,10 +127,22 @@ export function findClientTerms(text, { hashes = CLIENT_NEEDLE_HASHES, terms = [
   return found;
 }
 
+/** Links to private Google Docs/Drive/Sheets/Slides files: client working docs, never shipped. */
+const GOOGLE_DOC = /https?:\/\/(?:docs|drive|sheets|slides)\.google\.com\/[^\s"'<>)]+/gi;
+
+/** Google Docs links in text. @returns {{ rule: string, length: number }[]} */
+export function findGoogleDocs(text) {
+  return [...String(text).matchAll(GOOGLE_DOC)].map((m) => ({
+    rule: 'google-doc',
+    length: m[0].length,
+  }));
+}
+
 /** Every PII hit in one file's text. */
 export function scanFileText(text, file, opts = {}) {
   return [
     ...findPii(text, { plain: true, label: file }),
+    ...findGoogleDocs(text).map((f) => ({ ...f, file })),
     ...findClientTerms(text, opts).map((f) => ({ ...f, file })),
   ];
 }
@@ -142,68 +156,85 @@ function walk(dir, base = dir, out = []) {
   return out;
 }
 
+/** Run a command; throw with its stderr when it fails. */
+function must(cmd, args, opts, what) {
+  const r = spawnSync(cmd, args, { encoding: 'utf8', maxBuffer: 1 << 28, ...opts });
+  if (r.status !== 0) throw new Error(`${what} failed: ${`${r.stderr}${r.stdout}`.trim()}`);
+  return r.stdout;
+}
+
 /** `pnpm pack` the package at cwd and unpack it; returns the unpacked package root. */
 export function packAndUnpack(cwd, tmp) {
   const dest = path.join(tmp, 'tarball');
   const out = path.join(tmp, 'unpacked');
   mkdirSync(dest, { recursive: true });
-  mkdirSync(out, { recursive: true });
-  const r = spawnSync('pnpm', ['pack', '--pack-destination', dest], {
-    cwd,
-    encoding: 'utf8',
-    maxBuffer: 1 << 28,
-  });
-  if (r.status !== 0) throw new Error(`pnpm pack failed: ${(r.stderr || r.stdout).trim()}`);
+  mkdirSync(out);
+  must('pnpm', ['pack', '--pack-destination', dest], { cwd }, 'pnpm pack');
   const tgz = readdirSync(dest).find((f) => f.endsWith('.tgz'));
   if (!tgz) throw new Error('pnpm pack wrote no .tgz');
-  const t = spawnSync('tar', ['-xzf', path.join(dest, tgz), '-C', out], { encoding: 'utf8' });
-  if (t.status !== 0) throw new Error(`could not unpack ${tgz}: ${t.stderr.trim()}`);
+  must('tar', ['-xzf', path.join(dest, tgz), '-C', out], {}, `unpacking ${tgz}`);
   return { tarball: tgz, root: path.join(out, 'package') };
 }
 
-/** gitleaks over the unpacked package. @returns {{ ok: boolean, findings: number, error?: string }} */
-export function gitleaksDir(pkgRoot, config) {
-  if (spawnSync('gitleaks', ['version'], { stdio: 'ignore' }).status !== 0) {
-    return { ok: false, findings: 0, error: 'gitleaks is not installed (brew install gitleaks)' };
-  }
+const defaultRuns = (bin) => spawnSync(bin, ['version'], { stdio: 'ignore' }).status === 0;
+const defaultInstall = () =>
+  spawnSync('bash', [path.join(ROOT, 'scripts', 'install-gitleaks.sh')], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'inherit'],
+  });
+
+/**
+ * The gitleaks binary: GITLEAKS_BIN, else `gitleaks` on PATH, else in CI a
+ * pinned, checksum-verified download (scripts/install-gitleaks.sh), so the
+ * release workflow's `pnpm release` scans without a workflow step. Off CI a
+ * missing binary returns null and the scan fails closed.
+ */
+export function findGitleaks({
+  env = process.env,
+  runs = defaultRuns,
+  install = defaultInstall,
+} = {}) {
+  if (env.GITLEAKS_BIN) return runs(env.GITLEAKS_BIN) ? env.GITLEAKS_BIN : null;
+  if (runs('gitleaks')) return 'gitleaks';
+  if (!env.CI) return null;
+  const r = install();
+  const bin = String(r.stdout).trim().split('\n').pop();
+  return r.status === 0 && runs(bin) ? bin : null;
+}
+
+/**
+ * gitleaks over the unpacked package. Exit 0 is clean, exit 1 with a report
+ * is findings, anything else (a crash, a bad config) fails the scan.
+ * @returns {{ ok: boolean, list?: string[], error?: string }}
+ */
+export function gitleaksDir(pkgRoot, config, bin = findGitleaks()) {
+  if (!bin) return { ok: false, error: 'gitleaks is not installed (brew install gitleaks)' };
   const report = path.join(path.dirname(pkgRoot), 'gitleaks.json');
   const args = ['dir', '.', '--redact', '--no-banner', '--exit-code', '1'];
-  args.push('--report-format', 'json', '--report-path', report);
-  if (config && existsSync(config)) args.push('--config', config);
-  const r = spawnSync('gitleaks', args, { cwd: pkgRoot, encoding: 'utf8' });
-  let findings = [];
-  try {
-    findings = JSON.parse(readFileSync(report, 'utf8'));
-  } catch {
-    /* no report: treated by the exit status below */
-  }
-  if (r.status === 0) return { ok: true, findings: 0 };
-  if (r.status === 1 && findings.length) {
-    return {
-      ok: false,
-      findings: findings.length,
-      list: findings.map((f) => `${f.RuleID} in ${f.File}`),
-    };
-  }
-  return {
-    ok: false,
-    findings: 0,
-    error: `gitleaks exited ${r.status}: ${(r.stderr || '').trim().split('\n').pop()}`,
-  };
+  args.push('--report-format', 'json', '--report-path', report, '--config', config);
+  const r = spawnSync(bin, args, { cwd: pkgRoot, encoding: 'utf8' });
+  if (r.status === 0) return { ok: true };
+  const list = existsSync(report)
+    ? JSON.parse(readFileSync(report, 'utf8')).map((f) => `${f.RuleID} in ${f.File}`)
+    : [];
+  if (r.status === 1 && list.length) return { ok: false, list };
+  const why = `${r.stderr}`.trim().split('\n').pop();
+  return { ok: false, error: `gitleaks exited ${r.status}: ${why}` };
 }
 
 /**
  * Pack and scan the package at cwd.
  * @returns {{ tarball: string, files: number, stray: object[], secrets: object, pii: object[] }}
  */
-export function scanPackage(cwd, { config, hashes, terms } = {}) {
+export function scanPackage(cwd, { config, hashes, terms, allowed, bin } = {}) {
   const tmp = mkdtempSync(path.join(os.tmpdir(), 'hds-pack-scan-'));
   try {
     const { tarball, root } = packAndUnpack(cwd, tmp);
     const files = walk(root);
-    const allowed = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')).files ?? [];
-    const stray = strayFiles(files, allowed);
-    const secrets = gitleaksDir(root, config ?? path.join(cwd, '.gitleaks.toml'));
+    const allow =
+      allowed ?? JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')).files;
+    const stray = strayFiles(files, allow ?? []);
+    const secrets = gitleaksDir(root, config ?? path.join(ROOT, '.gitleaks.toml'), bin);
     const pii = files.flatMap((f) =>
       scanFileText(readFileSync(path.join(root, f), 'utf8'), f, { hashes, terms }),
     );
@@ -215,11 +246,12 @@ export function scanPackage(cwd, { config, hashes, terms } = {}) {
 
 /** Lines to print, and whether the release may go on. */
 export function report(r) {
-  const lines = [];
-  for (const s of r.stray) lines.push(`FAIL stray file ${s.file} (${s.reason})`);
-  if (r.secrets.error) lines.push(`FAIL secret scan did not run: ${r.secrets.error}`);
-  for (const s of r.secrets.list ?? []) lines.push(`FAIL secret ${s}`);
-  for (const p of r.pii) lines.push(`FAIL ${p.rule} in ${p.file} (${p.length} chars)`);
+  const lines = [
+    ...r.stray.map((s) => `FAIL stray file ${s.file} (${s.reason})`),
+    ...(r.secrets.error ? [`FAIL secret scan did not run: ${r.secrets.error}`] : []),
+    ...(r.secrets.list ?? []).map((s) => `FAIL secret ${s}`),
+    ...r.pii.map((p) => `FAIL ${p.rule} in ${p.file} (${p.length} chars)`),
+  ];
   const ok = lines.length === 0;
   lines.push(
     ok
@@ -229,27 +261,35 @@ export function report(r) {
   return { ok, lines };
 }
 
-function main() {
-  const argv = process.argv.slice(2);
-  const i = argv.indexOf('--cwd');
-  const cwd = i >= 0 ? path.resolve(argv[i + 1]) : ROOT;
-  const denyFile = process.env.HDS_PII_DENYLIST;
-  const terms = denyFile
-    ? readFileSync(denyFile, 'utf8')
-        .split('\n')
-        .map((l) => l.trim())
-        .filter((l) => l && !l.startsWith('#'))
-    : [];
-  const { ok, lines } = report(scanPackage(cwd, { terms }));
-  for (const l of lines) (ok ? console.log : console.error)(l);
-  return ok ? 0 : 1;
+/** Denylist terms: one per line; blank lines and `#` comments skipped. */
+export function parseDenylist(text) {
+  return text
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith('#'));
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+/** The CLI. @returns {number} exit code */
+export function main(
+  argv,
+  { env = process.env, scan = scanPackage, log = console.log, error = console.error } = {},
+) {
+  const i = argv.indexOf('--cwd');
+  const cwd = i === -1 ? ROOT : path.resolve(argv[i + 1]);
+  const terms = env.HDS_PII_DENYLIST
+    ? parseDenylist(readFileSync(env.HDS_PII_DENYLIST, 'utf8'))
+    : [];
   try {
-    process.exit(main());
+    const { ok, lines } = report(scan(cwd, { terms }));
+    for (const l of lines) (ok ? log : error)(l);
+    return ok ? 0 : 1;
   } catch (e) {
-    console.error(`check-pack-scan: ${e.message}`);
-    process.exit(1);
+    error(`check-pack-scan: ${e.message}`);
+    return 1;
   }
+}
+
+// Stryker disable next-line all: the CLI entry guard; main() is tested directly.
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  process.exit(main(process.argv.slice(2)));
 }

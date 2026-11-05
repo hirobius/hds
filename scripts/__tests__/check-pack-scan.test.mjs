@@ -9,12 +9,13 @@
  */
 import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { appendFileSync, cpSync, readFileSync } from 'node:fs';
-import { createHash } from 'node:crypto';
+import { appendFileSync, cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash, randomBytes } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   findClientTerms,
+  findGitleaks,
   report,
   scanFileText,
   scanPackage,
@@ -119,6 +120,96 @@ describe.skipIf(!hasGitleaks)('scanPackage: real pnpm pack + gitleaks', () => {
   });
 });
 
+/**
+ * Real-shape violations, each packed with `pnpm pack` and scanned. The values
+ * are built at runtime (random where gitleaks checks entropy), so no
+ * credential-shaped or PII-shaped string is committed.
+ */
+const rand = (n, chars) => Array.from(randomBytes(n), (b) => chars[b % chars.length]).join('');
+const UP = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+const LOWNUM = 'abcdefghijklmnopqrstuvwxyz0123456789';
+const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const privateKey = () =>
+  [
+    `-----BEGIN ${'RSA PRIVATE'} KEY-----`,
+    ...Array.from({ length: 8 }, () => rand(64, B64)),
+    `-----END ${'RSA PRIVATE'} KEY-----`,
+  ].join('\n');
+
+/** A temp package: files ["lib"] plus extra `files` entries, with the given files written. */
+function makePackage(files, extraEntries = []) {
+  const dir = makeTmp();
+  writeFileSync(
+    path.join(dir, 'package.json'),
+    JSON.stringify({ name: 'pack-scan-case', version: '1.0.0', files: ['lib', ...extraEntries] }),
+  );
+  for (const [rel, text] of Object.entries(files)) {
+    mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    writeFileSync(path.join(dir, rel), text);
+  }
+  return dir;
+}
+
+describe.skipIf(!hasGitleaks)('real-shape tarballs that MUST fail', () => {
+  const secretCases = [
+    ['an AWS access key', () => `const k = "AKIA${rand(16, UP)}";\n`, 'aws-access-token'],
+    [
+      'an npm token',
+      () => `//registry.npmjs.org/:_authToken=npm_${rand(36, LOWNUM)}\n`,
+      'npm-access-token',
+    ],
+    ['a private key', () => `${privateKey()}\n`, 'private-key'],
+  ];
+  it.each(secretCases)('%s', (_, body, rule) => {
+    const r = scanPackage(makePackage({ 'lib/index.js': body() }), { config: CONFIG });
+    expect(r.secrets.list).toEqual([`${rule} in lib/index.js`]);
+    expect(report(r).ok).toBe(false);
+  });
+
+  it('a .env inside an allowed directory', () => {
+    const r = scanPackage(makePackage({ 'lib/index.js': '', 'lib/.env': 'A=1\n' }), {
+      config: CONFIG,
+    });
+    expect(r.stray).toEqual([{ file: 'lib/.env', reason: 'forbidden path segment ".env"' }]);
+    expect(report(r).ok).toBe(false);
+  });
+
+  it.each([
+    ['a client-style email', `const owner = "${'dana.reyes'}@${'harborline'}.com";`, 'email'], // pii-allow
+    ['a client-style phone number', `// call ${'(415)'} ${'867-2231'}`, 'phone'], // pii-allow
+    [
+      'a docs.google link',
+      `// https://${'docs.google'}.com/document/d/${rand(44, LOWNUM)}/edit`,
+      'google-doc',
+    ],
+  ])('%s', (_, body, rule) => {
+    const r = scanPackage(makePackage({ 'lib/index.js': `${body}\n` }), { config: CONFIG });
+    expect(r.pii).toEqual([expect.objectContaining({ rule, file: 'lib/index.js' })]);
+    expect(report(r).lines.join('\n')).not.toContain('harborline');
+    expect(report(r).ok).toBe(false);
+  });
+
+  it('a file outside the allowlist', () => {
+    const dir = makePackage({ 'lib/index.js': '', 'notes/client.md': '# notes\n' }, ['notes']);
+    // "files" lets it into the tarball; the repo allowlist (this package's
+    // "files" minus "notes") is what refuses it.
+    const r = scanPackage(dir, { config: CONFIG, allowed: ['lib'] });
+    expect(r.stray).toEqual([{ file: 'notes/client.md', reason: 'not in package.json "files"' }]);
+    expect(report(r).ok).toBe(false);
+  });
+
+  it('a clean real-shape tarball MUST pass', () => {
+    const dir = makePackage({
+      'lib/index.js': 'export const c = "ops@example.com, (312) 555-0142";\n',
+      'README.md': '# ok\n',
+      LICENSE: 'MIT\n',
+    });
+    const r = scanPackage(dir, { config: CONFIG });
+    expect(r).toMatchObject({ stray: [], pii: [], secrets: { ok: true } });
+    expect(report(r).ok).toBe(true);
+  });
+});
+
 describe('release wiring', () => {
   it('release-local runs the pack scan after the build and before publishing', () => {
     for (const publish of [false, true]) {
@@ -131,5 +222,16 @@ describe('release wiring', () => {
   it('pnpm release runs it before changeset publish', () => {
     const { release } = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8')).scripts;
     expect(release).toMatch(/node scripts\/check-pack-scan\.mjs && changeset publish$/);
+  });
+});
+
+describe('findGitleaks', () => {
+  it('fails closed off CI when no binary runs', () => {
+    expect(findGitleaks({ env: { GITLEAKS_BIN: '/nonexistent/gitleaks' } })).toBeNull();
+  });
+  it('fetches a pinned, checksum-verified binary in CI (release.yml has no gitleaks step)', () => {
+    const src = readFileSync(path.join(ROOT, 'scripts', 'install-gitleaks.sh'), 'utf8');
+    expect(src).toMatch(/sha256sum -c/);
+    expect(src).toMatch(/GITLEAKS_VERSION:-\d+\.\d+\.\d+/);
   });
 });
