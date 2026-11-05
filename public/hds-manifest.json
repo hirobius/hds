@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T07:35:03.660Z",
+  "generated": "2026-11-05T07:49:12.774Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -1663,6 +1663,16 @@
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-161",
       "docsPage": "/docs/components/inline-link",
       "publicDataAttributes": [],
+      "tokens": {
+        "iconSize": "component.inlineLink.iconSize",
+        "iconGap": "component.inlineLink.iconGap"
+      },
+      "figmaPropertyMapping": {
+        "size": "Size"
+      },
+      "states": [
+        "default"
+      ],
       "usage": {
         "when": "Link to a route or external URL from inside body copy.",
         "whenNot": "An action that changes something, or a control that needs button styling.",
@@ -1677,17 +1687,7 @@
           }
         ]
       },
-      "core": true,
-      "tokens": {
-        "iconSize": "component.inlineLink.iconSize",
-        "iconGap": "component.inlineLink.iconGap"
-      },
-      "figmaPropertyMapping": {
-        "size": "Size"
-      },
-      "states": [
-        "default"
-      ]
+      "core": true
     },
     "Input": {
       "category": "Inputs",
@@ -16841,7 +16841,7 @@
         "path": "component.inlineLink.size.sm.iconSize",
         "cssVar": "--component-inlineLink-size-sm-iconSize",
         "type": "dimension",
-        "description": "Size sm external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px). Code draws it at iconSize (em).",
+        "description": "Size sm icon in Figma (12px): nearest grid step to 0.75em. Code draws 12px.",
         "alias": "{primitive.size.12}",
         "resolvedValue": "12px"
       },
@@ -16857,7 +16857,7 @@
         "path": "component.inlineLink.size.md.iconSize",
         "cssVar": "--component-inlineLink-size-md-iconSize",
         "type": "dimension",
-        "description": "Size md external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px (13.5px in code)). Code draws it at iconSize (em).",
+        "description": "Size md icon in Figma (12px): nearest grid step to 0.75em. Code draws 13.5px.",
         "alias": "{primitive.size.12}",
         "resolvedValue": "12px"
       },
@@ -16873,7 +16873,7 @@
         "path": "component.inlineLink.size.lg.iconSize",
         "cssVar": "--component-inlineLink-size-lg-iconSize",
         "type": "dimension",
-        "description": "Size lg external icon in Figma, the nearest grid step to 0.75em of the font size (icon 20px (21px in code)). Code draws it at iconSize (em).",
+        "description": "Size lg icon in Figma (20px): nearest grid step to 0.75em. Code draws 21px.",
         "alias": "{primitive.size.20}",
         "resolvedValue": "20px"
       }

@@ -3376,7 +3376,7 @@
           "iconSize": {
             "$type": "dimension",
             "$value": "{primitive.size.12}",
-            "$description": "Size sm external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px). Code draws it at iconSize (em)."
+            "$description": "Size sm icon in Figma (12px): nearest grid step to 0.75em. Code draws 12px."
           }
         },
         "md": {
@@ -3388,7 +3388,7 @@
           "iconSize": {
             "$type": "dimension",
             "$value": "{primitive.size.12}",
-            "$description": "Size md external icon in Figma, the nearest grid step to 0.75em of the font size (icon 12px (13.5px in code)). Code draws it at iconSize (em)."
+            "$description": "Size md icon in Figma (12px): nearest grid step to 0.75em. Code draws 13.5px."
           }
         },
         "lg": {
@@ -3400,7 +3400,7 @@
           "iconSize": {
             "$type": "dimension",
             "$value": "{primitive.size.20}",
-            "$description": "Size lg external icon in Figma, the nearest grid step to 0.75em of the font size (icon 20px (21px in code)). Code draws it at iconSize (em)."
+            "$description": "Size lg icon in Figma (20px): nearest grid step to 0.75em. Code draws 21px."
           }
         }
       }
