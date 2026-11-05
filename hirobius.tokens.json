@@ -1618,11 +1618,11 @@
           }
         },
         "disabled": {
-          "$value": "{primitive.color.neutral.300}",
+          "$value": "{primitive.color.neutral.350}",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.neutral.300}",
+                "Light": "{primitive.color.neutral.350}",
                 "Dark": "{primitive.color.neutral.600}"
               }
             }

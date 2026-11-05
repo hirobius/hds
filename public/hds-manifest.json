@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T02:46:16.460Z",
+  "generated": "2026-11-05T03:13:32.409Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -14760,8 +14760,8 @@
         "path": "semantic.color.content.disabled",
         "cssVar": "--semantic-color-content-disabled",
         "type": "color",
-        "alias": "{primitive.color.neutral.300}",
-        "resolvedValue": "#d3d4d6",
+        "alias": "{primitive.color.neutral.350}",
+        "resolvedValue": "#b2b4b8",
         "dark": {
           "alias": "{primitive.color.neutral.600}",
           "resolvedValue": "#4d525b"
@@ -16582,7 +16582,7 @@
         "type": "color",
         "description": "Disabled primary button text color.",
         "alias": "{semantic.color.content.disabled}",
-        "resolvedValue": "#d3d4d6"
+        "resolvedValue": "#b2b4b8"
       },
       {
         "path": "component.button.primary.bgDisabled",

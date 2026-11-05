@@ -285,7 +285,7 @@
   --semantic-color-content-primary: var(--primitive-color-neutral-900);
   --semantic-color-content-secondary: var(--primitive-color-neutral-600);
   --semantic-color-content-tertiary: var(--primitive-color-neutral-550);
-  --semantic-color-content-disabled: var(--primitive-color-neutral-300);
+  --semantic-color-content-disabled: var(--primitive-color-neutral-350);
   --semantic-color-content-inverse: var(--primitive-color-neutral-100);
   --semantic-color-content-accent: var(--primitive-color-graphite-700);
   --semantic-color-content-onAccent: var(--primitive-color-neutral-50);
