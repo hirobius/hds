@@ -555,6 +555,53 @@ export const Snapshot = z
     engines: z.record(z.string(), z.string()),
     bin: z.record(z.string(), z.string()),
     files: z.array(z.string()).describe('package.json#files.'),
+    props: z
+      .record(
+        z.string(),
+        z.record(
+          z.string(),
+          z
+            .object({
+              type: z.string(),
+              optional: z.boolean(),
+              values: z.array(z.string()).nullable(),
+              default: z.string().nullable(),
+            })
+            .strict(),
+        ),
+      )
+      .optional()
+      .describe(
+        'hds#461: every component prop (scripts/upgrade/props.mjs); absent for a release older than the props baseline.',
+      ),
+    types: z
+      .record(
+        z.string(),
+        z.record(
+          z.string(),
+          z
+            .object({
+              kind: z.enum(['value', 'type']),
+              signatures: z.array(z.string()).optional(),
+              members: z.array(z.string()).optional(),
+              keys: z.array(z.string()).optional(),
+            })
+            .strict(),
+        ),
+      )
+      .optional()
+      .describe(
+        'Each JS entry: the type shape of every export (scripts/upgrade/types.mjs); absent for a release older than the types baseline.',
+      ),
+    dom: z
+      .record(
+        z.string(),
+        z.object({ dom: z.array(z.string()), reader: z.array(z.string()) }).strict(),
+      )
+      .optional()
+      .describe(
+        'hds#468: each docs demo, its element outline and what a screen reader speaks (scripts/upgrade/dom.mjs); absent for a release older than the DOM baseline.',
+      ),
     css: CssContract.optional().describe(
       'The CSS contract of its stylesheets; absent for a snapshot read from source, which has no built CSS.',
     ),

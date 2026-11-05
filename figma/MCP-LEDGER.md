@@ -858,3 +858,23 @@ Override: Adrian 11-04 in chat: prune all 21, one-off override of ADR-026. Only 
 Session total: 6 calls
 
 Calls logged for 2026-11-04: 6 of 200 (6).
+
+## 2026-11-05 · session `claude/figma-comp6`
+
+Draw CommandPalette and Sheet (with Sheet.Trigger, Sheet.Title, Sheet.Description, Sheet.Close) for the hds#801 coverage gate. Staging draft `C85ZXnwtVc4AteeIOZfXRC`, then ingest to the library `2VgBbVpKiDnu0aftJEVyBQ`. No publish, no delete in the library.
+
+| #   | Time (UTC) | Tool                                                | Kind | Purpose                                                                                                                              | Result |
+| --- | ---------- | --------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 17:25      | `get_figma_skill` (figma-use SKILL.md)              | read | Mandatory skill load                                                                                                                 |        | OK                                                                                                                                                 |
+| 2   | 17:25      | `get_figma_skill` (figma-generate-library SKILL.md) | read | Skill load required by figma/README.md                                                                                               |        | OK                                                                                                                                                 |
+| 3   | 17:25      | `create_session`                                    | read | Open the file session (HDS Staging C85ZXnwtVc4AteeIOZfXRC)                                                                           |        | OK; session 98f4658b                                                                                                                               |
+| 4   | 17:25      | `use_figma`                                         | read | Library 2VgBbVpKiDnu0aftJEVyBQ: list pages; read Dialog 93:27 and Menu structure, bindings, styles and variable keys                 |        | OK. Pages Sheet 2265:2 and CommandPalette 2264:2 exist; Dialog 93:27 conventions read                                                              |
+| 5   | 17:26      | `use_figma`                                         | read | Library: list top-level nodes on page Sheet 2265:2                                                                                   |        | OK. Sheet set 2265:119 (4 variants) and parts 2265:3, 2265:14, 2265:16, 2265:18 already drawn                                                      |
+| 6   | 17:26      | `use_figma`                                         | read | Library: list top-level nodes on page CommandPalette 2264:2                                                                          |        | OK. CommandPalette set 2264:67 (3 variants) and spec sheet 2335:6392 already drawn                                                                 |
+| 7   | 17:26      | `get_screenshot`                                    | read | Library: Sheet page 2265:2 (existing Sheet 2265:119 and parts 2265:3, :14, :16, :18), check against code                             |        | OK; matches code (Phone and Desktop, Actions and Footer)                                                                                           |
+| 8   | 17:26      | `get_screenshot`                                    | read | Library: CommandPalette set 2264:67, check against code                                                                              |        | OK; matches code (Results, Empty, Argument)                                                                                                        |
+| 9   | 17:26      | `use_figma`                                         | read | Library: full descriptions, variant names, defaultVariant and text styles of 2265:119, 2265:3, 2265:14, 2265:16, 2265:18 and 2264:67 |        | OK. 0 raw solid fills, 0 unstyled text; defaults Layout=Phone, Content=Actions and State=Results. No draw needed, so no staging draft and no write |
+
+**Session total: 9 calls** (0 writes).
+
+Calls logged for 2026-11-05: 9 of 200 (9).
