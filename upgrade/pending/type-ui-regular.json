@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "New type style: use `hds.typeStyles.uiRegular` where you set the ui style at weight 400 by hand, such as table body cells."
+}

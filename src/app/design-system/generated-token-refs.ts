@@ -552,6 +552,14 @@ export const tokenRefs = {
         lineHeight: "var(--semantic-typography-ui-line-height)",
         maxWidth: "var(--semantic-typography-ui-max-width)"
       },
+      uiRegular: {
+        fontFamily: "var(--semantic-typography-uiRegular-font-family)",
+        fontSize: "var(--semantic-typography-uiRegular-font-size)",
+        fontWeight: "var(--semantic-typography-uiRegular-font-weight)",
+        letterSpacing: "var(--semantic-typography-uiRegular-letter-spacing)",
+        lineHeight: "var(--semantic-typography-uiRegular-line-height)",
+        maxWidth: "var(--semantic-typography-uiRegular-max-width)"
+      },
       uiItalic: {
         fontFamily: "var(--semantic-typography-uiItalic-font-family)",
         fontSize: "var(--semantic-typography-uiItalic-font-size)",

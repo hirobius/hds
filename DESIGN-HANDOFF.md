@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 608 tokens, aliases, and TS refs in one shot.
+Checks all 613 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -303,6 +303,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `body`            | 18px       | 400    | 1.6         | 0em            | Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.                                                                             |
 | `bodyStrong`      | 18px       | 700    | 1.6         | 0em            | Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.                           |
 | `ui`              | 16px       | 500    | 1.5         | 0em            | Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.                                                               |
+| `uiRegular`       | 16px       | 400    | 1.5         | 0em            | Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.                    |
 | `uiItalic`        | 16px       | 500    | 1.5         | 0em            | Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.                           |
 | `caption`         | 14px       | 500    | 1.5         | 0em            | Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.                                                |
 | `mono`            | 15px       | 400    | 1.5         | 0em            | Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.                                   |
