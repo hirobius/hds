@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -265,7 +266,9 @@ describe('API baseline wiring (hds#390)', () => {
   const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
 
   it('runs the --api surface guard in the pretest chain, so CI fails a removed export', () => {
-    expect(pkg.scripts.pretest).toContain('node scripts/audit-component-integrity.mjs --api');
+    expect(readLaneScripts(REPO).pretest).toContain(
+      'node scripts/audit-component-integrity.mjs --api',
+    );
   });
 
   // release.yml's changesets/action runs `pnpm changeset:version` to build the

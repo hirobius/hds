@@ -9,6 +9,7 @@
 // Every rule is driven through a throwaway repo built on disk, so the tests
 // name the behaviour (what the gate reports), never the gate's internals.
 import { describe, it, expect, afterEach } from 'vitest';
+import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, symlinkSync } from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
@@ -662,12 +663,11 @@ describe('this repo: no generated file claims freshness it does not check', () =
 describe("this repo: a generated surface's check actually runs somewhere", () => {
   it('is in the pretest chain, or is a script registered as a gate', () => {
     const reg = JSON.parse(readFileSync(join(ROOT, 'docs/state-surfaces.json'), 'utf8'));
-    const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
     const gates = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
     const gateScripts = new Set(gates.gates.map((g) => g.gateScript));
     for (const s of reg.surfaces.filter((x) => x.check)) {
       const script = s.check.split(/\s+/)[1];
-      const runs = pkg.scripts.pretest.includes(s.check) || gateScripts.has(script);
+      const runs = readLaneScripts(ROOT).pretest.includes(s.check) || gateScripts.has(script);
       expect(runs, `${s.path}: ${s.check}`).toBe(true);
     }
   });
