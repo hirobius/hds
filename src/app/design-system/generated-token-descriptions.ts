@@ -401,6 +401,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.list.rowPadding": "Inset inside each List row (12px compact).",
   "component.list.rowMinHeight": "Minimum height of a List row (56px).",
   "component.list.leadingSize": "Width and height of a List row's leading icon tile or logo (40px).",
+  "component.pagination.compactControlSize": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
   "role.background": "Page background. shadcn role: background.",
   "role.foreground": "Default text on background. shadcn role: foreground.",
   "role.card": "Card surface. shadcn role: card.",

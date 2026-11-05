@@ -696,6 +696,9 @@ export const tokens = {
       rowPadding: "var(--component-list-rowPadding)",
       rowMinHeight: "var(--component-list-rowMinHeight)",
       leadingSize: "var(--component-list-leadingSize)"
+    },
+    pagination: {
+      compactControlSize: "var(--component-pagination-compactControlSize)"
     }
   },
   role: {

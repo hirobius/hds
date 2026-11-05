@@ -592,6 +592,7 @@
   --component-list-rowPadding: var(--semantic-space-scale-sm);
   --component-list-rowMinHeight: var(--semantic-size-listRow);
   --component-list-leadingSize: var(--semantic-size-avatar);
+  --component-pagination-compactControlSize: var(--semantic-size-row-compact);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
   --role-background: var(--semantic-color-surface-page);

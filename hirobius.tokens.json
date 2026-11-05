@@ -3349,6 +3349,13 @@
         "$value": "{semantic.size.avatar}",
         "$description": "Width and height of a List row's leading icon tile or logo (40px)."
       }
+    },
+    "pagination": {
+      "compactControlSize": {
+        "$type": "dimension",
+        "$value": "{semantic.size.row.compact}",
+        "$description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square)."
+      }
     }
   },
   "role": {

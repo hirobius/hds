@@ -583,6 +583,7 @@ declare module 'react' {
     '--component-list-rowPadding'?: string | undefined;
     '--component-list-rowMinHeight'?: string | undefined;
     '--component-list-leadingSize'?: string | undefined;
+    '--component-pagination-compactControlSize'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;
     '--role-card'?: string | undefined;

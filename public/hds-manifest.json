@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-05T03:16:52.202Z",
+  "generated": "2026-11-05T08:14:00.296Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -9213,7 +9213,8 @@
         "src/app/components/control-color-fade.ts",
         "src/app/components/control-label.tsx",
         "src/app/components/radio.tsx",
-        "src/app/components/toggle.tsx"
+        "src/app/components/toggle.tsx",
+        "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -16794,6 +16795,14 @@
         "type": "dimension",
         "description": "Width and height of a List row's leading icon tile or logo (40px).",
         "alias": "{semantic.size.avatar}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "component.pagination.compactControlSize",
+        "cssVar": "--component-pagination-compactControlSize",
+        "type": "dimension",
+        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
+        "alias": "{semantic.size.row.compact}",
         "resolvedValue": "40px"
       }
     ],
