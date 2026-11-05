@@ -58,10 +58,11 @@ describe('container radius', () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const cfg = require('../tailwind.config.tokens.cjs');
     expect(cfg.theme.extend.borderRadius.lg).toBe(formula);
-    // brutalist-demo (0) -> 0, soft-demo / default (8) -> 12.
+    // brutalist-demo (0) -> 0, default (8) -> 12, soft-demo (20) -> 24.
     const lg = (r: number) => r + Math.min(r, 4);
     expect(lg(0)).toBe(0);
     expect(lg(8)).toBe(12);
+    expect(lg(20)).toBe(24);
   });
 
   it('the docs site no longer squares cards with a .rounded-lg / .hds-card override', () => {
