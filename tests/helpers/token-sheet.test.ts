@@ -10,12 +10,12 @@ describe('token-sheet', () => {
     const root = block(':root');
     expect(root['--primitive-space-6']).toBe('24px');
     // The raised-edge block is minified at the end of the sheet (hds#897).
-    expect(root['--hds-edge-primary']).toMatch(/^#[0-9a-f]{6}$/);
+    expect(root['--hds-edge-kbd']).toMatch(/^#[0-9a-f]{6}$/);
   });
 
   it('dark is light with the dark block over it', () => {
     expect(THEMES.dark['--primitive-space-6']).toBe('24px');
-    expect(THEMES.dark['--hds-edge-primary']).not.toBe(THEMES.light['--hds-edge-primary']);
+    expect(THEMES.dark['--hds-edge-kbd']).not.toBe(THEMES.light['--hds-edge-kbd']);
   });
 
   it('follows var() chains to the final value', () => {

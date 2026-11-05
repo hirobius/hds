@@ -1840,6 +1840,18 @@
         }
       },
       "edge": {
+        "primary": {
+          "$value": "oklch(0.0875 0.0215 266.83)",
+          "$description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "oklch(0.0875 0.0215 266.83)",
+                "Dark": "oklch(0.7253 0.0044 271.35)"
+              }
+            }
+          }
+        },
         "neutral": {
           "$value": "{primitive.color.neutral.400}",
           "$description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
@@ -3295,6 +3307,11 @@
         "$description": "Primary button pressed fill (hds#748)."
       },
       "edge": {
+        "primary": {
+          "$type": "color",
+          "$value": "{semantic.color.edge.primary}",
+          "$description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897)."
+        },
         "secondary": {
           "$type": "color",
           "$value": "{semantic.color.edge.neutral}",
