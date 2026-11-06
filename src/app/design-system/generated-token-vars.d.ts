@@ -535,7 +535,9 @@ declare module 'react' {
     '--semantic-size-listRow'?: string | undefined;
     '--semantic-zIndex-control'?: string | undefined;
     '--semantic-zIndex-sticky'?: string | undefined;
+    /** @deprecated superseded by component.disclosure.paddingY (hds#1147); removed in 1.0.0 @removeIn 1.0.0 */
     '--component-nav-paddingY'?: string | undefined;
+    '--component-disclosure-paddingY'?: string | undefined;
     '--component-tag-background'?: string | undefined;
     '--component-tag-text'?: string | undefined;
     '--component-tag-border'?: string | undefined;

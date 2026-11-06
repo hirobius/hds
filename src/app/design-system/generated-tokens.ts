@@ -598,7 +598,11 @@ export const tokens = {
   },
   component: {
     nav: {
+      /** @deprecated superseded by component.disclosure.paddingY (hds#1147); removed in 1.0.0 @removeIn 1.0.0 */
       paddingY: "var(--component-nav-paddingY)"
+    },
+    disclosure: {
+      paddingY: "var(--component-disclosure-paddingY)"
     },
     tag: {
       background: "var(--component-tag-background)",

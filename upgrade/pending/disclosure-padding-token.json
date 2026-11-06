@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "If you read `--component-nav-paddingY`, switch to `--component-disclosure-paddingY` before 1.0.0; the value is the same."
+}
