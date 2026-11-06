@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.36.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Fixed for you: 2 steps, applied by the command above.
+- Do by hand: @number-flow/react is a new optional peer, needed only if you import @hirobius/design-system/number; nothing changes if you do not.
+- Looks different: Table cells pad with --component-table-cell-paddingX (28px, 16px compact) instead of surface padding, so brutalist-demo cells grow from 20px to 28px (8px to 16px compact) unless you set --component-table-cell-paddingX.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0360).
+
+### Minor Changes
+
+- e3d1723: Breaking: the root `hds` and `tokens` exports are removed (deprecated since 0.34.0, hds#1205). Import them from `@hirobius/design-system/tokens`; `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the imports. The main entry no longer carries the token JSON (hds#1347).
+
+### Patch Changes
+
+- 1a60adb: New opt-in subpath `@hirobius/design-system/number` with `NumberValue`: a number that rolls its digits to a new value with the productive motion token, and shows the new value at once under reduced motion. It wraps NumberFlow (MIT); `@number-flow/react` is an optional peer, so install it only if you import this subpath. The main entry does not change (hds#751).
+- 39b9a14: `Table`: header and body cells read their own inline padding, the new `component.table.cell.paddingX` token (`--component-table-cell-paddingX`, `semantic.space.scale.md`: 28px, 16px compact), not `semantic.space.surface.padding`. The default look does not change. A tenant's surface padding no longer sets the cell padding: brutalist-demo cells go from 20px to 28px (8px to 16px compact), and docs-only soft-demo cells from 40px to 28px.
+- 209693c: UPGRADING.md and the release upgrade block show a note's code spans as code: a selector like `a > svg` no longer prints with escaped backticks. The 0.35.0 CHANGELOG line is corrected to match.
+- 8552e61: New `withViewTransition(update)` (hds#751): runs a DOM update inside a View Transition when the browser supports `document.startViewTransition`, and runs it at once, with no animation, when it does not or when the user prefers reduced motion. It takes the update as a callback, so it works with any router or state setter, and adds no dependency.
+
 ## 0.35.0
 
 ### Upgrade

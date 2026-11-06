@@ -1,0 +1,79 @@
+{
+  "version": "0.36.0",
+  "date": "2026-11-06",
+  "bump": "minor",
+  "summary": "1 change to make by hand, 2 fixed for you by a codemod and 1 that looks different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.36.0/removed/hds",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The package root no longer exports hds; import it from @hirobius/design-system/tokens.",
+      "auto": {
+        "codemod": "hds-tokens-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "hds"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:hds"
+      ],
+      "source": "CHANGELOG.md:18"
+    },
+    {
+      "id": "0.36.0/removed/tokens",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The package root no longer exports tokens; import it from @hirobius/design-system/tokens.",
+      "auto": {
+        "codemod": "hds-tokens-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tokens"
+            ]
+          }
+        ]
+      },
+      "facts": [
+        "removed:.:tokens"
+      ],
+      "source": "CHANGELOG.md:18"
+    },
+    {
+      "id": "0.36.0/look/table-cell-padding",
+      "kind": "look",
+      "impact": "look",
+      "plain": "Table cells pad with --component-table-cell-paddingX (28px, 16px compact) instead of surface padding, so brutalist-demo cells grow from 20px to 28px (8px to 16px compact) unless you set --component-table-cell-paddingX.",
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.36.0/peer/@number-flow/react",
+      "kind": "peer",
+      "impact": "additive",
+      "plain": "@number-flow/react is a new optional peer, needed only if you import @hirobius/design-system/number; nothing changes if you do not.",
+      "detect": {
+        "bareImports": [
+          "@number-flow/react"
+        ]
+      },
+      "facts": [
+        "peer-changed:@number-flow/react"
+      ],
+      "source": "CHANGELOG.md:22"
+    }
+  ]
+}
