@@ -466,12 +466,13 @@ const entryOf = (from) =>
  * exports key it is imported from) and per class, or one named by the
  * step's subject when it lists neither (a token path, a prop, a prop value),
  * while any of it is left. A subject is a label, not a name to find in code:
- * a reader finds its uses by the detect of the step the entry names. Soonest
- * removal first.
+ * a reader finds its uses by the detect of the step the entry names. A name
+ * a later release deprecates again (a removal moved out, hds#1347) is listed
+ * once, from the latest step. Soonest removal first.
  */
 function deprecatedNow(ledgers, kept) {
   const removals = deprecationRemovals(ledgers, kept);
-  const out = [];
+  const latest = new Map();
   for (const step of ledgers.flatMap((ledger) => ledger.steps)) {
     if (step.kind !== 'deprecated') continue;
     const { uses, removed, keptBy } = removals.get(step.id);
@@ -487,9 +488,16 @@ function deprecatedNow(ledgers, kept) {
     const listed = (step.detect?.imports?.length ?? 0) + (step.detect?.classes?.length ?? 0) > 0;
     const names = listed ? [...imports, ...classes] : [{ name: subject(step), entry: null }];
     for (const { name, entry } of names) {
-      out.push({ name, ...(entry ? { entry } : {}), removeIn: step.removeIn, step: step.id });
+      // Ledgers are oldest first, so a later step replaces an earlier one.
+      latest.set(`${name}\0${entry ?? ''}`, {
+        name,
+        ...(entry ? { entry } : {}),
+        removeIn: step.removeIn,
+        step: step.id,
+      });
     }
   }
+  const out = [...latest.values()];
   // Code-point order, not localeCompare: the bytes must not depend on ICU.
   const cmp = (x = '', y = '') => (x < y ? -1 : x > y ? 1 : 0);
   return out.sort(

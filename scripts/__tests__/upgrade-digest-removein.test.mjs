@@ -6,7 +6,8 @@
  * kept saying 0.35.0. The current removeIn is deprecations.json's; the
  * released record keeps its history.
  */
-import { readFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { deprecatedRows } from '../lib/upgrade-digest.mjs';
@@ -28,8 +29,21 @@ describe('deprecatedRows', () => {
     expect(rows.find((r) => r.name === 'Blockquote.size')?.removeIn).toBe(prop.removeIn);
   });
 
-  it('leaves the released ledger untouched', () => {
-    const index = JSON.parse(readFileSync(join(ROOT, 'upgrade/index.json'), 'utf8'));
-    expect(index.deprecated.find((d) => d.name === 'hds').removeIn).toBe('0.35.0');
+  // Whatever the record says (0.34.0's ledger says 0.35.0; the Version PR's
+  // compiled index may say 0.36.0), the digest reads removeIn from
+  // deprecations.json, not from upgrade/index.json.
+  it('takes removeIn from deprecations.json, not from upgrade/index.json', () => {
+    const root = mkdtempSync(join(tmpdir(), 'hds-digest-'));
+    try {
+      cpSync(join(ROOT, 'upgrade'), join(root, 'upgrade'), { recursive: true });
+      const moved = structuredClone(deprecations);
+      moved.exports.find((e) => e.name === 'hds').removeIn = '9.9.9';
+      writeFileSync(join(root, 'deprecations.json'), JSON.stringify(moved));
+      const index = JSON.parse(readFileSync(join(root, 'upgrade/index.json'), 'utf8'));
+      expect(index.deprecated.find((d) => d.name === 'hds').removeIn).not.toBe('9.9.9');
+      expect(deprecatedRows(root).find((r) => r.name === 'hds')?.removeIn).toBe('9.9.9');
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 });
