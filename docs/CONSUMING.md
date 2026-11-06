@@ -959,15 +959,16 @@ still belongs on the markup):
 variant at size md, as the React component's defaults. Add one variant
 (`.hds-button--primary`, `--secondary`, `--tertiary`, `--link`) and one size
 (`.hds-button--sm`, `--md`, `--lg`). It has the focus ring and a disabled
-state: `disabled` on a `<button>`, `aria-disabled="true"` on an `<a>` (drop its
-`href` too, so it cannot be followed). Every value is a `--component-button-*`
+state: `disabled` on a `<button>`; on an `<a>`, `role="link"` and
+`aria-disabled="true"` with no `href`, so it cannot be followed and is still
+read as a link. Every value is a `--component-button-*`
 token, and `tests/static-parity.test.ts` holds it to the component. The
 hard edge, the hover wipe and the status tones need the React `Button`:
 
 ```html
 <a class="hds-button hds-button--primary" href="/contact">Get in touch</a>
 <a class="hds-button hds-button--tertiary hds-button--sm" href="/work">See the work</a>
-<a class="hds-button hds-button--primary" aria-disabled="true">Sold out</a>
+<a class="hds-button hds-button--primary" role="link" aria-disabled="true">Sold out</a>
 ```
 
 ### InlineLink

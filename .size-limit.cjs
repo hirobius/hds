@@ -242,8 +242,8 @@ module.exports = [
   {
     // The CSS-only static primitives (hds#64). First budget 2026-11-06, when
     // .hds-button and .hds-link joined Badge/Card/Alert/Divider/Tag (hds#1372):
-    // 5.62 kB gzip (3.97 kB before them). About a third of the file is its
-    // comments, which the build copies as written.
+    // 5.76 kB gzip (3.97 kB before them). 6 kB leaves room for .hds-link and one
+    // more primitive. About a third of the file is comments, copied as written.
     name: 'static.css (CSS-only primitives)',
     path: 'dist/static.css',
     limit: '6 kB',

@@ -370,7 +370,7 @@
  * For an <a> (or a <button>) styled as a Button without the JS root entry.
  * `.hds-button` is the secondary variant at size md, as Button's defaults;
  * add `.hds-button--<variant>` and `.hds-button--<size>`. Disable an <a> with
- * aria-disabled="true" (and drop its href); a <button> with `disabled`.
+ * role="link" aria-disabled="true" and no href; a <button> with `disabled`.
  * Not mirrored: the hard edge and the hover wipe (theme.css .hds-btn-hard /
  * .hds-btn-wipe) and the status tones, which need the JS component.
  * Every value is a Button token (tests/static-parity.test.ts).
@@ -398,8 +398,8 @@
   background-color: var(--component-button-secondary-bg-rest);
   color: var(--component-button-secondary-text);
   transition:
-    color var(--hds-motion-productive-duration) ease,
-    background-color var(--hds-motion-productive-duration) ease;
+    color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
+    background-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
 }
 
 .hds-button svg {
@@ -470,8 +470,11 @@
   padding-inline: 0;
 }
 
-/* Sizes. md is the base rule. */
+/* Sizes. md is the base rule. sm is 36px tall; a ::before extends its hit area
+ * to semantic.size.touchTarget (44px) without moving the layout, as Button's
+ * hds-touch-row lifts it on touch. */
 .hds-button--sm {
+  position: relative;
   height: var(--component-button-size-sm-height);
   padding: 0 var(--component-button-size-sm-paddingX);
   gap: var(--component-button-size-sm-itemSpacing);
@@ -479,6 +482,15 @@
   font-size: var(--semantic-typography-caption-font-size);
   letter-spacing: var(--semantic-typography-caption-letter-spacing);
   line-height: var(--semantic-typography-caption-line-height);
+}
+
+.hds-button--sm::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: var(--semantic-size-touchTarget);
+  translate: 0 -50%;
 }
 
 .hds-button--sm svg {

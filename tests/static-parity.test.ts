@@ -72,6 +72,20 @@ describe('.hds-button in static.css', () => {
     for (const leaf of MIRRORED) expect(rows.get(leaf), leaf).toBe('BOUND');
   });
 
+  it('extends the sm hit area to the 44px touch target without moving the layout', () => {
+    const rule = css.slice(css.indexOf('.hds-button--sm::before {'));
+    expect(rule.slice(0, rule.indexOf('}'))).toMatch(/height: var\(--semantic-size-touchTarget\)/);
+  });
+
+  it('transitions on the productive motion tokens', () => {
+    const rule = css.slice(css.indexOf('.hds-button {'));
+    const body = rule.slice(0, rule.indexOf('}'));
+    expect(body).toMatch(
+      /var\(--hds-motion-productive-duration\) var\(--hds-motion-productive-easing\)/,
+    );
+    expect(body).not.toMatch(/\bease\b/);
+  });
+
   it('disables an <a> through aria-disabled as well as a <button> through :disabled', () => {
     expect(css).toMatch(/\.hds-button:disabled,\s*\.hds-button\[aria-disabled='true'\]\s*\{/);
   });
