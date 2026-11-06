@@ -1,25 +1,25 @@
 WEBVTT
 
 1
-00:00:00.001 --> 00:00:15.958
+00:00:00.000 --> 00:00:15.991
 HDS: one design system for one owner’s apps, built and guarded by agents.
 
 2
-00:00:15.958 --> 00:00:31.959
+00:00:15.991 --> 00:00:32.221
 Every component page is generated from the code: a live demo, the props, and the tokens behind it.
 
 3
-00:00:31.959 --> 00:00:43.898
+00:00:32.221 --> 00:00:44.162
 One token file. Generators make the CSS and the Figma model. Sync runs one way, and a drift check proves the match.
 
 4
-00:00:43.898 --> 00:00:57.615
+00:00:44.162 --> 00:00:57.473
 A mistake an agent makes is caught before the commit. Fix it with a named token, and the gate passes.
 
 5
-00:00:57.615 --> 00:01:09.355
+00:00:57.473 --> 00:01:09.497
 Each change carries a changeset. A reviewed merge, a Figma sync, then the release publishes only when Figma matches.
 
 6
-00:01:09.355 --> 00:01:17.363
+00:01:09.497 --> 00:01:17.515
 The owner decides what. Agents decide how. Checks keep both honest.
