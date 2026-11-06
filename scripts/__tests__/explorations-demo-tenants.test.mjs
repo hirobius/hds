@@ -12,7 +12,7 @@
  *
  *   - the files: metadata that marks a demo (and keeps it out of Figma), an
  *     overlay `check-tenant-tokens` accepts, a compiled block in the committed
- *     `src/styles/tenants.css`
+ *     `src/styles/tenants-docs-only.css` (not the shipped tenants.css, hds#1205)
  *   - the computed values: the real stylesheets in Chromium, default and both
  *     tenants side by side, light and dark, on <html> and on a nested element
  *     (a var() resolves where it is declared, so the two can differ)
@@ -90,7 +90,7 @@ describe.each(SLUGS)('%s: files', (slug) => {
     }
   });
 
-  it('is compiled into the committed src/styles/tenants.css (run `pnpm tokens`)', () => {
+  it('is compiled into the committed src/styles/tenants-docs-only.css, not the shipped tenants.css (run `pnpm tokens`, hds#1205)', () => {
     const { css, tenants } = buildTenantCSS(join(ROOT, 'directions'), base);
     expect(tenants).toContain(slug);
     // The tenant's block: from its header comment to the next tenant's. The committed file is
@@ -99,7 +99,9 @@ describe.each(SLUGS)('%s: files', (slug) => {
     const from = css.indexOf(`/* \u2500\u2500 ${slug} `);
     const next = css.indexOf('/* \u2500\u2500 ', from + 1);
     const block = css.slice(css.indexOf('\n', from), next === -1 ? undefined : next);
-    expect(squeeze(read('src/styles/tenants.css'))).toContain(squeeze(block));
+    expect(squeeze(read('src/styles/tenants-docs-only.css'))).toContain(squeeze(block));
+    expect(read('src/styles/tenants.css')).not.toContain(`"${slug}"`);
+    expect(read('src/styles/tenants.css')).not.toContain(`'${slug}'`);
   });
 
   it('has a README that lists its gaps', () => {
@@ -149,6 +151,7 @@ const hasBrowser = Boolean(CHROMIUM);
 const PAGE_CSS = [
   read('src/styles/tokens.generated.css'),
   read('src/styles/tenants.css'),
+  read('src/styles/tenants-docs-only.css'),
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
   read('directions/accent-pair-demo/support-overlay.css'),
 ].join('\n');

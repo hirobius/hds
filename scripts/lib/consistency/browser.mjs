@@ -2,7 +2,15 @@
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { launchChromium } from '../browser-host.mjs';
+import { DOCS_ONLY_DIRECTIONS } from '../token-emit/tenant.mjs';
+
+// The demo directions the package does not ship (hds#1205) live here; openApp
+// adds it to the page before it applies one of them.
+const DOCS_ONLY_CSS = fileURLToPath(
+  new URL('../../../src/styles/tenants-docs-only.css', import.meta.url),
+);
 
 // Same freeze as scripts/check-docs-axe.mjs: with reduced motion, this makes
 // a capture or a scan independent of where an animation happens to be.
@@ -122,6 +130,8 @@ export async function openApp(browser, base, viewport, theme, tenant = null) {
     );
     if (applied !== theme)
       throw new Error(`theme not applied: wanted ${theme}, page has ${applied}`);
+    if (tenant && DOCS_ONLY_DIRECTIONS.includes(tenant))
+      await page.addStyleTag({ path: DOCS_ONLY_CSS });
     if (tenant) await applyTenant(page, tenant);
     await page.evaluate(async () => {
       await document.fonts?.ready;
