@@ -8,7 +8,8 @@
  * Names stand on their own; order comes from position.
  *
  * Reads:
- *   - Markdown and MDX (content/): headings and the frontmatter title
+ *   - Markdown and MDX (content/): headings and the frontmatter title, outside
+ *     fenced code blocks (``` or ~~~)
  *   - meta.json (content/): "title" values and "pages" entries
  *   - spec-sheet data (figma/spec-sheets/*.json): label keys (title, heading,
  *     section, label, name, page)
@@ -80,7 +81,17 @@ function labelsOnLine(line, rel) {
 export function findViolationsInText(text, rel) {
   const lines = text.split('\n');
   const out = [];
+  const markdown = /\.mdx?$/.test(rel);
+  let fence = null; // the open fence marker (``` or ~~~), or null outside a code block
   lines.forEach((line, i) => {
+    if (markdown) {
+      const f = /^\s*(`{3,}|~{3,})/.exec(line);
+      if (f && (!fence || f[1][0] === fence[0])) {
+        fence = fence ? null : f[1];
+        return;
+      }
+      if (fence) return;
+    }
     const hit = labelsOnLine(line, rel).find(isOrdinalLabel);
     if (!hit || suppressed(lines, i)) return;
     out.push({
