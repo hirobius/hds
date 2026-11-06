@@ -40,7 +40,8 @@ describe('useHdsMotion', () => {
 
   it('resolves each motion category from the token bridge', () => {
     mockMatchMedia(false);
-    for (const category of Object.keys(hds.motion) as (keyof typeof hds.motion)[]) {
+    // The four roles; springs, stagger, extended and scale are not roles (hds#751).
+    for (const category of ['productive', 'expressive', 'spatial', 'exit'] as const) {
       const { result } = renderHook(() => useHdsMotion(category));
       expect(result.current).toEqual(hds.motion[category]);
     }
