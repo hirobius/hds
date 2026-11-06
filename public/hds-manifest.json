@@ -7457,7 +7457,8 @@
       "consumers": [
         "src/app/components/app-shell.tsx",
         "src/app/components/avatar-group.tsx",
-        "src/app/components/board.tsx"
+        "src/app/components/board.tsx",
+        "src/app/components/status-list-item.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
