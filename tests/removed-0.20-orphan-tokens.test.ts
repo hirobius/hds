@@ -2,7 +2,8 @@
 /**
  * The 0.20.0 removals (hds#394) took out Lightbox, NavItem, NavGroup, SideNav and
  * HdsDocsShell but left their tokens behind (hds#431). Nothing reads them, so they
- * go, except component.nav.paddingY, which Disclosure's nav variant still uses.
+ * go. component.nav.paddingY stayed for Disclosure's nav variant; it is deprecated
+ * now (hds#1147) and Disclosure reads its own component.disclosure.paddingY.
  * The frozen manifest `phases` key goes with them (hds#442): no script writes it.
  */
 
@@ -38,9 +39,14 @@ describe('orphan tokens after the 0.20.0 removals (hds#431)', () => {
     expect(at(path)).toBeUndefined();
   });
 
-  it('keeps component.nav.paddingY for the Disclosure nav variant', () => {
-    expect(at('component.nav.paddingY')).toBeDefined();
-    expect(read('src/app/components/disclosure.tsx')).toContain('--component-nav-paddingY');
+  it('Disclosure reads its own paddingY token, same value as the deprecated nav one', () => {
+    const own = at('component.disclosure.paddingY');
+    const old = at('component.nav.paddingY');
+    expect(own.$value).toBe(old.$value);
+    expect(old.$deprecated).toMatch(/component\.disclosure\.paddingY.*removed in 1\.0\.0/);
+    const src = read('src/app/components/disclosure.tsx');
+    expect(src).toContain('--component-disclosure-paddingY');
+    expect(src).not.toContain('--component-nav-paddingY');
   });
 
   it('no stylesheet still sets an orphan CSS variable', () => {

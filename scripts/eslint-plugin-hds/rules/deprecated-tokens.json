@@ -200,6 +200,17 @@
       "note": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0"
     },
     {
+      "path": "component.nav.paddingY",
+      "cssVar": "--component-nav-paddingY",
+      "composite": false,
+      "tailwind": null,
+      "replacement": null,
+      "replacementCssVar": null,
+      "replacementTailwind": null,
+      "removeIn": "1.0.0",
+      "note": "superseded by component.disclosure.paddingY (hds#1147); removed in 1.0.0"
+    },
+    {
       "path": "component.badge.text",
       "cssVar": "--component-badge-text",
       "composite": false,
