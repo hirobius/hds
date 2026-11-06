@@ -11,6 +11,8 @@
  *   pnpm ledger:append --session "<text in the ## heading>" \
  *     --row "| 17 | `use_figma` | read | ... | ... | OK. |" [--row ...] \
  *     [--total "Session total: 17 calls (...)."]
+ *   pnpm ledger:append --new-session "2026-11-06 · session `claude/x`" --row "| 1 | … |" …
+ *                                             start a session: dated heading + empty table, then rows
  *   pnpm ledger:append --resum 2026-11-06      only re-sum that day's line
  *
  * --session must match exactly one heading. Each --row must be the next number in
@@ -71,8 +73,11 @@ export function duplicateRowNumbers(text) {
   return out;
 }
 
-function findSection(text, match) {
-  const hits = sections(text).filter((s) => s.heading.includes(match));
+/** The one section whose heading contains `match` (or equals it, with `exact`). */
+function findSection(text, match, exact = false) {
+  const hits = sections(text).filter((s) =>
+    exact ? s.heading === match : s.heading.includes(match),
+  );
   if (hits.length !== 1)
     throw new Error(
       `--session "${match}" matches ${hits.length} headings${hits.length ? ': ' + hits.map((h) => h.heading).join(' | ') : ''}; it must match exactly one.`,
@@ -81,8 +86,8 @@ function findSection(text, match) {
 }
 
 /** Append rows (and optionally set the total) in the one section whose heading contains `match`. */
-export function appendRows(text, match, rows, total = null) {
-  const s = findSection(text, match);
+export function appendRows(text, match, rows, total = null, { exact = false } = {}) {
+  const s = findSection(text, match, exact);
   const lines = text.slice(s.start, s.end).split('\n');
   let last = -1;
   lines.forEach((l, i) => {
@@ -105,6 +110,29 @@ export function appendRows(text, match, rows, total = null) {
     else lines[t] = total;
   }
   return text.slice(0, s.start) + lines.join('\n') + text.slice(s.end);
+}
+
+const TABLE_HEAD =
+  '| # | Tool | Kind | Target | Why | Result |\n| - | ---- | ---- | ------ | --- | ------ |';
+
+/**
+ * Add "## <heading>" with an empty table: after the last section of the same day, or at
+ * the end of the ledger for a new day. The heading must start with its date.
+ */
+export function newSession(text, heading) {
+  const date = (heading.match(/^(\d{4}-\d{2}-\d{2}) · \S/) || [])[1];
+  if (!date)
+    throw new Error(`--new-session "${heading}" must start with a date: "YYYY-MM-DD · …".`);
+  if (sections(text).some((s) => s.heading === heading))
+    throw new Error(`Session "${heading}" already exists; use --session.`);
+  const block = `## ${heading}\n\n${TABLE_HEAD}\n`;
+  const last = sections(text)
+    .filter((s) => s.date === date)
+    .pop();
+  if (!last) return text.replace(/\s*$/, '') + '\n\n' + block;
+  const head = text.slice(0, last.end).replace(/\s*$/, '');
+  const tail = text.slice(last.end);
+  return head + '\n\n' + block + (tail ? '\n' + tail : '');
 }
 
 /** Rewrite the "Calls logged for <date>" line from that date's session totals, in ledger order. */
@@ -141,11 +169,22 @@ export function run(argv, { file = LEDGER, log = console.log } = {}) {
   const one = (f) => all(f)[0] ?? null;
   let text = readFileSync(file, 'utf8');
   let date = one('--resum');
-  if (one('--session')) {
-    text = appendRows(text, one('--session'), all('--row'), one('--total'));
-    date = findSection(text, one('--session')).date;
+  // A new session's heading is matched exactly: it may be a substring of an older one.
+  const fresh = one('--new-session');
+  if (fresh && !one('--total'))
+    throw new Error(
+      '--new-session needs --total "Session total: N calls …" (the day line sums it).',
+    );
+  if (fresh) text = newSession(text, fresh);
+  const session = fresh || one('--session');
+  if (session) {
+    text = appendRows(text, session, all('--row'), one('--total'), { exact: !!fresh });
+    date = findSection(text, session, !!fresh).date;
   }
-  if (!date) throw new Error('Nothing to do: pass --session (dated heading) or --resum <date>.');
+  if (!date)
+    throw new Error(
+      'Nothing to do: pass --session, --new-session (dated heading) or --resum <date>.',
+    );
   text = resumDay(text, date);
   writeFileSync(file, text);
   log(text.match(new RegExp(`^Calls logged for ${date}: .*$`, 'm'))[0]);
