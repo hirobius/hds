@@ -235,6 +235,7 @@
     "check:exemptions": "node scripts/check-exemptions.mjs",
     "check:fast": "node scripts/run-lane.mjs check:fast",
     "check:figma-bindings": "node scripts/check-figma-bindings.mjs",
+    "audit:figma-pixels": "node scripts/audit-figma-pixels.mjs",
     "check:figma-components": "node scripts/check-figma-components.mjs --check",
     "check:figma-coverage": "node scripts/check-figma-coverage.mjs",
     "check:figma-drift": "node scripts/check-figma-drift.mjs",
