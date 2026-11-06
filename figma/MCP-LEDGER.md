@@ -1356,4 +1356,12 @@ Session total: 1 use_figma call (1 write). No publish.
 
 Session total: 1 use_figma call (1 write). No publish.
 
-Calls logged for 2026-11-06: 132 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1, 1, 1, 1, 1 and 1).
+## 2026-11-06 · HDS ops: release 0.36.0 meta delta from Version PR #1356 head
+
+| #   | Tool        | Kind  | Target                                                                                                                                                                  | Why          | Result                                         |
+| --- | ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------- |
+| 1   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 94c94905 from Version PR head c4cc4b0 (VariableID:2419:24 meta/version 0.36.0; VariableID:2475:51 meta/commit c4cc4b0) | release meta | OK. updated 2; post 2de324c7; receipt written. |
+
+Session total: 1 use_figma call (1 write). No publish.
+
+Calls logged for 2026-11-06: 133 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1, 1, 1, 1, 1, 1 and 1).
