@@ -12,8 +12,8 @@
       "internal": 12
     },
     "docsCoverage": {
-      "expected": 63,
-      "covered": 63
+      "expected": 67,
+      "covered": 67
     },
     "figmaCoverage": {
       "expected": 75,
@@ -409,11 +409,11 @@
       "name": "Composer",
       "class": "library",
       "filePath": "src/app/components/composer.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/composer",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -1153,11 +1153,11 @@
       "name": "Sheet",
       "class": "library",
       "filePath": "src/app/components/sheet.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/sheet",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2265-119",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -1489,11 +1489,11 @@
       "name": "ThemeToggle",
       "class": "library",
       "filePath": "src/app/components/theme-toggle.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/theme-toggle",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-51",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -1561,11 +1561,11 @@
       "name": "TokenField",
       "class": "library",
       "filePath": "src/app/components/token-field.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/token-field",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2209-141",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },

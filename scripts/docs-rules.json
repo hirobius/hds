@@ -15,7 +15,7 @@
     "propsTodoPrefix": "{/* props: TODO",
     "tokens": "{/* generated: tokens */}"
   },
-  "pagedComponents": ["Board"],
+  "pagedComponents": ["Board", "Composer", "Sheet", "ThemeToggle", "TokenField"],
   "providerComponents": ["HdsRouterProvider", "HdsThemeProvider", "ToastProvider"],
   "providerGuide": "guides/providers.mdx",
   "requiredFrontmatterKeys": ["title", "description", "status"],
