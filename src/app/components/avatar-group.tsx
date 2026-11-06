@@ -9,6 +9,7 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import type { AvatarProps } from './avatar';
+import { VisuallyHidden } from './visually-hidden';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Non-interactive — no hover/active/focus states. The overflow "+N" bubble is
@@ -16,7 +17,7 @@ import type { AvatarProps } from './avatar';
 // sm/md/lg ramp so the bubble lines up exactly with the avatars it follows.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- surface.sunken has no Tailwind-theme utility; var()-based so still token-driven (bg-muted was 1.04:1 on a raised Card, hds#522)
 const overflowBubbleVariants = /* @__PURE__ */ cva(
-  'inline-flex -ml-scale-xs shrink-0 items-center justify-center rounded-full bg-[var(--semantic-color-surface-sunken)] text-muted-foreground ring-2 ring-background',
+  'relative inline-flex -ml-scale-xs shrink-0 items-center justify-center rounded-full bg-[var(--semantic-color-surface-sunken)] text-muted-foreground ring-2 ring-background',
   {
     variants: {
       size: {
@@ -75,8 +76,10 @@ export const AvatarGroup = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Avat
           }),
         )}
         {overflow > 0 && (
-          <span aria-label={`+${overflow} more`} className={overflowBubbleVariants({ size })}>
-            +{overflow}
+          // Real text, not aria-label: a role-less span cannot be named.
+          <span className={overflowBubbleVariants({ size })}>
+            <span>+{overflow}</span>
+            <VisuallyHidden> more</VisuallyHidden>
           </span>
         )}
       </div>

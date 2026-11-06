@@ -7442,6 +7442,7 @@
       },
       "consumers": [
         "src/app/components/app-shell.tsx",
+        "src/app/components/avatar-group.tsx",
         "src/app/components/board.tsx"
       ],
       "tokenMapping": {},
