@@ -17,7 +17,7 @@ Re-measure from a full clone: `node scripts/count-consumer-usage.mjs --root <clo
 | 2026-09 | `76ef65e` | 33    | 24         | 33           | ^0.16.0   | 0.19.1      |
 | 2026-10 | `aab75a7` | 87    | 34         | 4            | 0.31.0    | 0.32.0      |
 
-### Roleforge, a job-application tracker
+### Roleflame, a job-application tracker
 
 | Month   | Commit    | Files | Components | Raw controls | HDS range | HDS release |
 | ------- | --------- | ----- | ---------- | ------------ | --------- | ----------- |
