@@ -9,7 +9,13 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
-import { parseVariant, crop, compare, buildGeometryScript } from '../audit-figma-pixels.mjs';
+import {
+  parseVariant,
+  crop,
+  compare,
+  buildGeometryScript,
+  rebaseFontUrls,
+} from '../audit-figma-pixels.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -26,6 +32,16 @@ describe('audit-figma-pixels', () => {
       size: 'md',
       state: 'hover',
     });
+  });
+
+  // hds#1295: dist/fonts.css quotes its urls; the old unquoted replace missed them, the
+  // brand font failed to load and the code render fell back to system-ui (labels 3-4px narrow).
+  it('points quoted and unquoted ./fonts/ urls at the dist fonts folder', () => {
+    const css =
+      "src:url('./fonts/a.woff2') format('woff2');src:url(\"./fonts/b.woff2\");src:url(./fonts/c.woff2)";
+    expect(rebaseFontUrls(css, 'file:///x/dist/fonts')).toBe(
+      "src:url('file:///x/dist/fonts/a.woff2') format('woff2');src:url(\"file:///x/dist/fonts/b.woff2\");src:url(file:///x/dist/fonts/c.woff2)",
+    );
   });
 
   it('crops a box, transparent outside the source', () => {

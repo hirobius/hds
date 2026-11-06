@@ -1253,4 +1253,12 @@ Session total: 1 use_figma call (1 write). No publish.
 
 Session total: 5 calls (1 create_session, 2 use_figma: 1 read + 1 write, 2 get_screenshot). No delete. No publish.
 
-Calls logged for 2026-11-06: 102 of 200 (1, 1, 5, 5, 12, 1, 48, 1, 3, 1, 16, 1, 1, 1 and 5).
+## 2026-11-06 · session `claude/figma-button-label` (hds#1295, file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #   | Tool        | Kind | Target                                                                                                                     | Why                        | Result                                                                                                                                                                                   |
+| --- | ----------- | ---- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `use_figma` | read | library: Button 2399:11077, primary rest sm/md/lg: label font, size, letter spacing, width, bindings; root padding and gap | find the label-width cause | OK. Plus Jakarta Sans SemiBold 600, 14/16/16px, letter spacing 0, the same as code. Widths 47/54/54 = code 46.45/53.08/53.08 rounded up. No drift; the 3-4px gap was the audit font bug. |
+
+Session total: 1 call (1 use_figma read; reused Figma session 143c3e71). No write. No publish.
+
+Calls logged for 2026-11-06: 103 of 200 (1, 1, 5, 5, 12, 1, 48, 1, 3, 1, 16, 1, 1, 1, 5 and 1).

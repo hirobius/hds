@@ -78,6 +78,11 @@ export function compare(a, b) {
   };
 }
 
+/** Point dist/fonts.css's relative ./fonts/ urls (quoted or not) at `dir`, so a file page loads them. */
+export function rebaseFontUrls(css, dir) {
+  return css.replace(/url\((['"]?)\.\/fonts\//g, (_, q) => `url(${q}${dir}/`);
+}
+
 export function buildGeometryScript({ root = REPO } = {}) {
   const links = readJson(join(root, 'figma/links.json'));
   const sets = Object.entries(COMPONENTS).map(([name, c]) => [name, c.nodeId]);
@@ -128,10 +133,10 @@ async function renderCode(
     /* @vite-ignore */ pathToFileURL(join(root, 'dist/hirobius-ui.js')).href
   );
   const { Plus } = await import('lucide-react');
-  const css = ['fonts.css', 'styles.css']
-    .map((f) => readFileSync(join(root, 'dist', f), 'utf8'))
-    .join('\n')
-    .replaceAll('url(./fonts/', `url(${pathToFileURL(join(root, 'dist/fonts')).href}/`);
+  const css = rebaseFontUrls(
+    ['fonts.css', 'styles.css'].map((f) => readFileSync(join(root, 'dist', f), 'utf8')).join('\n'),
+    pathToFileURL(join(root, 'dist/fonts')).href,
+  );
   const { chromium } = await import('playwright');
   // CHROMIUM_PATH: a browser outside Playwright's own cache (e.g. a pre-installed one).
   const browser = await chromium.launch(
