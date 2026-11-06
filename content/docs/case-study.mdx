@@ -16,7 +16,7 @@ A component library alone does not fix this. Every design system has a Button. T
 
 - **One owner.** There is no team to review by hand. Quality must come from checks that run without anyone remembering them.
 - **Agents write most of the code.** The owner sets the direction and makes the calls. Agents build, test and review. The system must stay readable to them and catch their mistakes.
-- **Checks run before the push.** Git hooks run the checks on the machine that makes the change. The hosted pipeline publishes a release when a change merges, so a check must pass before it gets there.
+- **Checks run before the push.** Git hooks run the checks on the machine that makes the change. The hosted pipeline runs one job: it publishes a release when a change merges.
 - **A small Figma plan.** Design-tool access is rationed by the day, so syncing design and code must be cheap and deliberate.
 - **Before 1.0.** Breaking changes are allowed, but each one ships with an upgrade note and, where it can, a codemod.
 

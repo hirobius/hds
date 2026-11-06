@@ -20,11 +20,27 @@ const sources = {
   },
   registry: {
     gates: [
-      { firingChannel: 'pre-commit' },
-      { firingChannel: 'pre-commit' },
-      { firingChannel: 'pre-push' },
-      { firingChannel: 'manual' },
+      { id: 'a', gateScript: 'scripts/check-a.mjs', firingChannel: 'pre-commit' },
+      { id: 'b', gateScript: 'scripts/check-b.mjs', firingChannel: 'pre-commit' },
+      { id: 'c', gateScript: 'scripts/check-c.mjs', firingChannel: 'pre-push' },
+      { id: 'd', gateScript: 'scripts/check-d.mjs', firingChannel: 'manual' },
+      // In the pretest lane (and pre-commit): counted once.
+      { id: 'e', gateScript: 'scripts/check-e.mjs', firingChannel: 'pnpm-meta' },
+      // In check:fast with a flag.
+      { id: 'f', gateScript: 'scripts/check-f.mjs', firingChannel: 'pnpm-meta' },
+      // Only in a lane no hook runs.
+      { id: 'g', gateScript: 'scripts/check-g.mjs', firingChannel: 'pnpm-meta' },
+      // No script, no hook channel.
+      { id: 'h', gateScript: null, firingChannel: 'on-demand' },
+      // Name is a prefix of a lane command's script, not the same script.
+      { id: 'i', gateScript: 'scripts/check-e', firingChannel: 'on-demand' },
     ],
+    lanes: {
+      'pre-push': [{ run: 'node scripts/check-a.mjs' }],
+      pretest: ['node scripts/check-e.mjs', 'node scripts/check-a.mjs'],
+      'check:fast': ['node scripts/check-f.mjs --strict', 'pnpm typecheck'],
+      'check:full': ['node scripts/check-g.mjs'],
+    },
   },
   adrFiles: ['001-a.md', '002-b.md', 'README.md', 'template.md'],
   changelog: '# Changelog\n\n## 0.9.0\n\n- x\n\n## 0.8.1\n\n### Patch\n\n## 0.8.0\n',
@@ -41,10 +57,23 @@ describe('caseStudyFacts', () => {
     expect(f.tokenSites).toBe(3);
   });
 
-  it('counts registered gates and the ones that run on every commit or push', () => {
+  it('counts registered gates and the ones git hooks run, each gate once', () => {
     const f = caseStudyFacts(sources);
-    expect(f.gates).toBe(4);
-    expect(f.hookGates).toBe(3);
+    expect(f.gates).toBe(9);
+    // a, b, c by channel; e by pretest; f by check:fast. Not d, g, h or i.
+    expect(f.hookGates).toBe(5);
+  });
+
+  it('pins the hook-run count against the real registry', () => {
+    const registry = JSON.parse(
+      readFileSync(join(ROOT, 'docs', 'guardrails', 'registry.json'), 'utf8'),
+    ) as typeof sources.registry;
+    const byChannel = registry.gates.filter((g) =>
+      ['pre-commit', 'pre-push'].includes(g.firingChannel),
+    ).length;
+    const f = caseStudyFacts({ ...sources, registry });
+    expect(f.hookGates).toBeGreaterThan(byChannel);
+    expect(f.hookGates).toBeLessThanOrEqual(registry.gates.length);
   });
 
   it('counts only numbered decision records', () => {

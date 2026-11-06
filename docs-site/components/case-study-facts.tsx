@@ -21,8 +21,8 @@ export function CaseStudyFacts() {
     ],
     [
       'Quality gates',
-      `${f.gates} registered checks; ${f.hookGates} run on every commit or push`,
-      'Each one names where it fires',
+      `${f.gates} registered checks; git hooks run ${f.hookGates} of them`,
+      'On every commit, and on every push that touches shipped code',
     ],
     [
       'Decisions',
