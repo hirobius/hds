@@ -39,7 +39,7 @@ Released 2026-11-06 (minor). 1 change to make by hand, 28 that look different an
 
 ### Do by hand
 
-- The external icon is now inside a span in the link, so update a selector like \`a > svg\` to \`a svg\`.
+- The external icon is now inside a span in the link, so update a selector like `a > svg` to `a svg`.
 
 ## 0.34.0
 
@@ -184,10 +184,10 @@ The upgrade command runs these codemods for you.
 - The bundled manifest no longer carries componentSpecs figmaLink; read figmaUrl, which holds the same URL.
 - Declare any of these Tailwind theme variables your own CSS reads (or use the HDS token for the same role); no HDS component read them.
 - If your app uses react-router below 7.18.2, upgrade it to 7.18.2 or later (older 7.x releases have security advisories).
-- An \`interface X extends TextProps\` no longer compiles because TextProps is a union (truncate and lineClamp exclude each other): write \`type X = TextProps & { … }\`.
-- A wrapper that spreads an \`Omit\<TextProps, …>\` into Text can fail to compile: keep \`truncate\` and \`lineClamp\` out of the Omit, or cast the spread to \`TextProps\`.
-- If \`hds/no-nested-cards\` now fails your lint, drop the outer surface and head the group with a section title and count on a plain region, or list your own card wrappers in its \`cards\` / \`surfaces\` options.
-- \`cn()\` now treats named spacing classes like \`p-surface-padding\` or \`px-fixed-sm\` as spacing, so a later \`p-4\` or \`px-6\` replaces them instead of both staying; check any className that relied on both applying.
+- An `interface X extends TextProps` no longer compiles because TextProps is a union (truncate and lineClamp exclude each other): write `type X = TextProps & { … }`.
+- A wrapper that spreads an `Omit<TextProps, …>` into Text can fail to compile: keep `truncate` and `lineClamp` out of the Omit, or cast the spread to `TextProps`.
+- If `hds/no-nested-cards` now fails your lint, drop the outer surface and head the group with a section title and count on a plain region, or list your own card wrappers in its `cards` / `surfaces` options.
+- `cn()` now treats named spacing classes like `p-surface-padding` or `px-fixed-sm` as spacing, so a later `p-4` or `px-6` replaces them instead of both staying; check any className that relied on both applying.
 - Compile any of these utilities your own markup still uses with your own Tailwind build; HDS components never used them.
 
 ## 0.32.0
