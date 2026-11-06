@@ -163,9 +163,11 @@ async function renderCode(
       await page.evaluate(() => document.fonts.ready);
       const btn = page.locator('#c > *').first();
       await page.mouse.move(0, 0);
+      // The rest box, like Figma's variant frame: hover and press move the face (translate)
+      // inside it (hds#1296), so the clip must not follow the face.
+      const box = await btn.boundingBox();
       if (v.state === 'hover' || v.state === 'pressed') await btn.hover();
       if (v.state === 'pressed') await page.mouse.down();
-      const box = await btn.boundingBox();
       const shot = await page.screenshot({
         clip: { x: box.x, y: box.y, width: box.width, height: box.height },
       });
