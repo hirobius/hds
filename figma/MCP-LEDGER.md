@@ -1153,8 +1153,10 @@ Library 2VgBbVpKiDnu0aftJEVyBQ read only. Draft built in HDS Explorations 7US9lA
 | 29  | `search_design_system` | read  | Explorations: Button, Card, Menu, Popover, Dialog, Tooltip                                                | live components for Surface | OK. Library keys found.                                                                   |
 | 30  | `use_figma`            | write | Explorations 24:274: surface-step rows with live instances; new section 26:3441                           | Adrian request              | OK. Library Button, Card, Tag, Toast, Popover, Menu, Skeleton, Tooltip, Dialog instances. |
 | 31  | `use_figma`            | write | Explorations 26:3453: Card swapped to Bordered=true; screenshots                                          | fix                         | OK.                                                                                       |
+| 32  | `use_figma`            | read  | Explorations 12:2: node counts per Draft 2 frame                                                          | library rebuild plan        | OK. 82–482 nodes per sheet.                                                               |
+| 33  | `use_figma`            | read  | library 28:2: Button sheet Section slot, Header and SourceFooter properties, Archive page                 | kit internals               | OK. Content is a SLOT; footer Version is bound to meta/version; Archive 2083:2.           |
 
-Session total: 31 calls (11 writes, all in HDS Explorations; 2 of them failed). Library not written. No publish.
+Session total: 33 calls (11 writes, all in HDS Explorations; 2 of them failed). Library not written. No publish.
 
 ## 2026-11-06 · Agent sync: meta/commit after #1261 (file 2VgBbVpKiDnu0aftJEVyBQ)
 
@@ -1224,4 +1226,4 @@ Session total: 16 calls (1 skill, 1 create_session, 10 use_figma: 8 read + 2 wri
 
 Session total: 1 use_figma call (1 write). No publish.
 
-Calls logged for 2026-11-06: 80 of 200 (1, 1, 5, 5, 12, 1, 31, 1, 3, 1, 16, 1, 1 and 1).
+Calls logged for 2026-11-06: 82 of 200 (1, 1, 5, 5, 12, 1, 33, 1, 3, 1, 16, 1, 1 and 1).
