@@ -5,6 +5,38 @@
     "button": {
       "source": "src/app/components/button.tsx",
       "cva": "buttonVariants",
+      "css": {
+        "file": "src/styles/static.css",
+        "leaves": {
+          "bg": ".hds-button--primary | background-color",
+          "bgHover": ".hds-button--primary:hover | background-color",
+          "bgPressed": ".hds-button--primary:active | background-color",
+          "text": ".hds-button--primary | color",
+          "radius": ".hds-button | border-radius",
+          "fontWeight": ".hds-button | font-weight",
+          "primary.bgDisabled": ".hds-button[aria-disabled='true'] | background-color",
+          "primary.textDisabled": ".hds-button[aria-disabled='true'] | color",
+          "secondary.bg.rest": ".hds-button--secondary | background-color",
+          "secondary.bg.hover": ".hds-button--secondary:hover | background-color",
+          "secondary.bg.pressed": ".hds-button--secondary:active | background-color",
+          "secondary.text": ".hds-button--secondary | color",
+          "tertiary.bg.hover": ".hds-button--tertiary:hover | background-color",
+          "tertiary.bg.pressed": ".hds-button--tertiary:active | background-color",
+          "size.sm.height": ".hds-button--sm | height",
+          "size.sm.paddingX": ".hds-button--sm | padding | 1",
+          "size.sm.iconSize": ".hds-button--sm svg | width",
+          "size.sm.itemSpacing": ".hds-button--sm | gap",
+          "size.md.height": ".hds-button--md | height",
+          "size.md.paddingY": ".hds-button--md | padding | 0",
+          "size.md.paddingX": ".hds-button--md | padding | 1",
+          "size.md.iconSize": ".hds-button svg | width",
+          "size.md.itemSpacing": ".hds-button | gap",
+          "size.lg.height": ".hds-button--lg | height",
+          "size.lg.paddingX": ".hds-button--lg | padding | 1",
+          "size.lg.iconSize": ".hds-button--lg svg | width",
+          "size.lg.itemSpacing": ".hds-button--lg | gap"
+        }
+      },
       "rules": [
         { "match": "bg", "ctx": { "variant": "primary" } },
         { "match": "bgHover", "ctx": { "variant": "primary" } },
@@ -193,6 +225,16 @@
     "inlineLink": {
       "$comment": "size.*.iconSize are the Figma-side px of the icon (Figma variables have no em). Code draws iconSize (0.75em) at every size, so those three read UNUSED by design.",
       "source": "src/app/components/inline-link.tsx",
+      "css": {
+        "file": "src/styles/static.css",
+        "leaves": {
+          "iconSize": ".hds-link__icon | width",
+          "iconGap": ".hds-link__icon | margin-left",
+          "size.sm.fontSize": ".hds-link--sm | font-size",
+          "size.md.fontSize": ".hds-link--md | font-size",
+          "size.lg.fontSize": ".hds-link--lg | font-size"
+        }
+      },
       "rules": [
         {
           "match": "size.sm.fontSize",
