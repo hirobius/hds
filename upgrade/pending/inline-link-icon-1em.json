@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "No action needed: external InlineLink icons now render at 1em, the size of the link text."
+}

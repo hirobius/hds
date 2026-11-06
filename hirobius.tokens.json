@@ -1320,10 +1320,10 @@
       "$description": "An icon set inside a line of text, sized in em so it follows the font size (hds InlineLink).",
       "size": {
         "$value": {
-          "value": 0.75,
+          "value": 1,
           "unit": "em"
         },
-        "$description": "Inline icon size: three quarters of the font size."
+        "$description": "Inline icon size: one em, the font size, so the icon is sized to the text."
       },
       "gap": {
         "$value": {
@@ -3705,8 +3705,8 @@
           },
           "iconSize": {
             "$type": "dimension",
-            "$value": "{primitive.size.12}",
-            "$description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize."
+            "$value": "{primitive.size.16}",
+            "$description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize."
           }
         },
         "md": {
@@ -3717,8 +3717,8 @@
           },
           "iconSize": {
             "$type": "dimension",
-            "$value": "{primitive.size.12}",
-            "$description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize."
+            "$value": "{primitive.size.16}",
+            "$description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize."
           }
         },
         "lg": {
@@ -3729,8 +3729,8 @@
           },
           "iconSize": {
             "$type": "dimension",
-            "$value": "{primitive.size.20}",
-            "$description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize."
+            "$value": "{primitive.size.24}",
+            "$description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize."
           }
         }
       }
