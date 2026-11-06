@@ -26,6 +26,17 @@ describe('check-figma-bindings', () => {
     expect(t.tag).toEqual(['32:11']);
     expect(t.disclosure).toEqual(['88:453']);
     expect(t.nav).toBeUndefined();
+    // hds#1323: List's row tokens live on the ListItem set, which List nests.
+    expect(t.list).toEqual(['2353:315', '2352:301']);
+  });
+
+  it('the snapshot reads a whole set when a tag names one of its variants (hds#1323)', () => {
+    // pagination.tsx tags variant 86:194; its compact sibling holds compactControlSize.
+    const s = buildBindingsScript();
+    expect(s).toContain(
+      "node.type === 'COMPONENT' && node.parent && node.parent.type === 'COMPONENT_SET'",
+    );
+    expect(s).toContain("'2352:301'");
   });
 
   it('the snapshot script reads the library only and writes nothing', () => {
