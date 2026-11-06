@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Radio, Checkbox and Toggle rows are 4px wider (8px between control and label); check tight layouts that hold them."
+}

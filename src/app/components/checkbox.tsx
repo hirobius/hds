@@ -42,7 +42,7 @@ export type HdsCheckboxDemoState = 'rest' | 'hover' | 'focused' | 'pressed' | 'd
 /** Root label chrome — hover/press tint + cursor affordance. */
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven spacing/radius/color; var()-based, no Tailwind-theme utility exists
 const checkboxRootVariants = /* @__PURE__ */ cva(
-  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] rounded-md py-[var(--semantic-space-subgrid-gap)] select-none hds-touch-row',
+  'relative inline-flex items-center gap-scale-xs rounded-md py-[var(--semantic-space-subgrid-gap)] select-none hds-touch-row',
   {
     variants: {
       state: {
