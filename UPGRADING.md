@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.33.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.34.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,28 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.34.0
+
+Released 2026-11-06 (minor). 2 changes to make by hand, 5 that look different and 2 deprecations.
+
+### Looks different
+
+- The interactive Card hover lift and Card.Progress fill now animate on the productive motion token and stop under reduced motion; nothing to change in your app.
+- Radio, Checkbox and Toggle rows are 4px wider (8px between control and label); check tight layouts that hold them.
+- Progress and Tabs indicators now animate on the productive motion token; nothing to change in your app.
+- The accent-pair-demo demo direction no longer ships, so a page with data-brand="accent-pair-demo" renders with the base tokens; theme it with your own brand block instead.
+- The soft-demo demo direction no longer ships, so a page with data-brand="soft-demo" renders with the base tokens; theme it with your own brand block instead.
+
+### Coming next
+
+- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.35.0.
+- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.35.0.
+
+### Do by hand
+
+- CodeBlock's copy button icon now sits inside a span\[data-hds-icon-swap] wrapper; a test or selector that expects the svg as the button's direct child must look one level deeper.
+- tokens.css and styles.css no longer ship 42 Tailwind utilities that no HDS component or fleet consumer used (hds#1205); a class from the list in your markup stops applying.
 
 ## 0.33.1
 
