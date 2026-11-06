@@ -7805,7 +7805,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/sidebar",
       "publicDataAttributes": [],
       "aiRules": "Reach for this named layout intent before Box/sx. Sidebar expects EXACTLY two children — the rail and the content — passed in that order. `side` controls which one visually renders as the rail; DOM order is unchanged. gap MUST use a semantic space step, never raw px. sideWidth and contentMin are CSS length dimensions (not spacing) — a length string like '16rem' or '50%' is expected, matching the check-hardcoded-spacing gate's own dimension-prop exemption. Do NOT use Sidebar for more than two regions — use Grid."
     },
@@ -7871,7 +7871,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/switcher",
       "publicDataAttributes": [],
       "aiRules": "Reach for this named layout intent before Box/sx. gap MUST use a semantic space step, never raw px. threshold is a CSS length dimension (not spacing), e.g. '30rem'. `limit` unconditionally forces the stacked (column) layout once there are more than `limit` children, regardless of container width — use it to stop a row from thinning out into an unreadable N-up strip. Do NOT use Switcher for content that should always wrap in place — use Stack with `direction=\"row\"` and `wrap=\"wrap\"`."
     },
@@ -7923,7 +7923,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/pin",
       "publicDataAttributes": [],
       "aiRules": "`top` is a CSS length offset (a dimension, not a spacing step). Give the pinned element a TALLER scrolling parent so it has room to travel. For the scroll-scrubbed animation inside a pinned scene, use CSS `animation-timeline` (see Reveal) or `useScrollProgress` from `@hirobius/design-system/scroll`. See ADR-021."
     },

@@ -46,11 +46,13 @@ import {
   NavList,
   List,
   Pagination,
+  Pin,
   Popover,
   Progress,
   Radio,
   SegmentedControl,
   Select,
+  Sidebar,
   Sheet,
   Skeleton,
   Slider,
@@ -58,6 +60,7 @@ import {
   Stack,
   StatusListItem,
   Surface,
+  Switcher,
   Table,
   Tabs,
   TabsContent,
@@ -840,6 +843,52 @@ function ThemeToggleDemo() {
   );
 }
 
+function PinDemo() {
+  // A short scroll box stands in for the page: scroll it and the heading stays put.
+  return (
+    <div
+      role="region"
+      aria-label="Pinned heading example"
+      // A scroll box must be keyboard-scrollable (axe scrollable-region-focusable).
+      tabIndex={0}
+      className="hds-focus"
+      style={{ blockSize: 200, overflowY: 'auto' }}
+    >
+      <Pin top="0" style={{ ...demoTile, zIndex: 1 }}>
+        Pinned while this box scrolls
+      </Pin>
+      {['Step one', 'Step two', 'Step three', 'Step four', 'Step five'].map((label) => (
+        <p key={label} style={{ margin: 0, padding: SM }}>
+          {label}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function SidebarDemo() {
+  return (
+    <Sidebar sideWidth="12rem" gap="normal">
+      <div style={demoTile}>Rail: filters</div>
+      <div style={demoTile}>
+        Content: results fill the rest and drop below the rail when space runs out.
+      </div>
+    </Sidebar>
+  );
+}
+
+function SwitcherDemo() {
+  return (
+    <Switcher threshold="30rem" gap="normal">
+      {['Plan', 'Build', 'Ship'].map((label) => (
+        <div key={label} style={demoTile}>
+          {label}
+        </div>
+      ))}
+    </Switcher>
+  );
+}
+
 function AvatarGroupDemo() {
   return (
     <AvatarGroup max={3} aria-label="Project members">
@@ -1547,6 +1596,9 @@ function RevealDemo() {
 }
 
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
+  Pin: PinDemo,
+  Sidebar: SidebarDemo,
+  Switcher: SwitcherDemo,
   AvatarGroup: AvatarGroupDemo,
   MetadataList: MetadataListDemo,
   StatusListItem: StatusListItemDemo,
