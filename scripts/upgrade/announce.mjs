@@ -41,7 +41,9 @@ import { fileURLToPath } from 'node:url';
 import { HDS_PACKAGE } from '../../codemods/lib/installed-version.mjs';
 import { listOf, loadRecord } from '../../codemods/lib/record.mjs';
 import { compareVersions, isVersion } from '../../codemods/lib/semver.mjs';
+import { readArgs, runIfEntry } from './cli.mjs';
 import { TOKEN_VAR, discoverConsumers, fleetToken } from './consumers.mjs';
+import { postDiscord } from './discord.mjs';
 import {
   API,
   MARKER,
@@ -310,24 +312,17 @@ export async function announce({
     log('   quiet: every change in this release is none or additive.');
   } else {
     const lines = discordLines({ version, ledger, ...result });
-    const hook = env.DISCORD_WEBHOOK_URL?.trim();
-    if (!hook) log('   skipped: set DISCORD_WEBHOOK_URL.');
-    else {
-      for (const line of lines) log(`   ${apply ? '' : 'would post: '}${line}`);
-      if (apply) {
-        try {
-          const res = await fetch(hook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: lines.join('\n') }),
-          });
-          if (!res.ok) throw new Error(`Discord answered ${res.status}`);
-        } catch (error) {
-          result.failed += 1;
-          log(`   the Discord post failed: ${error.message}`);
-        }
-      }
-    }
+    await postDiscord({
+      lines,
+      apply,
+      log,
+      env,
+      fetch,
+      onError: (error) => {
+        result.failed += 1;
+        log(`   the Discord post failed: ${error.message}`);
+      },
+    });
   }
   if (result.failed) {
     log('');
@@ -340,23 +335,14 @@ export async function announce({
 
 /** Always 0 (see the file comment); usage errors are 2. */
 export async function main(argv, io = {}) {
-  const parsed = parseArgs(argv);
-  if (parsed.help) {
-    console.log(USAGE);
-    return 0;
-  }
-  if (parsed.error) {
-    console.error(`${parsed.error}\n\n${USAGE}`);
-    return 2;
-  }
+  const args = readArgs(argv, parseArgs, USAGE);
+  if ('exit' in args) return args.exit;
   try {
-    await announce({ ...parsed.options, ...io });
+    await announce({ ...args.options, ...io });
   } catch (error) {
     console.error(`release:announce: ${explain(error)}`);
   }
   return 0;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  process.exitCode = await main(process.argv.slice(2));
-}
+await runIfEntry(import.meta.url, main);

@@ -32,12 +32,12 @@
  *
  * Exit 0: done (or the dry run printed). 1: a step failed. 2: refused.
  */
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { readDeprecated } from '../../codemods/lib/deprecated.mjs';
 import { HDS_PACKAGE } from '../../codemods/lib/installed-version.mjs';
 import { compareVersions, isVersion } from '../../codemods/lib/semver.mjs';
+import { readArgs, runIfEntry } from './cli.mjs';
 import { SELF_REPO, TOKEN_VAR, discoverConsumers, fleetToken } from './consumers.mjs';
+import { postDiscord } from './discord.mjs';
 import { NO_BACKPORTS, rollbackLines } from './rollback.mjs';
 import {
   API,
@@ -273,38 +273,25 @@ export async function yank({
   log('');
   log('4. Discord');
   const lines = discordLines({ version, good, reason, release: releaseUrl, edited, closed });
-  const hook = env.DISCORD_WEBHOOK_URL?.trim();
-  if (!hook) log('   skipped: set DISCORD_WEBHOOK_URL.');
-  else {
-    for (const line of lines) log(`   ${apply ? '' : 'would post: '}${line}`);
-    if (apply) {
-      await step('the Discord post', async () => {
-        const res = await fetch(hook, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: lines.join('\n') }),
-        });
-        if (!res.ok) throw new Error(`Discord answered ${res.status}`);
-      });
-    }
-  }
+  await postDiscord({
+    lines,
+    apply,
+    log,
+    env,
+    fetch,
+    onError: (error) =>
+      step('the Discord post', () => {
+        throw error;
+      }),
+  });
   return { exitCode: failed > 0 ? 1 : 0 };
 }
 
 export async function main(argv) {
-  const parsed = parseArgs(argv);
-  if (parsed.help) {
-    console.log(USAGE);
-    return 0;
-  }
-  if (parsed.error) {
-    console.error(`${parsed.error}\n\n${USAGE}`);
-    return 2;
-  }
-  const { exitCode } = await yank(parsed.options);
+  const args = readArgs(argv, parseArgs, USAGE);
+  if ('exit' in args) return args.exit;
+  const { exitCode } = await yank(args.options);
   return exitCode;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  process.exitCode = await main(process.argv.slice(2));
-}
+await runIfEntry(import.meta.url, main);
