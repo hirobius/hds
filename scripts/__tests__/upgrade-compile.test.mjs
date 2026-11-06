@@ -27,6 +27,7 @@ import {
   listOf,
   md,
   releaseSections,
+  summarize,
   upgradeBlock,
 } from '../upgrade/compile.mjs';
 import { formatJson } from '../upgrade/format.mjs';
@@ -394,6 +395,10 @@ describe('the list a step lands in: kind, impact and auto alone', () => {
     ['behavior', 'behavior', false, 'doByHand'],
     ['dependency', 'breaking', false, 'doByHand'],
     ['exports', 'additive', false, 'doByHand'],
+    // A new optional peer: informational, not a to-do (a codemod still wins).
+    ['peer', 'additive', false, 'goodToKnow'],
+    ['peer', 'additive', true, 'fixedForYou'],
+    ['peer', 'breaking', false, 'doByHand'],
     ['manual', 'none', false, 'doByHand'],
   ])('%s, impact %s, auto %s: %s', (kind, impact, auto, list) => {
     expect(listOf(step(kind, impact, auto))).toBe(list);
@@ -429,9 +434,11 @@ describe('the list a step lands in: kind, impact and auto alone', () => {
               ? 'comingNext'
               : auto
                 ? 'fixedForYou'
-                : impact === 'look' && lookKeepsNames.includes(kind)
-                  ? 'looksDifferent'
-                  : 'doByHand';
+                : kind === 'peer' && impact === 'additive'
+                  ? 'goodToKnow'
+                  : impact === 'look' && lookKeepsNames.includes(kind)
+                    ? 'looksDifferent'
+                    : 'doByHand';
           expect(listOf(step(kind, impact, auto)), `${kind} ${impact} auto=${auto}`).toBe(expected);
         }
       }
@@ -1729,5 +1736,69 @@ describe('md', () => {
 
   it('escapes a backtick with no partner', () => {
     expect(md('a lone ` tick')).toBe('a lone \\` tick');
+  });
+});
+
+describe('an additive peer step (a new optional peer)', () => {
+  const peer = {
+    id: '0.11.0/peer/@number-flow/react',
+    kind: 'peer',
+    impact: 'additive',
+    plain: '@number-flow/react is a new optional peer, needed only for the ./number subpath.',
+    detect: { bareImports: ['@number-flow/react'] },
+    source: 'x',
+  };
+  const ledger = { ...LEDGER_0_11, steps: [peer] };
+
+  it('is Good to know, not Do by hand', () => {
+    expect(listOf(peer)).toBe('goodToKnow');
+    expect(listOf({ ...peer, impact: 'breaking' })).toBe('doByHand');
+    const { upgrading } = compileOutputs({ repo: historyRepo({ ledgers: [ledger] }) });
+    const section = upgrading.slice(upgrading.indexOf('## 0.11.0'));
+    expect(section).toContain(`### Good to know\n\n- ${peer.plain}\n`);
+    expect(section).not.toContain('### Do by hand');
+  });
+
+  it('is not counted in the summary', () => {
+    expect(summarize(ledger)).toBe('Nothing in this release asks anything of a consumer.');
+  });
+});
+
+describe('a deprecation removed after its planned release', () => {
+  it('says late, not early', () => {
+    const deprecated = {
+      ...LEDGER_0_11,
+      steps: [
+        {
+          id: '0.11.0/deprecated/Tile',
+          kind: 'deprecated',
+          impact: 'none',
+          plain: 'Tile still works but is deprecated; use Card instead.',
+          detect: { jsx: ['Tile'] },
+          removeIn: '0.12.0',
+          source: 'x',
+        },
+      ],
+    };
+    const removed = {
+      ...LEDGER_0_12_1,
+      steps: [
+        {
+          id: '0.12.1/removed/Tile',
+          kind: 'removed',
+          impact: 'breaking',
+          plain: 'Tile is removed; use Card.',
+          detect: { jsx: ['Tile'] },
+          source: 'x',
+        },
+      ],
+    };
+    const { upgrading } = compileOutputs({
+      repo: historyRepo({ ledgers: [deprecated, { ...LEDGER_0_12, steps: [] }, removed] }),
+    });
+    expect(upgrading).toContain(
+      '- Tile still works but is deprecated; use Card instead. Removed late, in [0.12.1](#0121) (planned for 0.12.0).',
+    );
+    expect(upgrading).not.toMatch(/Removed early, in \[0\.12\.1\]/);
   });
 });
