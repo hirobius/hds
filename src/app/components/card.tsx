@@ -190,7 +190,7 @@ const SELECTABLE_CARD =
 // property to transition. `no-underline` and `text-inherit` keep a link child
 // reading as a card, not as link text.
 const INTERACTIVE_CARD =
-  'hds-focus no-underline text-inherit transition-[scale,box-shadow] duration-150 hover:scale-102 hover:shadow-[var(--semantic-elevation-raised-shadow)] motion-reduce:transition-none motion-reduce:hover:scale-100';
+  'hds-focus no-underline text-inherit transition-[scale,box-shadow] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] hover:scale-102 hover:shadow-[var(--semantic-elevation-raised-shadow)] motion-reduce:transition-none motion-reduce:hover:scale-100';
 
 // A click on a control inside a selectable card belongs to that control, the
 // same rule as Space typed into a nested field.
@@ -647,7 +647,9 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
               transformOrigin: 'left',
               background: PROGRESS_TONE_FILL[tone],
               borderRadius: hds.borderRadius[2],
-              transition: `transform ${hds.motion.expressive.duration}s ease-out`,
+              // CSS vars, not hds.motion's JS number, so reduced motion zeroes it (hds#751).
+              transition:
+                'transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing)',
             }}
           />
         </div>
