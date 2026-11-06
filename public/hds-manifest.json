@@ -17618,6 +17618,13 @@
     "hds-divider--strong",
     "hds-divider--vertical",
     "hds-focus",
+    "hds-link",
+    "hds-link--lg",
+    "hds-link--md",
+    "hds-link--sm",
+    "hds-link-standalone",
+    "hds-link__icon",
+    "hds-link__tail",
     "hds-tag",
     "hds-tag--active",
     "hds-tag__pill"

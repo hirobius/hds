@@ -374,6 +374,16 @@
     "inlineLink": {
       "$comment": "size.*.iconSize are the Figma-side px of the icon (Figma variables have no em). Code draws iconSize (0.75em) at every size, so those three read UNUSED by design.",
       "source": "src/app/components/inline-link.tsx",
+      "css": {
+        "file": "src/styles/static.css",
+        "leaves": {
+          "iconSize": ".hds-link__icon | width",
+          "iconGap": ".hds-link__icon | margin-left",
+          "size.sm.fontSize": ".hds-link--sm | font-size",
+          "size.md.fontSize": ".hds-link--md | font-size",
+          "size.lg.fontSize": ".hds-link--lg | font-size"
+        }
+      },
       "rules": [
         {
           "match": "size.sm.fontSize",

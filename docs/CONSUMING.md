@@ -273,7 +273,7 @@ export function Example() {
 | `@hirobius/design-system/brand`             | Framework-free palette → HDS-semantic overlay bridge for static/SSR targets (see §12)                                                                                                                                                                                                                                           |
 | `@hirobius/design-system/scroll`            | Opt-in scroll-motion: `SmoothScroll` (Lenis) + `useScrollProgress` (Motion). Optional peer `lenis` (see §13)                                                                                                                                                                                                                    |
 | `@hirobius/design-system/number`            | Opt-in animated numbers: `NumberValue` (NumberFlow) with the productive motion token; static under reduced motion. Optional peer `@number-flow/react` (hds#751)                                                                                                                                                                 |
-| `@hirobius/design-system/static.css`        | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag`/`.hds-button` classes, no React (see §14)                                                                                                                                                                                     |
+| `@hirobius/design-system/static.css`        | CSS-only static-primitive layer — `.hds-badge`/`.hds-card`/`.hds-alert`/`.hds-divider`/`.hds-tag`/`.hds-button`/`.hds-link` classes, no React (see §14)                                                                                                                                                                         |
 | `@hirobius/design-system/patterns`          | The 14 pattern modules (`Page`, `PageHeader`, `Form` with its `FormField`, `CodeBlock`, …); root copies removed in 0.20.0                                                                                                                                                                                                       |
 | `@hirobius/design-system/icons`             | Curated Lucide icon set for `Icon` and `Button iconOnly` (see §15)                                                                                                                                                                                                                                                              |
 | `@hirobius/design-system/eslint-plugin`     | The consumer ESLint plugin; spread `configs.recommended` into `eslint.config.mjs` (see §11)                                                                                                                                                                                                                                     |
@@ -848,7 +848,7 @@ function Hero() {
 
 `SmoothScroll` drives the real scroll position, so CSS `animation-timeline` and `useScrollProgress` keep working underneath it unchanged. See `docs/adr/021-animation-engine-motion-core-gsap-downstream.md` for why Lenis is opt-in and GSAP is out.
 
-## 14. CSS-only static primitives — Badge/Card/Alert/Divider/Tag/Button with NO React
+## 14. CSS-only static primitives — Badge/Card/Alert/Divider/Tag/Button/InlineLink with NO React
 
 §12.4 promised that "static primitives (badge, card, alert, divider, tag, …)
 render from tokens with no JS" — `@hirobius/design-system/static.css` is that
@@ -961,7 +961,7 @@ variant at size md, as the React component's defaults. Add one variant
 (`.hds-button--sm`, `--md`, `--lg`). It has the focus ring and a disabled
 state: `disabled` on a `<button>`, `aria-disabled="true"` on an `<a>` (drop its
 `href` too, so it cannot be followed). Every value is a `--component-button-*`
-token, and `tests/button-static-parity.test.ts` holds it to the component. The
+token, and `tests/static-parity.test.ts` holds it to the component. The
 hard edge, the hover wipe and the status tones need the React `Button`:
 
 ```html
@@ -970,12 +970,36 @@ hard edge, the hover wipe and the status tones need the React `Button`:
 <a class="hds-button hds-button--primary" aria-disabled="true">Sold out</a>
 ```
 
+### InlineLink
+
+`.hds-link` is a text link with the same rules as the React `InlineLink`.
+Add `.hds-link-standalone` for a link outside running text (a 24px hit area,
+44px on touch), and `.hds-link--sm` / `--md` / `--lg` for its own size; leave
+the size off inside running text. For an external link, put the last word and
+the icon in `.hds-link__tail`, so the icon never wraps alone, and say "opens in
+new tab" in visually hidden text:
+
+```html
+<a class="hds-link" href="/work">See the work</a>
+
+<a class="hds-link" href="https://example.com" target="_blank" rel="noopener noreferrer">
+  Read the
+  <span class="hds-link__tail"
+    >notes<svg class="hds-link__icon" aria-hidden="true" viewBox="0 0 24 24">…</svg></span
+  >
+  <span class="sr-only"> (opens in new tab)</span>
+</a>
+```
+
+`tests/static-parity.test.ts` holds `.hds-link` to theme.css's copy and its
+icon and sizes to the InlineLink tokens.
+
 ### What's out of scope
 
 `static.css` covers non-interactive/CSS-only-interactive primitives. Anything
 with real state (forms, dialogs, dropdowns, `ContactForm`) still needs a React
 island (§12.4) — this layer doesn't attempt to reimplement component logic in
-CSS, only the visual surface of the six primitives above.
+CSS, only the visual surface of the seven primitives above.
 
 ## 15. Icons — the `/icons` subpath
 
