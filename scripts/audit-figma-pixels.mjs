@@ -78,6 +78,17 @@ export function compare(a, b) {
   };
 }
 
+/** The font the Button label uses; a render without it measures a fallback (hds#1295). */
+export const BRAND_FONT = '600 16px "Plus Jakarta Sans"';
+
+/** Abort the code render when the brand font did not load. */
+export function requireBrandFont(loaded) {
+  if (!loaded)
+    throw new Error(
+      `${BRAND_FONT} did not load in the code render; check the url rewrite of dist/fonts.css (rebaseFontUrls). Aborting: a fallback font makes every label measure wrong.`,
+    );
+}
+
 /** Point dist/fonts.css's relative ./fonts/ urls (quoted or not) at `dir`, so a file page loads them. */
 export function rebaseFontUrls(css, dir) {
   return css.replace(/url\((['"]?)\.\/fonts\//g, (_, q) => `url(${q}${dir}/`);
@@ -161,6 +172,7 @@ async function renderCode(
       );
       await page.goto(pathToFileURL(htmlPath).href);
       await page.evaluate(() => document.fonts.ready);
+      requireBrandFont(await page.evaluate((f) => document.fonts.check(f), BRAND_FONT));
       const btn = page.locator('#c > *').first();
       await page.mouse.move(0, 0);
       // The rest box, like Figma's variant frame: hover and press move the face (translate)
