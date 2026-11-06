@@ -1157,4 +1157,11 @@ Session total: 22 calls (6 writes, all in HDS Explorations; 2 of them failed). L
 | 3                                                                | `use_figma` | read  | the 3 sets: screenshots, label fit                                                                                   | after              | OK. 0 clipped labels. figma/shots/*-gap-after.png.                       |
 | Session total: 3 use_figma calls (1 write, 2 reads). No publish. |
 
-Calls logged for 2026-11-06: 51 of 200 (1, 1, 5, 5, 12, 1, 22, 1 and 3).
+## 2026-11-06 · Agent sync: release 0.34.0 meta after #1231 (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                      | Tool        | Kind  | Target                                                                                                                                                          | Why          | Result                                         |
+| ------------------------------------------------------ | ----------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------- |
+| 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against c0a16504 (VariableID:2419:24 meta/version, VariableID:2475:50 meta/releasedAt, VariableID:2475:51 meta/commit) | release meta | OK. updated 3; post 153b3610; receipt written. |
+| Session total: 1 use_figma call (1 write). No publish. |
+
+Calls logged for 2026-11-06: 52 of 200 (1, 1, 5, 5, 12, 1, 22, 1, 3 and 1).
