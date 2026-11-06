@@ -25,9 +25,12 @@
  *                             `git merge-base HEAD origin/main`, so it always describes a
  *                             commit on main:
  *     .commitsOnMain          commits reachable from that commit
- *     .mergedPullRequests     PRs whose squash merge is on main's first-parent history:
- *                             distinct N of the last "(#N)" in each first-parent subject
- *                             (a plain merge commit is not counted)
+ *     .mergedPullRequests     PRs merged into main (squash or merge commit): distinct N
+ *                             over main's first-parent subjects, where a subject that
+ *                             starts "Merge pull request #N" is PR N and any other takes
+ *                             its last "(#N)". A squash subject names the number its
+ *                             author typed, so a wrong one counts as that number (the
+ *                             #491/#490 case); expect the count to be off by such slips
  *     .firstCommitDate        day of the root commit (YYYY-MM-DD)
  *     .changelogVersions      versions with a `## x.y.z` heading in CHANGELOG.md at that
  *                             commit. Not "releases": git tags and docs/api/releases each
@@ -110,8 +113,17 @@ const gitOut = (root, args) =>
     maxBuffer: 64 * 1024 * 1024,
   }).trim();
 
-/** Every "(#N)" in a subject; the last one is the PR that merged it. */
+/** A merge-commit subject names its PR first; a squash subject ends with it. */
+const MERGE_PR = /^Merge pull request #(\d+)\b/;
 const PR_REF = /\(#(\d+)\)/g;
+
+/** The PR a first-parent subject merged, or null when it names none. */
+export function prOfSubject(subject) {
+  const merge = MERGE_PR.exec(subject);
+  if (merge) return Number(merge[1]);
+  const refs = [...subject.matchAll(PR_REF)];
+  return refs.length ? Number(refs[refs.length - 1][1]) : null;
+}
 
 /**
  * Delivery counts at the merge-base of HEAD and origin/main, or null when they
@@ -125,8 +137,8 @@ export function collectDelivery(root) {
     for (const subject of gitOut(root, ['log', '--first-parent', '--format=%s', base]).split(
       '\n',
     )) {
-      const refs = [...subject.matchAll(PR_REF)];
-      if (refs.length) prs.add(Number(refs[refs.length - 1][1]));
+      const pr = prOfSubject(subject);
+      if (pr !== null) prs.add(pr);
     }
     const roots = gitOut(root, ['log', '--max-parents=0', '--format=%cs', base]).split('\n').sort();
     let changelog = '';

@@ -24,7 +24,7 @@
   },
   "delivery": {
     "commitsOnMain": 1052,
-    "mergedPullRequests": 787,
+    "mergedPullRequests": 819,
     "firstCommitDate": "2026-06-17",
     "changelogVersions": 40,
     "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",

@@ -11,7 +11,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { collectDelivery, pickDelivery } from '../build-stats-json.mjs';
+import { collectDelivery, pickDelivery, prOfSubject } from '../build-stats-json.mjs';
 
 const dirs = [];
 afterEach(() => {
@@ -68,14 +68,14 @@ function repo() {
 }
 
 describe('collectDelivery', () => {
-  it('counts at the merge-base with origin/main: commits, squash-merged PRs, days and CHANGELOG versions', () => {
+  it('counts at the merge-base with origin/main: commits, merged PRs (squash or merge commit), days and CHANGELOG versions', () => {
     const root = repo();
     const base = git(root, 'rev-parse', 'origin/main');
     expect(collectDelivery(root)).toEqual({
       commitsOnMain: 6,
-      // #3, #7 and #11 (the last "(#N)" of a subject). A merge commit and the
-      // unmerged branch commit (#12) are not squash merges on main.
-      mergedPullRequests: 3,
+      // #3, #7, #11 (the last "(#N)" of a subject) and #9 (a merge commit).
+      // The branch commit (#12) is not on main yet.
+      mergedPullRequests: 4,
       firstCommitDate: '2026-07-01',
       changelogVersions: 2,
       asOf: base,
@@ -101,6 +101,28 @@ describe('collectDelivery', () => {
     const root = mkdtempSync(join(tmpdir(), 'hds-delivery-nogit-'));
     dirs.push(root);
     expect(collectDelivery(root)).toBeNull();
+  });
+});
+
+describe('prOfSubject', () => {
+  it('reads a merge commit by its leading "Merge pull request #N"', () => {
+    expect(prOfSubject('Merge pull request #1280 from hirobius/claude/docs-baselines-stale2')).toBe(
+      1280,
+    );
+  });
+
+  it('reads a squash subject by its last "(#N)"', () => {
+    expect(prOfSubject('feat(x): thing (#933) (#982)')).toBe(982);
+    expect(prOfSubject('fix: y (hds#1274) (#1287)')).toBe(1287);
+  });
+
+  it('a merge commit wins over a "(#N)" in its branch name or text', () => {
+    expect(prOfSubject('Merge pull request #14 from x/fix-(#2)')).toBe(14);
+  });
+
+  it('names no PR for a plain commit', () => {
+    expect(prOfSubject('chore: tidy')).toBeNull();
+    expect(prOfSubject('docs: see hds#12')).toBeNull();
   });
 });
 
