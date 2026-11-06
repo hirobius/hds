@@ -1,0 +1,46 @@
+{
+  "checksum": "be37338f",
+  "snapshot": {
+    "booleans": {
+      "Focus": false,
+      "Loading": false
+    },
+    "component": "IconButton",
+    "instanceSwaps": {
+      "Icon": true
+    },
+    "modeCollections": {
+      "Button tone": ["neutral", "quiet", "danger", "success", "warning", "info"]
+    },
+    "nodeId": "2399:26744",
+    "rootPadding": 0,
+    "sizeBindings": {
+      "lg": {
+        "Icon.height": ["button/size/lg/iconSize"],
+        "Icon.width": ["button/size/lg/iconSize"],
+        "root.height": ["button/size/lg/height"],
+        "root.width": ["button/size/lg/height"]
+      },
+      "md": {
+        "Icon.height": ["button/size/md/iconSize"],
+        "Icon.width": ["button/size/md/iconSize"],
+        "root.height": ["button/size/md/height"],
+        "root.width": ["button/size/md/height"]
+      },
+      "sm": {
+        "Icon.height": ["button/size/sm/iconSize"],
+        "Icon.width": ["button/size/sm/iconSize"],
+        "root.height": ["button/size/sm/height"],
+        "root.width": ["button/size/sm/height"]
+      }
+    },
+    "texts": {},
+    "unboundRootFills": [],
+    "variantAxes": {
+      "Size": ["sm", "md", "lg"],
+      "State": ["rest", "hover", "pressed", "disabled"],
+      "Variant": ["primary", "secondary", "tertiary"]
+    },
+    "variantCount": 36
+  }
+}

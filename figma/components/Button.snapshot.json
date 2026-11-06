@@ -1,7 +1,9 @@
 {
-  "checksum": "ea67b5fc",
+  "checksum": "a17852de",
   "snapshot": {
     "booleans": {
+      "Focus": false,
+      "Loading": false,
       "Show icon": false,
       "Show trail icon": false
     },
@@ -10,29 +12,31 @@
       "Icon": true,
       "Trail Icon": true
     },
-    "modeCollections": {},
-    "nodeId": "28:138",
+    "modeCollections": {
+      "Button tone": ["neutral", "quiet", "danger", "success", "warning", "info"]
+    },
+    "nodeId": "2399:11077",
     "sizeBindings": {
       "lg": {
         "Lead Icon.width": ["button/size/lg/iconSize"],
         "root.height": ["button/size/lg/height"],
         "root.itemSpacing": ["button/size/lg/itemSpacing"],
-        "root.paddingLeft": ["(unbound)", "button/size/lg/paddingX"],
-        "root.paddingRight": ["(unbound)", "button/size/lg/paddingX"]
+        "root.paddingLeft": ["button/size/lg/paddingX"],
+        "root.paddingRight": ["button/size/lg/paddingX"]
       },
       "md": {
         "Lead Icon.width": ["button/size/md/iconSize"],
         "root.height": ["button/size/md/height"],
         "root.itemSpacing": ["button/size/md/itemSpacing"],
-        "root.paddingLeft": ["(unbound)", "button/size/md/paddingX"],
-        "root.paddingRight": ["(unbound)", "button/size/md/paddingX"]
+        "root.paddingLeft": ["button/size/md/paddingX"],
+        "root.paddingRight": ["button/size/md/paddingX"]
       },
       "sm": {
         "Lead Icon.width": ["button/size/sm/iconSize"],
         "root.height": ["button/size/sm/height"],
         "root.itemSpacing": ["button/size/sm/itemSpacing"],
-        "root.paddingLeft": ["(unbound)", "button/size/sm/paddingX"],
-        "root.paddingRight": ["(unbound)", "button/size/sm/paddingX"]
+        "root.paddingLeft": ["button/size/sm/paddingX"],
+        "root.paddingRight": ["button/size/sm/paddingX"]
       }
     },
     "texts": {
@@ -40,12 +44,10 @@
     },
     "unboundRootFills": [],
     "variantAxes": {
-      "Icon only": ["true", "false"],
       "Size": ["sm", "md", "lg"],
-      "State": ["Default", "Hover", "Disabled", "Loading", "Focus", "Pressed"],
-      "Tone": ["neutral", "danger", "success", "warning", "info", "quiet"],
-      "Variant": ["Primary", "Secondary", "Tertiary"]
+      "State": ["rest", "hover", "pressed", "disabled"],
+      "Variant": ["primary", "secondary", "tertiary", "link"]
     },
-    "variantCount": 576
+    "variantCount": 48
   }
 }
