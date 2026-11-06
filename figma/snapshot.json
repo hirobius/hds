@@ -1,15 +1,15 @@
 {
-  "checksum": "cd0f8050",
+  "checksum": "550212e6",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-06T00:30:06.896Z",
+    "takenAt": "2026-11-06T01:11:25.063Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "6e34853f",
-      "pushedAt": "2026-11-06T00:30:06.836Z",
+      "modelHash": "da4e8b23",
+      "pushedAt": "2026-11-06T01:11:25.024Z",
       "scope": null
     },
     "collections": [
@@ -10906,6 +10906,26 @@
             }
           },
           {
+            "id": "VariableID:2534:50",
+            "name": "disclosure/paddingY",
+            "path": "component.disclosure.paddingY",
+            "resolvedType": "FLOAT",
+            "description": "Vertical padding of the nav-variant Disclosure trigger.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-disclosure-paddingY)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:6",
+                "to": "Hirobius/Primitives: space/2"
+              }
+            }
+          },
+          {
             "id": "VariableID:2150:14",
             "name": "inlineCode/bg",
             "path": "component.inlineCode.bg",
@@ -11338,7 +11358,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--component-nav-paddingY)"
             },
@@ -13519,7 +13539,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "6f49b08"
+                "value": "ab3d5fe"
               }
             }
           },
@@ -14329,5 +14349,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:76fd36989180c7efe80b93573d73e255dc345b56bcc1fac00148ab6a2502f1e1"
+  "tokensHash": "sha256:33e0fb0fc37bd10b889eadd9a66c93987e5ad700d15a090c26c8a4a0c1938ddd"
 }
