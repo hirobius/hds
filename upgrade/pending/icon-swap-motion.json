@@ -1,6 +1,6 @@
 {
   "impact": "behavior",
-  "plain": "CodeBlock's copy icon now pops in when it swaps to the check; nothing to change, and reduced motion keeps it still.",
+  "plain": "CodeBlock's copy icon now pops in when it swaps to the check; reduced motion keeps it still.",
   "steps": [
     {
       "id": "behavior/CodeBlock.dom",
@@ -8,7 +8,8 @@
       "impact": "behavior",
       "plain": "CodeBlock's copy button icon now sits inside a span.hds-icon-swap wrapper; a test or selector that expects the svg as the button's direct child must look one level deeper.",
       "detect": {
-        "jsx": ["CodeBlock"]
+        "jsx": ["CodeBlock"],
+        "regex": ["button\\s*>\\s*svg"]
       },
       "facts": ["dom-changed:CodeBlock"]
     }
