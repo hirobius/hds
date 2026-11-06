@@ -152,6 +152,9 @@ export const tokens = tokensJson;
 // ── cn() class-name helper (clsx + tailwind-merge) ──
 export { cn } from './lib/utils';
 
+// View Transitions helper: feature-detected, skipped under reduced motion (hds#751).
+export { withViewTransition } from './lib/view-transition';
+
 // ── Responsive hooks (hds#824): read an HDS breakpoint in JS, narrow by default ──
 // `Breakpoint` (the key type) ships from Box with the `sx` types.
 export { useAtLeast, useBreakpoint } from './app/hooks/useBreakpoint';

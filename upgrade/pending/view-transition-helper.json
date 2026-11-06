@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "To animate a route or view change, wrap the update in withViewTransition(() => update()); nothing changes until you do."
+}
