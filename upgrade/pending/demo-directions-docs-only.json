@@ -1,0 +1,75 @@
+{
+  "impact": "look",
+  "plain": "The demo directions soft-demo and accent-pair-demo no longer ship in tokens.css or styles.css; a page that sets data-brand to one of them renders with the base tokens.",
+  "steps": [
+    {
+      "id": "tenant/accent-pair-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "The accent-pair-demo demo direction no longer ships, so a page with data-brand=\"accent-pair-demo\" renders with the base tokens; theme it with your own brand block instead.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-pair-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-bg:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-button-bgHover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-button-bgPressed:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-button-secondary-border-hover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-tag-activeBackground:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-tag-activeBorder:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--component-tag-activeHover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--role-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--role-accent-foreground:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--role-primary:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--role-ring:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-content:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-content:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-accent-contentHover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-contentHover:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-hover:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-pressed:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-rest:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-accent-subtle:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-border-accent:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-color-content-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-content-accent:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-surface-accent:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-brand=accent-pair-demo][data-theme=dark],[data-tenant=accent-pair-demo][data-theme=dark]",
+        "css-var-changed:--semantic-focus-ring-color:[data-brand=accent-pair-demo],[data-tenant=accent-pair-demo]"
+      ]
+    },
+    {
+      "id": "tenant/soft-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "The soft-demo demo direction no longer ships, so a page with data-brand=\"soft-demo\" renders with the base tokens; theme it with your own brand block instead.",
+      "detect": {
+        "regex": ["(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?soft-demo(?![\\w-])"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-radius:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--component-card-bg:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--component-input-radius:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--role-card:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--role-radius:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--role-secondary:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-color-surface-raised:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-color-surface-raised:[data-brand=soft-demo][data-theme=dark],[data-tenant=soft-demo][data-theme=dark]",
+        "css-var-changed:--semantic-radius-action:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-space-surface-padding:[data-brand=soft-demo],[data-tenant=soft-demo]",
+        "css-var-changed:--semantic-space-surface-padding:[data-brand=soft-demo][data-density=compact],[data-tenant=soft-demo][data-density=compact]"
+      ]
+    }
+  ]
+}
