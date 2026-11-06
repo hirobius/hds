@@ -3615,9 +3615,26 @@
           "$description": "Outer edge of the focus ring: the Input (8px) radius + gap width + semantic.focus.ring.width."
         }
       },
+      "size": {
+        "sm": {
+          "paddingX": {
+            "$type": "dimension",
+            "$value": "{semantic.space.scale.xs}",
+            "$description": "Small input horizontal padding (8px)."
+          }
+        },
+        "lg": {
+          "paddingX": {
+            "$type": "dimension",
+            "$value": "{semantic.space.fixed.sm}",
+            "$description": "Large input horizontal padding (16px)."
+          }
+        }
+      },
       "paddingX": {
         "$type": "dimension",
-        "$value": "{primitive.space.3}"
+        "$value": "{primitive.space.3}",
+        "$description": "Medium (default) input horizontal padding (12px). Small and large: input.size.sm/lg.paddingX."
       },
       "paddingY": {
         "$type": "dimension",
