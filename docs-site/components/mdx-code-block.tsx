@@ -1,5 +1,6 @@
 import { CodeBlock } from '@hirobius/design-system/patterns';
 import { MdxCode } from './mdx-prose';
+import { Mermaid } from './mermaid';
 import { isValidElement, type ComponentProps, type ReactNode } from 'react';
 
 /**
@@ -9,11 +10,14 @@ import { isValidElement, type ComponentProps, type ReactNode } from 'react';
  *
  * Fumadocs' Shiki pass is off (source.config.ts), so MDX hands this one
  * <code class="language-…"> holding the fence's raw text. That text is the
- * copy source, and CodeBlock colours it from HDS tokens by language.
+ * copy source, and CodeBlock colours it from HDS tokens by language. A
+ * `mermaid` fence goes to <Mermaid> instead and renders as a diagram.
  */
 export function MdxPre(props: ComponentProps<'pre'>) {
   const fence = readFence(props.children);
   if (!fence) return <pre {...props} />;
+  // A ```mermaid fence is a diagram, drawn by <Mermaid> with HDS token colours.
+  if (fence.language === 'mermaid') return <Mermaid chart={fence.code} />;
   // not-prose: Fumadocs' prose rules box every <code> as inline code; the CodeBlock owns its look.
   return (
     <CodeBlock code={fence.code} language={fence.language} className="not-prose hds-docs-code" />

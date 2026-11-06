@@ -70,6 +70,13 @@ node scripts/check-pure-annotations.mjs
 echo "Spacing vocabulary (no raw integers on sx spacing props)…"
 node scripts/check-spacing-vocabulary.mjs
 
+# hds#1148: committed walkthrough media must have been recorded with both Figma
+# gates green, not with --allow-red: its captions say they are. Reads
+# docs-site/public/walkthrough/walkthrough.evidence.json and hashes the media:
+# no build, no network, no browser.
+echo "Walkthrough evidence (media recorded with every gate green)…"
+node scripts/check-walkthrough-evidence.mjs
+
 # hds#404: the layout-gap names ('tight'..'spacious') map to the t-shirt scale in
 # one place, box-sx.ts. A second copy drifts from Stack's names unseen. Source
 # only: parses the src/ files that pair one of the names with a scale step using

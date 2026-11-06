@@ -1,0 +1,15 @@
+{
+  "recordedAt": "2026-11-06T04:47:00Z",
+  "commit": "6b6b0d5",
+  "allowRed": false,
+  "gates": {
+    "check:figma-drift": 0,
+    "check:figma-release": 0
+  },
+  "files": {
+    "poster.jpg": "56292f0d1d93af3bcc32ea4f20acd6a17d9809abc73d37a5edb49546860125a9",
+    "walkthrough.mp4": "69b1add278b8d7bc4417fe707b36d69a650a3ad4381b3a958abfbb1c835dc77a",
+    "walkthrough.vtt": "0b6023321ac03b12ca45bc753ee093747026fbba42e14903085ce65578434a38"
+  },
+  "note": "Backfilled in the hds#1148 follow-up for the media merged in #1292, which was recorded before this file existed. Both gates were green at record time: their ✓ output is in the video (chapters 3 and 5). Re-recording writes this file itself."
+}
