@@ -4643,8 +4643,10 @@
           "required": true
         }
       ],
-      "docsPage": null,
-      "publicDataAttributes": []
+      "docsPage": "/docs/components/status-list-item",
+      "publicDataAttributes": [
+        "data-tone"
+      ]
     },
     "StatusTile": {
       "category": "Display",
@@ -7268,8 +7270,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "publicDataAttributes": []
+      "docsPage": "/docs/components/avatar-group",
+      "publicDataAttributes": [
+        "data-size"
+      ]
     },
     "Blockquote": {
       "category": "Typography",
@@ -7526,8 +7530,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "publicDataAttributes": []
+      "docsPage": "/docs/components/metadata-list",
+      "publicDataAttributes": [
+        "data-orientation"
+      ]
     },
     "AlertDialog": {
       "category": "Overlays",

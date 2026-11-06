@@ -134,6 +134,29 @@
       "paragraph"
     ]
   },
+  "AvatarGroup": {
+    "dom": [
+      "div aria-label=\"Project members\" data-size=\"md\" role=\"group\"",
+      "  span data-size=\"md\"",
+      "    span",
+      "      span aria-label=\"Ada Lovelace\" role=\"img\"",
+      "  span data-size=\"md\"",
+      "    span",
+      "      span aria-label=\"Grace Hopper\" role=\"img\"",
+      "  span data-size=\"md\"",
+      "    span",
+      "      span aria-label=\"Alan Kay\" role=\"img\"",
+      "  span aria-label=\"+2 more\""
+    ],
+    "reader": [
+      "group, Project members",
+      "image, Ada Lovelace",
+      "image, Grace Hopper",
+      "image, Alan Kay",
+      "+2 more",
+      "end, +2 more"
+    ]
+  },
   "Badge": {
     "dom": [
       "div",
@@ -930,6 +953,26 @@
       "paragraph"
     ]
   },
+  "MetadataList": {
+    "dom": [
+      "div",
+      "  dl data-orientation=\"horizontal\"",
+      "    dt",
+      "    dd",
+      "    dt",
+      "    dd",
+      "    dt",
+      "    dd"
+    ],
+    "reader": [
+      "term",
+      "definition",
+      "term",
+      "definition",
+      "term",
+      "definition"
+    ]
+  },
   "MetricTiles": {
     "dom": [
       "div data-hds-component=\"MetricTiles\"",
@@ -1314,6 +1357,34 @@
     "reader": [
       "button, Save",
       "button, Cancel"
+    ]
+  },
+  "StatusListItem": {
+    "dom": [
+      "div",
+      "  div data-tone=\"success\"",
+      "    span aria-hidden=\"true\"",
+      "    div",
+      "      p",
+      "      p",
+      "    div",
+      "      span data-tone=\"success\"",
+      "  div data-tone=\"warning\"",
+      "    span aria-hidden=\"true\"",
+      "    div",
+      "      p",
+      "      p",
+      "  div data-tone=\"neutral\"",
+      "    span aria-hidden=\"true\"",
+      "    div",
+      "      p"
+    ],
+    "reader": [
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph"
     ]
   },
   "StatusTile": {

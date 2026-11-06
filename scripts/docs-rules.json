@@ -16,12 +16,15 @@
     "tokens": "{/* generated: tokens */}"
   },
   "pagedComponents": [
+    "AvatarGroup",
     "Blockquote",
     "Board",
     "Callout",
     "Composer",
     "InlineCode",
+    "MetadataList",
     "Sheet",
+    "StatusListItem",
     "ThemeToggle",
     "Timestamp",
     "TokenField"

@@ -12,8 +12,8 @@
       "internal": 12
     },
     "docsCoverage": {
-      "expected": 71,
-      "covered": 71
+      "expected": 74,
+      "covered": 74
     },
     "figmaCoverage": {
       "expected": 75,
@@ -97,11 +97,11 @@
       "name": "AvatarGroup",
       "class": "library",
       "filePath": "src/app/components/avatar-group.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/avatar-group",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2030-63",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -961,11 +961,11 @@
       "name": "MetadataList",
       "class": "library",
       "filePath": "src/app/components/metadata-list.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/metadata-list",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -1345,11 +1345,11 @@
       "name": "StatusListItem",
       "class": "library",
       "filePath": "src/app/components/status-list-item.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/status-list-item",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-350",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
