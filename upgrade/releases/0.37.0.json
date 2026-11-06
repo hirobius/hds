@@ -1,0 +1,22 @@
+{
+  "version": "0.37.0",
+  "date": "2026-11-06",
+  "bump": "minor",
+  "summary": "1 change to make by hand (1 breaking).",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.37.0/dependency/motion",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "If your app imports motion itself, move it to 14.x so HDS and your code share one copy, and Motion types such as MotionValue from @hirobius/design-system/scroll and the motion recipes match your own.",
+      "detect": {
+        "bareImports": [
+          "motion",
+          "framer-motion"
+        ]
+      },
+      "source": "CHANGELOG.md:16"
+    }
+  ]
+}
