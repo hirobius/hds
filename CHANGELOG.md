@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.37.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: If your app imports motion itself, move it to 14.x so HDS and your code share one copy, and Motion types such as MotionValue from @hirobius/design-system/scroll and the motion recipes match your own.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0370).
+
+### Minor Changes
+
+- 4e0f47f: Motion (the animation engine) is now 14.3.1, up from 12.23.24 (hds#751). Breaking for apps that import `motion` themselves: move it to 14.x so both use one copy, and so Motion types in HDS exports (such as `MotionValue` from `./scroll`, and the recipes) match yours. Button's toggle-label crossfade now uses Motion's `m` with `LazyMotion` (`domAnimation`), so a Button-only import is smaller (74.3 kB to 66.3 kB gzip in the probe).
+
+### Patch Changes
+
+- 8c2b010: Motion recipes (hds#751, ADR-065): `useMotionRecipe(name)`, `motionRecipe(name, { reduced })`, `MOTION_RECIPES` and `staggerDelay(index)`. Eleven named motions (`openDialog`, `openMenu`, `openTooltip`, `toast`, `reveal`, `swap`, `arrive`, `check`, `shake`, `expand`, `listItem`) built only from `hds.motion` tokens, to spread on a `motion.*` element. Each one has a reduced-motion version with no movement and no duration, which `useMotionRecipe` picks when the user asks for less motion.
+- fe14bc7: Motion tokens (hds#751): six springs (`primitive.easing.spatialFast|spatialDefault|spatialSlow|effectsFast|effectsDefault|effectsSlow`, emitted as CSS `linear()` curves), `primitive.duration.stagger` (40ms) and `extended` (600ms), `primitive.blur.2|4`, `primitive.scale.96|97|98`, and `semantic.motion.nudge|slide|blurSwap|blurReveal|scaleDialog|scaleMenu|scaleTooltip`. JS: `hds.motion.springs`, `hds.motion.stagger`, `hds.motion.extended` and `hds.motion.scale`. Under `prefers-reduced-motion: reduce`, the stagger and extended durations are `0s`, like the other durations. Nothing existing changes.
+- d58812a: `static.css` gains `.hds-button`: style an `<a>` (or a `<button>`) as a Button without the JS root entry. Variants `--primary`, `--secondary` (the default), `--tertiary` and `--link`; sizes `--sm`, `--md` (the default) and `--lg`; the focus ring; and a disabled state through `disabled` or `aria-disabled="true"`. Every value is a `--component-button-*` token, held in parity with the Button component by a test. The hard edge, hover wipe and status tones stay in the React `Button`. It also gains `.hds-link` (InlineLink): the same rules as the JS bundle's `.hds-link`, with `.hds-link-standalone`, sizes `--sm`/`--md`/`--lg`, and the external form's `.hds-link__tail` and `.hds-link__icon`.
+
 ## 0.36.0
 
 ### Upgrade

@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.36.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.37.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,14 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.37.0
+
+Released 2026-11-06 (minor). 1 change to make by hand (1 breaking).
+
+### Do by hand
+
+- If your app imports motion itself, move it to 14.x so HDS and your code share one copy, and Motion types such as MotionValue from @hirobius/design-system/scroll and the motion recipes match your own.
 
 ## 0.36.0
 
