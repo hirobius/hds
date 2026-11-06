@@ -1,15 +1,15 @@
 {
-  "checksum": "2de324c7",
+  "checksum": "ef45e5e7",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-06T15:27:39.431Z",
+    "takenAt": "2026-11-06T18:40:54.244Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "8468560c",
-      "pushedAt": "2026-11-06T15:27:39.368Z",
+      "modelHash": "b1d1f8cf",
+      "pushedAt": "2026-11-06T18:40:54.203Z",
       "scope": null
     },
     "collections": [
@@ -37,6 +37,40 @@
             "valuesByMode": {
               "Default": {
                 "value": 16
+              }
+            }
+          },
+          {
+            "id": "VariableID:2576:50",
+            "name": "blur/2",
+            "path": "primitive.blur.2",
+            "resolvedType": "FLOAT",
+            "description": "Motion blur for in-place swaps of text and icons (hds#751).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-blur-2)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 2
+              }
+            }
+          },
+          {
+            "id": "VariableID:2576:51",
+            "name": "blur/4",
+            "path": "primitive.blur.4",
+            "resolvedType": "FLOAT",
+            "description": "Motion blur for content revealing into place (hds#751).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-blur-4)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 4
               }
             }
           },
@@ -13616,7 +13650,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "c4cc4b0"
+                "value": "fe14bc7"
               }
             }
           },
@@ -14426,7 +14460,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:49614593f00994219593c24576a4df6b6deddbbfd57ef5a622de583a221c399c",
-  "syncedCommit": "c4cc4b0",
-  "syncedHash": "sha256:ce233a15587cf49ccb73861dd1f2e2c6e0709d2c6b27f42e6a254c29725a4728"
+  "tokensHash": "sha256:556953ea0aa41805adbaac1303537ab97f5cc24c0dac634ea3a43a324935eeb1",
+  "syncedCommit": "fe14bc7",
+  "syncedHash": "sha256:9e8aa8a47f0922d5ae7cd143583ac5a919a0b9bffa68ef344c0f636a23f2cfa6"
 }

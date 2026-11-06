@@ -1364,4 +1364,12 @@ Session total: 1 use_figma call (1 write). No publish.
 
 Session total: 1 use_figma call (1 write). No publish.
 
-Calls logged for 2026-11-06: 133 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1, 1, 1, 1, 1, 1 and 1).
+## 2026-11-06 · HDS ops: delta after hds#1367 (motion blur tokens)
+
+| #   | Tool        | Kind  | Target                                                                                                                                                                 | Why          | Result                                                    |
+| --- | ----------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------------------------------------- |
+| 1   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 2de324c7 (new VariableID:2576:50 primitive blur/2, VariableID:2576:51 blur/4; VariableID:2475:51 meta/commit fe14bc7) | token change | OK. updated 1, created 2; post ef45e5e7; receipt written. |
+
+Session total: 1 use_figma call (1 write). No publish.
+
+Calls logged for 2026-11-06: 134 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1, 1, 1, 1, 1, 1, 1 and 1).
