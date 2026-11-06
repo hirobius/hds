@@ -56,6 +56,7 @@
       "node scripts/check-attributions.mjs",
       "node scripts/check-exemptions.mjs",
       "node scripts/check-brand.mjs",
+      "node scripts/generate-component-api.mjs",
       "node scripts/audit-component-integrity.mjs --api",
       "node scripts/check-token-descriptions.mjs --no-missing",
       "node scripts/check-token-renames.mjs",
