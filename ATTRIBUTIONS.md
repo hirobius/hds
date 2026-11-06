@@ -62,6 +62,15 @@ Use this file to track:
 - Pinned commit: `630fc2682a5bd39b25a8e61f74b6b3f14f2b1e21`
 - License link: [Apache-2.0 license](https://github.com/pbakaus/impeccable/blob/main/LICENSE)
 
+### NumberFlow
+
+- Registry ID: library-number-flow
+- Type: Animation library (optional peer dependency)
+- Usage: `NumberValue` in the optional `@hirobius/design-system/number` subpath rolls digits with `@number-flow/react` (hds#751, #1353). The main entry does not import it
+- License: MIT
+- Source: [barvian/number-flow](https://github.com/barvian/number-flow) · [number-flow.barvian.me](https://number-flow.barvian.me)
+- License link: [MIT](https://github.com/barvian/number-flow/blob/main/LICENSE)
+
 ## Design-System And Documentation References
 
 These are not copied implementations. They are reference points used for structure, conventions, or quality baseline.
@@ -70,7 +79,7 @@ These are not copied implementations. They are reference points used for structu
 
 - Registry ID: reference-material-design
 - Type: Design-system convention reference
-- Usage: component categorization and DS baseline comparison; density modes (`src/styles/theme.css`, compact density); motion duration and easing roles as a reference for the HDS motion tokens (hds#751). Ideas only, no code copied
+- Usage: component categorization and DS baseline comparison; density modes (`src/styles/theme.css`, compact density); motion duration and easing roles as a reference for the HDS motion tokens, and the stiffness and damping ratios of the spatial and effects springs (`primitive.easing.spatial*` and `effects*`, hds#751, #1367). Ideas and values only, no code copied
 - License: Material Components Apache-2.0; guidance per m3.material.io terms (CC BY 4.0)
 - Source: [Material Design](https://m3.material.io/) · [Motion](https://m3.material.io/styles/motion/overview)
 - License link: [Apache-2.0](https://github.com/material-components/material-web/blob/main/LICENSE)
@@ -116,9 +125,8 @@ These are not copied implementations. They are reference points used for structu
 
 These are named in hds#751 as sources to borrow from, but nothing on main uses them yet. Each gets its own entry in the PR that brings its idea or code in:
 
-- Open Props (MIT): spring and easing ideas, on the unmerged `claude/design-evolution-pipeline-v0vi13` branch.
+- Open Props (MIT): spring and easing ideas. The springs that shipped (#1367) follow Material 3 instead, so nothing on main uses Open Props.
 - Utopia (ISC, `utopia-core`): fluid type and spacing, for #751 slice 3. `--semantic-typography-display-font-size-fluid` (hds#1300) is a plain linear `clamp()` computed in `scripts/lib/token-emit/css.mjs`; it does not use Utopia.
-- NumberFlow (MIT): the optional `./number` subpath, for #751 slice 2.
 
 ## Visual Direction References
 
