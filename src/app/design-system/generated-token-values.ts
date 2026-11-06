@@ -217,6 +217,7 @@ export const tokenValues = {
         "4xl": "36px",
         "5xl": "48px",
         display: "56px",
+        displayMin: "40px",
         hero: "120px",
         "6xl": "60px",
         code: "15px"

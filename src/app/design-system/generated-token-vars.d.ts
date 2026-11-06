@@ -179,6 +179,7 @@ declare module 'react' {
     '--primitive-typography-size-4xl'?: string | undefined;
     '--primitive-typography-size-5xl'?: string | undefined;
     '--primitive-typography-size-display'?: string | undefined;
+    '--primitive-typography-size-displayMin'?: string | undefined;
     '--primitive-typography-size-hero'?: string | undefined;
     '--primitive-typography-size-6xl'?: string | undefined;
     '--primitive-typography-size-code'?: string | undefined;
@@ -363,6 +364,7 @@ declare module 'react' {
     '--semantic-typography-display-font-weight'?: string | undefined;
     '--semantic-typography-display-letter-spacing'?: string | undefined;
     '--semantic-typography-display-line-height'?: string | undefined;
+    '--semantic-typography-display-font-size-min'?: string | undefined;
     '--semantic-typography-title-font-family'?: string | undefined;
     '--semantic-typography-title-font-size'?: string | undefined;
     '--semantic-typography-title-font-weight'?: string | undefined;
