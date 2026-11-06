@@ -7,7 +7,7 @@
 DESIGN.md said "Don't make motion playful or bouncy by default" and kept the spring
 (`expressive`) for rare teaching moments. Adrian wrote that rule to counter poor default
 motion from an older model. It did not describe the brand. The result was a system where
-19 interactive components did not animate, and menus and dialogs appeared with no
+19 interactive components carried a `motion-ok` exemption and did not animate, and menus and dialogs appeared with no
 transition. He wants HDS and the apps to feel lively, with many more micro-interactions.
 
 ## Decision
@@ -32,6 +32,14 @@ transition. He wants HDS and the apps to feel lively, with many more micro-inter
 
 ## Evidence
 
+- 19 components: `git grep -l motion-ok 78ad4097 -- src/app/components` on main at 2026-10-15
+  lists 19 files (alert-dialog, asset-img, button, checkbox, combobox, destructive-section,
+  form, inline-code, inline-link, input, menu, pagination, popover, radio,
+  segmented-control, select, textarea, toast, toggle). The hds#751 comment of 2026-11-01
+  agrees: #1052 retired 3 and "~16" remained.
+- Adrian's intent ("lively", and that the old rule countered an older model's defaults)
+  is from the hds#751 body. The record keeps his decisions as the issue states them, not
+  his own words.
 - hds#751: Adrian's decisions of 2026-10-15, item 1: "HDS should feel lively. Replace the 'no bouncy motion by default' rule with 'motion must look effective and intentional'; record it in an ADR."
 - `4645fbc0` docs(design): allow delightful motion and press scale (PR #786, 2026-10-17): the DESIGN.md rule this record describes.
 - `40980006` docs(adr): ADR-064, HDS motion is lively, on `claude/design-evolution-pipeline-v0vi13` (not merged): the first draft. Its "press feedback stays colour" line was dropped, because #786 allows a press transform.
