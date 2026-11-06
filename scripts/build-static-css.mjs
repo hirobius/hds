@@ -1,7 +1,7 @@
 /**
  * build-static-css — emit dist/static.css: the CSS-only static-primitive layer (#64).
  *
- * Copies the hand-authored src/styles/static.css (Badge/Card/Alert/Divider/Tag
+ * Copies the hand-authored src/styles/static.css (Badge/Card/Alert/Divider/Tag/Button
  * as plain `.hds-*` classes, no React, no build step needed to author it) into
  * dist/static.css with a banner, exactly as build-vars-css.mjs does for
  * variables.css. Unlike styles.css/variables.css (both DERIVED from the
@@ -26,8 +26,9 @@ const OUT = path.join(ROOT, 'dist', 'static.css');
 
 const banner =
   '/* @hirobius/design-system/static.css — CSS-only static-primitive layer.\n' +
-  ' * Plain `.hds-badge` / `.hds-card` / `.hds-alert` / `.hds-divider` / `.hds-tag`\n' +
-  ' * classes for Badge/Card/Alert/Divider/Tag with NO React and NO reset — every\n' +
+  ' * Plain `.hds-badge` / `.hds-card` / `.hds-alert` / `.hds-divider` / `.hds-tag` /\n' +
+  ' * `.hds-button` classes for Badge/Card/Alert/Divider/Tag/Button with NO React\n' +
+  ' * and NO reset — every\n' +
   ' * rule is scoped to `.hds-*` and bound to the same design tokens the React\n' +
   ' * components use, so it stays theme-aware via [data-theme]/[data-brand]. Pair\n' +
   ' * with @hirobius/design-system/variables.css for the token vars themselves.\n' +

@@ -2,10 +2,10 @@
  * static.css — CSS-only static-primitive layer (#64).
  *
  * A hand-authored, framework-free stylesheet that lets a page with ZERO React
- * (a plain `.astro`/`.html` file) render Badge, Card, Alert, Divider, and Tag
- * using plain semantic classes (`.hds-badge`, `.hds-card`, `.hds-alert`,
- * `.hds-divider`, `.hds-tag`) instead of the React components in
- * `src/app/components/{badge,card,alert,divider,tag}.tsx`.
+ * (a plain `.astro`/`.html` file) render Badge, Card, Alert, Divider, Tag and
+ * Button using plain semantic classes (`.hds-badge`, `.hds-card`, `.hds-alert`,
+ * `.hds-divider`, `.hds-tag`, `.hds-button`) instead of the React components in
+ * `src/app/components/{badge,card,alert,divider,tag,button}.tsx`.
  *
  * Every declaration below binds to the SAME `--semantic-*` / `--component-*` /
  * `--role-*` custom properties the React cva variants reference (see the
@@ -363,4 +363,154 @@
 
 .hds-tag--active:hover .hds-tag__pill {
   background-color: var(--component-tag-activeHover);
+}
+
+/* ── Button — src/app/components/button.tsx ─────────────────────────────────
+ * For an <a> (or a <button>) styled as a Button without the JS root entry.
+ * `.hds-button` is the secondary variant at size md, as Button's defaults;
+ * add `.hds-button--<variant>` and `.hds-button--<size>`. Disable an <a> with
+ * aria-disabled="true" (and drop its href); a <button> with `disabled`.
+ * Not mirrored: the hard edge and the hover wipe (theme.css .hds-btn-hard /
+ * .hds-btn-wipe) and the status tones, which need the JS component.
+ * Every value is a Button token (tests/button-static-parity.test.ts).
+ */
+
+.hds-button {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: var(--component-button-size-md-itemSpacing);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  border: 0;
+  border-radius: var(--component-button-radius);
+  height: var(--component-button-size-md-height);
+  padding: var(--component-button-size-md-paddingY) var(--component-button-size-md-paddingX);
+  font-family: var(--semantic-typography-ui-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--component-button-fontWeight);
+  letter-spacing: var(--semantic-typography-ui-letter-spacing);
+  line-height: var(--semantic-typography-ui-line-height);
+  background-color: var(--component-button-secondary-bg-rest);
+  color: var(--component-button-secondary-text);
+  transition:
+    color var(--hds-motion-productive-duration) ease,
+    background-color var(--hds-motion-productive-duration) ease;
+}
+
+.hds-button svg {
+  pointer-events: none;
+  flex-shrink: 0;
+  width: var(--component-button-size-md-iconSize);
+  height: var(--component-button-size-md-iconSize);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hds-button {
+    transition: none;
+  }
+}
+
+.hds-button:focus-visible {
+  outline: var(--semantic-focus-ring-width) solid var(--semantic-focus-ring-color);
+  outline-offset: var(--semantic-focus-gap-width);
+}
+
+/* Variants. Secondary is the base rule; its hover and press: */
+.hds-button--secondary {
+  background-color: var(--component-button-secondary-bg-rest);
+  color: var(--component-button-secondary-text);
+}
+
+.hds-button--secondary:hover {
+  background-color: var(--component-button-secondary-bg-hover);
+}
+
+.hds-button--secondary:active {
+  background-color: var(--component-button-secondary-bg-pressed);
+}
+
+.hds-button--primary {
+  background-color: var(--component-button-bg);
+  color: var(--component-button-text);
+}
+
+.hds-button--primary:hover {
+  background-color: var(--component-button-bgHover);
+}
+
+.hds-button--primary:active {
+  background-color: var(--component-button-bgPressed);
+}
+
+.hds-button--tertiary {
+  background-color: transparent;
+  color: var(--component-button-secondary-text);
+}
+
+.hds-button--tertiary:hover {
+  background-color: var(--component-button-tertiary-bg-hover);
+}
+
+.hds-button--tertiary:active {
+  background-color: var(--component-button-tertiary-bg-pressed);
+}
+
+/* Link: underlined text, no fill, no inline padding; keeps the size's height. */
+.hds-button--link,
+.hds-button--link:hover,
+.hds-button--link:active {
+  background-color: transparent;
+  color: var(--component-button-secondary-text);
+  text-decoration: underline;
+  padding-inline: 0;
+}
+
+/* Sizes. md is the base rule. */
+.hds-button--sm {
+  height: var(--component-button-size-sm-height);
+  padding: 0 var(--component-button-size-sm-paddingX);
+  gap: var(--component-button-size-sm-itemSpacing);
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+  line-height: var(--semantic-typography-caption-line-height);
+}
+
+.hds-button--sm svg {
+  width: var(--component-button-size-sm-iconSize);
+  height: var(--component-button-size-sm-iconSize);
+}
+
+.hds-button--md {
+  height: var(--component-button-size-md-height);
+  padding: var(--component-button-size-md-paddingY) var(--component-button-size-md-paddingX);
+}
+
+.hds-button--lg {
+  height: var(--component-button-size-lg-height);
+  padding: 0 var(--component-button-size-lg-paddingX);
+  gap: var(--component-button-size-lg-itemSpacing);
+}
+
+.hds-button--lg svg {
+  width: var(--component-button-size-lg-iconSize);
+  height: var(--component-button-size-lg-iconSize);
+}
+
+/* Disabled, last so it wins over every variant's rest, hover and press fill. */
+.hds-button:disabled,
+.hds-button[aria-disabled='true'] {
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: var(--component-button-primary-bgDisabled);
+  color: var(--component-button-primary-textDisabled);
+}
+
+.hds-button--link:disabled,
+.hds-button--link[aria-disabled='true'] {
+  background-color: transparent;
 }

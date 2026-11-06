@@ -240,6 +240,15 @@ module.exports = [
     gzip: true,
   },
   {
+    // The CSS-only static primitives (hds#64). First budget 2026-11-06, when
+    // .hds-button joined Badge/Card/Alert/Divider/Tag: 4.80 kB gzip (3.97 kB
+    // before it).
+    name: 'static.css (CSS-only primitives)',
+    path: 'dist/static.css',
+    limit: '5 kB',
+    gzip: true,
+  },
+  {
     // Opt-in fonts (hds#479): fonts.css plus its three woff2 files, raw bytes
     // (woff2 is already compressed, so gzip would only hide the real transfer).
     name: 'fonts.css + woff2 files (opt-in, raw)',
