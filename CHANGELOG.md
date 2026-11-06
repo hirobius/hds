@@ -1,5 +1,39 @@
 # Changelog
 
+## 0.34.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: CodeBlock's copy button icon now sits inside a span\[data-hds-icon-swap] wrapper; a test or selector that expects the svg as the button's direct child must look one level deeper.
+- Do by hand: tokens.css and styles.css no longer ship 42 Tailwind utilities that no HDS component or fleet consumer used (hds#1205); a class from the list in your markup stops applying.
+- Looks different: The interactive Card hover lift and Card.Progress fill now animate on the productive motion token and stop under reduced motion; nothing to change in your app.
+- Looks different: Radio, Checkbox and Toggle rows are 4px wider (8px between control and label); check tight layouts that hold them.
+- And 5 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0340).
+
+### Minor Changes
+
+- 7bf2b39: `tokens.css` and `styles.css` no longer carry the design-explorations demo directions `soft-demo` and `accent-pair-demo` (hds#628). They were never meant for consumers. The docs site still renders them from `src/styles/tenants-docs-only.css` (hds#1205). `accent-lilac` and `brutalist-demo` still ship.
+- 00591b9: `tokens.css` and `styles.css` drop 42 Tailwind utilities that only the hds#449 safelist kept: no HDS component, docs page or fleet consumer uses them (hds#1205; the list is in the upgrade note and on the issue). The upgrade command flags any markup that still writes one.
+- b0340b2: `@hirobius/design-system/tokens` now exports the raw DTCG tokens as `tokens` and the token bridge as the named export `hds` (still the default export too), next to `ct` and `tokenValues` (hds#1205). The root `hds` and `tokens` exports still work but are deprecated and leave in 0.35.0; run `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` (or the upgrade command) to move the imports. Once an app imports both from `/tokens`, its bundler drops the token JSON from a components-only root import.
+
+### Patch Changes
+
+- 279b9ac: `AvatarGroup`: screen readers now read the overflow chip as "+2 more". The chip used an `aria-label` on a plain span, which assistive tech does not reliably announce. It looks the same.
+- 854d6b1: `Blockquote`: the attribution no longer shows up as a page-footer (contentinfo) landmark to screen readers. It is read as plain text after the quote.
+- 5a79d3e: `Board` is now a keyboard Tab stop while its columns overflow and scroll sideways, so keyboard users can scroll it (it adds no Tab stop when the columns fit or stack). `Board` also has its own docs page.
+- 7e7ac7b: The interactive Card's hover lift and the Card.Progress fill now move on the productive motion token (hds#751). The lift dropped its raw 150ms; the fill dropped a JS duration with a bare `ease-out`, which prefers-reduced-motion could not reach. Both now stop under reduced motion.
+- a02fedd: `Radio`, `Checkbox` and `Toggle`: the gap between the control and its label grows from 4px to 8px (`semantic.space.scale.xs`), so the focus ring has clear space before the label text. The rows get 4px wider.
+- 99f0d10: Runtime dependency bump: every `@radix-ui/*` package to its latest minor (Dialog 1.3, Popover 1.3, Tooltip 1.4, Select 2.4, Slot 1.5 and others) and `tailwind-merge` 3.7. `Dialog` now passes through Radix's new `deferPointerDownOutside` prop. React peer ranges do not change.
+- ab3d5fe: New component token `component.disclosure.paddingY` (hds#1147): the nav-variant Disclosure trigger reads its own token, `--component-disclosure-paddingY`, in place of the orphan `component.nav.paddingY`. Same value, so nothing renders differently. `component.nav.paddingY` is deprecated and goes in 1.0.0.
+- 7d6ef29: CodeBlock's copy icon now pops in (fade and scale) when it swaps to the check and back, never on first render, on `--hds-anim-appear`: the productive motion duration with the expressive easing (hds#751). The new `.hds-icon-swap` class in theme.css drives it; reduced motion drops the animation.
+- c1854e9: The Progress fill and the active Tabs indicator now move on the productive motion token (hds#751). Progress dropped its raw 300ms ease-out; a tab's underline, tint and text colour fade with it instead of Tailwind's untimed 150ms default. Both stop under prefers-reduced-motion.
+- 069ba05: `StatusListItem` takes a `statusLabel` prop, such as "Overdue". The tone dot is hidden from screen readers, so the label is read after the title in its place. Pass it whenever the tone carries meaning.
+- 89d80cd: New type token `semantic.typography.uiRegular` (ADR-052 addendum, hds#1198): the ui size, line height and family at weight 400, for table body cells and other plain UI text. Ships as `--semantic-typography-uiRegular-*`, `hds.typeStyles.uiRegular` and the Figma text style `typography/uiRegular`. Table body cells now use it; they render the same as before.
+
 ## 0.33.1
 
 ### Upgrade

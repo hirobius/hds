@@ -1,5 +1,5 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
-   from docs/api/releases/0.33.1.json: every Tailwind utility that release shipped stays emitted,
+   from docs/api/releases/0.34.0.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
    ./tokens.css by accident. To drop one, list utility-removed:<class> in a step
    (upgrade/pending/<changeset>.json), then run node scripts/build-utility-safelist.mjs. */
@@ -596,6 +596,7 @@
 @source inline("py-1.5");
 @source inline("py-2");
 @source inline("py-3");
+@source inline("py-[var(--component-disclosure-paddingY)]");
 @source inline("py-[var(--component-tag-paddingY)]");
 @source inline("py-[var(--semantic-space-component-medium)]");
 @source inline("py-[var(--semantic-space-scale-sm)]");
@@ -756,6 +757,7 @@
 @source inline("transition-[background-color,color,transform]");
 @source inline("transition-[border-color,box-shadow,color]");
 @source inline("transition-[color,background-color,border-color,filter,box-shadow,translate]");
+@source inline("transition-[color,background-color,border-color]");
 @source inline("transition-[color,outline-color,transform]");
 @source inline("transition-[colors,filter]");
 @source inline("transition-[scale,box-shadow]");
