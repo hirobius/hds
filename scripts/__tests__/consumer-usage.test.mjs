@@ -158,15 +158,20 @@ describe('README "In use" section', () => {
 
   it('declares every product app it counts', () => {
     const { apps, productApps } = snapshot.consumers;
-    expect(apps.map((a) => a.id)).toEqual(['hirobius/ops', 'roleforge']);
+    expect(apps.map((a) => a.id)).toEqual(['hirobius/ops', 'roleflame']);
     expect(productApps).toBe(apps.length);
-    expect(apps.find((a) => a.id === 'roleforge').label).toMatch(/^Roleforge/);
+    expect(apps.find((a) => a.id === 'roleflame').label).toMatch(/^Roleflame/);
   });
 
   it('names the second product app by its public name, never its private repo (Adrian, 2026-10-14)', () => {
     expect(JSON.stringify(snapshot)).not.toMatch(/job-hunt/);
     expect(readme).not.toMatch(/job-hunt/);
-    expect(readme).toMatch(/Roleforge/);
+    expect(readme).toMatch(/Roleflame/);
+  });
+
+  it('marks the re-confirm as due after the Roleforge -> Roleflame rename (hds#1312)', () => {
+    expect(JSON.stringify(snapshot.consumers)).not.toMatch(/Roleforge|roleforge/);
+    expect(snapshot.consumersReconfirmDue).toMatch(/hds#1312/);
   });
 });
 

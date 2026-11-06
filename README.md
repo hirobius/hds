@@ -38,7 +38,7 @@ Month-by-month adoption in each product app, one row per measured commit: [docs/
 
 <!-- auto:end:consumer-usage -->
 
-`pnpm consumer:usage --root <consumer checkout>` measures a checkout's `src/` and records its commit in `docs/data/consumer-usage.json`; without a root it reuses that snapshot. Roleforge is the second product app. Deprecated aliases count as their target, `promptContracts` are listed but not counted, and `scripts/__tests__/consumer-usage.test.mjs` fails on drift.
+`pnpm consumer:usage --root <consumer checkout>` measures a checkout's `src/` and records its commit in `docs/data/consumer-usage.json`; without a root it reuses that snapshot. Roleflame is the second product app. Deprecated aliases count as their target, `promptContracts` are listed but not counted, and `scripts/__tests__/consumer-usage.test.mjs` fails on drift.
 
 ## What belongs in the system
 
