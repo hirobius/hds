@@ -1,6 +1,6 @@
 # ATTRIBUTIONS
 
-Last updated: 2026-03-18
+Last updated: 2026-11-06
 Status: Canonical attribution registry
 
 ## Purpose
@@ -70,15 +70,19 @@ These are not copied implementations. They are reference points used for structu
 
 - Registry ID: reference-material-design
 - Type: Design-system convention reference
-- Usage: component categorization and DS baseline comparison
-- Source: [Material Design](https://m3.material.io/)
+- Usage: component categorization and DS baseline comparison; density modes (`src/styles/theme.css`, compact density); motion duration and easing roles as a reference for the HDS motion tokens (hds#751). Ideas only, no code copied
+- License: Apache-2.0 (Material Design guidance and Material Components)
+- Source: [Material Design](https://m3.material.io/) · [Motion](https://m3.material.io/styles/motion/overview)
+- License link: [Apache-2.0](https://github.com/material-components/material-web/blob/main/LICENSE)
 
 ### IBM Carbon
 
 - Registry ID: reference-ibm-carbon
 - Type: Design-system convention reference
-- Usage: DS governance, accessibility, and system-quality comparisons
-- Source: [Carbon Design System](https://carbondesignsystem.com/)
+- Usage: DS governance, accessibility, and system-quality comparisons; reduced motion (duration tokens collapse to 0ms, `src/styles/theme.css`), condensed density, and the productive/expressive motion split behind the HDS motion tokens (hds#751). Ideas only, no code copied
+- License: Apache-2.0 (`@carbon/motion`)
+- Source: [Carbon Design System](https://carbondesignsystem.com/) · [Motion](https://carbondesignsystem.com/elements/motion/overview/)
+- License link: [Apache-2.0](https://github.com/carbon-design-system/carbon/blob/main/LICENSE)
 
 ### Adobe Spectrum
 
@@ -107,6 +111,14 @@ These are not copied implementations. They are reference points used for structu
 - Type: component primitive reference
 - Usage: accessibility and component primitive baseline
 - Source: [Radix UI](https://www.radix-ui.com/)
+
+### Deferred until the work lands on main (hds#751)
+
+These are named in hds#751 as sources to borrow from, but nothing on main uses them yet. Each gets its own entry in the PR that brings its idea or code in:
+
+- Open Props (MIT): spring and easing ideas, on the unmerged `claude/design-evolution-pipeline-v0vi13` branch.
+- Utopia (ISC, `utopia-core`): fluid type and spacing, for #751 slice 3. `--semantic-typography-display-font-size-fluid` (hds#1300) is a plain linear `clamp()` computed in `scripts/lib/token-emit/css.mjs`; it does not use Utopia.
+- NumberFlow (MIT): the optional `./number` subpath, for #751 slice 2.
 
 ## Visual Direction References
 
