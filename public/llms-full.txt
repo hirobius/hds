@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Version: 0.34.0
+Version: 0.35.0
 
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
@@ -405,7 +405,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 
 ## Upgrading
 
-This text describes @hirobius/design-system 0.34.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+This text describes @hirobius/design-system 0.35.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
 
 Every name a release removed, moved or renamed, and what to use instead:
 
@@ -681,8 +681,8 @@ Every name a release removed, moved or renamed, and what to use instead:
 
 Still exported, but on the way out: do not write new code with them.
 
-- `hds` (removed in 0.35.0): Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
-- `tokens` (removed in 0.35.0): Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
+- `hds` (removed in 0.36.0): Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
+- `tokens` (removed in 0.36.0): Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
 - `Blockquote.size` (removed in 1.0.0): Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.
 - `Box-sx-layout-names` (removed in 1.0.0): Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.
 - `CardMetric` (removed in 1.0.0): Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
@@ -694,7 +694,6 @@ Still exported, but on the way out: do not write new code with them.
 - `Stat` (removed in 1.0.0): Stat is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
 - `StatusTile` (removed in 1.0.0): StatusTile still works until 1.0.0; replace it with <Card padding="item" className="border-0"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle> plus one <Card.RowNote> per note, and drop tone, which StatusTile never painted.
 - `Text-variants` (removed in 1.0.0): The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead.
-- `hds.density` (removed in 1.0.0): hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs.
 - `hds.density` (removed in 1.0.0): hds.density is deprecated; the upgrade command rewrites hds.density.sm to hds.semantic.space.scale.xs (md to sm, lg to md, xl to lg, xl2 to xl), the same pixels. density.xs, xl3 and xl4 have no scale step: use hds.space.px4, px64 or px80, which do not shrink under compact density.
 - `max-w-2xl`, `pt-1`, `sm:text-4xl` (removed in 1.0.0): Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind.
 - `typeStyles-aliases` (removed in 1.0.0): The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead.
@@ -1002,7 +1001,7 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (552 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (554 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
 

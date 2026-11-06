@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "If you theme Input padding, set --component-input-size-sm-paddingX or --component-input-size-lg-paddingX for small and large; rendering is unchanged."
+}

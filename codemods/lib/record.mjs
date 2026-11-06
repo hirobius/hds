@@ -95,10 +95,17 @@ const namedUses = (step) => [
   ...(step.detect?.classes ?? []).map((name) => `class:${name}`),
 ];
 
+/** What a step names: its imports, CSS variables and classes, or its subject. */
+const usesOf = (step) => {
+  const named = namedUses(step);
+  return named.length > 0 ? named : [`subject:${subject(step)}`];
+};
+
 /**
  * The deprecation steps still deprecated at `target`: announced at or before
- * it, not removed by it (removeIn after it), and with some use no later
- * release up to `target` took away.
+ * it, not removed by it (removeIn after it), not deprecated again by a later
+ * release up to `target`, and with some use no later release up to `target`
+ * took away.
  * @param {{ version: string, steps: any[] }[]} ledgers oldest first
  * @param {string} target
  * @param {Map<string, { in: string, plain: string }>} [kept] readKept: those steps are not deprecated any more
@@ -111,8 +118,16 @@ export function comingNextSteps(ledgers, target, kept = new Map()) {
     for (const step of ledger.steps) {
       if (step.kind !== 'deprecated' || kept.has(step.id)) continue;
       if (step.removeIn && compareVersions(step.removeIn, target) <= 0) continue;
-      const named = namedUses(step);
-      const uses = named.length > 0 ? named : [`subject:${subject(step)}`];
+      const uses = usesOf(step);
+      // A later release that deprecates the same uses again (a removal moved
+      // out, hds#1347) restates this step: Coming next shows the latest one.
+      const restated = new Set(
+        later
+          .flatMap((l) => l.steps)
+          .filter((s) => s.kind === 'deprecated' && !kept.has(s.id))
+          .flatMap(usesOf),
+      );
+      if (uses.every((use) => restated.has(use))) continue;
       const taken = new Set();
       for (const taker of later.flatMap((l) => l.steps).filter((s) => REMOVING.has(s.kind))) {
         const own = namedUses(taker);

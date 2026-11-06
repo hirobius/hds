@@ -635,6 +635,8 @@ declare module 'react' {
     '--component-input-radius'?: string | undefined;
     '--component-input-focus-gapRadius'?: string | undefined;
     '--component-input-focus-ringRadius'?: string | undefined;
+    '--component-input-size-sm-paddingX'?: string | undefined;
+    '--component-input-size-lg-paddingX'?: string | undefined;
     '--component-input-paddingX'?: string | undefined;
     '--component-input-paddingY'?: string | undefined;
     '--component-card-bg'?: string | undefined;

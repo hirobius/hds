@@ -6,11 +6,11 @@
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
-  "packageVersion": "0.34.0",
+  "packageVersion": "0.35.0",
   "upgrade": {
     "command": "npx @hirobius/design-system@latest upgrade"
   },
-  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.34.0/llms.txt",
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.35.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -14140,8 +14140,8 @@
         "path": "primitive.typography.size.displayMin",
         "cssVar": "--primitive-typography-size-displayMin",
         "type": "dimension",
-        "description": "Display floor at a 360px viewport (hds#1300): the low end of the fluid display size.",
-        "value": "40px"
+        "description": "Display floor at a 360px viewport (hds#1300): 40px at a 16px root, in rem to follow the user's font size.",
+        "value": "2.5rem"
       },
       {
         "path": "primitive.typography.size.hero",
@@ -15630,7 +15630,7 @@
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
           "lineHeight": "1.05",
-          "fontSizeMin": "40px"
+          "fontSizeMin": "2.5rem"
         }
       },
       {
@@ -17189,9 +17189,26 @@
         "resolvedValue": "12px"
       },
       {
+        "path": "component.input.size.sm.paddingX",
+        "cssVar": "--component-input-size-sm-paddingX",
+        "type": "dimension",
+        "description": "Small input horizontal padding (8px).",
+        "alias": "{semantic.space.scale.xs}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "component.input.size.lg.paddingX",
+        "cssVar": "--component-input-size-lg-paddingX",
+        "type": "dimension",
+        "description": "Large input horizontal padding (16px).",
+        "alias": "{semantic.space.fixed.sm}",
+        "resolvedValue": "16px"
+      },
+      {
         "path": "component.input.paddingX",
         "cssVar": "--component-input-paddingX",
         "type": "dimension",
+        "description": "Medium (default) input horizontal padding (12px). Small and large: input.size.sm/lg.paddingX.",
         "alias": "{primitive.space.3}",
         "resolvedValue": "12px"
       },

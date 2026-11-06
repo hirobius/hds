@@ -438,6 +438,34 @@ describe('the list a step lands in: kind, impact and auto alone', () => {
   });
 });
 
+describe('a deprecation a later release deprecates again', () => {
+  // 0.36.0 moved a removal out a release: 0.12.0 re-deprecates what 0.11.0
+  // deprecated, with a later removeIn. The newer step is what is deprecated today.
+  const step = (version, removeIn) => ({
+    id: `${version}/deprecated/hds`,
+    kind: 'deprecated',
+    impact: 'none',
+    plain: 'The root tokens export still works but is deprecated; use the tokens subpath.',
+    detect: { imports: [{ from: '@hirobius/design-system', names: ['hds'] }] },
+    removeIn,
+    source: 'x',
+  });
+
+  it('lists each name once in upgrade/index.json, from the latest step', () => {
+    const { index } = compileOutputs({
+      repo: historyRepo({
+        ledgers: [
+          { ...LEDGER_0_11, steps: [step('0.11.0', '0.12.0')] },
+          { ...LEDGER_0_12, steps: [step('0.12.0', '0.13.0')] },
+        ],
+      }),
+    });
+    expect(JSON.parse(index).deprecated).toEqual([
+      { name: 'hds', entry: '.', removeIn: '0.13.0', step: '0.12.0/deprecated/hds' },
+    ]);
+  });
+});
+
 describe('a deprecation a later release takes away completely', () => {
   // Uses named only by CSS variable, or by the step's subject alone.
   const deprecations = {
