@@ -20,13 +20,14 @@ import { readFigmaMeta } from './figma-meta.mjs';
 /**
  * @param {string} root  A repo root (or a fixture mini-root) holding hirobius.tokens.json
  *   and, optionally, figma/brand-modes.json with the tenants it lists.
+ * @param {{ git?: Function, commit?: string }} [metaOptions]  passed to readFigmaMeta.
  * @returns {{ model: object, renames: Record<string, string> }}
  */
-export function loadFigmaInputs(root) {
+export function loadFigmaInputs(root, metaOptions = {}) {
   const raw = readTokenSource(join(root, 'hirobius.tokens.json'));
   const model = buildFigmaModel(raw, {
     brands: loadBrandModes(root, raw),
-    meta: readFigmaMeta(root),
+    meta: readFigmaMeta(root, metaOptions),
   });
   const violations = validateFigmaModel(model);
   if (violations.length > 0) {

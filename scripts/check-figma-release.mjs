@@ -17,7 +17,11 @@
  *      releasedAt, commit, docsUrl, repoUrl, npmName; scripts/lib/figma-meta.mjs)
  *      differs from what code reads now, above all meta/version against the
  *      version being released. Each named on its own line, with a reminder,
- *      even though step 1 counts it as drift too.
+ *      even though step 1 counts it as drift too. meta/commit may name a
+ *      commit that is not HEAD's history: the Version PR head the ops agent
+ *      synced from before the squash merge. The gate takes Figma's meta/commit
+ *      when it is the snapshot's `syncedCommit` and `syncedHash` (the git
+ *      content of the synced inputs at that commit) equals the content now (syncedCommitStandIn, hds#1359); any other change fails.
  *
  * --meta runs step 4 alone: `pnpm release:local` runs it before the build,
  * so a laptop release cannot ship with a stale cover.
@@ -44,7 +48,9 @@ import { parseSnapshotFile, tokensFileHash } from './lib/figma-snapshot.mjs';
 import {
   readFigmaMeta,
   metaGaps,
+  snapshotMeta,
   syncedInputsCommit,
+  syncedInputsHash,
   deepenSyncedHistory,
 } from './lib/figma-meta.mjs';
 
@@ -57,7 +63,43 @@ const COVERAGE_FIX =
   'Fix: draw each in the library through use_figma, add its node as an @figma tag in the component JSDoc (or a figma/mapping-overrides.json entry), then pnpm manifest:generate && pnpm figma:disposition --write.';
 
 const META_FIX =
-  'Reminder: the library cover reads Hirobius/Meta. Push it from main (pnpm figma:push, or figma/push delta.js through use_figma), refresh the snapshot by the snapshot-diff route (figma/push/use-figma/snapshot-diff.js through use_figma, then pnpm figma:snapshot --from-diff <file>), commit figma/snapshot.json, and publish the library.';
+  'Reminder: the library cover reads Hirobius/Meta. For a release, push it from the Version PR head before the merge (pnpm figma:push, or figma/push delta.js through use_figma), refresh the snapshot by the snapshot-diff route (figma/push/use-figma/snapshot-diff.js through use_figma, then pnpm figma:snapshot --from-diff <file>), commit figma/snapshot.json, and publish the library.';
+
+/** The committed snapshot file, parsed, or null when absent or unreadable. */
+function readSnapshotFile(root) {
+  const path = join(root, 'figma', 'snapshot.json');
+  if (!existsSync(path)) return null;
+  try {
+    return parseSnapshotFile(readFileSync(path, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The meta/commit Figma shows, when Figma was synced from exactly the content
+ * now checked out: Figma's meta/commit is the snapshot's `syncedCommit`, and
+ * its `syncedHash` equals syncedInputsHash(root) (git blob ids, not bytes).
+ * The ops agent pushes and ingests on the Version PR head, before the merge; a
+ * squash merge keeps that tree under a new sha, so meta/commit cannot be HEAD's,
+ * but the content proves the sync (hds#1359). Null otherwise: then meta/commit
+ * must be the last synced-input commit, as before.
+ */
+export function syncedCommitStandIn(root, options = {}) {
+  const file = readSnapshotFile(root);
+  if (!file?.syncedCommit || !file.syncedHash) return null;
+  // Bound at ingest: Figma's meta/commit must be the commit the hash was taken at.
+  if (snapshotMeta(file.snapshot).commit !== file.syncedCommit) return null;
+  if (file.syncedHash !== syncedInputsHash(root, options)) return null;
+  return file.syncedCommit;
+}
+
+/** readFigmaMeta options: the caller's, plus the stand-in commit when there is one. */
+function metaOptionsFor(root, options) {
+  if (!existsSync(join(root, 'package.json'))) return options;
+  const commit = syncedCommitStandIn(root, options);
+  return commit ? { ...options, commit } : options;
+}
 
 /**
  * Every Hirobius/Meta value code sets (readFigmaMeta) against Figma's, from
@@ -77,7 +119,7 @@ export function metaReleaseGaps(root, options = {}) {
       /* unreadable snapshot: nothing to read */
     }
   }
-  return metaGaps(readFigmaMeta(root, options), snapshot);
+  return metaGaps(readFigmaMeta(root, metaOptionsFor(root, options)), snapshot);
 }
 
 /** meta/version alone: `{ expected, actual, ok }`, expected null without a package.json. */
@@ -93,7 +135,10 @@ export function metaVersionGap(root, options = {}) {
  * no package.json (a fixture mini-root) builds no meta, so it has none.
  */
 function metaProblems(root, options) {
-  const synced = existsSync(join(root, 'package.json')) ? syncedInputsCommit(root, options) : null;
+  // With a stand-in commit the history is not read, so a shallow clone is fine.
+  const standIn = existsSync(join(root, 'package.json')) && syncedCommitStandIn(root, options);
+  const synced =
+    existsSync(join(root, 'package.json')) && !standIn ? syncedInputsCommit(root, options) : null;
   const shallow =
     synced && !synced.complete
       ? [
@@ -199,7 +244,7 @@ export function componentCoverageGaps(root) {
  */
 export function runReleaseGate({ root, ...options }) {
   const problems = [];
-  const drift = runDriftCheck({ root });
+  const drift = runDriftCheck({ root, meta: metaOptionsFor(root, options) });
   const base = drift.report
     ? applyDriftBaseline(root, drift.report.items)
     : { open: null, baselined: [], problems: [] };
@@ -258,7 +303,7 @@ export function runReleaseGate({ root, ...options }) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   // CI checks out at depth 1, where meta/commit would read as HEAD: fetch the
   // history first. If that fails, the gate names the shallow clone and refuses.
-  const synced = syncedInputsCommit(ROOT);
+  const synced = syncedCommitStandIn(ROOT) ? null : syncedInputsCommit(ROOT);
   if (synced && !synced.complete && !deepenSyncedHistory(ROOT)) {
     console.error('check-figma-release: could not fetch the full git history (shallow clone).');
   }

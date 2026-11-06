@@ -26,6 +26,7 @@
  */
 
 import { existsSync, readFileSync } from 'fs';
+import { createHash } from 'crypto';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { META_FIELDS } from './figma-model.mjs';
@@ -40,7 +41,24 @@ export const SYNCED_INPUTS = Object.freeze([
   'package.json',
 ]);
 
-const SHORT_SHA = 7;
+export const SHORT_SHA = 7;
+
+/**
+ * `sha256:<hex>` of what the library is synced from, as git records it: the
+ * `git ls-tree -r HEAD` lines (mode, blob id, path) of SYNCED_INPUTS. A squash
+ * merge keeps the tree, so it keeps every blob id: the release gate can tell
+ * that Figma was synced from this content even though meta/commit names the
+ * pre-merge sha (hds#1359). Blob ids, not file bytes, so a checkout's line
+ * endings or an uncommitted edit cannot change it. Undefined without git or
+ * when HEAD holds none of the inputs.
+ * @param {string} root
+ * @param {{ git?: (root: string, args: string[]) => string|null }} [options]
+ */
+export function syncedInputsHash(root, { git = runGit } = {}) {
+  const tree = git(root, ['ls-tree', '-r', '--full-tree', 'HEAD', '--', ...SYNCED_INPUTS]);
+  if (!tree) return undefined;
+  return `sha256:${createHash('sha256').update(tree).digest('hex')}`;
+}
 
 /** `git+https://host/o/r.git`, `git@host:o/r.git` or `{ url }` → `https://host/o/r`. */
 export function browsableRepoUrl(repository) {
@@ -128,19 +146,24 @@ function releaseDate(root, version, git) {
 /**
  * The meta values for `root`, keyed as META_FIELDS; unreadable ones are absent.
  * @param {string} root
- * @param {{ git?: (root: string, args: string[]) => string|null }} [options]  git: injectable for tests.
+ * @param {{ git?: (root: string, args: string[]) => string|null, commit?: string }} [options]
+ *   git: injectable for tests. commit: meta/commit to use instead of the history's,
+ *   for a release whose synced content Figma already shows (syncedInputsHash).
  * @returns {Record<string, string>}
  */
-export function readFigmaMeta(root, { git = runGit } = {}) {
+export function readFigmaMeta(root, { git = runGit, commit } = {}) {
   const pkgPath = join(root, 'package.json');
   if (!existsSync(pkgPath)) return {};
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
-  const synced = syncedInputsCommit(root, { git });
-  const sha = synced?.complete ? synced.sha : null;
+  let short = commit ?? null;
+  if (!short) {
+    const synced = syncedInputsCommit(root, { git });
+    short = synced?.complete ? synced.sha.slice(0, SHORT_SHA) : null;
+  }
   const meta = {
     version: pkg.version ?? null,
     releasedAt: pkg.version ? releaseDate(root, pkg.version, git) : null,
-    commit: sha ? sha.slice(0, SHORT_SHA) : null,
+    commit: short,
     docsUrl: pkg.homepage ?? null,
     repoUrl: browsableRepoUrl(pkg.repository),
     npmName: pkg.name ?? null,
