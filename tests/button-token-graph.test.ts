@@ -14,6 +14,7 @@
  * measures the full bundle; this is the fast guard that runs in `pnpm test`.
  */
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 
@@ -52,5 +53,16 @@ describe('Button-only import: token graph', () => {
     const inputs = await localInputs(resolve(ROOT, 'src/app/components/button.tsx'), 'Button');
     const total = inputs.reduce((sum, i) => sum + i.bytes, 0);
     expect(total).toBeLessThan(16_000);
+  });
+
+  // hds#751: on Motion 14 the full `motion` component costs Button's import about
+  // 14 kB gzip more than `m` + LazyMotion(domAnimation); the crossfade needs only opacity.
+  it('animates with m + LazyMotion, not the full motion component', () => {
+    const source = readFileSync(resolve(ROOT, 'src/app/components/button.tsx'), 'utf8');
+    const imports = /import\s*\{([^}]*)\}\s*from\s*'motion\/react'/.exec(source)?.[1] ?? '';
+    const names = imports.split(',').map((n) => n.trim());
+    expect(names).toContain('m');
+    expect(names).toContain('LazyMotion');
+    expect(names).not.toContain('motion');
   });
 });
