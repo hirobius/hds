@@ -51,6 +51,7 @@ import {
   snapshotMeta,
   syncedInputsCommit,
   syncedInputsHash,
+  syncedInputsTree,
   deepenSyncedHistory,
 } from './lib/figma-meta.mjs';
 
@@ -91,6 +92,10 @@ export function syncedCommitStandIn(root, options = {}) {
   // Bound at ingest: Figma's meta/commit must be the commit the hash was taken at.
   if (snapshotMeta(file.snapshot).commit !== file.syncedCommit) return null;
   if (file.syncedHash !== syncedInputsHash(root, options)) return null;
+  // When the synced commit is in this clone (a laptop, or CI after the
+  // unshallow), its own tree must match HEAD's too, not only the recorded hash.
+  const at = syncedInputsTree(root, file.syncedCommit, options);
+  if (at !== null && at !== syncedInputsTree(root, 'HEAD', options)) return null;
   return file.syncedCommit;
 }
 
