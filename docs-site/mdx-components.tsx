@@ -17,6 +17,7 @@ import { OverviewActions } from './components/overview-actions';
 import { MdxCode, MdxImg, MdxTable } from './components/mdx-prose';
 import { NumberValueDemo } from './components/number-value-demo';
 import { Mermaid } from './components/mermaid';
+import { MotionRecipesDemo } from './components/motion-recipes-demo';
 import { WalkthroughVideo } from './components/walkthrough-video';
 import { PrinciplesAndPractices } from './components/principles-and-practices';
 import { TokenTable } from './components/token-table';
@@ -63,6 +64,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     WalkthroughVideo,
     PrinciplesAndPractices,
     NumberValueDemo,
+    MotionRecipesDemo,
     ReleaseLedger,
     DeprecationLedger,
     RemovalLedger,
