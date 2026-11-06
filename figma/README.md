@@ -662,15 +662,21 @@ them into Figma.
 | `meta/npmName`    | package.json `name`                                                                                                   |
 
 No value comes from the clock, so the same commit always builds the same
-values. No counts. `meta/commit` names a commit on the branch you push from:
-push from main, since a squash merge gives a branch commit a new SHA on main.
+values. No counts. `meta/commit` names a commit on the branch you push from.
+A squash merge gives a branch commit a new SHA on main, so `--ingest` also
+records `syncedHash`, the sha256 of the synced inputs' content, in
+`figma/snapshot.json`. The release gate takes Figma's `meta/commit` when that
+hash equals main's: the content Figma was synced from is the content being
+released (hds#1359). A changed synced input or version still fails.
 
 `pnpm check:figma-drift` names each one that differs on its own line.
 `pnpm check:figma-release` fails on them, and `pnpm release:local` runs that
-check alone (`check-figma-release.mjs --meta`) before the build. After a
-version bump: push, refresh the snapshot by the snapshot-diff route
-([re-base](#agent-re-base-after-an-out-of-band-change-snapshot-diff)), commit
-`figma/snapshot.json`, and Adrian publishes the library.
+check alone (`check-figma-release.mjs --meta`) before the build. A release, in
+order: on the Version PR head, before the merge, push the meta delta, refresh the
+snapshot by the snapshot-diff route
+([re-base](#agent-re-base-after-an-out-of-band-change-snapshot-diff)) and commit
+`figma/snapshot.json` to the Version PR; after the merge, Release passes in one
+run, and Adrian publishes the library.
 
 ## Bound-colour fallbacks
 

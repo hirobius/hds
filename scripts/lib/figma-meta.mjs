@@ -25,7 +25,8 @@
  * meta/commit is unknowable and is left out too: deepenSyncedHistory first.
  */
 
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
+import { createHash } from 'crypto';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { META_FIELDS } from './figma-model.mjs';
@@ -41,6 +42,36 @@ export const SYNCED_INPUTS = Object.freeze([
 ]);
 
 const SHORT_SHA = 7;
+
+/** Every file under SYNCED_INPUTS in `root`, relative, sorted (a directory is walked). */
+function syncedFiles(root) {
+  const walk = (rel) => {
+    const abs = join(root, rel);
+    if (!existsSync(abs)) return [];
+    if (!statSync(abs).isDirectory()) return [rel];
+    return readdirSync(abs).flatMap((name) => walk(`${rel}/${name}`));
+  };
+  return SYNCED_INPUTS.flatMap(walk).sort();
+}
+
+/**
+ * `sha256:<hex>` of what the library is synced from: each SYNCED_INPUTS file's
+ * path and bytes. Ingest records it in figma/snapshot.json; a squash merge
+ * keeps the tree, so the release gate can tell that Figma was synced from this
+ * content even though meta/commit names the pre-merge sha (hds#1359).
+ * Undefined when none of the files exists (a fixture mini-root).
+ */
+export function syncedInputsHash(root) {
+  const files = syncedFiles(root);
+  if (!files.length) return undefined;
+  const hash = createHash('sha256');
+  for (const rel of files) {
+    hash.update(`${rel}\0`);
+    hash.update(readFileSync(join(root, rel)));
+    hash.update('\0');
+  }
+  return `sha256:${hash.digest('hex')}`;
+}
 
 /** `git+https://host/o/r.git`, `git@host:o/r.git` or `{ url }` → `https://host/o/r`. */
 export function browsableRepoUrl(repository) {
@@ -128,19 +159,24 @@ function releaseDate(root, version, git) {
 /**
  * The meta values for `root`, keyed as META_FIELDS; unreadable ones are absent.
  * @param {string} root
- * @param {{ git?: (root: string, args: string[]) => string|null }} [options]  git: injectable for tests.
+ * @param {{ git?: (root: string, args: string[]) => string|null, commit?: string }} [options]
+ *   git: injectable for tests. commit: meta/commit to use instead of the history's,
+ *   for a release whose synced content Figma already shows (syncedInputsHash).
  * @returns {Record<string, string>}
  */
-export function readFigmaMeta(root, { git = runGit } = {}) {
+export function readFigmaMeta(root, { git = runGit, commit } = {}) {
   const pkgPath = join(root, 'package.json');
   if (!existsSync(pkgPath)) return {};
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
-  const synced = syncedInputsCommit(root, { git });
-  const sha = synced?.complete ? synced.sha : null;
+  let short = commit ?? null;
+  if (!short) {
+    const synced = syncedInputsCommit(root, { git });
+    short = synced?.complete ? synced.sha.slice(0, SHORT_SHA) : null;
+  }
   const meta = {
     version: pkg.version ?? null,
     releasedAt: pkg.version ? releaseDate(root, pkg.version, git) : null,
-    commit: sha ? sha.slice(0, SHORT_SHA) : null,
+    commit: short,
     docsUrl: pkg.homepage ?? null,
     repoUrl: browsableRepoUrl(pkg.repository),
     npmName: pkg.name ?? null,

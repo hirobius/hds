@@ -14,11 +14,16 @@ publishes through npm Trusted Publishing (OIDC): no npm token, no laptop login.
 1. **Version PR.** Each push to `main` makes the Release workflow open or update
    the "Version Packages" PR (`changeset-release/main`): it applies the pending
    `.changeset/*.md`, bumps the version and writes the changelog.
-2. **Figma first.** `pnpm release` starts with `pnpm check:figma-release`, which
-   refuses to publish when the committed `figma/snapshot.json` differs from code,
-   above all `meta/version` against the version being released. So the agent
-   delta sync (`figma/README.md`, "Agent sync (zero clicks)") and its snapshot PR
-   must land before the publish runs.
+2. **Figma first, on the Version PR.** `pnpm release` starts with
+   `pnpm check:figma-release`, which refuses to publish when the committed
+   `figma/snapshot.json` differs from code, above all `meta/version` against the
+   version being released. So, before the merge, the ops agent runs the meta
+   delta sync (`figma/README.md`, "Agent sync (zero clicks)") from the Version PR
+   head, ingests the snapshot and commits `figma/snapshot.json` to that PR. The
+   squash merge gives that commit a new sha, so `meta/commit` cannot equal it;
+   the gate instead takes Figma's `meta/commit` when the snapshot's `syncedHash`
+   (the content of the synced inputs at ingest) equals main's (hds#1359). One
+   Release run, no snapshot PR after the merge.
 3. **Review.** The PR needs an independent `Reviewed: PASS — <sha>` comment for
    its head commit, from someone other than the author. A new push voids it.
 4. **Merge** the PR (owner). The Release workflow runs `pnpm release`:
