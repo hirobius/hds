@@ -1,5 +1,10 @@
 import type { MDXComponents } from 'mdx/types';
 
+import {
+  A11yConsumerChecklist,
+  A11yContractIndex,
+  A11yGuarantees,
+} from './components/a11y-contracts';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
@@ -22,10 +27,9 @@ import {
 // Every MDX element the docs use is mapped to HDS here; Fumadocs' MDX defaults are not spread
 // (hds#806). Its Callout, Card/Cards and CodeBlockTabs are left out: no docs content uses them.
 // When content first needs one, map it to the HDS Alert, Card or Tabs here.
-// The HDS elements. The docs site loads two React type packages (its own 19, and the library's
-// 18 through the package's .d.ts), and MDX's global JSX types resolve to 18, so the props of
-// these React 19 components do not match them. Fumadocs' typed defaults hid this while they
-// were spread in; the cast keeps that, with no change at runtime. Remove it with hds#1234.
+// The HDS elements. No cast: tsconfig.json `paths` sends every `react` type import, the
+// library's dist .d.ts included, to the docs site's own React 19 types, so MDX's JSX types and
+// these components agree (hds#1234). The bundler finds no JS there and resolves react as usual.
 const hdsElements = {
   // Plain headings: keep the id the contents rail links to, no copy-link button.
   ...mdxHeadings,
@@ -37,12 +41,15 @@ const hdsElements = {
   table: MdxTable,
   code: MdxCode,
   img: MdxImg,
-} as MDXComponents;
+};
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...hdsElements,
     TokenTable,
+    A11yGuarantees,
+    A11yConsumerChecklist,
+    A11yContractIndex,
     ComponentTokens,
     ComponentPreview,
     ComponentIndex,

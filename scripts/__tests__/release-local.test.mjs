@@ -11,6 +11,7 @@ import {
   preflight,
   publishStep,
   runSteps,
+  announceStep,
   fetchMainOrThrow,
 } from '../release-local.mjs';
 
@@ -135,8 +136,22 @@ describe('fetchMainOrThrow', () => {
   });
 });
 
+describe('announceStep (hds#456)', () => {
+  it('announces the published version with --apply, after the publish, never as a run step', () => {
+    expect(announceStep('0.34.0')).toEqual([
+      'node',
+      ['scripts/upgrade/announce.mjs', '0.34.0', '--apply'],
+    ]);
+    const all = [...runSteps(true), ...runSteps(false)].map(([, args]) => args.join(' '));
+    expect(all.some((a) => a.includes('announce'))).toBe(false);
+  });
+});
+
 describe('package.json wiring', () => {
   const pkg = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
+  it('exposes pnpm release:announce', () => {
+    expect(pkg.scripts['release:announce']).toBe('node scripts/upgrade/announce.mjs');
+  });
   it('exposes pnpm release:local', () => {
     expect(pkg.scripts['release:local']).toBe('node scripts/release-local.mjs');
   });

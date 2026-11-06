@@ -23,7 +23,13 @@ account that can publish the package. npm asks for 2FA at publish.
    and `pnpm publish --dry-run`. Publishes nothing, needs no login.
 6. **Publish.** `pnpm release:local --publish`. It refuses unless HEAD is a clean
    checkout of `origin/main` with no pending changesets, and stops if the
-   version is already on npm.
+   version is already on npm. After the publish it runs
+   `pnpm release:announce <version> --apply`: one standing upgrade issue per
+   consumer repo that is behind (filed, retargeted, or reopened; never closed),
+   and five lines on Discord unless every change is none or additive. Export
+   `HDS_FLEET_TOKEN` and `DISCORD_WEBHOOK_URL` in your shell first; a missing
+   one skips its step. It never fails the release: re-run it by hand with the
+   same command once a token is fixed.
 
 ## What changed from the Actions release
 

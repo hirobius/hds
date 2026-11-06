@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import type { LedgerIndex, LedgerRelease } from './upgrade-ledger';
+import type { A11ySpec } from './a11y-contracts';
 
 /** Walk up from the working directory so this works whether Next runs from docs-site/ or the repo root. */
 export function findUp(relative: string, start = process.cwd()): string {
@@ -29,6 +30,9 @@ function readJson(relative: string): unknown {
 }
 
 export const loadTokens = () => readJson('hirobius.tokens.json');
+/** public/hds-stats.json (scripts/build-stats-json.mjs): repo counts, checked fresh by pretest. */
+export const loadStats = () =>
+  readJson('public/hds-stats.json') as { contrast: { textPairs: number; nonTextPairs: number } };
 /** Opt-in accent themes (`accents/<name>/tokens.json`), keyed by name. */
 export const loadAccentThemes = (): Record<string, unknown> =>
   Object.fromEntries(
@@ -37,7 +41,7 @@ export const loadAccentThemes = (): Record<string, unknown> =>
       .map((d) => [d.name, readJson(`accents/${d.name}/tokens.json`)]),
   );
 
-interface ManifestSpec {
+interface ManifestSpec extends A11ySpec {
   category?: string;
   tokenMapping?: Record<string, string>;
 }
