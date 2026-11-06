@@ -38,7 +38,22 @@ describe('Elevation on components', () => {
     expect(block).toMatch(/Open popover/);
     expect(block).toMatch(/<button[^>]*>[\s\S]*?Primary/);
     expect(block).toMatch(/<button[^>]*>[\s\S]*?Secondary/);
-    expect((block.match(/<a [^>]*href="#elevation-on-components"/g) ?? []).length).toBe(1);
+    // The interactive card is a non-navigating button, not a link (review nit on #1310).
+    expect(block).not.toMatch(/<a [^>]*href=/);
+    expect(block).toMatch(/<button[^>]*type="button"[^>]*>[\s\S]*?Interactive card/);
+  });
+
+  it('names every row by its dotted token path, one format on the page', () => {
+    for (const html of [
+      renderToStaticMarkup(<FoundationVisual page="elevation" />),
+      renderToStaticMarkup(<FoundationVisual page="soft-surfaces" />),
+    ]) {
+      const names = [
+        ...html.matchAll(/class="hds-oncomp-row"[\s\S]*?class="hds-swatch-name">([^<]+)</g),
+      ].map((m) => m[1]!);
+      expect(names.length).toBeGreaterThan(4);
+      for (const n of names) expect(n).toMatch(/^semantic\./);
+    }
   });
 });
 

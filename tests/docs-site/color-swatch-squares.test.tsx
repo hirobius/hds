@@ -55,3 +55,27 @@ describe('Color swatches are squares', () => {
     expect(ruleBody('.hds-swatch')).toMatch(/flex-direction:\s*row/);
   });
 });
+
+describe('Color swatch polish (review nits on #1309)', () => {
+  const html = renderToStaticMarkup(<FoundationVisual page="color" />);
+
+  it('shows every hex value in lowercase', () => {
+    const values = [...html.matchAll(/class="hds-swatch-value">(?:[LD] )?([^<]+)</g)].map(
+      (m) => m[1]!,
+    );
+    expect(values.length).toBeGreaterThan(50);
+    for (const v of values.filter((v) => v.startsWith('#'))) expect(v).toBe(v.toLowerCase());
+  });
+
+  it('keeps no rule for the removed split block', () => {
+    expect(CSS).not.toContain('hds-swatch-block');
+  });
+
+  it('places the Copied status over the squares, not over the token name', () => {
+    const body = ruleBody('.hds-swatch-copied');
+    expect(body).toMatch(/left:/);
+    expect(body).toMatch(/bottom:/);
+    expect(body).not.toMatch(/right:/);
+    expect(body).not.toMatch(/top:/);
+  });
+});

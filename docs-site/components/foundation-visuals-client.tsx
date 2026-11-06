@@ -275,9 +275,7 @@ export function ElevationOnComponents({ rows }: { rows: OnComponentsRow[] }) {
         ),
         'semantic.elevation.raised': (
           <Card asChild className="hds-oncomp-card">
-            <a href="#elevation-on-components">
-              {cardBody('Interactive card', 'Hover to lift to raised')}
-            </a>
+            <button type="button">{cardBody('Interactive card', 'Hover to lift to raised')}</button>
           </Card>
         ),
         'semantic.elevation.floating': <TooltipTrigger />,
