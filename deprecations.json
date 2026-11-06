@@ -241,6 +241,20 @@
       "removeIn": "1.0.0",
       "notice": "hds#206 — use `hds.semantic.space.scale.*`, which compact density remaps too. Same pixels at both densities, one step down the name ladder: `density.sm` → `scale.xs`, `density.md` → `scale.sm`, `density.lg` → `scale.md`, `density.xl` → `scale.lg`, `density.xl2` → `scale.xl`. `density.xs` (4px), `density.xl3` (64px) and `density.xl4` (80px) have no scale step: `hds.space.px4` / `px64` / `px80` keep their comfortable pixels, without the compact remap.",
       "file": "src/app/design-system/tokens.ts"
+    },
+    {
+      "kind": "export",
+      "name": "hds",
+      "removeIn": "0.35.0",
+      "notice": "Import `hds` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.",
+      "file": "src/index.ts"
+    },
+    {
+      "kind": "export",
+      "name": "tokens",
+      "removeIn": "0.35.0",
+      "notice": "Import `tokens` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.",
+      "file": "src/index.ts"
     }
   ],
   "props": [

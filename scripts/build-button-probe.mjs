@@ -35,7 +35,7 @@ import {
   bundleButtonOnly,
   disallowedPackages,
 } from './lib/button-probe-esbuild.mjs';
-import { ENTRY_GRAPHS, bundleEntryGraph } from './lib/entry-graph-probe.mjs';
+import { ENTRY_GRAPHS, bundleEntryGraph, probeReexports } from './lib/entry-graph-probe.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -97,18 +97,31 @@ try {
 
 // Entry-graph probes (hds#1145): dist/<entry>.js is only re-exports since the
 // build keeps one file per module, so the entry budgets measure these.
-for (const { entry, reexports, probe } of ENTRY_GRAPHS) {
+const graphFailures = [];
+for (const row of ENTRY_GRAPHS) {
+  const { entry, probe, forbidInputs = [] } = row;
   const stub = join(PROBE_DIR, 'graph-entry.js');
   const from = `'../${entry.replace(/^dist\//, '')}'`;
+  const reexports = await probeReexports(row, ROOT);
   writeFileSync(stub, reexports.map((r) => `${r} from ${from};\n`).join(''));
   try {
     const out = await bundleEntryGraph({ entry: stub, outfile: join(ROOT, probe) });
     console.log(
       `build-button-probe — wrote ${probe} (${entry} graph; ${(out.bytes / 1024).toFixed(2)} kB raw, ${(out.gzipBytes / 1024).toFixed(2)} kB gzip)`,
     );
+    const forbidden = out.inputs.filter((i) => forbidInputs.some((f) => i.endsWith(f)));
+    if (forbidden.length > 0) graphFailures.push(`${probe} reached ${forbidden.join(', ')}`);
   } finally {
     rmSync(stub, { force: true });
   }
+}
+if (graphFailures.length > 0) {
+  console.error(
+    `\n✗ build-button-probe — an entry graph reached a module it must not (hds#1205):\n` +
+      graphFailures.map((f) => `    ${f}`).join('\n') +
+      '\n\n  fix: import the token JSON only through `tokens` on @hirobius/design-system/tokens.\n',
+  );
+  process.exit(1);
 }
 
 // After `finally`, so the temp entry is gone on failure too (process.exit skips it).

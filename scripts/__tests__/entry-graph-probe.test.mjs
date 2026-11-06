@@ -17,7 +17,7 @@ import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ENTRY_GRAPHS, bundleEntryGraph } from '../lib/entry-graph-probe.mjs';
+import { ENTRY_GRAPHS, bundleEntryGraph, probeReexports } from '../lib/entry-graph-probe.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const require = createRequire(import.meta.url);
@@ -38,6 +38,38 @@ describe('bundleEntryGraph', () => {
     expect(code).toMatch(/from\s*"clsx"/);
     expect(result.bytes).toBe(Buffer.byteLength(code));
     expect(result.gzipBytes).toBeGreaterThan(0);
+    expect(result.inputs.some((i) => i.endsWith('m/local.js'))).toBe(true);
+  });
+
+  it('lists only modules with code in the output (hds#1205)', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'entry-graph-'));
+    writeFileSync(path.join(dir, 'big.js'), "export const big = { marker: 'big-json' };\n");
+    writeFileSync(path.join(dir, 'small.js'), 'export const small = 1;\n');
+    writeFileSync(
+      path.join(dir, 'lib.js'),
+      "export { big } from './big.js';\nexport { small } from './small.js';\n",
+    );
+    writeFileSync(path.join(dir, 'entry.js'), "export { small } from './lib.js';\n");
+    const result = await bundleEntryGraph({
+      entry: path.join(dir, 'entry.js'),
+      outfile: path.join(dir, 'out.js'),
+    });
+    expect(result.inputs.some((i) => i.endsWith('small.js'))).toBe(true);
+    expect(result.inputs.some((i) => i.endsWith('big.js'))).toBe(false);
+  });
+});
+
+describe('probeReexports', () => {
+  it('re-exports every name but the excluded ones, default included', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'entry-graph-'));
+    mkdirSync(path.join(dir, 'dist'));
+    writeFileSync(
+      path.join(dir, 'dist', 'e.js'),
+      'export const a = 1;\nexport const b = 2;\nexport default 3;\n',
+    );
+    const row = { entry: 'dist/e.js', exclude: ['b'] };
+    expect(await probeReexports(row, dir)).toEqual(['export { a, default }']);
+    expect(await probeReexports({ reexports: ['export *'] }, dir)).toEqual(['export *']);
   });
 });
 

@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import tokensJson from '../../../hirobius.tokens.json';
 import { tokenValues } from './generated-token-values';
 import { tokenRefs } from './generated-token-refs';
 import { motion } from './motion-tokens';
@@ -504,6 +505,16 @@ const hds = {
 
 /** @public */
 export default hds;
+/** The token bridge: CSS variables wrapped as TS constants. Same object as the default export. */
+export { hds };
+
+// Typed const, not a direct JSON re-export, so the emitted .d.ts inlines the
+// token shape instead of importing `hirobius.tokens.json` (that path does not
+// exist under dist/types: attw InternalResolutionError). The JSON is its own
+// module in dist/m/ (preserveModules), so a bundler drops it when only `hds`
+// is imported (hds#1205).
+/** Raw DTCG design tokens (the contents of `hirobius.tokens.json`). */
+export const tokens = tokensJson;
 
 // Re-exported so consuming apps get the full token API from a single subpath
 // (`@hirobius/design-system/tokens`): the dark-mode resolver and raw values.

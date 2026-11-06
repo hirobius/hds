@@ -45,9 +45,10 @@ function usageOf(node) {
     return jsx && `${jsx} ${nameOf(node)}`;
   }
   if (ts.isVariableStatement(node)) {
-    // A deprecated component: `export const Stat = forwardRef(...)` is used as `<Stat`.
+    // A deprecated component: `export const Stat = forwardRef(...)` is used as `<Stat`;
+    // a deprecated value (`export const tokens = …`, hds#1205) by its name.
     const name = nameOf(node.declarationList.declarations[0]);
-    return name && `<${name}`;
+    return name && (/^[A-Z]/.test(name) ? `<${name}` : name);
   }
   if (ts.isInterfaceDeclaration(node)) return jsxOf(node.name.text);
   if (ts.isLiteralTypeNode(node) && ts.isStringLiteral(node.literal)) {
