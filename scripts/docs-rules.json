@@ -23,8 +23,11 @@
     "Composer",
     "InlineCode",
     "MetadataList",
+    "Pin",
     "Sheet",
+    "Sidebar",
     "StatusListItem",
+    "Switcher",
     "ThemeToggle",
     "Timestamp",
     "TokenField"

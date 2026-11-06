@@ -12,8 +12,8 @@
       "internal": 12
     },
     "docsCoverage": {
-      "expected": 74,
-      "covered": 74
+      "expected": 77,
+      "covered": 77
     },
     "figmaCoverage": {
       "expected": 75,
@@ -1069,11 +1069,11 @@
       "name": "Pin",
       "class": "layout",
       "filePath": "src/app/components/pin.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/pin",
       "figmaUrl": null,
       "figmaVia": null,
       "expectFigma": false,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -1273,11 +1273,11 @@
       "name": "Sidebar",
       "class": "layout",
       "filePath": "src/app/components/sidebar.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/sidebar",
       "figmaUrl": null,
       "figmaVia": null,
       "expectFigma": false,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -1381,11 +1381,11 @@
       "name": "Switcher",
       "class": "layout",
       "filePath": "src/app/components/switcher.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/switcher",
       "figmaUrl": null,
       "figmaVia": null,
       "expectFigma": false,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },

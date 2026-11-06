@@ -1174,6 +1174,25 @@
       "button, Next page"
     ]
   },
+  "Pin": {
+    "dom": [
+      "div aria-label=\"Pinned heading example\" role=\"region\"",
+      "  div data-hds-component=\"Pin\"",
+      "  p",
+      "  p",
+      "  p",
+      "  p",
+      "  p"
+    ],
+    "reader": [
+      "region, Pinned heading example",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph",
+      "paragraph"
+    ]
+  },
   "Popover": {
     "dom": [
       "button aria-expanded=\"false\" aria-haspopup=\"dialog\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
@@ -1310,6 +1329,16 @@
       "button, Sort: Newest, not expanded, has popup dialog"
     ]
   },
+  "Sidebar": {
+    "dom": [
+      "div data-hds-component=\"Sidebar\" data-hds-metrics=\"side:start\"",
+      "  div",
+      "    div",
+      "  div",
+      "    div"
+    ],
+    "reader": []
+  },
   "Skeleton": {
     "dom": [
       "div",
@@ -1414,6 +1443,18 @@
   "Surface": {
     "dom": [
       "div data-hds-component=\"Surface\" data-hds-metrics=\"padding:component\" data-hds-surface=\"true\""
+    ],
+    "reader": []
+  },
+  "Switcher": {
+    "dom": [
+      "div data-hds-component=\"Switcher\" data-hds-metrics=\"threshold:30rem\"",
+      "  div",
+      "    div",
+      "  div",
+      "    div",
+      "  div",
+      "    div"
     ],
     "reader": []
   },
