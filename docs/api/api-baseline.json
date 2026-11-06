@@ -34,7 +34,8 @@
       "useAtLeast",
       "useBreakpoint",
       "useHdsRouter",
-      "useHdsTheme"
+      "useHdsTheme",
+      "withViewTransition"
     ],
     "./app/components/alert": ["Alert", "AlertProps"],
     "./app/components/avatar": ["Avatar", "AvatarProps", "AvatarStatus"],

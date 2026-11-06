@@ -25,3 +25,17 @@ since: '0.1.0'
 - Don't write durations or easing curves by hand. Use the tokens.
 
 </PrinciplesAndPractices>
+
+## Page transitions
+
+`withViewTransition(update)` runs an update inside a [View Transition](https://developer.mozilla.org/docs/Web/API/View_Transition_API) when the browser supports one. Where it doesn't, or when the user asks for reduced motion, the update runs at once with no animation. It takes the update as a callback, so it works with any router or state setter.
+
+```tsx
+import { withViewTransition } from '@hirobius/design-system';
+
+function openProject(id: string) {
+  withViewTransition(() => setProjectId(id));
+}
+```
+
+Style the transition with `::view-transition-old(root)` and `::view-transition-new(root)`, and time it with the motion tokens, for example `var(--hds-motion-productive-duration)`.
