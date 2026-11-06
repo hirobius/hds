@@ -10,20 +10,22 @@
 /** @typedef {'no-page' | 'no-demo' | 'no-figma-link'} GapKind */
 
 /**
- * The components the gate measures. Hidden components are out. A docExempt
+ * The components the gate measures. Hidden components are out, and so are
+ * deprecated ones: the deprecation guide documents those, never a live page
+ * (content-model Rule 4, hds#1227). A docExempt
  * component is out only when it has no page: `@doc-exempt` is a file-level tag
  * and some are stale (Dialog, Menu have pages), so a paged one is measured. A component
  * without a page of its own whose source file has a paged component is a part
  * of that one (TabsList on the Tabs page, CardHeader on the Card page), so it
  * is covered there and is not a unit.
  *
- * @param {Record<string, { filePath?: string, hidden?: boolean, docExempt?: boolean }>} specs
+ * @param {Record<string, { filePath?: string, hidden?: boolean, docExempt?: boolean, deprecated?: string }>} specs
  * @param {(name: string) => boolean} hasPage
  * @returns {{ units: string[], parts: string[] }}
  */
 export function coverageUnits(specs, hasPage) {
   const measured = Object.entries(specs ?? {}).filter(
-    ([name, s]) => !s?.hidden && (!s?.docExempt || hasPage(name)),
+    ([name, s]) => !s?.hidden && !s?.deprecated && (!s?.docExempt || hasPage(name)),
   );
   const pagedFiles = new Set(
     measured.filter(([name, s]) => s?.filePath && hasPage(name)).map(([, s]) => s.filePath),

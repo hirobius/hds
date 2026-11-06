@@ -31,6 +31,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   AsyncState: ['data-crossfade-view', 'data-slot', 'data-status'],
   Alert: ['data-size'],
   Avatar: ['data-size'],
+  AvatarGroup: ['data-size'],
   Badge: ['data-tone'],
   Blockquote: ['data-size'],
   Button: [
@@ -66,6 +67,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   Kbd: ['data-size'],
   Menu: ['data-state'],
   MetaLine: ['data-meta-separator'],
+  MetadataList: ['data-orientation'],
   MetricTiles: ['data-tone'],
   List: ['data-leading', 'data-slot', 'data-variant'],
   NavList: ['data-slot'],
@@ -78,6 +80,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   Sheet: ['data-state'],
   Skeleton: ['data-variant'],
   Spinner: ['data-size'],
+  StatusListItem: ['data-tone'],
   Table: ['data-slot'],
   Tabs: ['data-orientation', 'data-state'],
   Tag: ['data-active', 'data-dismissible'],

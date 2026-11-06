@@ -75,6 +75,11 @@ describe('coverageUnits', () => {
     const paged = (n) => n === 'Card' || n === 'Dialog';
     expect(coverageUnits(withPage, paged).units).toContain('Dialog');
   });
+  it('drops a deprecated component: the deprecation guide documents it, not a page (hds#1227)', () => {
+    const withOld = { ...specs, Old: { filePath: 'old.tsx', deprecated: 'Use Card.' } };
+    expect(coverageUnits(withOld, hasPage).units).not.toContain('Old');
+    expect(coverageUnits(withOld, hasPage).parts).not.toContain('Old');
+  });
   it("covers a part through its file's page, and keeps an unpaged component", () => {
     const { units, parts } = coverageUnits(specs, hasPage);
     expect(units).toEqual(['Card', 'Callout']);

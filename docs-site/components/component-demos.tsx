@@ -14,6 +14,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
   Avatar,
+  AvatarGroup,
   Badge,
   Blockquote,
   Board,
@@ -40,6 +41,7 @@ import {
   Input,
   Kbd,
   MetaLine,
+  MetadataList,
   Menu,
   NavList,
   List,
@@ -54,6 +56,7 @@ import {
   Slider,
   Spinner,
   Stack,
+  StatusListItem,
   Surface,
   Table,
   Tabs,
@@ -837,6 +840,48 @@ function ThemeToggleDemo() {
   );
 }
 
+function AvatarGroupDemo() {
+  return (
+    <AvatarGroup max={3} aria-label="Project members">
+      <Avatar alt="Ada Lovelace" initials="AL" />
+      <Avatar alt="Grace Hopper" initials="GH" />
+      <Avatar alt="Alan Kay" initials="AK" />
+      <Avatar alt="Barbara Liskov" initials="BL" />
+      <Avatar alt="Edsger Dijkstra" initials="ED" />
+    </AvatarGroup>
+  );
+}
+
+function MetadataListDemo() {
+  return (
+    <div style={demoColumn}>
+      <MetadataList
+        orientation="horizontal"
+        items={[
+          { term: 'Status', description: 'Active' },
+          { term: 'Owner', description: 'Grace Hopper' },
+          { term: 'Plan', description: 'Team, billed yearly' },
+        ]}
+      />
+    </div>
+  );
+}
+
+function StatusListItemDemo() {
+  return (
+    <div style={demoColumn}>
+      <StatusListItem
+        tone="success"
+        title="Invoice sent"
+        notes={['Paid on delivery']}
+        trailing={<Badge tone="success">Paid</Badge>}
+      />
+      <StatusListItem tone="warning" title="Quote awaiting reply" notes={['Sent 3 days ago']} />
+      <StatusListItem title="Draft saved" />
+    </div>
+  );
+}
+
 function BlockquoteDemo() {
   return <Blockquote attribution="Dieter Rams">Less, but better.</Blockquote>;
 }
@@ -1502,6 +1547,9 @@ function RevealDemo() {
 }
 
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
+  AvatarGroup: AvatarGroupDemo,
+  MetadataList: MetadataListDemo,
+  StatusListItem: StatusListItemDemo,
   Blockquote: BlockquoteDemo,
   Callout: CalloutDemo,
   InlineCode: InlineCodeDemo,

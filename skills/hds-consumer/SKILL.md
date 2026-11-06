@@ -291,6 +291,7 @@ The `data-*` attributes each component renders for you to select on:
 - `Alert`: `data-size`
 - `AsyncState`: `data-crossfade-view`, `data-slot`, `data-status`
 - `Avatar`: `data-size`
+- `AvatarGroup`: `data-size`
 - `Badge`: `data-tone`
 - `Blockquote`: `data-size`
 - `Button`: `data-crossfade-label`, `data-hover-effect`, `data-pressed`, `data-size`, `data-slot`, `data-tone`, `data-variant`
@@ -311,6 +312,7 @@ The `data-*` attributes each component renders for you to select on:
 - `List`: `data-leading`, `data-slot`, `data-variant`
 - `Menu`: `data-state`
 - `MetaLine`: `data-meta-separator`
+- `MetadataList`: `data-orientation`
 - `NavList`: `data-slot`
 - `PageHeader`: `data-slot`
 - `Popover`: `data-state`
@@ -321,6 +323,7 @@ The `data-*` attributes each component renders for you to select on:
 - `Sheet`: `data-state`
 - `Skeleton`: `data-variant`
 - `Spinner`: `data-size`
+- `StatusListItem`: `data-tone`
 - `Table`: `data-slot`
 - `Tabs`: `data-orientation`, `data-state`
 - `Tag`: `data-active`, `data-dismissible`
