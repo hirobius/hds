@@ -11,7 +11,9 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';
-import { AnimatePresence, motion, useIsPresent } from 'motion/react';
+// m + LazyMotion(domAnimation): the crossfade needs only opacity, and the full `motion`
+// component costs Button's import about 14 kB gzip more on Motion 14 (hds#751).
+import { AnimatePresence, LazyMotion, domAnimation, m, useIsPresent } from 'motion/react';
 import { cn } from '../../lib/utils';
 import { isDevelopment } from '../../lib/env';
 import { warnOncePlain } from '../../lib/deprecation';
@@ -273,14 +275,14 @@ function CrossfadeLabel({ children }: { children: React.ReactNode }) {
   const isPresent = useIsPresent();
   const productiveMotion = useHdsMotion('productive');
   return (
-    <motion.span
+    <m.span
       className="col-start-1 row-start-1"
       data-crossfade-label={isPresent ? 'live' : 'exiting'}
       aria-hidden={!isPresent || undefined}
       {...crossfadeFade(productiveMotion)}
     >
       {children}
-    </motion.span>
+    </m.span>
   );
 }
 
@@ -529,9 +531,11 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         {!iconOnly &&
           (crossfadeLabel ? (
             <span className="grid" data-slot="label-crossfade">
-              <AnimatePresence initial={false}>
-                <CrossfadeLabel key={content}>{content}</CrossfadeLabel>
-              </AnimatePresence>
+              <LazyMotion features={domAnimation}>
+                <AnimatePresence initial={false}>
+                  <CrossfadeLabel key={content}>{content}</CrossfadeLabel>
+                </AnimatePresence>
+              </LazyMotion>
             </span>
           ) : (
             content
