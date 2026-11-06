@@ -1286,6 +1286,16 @@ Session total: 1 call (1 use_figma read; reused Figma session 143c3e71). No writ
 | 10-12 | `get_screenshot` x3 | read  | library: InlineCode 89:155, Pagination 2335:4217, Badge 31:15                                                                                                  | after                                       | OK. figma/shots/{inlinecode,pagination,badge}-after.png.                                             |
 | 13    | `use_figma`         | read  | library: generated bindings-snapshot.js (12 targets, variant tags read as their set)                                                                           | refresh figma/bindings.json                 | OK. 07fb2425: 77 both, 28 code-only.                                                                 |
 
-Session total: 13 calls (9 use_figma: 4 read + 5 write, 6 get_screenshot; reused Figma session 143c3e71). No delete. No publish. No variable change.
+Session total: 13 calls (7 use_figma: 3 read + 4 write, 6 get_screenshot; reused Figma session 143c3e71). No delete. No publish. No variable change.
 
-Calls logged for 2026-11-06: 120 of 200 (1, 1, 5, 5, 12, 1, 48, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1 and 13).
+## 2026-11-06 · session `claude/figma-inlinecode-followup` (hds#1323, file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #   | Tool             | Kind  | Target                                                                                                                                                                        | Why                                                         | Result                                                 |
+| --- | ---------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------ |
+| 1   | `get_screenshot` | read  | library: InlineCode 89:155                                                                                                                                                    | before                                                      | OK. figma/shots/inlinecode-leading-before.png.         |
+| 2   | `use_figma`      | write | library: InlineCode 89:155 paddingTop and paddingBottom to space/subgrid/gap VariableID:10:31; label 89:156 line height unbound from typography/mono/line-height, set to 100% | match the comfortable density (py subgrid gap, leading-[1]) | OK. Text 15 high, box 53x23 (15 x 1 + 4 + 4), as code. |
+| 3   | `get_screenshot` | read  | library: InlineCode 89:155                                                                                                                                                    | after                                                       | OK. figma/shots/inlinecode-leading-after.png.          |
+
+Session total: 3 calls (1 use_figma write, 2 get_screenshot; reused Figma session 143c3e71). No delete. No publish. No variable change.
+
+Calls logged for 2026-11-06: 123 of 200 (1, 1, 5, 5, 12, 1, 48, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13 and 3).
