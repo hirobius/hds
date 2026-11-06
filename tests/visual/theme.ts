@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import type { Page } from '@playwright/test';
 
 /**
@@ -8,6 +9,8 @@ export const DEMO_SHOT = {
   animations: 'disabled',
   caret: 'hide',
   maxDiffPixelRatio: 0.002,
+  // Keeps the sticky docs top bar off a demo taller than the viewport (hds#1277).
+  stylePath: fileURLToPath(new URL('./screenshot.css', import.meta.url)),
 } as const;
 
 /**

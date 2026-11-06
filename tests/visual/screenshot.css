@@ -1,0 +1,9 @@
+/*
+ * Applied only while a demo baseline is captured (DEMO_SHOT.stylePath, hds#1277).
+ * The docs top bar is sticky: when a demo is taller than the viewport, Playwright
+ * scrolls to capture it and the bar is painted over the demo's top edge. Static,
+ * it stays at the top of the page and out of every demo's box.
+ */
+#nd-subnav {
+  position: static !important;
+}
