@@ -745,30 +745,79 @@ function runWiringCheck(
 // Self-test mode
 // ────────────────────────────────────────────────────────────────────────────
 
+/** Codes that compare the live registry with the hooks; not bypass patterns. */
+const REGISTRY_DRIFT_CODES = new Set([
+  'WIRING_DRIFT',
+  'MULTI_CHANNEL_DRIFT',
+  'MISSING_CHANNEL',
+  'BAD_CHANNEL',
+  'FIRING_CHANNEL_NOT_IN_CHANNELS',
+  'PRECOMMIT_HASH_DRIFT',
+]);
+
 if (SELF_TEST) {
   const FIXTURE_DIR = path.join(ROOT, 'scripts/__tests__/fixtures/wiring');
 
-  // Load the real registry for fixture testing.
+  // The real registry, for package.json lane expansion.
   const registryObj = JSON.parse(readSafe(REGISTRY));
   const pkgObj = loadPkgWithLanes(registryObj);
   const ghActionsContent = listGhActions();
 
-  // Fixture definitions: { file, expectPass }
+  // Hook fixtures: { file, expectPass, gate, strictArgv? }. Each bad fixture
+  // tampers with ONE gate's line; `gate` names it. Each runs against a
+  // synthetic registry that declares that gate pre-commit, so the bypass
+  // detector is what decides (hds#1283). Against the live registry the gates
+  // in these frozen hooks have moved to other channels, so detection was
+  // skipped and the bad cases "failed" on drift alone.
   const fixtures = [
-    { file: 'good.husky-pre-commit', expectPass: true },
-    { file: 'bad-or-true.husky-pre-commit', expectPass: false },
-    { file: 'bad-semi-true.husky-pre-commit', expectPass: false },
-    { file: 'bad-exit-zero.husky-pre-commit', expectPass: false },
-    { file: 'bad-trailing-amp.husky-pre-commit', expectPass: false },
-    { file: 'bad-if-false.husky-pre-commit', expectPass: false },
-    { file: 'bad-set-plus-e.husky-pre-commit', expectPass: false },
-    { file: 'bad-missing-strict-argv.husky-pre-commit', expectPass: false },
+    { file: 'good.husky-pre-commit', expectPass: true, gate: null },
+    {
+      file: 'bad-or-true.husky-pre-commit',
+      expectPass: false,
+      gate: 'scripts/check-hardcoded-colors.mjs',
+    },
+    {
+      file: 'bad-semi-true.husky-pre-commit',
+      expectPass: false,
+      gate: 'scripts/check-mojibake.mjs',
+    },
+    {
+      file: 'bad-exit-zero.husky-pre-commit',
+      expectPass: false,
+      gate: 'scripts/check-hardcoded-spacing.mjs',
+    },
+    {
+      file: 'bad-trailing-amp.husky-pre-commit',
+      expectPass: false,
+      gate: 'scripts/audit-typography-overrides.mjs',
+    },
+    {
+      file: 'bad-if-false.husky-pre-commit',
+      expectPass: false,
+      gate: 'scripts/check-validator-wiring.mjs',
+    },
+    {
+      file: 'bad-set-plus-e.husky-pre-commit',
+      expectPass: false,
+      gate: 'scripts/check-hardcoded-spacing.mjs',
+    },
+    {
+      file: 'bad-missing-strict-argv.husky-pre-commit',
+      expectPass: false,
+      gate: 'scripts/validate-orchestration.mjs',
+      strictArgv: '--strict-validation',
+    },
+  ];
+
+  /** Every `node scripts/<name>.mjs` a hook invokes, as gateScript paths. */
+  const invokedGates = (content) => [
+    ...new Set([...content.matchAll(/node\s+(scripts\/[\w./-]+\.mjs)/g)].map((m) => m[1])),
   ];
 
   let allPassed = true;
   const results = [];
 
-  for (const { file, expectPass } of fixtures) {
+  for (const { file, expectPass, gate, strictArgv } of fixtures) {
     const fixturePath = path.join(FIXTURE_DIR, file);
     if (!fs.existsSync(fixturePath)) {
       console.error(`  MISSING fixture: ${file}`);
@@ -777,24 +826,36 @@ if (SELF_TEST) {
       continue;
     }
 
+    // The good hook must be clean for every gate it runs; a bad hook must trip
+    // on the one gate it tampers with.
+    const gates = gate ? [gate] : invokedGates(readSafe(fixturePath));
+    const registry = {
+      gates: gates.map((g) => ({
+        id: path.basename(g, '.mjs'),
+        gateScript: g,
+        firingChannel: 'pre-commit',
+        ...(g === gate && strictArgv ? { strictArgv } : {}),
+      })),
+    };
     const { violations } = runWiringCheck(
-      registryObj,
+      registry,
       fixturePath,
       null, // no pre-push fixture
       ghActionsContent,
       pkgObj,
       null, // no commit-msg fixture
-      RALPH_GATE, // real ralph/gate.sh — only the pre-commit file is swapped
+      RALPH_GATE,
     );
 
-    const passed = violations.length === 0;
+    const bypass = violations.filter((v) => !REGISTRY_DRIFT_CODES.has(v.code));
+    const passed = bypass.length === 0;
     const ok = (expectPass && passed) || (!expectPass && !passed);
 
     if (!ok) {
       allPassed = false;
       const reason = expectPass
-        ? `expected PASS but got ${violations.length} violation(s): ${violations.map((v) => v.code).join(', ')}`
-        : `expected FAIL but got 0 violations (bypass not detected)`;
+        ? `expected PASS but got ${bypass.length} bypass violation(s): ${bypass.map((v) => `${v.code} (${v.id})`).join(', ')}`
+        : `expected FAIL but got 0 bypass violations on ${gate} (bypass not detected)`;
       results.push({ file, ok: false, reason });
     } else {
       results.push({ file, ok: true });
