@@ -205,7 +205,9 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
 - **Vars-only path:** import `@hirobius/design-system/variables.css` for just the
   design-token custom properties — no components, no utilities, no reset. Use
   when you only want to theme another system (MUI palette, etc.) from HDS tokens
-  and aren't rendering HDS components on that surface.
+  and aren't rendering HDS components on that surface. It carries the opt-in
+  accents too: set `data-accent="cobalt"` on `<html>` or a wrapper to switch the
+  accent tokens.
 - **MUI theme preset:** `@hirobius/design-system/mui` maps HDS tokens to an MUI
   palette so MUI and HDS share one source of truth (status colors line up with
   `<Button tone>`). It imports no MUI code — the return type is structural:
