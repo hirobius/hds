@@ -609,11 +609,11 @@ div:has(> .hds-docs-display) {
 
 .hds-swatch-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
   gap: var(--semantic-space-scale-xs);
 }
 .hds-swatch-grid--dense {
-  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
 }
 .hds-swatch-cell {
   position: relative;
@@ -623,16 +623,17 @@ div:has(> .hds-docs-display) {
 .hds-swatch {
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--semantic-space-scale-xs);
   min-width: 0;
-  padding: 0;
+  padding: var(--semantic-space-scale-xs);
   text-align: left;
   font: inherit;
   color: inherit;
-  background: var(--semantic-color-surface-raised);
+  background: none;
   border: 0;
   border-radius: var(--semantic-radius-action);
-  overflow: hidden;
   cursor: copy;
 }
 .hds-swatch:hover {
@@ -642,23 +643,22 @@ div:has(> .hds-docs-display) {
   outline: 2px solid var(--semantic-color-border-accent);
   outline-offset: 2px;
 }
-.hds-swatch-block {
+.hds-swatch-squares {
   display: flex;
-  align-self: stretch;
-  height: 4.5rem;
+  flex: none;
+  gap: var(--semantic-space-scale-2xs);
 }
-/* An empty span has no intrinsic width: give each half its share explicitly so
-   the fill never collapses to nothing (hds#846). */
 .hds-swatch-fill {
   display: block;
-  flex: 1 1 0;
-  min-width: 50%;
+  width: var(--semantic-size-listRow);
+  aspect-ratio: 1;
+  border-radius: var(--semantic-radius-action);
+  box-shadow: inset 0 0 0 1px var(--semantic-color-border-subtle);
 }
 .hds-swatch-meta {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
-  padding: 0.5rem 0.625rem 0.625rem;
   min-width: 0;
 }
 .prose .hds-swatch-name {
@@ -786,7 +786,7 @@ div:has(> .hds-docs-display) {
 }
 .hds-icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
   gap: var(--semantic-space-scale-sm);
   margin: 0;
   padding: 0;
