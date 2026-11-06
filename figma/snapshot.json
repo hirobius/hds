@@ -1,15 +1,15 @@
 {
-  "checksum": "896d559a",
+  "checksum": "94c94905",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-06T14:45:32.022Z",
+    "takenAt": "2026-11-06T14:51:36.309Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "a683516a",
-      "pushedAt": "2026-11-06T14:45:31.953Z",
+      "modelHash": "4972ae3d",
+      "pushedAt": "2026-11-06T14:51:36.249Z",
       "scope": null
     },
     "collections": [
@@ -11447,6 +11447,26 @@
             }
           },
           {
+            "id": "VariableID:2573:50",
+            "name": "table/cell/paddingX",
+            "path": "component.table.cell.paddingX",
+            "resolvedType": "FLOAT",
+            "description": "Table cell inline padding: scale.md (28px, 16px compact). Own token, so tenant surface padding never widens cells.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-table-cell-paddingX)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2061:880",
+                "to": "Hirobius/Semantic: space/scale/md"
+              }
+            }
+          },
+          {
             "id": "VariableID:14:22",
             "name": "tag/activeBackground",
             "path": "component.tag.activeBackground",
@@ -13596,7 +13616,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "1a60adb"
+                "value": "39b9a14"
               }
             }
           },
@@ -14406,5 +14426,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:81d53711558e974b56524401236d07277ad2d436fc9a1235412f86ecd0e40230"
+  "tokensHash": "sha256:49614593f00994219593c24576a4df6b6deddbbfd57ef5a622de583a221c399c"
 }
