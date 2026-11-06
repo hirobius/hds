@@ -14597,8 +14597,8 @@
         "path": "primitive.inlineIcon.size",
         "cssVar": "--primitive-inlineIcon-size",
         "type": "dimension",
-        "description": "Inline icon size: three quarters of the font size.",
-        "value": "0.75em"
+        "description": "Inline icon size: one em, the font size, so the icon is sized to the text.",
+        "value": "1em"
       },
       {
         "path": "primitive.inlineIcon.gap",
@@ -17317,7 +17317,7 @@
         "type": "dimension",
         "description": "External-link icon size, in em so it scales with the link text at any font size.",
         "alias": "{primitive.inlineIcon.size}",
-        "resolvedValue": "0.75em"
+        "resolvedValue": "1em"
       },
       {
         "path": "component.inlineLink.iconGap",
@@ -17339,9 +17339,9 @@
         "path": "component.inlineLink.size.sm.iconSize",
         "cssVar": "--component-inlineLink-size-sm-iconSize",
         "type": "dimension",
-        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
-        "alias": "{primitive.size.12}",
-        "resolvedValue": "12px"
+        "description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize.",
+        "alias": "{primitive.size.16}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.inlineLink.size.md.fontSize",
@@ -17355,9 +17355,9 @@
         "path": "component.inlineLink.size.md.iconSize",
         "cssVar": "--component-inlineLink-size-md-iconSize",
         "type": "dimension",
-        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
-        "alias": "{primitive.size.12}",
-        "resolvedValue": "12px"
+        "description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize.",
+        "alias": "{primitive.size.16}",
+        "resolvedValue": "16px"
       },
       {
         "path": "component.inlineLink.size.lg.fontSize",
@@ -17371,9 +17371,9 @@
         "path": "component.inlineLink.size.lg.iconSize",
         "cssVar": "--component-inlineLink-size-lg-iconSize",
         "type": "dimension",
-        "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
-        "alias": "{primitive.size.20}",
-        "resolvedValue": "20px"
+        "description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize.",
+        "alias": "{primitive.size.24}",
+        "resolvedValue": "24px"
       },
       {
         "path": "component.pagination.compactControlSize",

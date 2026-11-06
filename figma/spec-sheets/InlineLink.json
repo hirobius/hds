@@ -18,7 +18,7 @@
         },
         "iconSize": {
           "token": "component.inlineLink.size.sm.iconSize",
-          "value": "12px"
+          "value": "16px"
         }
       }
     },
@@ -31,7 +31,7 @@
         },
         "iconSize": {
           "token": "component.inlineLink.size.md.iconSize",
-          "value": "12px"
+          "value": "16px"
         }
       }
     },
@@ -44,7 +44,7 @@
         },
         "iconSize": {
           "token": "component.inlineLink.size.lg.iconSize",
-          "value": "20px"
+          "value": "24px"
         }
       }
     }

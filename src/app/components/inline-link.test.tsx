@@ -108,7 +108,8 @@ describe('InlineLink', () => {
       expect(svg.getAttribute('width')).not.toBe('11');
       expect(comp.iconSize.$value).toBe('{primitive.inlineIcon.size}');
       expect(comp.iconGap.$value).toBe('{primitive.inlineIcon.gap}');
-      expect(prim.inlineIcon.size.$value).toEqual({ value: 0.75, unit: 'em' });
+      // Sized to the text (Adrian, 2026-11-06): the icon box is one em, the font size.
+      expect(prim.inlineIcon.size.$value).toEqual({ value: 1, unit: 'em' });
       expect(prim.inlineIcon.gap.$value).toEqual({ value: 0.25, unit: 'em' });
     });
 
@@ -156,11 +157,14 @@ describe('InlineLink', () => {
       const roleSize = (tokens.semantic.typography[role].$value as { fontSize: string }).fontSize;
       expect(roleSize).toBe(`{primitive.typography.size.${step}}`);
       expect(comp.size[size].fontSize.$value).toBe(roleSize);
-      // Figma's px icon stays within 1.5px of the code's 0.75em at that size.
+      // Figma's px icon is the largest primitive.size step that is not larger than the
+      // font size, the nearest Figma can get to the code's 1em without outgrowing the text.
       const fontPx = px(comp.size[size].fontSize.$value);
-      expect(Math.abs(px(comp.size[size].iconSize.$value) - fontPx * 0.75)).toBeLessThanOrEqual(
-        1.5,
-      );
+      const steps = Object.keys(tokens.primitive.size as Record<string, unknown>)
+        .filter((k) => /^\d+$/.test(k))
+        .map(Number);
+      const expected = Math.max(...steps.filter((n) => n <= fontPx));
+      expect(px(comp.size[size].iconSize.$value)).toBe(expected);
     });
 
     it('applies the size to internal and plain links too', () => {

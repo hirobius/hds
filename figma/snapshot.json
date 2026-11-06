@@ -1,15 +1,15 @@
 {
-  "checksum": "2b942a35",
+  "checksum": "fdf0bf17",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-06T06:02:34.540Z",
+    "takenAt": "2026-11-06T08:52:57.719Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "22fc1b3b",
-      "pushedAt": "2026-11-06T06:02:34.476Z",
+      "modelHash": "596f9523",
+      "pushedAt": "2026-11-06T08:52:57.609Z",
       "scope": null
     },
     "collections": [
@@ -10971,7 +10971,7 @@
             "name": "inlineLink/size/lg/iconSize",
             "path": "component.inlineLink.size.lg.iconSize",
             "resolvedType": "FLOAT",
-            "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+            "description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize.",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -10981,8 +10981,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:29",
-                "to": "Hirobius/Primitives: size/20"
+                "alias": "VariableID:7:30",
+                "to": "Hirobius/Primitives: size/24"
               }
             }
           },
@@ -11011,7 +11011,7 @@
             "name": "inlineLink/size/md/iconSize",
             "path": "component.inlineLink.size.md.iconSize",
             "resolvedType": "FLOAT",
-            "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+            "description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize.",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -11021,8 +11021,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:27",
-                "to": "Hirobius/Primitives: size/12"
+                "alias": "VariableID:7:28",
+                "to": "Hirobius/Primitives: size/16"
               }
             }
           },
@@ -11051,7 +11051,7 @@
             "name": "inlineLink/size/sm/iconSize",
             "path": "component.inlineLink.size.sm.iconSize",
             "resolvedType": "FLOAT",
-            "description": "Figma icon size: nearest px step to 0.75em of fontSize. Code draws iconSize.",
+            "description": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize.",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -11061,8 +11061,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:7:27",
-                "to": "Hirobius/Primitives: size/12"
+                "alias": "VariableID:7:28",
+                "to": "Hirobius/Primitives: size/16"
               }
             }
           },
@@ -13539,7 +13539,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "56fb129"
+                "value": "5bfa674"
               }
             }
           },
@@ -14349,5 +14349,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:33e0fb0fc37bd10b889eadd9a66c93987e5ad700d15a090c26c8a4a0c1938ddd"
+  "tokensHash": "sha256:6ca5f89bfdf5132cd8b001c23c95d9e7e292b1061ef3af539ef3122cacbabf14"
 }
