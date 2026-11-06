@@ -41,7 +41,7 @@ const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /** Components under parity. Each entry names its source and Figma node. */
 export const COMPONENTS = Object.freeze({
-  // The condensed set (page "Button", 2026-11-05). The 576-variant 28:138 is on
+  // The condensed set (page "Button v2 (review)" 2399:10548, 2026-11-05). The 576-variant 28:138 is on
   // "Archive / Deprecated".
   Button: {
     source: 'src/app/components/button.tsx',
