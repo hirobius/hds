@@ -4602,6 +4602,10 @@
           "type": "ReactNode[]",
           "optional": true
         },
+        "statusLabel": {
+          "type": "string",
+          "optional": true
+        },
         "title": {
           "type": "ReactNode"
         },
@@ -4623,6 +4627,9 @@
       },
       "allowedChildren": [],
       "propConstraints": {
+        "statusLabel": {
+          "type": "string"
+        },
         "tone": {
           "type": "enum",
           "values": [
@@ -4639,8 +4646,15 @@
       ],
       "a11yRules": [
         {
-          "rule": "Status dot is decorative (aria-hidden); convey status meaning via title or trailing badge",
-          "required": true
+          "rule": "The dot is hidden; statusLabel is read after the title.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:status-list-item.status-named"
+        },
+        {
+          "rule": "Pass statusLabel whenever the tone carries meaning.",
+          "required": true,
+          "owner": "consumer"
         }
       ],
       "docsPage": "/docs/components/status-list-item",
@@ -7445,7 +7459,8 @@
       },
       "consumers": [
         "src/app/components/app-shell.tsx",
-        "src/app/components/board.tsx"
+        "src/app/components/board.tsx",
+        "src/app/components/status-list-item.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],

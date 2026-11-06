@@ -1737,6 +1737,7 @@ Stack — one-dimensional layout primitive.
 ### StatusListItem
 Status dot + title row with optional muted notes and trailing slot (e.g. badge).
   - notes: ReactNode[]
+  - statusLabel: string
   - title: ReactNode
   - tone: "success" | "danger" | "warning" | "info" | "neutral" | null
   - trailing: ReactNode

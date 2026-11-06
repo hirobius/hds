@@ -921,11 +921,17 @@ function StatusListItemDemo() {
     <div style={demoColumn}>
       <StatusListItem
         tone="success"
+        statusLabel="Done"
         title="Invoice sent"
         notes={['Paid on delivery']}
         trailing={<Badge tone="success">Paid</Badge>}
       />
-      <StatusListItem tone="warning" title="Quote awaiting reply" notes={['Sent 3 days ago']} />
+      <StatusListItem
+        tone="warning"
+        statusLabel="Waiting"
+        title="Quote awaiting reply"
+        notes={['Sent 3 days ago']}
+      />
       <StatusListItem title="Draft saved" />
     </div>
   );
