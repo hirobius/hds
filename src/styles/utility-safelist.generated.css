@@ -1,5 +1,5 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
-   from docs/api/releases/0.35.0.json: every Tailwind utility that release shipped stays emitted,
+   from docs/api/releases/0.36.0.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
    ./tokens.css by accident. To drop one, list utility-removed:<class> in a step
    (upgrade/pending/<changeset>.json), then run node scripts/build-utility-safelist.mjs. */
@@ -589,6 +589,7 @@
 @source inline("px-6");
 @source inline("px-[var(--component-badge-paddingX)]");
 @source inline("px-[var(--component-button-size-lg-paddingX)]");
+@source inline("px-[var(--component-table-cell-paddingX)]");
 @source inline("px-[var(--component-tag-paddingX)]");
 @source inline("px-[var(--semantic-space-scale-xs)]");
 @source inline("px-[var(--semantic-space-subgrid-gap)]");

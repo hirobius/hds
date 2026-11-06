@@ -6,7 +6,7 @@ One file per decision, numbered in the order recorded ([ADR-009](009-adr-convent
 An Accepted ADR is not edited; a change is a new ADR that supersedes it through its
 Status line.
 
-64 records. 25 are **retroactive**: decisions made between June and
+65 records. 26 are **retroactive**: decisions made between June and
 October 2026 that shipped without an ADR, written up afterwards from the commit and PR
 history. Each one lists its evidence and says when the evidence does not record a reason.
 Their "Decided" date is when the decision landed, not when it was written up.
@@ -80,3 +80,4 @@ the bundle budget) predates this folder; see ADR-009.
 | [062](062-state-is-derived.md) | Project state is derived, and every state surface is registered | Accepted | 2026-10-12 | yes |
 | [063](063-sora-display-face.md) | Sora sets display and title type | Accepted | 2026-10-17 |  |
 | [064](064-soft-surfaces.md) | Soft surfaces by default; hard shadow and wipe by default | Accepted | 2026-10-22 |  |
+| [065](065-lively-motion.md) | HDS motion is lively, not restrained | Accepted | 2026-10-17 | yes |

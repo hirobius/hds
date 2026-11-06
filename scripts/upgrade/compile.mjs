@@ -112,13 +112,18 @@ function readHistory(repo, oneCommandFrom = ONE_COMMAND_FROM) {
   };
 }
 
-/** The four lists of UPGRADING.md, in the order a release section prints them. */
-export const LISTS = ['fixedForYou', 'looksDifferent', 'comingNext', 'doByHand'];
+/**
+ * The lists of UPGRADING.md, in the order a release section prints them. Good
+ * to know is informational (an additive peer step: a new optional peer) and
+ * no summary or announcement counts it.
+ */
+export const LISTS = ['fixedForYou', 'looksDifferent', 'comingNext', 'doByHand', 'goodToKnow'];
 const HEADINGS = {
   fixedForYou: 'Fixed for you',
   looksDifferent: 'Looks different',
   comingNext: 'Coming next',
   doByHand: 'Do by hand',
+  goodToKnow: 'Good to know',
 };
 
 /** Step kinds that take something public away (./ledger.mjs stepIsBreaking reads the same set). */
@@ -144,11 +149,14 @@ const REMOVING = new Set([
  *     edit), a removed or moved name with no codemod, a manual step, and an
  *     additive or none-impact step, which a note only records to tell the
  *     consumer something to do.
- * @returns {'fixedForYou' | 'looksDifferent' | 'comingNext' | 'doByHand'}
+ *   - an additive peer step (a new optional peer) is Good to know: nothing to
+ *     do unless the consumer opts into what needs it, and nothing counts it.
+ * @returns {'fixedForYou' | 'looksDifferent' | 'comingNext' | 'doByHand' | 'goodToKnow'}
  */
 export function listOf(step) {
   if (step.kind === 'deprecated') return 'comingNext';
   if (step.auto) return 'fixedForYou';
+  if (step.kind === 'peer' && step.impact === 'additive') return 'goodToKnow';
   if (step.impact === 'look' && !REMOVING.has(step.kind) && step.kind !== 'manual') {
     return 'looksDifferent';
   }
@@ -357,9 +365,11 @@ function removalTail(step, removals) {
   if (removed.size === 0) return ` Removed in ${step.removeIn}.`;
   const where = versions.map(sectionLink).join(' and ');
   if (removed.size === uses.length) {
-    return asPlanned
-      ? ` Removed in ${where}.`
-      : ` Removed early, in ${where} (planned for ${step.removeIn}).`;
+    if (asPlanned) return ` Removed in ${where}.`;
+    // Late when any of it went after the planned release (0.36.0 for a planned
+    // 0.35.0); early otherwise.
+    const late = compareVersions(versions.at(-1), step.removeIn) > 0;
+    return ` Removed ${late ? 'late' : 'early'}, in ${where} (planned for ${step.removeIn}).`;
   }
   const gone = uses.filter((use) => removed.has(use)).map(useName);
   return ` ${codeList(gone)} ${gone.length === 1 ? 'was' : 'were'} removed in ${where}; the rest is removed in ${step.removeIn}.`;
@@ -582,6 +592,7 @@ export function upgradeBlock(ledger, { command, bin }) {
   items.push(...itemsOf('doByHand', 'Do by hand'));
   items.push(...itemsOf('looksDifferent', 'Looks different'));
   items.push(...itemsOf('comingNext', 'Coming next'));
+  items.push(...itemsOf('goodToKnow', 'Good to know'));
   const url = `${UPGRADING_URL}#${ledger.version.replace(/\./g, '')}`;
   const shown = items.slice(0, BLOCK_ITEMS);
   const left = items.length - shown.length;

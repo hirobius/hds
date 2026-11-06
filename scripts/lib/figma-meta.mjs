@@ -55,9 +55,23 @@ export const SHORT_SHA = 7;
  * @param {{ git?: (root: string, args: string[]) => string|null }} [options]
  */
 export function syncedInputsHash(root, { git = runGit } = {}) {
-  const tree = git(root, ['ls-tree', '-r', '--full-tree', 'HEAD', '--', ...SYNCED_INPUTS]);
+  const tree = syncedInputsTree(root, 'HEAD', { git });
   if (!tree) return undefined;
   return `sha256:${createHash('sha256').update(tree).digest('hex')}`;
+}
+
+/**
+ * The `git ls-tree -r` lines of SYNCED_INPUTS at `rev`, or null when git cannot
+ * read it (no git, or `rev` is not a commit in this clone).
+ * @param {string} root
+ * @param {string} rev
+ * @param {{ git?: (root: string, args: string[]) => string|null }} [options]
+ */
+export function syncedInputsTree(root, rev, { git = runGit } = {}) {
+  if (rev !== 'HEAD' && !git(root, ['rev-parse', '--verify', '--quiet', `${rev}^{commit}`])) {
+    return null;
+  }
+  return git(root, ['ls-tree', '-r', '--full-tree', rev, '--', ...SYNCED_INPUTS]);
 }
 
 /** `git+https://host/o/r.git`, `git@host:o/r.git` or `{ url }` → `https://host/o/r`. */

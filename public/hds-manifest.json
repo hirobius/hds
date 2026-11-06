@@ -6,11 +6,11 @@
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
-  "packageVersion": "0.35.0",
+  "packageVersion": "0.36.0",
   "upgrade": {
     "command": "npx @hirobius/design-system@latest upgrade"
   },
-  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.35.0/llms.txt",
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.36.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
