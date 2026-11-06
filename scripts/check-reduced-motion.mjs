@@ -41,6 +41,7 @@
 
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
+import { requiredDurationVars } from './lib/reduced-motion-vars.mjs';
 
 const ROOT = process.cwd();
 const failures = [];
@@ -52,16 +53,10 @@ const fixtureFile = process.env.FIXTURE_FILE;
 
 // ── Duration tokens that MUST be zeroed in the reduced-motion block ───────────
 
-const REQUIRED_DURATION_VARS = [
-  '--primitive-duration-instant',
-  '--primitive-duration-short',
-  '--primitive-duration-medium',
-  '--primitive-duration-long',
-  '--hds-motion-productive-duration',
-  '--hds-motion-expressive-duration',
-  '--hds-motion-spatial-duration',
-  '--hds-motion-exit-duration',
-];
+// Derived from hirobius.tokens.json, so a new duration token needs its zero here (hds#751).
+const REQUIRED_DURATION_VARS = requiredDurationVars(
+  JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf-8')),
+);
 
 // ── Layer 1: CSS @media (prefers-reduced-motion) ──────────────────────────────
 
