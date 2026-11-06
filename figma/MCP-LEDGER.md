@@ -1066,4 +1066,15 @@ Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 an
 | 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 6082c48f | meta/commit | OK. updated 1; post cd0f8050; receipt written. |
 | Session total: 1 use_figma call (1 write). No publish. |
 
-Calls logged for 2026-11-06: 2 of 200 (1 and 1).
+## 2026-11-06 · References page made product-neutral (files 2VgBbVpKiDnu0aftJEVyBQ, 7US9lA0qsUP0uwmtQtA8Ss)
+
+| #                                                       | Tool           | Kind  | Target                            | Why             | Result                                |
+| ------------------------------------------------------- | -------------- | ----- | --------------------------------- | --------------- | ------------------------------------- |
+| 1                                                       | `get_metadata` | read  | library References page 2190:2    | Adrian question | OK. Roleforge reference cards.        |
+| 2                                                       | `use_figma`    | read  | Explorations References page text | find app names  | OK. 47 hits.                          |
+| 3                                                       | `use_figma`    | write | Explorations References page text | Adrian request  | OK. 43 texts rewritten, tags renamed. |
+| 4                                                       | `use_figma`    | read  | Explorations References page text | find leftovers  | OK. 10 hits.                          |
+| 5                                                       | `use_figma`    | write | Explorations References page text | Adrian request  | OK. 9 texts rewritten.                |
+| Session total: 5 calls (2 writes, 3 reads). No publish. |
+
+Calls logged for 2026-11-06: 7 of 200 (1, 1 and 5).
