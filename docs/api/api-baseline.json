@@ -14,7 +14,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.33.1",
-  "generatedAt": "2026-11-05",
+  "generatedAt": "2026-11-06",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -221,7 +221,7 @@
       "ToastTone",
       "useToast"
     ],
-    "@subpath/tokens": ["ct", "default", "tokenValues"],
+    "@subpath/tokens": ["ct", "default", "hds", "tokenValues", "tokens"],
     "@subpath/cn": ["SPACING_KEYS", "cn"],
     "@subpath/manifest": ["default"],
     "@subpath/contexts": [

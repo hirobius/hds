@@ -236,7 +236,7 @@ If your app runs MUI `<CssBaseline>` + Emotion (or any opinionated global CSS),
 ```tsx
 import { Button, Card, Badge } from '@hirobius/design-system';
 import { cn } from '@hirobius/design-system/cn';
-import tokens from '@hirobius/design-system/tokens';
+import { hds, tokens } from '@hirobius/design-system/tokens';
 import manifest from '@hirobius/design-system/manifest';
 
 export function Example() {
@@ -260,7 +260,7 @@ export function Example() {
 | `@hirobius/design-system/fonts.css`         | Optional brand fonts: Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                                                                                                           |
 | `@hirobius/design-system/tokens.css`        | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                                                                                                                     |
 | `@hirobius/design-system/variables.css`     | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                                                                                                                    |
-| `@hirobius/design-system/tokens`            | Design-token values as typed TS                                                                                                                                                                                                                                                                                                 |
+| `@hirobius/design-system/tokens`            | Design tokens as typed TS: `hds` (the token bridge, also the default export), `tokens` (the raw DTCG JSON of `hirobius.tokens.json`), `ct` and `tokenValues`. The root `hds` and `tokens` exports are deprecated since 0.34.0 and leave in 0.35.0; `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the imports   |
 | `@hirobius/design-system/cn`                | The `cn()` className-merge helper                                                                                                                                                                                                                                                                                               |
 | `@hirobius/design-system/manifest`          | Machine-readable component inventory (`hds-manifest.json`)                                                                                                                                                                                                                                                                      |
 | `@hirobius/design-system/stats.json`        | Generated HDS numbers (component, core, pattern and token counts, contrast pairs, typography styles, consumer split), each computed from the code (`hds-stats.json`)                                                                                                                                                            |

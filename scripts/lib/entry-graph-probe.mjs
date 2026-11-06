@@ -19,7 +19,10 @@ import { resolveEsbuild } from './button-probe-esbuild.mjs';
 /**
  * Each budgeted JS entry, the export statements its probe uses (every name
  * the entry exports: `export *` skips a default export) and the probe file
- * .size-limit.cjs measures.
+ * .size-limit.cjs measures. A row with `exclude` re-exports every name the
+ * entry has but those (read with entryExportNames), and a row with
+ * `forbidInputs` fails the probe build when a dist module whose path ends
+ * with one of them reaches the graph.
  */
 export const ENTRY_GRAPHS = [
   {
@@ -28,26 +31,75 @@ export const ENTRY_GRAPHS = [
     probe: 'dist/probe/hirobius-ui.graph.js',
   },
   {
+    // hds#1205: the root without its deprecated token copies (`hds`, `tokens`,
+    // removed in 0.35.0), so the components a root import brings in are
+    // budgeted apart from the token JSON, and the JSON can never ride along.
+    entry: 'dist/hirobius-ui.js',
+    exclude: ['hds', 'tokens'],
+    forbidInputs: ['hirobius.tokens.json.js'],
+    probe: 'dist/probe/hirobius-ui.components.graph.js',
+  },
+  {
     entry: 'dist/manifest.js',
     reexports: ['export { default }'],
     probe: 'dist/probe/manifest.graph.js',
   },
   {
+    // The token bridge without the raw DTCG JSON (`tokens`, budgeted below).
     entry: 'dist/tokens.js',
-    reexports: ['export *', 'export { default }'],
+    exclude: ['tokens'],
+    forbidInputs: ['hirobius.tokens.json.js'],
     probe: 'dist/probe/tokens.graph.js',
   },
+  {
+    entry: 'dist/tokens.js',
+    reexports: ['export { tokens }'],
+    probe: 'dist/probe/tokens-json.graph.js',
+  },
 ];
+
+/**
+ * The names `entry` exports (`default` included), read from an esbuild
+ * metafile of the entry bundled with packages external.
+ *
+ * @param {string} entry
+ * @returns {Promise<string[]>}
+ */
+export async function entryExportNames(entry) {
+  const esbuild = resolveEsbuild();
+  const result = await esbuild.build({
+    entryPoints: [entry],
+    bundle: true,
+    format: 'esm',
+    platform: 'browser',
+    packages: 'external',
+    write: false,
+    metafile: true,
+    outdir: 'out',
+    logLevel: 'silent',
+  });
+  const [output] = Object.values(result.metafile.outputs).filter((o) => o.entryPoint);
+  return [...output.exports].sort();
+}
+
+/** The export statements a row's probe stub uses (see ENTRY_GRAPHS). */
+export async function probeReexports(row, root) {
+  if (!row.exclude) return row.reexports;
+  const names = (await entryExportNames(`${root}/${row.entry}`)).filter(
+    (n) => !row.exclude.includes(n),
+  );
+  return [`export { ${names.join(', ')} }`];
+}
 
 /**
  * Bundle `entry` (minified ESM, packages external) to `outfile`.
  *
  * @param {{entry: string, outfile: string}} paths
- * @returns {Promise<{bytes: number, gzipBytes: number}>}
+ * @returns {Promise<{bytes: number, gzipBytes: number, inputs: string[]}>}
  */
 export async function bundleEntryGraph({ entry, outfile }) {
   const esbuild = resolveEsbuild();
-  await esbuild.build({
+  const result = await esbuild.build({
     entryPoints: [entry],
     outfile,
     bundle: true,
@@ -57,8 +109,19 @@ export async function bundleEntryGraph({ entry, outfile }) {
     target: 'es2020',
     packages: 'external',
     write: true,
+    metafile: true,
     logLevel: 'silent',
   });
   const text = readFileSync(outfile);
-  return { bytes: text.length, gzipBytes: gzipSync(text).length };
+  return {
+    bytes: text.length,
+    gzipBytes: gzipSync(text).length,
+    // Modules with code in the output: the metafile's top-level `inputs` also
+    // lists modules esbuild parsed and then tree-shook away.
+    inputs: Object.values(result.metafile.outputs).flatMap((o) =>
+      Object.entries(o.inputs)
+        .filter(([, i]) => i.bytesInOutput > 0)
+        .map(([name]) => name),
+    ),
+  };
 }

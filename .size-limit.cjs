@@ -192,6 +192,15 @@ module.exports = [
     gzip: true,
   },
   {
+    // hds#1205: the root without its deprecated `hds`/`tokens` copies, which
+    // leave in 0.35.0. This is what a components-only root import ships, and
+    // the probe build fails if the token JSON reaches it. Measured 52.38 kB (size-limit).
+    name: 'components-only root graph (hirobius-ui.js minus hds/tokens)',
+    path: 'dist/probe/hirobius-ui.components.graph.js',
+    limit: '60 kB',
+    gzip: true,
+  },
+  {
     name: 'manifest graph (hds-manifest.json ESM)',
     path: 'dist/probe/manifest.graph.js',
     limit: '70 kB',
@@ -225,9 +234,17 @@ module.exports = [
     gzip: true,
   },
   {
+    // hds, ct and tokenValues from /tokens: everything but the raw JSON.
     name: 'tokens graph (token bridge constants)',
     path: 'dist/probe/tokens.graph.js',
     limit: '7 kB',
+    gzip: true,
+  },
+  {
+    // hds#1205: `tokens` (the raw DTCG JSON) from /tokens. Measured 20.31 kB (size-limit).
+    name: 'tokens JSON graph (raw DTCG tokens from /tokens)',
+    path: 'dist/probe/tokens-json.graph.js',
+    limit: '22 kB',
     gzip: true,
   },
 ];

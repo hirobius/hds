@@ -430,7 +430,8 @@ let ok = true;
   writeFileSync(
     join(app, 'consumer-typecheck.tsx'),
     [
-      "import { Button, hds } from '@hirobius/design-system';",
+      "import { Button } from '@hirobius/design-system';",
+      "import { hds, tokens } from '@hirobius/design-system/tokens';",
       "import { Icon } from '@hirobius/design-system';",
       "import { Ellipsis } from '@hirobius/design-system/icons';",
       "import { cn } from '@hirobius/design-system/cn';",
@@ -438,6 +439,8 @@ let ok = true;
       '// Types must resolve from dist/*.d.ts (not source) under skipLibCheck.',
       'export const a = <Button className={cn(String(hds ? 1 : 0))}>Hi</Button>;',
       'export const b = Object.keys(manifest).length;',
+      // The token subpath carries the bridge and the raw DTCG JSON (hds#1205).
+      'export const c = Object.keys(tokens).length + Object.keys(hds).length;',
       // Button iconOnly + Icon proves a LucideIcon from ./icons resolves from dist
       // (the icon-only recipe since 0.20.0, hds#394).
       'export const d = <Button iconOnly aria-label="Row actions" iconLeft={<Icon icon={Ellipsis} />} />;',
