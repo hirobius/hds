@@ -114,7 +114,7 @@ describe('createCodeModel — real components', { timeout: 60_000 }, () => {
     // starting http(s):// or figma.com/ are accepted (component-discovery.mjs),
     // so the property lines must not win, be concatenated, or null the result.
     const button = model.component('src/app/components/button.tsx', 'Button');
-    expect(button.figmaUrl).toMatch(/^https:\/\/www\.figma\.com\/design\/.+node-id=28-138$/);
+    expect(button.figmaUrl).toMatch(/^https:\/\/www\.figma\.com\/design\/.+node-id=2399-11077$/);
   });
 
   it('returns null for an unknown export', () => {

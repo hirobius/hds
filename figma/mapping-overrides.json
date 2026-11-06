@@ -84,6 +84,13 @@
       "mapsTo": "Sheet.Close",
       "source": "src/app/components/sheet.tsx",
       "reason": "Compound member of Sheet (the built-in close X). Code attaches the Radix Dialog part directly (Sheet.Close is a Radix Dialog part), so no JSDoc block can carry an @figma tag for it. The library draws it as a small component on the Sheet page next to the Sheet set 2265:119."
+    },
+    {
+      "nodeId": "2399:26744",
+      "name": "IconButton",
+      "mapsTo": "Button (iconOnly)",
+      "source": "src/app/components/button.tsx",
+      "reason": "In code IconButton is <Button iconOnly>, one component; Figma draws it as its own set (owner decision 2026-11-05, hds#1147). check-figma-components holds the parity contract for it (figma/contracts/IconButton.json)."
     }
   ]
 }

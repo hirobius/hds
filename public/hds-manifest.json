@@ -3786,9 +3786,9 @@
       "governedCategory": true,
       "filePath": "src/app/components/button.tsx",
       "description": "Triggers an action when activated.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2399-11077",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2399-11077",
       "tier": "primitive",
       "preview": {
         "exportName": "Button",

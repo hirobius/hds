@@ -171,6 +171,49 @@ describe('parseDocument', () => {
     expect(inventory.pages.find((page) => page.name === 'IconButton').kind).toBe('empty');
   });
 
+  // hds#1147: the deprecated 576-variant Button set 28:138 lives on
+  // "Archive / Deprecated" (2482:37190). Only an exact "Archive" was archive, so
+  // a fetch would police that page and report 28:138 as an unmapped gap.
+  it('classifies an "Archive / <name>" page as archive too, so its sets are never coverage gaps', () => {
+    const doc = {
+      name: FILE.name,
+      document: {
+        id: '0:0',
+        name: 'Document',
+        type: 'DOCUMENT',
+        children: [
+          {
+            id: '2482:37190',
+            name: 'Archive / Deprecated',
+            type: 'CANVAS',
+            children: [
+              {
+                id: '28:138',
+                name: 'Button',
+                type: 'COMPONENT_SET',
+                children: [{ id: '28:139', name: 'Variant=primary', type: 'COMPONENT' }],
+              },
+            ],
+          },
+          {
+            id: '9:9',
+            name: 'Archived ideas',
+            type: 'CANVAS',
+            children: [{ id: '9:10', name: 'Sketch', type: 'COMPONENT_SET', children: [] }],
+          },
+        ],
+      },
+    };
+    const inventory = parseDocument(doc, FILE_KEY);
+    expect(inventory.pages.find((page) => page.name === 'Archive / Deprecated').kind).toBe(
+      'archive',
+    );
+    // Only "Archive" or an "Archive / " prefix, not any page that starts with the word.
+    expect(inventory.pages.find((page) => page.name === 'Archived ideas').kind).toBe('components');
+    const result = coverage(inventory, { components: {} });
+    expect(result.unmapped.map((asset) => asset.id)).toEqual(['9:10']);
+  });
+
   it('carries the file key and name through', () => {
     const inventory = parseDocument(FILE, FILE_KEY);
     expect(inventory.fileKey).toBe(FILE_KEY);
