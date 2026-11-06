@@ -1316,4 +1316,12 @@ Session total: 1 use_figma call (1 write). No publish.
 
 Session total: 1 use_figma call (1 write). No publish.
 
-Calls logged for 2026-11-06: 127 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1 and 1).
+## 2026-11-06 · HDS ops: delta after hds#1340 (displayMin in rem)
+
+| #   | Tool        | Kind  | Target                                                                                                                                                          | Why          | Result                                         |
+| --- | ----------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------- |
+| 1   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against d6205d37 (VariableID:2568:50 primitive typography/size/displayMin description; VariableID:2475:51 meta/commit) | token change | OK. updated 2; post aa338597; receipt written. |
+
+Session total: 1 use_figma call (1 write). No publish.
+
+Calls logged for 2026-11-06: 128 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1 and 1).
