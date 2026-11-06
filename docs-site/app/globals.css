@@ -1071,3 +1071,22 @@ a code[data-density] {
   height: 1.25rem;
   flex: none;
 }
+
+/* The case study walkthrough (components/walkthrough-video.tsx, hds#1148): full prose width,
+   the recording's own 16:10 ratio reserved before the poster loads (no layout shift). */
+.hds-walkthrough {
+  margin: var(--semantic-space-scale-lg) 0;
+}
+.hds-walkthrough-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1440 / 900;
+  background: var(--semantic-color-surface-raised);
+  border-radius: var(--semantic-radius-action);
+}
+.hds-walkthrough figcaption {
+  margin-top: var(--semantic-space-scale-sm);
+  color: var(--semantic-color-content-secondary);
+  font-size: var(--semantic-typography-caption-font-size);
+}

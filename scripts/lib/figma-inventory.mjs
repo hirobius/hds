@@ -41,6 +41,9 @@ const DOC_PAGE_NAMES = new Set(['Cover', 'Color', 'Typography', 'ColorDoc', 'Typ
  * code and keeps its @figma link.
  */
 const ARCHIVE_PAGE_NAME = 'Archive';
+// A sub-archive such as "Archive / Deprecated" (2482:37190, where the 576-variant
+// Button 28:138 sits since hds#1147) is an archive page too.
+const ARCHIVE_SUBPAGE_PREFIX = `${ARCHIVE_PAGE_NAME} / `;
 
 /**
  * Reduce a `GET /v1/files/:key` response to the inventory we keep in the repo.
@@ -82,13 +85,15 @@ export function parseDocument(file, fileKey) {
  *              nobody should ever close.
  *   components the real surface: sets and standalone components that a React
  *              component is expected to correspond to.
- *   archive    components removed from code, waiting for Adrian to delete them
+ *   archive    "Archive" or an "Archive / <name>" page: components removed from
+ *              code, waiting for Adrian to delete them
  *              (ADR-026, amended 2026-10-07: agents never delete in the library; they
  *              move a removed component here as "_<Name> (archived <date>)").
  *              Inventoried, never policed: no code component may claim them.
  */
 function classifyPage(canvas, assets) {
-  if (canvas.name === ARCHIVE_PAGE_NAME) return 'archive';
+  if (canvas.name === ARCHIVE_PAGE_NAME || canvas.name.startsWith(ARCHIVE_SUBPAGE_PREFIX))
+    return 'archive';
   if (assets.length === 0) return DOC_PAGE_NAMES.has(canvas.name) ? 'doc' : 'empty';
   const allIcons = assets.every(
     (asset) => asset.type === 'COMPONENT' && asset.name.startsWith('Icon/'),

@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138
+// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2399-11077
 // source=src/app/components/button.tsx
 // component=Button
 //
