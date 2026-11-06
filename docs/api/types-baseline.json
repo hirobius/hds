@@ -3187,6 +3187,17 @@
       ]
     }
   },
+  "./number": {
+    "NumberValue": {
+      "kind": "value",
+      "signatures": [
+        "({ animated, ...props }: NumberValueProps): Element"
+      ]
+    },
+    "NumberValueProps": {
+      "kind": "type"
+    }
+  },
   "./patterns": {
     "AppShell": {
       "kind": "value",

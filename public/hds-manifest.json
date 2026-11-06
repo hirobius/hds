@@ -3441,6 +3441,7 @@
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/tokens.ts",
         "src/brand/overlay.ts",
+        "src/number/number-value.tsx",
         "src/styles/__tests__/glyph-outlines.ts"
       ],
       "tokenMapping": {},
