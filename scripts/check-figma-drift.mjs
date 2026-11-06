@@ -39,10 +39,11 @@ import { figmaDrift, formatDrift } from './lib/figma-drift.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /**
- * @param {{ root: string, json?: boolean, ci?: boolean }} options
+ * @param {{ root: string, json?: boolean, ci?: boolean, meta?: object }} options
+ *   meta: passed to readFigmaMeta (the release gate's synced-content commit, hds#1359).
  * @returns {{ exitCode: 0|1|2, output: string, report?: object }}
  */
-export function runDriftCheck({ root, json = false, ci = false }) {
+export function runDriftCheck({ root, json = false, ci = false, meta = {} }) {
   const snapshotPath = join(root, 'figma', 'snapshot.json');
   if (!existsSync(snapshotPath)) {
     const message =
@@ -52,7 +53,7 @@ export function runDriftCheck({ root, json = false, ci = false }) {
       : { exitCode: 2, output: message };
   }
   try {
-    const { model, renames } = loadFigmaInputs(root);
+    const { model, renames } = loadFigmaInputs(root, meta);
     const snapshotFile = parseSnapshotFile(readFileSync(snapshotPath, 'utf8'));
     const report = figmaDrift(model, snapshotFile, { renames });
     const output = json ? JSON.stringify(report, null, 2) : formatDrift(report);

@@ -13,12 +13,17 @@ Ralph gate) and fails until both are right.
 
 ## Adding one
 
-1. `pnpm changeset` and pick the bump:
-   - **patch** for a fix or an addition;
+1. `pnpm changeset` and pick the bump. The rule below 1.0: **minor = breaking
+   (DOM changes included), patch = additive or a fix.**
+   - **patch** for a fix or an addition: a new component, prop, subpath,
+     optional peer or token. An additive change does not take a minor, even a
+     large one: a minor also pulls every `@removeIn` of the next minor into
+     this release (`check-deprecations`);
    - **minor** for anything breaking while HDS is below 1.0: removing or moving
      an export, prop, prop value, CSS variable, class, subpath, bin or runtime
-     dependency, narrowing a peer range, or raising `engines` (hds#445
-     decision 3);
+     dependency, narrowing a peer range, raising `engines` (hds#445
+     decision 3), or a DOM change a consumer's selectors or tests can see (a
+     `dom-changed` fact, hds#1349);
    - **major** never: it would cut 1.0, which waits for Adrian's call (#396).
      The gate refuses one unless `upgrade/ALLOW_1_0` exists.
 2. `pnpm upgrade:note --name <name>` writes `upgrade/pending/<name>.json`. It

@@ -14,14 +14,18 @@ import { deprecatedRows } from '../lib/upgrade-digest.mjs';
 
 const ROOT = join(__dirname, '..', '..');
 const deprecations = JSON.parse(readFileSync(join(ROOT, 'deprecations.json'), 'utf8'));
-const removeInOf = (name) => deprecations.exports.find((e) => e.name === name)?.removeIn;
 
 describe('deprecatedRows', () => {
   const rows = deprecatedRows(ROOT);
+  // Exports deprecations.json and the digest both list; the root hds/tokens were
+  // the first case (hds#1348) and left in 0.36.0 (hds#1347).
+  const listed = deprecations.exports.filter((e) => rows.some((r) => r.name === e.name));
 
-  it.each(['hds', 'tokens'])('takes %s removeIn from deprecations.json', (name) => {
-    expect(removeInOf(name)).toBe('0.36.0');
-    expect(rows.find((r) => r.name === name)?.removeIn).toBe('0.36.0');
+  it('takes each export removeIn from deprecations.json', () => {
+    expect(listed.length).toBeGreaterThan(0);
+    for (const { name, removeIn } of listed) {
+      expect(rows.find((r) => r.name === name)?.removeIn).toBe(removeIn);
+    }
   });
 
   it('maps a deprecated prop (Blockquote.size) to its deprecations.json entry', () => {
@@ -29,19 +33,19 @@ describe('deprecatedRows', () => {
     expect(rows.find((r) => r.name === 'Blockquote.size')?.removeIn).toBe(prop.removeIn);
   });
 
-  // Whatever the record says (0.34.0's ledger says 0.35.0; the Version PR's
-  // compiled index may say 0.36.0), the digest reads removeIn from
+  // Whatever the released record says, the digest reads removeIn from
   // deprecations.json, not from upgrade/index.json.
   it('takes removeIn from deprecations.json, not from upgrade/index.json', () => {
+    const { name } = listed[0];
     const root = mkdtempSync(join(tmpdir(), 'hds-digest-'));
     try {
       cpSync(join(ROOT, 'upgrade'), join(root, 'upgrade'), { recursive: true });
       const moved = structuredClone(deprecations);
-      moved.exports.find((e) => e.name === 'hds').removeIn = '9.9.9';
+      moved.exports.find((e) => e.name === name).removeIn = '9.9.9';
       writeFileSync(join(root, 'deprecations.json'), JSON.stringify(moved));
       const index = JSON.parse(readFileSync(join(root, 'upgrade/index.json'), 'utf8'));
-      expect(index.deprecated.find((d) => d.name === 'hds').removeIn).not.toBe('9.9.9');
-      expect(deprecatedRows(root).find((r) => r.name === 'hds')?.removeIn).toBe('9.9.9');
+      expect(index.deprecated.find((d) => d.name === name)?.removeIn).not.toBe('9.9.9');
+      expect(deprecatedRows(root).find((r) => r.name === name)?.removeIn).toBe('9.9.9');
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
