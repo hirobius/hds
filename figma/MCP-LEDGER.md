@@ -1113,4 +1113,32 @@ Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 an
 | 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against cd0f8050 (new VariableID:2534:50 disclosure/paddingY, VariableID:14:9 nav/paddingY hidden, VariableID:2475:51 meta/commit) | token change | OK. updated 2, created 1; post 550212e6; receipt written. |
 | Session total: 1 use_figma call (1 write). No publish. |
 
-Calls logged for 2026-11-06: 25 of 200 (1, 1, 5, 5, 12 and 1).
+## 2026-11-06 · doc pages redesign, draft (session 01YAE7bYKpNdBTng72Y1M7cV)
+
+Adrian asked for one page system for Cover, Getting Started and Foundations (Color, Typography, Spacing).
+Library 2VgBbVpKiDnu0aftJEVyBQ read only. Draft built in HDS Explorations 7US9lA0qsUP0uwmtQtA8Ss, page "Doc pages redesign" (12:2).
+
+| #   | Tool              | Kind  | Target                                                                 | Why                     | Result                                                           |
+| --- | ----------------- | ----- | ---------------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | figma-use SKILL.md                                                     | skill load              | OK.                                                              |
+| 2   | `create_session`  | read  | library 2VgBbVpKiDnu0aftJEVyBQ                                         | session                 | OK.                                                              |
+| 3   | `use_figma`       | read  | library: page list                                                     | inventory               | OK. 5 doc pages: 0:1, 20:2, 20:3, 20:4, 20:5.                    |
+| 4–8 | `use_figma` ×5    | read  | library: Cover, Getting Started, Color, Typography, Spacing            | structure + screenshots | OK.                                                              |
+| 9   | `use_figma`       | read  | library: text styles                                                   | keys                    | OK. 15 styles.                                                   |
+| 10  | `use_figma`       | read  | library: variable collections                                          | keys                    | OK. Output cut at 19 KB.                                         |
+| 11  | `use_figma`       | read  | library: Spec sheet kit 2290:804                                       | kit parts               | OK. 31 `_SpecSheet/*` parts, SourceFooter 2290:937.              |
+| 12  | `use_figma`       | read  | library: Button page 28:2, semantic keys                               | spec sheet layout       | OK. Frame 2291:804.                                              |
+| 13  | `use_figma`       | read  | library: 2291:804 bound variables, Header, Section                     | rhythm                  | OK.                                                              |
+| 14  | `use_figma`       | read  | Explorations: page list, import probe                                  | can the draft use kit   | Kit components not found (private). Variables and styles import. |
+| 15  | `use_figma`       | read  | library: Density and Meta keys                                         | keys                    | OK.                                                              |
+| 16  | `use_figma`       | write | Explorations: new page, template                                       | draft                   | Failed: primitive space/24 not published. Nothing kept.          |
+| 17  | `use_figma`       | write | Explorations: same, semantic only                                      | draft                   | Failed: space/section/heroMax not published. Nothing kept.       |
+| 18  | `use_figma`       | read  | Explorations: import probe of 86 variables                             | find published set      | OK. Only heroMax and meta/version fail.                          |
+| 19  | `use_figma`       | write | Explorations 12:2: template 12:3, Cover 12:222, Getting started 12:260 | draft                   | OK.                                                              |
+| 20  | `use_figma`       | write | Explorations 12:3, 12:260: hug height                                  | fix                     | OK.                                                              |
+| 21  | `use_figma`       | write | Explorations 12:2: Color 14:2, Typography 14:521, Spacing 14:742       | draft                   | OK.                                                              |
+| 22  | `use_figma`       | write | Explorations 12:59, 12:219, 12:225, 12:269, 12:375: gap 0; shots       | fix + screenshots       | OK.                                                              |
+
+Session total: 22 calls (6 writes, all in HDS Explorations; 2 of them failed). Library not written. No publish.
+
+Calls logged for 2026-11-06: 47 of 200 (1, 1, 5, 5, 12, 1 and 22).
