@@ -1253,6 +1253,17 @@ Session total: 1 use_figma call (1 write). No publish.
 
 Session total: 5 calls (1 create_session, 2 use_figma: 1 read + 1 write, 2 get_screenshot). No delete. No publish.
 
+## 2026-11-06 · session `claude/figma-disclosure-binding` (hds#1294, file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #   | Tool             | Kind  | Target                                                                                                                                                                         | Why                         | Result                                                                  |
+| --- | ---------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- | ----------------------------------------------------------------------- |
+| 1   | `get_screenshot` | read  | library: Disclosure 88:453                                                                                                                                                     | before                      | OK. figma/shots/disclosure-binding-before.png.                          |
+| 2   | `use_figma`      | write | library: Disclosure 88:453, variants 2337:1257 and 2337:1264: paddingTop and paddingBottom rebound from nav/paddingY VariableID:14:9 to disclosure/paddingY VariableID:2534:50 | match code (hds#1294)       | OK. 4 fields; 0 left on nav/paddingY. Same value (space/2).             |
+| 3   | `get_screenshot` | read  | library: Disclosure 88:453                                                                                                                                                     | after                       | OK. figma/shots/disclosure-binding-after.png, byte-identical to before. |
+| 4   | `use_figma`      | read  | library: generated bindings-snapshot.js, 11 sets                                                                                                                               | refresh figma/bindings.json | OK. 7a8cd205; Disclosure binds disclosure/paddingY.                     |
+
+Session total: 4 calls (2 use_figma: 1 read + 1 write, 2 get_screenshot; reused Figma session 143c3e71). No delete. No publish. No variable change.
+
 ## 2026-11-06 · session `claude/figma-button-label` (hds#1295, file 2VgBbVpKiDnu0aftJEVyBQ)
 
 | #   | Tool        | Kind | Target                                                                                                                     | Why                        | Result                                                                                                                                                                                   |
@@ -1261,4 +1272,4 @@ Session total: 5 calls (1 create_session, 2 use_figma: 1 read + 1 write, 2 get_s
 
 Session total: 1 call (1 use_figma read; reused Figma session 143c3e71). No write. No publish.
 
-Calls logged for 2026-11-06: 103 of 200 (1, 1, 5, 5, 12, 1, 48, 1, 3, 1, 16, 1, 1, 1, 5 and 1).
+Calls logged for 2026-11-06: 107 of 200 (1, 1, 5, 5, 12, 1, 48, 1, 3, 1, 16, 1, 1, 1, 5, 4 and 1).
