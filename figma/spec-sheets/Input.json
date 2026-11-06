@@ -14,7 +14,26 @@
       "type": "TEXT"
     }
   ],
-  "sizes": [],
+  "sizes": [
+    {
+      "size": "sm",
+      "values": {
+        "paddingX": {
+          "token": "component.input.size.sm.paddingX",
+          "value": "8px"
+        }
+      }
+    },
+    {
+      "size": "lg",
+      "values": {
+        "paddingX": {
+          "token": "component.input.size.lg.paddingX",
+          "value": "16px"
+        }
+      }
+    }
+  ],
   "states": [
     {
       "state": "default",
