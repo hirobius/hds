@@ -22,6 +22,11 @@
  * npm is always exactly what is on main. If the version on main is already on
  * npm, it says so and stops.
  *
+ * After a real publish it runs `pnpm release:announce <version> --apply`
+ * (hds#456): one standing upgrade issue per consumer and, unless the release
+ * is quiet, five lines on Discord. Set HDS_FLEET_TOKEN and DISCORD_WEBHOOK_URL
+ * in your shell for it; without them it skips that step and says so.
+ *
  * Provenance: local publishes carry no npm provenance (it came from OIDC in
  * Actions); don't add --provenance, it fails outside a supported CI.
  *
@@ -124,6 +129,15 @@ export function runSteps(publish) {
   ];
 }
 
+/**
+ * After a publish that put a new version on npm (hds#456): tell the
+ * consumers. scripts/upgrade/announce.mjs always exits 0 and skips any step
+ * whose token is not set, so this never turns a done publish into a failure.
+ */
+export function announceStep(version) {
+  return ['node', ['scripts/upgrade/announce.mjs', version, '--apply']];
+}
+
 /** A failed fetch means origin/main may be stale; stop rather than compare against it. */
 export function fetchMainOrThrow(result) {
   if (!result.ok) {
@@ -213,6 +227,11 @@ function main() {
   console.log(
     `\nPublished ${PKG}@${s.version}. The v${s.version} git tag is local only; do not push it from this machine.`,
   );
+  // The published guard: preflight stopped earlier if the version was on npm
+  // already, and the check above saw it there now.
+  const [cmd, args] = announceStep(s.version);
+  console.log(`\n$ ${cmd} ${args.join(' ')}`);
+  spawnSync(cmd, args, { cwd: ROOT, stdio: 'inherit' });
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

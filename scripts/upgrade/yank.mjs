@@ -40,14 +40,13 @@ import { HDS_PACKAGE } from '../../codemods/lib/installed-version.mjs';
 import { compareVersions, isVersion } from '../../codemods/lib/semver.mjs';
 import { SELF_REPO, TOKEN_VAR, discoverConsumers, fleetToken } from './consumers.mjs';
 import { NO_BACKPORTS, rollbackLines } from './rollback.mjs';
+import { API, MARKER, github, isStanding, listIssues, targetOf } from './standing.mjs';
+
+export { MARKER, targetOf };
 
 const PACKAGE = HDS_PACKAGE;
-const API = 'https://api.github.com';
 const ACCESS_URL = `https://www.npmjs.com/package/${PACKAGE}/access`;
 const ROLLBACK_URL = 'https://github.com/hirobius/hds/blob/main/UPGRADING.md#if-a-release-is-bad';
-/** The hidden marker a standing upgrade issue carries (hds#456). */
-export const MARKER = '<!-- hds-upgrade -->';
-const TITLE_PREFIX = `Upgrade ${PACKAGE}`;
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 export const USAGE = `usage: pnpm release:yank <version> <reason> [--good <version>] [--apply]
@@ -103,17 +102,6 @@ export function npmCommands(version, good, reason) {
   ];
 }
 
-/** Whether an issue is a standing upgrade issue (hds#456). */
-const isStanding = (issue) =>
-  !issue.pull_request &&
-  ((issue.body ?? '').includes(MARKER) || (issue.title ?? '').startsWith(TITLE_PREFIX));
-
-/** The version a standing issue targets, from its title, or null. */
-export function targetOf(issue) {
-  if (!(issue.title ?? '').startsWith(TITLE_PREFIX)) return null;
-  return /\bto v?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)\b/.exec(issue.title)?.[1] ?? null;
-}
-
 /** `v` as a whole version: not inside 10.33.0, 0.33.01 or 0.33.0-rc.1 (a sentence's full stop is fine). */
 const versionPattern = (v) =>
   new RegExp(`(?<![\\d.])${v.replace(/[.+-]/g, (c) => `\\${c}`)}(?!\\d|\\.\\d|-[0-9A-Za-z])`, 'g');
@@ -160,25 +148,6 @@ function discordLines({ version, good, reason, release, edited, closed }) {
     `Consumer issues: ${edited} moved back to ${good}, ${closed} closed.`,
     `Took ${version} already? Roll back: ${ROLLBACK_URL}`,
   ];
-}
-
-function github(token, fetch) {
-  return async (method, url, body) => {
-    const res = await fetch(url, {
-      method,
-      headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${token}`,
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'hirobius-hds-release-yank',
-        ...(body ? { 'Content-Type': 'application/json' } : {}),
-      },
-      ...(body ? { body: JSON.stringify(body) } : {}),
-    });
-    if (res.status === 404 && method === 'GET') return null;
-    if (!res.ok) throw new Error(`${method} ${url} answered ${res.status}`);
-    return res.status === 204 ? {} : res.json().catch(() => ({}));
-  };
 }
 
 const readPublished = () =>
@@ -242,7 +211,7 @@ export async function yank({
     log(`   skipped: set GITHUB_TOKEN (Contents: Read and write on ${SELF_REPO}).`);
   } else {
     await step('the Release edit', async () => {
-      const gh = github(releaseToken, fetch);
+      const gh = github(releaseToken, fetch, 'hirobius-hds-release-yank');
       const release = await gh('GET', `${API}/repos/${SELF_REPO}/releases/tags/v${version}`);
       if (!release) return log(`   no Release tagged v${version}: nothing to edit.`);
       releaseUrl = release.html_url;
@@ -264,20 +233,11 @@ export async function yank({
     log(`   skipped: set ${TOKEN_VAR} (Issues: Read and write on the consumer repos).`);
   } else {
     await step('the issue scan', async () => {
-      const gh = github(fleet.value, fetch);
+      const gh = github(fleet.value, fetch, 'hirobius-hds-release-yank');
       const { consumers } = await discover({ token: fleet.value, tokenVar: fleet.name, fetch });
       for (const consumer of consumers) {
         if (consumer.skip?.length) continue;
-        const issues = [];
-        for (let page = 1; ; page += 1) {
-          const batch =
-            (await gh(
-              'GET',
-              `${API}/repos/${consumer.repo}/issues?state=open&per_page=100&page=${page}`,
-            )) ?? [];
-          issues.push(...batch);
-          if (batch.length < 100) break;
-        }
+        const issues = await listIssues(gh, consumer.repo, 'open', Infinity);
         for (const issue of issues) {
           const plan = planIssue(issue, consumer, { version, good, reason });
           if (plan.action === 'skip') continue;
