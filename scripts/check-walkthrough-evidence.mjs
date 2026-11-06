@@ -17,6 +17,10 @@
  * does not list). No media folder passes. Reads files only: no build, no
  * network, no browser.
  *
+ * Known limit: the evidence is self-attested. It catches a red or --allow-red
+ * recording committed by mistake, not a hand-edited evidence file with
+ * recomputed hashes.
+ *
  * Usage: node scripts/check-walkthrough-evidence.mjs [--json]
  */
 import { createHash } from 'node:crypto';
@@ -28,6 +32,17 @@ export const EVIDENCE_FILE = 'walkthrough.evidence.json';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MEDIA_DIR = path.join(ROOT, 'docs-site', 'public', 'walkthrough');
 
+/** The gates the captions vouch for; evidence must list each one, green. */
+export const REQUIRED_GATES = ['check:figma-drift', 'check:figma-release'];
+
+/** Every file in the media folder but the evidence itself, dotfiles included. */
+function listMedia(dir) {
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.name !== EVIDENCE_FILE)
+    .map((e) => ({ name: e.name, isFile: e.isFile() }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 const sha256 = (file) => createHash('sha256').update(readFileSync(file)).digest('hex');
 
 /**
@@ -37,9 +52,9 @@ const sha256 = (file) => createHash('sha256').update(readFileSync(file)).digest(
  * @param {{ commit: string, allowRed: boolean, gates: Record<string, number>, note?: string, recordedAt?: string }} facts
  */
 export function writeWalkthroughEvidence(dir, { commit, allowRed, gates, note, recordedAt }) {
-  const media = readdirSync(dir)
-    .filter((f) => f !== EVIDENCE_FILE && !f.startsWith('.'))
-    .sort();
+  const media = listMedia(dir)
+    .filter((e) => e.isFile)
+    .map((e) => e.name);
   const evidence = {
     recordedAt: recordedAt ?? new Date().toISOString(),
     commit,
@@ -55,8 +70,9 @@ export function writeWalkthroughEvidence(dir, { commit, allowRed, gates, note, r
 /** Problems with the media in `dir`, as one line each; [] when it is clean. */
 export function checkWalkthroughEvidence(dir = MEDIA_DIR) {
   if (!existsSync(dir)) return [];
-  const media = readdirSync(dir).filter((f) => f !== EVIDENCE_FILE && !f.startsWith('.'));
-  if (!media.length) return [];
+  const entries = listMedia(dir);
+  if (!entries.length) return [];
+  const media = entries.filter((e) => e.isFile).map((e) => e.name);
   const evidencePath = path.join(dir, EVIDENCE_FILE);
   if (!existsSync(evidencePath)) {
     return [`media is committed with no ${EVIDENCE_FILE}: re-record with pnpm walkthrough:record`];
@@ -67,12 +83,16 @@ export function checkWalkthroughEvidence(dir = MEDIA_DIR) {
   } catch {
     return [`${EVIDENCE_FILE} is not valid JSON`];
   }
-  const problems = [];
+  const problems = entries
+    .filter((e) => !e.isFile)
+    .map((e) => `${e.name} is not a file: the media folder holds files only`);
   if (ev.allowRed !== false) {
     problems.push('recorded with --allow-red: the panels may contradict the captions');
   }
   const gates = Object.entries(ev.gates ?? {});
-  if (!gates.length) problems.push(`${EVIDENCE_FILE} lists no gates`);
+  for (const name of REQUIRED_GATES) {
+    if (!(name in (ev.gates ?? {}))) problems.push(`${EVIDENCE_FILE} does not list ${name}`);
+  }
   for (const [name, code] of gates) {
     if (code !== 0) problems.push(`recorded while ${name} exited ${code}`);
   }

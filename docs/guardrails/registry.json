@@ -665,7 +665,7 @@
     },
     {
       "id": "check-walkthrough-evidence",
-      "description": "hds#1148 -- committed walkthrough media (docs-site/public/walkthrough/) must carry walkthrough.evidence.json, written by scripts/walkthrough/record.mjs, saying it was recorded with check:figma-drift and check:figma-release green and not with --allow-red, with sha256 hashes that match every media file. The video's captions say both gates are green and its panels show their live output, so a red or --allow-red recording would contradict itself. Reads files only. Error severity, run by .husky/pre-commit; its vitest suite covers each failure.",
+      "description": "hds#1148 -- committed walkthrough media (docs-site/public/walkthrough/) must carry walkthrough.evidence.json, written by scripts/walkthrough/record.mjs, saying it was recorded with check:figma-drift and check:figma-release green and not with --allow-red, with sha256 hashes that match every media file. The video's captions say both gates are green and its panels show their live output, so a red or --allow-red recording would contradict itself. Requires both gates by name and checks every entry in the folder (dotfiles included). Reads files only. Known limit: the evidence is self-attested, so it catches a red recording committed by mistake, not a hand-edited evidence file with recomputed hashes. Error severity, run by .husky/pre-commit; its vitest suite covers each failure.",
       "severity": "error",
       "gateScript": "scripts/check-walkthrough-evidence.mjs",
       "fixturePath": null,

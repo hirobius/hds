@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -75,6 +75,23 @@ describe('checkWalkthroughEvidence', () => {
     const dir = folder(green);
     writeFileSync(path.join(dir, 'extra.webm'), 'x');
     expect(checkWalkthroughEvidence(dir).join('\n')).toMatch(/extra\.webm is not in/);
+  });
+
+  it('fails evidence that leaves out a required gate', () => {
+    const dir = folder((files) => ({ ...green(files), gates: { other: 0 } }));
+    expect(checkWalkthroughEvidence(dir).join('\n')).toMatch(/does not list check:figma-drift/);
+  });
+
+  it('checks hidden files too', () => {
+    const dir = folder(green);
+    writeFileSync(path.join(dir, '.red.mp4'), 'x');
+    expect(checkWalkthroughEvidence(dir).join('\n')).toMatch(/\.red\.mp4 is not in/);
+  });
+
+  it('reports a subfolder instead of crashing', () => {
+    const dir = folder(green);
+    mkdirSync(path.join(dir, 'old'));
+    expect(checkWalkthroughEvidence(dir).join('\n')).toMatch(/old is not a file/);
   });
 
   it('fails evidence that is not valid JSON', () => {

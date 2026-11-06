@@ -32,7 +32,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { writeWalkthroughEvidence } from '../check-walkthrough-evidence.mjs';
+import { REQUIRED_GATES, writeWalkthroughEvidence } from '../check-walkthrough-evidence.mjs';
 import { chromiumPath } from '../lib/browser-host.mjs';
 import { CHAPTERS, buildVtt, terminalPanelHtml } from './chapters.mjs';
 import { collectEvidence } from './evidence.mjs';
@@ -54,8 +54,8 @@ const evidence = collectEvidence(ROOT);
 // when that is true (right after a release's Figma delta sync), never a video
 // whose panels contradict its captions.
 const gateRuns = [
-  ['check:figma-drift', evidence.drift],
-  ['check:figma-release', evidence.release.gate],
+  [REQUIRED_GATES[0], evidence.drift],
+  [REQUIRED_GATES[1], evidence.release.gate],
 ];
 const red = gateRuns.filter(([, r]) => r.code !== 0);
 // --allow-red is for a local look only: the evidence file records it, and
@@ -366,6 +366,11 @@ const commit = spawnSync('git', ['rev-parse', '--short=7', 'HEAD'], {
   cwd: ROOT,
   encoding: 'utf8',
 });
+if (commit.status !== 0 || !commit.stdout.trim()) {
+  throw new Error(
+    `walkthrough: git rev-parse failed, so the evidence has no commit: ${commit.stderr}`,
+  );
+}
 writeWalkthroughEvidence(OUT, {
   commit: commit.stdout.trim(),
   allowRed,
