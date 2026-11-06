@@ -756,7 +756,9 @@ function IconDemo() {
 function InlineLinkDemo() {
   return (
     <p style={{ margin: 0 }}>
-      Read the <InlineLink href="#">upgrade guide</InlineLink> before you bump the range.
+      Read the <InlineLink href="#">upgrade guide</InlineLink> before you bump the range, or the{' '}
+      <InlineLink href="https://github.com/hirobius/hds/releases">release notes</InlineLink> on
+      GitHub.
     </p>
   );
 }
