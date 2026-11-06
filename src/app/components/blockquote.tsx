@@ -57,7 +57,11 @@ export const Blockquote = /* @__PURE__ */ React.forwardRef<HTMLQuoteElement, Blo
       >
         {children}
         {attribution != null && (
-          <footer className="mt-scale-xs hds-type-ui text-muted-foreground">{attribution}</footer>
+          // role="none": a <footer> outside sectioning content is a contentinfo
+          // landmark, and a quote's byline is not the page footer.
+          <footer role="none" className="mt-scale-xs hds-type-ui text-muted-foreground">
+            {attribution}
+          </footer>
         )}
       </blockquote>
     );

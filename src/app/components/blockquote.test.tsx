@@ -17,6 +17,14 @@ describe('Blockquote', () => {
     expect(screen.getByText('— Ada').tagName.toLowerCase()).toBe('footer');
   });
 
+  // A <footer> outside sectioning content maps to the contentinfo landmark, so an
+  // attribution would add a page-footer landmark per quote. It reads as plain text.
+  it('does not expose the attribution as a contentinfo landmark', () => {
+    render(<Blockquote attribution="Ada Lovelace">Quote</Blockquote>);
+    expect(screen.queryByRole('contentinfo')).toBeNull();
+    expect(screen.getByText('Ada Lovelace')).toBeTruthy();
+  });
+
   it('omits the footer when no attribution is given', () => {
     const { container } = render(<Blockquote>Quote</Blockquote>);
     expect(container.querySelector('footer')).toBeNull();

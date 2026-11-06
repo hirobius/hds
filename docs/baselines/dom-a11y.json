@@ -183,11 +183,10 @@
   "Blockquote": {
     "dom": [
       "blockquote data-size=\"md\"",
-      "  footer"
+      "  footer role=\"none\""
     ],
     "reader": [
-      "blockquote",
-      "contentinfo"
+      "blockquote"
     ]
   },
   "Board": {
