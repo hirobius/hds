@@ -48,6 +48,12 @@ const SCRIPT_MAX_CHARS = 40000;
  * sets to read. A source under component parity (check-figma-components) uses those
  * node ids; any other source uses the first @figma tag in its file.
  */
+/**
+ * Sets a group's tokens are drawn on besides its tagged node: a component part that
+ * the tagged component nests (hds#1323). list.tsx tags List; the row tokens live on ListItem.
+ */
+const EXTRA_TARGETS = Object.freeze({ list: ['2352:301'] });
+
 export function bindingTargets({ root = REPO } = {}) {
   const map = readJson(join(root, 'scripts/component-token-bindings.json'));
   const out = [];
@@ -62,7 +68,7 @@ export function bindingTargets({ root = REPO } = {}) {
     }
     const src = readFileSync(join(root, g.source), 'utf8');
     const m = src.match(/@figma https:\/\/\S*node-id=(\d+)-(\d+)/);
-    if (m) out.push({ group, nodeIds: [`${m[1]}:${m[2]}`] });
+    if (m) out.push({ group, nodeIds: [`${m[1]}:${m[2]}`, ...(EXTRA_TARGETS[group] || [])] });
   }
   return out;
 }
@@ -105,7 +111,9 @@ const aliases = (o, acc) => {
 };
 const bindings = {};
 for (const id of IDS) {
-  const node = await figma.getNodeByIdAsync(id);
+  let node = await figma.getNodeByIdAsync(id);
+  // A tag may name one variant; read its whole set (the other variants bind tokens too).
+  if (node && node.type === 'COMPONENT' && node.parent && node.parent.type === 'COMPONENT_SET') node = node.parent;
   if (!node) { bindings[id] = { name: null, variables: [] }; continue; }
   const found = new Set();
   const nodes = [node].concat('findAll' in node ? node.findAll(() => true) : []);

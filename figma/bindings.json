@@ -1,6 +1,21 @@
 {
-  "checksum": "7a8cd205",
+  "checksum": "07fb2425",
   "bindings": {
+    "2352:301": {
+      "name": "ListItem",
+      "variables": [
+        "badge/height",
+        "badge/minWidth",
+        "badge/neutral/bg",
+        "badge/paddingX",
+        "badge/radius",
+        "button/radius",
+        "button/size/md/height",
+        "list/leadingSize",
+        "list/rowMinHeight",
+        "list/rowPadding"
+      ]
+    },
     "2353:315": {
       "name": "List",
       "variables": ["list/groupGap", "list/headingGap"]
@@ -85,7 +100,6 @@
         "badge/neutral/bg",
         "badge/neutral/text",
         "badge/paddingX",
-        "badge/paddingY",
         "badge/radius",
         "badge/success/bg",
         "badge/success/text",
@@ -120,21 +134,20 @@
       "variables": ["card/bg", "card/radius"]
     },
     "86:194": {
-      "name": "Variant=default",
+      "name": "Pagination",
       "variables": [
         "button/primary/bgDisabled",
         "button/radius",
         "button/secondary/bg/rest",
         "button/size/sm/height",
-        "button/size/sm/paddingX"
+        "button/size/sm/paddingX",
+        "pagination/compactControlSize"
       ]
     },
     "88:453": {
       "name": "Disclosure",
       "variables": [
-        "button/fontWeight",
         "button/radius",
-        "button/size/sm/fontSize",
         "button/size/sm/height",
         "button/size/sm/itemSpacing",
         "button/size/sm/paddingX",
@@ -143,7 +156,7 @@
     },
     "89:155": {
       "name": "InlineCode",
-      "variables": []
+      "variables": ["inlineCode/bg"]
     },
     "89:161": {
       "name": "InlineLink",
