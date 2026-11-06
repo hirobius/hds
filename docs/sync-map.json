@@ -12,8 +12,8 @@
       "internal": 12
     },
     "docsCoverage": {
-      "expected": 62,
-      "covered": 62
+      "expected": 63,
+      "covered": 63
     },
     "figmaCoverage": {
       "expected": 75,
@@ -133,11 +133,11 @@
       "name": "Board",
       "class": "layout",
       "filePath": "src/app/components/board.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/board",
       "figmaUrl": null,
       "figmaVia": null,
       "expectFigma": false,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },

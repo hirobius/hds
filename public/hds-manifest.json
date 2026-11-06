@@ -9936,7 +9936,7 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/board",
       "publicDataAttributes": [],
       "usage": {
         "when": "Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage.",

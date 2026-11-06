@@ -76,12 +76,55 @@ export const Board = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoardProps
   { children, className, ...rest },
   ref,
 ) {
+  const rootRef = React.useRef<HTMLDivElement | null>(null);
+  const setRefs = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      rootRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
+  // Past the column floors the track scrolls sideways inside the Board. A keyboard
+  // user must reach that scroll (WCAG 2.1.1, axe scrollable-region-focusable), so the
+  // Board is a Tab stop while it overflows, and only then (hds#1220). Columns can
+  // overflow the track without resizing it, so each column is observed too, and a
+  // column added or removed re-measures.
+  const [scrolls, setScrolls] = React.useState(false);
+  React.useEffect(() => {
+    const el = rootRef.current;
+    const track = el?.firstElementChild;
+    if (!el || !track) return;
+    const measure = () => setScrolls(el.scrollWidth > el.clientWidth);
+    measure();
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    const observeAll = () => {
+      if (!ro) return;
+      ro.disconnect();
+      for (const node of [el, track, ...track.children]) ro.observe(node);
+    };
+    observeAll();
+    const mo =
+      typeof MutationObserver === 'undefined'
+        ? null
+        : new MutationObserver(() => {
+            observeAll();
+            measure();
+          });
+    mo?.observe(track, { childList: true });
+    return () => {
+      ro?.disconnect();
+      mo?.disconnect();
+    };
+  }, []);
+  const tabIndex = rest.tabIndex ?? (scrolls ? 0 : undefined);
   return (
     <div
       role="group"
       {...rest}
-      ref={ref}
-      className={cn(ROOT_CLASS, className)}
+      tabIndex={tabIndex}
+      ref={setRefs}
+      className={cn(ROOT_CLASS, tabIndex !== undefined && tabIndex >= 0 && 'hds-focus', className)}
       data-hds-component="Board"
     >
       <div className={TRACK_CLASS} data-hds-board-track="">

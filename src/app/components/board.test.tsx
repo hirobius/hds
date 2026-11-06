@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, cleanup, screen, within } from '@testing-library/react';
+import { render, cleanup, screen, within, waitFor } from '@testing-library/react';
 import { Board, BoardColumn } from './board';
 
 afterEach(cleanup);
@@ -135,6 +135,68 @@ describe('Board', () => {
   it('is a labelled group so aria-label on the wrapper is valid', () => {
     renderBoard();
     expect(screen.getByRole('group', { name: 'Pipeline' })).toBeTruthy();
+  });
+
+  // hds#1220: past its column floors the Board scrolls sideways, so axe's
+  // scrollable-region-focusable asks for a keyboard stop. Only while it overflows:
+  // a Board that fits (or stacks) adds no extra Tab stop.
+  it('is a keyboard stop only while its columns overflow and scroll', async () => {
+    const sizes = { scroll: 900, client: 600 };
+    const sw = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollWidth');
+    const cw = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientWidth');
+    Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+      configurable: true,
+      get: () => sizes.scroll,
+    });
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+      configurable: true,
+      get: () => sizes.client,
+    });
+    try {
+      const { unmount } = renderBoard();
+      expect(screen.getByRole('group', { name: 'Pipeline' }).getAttribute('tabindex')).toBe('0');
+      unmount();
+      sizes.scroll = 600;
+      renderBoard();
+      const board = screen.getByRole('group', { name: 'Pipeline' });
+      expect(board.hasAttribute('tabindex')).toBe(false);
+      // A column added after mount can push the track past the Board's width.
+      sizes.scroll = 900;
+      const track = board.querySelector('[data-hds-board-track]')!;
+      track.append(track.lastElementChild!.cloneNode(true));
+      await waitFor(() => expect(board.getAttribute('tabindex')).toBe('0'));
+      expect(board.className).toContain('hds-focus');
+    } finally {
+      if (sw) Object.defineProperty(HTMLElement.prototype, 'scrollWidth', sw);
+      if (cw) Object.defineProperty(HTMLElement.prototype, 'clientWidth', cw);
+    }
+  });
+
+  it('keeps a consumer tabIndex, with the focus ring only when it can take focus', () => {
+    const { rerender } = render(
+      <Board aria-label="P" tabIndex={-1}>
+        <BoardColumn title="A" count={0} />
+      </Board>,
+    );
+    const board = screen.getByRole('group', { name: 'P' });
+    expect(board.getAttribute('tabindex')).toBe('-1');
+    expect(board.className).not.toContain('hds-focus');
+    rerender(
+      <Board aria-label="P" tabIndex={0}>
+        <BoardColumn title="A" count={0} />
+      </Board>,
+    );
+    expect(board.className).toContain('hds-focus');
+  });
+
+  it('forwards its ref to the root element', () => {
+    const ref = React.createRef<HTMLDivElement>();
+    render(
+      <Board ref={ref} aria-label="P">
+        <BoardColumn title="A" count={0} />
+      </Board>,
+    );
+    expect(ref.current?.getAttribute('data-hds-component')).toBe('Board');
   });
 
   it('is read-only: no element is draggable and no drag handler is attached', () => {

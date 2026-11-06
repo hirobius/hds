@@ -289,21 +289,24 @@ export function patternComponents(patternsSource) {
 
 /**
  * Where a component's documentation lives on the docs site, or null when it has
- * no page (a component outside the core set and the patterns). One answer for
+ * no page (a component outside the core set, `paged` and the patterns). One answer for
  * everything that links to docs: the design links doc, Figma dev resources and
  * documentation links, the manifest's `docsPage`, the scaffold.
  *
  * Utilities share one page; providers share the providers guide; a pattern
- * lives under /docs/patterns. Mirrors where generate-docs-components writes.
+ * lives under /docs/patterns. `paged` names standalone components outside the
+ * core set that still get a components/ page of their own (docs-rules.json
+ * pagedComponents, hds#1227). Mirrors where generate-docs-components writes.
  *
  * @param {string} name
- * @param {{ core: string[], patterns?: string[], providers?: string[], utilities?: string[], utilityPage?: string, providerGuide?: string }} routing
+ * @param {{ core: string[], paged?: string[], patterns?: string[], providers?: string[], utilities?: string[], utilityPage?: string, providerGuide?: string }} routing
  * @returns {{ section: 'components'|'patterns'|'guides', slug: string, path: string } | null}
  */
 export function docsPageFor(
   name,
   {
     core,
+    paged = [],
     patterns = [],
     providers = [],
     utilities = [],
@@ -315,7 +318,7 @@ export function docsPageFor(
   if (providers.includes(name))
     return page('guides', providerGuide.replace(/^guides\//, '').replace(/\.mdx$/, ''));
   if (utilities.includes(name)) return page('components', utilityPage);
-  if (core.includes(name)) return page('components', componentSlug(name));
+  if (core.includes(name) || paged.includes(name)) return page('components', componentSlug(name));
   if (patterns.includes(name)) return page('patterns', componentSlug(name));
   return null;
 }

@@ -16,7 +16,7 @@
  */
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import test from 'node:test';
@@ -27,6 +27,8 @@ import { CORE_COMPONENTS } from './lib/core-components.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const checker = join(here, 'check-docs.mjs');
 const PROVIDERS = ['HdsRouterProvider', 'HdsThemeProvider', 'ToastProvider'];
+// Standalone components outside the core set that get a page of their own (hds#1227).
+const PAGED = JSON.parse(readFileSync(join(here, 'docs-rules.json'), 'utf8')).pagedComponents ?? [];
 
 const kebab = (name) => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 
@@ -78,7 +80,7 @@ function buildValidTree() {
   mkdirSync(join(docs, 'components'), { recursive: true });
   mkdirSync(join(docs, 'guides'), { recursive: true });
   mkdirSync(join(docs, 'foundations'), { recursive: true });
-  for (const name of CORE_COMPONENTS) {
+  for (const name of [...CORE_COMPONENTS, ...PAGED]) {
     if (PROVIDERS.includes(name)) continue;
     writeFileSync(join(docs, 'components', `${kebab(name)}.mdx`), componentPage(name));
   }
