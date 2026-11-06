@@ -1088,4 +1088,15 @@ Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 an
 | 5                                                      | `use_figma`       | read  | all pages: names and text        | verify     | OK. 0 hits.                            |
 | Session total: 5 calls (1 write, 4 reads). No publish. |
 
-Calls logged for 2026-11-06: 12 of 200 (1, 1, 5 and 5).
+## 2026-11-06 · EmptyState and Radio unused properties (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                      | Tool             | Kind  | Target                                                                                                             | Why            | Result                                                                                |
+| ------------------------------------------------------ | ---------------- | ----- | ------------------------------------------------------------------------------------------------------------------ | -------------- | ------------------------------------------------------------------------------------- |
+| 1                                                      | `create_session` | read  | library 2VgBbVpKiDnu0aftJEVyBQ                                                                                     | session        | OK.                                                                                   |
+| 2                                                      | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 properties and references                                                       | find unused    | OK. EmptyState Description#2337:10 (duplicate of Show description), Radio Label#36:0. |
+| 3                                                      | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 screenshots                                                                     | before         | OK. figma/shots/*-props-before.png.                                                   |
+| 4                                                      | `use_figma`      | write | Radio Label texts 2337:16393, 16396, 16399, 16403, 16407, 16411, 16415, 16420, 16423, 16427; EmptyState 2337:14631 | publish dialog | OK. Labels bound to Label#36:0; Description#2337:10 removed. 0 unused.                |
+| 5                                                      | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 screenshots                                                                     | after          | OK. No visual change.                                                                 |
+| Session total: 5 calls (1 write, 4 reads). No publish. |
+
+Calls logged for 2026-11-06: 17 of 200 (1, 1, 5, 5 and 5).
