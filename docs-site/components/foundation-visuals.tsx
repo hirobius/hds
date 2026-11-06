@@ -62,14 +62,16 @@ function ColorGallery() {
                   // Fills are the shipped CSS variables, not copied values (hds#846).
                   return (
                     <CopyCard key={s.token} copy={name}>
-                      <span className="hds-swatch-block" aria-hidden="true">
+                      <span className="hds-swatch-squares" aria-hidden="true">
                         <span
                           className="hds-swatch-fill"
+                          data-theme-mode="light"
                           style={{ background: s.fill ?? undefined }}
                         />
                         {dark ? (
                           <span
                             className="hds-swatch-fill"
+                            data-theme-mode="dark"
                             style={{ background: s.darkFill ?? undefined }}
                           />
                         ) : null}
@@ -94,7 +96,7 @@ function ColorGallery() {
         </Section>
       ))}
       <p className="hds-visual-note">
-        Split blocks show light (left) and dark (right). Tap a card to copy its CSS variable.
+        Two squares show light, then dark. Tap a swatch to copy its CSS variable.
       </p>
     </>
   );
