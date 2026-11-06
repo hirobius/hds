@@ -20,7 +20,7 @@
  *     `semantic.typography.eyebrow`, `<Text variant="heading1">` and the rest.
  *     They still resolve (so no consumer breaks) and are removed in 1.0.0.
  *
- * Text-style variants (VARIANTS: bodyStrong, uiItalic) are a role with one
+ * Text-style variants (VARIANTS: bodyStrong, uiRegular, uiItalic) are a role with one
  * property changed; the token file must keep each equal to its role otherwise.
  *
  * Marketing-only extensions (MARKETING_ROLES: hero, ADR-052 addendum) are live
@@ -84,6 +84,7 @@ export const MARKETING_ROLES = Object.freeze(['hero']);
  */
 export const VARIANTS = Object.freeze({
   bodyStrong: { of: 'body', set: { fontWeight: '{primitive.typography.weight.bold}' } },
+  uiRegular: { of: 'ui', set: { fontWeight: '{primitive.typography.weight.regular}' } },
   uiItalic: { of: 'ui', set: { fontStyle: 'italic' } },
 });
 

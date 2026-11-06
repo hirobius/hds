@@ -155,13 +155,13 @@ describe('Table — layout and restyle', () => {
   it('sets the body in the regular weight and emphasises the first column only when asked', () => {
     const { unmount } = render(<Table columns={columnsWith({})} rows={rows} />);
     expect(screen.getAllByRole('cell')[0].style.fontWeight).toBe(
-      'var(--semantic-typography-body-font-weight)',
+      'var(--semantic-typography-uiRegular-font-weight)',
     );
     unmount();
     render(<Table columns={columnsWith({})} rows={rows} emphasizeFirstColumn />);
     const [first, second] = screen.getAllByRole('cell');
     expect(first.style.fontWeight).toBe('var(--semantic-typography-ui-font-weight)');
-    expect(second.style.fontWeight).toBe('var(--semantic-typography-body-font-weight)');
+    expect(second.style.fontWeight).toBe('var(--semantic-typography-uiRegular-font-weight)');
   });
 
   it('a11y:table.scroll-region-focusable - keeps the scroll region a named tab stop', () => {
