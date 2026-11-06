@@ -133,7 +133,8 @@ From 0.21.0 on, each changeset carries an `upgrade/pending/<name>.json` note
 upgrade:note` pre-fills it). `scripts/check-upgrade-ledger.mjs` runs in
 `pretest` and fails when a fact since the last release snapshot has no step,
 a changeset has no note, or something breaking ships under less than a minor
-below 1.0. It also fails what `pnpm changeset:version` would refuse or
+below 1.0 (the rule: minor = breaking, DOM changes included; patch = additive
+or a fix; `.changeset/README.md`). It also fails what `pnpm changeset:version` would refuse or
 misfile: a note step that lists a fact the diff no longer has (a reverted
 removal), and a note with no changeset of its name (hds#541). `pnpm changeset:version` compiles the notes into the release's
 ledger ([At release time](#at-release-time)).
