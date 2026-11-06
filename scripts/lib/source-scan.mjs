@@ -220,6 +220,8 @@ export const EXEMPTION_MARKERS = [
   'motion-animate-var-ok',
   // check-no-custom-tracking.mjs (a reason is required)
   'tracking-ok',
+  // check-no-ordinal-labels.mjs (a reason is required)
+  'ordinal-ok',
 ];
 
 function assertKnownMarker(marker) {

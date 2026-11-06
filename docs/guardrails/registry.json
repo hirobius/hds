@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "063089a0075516f9faca521ccb3b4d00661f19719135030f5de298073b5857b3",
-  "precommitStructureHashUpdatedAt": "2026-10-16T12:42:38.942Z",
+  "precommitStructureHash": "efdcb923992f0f6640e073a26af4836c1d3f358d0503c5c7ea5647bc6bf9f84e",
+  "precommitStructureHashUpdatedAt": "2026-11-06T04:25:39.707Z",
   "lanes": {
     "check:fast": [
       "node scripts/validate-manifest.mjs",
@@ -691,6 +691,18 @@
       "severity": "error",
       "gateScript": "scripts/check-no-uppercase.mjs",
       "fixturePath": "fixtures/check-no-uppercase",
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
+      "id": "check-no-ordinal-labels",
+      "description": "No ordinal number before a page, section or nav name (Adrian, 2026-11-06): \"Color\", not \"01 Color\", \"02 — Color\" or \"1. Color\". Reads Markdown/MDX headings and frontmatter titles and meta.json titles and page entries in content/, label keys (title, heading, section, label, name, page) in figma/spec-sheets/*.json, and string literals in scripts/generate-spec-sheets.mjs. A zero-padded number, or a number with a list mark (. ) · — – :), at the start of a label fails; \"3 ways\", \"2xs\" and \"0.33.1\" pass. A line is exempt with ordinal-ok: <reason> on the same line or either line above; the reason is required. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
+      "severity": "error",
+      "gateScript": "scripts/check-no-ordinal-labels.mjs",
+      "fixturePath": "fixtures/check-no-ordinal-labels",
       "owner": "Adrian",
       "source": "human",
       "firingChannel": "pre-commit",
