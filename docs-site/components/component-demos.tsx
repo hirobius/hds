@@ -15,11 +15,13 @@ import {
   Alert,
   Avatar,
   Badge,
+  Blockquote,
   Board,
   BoardColumn,
   Box,
   Breadcrumb,
   Button,
+  Callout,
   Card,
   Checkbox,
   Combobox,
@@ -33,6 +35,7 @@ import {
   Field,
   Grid,
   Icon,
+  InlineCode,
   InlineLink,
   Input,
   Kbd,
@@ -834,6 +837,42 @@ function ThemeToggleDemo() {
   );
 }
 
+function BlockquoteDemo() {
+  return <Blockquote attribution="Dieter Rams">Less, but better.</Blockquote>;
+}
+
+function CalloutDemo() {
+  return (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <Callout tone="info">Drafts save every few seconds while you type.</Callout>
+      <Callout tone="accent" italic>
+        Hypothesis: a shorter form lifts sign-ups more than a new headline.
+      </Callout>
+    </div>
+  );
+}
+
+function InlineCodeDemo() {
+  return (
+    <p style={{ margin: 0 }}>
+      Install the package with <InlineCode copyable>pnpm add @hirobius/design-system</InlineCode>,
+      then import <InlineCode>Button</InlineCode>.
+    </p>
+  );
+}
+
+// A fixed date, reference time and locale keep the demo the same on every build.
+const TIMESTAMP_NOW = '2026-03-14T12:00:00Z';
+
+function TimestampDemo() {
+  return (
+    <div style={{ display: 'grid', gap: 4 }}>
+      <Timestamp date="2026-03-02T12:00:00Z" format="date" locale="en-US" />
+      <Timestamp date="2026-03-12T12:00:00Z" format="relative" now={TIMESTAMP_NOW} locale="en-US" />
+    </div>
+  );
+}
+
 function KbdDemo() {
   return (
     <p style={{ margin: 0 }}>
@@ -1463,6 +1502,10 @@ function RevealDemo() {
 }
 
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
+  Blockquote: BlockquoteDemo,
+  Callout: CalloutDemo,
+  InlineCode: InlineCodeDemo,
+  Timestamp: TimestampDemo,
   AppShell: AppShellDemo,
   Button: ButtonDemo,
   Input: InputDemo,

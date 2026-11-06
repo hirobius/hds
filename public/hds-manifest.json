@@ -1554,8 +1554,11 @@
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineCode.tsx",
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
-      "docsPage": null,
-      "publicDataAttributes": []
+      "docsPage": "/docs/components/inline-code",
+      "publicDataAttributes": [
+        "data-copy-glyph",
+        "data-density"
+      ]
     },
     "InlineLink": {
       "category": "Navigation",
@@ -4219,8 +4222,10 @@
           "required": false
         }
       ],
-      "docsPage": null,
-      "publicDataAttributes": []
+      "docsPage": "/docs/components/callout",
+      "publicDataAttributes": [
+        "data-tone"
+      ]
     },
     "EmptyState": {
       "category": "Display",
@@ -7305,8 +7310,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "publicDataAttributes": []
+      "docsPage": "/docs/components/blockquote",
+      "publicDataAttributes": [
+        "data-size"
+      ]
     },
     "Kbd": {
       "category": "Display",
@@ -7413,8 +7420,10 @@
       "propConstraints": {},
       "requiredProps": [],
       "a11yRules": [],
-      "docsPage": null,
-      "publicDataAttributes": []
+      "docsPage": "/docs/components/timestamp",
+      "publicDataAttributes": [
+        "data-format"
+      ]
     },
     "VisuallyHidden": {
       "category": "Utility",

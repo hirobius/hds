@@ -157,6 +157,16 @@
       "image, 12 roles"
     ]
   },
+  "Blockquote": {
+    "dom": [
+      "blockquote data-size=\"md\"",
+      "  footer"
+    ],
+    "reader": [
+      "blockquote",
+      "contentinfo"
+    ]
+  },
   "Board": {
     "dom": [
       "div aria-label=\"Lead pipeline\" data-hds-component=\"Board\" role=\"group\"",
@@ -277,6 +287,14 @@
       "button, Flat (opt-out)",
       "button, Small"
     ]
+  },
+  "Callout": {
+    "dom": [
+      "div",
+      "  div data-tone=\"info\"",
+      "  div data-tone=\"accent\""
+    ],
+    "reader": []
   },
   "Card": {
     "dom": [
@@ -715,6 +733,26 @@
       "  svg aria-hidden=\"true\" data-hds-icon"
     ],
     "reader": []
+  },
+  "InlineCode": {
+    "dom": [
+      "p",
+      "  span",
+      "    button aria-label=\"Copy\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
+      "      span",
+      "        span data-copy-glyph=\"copy\"",
+      "          svg aria-hidden=\"true\" data-hds-icon",
+      "    code data-density=\"comfortable\"",
+      "    span role=\"status\"",
+      "  code data-density=\"comfortable\""
+    ],
+    "reader": [
+      "paragraph",
+      "button, Copy",
+      "code",
+      "status",
+      "code"
+    ]
   },
   "InlineLink": {
     "dom": [
@@ -1555,6 +1593,17 @@
       "listitem, level 2, position 1, set size 2",
       "time",
       "listitem, level 2, position 2, set size 2",
+      "time"
+    ]
+  },
+  "Timestamp": {
+    "dom": [
+      "div",
+      "  time data-format=\"date\"",
+      "  time data-format=\"relative\""
+    ],
+    "reader": [
+      "time",
       "time"
     ]
   },
