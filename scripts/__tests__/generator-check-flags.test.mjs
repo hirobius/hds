@@ -136,6 +136,8 @@ describe('generate-llms-txt --check', () => {
     // hds#463: the Upgrading section and upgrade.txt are projected from the record.
     'upgrade/index.json',
     'upgrade/releases',
+    // The current removeIn of each deprecation (the record keeps its day's).
+    'deprecations.json',
   ];
 
   it('fails when a slice drifts from its sources, and writes nothing', () => {
@@ -298,6 +300,7 @@ describe('generate-consumer-skill on runGenerator', () => {
       'skills/hds-consumer/SKILL.md',
       'upgrade/index.json',
       'upgrade/releases',
+      'deprecations.json',
     ],
     out: 'skills/hds-consumer/SKILL.md',
     fix: 'pnpm skill:generate',

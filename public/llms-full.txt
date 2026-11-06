@@ -681,8 +681,8 @@ Every name a release removed, moved or renamed, and what to use instead:
 
 Still exported, but on the way out: do not write new code with them.
 
-- `hds` (removed in 0.35.0): Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
-- `tokens` (removed in 0.35.0): Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
+- `hds` (removed in 0.36.0): Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
+- `tokens` (removed in 0.36.0): Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.
 - `Blockquote.size` (removed in 1.0.0): Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.
 - `Box-sx-layout-names` (removed in 1.0.0): Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.
 - `CardMetric` (removed in 1.0.0): Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).
