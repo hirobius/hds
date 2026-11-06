@@ -316,7 +316,7 @@ export const tokenValues = {
       offset: "0.2em"
     },
     inlineIcon: {
-      size: "0.75em",
+      size: "1em",
       gap: "0.25em"
     },
     borderWidth: {

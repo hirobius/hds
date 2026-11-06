@@ -1,0 +1,50 @@
+{
+  "impact": "look",
+  "plain": "External InlineLink icons are larger: 1em, the size of the link text, instead of 0.75em.",
+  "steps": [
+    {
+      "id": "value-changed/--component-inlineLink-size-lg-iconSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Figma px size for lg links is now 24 (was 20); if you set this variable yourself, check the icon next to title-size text.",
+      "detect": {
+        "cssVars": ["--component-inlineLink-size-lg-iconSize"],
+        "cssVarWrites": ["--component-inlineLink-size-lg-iconSize"]
+      },
+      "facts": ["css-var-changed:--component-inlineLink-size-lg-iconSize::root"]
+    },
+    {
+      "id": "value-changed/--component-inlineLink-size-md-iconSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Figma px size for md links is now 16 (was 12); if you set this variable yourself, check the icon next to body-size text.",
+      "detect": {
+        "cssVars": ["--component-inlineLink-size-md-iconSize"],
+        "cssVarWrites": ["--component-inlineLink-size-md-iconSize"]
+      },
+      "facts": ["css-var-changed:--component-inlineLink-size-md-iconSize::root"]
+    },
+    {
+      "id": "value-changed/--component-inlineLink-size-sm-iconSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Figma px size for sm links is now 16 (was 12); if you set this variable yourself, check the icon next to ui-size text.",
+      "detect": {
+        "cssVars": ["--component-inlineLink-size-sm-iconSize"],
+        "cssVarWrites": ["--component-inlineLink-size-sm-iconSize"]
+      },
+      "facts": ["css-var-changed:--component-inlineLink-size-sm-iconSize::root"]
+    },
+    {
+      "id": "value-changed/--primitive-inlineIcon-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The inline icon is now 1em instead of 0.75em; if you override this variable to keep the old look, set it to 0.75em.",
+      "detect": {
+        "cssVars": ["--primitive-inlineIcon-size"],
+        "cssVarWrites": ["--primitive-inlineIcon-size"]
+      },
+      "facts": ["css-var-changed:--primitive-inlineIcon-size::root"]
+    }
+  ]
+}
