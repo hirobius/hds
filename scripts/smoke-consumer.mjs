@@ -142,11 +142,12 @@ run(
     'react@^18.3',
     'react-dom@^18.3',
     'react-router@^7',
-    // The optional peers, so /form and /scroll import (and their doc fences resolve).
+    // The optional peers, so /form, /scroll and /number import (and their doc fences resolve).
     'react-hook-form@^7',
     'zod@^3.23',
     '@hookform/resolvers@^3.9',
     'lenis@^1.3',
+    '@number-flow/react@^0.6.2',
     // jsdom backs the render probe below (real browser globals so the router
     // fallback's window.location path executes as a consumer would hit it).
     tool('jsdom'),
@@ -215,6 +216,7 @@ const importChecks = [
   [PKG + '/patterns', (m) => assert.equal(typeof m.Page, 'function', 'Page missing')],
   [PKG + '/form', (m) => assert.ok(Object.keys(m).length > 0, 'form exports nothing')],
   [PKG + '/scroll', (m) => assert.ok(Object.keys(m).length > 0, 'scroll exports nothing')],
+  [PKG + '/number', (m) => assert.equal(typeof m.NumberValue, 'function', 'NumberValue missing')],
   [PKG + '/brand', (m) => assert.ok(Object.keys(m).length > 0, 'brand exports nothing')],
 ];
 

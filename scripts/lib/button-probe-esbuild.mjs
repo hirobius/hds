@@ -220,6 +220,7 @@ export function buttonOnlyEsbuildOptions({ entry, outfile }) {
       '@hookform/*',
       'lenis',
       'lenis/*',
+      '@number-flow/*',
     ],
   };
 }

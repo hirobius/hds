@@ -138,6 +138,9 @@ export default defineConfig({
         // useScrollProgress). `lenis` is an OPTIONAL peer, externalized below, so
         // this never lands in the main barrel. See ADR-021 / #116.
         scroll: path.resolve(__dirname, 'src/scroll/index.ts'),
+        // Subpath: opt-in animated numbers (NumberValue over NumberFlow, MIT).
+        // `@number-flow/react` is an OPTIONAL peer, externalized below (hds#751).
+        number: path.resolve(__dirname, 'src/number/index.ts'),
         // Subpath: the pattern-tier components (hds#254). The only entry that
         // exports them since 0.20.0 removed their root re-exports (hds#389).
         patterns: path.resolve(__dirname, 'src/patterns.ts'),
@@ -180,6 +183,9 @@ export default defineConfig({
         // Optional peer dep for the ./scroll subpath — `lenis` and its subpaths
         // (lenis/react) resolve against the consumer's install; never bundled.
         /^lenis(\/.*)?$/,
+        // Optional peer dep for the ./number subpath (hds#751); never bundled.
+        /^@number-flow\//,
+        /^number-flow(\/.*)?$/,
       ],
       output: {
         // One output file per source module (hds#1145). package.json#sideEffects

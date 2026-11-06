@@ -9,6 +9,19 @@ since: '0.1.0'
 
 {/* generated: tokens */}
 
+## Animated numbers
+
+`NumberValue` rolls a number's digits to its new value with the productive motion token. With reduced motion on, the new value shows at once. It ships only in the `@hirobius/design-system/number` subpath, with `@number-flow/react` (MIT) as an optional peer, so the main entry does not change.
+
+<NumberValueDemo />
+
+```tsx
+// pnpm add @number-flow/react
+import { NumberValue } from '@hirobius/design-system/number';
+
+<NumberValue value={count} format={{ notation: 'compact' }} />;
+```
+
 <PrinciplesAndPractices>
 
 ### Principle

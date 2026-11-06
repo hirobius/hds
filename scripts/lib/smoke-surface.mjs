@@ -25,6 +25,7 @@ export const OPTIONAL_PEER_SUBPATHS = {
   '@hookform/resolvers': ['./form'],
   zod: ['./form'],
   lenis: ['./scroll'],
+  '@number-flow/react': ['./number'],
   // The router seam takes a LinkComponent; no bundle imports react-router.
   'react-router': [],
 };

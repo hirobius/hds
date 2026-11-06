@@ -27,6 +27,7 @@
     "src/mui/index.ts",
     "src/brand/index.ts",
     "src/scroll/index.ts",
+    "src/number/index.ts",
     "src/patterns.ts",
     "src/icons.ts"
   ],

@@ -1,0 +1,16 @@
+{
+  "impact": "additive",
+  "plain": "If you want an animated number, install @number-flow/react and import NumberValue from @hirobius/design-system/number; nothing you use today changes.",
+  "steps": [
+    {
+      "id": "peer/@number-flow/react",
+      "kind": "peer",
+      "impact": "additive",
+      "plain": "@number-flow/react is a new optional peer, needed only if you import @hirobius/design-system/number; nothing changes if you do not.",
+      "detect": {
+        "bareImports": ["@number-flow/react"]
+      },
+      "facts": ["peer-changed:@number-flow/react"]
+    }
+  ]
+}
