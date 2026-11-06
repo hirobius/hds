@@ -49,6 +49,19 @@ if (!existsSync(path.join(SITE, 'docs', 'case-study.html'))) {
 }
 
 const evidence = collectEvidence(ROOT);
+// The captions say Figma matches and the release gate is green. Record only
+// when that is true (right after a release's Figma delta sync), never a video
+// whose panels contradict its captions.
+const red = [
+  ['check:figma-drift', evidence.drift],
+  ['check:figma-release', evidence.release.gate],
+].filter(([, r]) => r.code !== 0);
+if (red.length && !process.argv.includes('--allow-red')) {
+  for (const [name, r] of red)
+    console.error(`✗ walkthrough — ${name} is red:\n  ${r.lines.join('\n  ')}`);
+  console.error('Record after the Figma delta sync makes both green (or pass --allow-red).');
+  process.exit(1);
+}
 const caseStudyHtml = readFileSync(path.join(SITE, 'docs', 'case-study.html'), 'utf8');
 const stylesheets = [...caseStudyHtml.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map(
   (m) => m[1],

@@ -9,10 +9,11 @@ import {
   buildVtt,
   formatVttTime,
   escapeHtml,
+  escapeVtt,
   redactPaths,
   terminalPanelHtml,
 } from '../walkthrough/chapters.mjs';
-import { resolveFile } from '../walkthrough/serve.mjs';
+import { parseRange, resolveFile } from '../walkthrough/serve.mjs';
 import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -120,5 +121,44 @@ describe('resolveFile', () => {
 
   it('refuses paths that climb out of the root', () => {
     expect(resolveFile(root, '/../../etc/passwd')).toBeNull();
+  });
+});
+
+describe('escapeVtt', () => {
+  it('escapes only &, < and >, leaving quotes readable', () => {
+    expect(escapeVtt(`a & <b> "c" 'd'`)).toBe(`a &amp; &lt;b&gt; "c" 'd'`);
+  });
+});
+
+describe('resolveFile edge cases', () => {
+  const parent = mkdtempSync(path.join(tmpdir(), 'wt-edge-'));
+  const root = path.join(parent, 'out');
+  mkdirSync(root);
+  mkdirSync(path.join(parent, 'out-secrets'));
+  writeFileSync(path.join(parent, 'out-secrets', 'key.html'), 'x');
+
+  it('refuses a sibling folder that shares the root as a prefix', () => {
+    expect(resolveFile(root, '/../out-secrets/key')).toBeNull();
+  });
+
+  it('returns null for a malformed URL instead of throwing', () => {
+    expect(resolveFile(root, '/%E0%A4%A')).toBeNull();
+  });
+});
+
+describe('parseRange', () => {
+  it('reads an open and a closed range', () => {
+    expect(parseRange('bytes=0-', 1000)).toEqual({ start: 0, end: 999 });
+    expect(parseRange('bytes=100-199', 1000)).toEqual({ start: 100, end: 199 });
+  });
+
+  it('reads a suffix range as the last N bytes', () => {
+    expect(parseRange('bytes=-500', 1000)).toEqual({ start: 500, end: 999 });
+  });
+
+  it('clamps the end to the file size and rejects an unsatisfiable range', () => {
+    expect(parseRange('bytes=900-5000', 1000)).toEqual({ start: 900, end: 999 });
+    expect(parseRange('bytes=2000-', 1000)).toBeNull();
+    expect(parseRange(undefined, 1000)).toBeNull();
   });
 });

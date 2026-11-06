@@ -48,7 +48,7 @@ export function formatVttTime(ms) {
   return `${pad(h)}:${pad(m)}:${pad(s)}.${pad(t % 1000, 3)}`;
 }
 
-/** Escape text for HTML (and for WebVTT cue text, which shares &, < and >). */
+/** Escape text for HTML. */
 export function escapeHtml(text) {
   return String(text)
     .replace(/&/g, '&amp;')
@@ -58,15 +58,18 @@ export function escapeHtml(text) {
     .replace(/'/g, '&#39;');
 }
 
+/** Escape WebVTT cue text: only &, < and > are significant there. */
+export function escapeVtt(text) {
+  return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 /** Cues ({ start, end, text } in ms) → a WebVTT file. */
 export function buildVtt(cues) {
   const body = cues
     .filter((c) => c.end > c.start)
     .map(
       (c, i) =>
-        `${i + 1}\n${formatVttTime(c.start)} --> ${formatVttTime(c.end)}\n${escapeHtml(c.text)
-          .replace(/&quot;/g, '"')
-          .replace(/&#39;/g, "'")}\n`,
+        `${i + 1}\n${formatVttTime(c.start)} --> ${formatVttTime(c.end)}\n${escapeVtt(c.text)}\n`,
     )
     .join('\n');
   return `WEBVTT\n\n${body}`;

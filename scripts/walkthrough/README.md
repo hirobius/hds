@@ -9,6 +9,10 @@ pnpm docs:build           # the static site in docs-site/out
 pnpm walkthrough:record   # writes docs-site/public/walkthrough/
 ```
 
+Record when Figma matches code: right after a release's Figma delta sync.
+The script stops when `check:figma-drift` or `check:figma-release` is red,
+because the captions say both are green (`--allow-red` overrides).
+
 Output, served by the docs site at `/walkthrough/`:
 
 | File              | What it is                                            |

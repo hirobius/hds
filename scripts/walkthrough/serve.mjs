@@ -28,13 +28,27 @@ const TYPES = {
 
 /** Map a URL path to a file under root, or null. */
 export function resolveFile(root, urlPath) {
-  const clean = decodeURIComponent(urlPath.split('?')[0]).replace(/\/+$/, '') || '/';
+  let clean;
+  try {
+    clean = decodeURIComponent(urlPath.split('?')[0]).replace(/\/+$/, '') || '/';
+  } catch {
+    return null;
+  }
   const base = path.join(root, path.normalize(clean));
-  if (!base.startsWith(root)) return null;
+  if (base !== root && !base.startsWith(root + path.sep)) return null;
   for (const candidate of [base, `${base}.html`, path.join(base, 'index.html')]) {
     if (existsSync(candidate) && statSync(candidate).isFile()) return candidate;
   }
   return null;
+}
+
+/** A Range header → { start, end } within size, or null when absent or unsatisfiable. */
+export function parseRange(header, size) {
+  const m = /^bytes=(\d*)-(\d*)$/.exec(header ?? '');
+  if (!m || (!m[1] && !m[2])) return null;
+  const start = m[1] ? Number(m[1]) : Math.max(0, size - Number(m[2]));
+  const end = m[1] && m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+  return start <= end ? { start, end } : null;
 }
 
 /**
@@ -58,10 +72,9 @@ export function serve(root) {
     }
     const type = TYPES[path.extname(file)] ?? 'application/octet-stream';
     const { size } = statSync(file);
-    const range = /bytes=(\d*)-(\d*)/.exec(req.headers.range ?? '');
+    const range = parseRange(req.headers.range, size);
     if (range) {
-      const start = range[1] ? Number(range[1]) : 0;
-      const end = range[2] ? Number(range[2]) : size - 1;
+      const { start, end } = range;
       res.writeHead(206, {
         'content-type': type,
         'content-range': `bytes ${start}-${end}/${size}`,

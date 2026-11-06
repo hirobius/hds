@@ -12,7 +12,7 @@ import path from 'node:path';
 import { redactPaths } from './chapters.mjs';
 
 const TOKEN_PATH = ['semantic', 'color', 'surface', 'raised'];
-const CSS_VAR = '--semantic-color-surface-raised';
+const CSS_VAR = `--${TOKEN_PATH.join('-')}`;
 
 /** Run a node script in the repo; returns { code, lines }. */
 function run(root, args, env = {}, files = []) {
@@ -59,11 +59,17 @@ export function cssLines(root) {
 /** The same variable as Figma holds it, from the committed snapshot. */
 export function figmaLines(root) {
   const snap = JSON.parse(readFileSync(path.join(root, 'figma', 'snapshot.json'), 'utf8'));
-  let found = null;
-  JSON.stringify(snap, (k, v) => {
-    if (!found && v && typeof v === 'object' && v.path === TOKEN_PATH.join('.')) found = v;
-    return v;
-  });
+  const wanted = TOKEN_PATH.join('.');
+  const find = (node) => {
+    if (!node || typeof node !== 'object') return null;
+    if (node.path === wanted) return node;
+    for (const child of Object.values(node)) {
+      const hit = find(child);
+      if (hit) return hit;
+    }
+    return null;
+  };
+  const found = find(snap);
   if (!found) throw new Error('token not in figma/snapshot.json');
   return [
     `name: ${found.name}`,
