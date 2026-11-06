@@ -64,12 +64,12 @@ describe('uiRegular (ADR-052 addendum, hds#1198)', () => {
   });
 
   it('is what Table body cells render', () => {
-    const src = readFileSync(resolve(ROOT, 'src/app/components/table.tsx'), 'utf8');
+    const src = repoFile('src/app/components/table.tsx');
     expect(src).toContain('const BODY_TEXT: CSSProperties = hds.typeStyles.uiRegular;');
   });
 
   it('ships --semantic-typography-uiRegular-* in CSS at weight regular', () => {
-    expect(readFileSync(resolve(ROOT, 'src/styles/tokens.generated.css'), 'utf8')).toContain(
+    expect(repoFile('src/styles/tokens.generated.css')).toContain(
       // tier-ok: asserts the line the CSS emitter writes, not a style
       '--semantic-typography-uiRegular-font-weight: var(--primitive-typography-weight-regular);',
     );
