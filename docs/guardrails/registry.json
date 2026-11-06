@@ -62,6 +62,7 @@
       "node scripts/check-tailwind-token-coverage.mjs"
     ],
     "pretest": [
+      "node scripts/generate-component-api.mjs",
       "node scripts/validate-manifest.mjs",
       "node scripts/check-manifest-drift.mjs",
       "node scripts/check-manifest-schema-semver.mjs",
