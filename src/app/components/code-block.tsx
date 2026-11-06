@@ -20,7 +20,7 @@ import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
-import { Icon } from './icon';
+import { Icon, type IconColor } from './icon';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `variant` here mirrors CodeBlockProps.variant 1:1 — it is only used on the
@@ -237,11 +237,7 @@ export function CodeBlock({
           aria-label={copied ? 'Copied' : 'Copy code'}
           className={cn('hds-focus', copyButtonVariants({ variant: 'inline' }))}
         >
-          {copied ? (
-            <Icon icon={Check} size="small" color="var(--semantic-color-content-primary)" />
-          ) : (
-            <Icon icon={Copy} size="small" color="var(--semantic-color-content-primary)" />
-          )}
+          <CopyIcon copied={copied} color="var(--semantic-color-content-primary)" />
         </button>
         <CopyStatus copied={copied} />
       </div>
@@ -286,7 +282,7 @@ export function CodeBlock({
         iconOnly
         shadow="none"
         label={copied ? 'Copied' : 'Copy code'}
-        iconLeft={<Icon icon={copied ? Check : Copy} size="small" />}
+        iconLeft={<CopyIcon copied={copied} />}
         onClick={handleCopy}
         className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
       />
@@ -343,6 +339,18 @@ export function CodeBlock({
  * Polite live region for the copy result (4.1.3). It is always mounted, empty until
  * a copy lands, because a region added with its text already in it is not announced.
  */
+/**
+ * The copy/check glyph. Keyed on `copied`, so each swap remounts the wrapper and replays the
+ * `.hds-icon-swap` pop (theme.css: --hds-anim-appear, dropped under reduced motion) (hds#751).
+ */
+function CopyIcon({ copied, color }: { copied: boolean; color?: IconColor }) {
+  return (
+    <span key={copied ? 'check' : 'copy'} className="hds-icon-swap inline-flex">
+      <Icon icon={copied ? Check : Copy} size="small" color={color} />
+    </span>
+  );
+}
+
 function CopyStatus({ copied }: { copied: boolean }) {
   return (
     <span role="status" className="sr-only">

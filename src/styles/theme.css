@@ -481,6 +481,28 @@
   }
 }
 
+/* Icon swap (hds#751): a glyph that replaces another (CodeBlock copy -> check) pops in,
+ * fading and scaling up on --hds-anim-appear (productive duration, expressive easing).
+ * The element is keyed in React, so each swap replays it. Static under reduced motion. */
+@keyframes hds-icon-swap {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+}
+
+@layer components {
+  .hds-icon-swap {
+    animation: hds-icon-swap var(--hds-anim-appear);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hds-icon-swap {
+      animation: none;
+    }
+  }
+}
+
 /* --- Sheet (hds#690) ----------------------------------------------------------
  * Phone first: below sm (640) Sheet.Content docks to the bottom edge, full width,
  * with the bottom safe-area inset under its padding. It sits on the on-screen
