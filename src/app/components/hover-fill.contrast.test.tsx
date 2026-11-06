@@ -134,7 +134,7 @@ const REST_CASES: Record<string, RestCase> = {
         <Avatar name="Grace Hopper" />
       </AvatarGroup>
     ),
-    find: () => screen.getByText('+1'),
+    find: () => screen.getByText('+1').parentElement as HTMLElement,
     on: ['--role-background', '--role-card'],
   },
   'Callout accent': {

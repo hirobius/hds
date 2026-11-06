@@ -155,15 +155,15 @@
       "  span data-size=\"md\"",
       "    span",
       "      span aria-label=\"Alan Kay\" role=\"img\"",
-      "  span aria-label=\"+2 more\""
+      "  span",
+      "    span",
+      "    span"
     ],
     "reader": [
       "group, Project members",
       "image, Ada Lovelace",
       "image, Grace Hopper",
-      "image, Alan Kay",
-      "+2 more",
-      "end, +2 more"
+      "image, Alan Kay"
     ]
   },
   "Badge": {

@@ -28,7 +28,22 @@ describe('AvatarGroup', () => {
       </AvatarGroup>,
     );
     expect(screen.getByText('+2')).not.toBeNull();
-    expect(screen.getByLabelText('+2 more')).not.toBeNull();
+  });
+
+  // aria-label on a role-less <span> is not reliably announced (ARIA prohibits
+  // naming the generic role), so the count is real text: "+2" shown, " more" sr-only.
+  it('reads the overflow chip as text, not as an aria-label on a span', () => {
+    render(
+      <AvatarGroup max={1}>
+        <Avatar alt="Ada Lovelace" />
+        <Avatar alt="Alan Turing" />
+        <Avatar alt="Grace Hopper" />
+      </AvatarGroup>,
+    );
+    const chip = screen.getByText('+2').parentElement as HTMLElement;
+    expect(chip.textContent).toBe('+2 more');
+    expect(chip.hasAttribute('aria-label')).toBe(false);
+    expect(screen.getByText('more').className).toContain('sr-only');
   });
 
   it('does not render an overflow chip when count equals max', () => {
