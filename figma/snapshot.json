@@ -1,15 +1,15 @@
 {
-  "checksum": "aa338597",
+  "checksum": "a3addca7",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-06T10:04:17.696Z",
+    "takenAt": "2026-11-06T10:17:30.707Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "1ab16b3d",
-      "pushedAt": "2026-11-06T10:04:17.636Z",
+      "modelHash": "5aa4735d",
+      "pushedAt": "2026-11-06T10:17:30.649Z",
       "scope": null
     },
     "collections": [
@@ -11189,7 +11189,7 @@
             "name": "input/paddingX",
             "path": "component.input.paddingX",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "Medium (default) input horizontal padding (12px). Small and large: input.size.sm/lg.paddingX.",
             "scopes": [
               "GAP"
             ],
@@ -11241,6 +11241,46 @@
               "Default": {
                 "alias": "VariableID:12:29",
                 "to": "Hirobius/Semantic: radius/action"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2570:51",
+            "name": "input/size/lg/paddingX",
+            "path": "component.input.size.lg.paddingX",
+            "resolvedType": "FLOAT",
+            "description": "Large input horizontal padding (16px).",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-input-size-lg-paddingX)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2229:16",
+                "to": "Hirobius/Semantic: space/fixed/sm"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2570:50",
+            "name": "input/size/sm/paddingX",
+            "path": "component.input.size.sm.paddingX",
+            "resolvedType": "FLOAT",
+            "description": "Small input horizontal padding (8px).",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-input-size-sm-paddingX)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2061:878",
+                "to": "Hirobius/Semantic: space/scale/xs"
               }
             }
           },
@@ -13556,7 +13596,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "1912d44"
+                "value": "93544b4"
               }
             }
           },
@@ -14366,5 +14406,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:225c948ed81d467cd8c7c88efcc3fe381d88c30c871dcd4d65ed6bc83bfecdc6"
+  "tokensHash": "sha256:81d53711558e974b56524401236d07277ad2d436fc9a1235412f86ecd0e40230"
 }
