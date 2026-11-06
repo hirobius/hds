@@ -245,11 +245,12 @@ export function fluidPreferred(minPx, maxPx) {
   return `${round(interceptPx / 16)}rem + ${round(slope * 100)}vw`;
 }
 
+/** px of a px or rem size (rem at the 16px default root the slope is drawn for). */
 const pxOf = (val, root) => {
   const leaf = typeof val === 'string' && val.startsWith('{') ? resolveAlias(val, root) : val;
-  if (!leaf || leaf.unit !== 'px' || typeof leaf.value !== 'number')
-    throw new Error(`fluid type needs px sizes, got ${JSON.stringify(leaf)}`);
-  return leaf.value;
+  if (leaf && typeof leaf.value === 'number' && leaf.unit === 'px') return leaf.value;
+  if (leaf && typeof leaf.value === 'number' && leaf.unit === 'rem') return leaf.value * 16;
+  throw new Error(`fluid type needs px or rem sizes, got ${JSON.stringify(leaf)}`);
 };
 
 /** The fluid line for a composite that sets fontSizeMin, or null. */
