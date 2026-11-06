@@ -112,6 +112,28 @@ describe('InlineLink', () => {
       expect(prim.inlineIcon.gap.$value).toEqual({ value: 0.25, unit: 'em' });
     });
 
+    // Table review (hds#1277): the icon wrapped alone onto the next line in a narrow
+    // cell. The last word and the icon share a no-wrap span, so they break together.
+    it('keeps the last word and the external icon on one line', () => {
+      render(<InlineLink href="https://example.com">Portfolio redesign</InlineLink>);
+      const svg = icon(link('Portfolio redesign'));
+      const group = svg.parentElement as HTMLElement;
+      expect(group.style.whiteSpace).toBe('nowrap');
+      expect(group.textContent).toBe('redesign');
+      expect(link('Portfolio redesign').textContent).toBe('Portfolio redesign (opens in new tab)');
+    });
+
+    it('keeps a non-text label and the icon together with a word joiner', () => {
+      render(
+        <InlineLink href="https://example.com">
+          <b>Docs</b>
+        </InlineLink>,
+      );
+      const group = icon(link('Docs')).parentElement as HTMLElement;
+      expect(group.style.whiteSpace).toBe('nowrap');
+      expect(group.textContent).toBe('\u2060');
+    });
+
     it('inherits the surrounding type when no size is set', () => {
       render(<InlineLink href="https://example.com">Example</InlineLink>);
       expect(link('Example').className).not.toMatch(/hds-type-/);
