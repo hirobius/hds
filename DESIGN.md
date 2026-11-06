@@ -58,6 +58,7 @@ Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700`
 **Never for.** Each role has one job; reaching past it is how the ramp drifts.
 
 - `display`: never for a section heading, a card or anything twice on a page. It is the hero line only.
+  On a hero that must fit a phone, set `font-size: var(--semantic-typography-display-font-size-fluid)`: it runs from 40px at a 360px viewport to the full display size at 760px (hds#1300). Opt-in; the display size itself does not change.
 - `title`: never for body copy or a label, and never skip a level to make a heading smaller; use `titleSm` for a heading inside a card or band.
 - `titleSm`: never for page-level headings, and never for emphasis inside prose (bold the words instead).
 - `body`: never for controls, table cells or metadata (those are `ui` and `caption`). A lead paragraph is `body` plus a quieter colour, not a bigger size.
@@ -285,6 +286,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (550 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (551 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

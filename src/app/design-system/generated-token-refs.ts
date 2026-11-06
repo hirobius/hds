@@ -223,6 +223,7 @@ export const tokenRefs = {
         "4xl": "var(--primitive-typography-size-4xl)",
         "5xl": "var(--primitive-typography-size-5xl)",
         display: "var(--primitive-typography-size-display)",
+        displayMin: "var(--primitive-typography-size-displayMin)",
         hero: "var(--primitive-typography-size-hero)",
         "6xl": "var(--primitive-typography-size-6xl)",
         code: "var(--primitive-typography-size-code)"
@@ -512,7 +513,8 @@ export const tokenRefs = {
         fontSize: "var(--semantic-typography-display-font-size)",
         fontWeight: "var(--semantic-typography-display-font-weight)",
         letterSpacing: "var(--semantic-typography-display-letter-spacing)",
-        lineHeight: "var(--semantic-typography-display-line-height)"
+        lineHeight: "var(--semantic-typography-display-line-height)",
+        fontSizeMin: "var(--semantic-typography-display-font-size-min)"
       },
       title: {
         fontFamily: "var(--semantic-typography-title-font-family)",

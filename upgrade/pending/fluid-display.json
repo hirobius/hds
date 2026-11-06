@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "If you hand-roll a clamp() on a display hero, replace it with font-size: var(--semantic-typography-display-font-size-fluid); nothing changes until you do."
+}

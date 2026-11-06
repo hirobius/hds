@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 614 tokens, aliases, and TS refs in one shot.
+Checks all 615 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -330,6 +330,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 - `primitive.typography.size.4xl` = **36px**
 - `primitive.typography.size.5xl` = **48px**
 - `primitive.typography.size.display` = **56px**
+- `primitive.typography.size.displayMin` = **40px**
 - `primitive.typography.size.hero` = **120px**
 - `primitive.typography.size.6xl` = **60px**
 - `primitive.typography.size.code` = **15px**
