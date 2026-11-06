@@ -11,14 +11,15 @@
         "label": "Internal operations dashboard"
       },
       {
-        "id": "roleforge",
-        "label": "Roleforge, a job-application tracker"
+        "id": "roleflame",
+        "label": "Roleflame, a job-application tracker"
       }
     ]
   },
   "commit": "76ef65e40b622a8d6d5fa5800e6ab42acbece6bf",
   "consumersConfirmed": true,
   "consumersConfirmedAt": "2026-10-01",
+  "consumersReconfirmDue": "Roleforge was renamed Roleflame (hds#1312); re-confirm both product apps, then set consumersConfirmedAt and drop this field.",
   "names": [
     "AssetImg",
     "Badge",
@@ -122,7 +123,7 @@
       ]
     },
     {
-      "consumer": "roleforge",
+      "consumer": "roleflame",
       "ref": "origin/main",
       "rows": [
         {
