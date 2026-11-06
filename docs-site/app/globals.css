@@ -676,9 +676,10 @@ div:has(> .hds-docs-display) {
   overflow-wrap: anywhere;
 }
 .hds-swatch-copied {
+  /* Over the squares (bottom left), so it never covers the token name. */
   position: absolute;
-  top: 0.375rem;
-  right: 0.375rem;
+  bottom: var(--semantic-space-scale-xs);
+  left: var(--semantic-space-scale-xs);
   font-size: 0.6875rem;
   font-weight: 500;
   color: var(--semantic-color-content-onAccent);
@@ -887,11 +888,6 @@ div:has(> .hds-docs-display) {
 .hds-elevation-card {
   line-height: 1.4;
 }
-@media (width < 30rem) {
-  .hds-swatch-block {
-    height: 3.5rem;
-  }
-}
 
 /* A linked inline-code chip is inline-flex, so the link's underline does not reach it
    (text-decoration skips inline-flex children). Draw the cue on the chip itself. */
@@ -1089,4 +1085,14 @@ a code[data-density] {
   margin-top: var(--semantic-space-scale-sm);
   color: var(--semantic-color-content-secondary);
   font-size: var(--semantic-typography-caption-font-size);
+}
+
+/* The site footer: the one line that carries the released version, on every route. */
+.hds-site-footer {
+  padding: var(--semantic-space-scale-md)
+    max(var(--semantic-space-scale-md), env(safe-area-inset-left, 0px));
+  border-top: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
+  font-size: 0.8125rem;
+  color: var(--semantic-color-content-tertiary);
+  text-align: center;
 }

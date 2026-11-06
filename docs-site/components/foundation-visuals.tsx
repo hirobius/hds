@@ -47,6 +47,9 @@ function SpecLine({ label, values }: { label: string; values: string }) {
   );
 }
 
+/** Hex values read in one case (lowercase), whatever case the token file stores. */
+const hex = (v: string) => (v.startsWith('#') ? v.toLowerCase() : v);
+
 function ColorGallery() {
   return (
     <>
@@ -57,7 +60,8 @@ function ColorGallery() {
               <p className="hds-visual-label">{group.title}</p>
               <div className={`hds-swatch-grid${gallery.dense ? ' hds-swatch-grid--dense' : ''}`}>
                 {group.swatches.map((s) => {
-                  const dark = s.darkValue !== null && s.darkValue !== s.value ? s.darkValue : null;
+                  const dark =
+                    s.darkValue !== null && s.darkValue !== s.value ? hex(s.darkValue) : null;
                   const name = s.cssVar ?? s.token;
                   // Fills are the shipped CSS variables, not copied values (hds#846).
                   return (
@@ -80,11 +84,11 @@ function ColorGallery() {
                         <code className="hds-swatch-name">{name}</code>
                         {dark ? (
                           <>
-                            <span className="hds-swatch-value">L {s.value}</span>
+                            <span className="hds-swatch-value">L {hex(s.value)}</span>
                             <span className="hds-swatch-value">D {dark}</span>
                           </>
                         ) : (
-                          <span className="hds-swatch-value">{s.value}</span>
+                          <span className="hds-swatch-value">{hex(s.value)}</span>
                         )}
                       </span>
                     </CopyCard>
