@@ -17,6 +17,8 @@ import { useHdsMotion } from '../../src/app/hooks/useHdsMotion';
  *     --primitive-duration-short: 0s;
  *     --primitive-duration-medium: 0s;
  *     --primitive-duration-long: 0s;
+ *     --primitive-duration-stagger: 0s;
+ *     --primitive-duration-extended: 0s;
  *     --hds-motion-productive-duration: 0s;
  *     --hds-motion-expressive-duration: 0s;
  *     --hds-motion-spatial-duration: 0s;
