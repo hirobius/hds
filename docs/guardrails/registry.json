@@ -102,6 +102,7 @@
       "node scripts/generate-llms-txt.mjs --check",
       "node scripts/figma-disposition.mjs --check",
       "node scripts/figma-links.mjs --check",
+      "node scripts/check-figma-coverage.mjs",
       "node scripts/check-figma-fallbacks.mjs",
       "node scripts/check-figma-components.mjs --report",
       "node scripts/check-guardrail-drift.mjs",
@@ -119,6 +120,24 @@
       "pnpm typecheck",
       "node scripts/lib/test-lanes.mjs run",
       "pnpm lint"
+    ],
+    "pre-push": [
+      {
+        "name": "Secret + PII scan (pushed commits; fails closed without gitleaks)",
+        "run": "node scripts/hooks/secret-pii-scan.mjs"
+      },
+      {
+        "name": "Record freshness (status.json + changeset presence)",
+        "run": "node scripts/check-record-freshness.mjs"
+      },
+      {
+        "name": "TDD gate (source changes ship with a test)",
+        "run": "node scripts/check-tests-with-code.mjs"
+      },
+      {
+        "name": "Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + affected tests + smoke)",
+        "run": "node scripts/pre-push-gate.mjs"
+      }
     ]
   },
   "gates": [
@@ -360,13 +379,13 @@
     },
     {
       "id": "check-figma-coverage",
-      "description": "Counts coverage from the FIGMA side: every component set published to the library (figma/inventory.json) must be reachable from code through an @figma JSDoc tag. figma:links --check counts the other direction — components in code that carry a tag — so a design published in Figma and never wired up is invisible to it. Refuses to report green from an inventory marked complete:false, because a hand walk cannot prove a page is absent. firingChannel is manual until a full `pnpm figma:inventory --fetch` inventory is committed; it becomes ci-pr then. Exit 0 clean, 1 unmapped assets or an incomplete inventory, 2 no inventory yet.",
-      "severity": "warn",
+      "description": "Counts coverage from the FIGMA side: every component set published to the library (figma/inventory.json) must be reachable from code through an @figma JSDoc tag. figma:links --check counts the other direction — components in code that carry a tag — so a design published in Figma and never wired up is invisible to it. Refuses to report green from an inventory marked complete:false, because a hand walk cannot prove a page is absent. The committed inventory is complete, so it runs in the pretest lane (hds#1147); `pnpm figma:inventory` reads the same mapping overrides, so the two counts agree. Exit 0 clean, 1 unmapped assets or an incomplete inventory, 2 no inventory yet.",
+      "severity": "error",
       "gateScript": "scripts/check-figma-coverage.mjs",
       "fixturePath": "fixtures/check-figma-coverage",
       "owner": "Adrian",
       "source": "agent",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "supportsJson": true
     },
     {

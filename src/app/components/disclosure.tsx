@@ -43,7 +43,7 @@ type DisclosureVariant = 'panel' | 'nav' | 'card' | 'row';
 // timing an accordion needs, not a CSS transition), so that animation is
 // untouched by this migration — only the static layout/color styling moved.
 // min-h: the caption-size label is 18px tall, under the 24px WCAG 2.5.8 floor (hds#520).
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-nav/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-disclosure/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const disclosureTriggerVariants = /* @__PURE__ */ cva(
   // tier-ok: 24px WCAG 2.5.8 target floor, not tenant-scaled (hds#520)
   'flex min-h-[var(--primitive-size-interactive-minCompact)] hds-touch-row w-full cursor-pointer items-center gap-[var(--semantic-space-sidebar-gap)] text-left text-foreground transition-[border-color,box-shadow,color]',
@@ -51,7 +51,7 @@ const disclosureTriggerVariants = /* @__PURE__ */ cva(
     variants: {
       variant: {
         panel: 'min-w-0 justify-between',
-        nav: 'justify-between rounded-[var(--semantic-radius-action)] border-0 px-0 py-[var(--component-nav-paddingY)] hover:bg-[var(--semantic-color-surface-raised)] data-[state=open]:bg-[var(--semantic-color-surface-raised)]',
+        nav: 'justify-between rounded-[var(--semantic-radius-action)] border-0 px-0 py-[var(--component-disclosure-paddingY)] hover:bg-[var(--semantic-color-surface-raised)] data-[state=open]:bg-[var(--semantic-color-surface-raised)]',
         // row: list row; the trigger holds label + preview + chevron, actions are a sibling
         row: 'min-w-0 justify-between py-[var(--semantic-space-scale-xs)]',
         // grid-ok: label + caret row; minmax(0,1fr) lets label shrink to any viewport, caret is a small auto column

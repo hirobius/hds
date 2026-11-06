@@ -1,52 +1,50 @@
 #!/usr/bin/env sh
 set -e
 
-# Quiet by default: scripts/hook-run.mjs runs each stage below (the echo line
-# names it, the lines under it are its commands), prints one summary line when
-# green and only the failing stage + a log path when red. HOOK_VERBOSE=1 runs
-# this file as-is with full output.
+# Quiet by default: scripts/hook-run.mjs expands the lane call below into its
+# stages (one per lane step, named by the step's title), prints one summary
+# line when green and only the failing stage + a log path when red.
+# HOOK_VERBOSE=1 runs this file as-is: run-lane.mjs prints each title, then
+# streams the step's output.
 [ -n "$HOOK_RUN_RAW" ] || exec node scripts/hook-run.mjs "$(basename "$0")"
 
+# The stages live in docs/guardrails/registry.json, lane "pre-push" (hds#1095),
+# beside check:fast, check:full, pretest and ralph-gate. Why they are in this
+# order:
+#
 # ── Lean pre-push gate set (ADR-018 §5 / #52) ────────────────────────────────
 # Deterministic and environment-agnostic: no live-site fetches (was:
 # visual-ingest → hirobius.io), no browser-dependent steps (was: test:a11y via
 # Playwright), no self-heal, no 56-gate check:full chain. Ends the push-time
-# --no-verify workaround.
+# --no-verify workaround. The heavier lean gates that need a full toolchain —
+# size-limit and the docs-site axe gate — run in CI, not at push time.
 #
-# The heavier lean gates that need a full toolchain — size-limit and the
-# docs-site axe gate — run in CI (chromatic.yml / quality.yml), not at push time.
-
-# Secret + PII scan (hirobius/ops#943): vendored scripts/hooks/secret-pii-scan.mjs
-# from ops, template ops scripts/hooks/fleet/pre-push. Stays the FIRST stage: it
-# reads git's pre-push stdin (hook-run.mjs forwards it) and scans only the
-# commits this push adds: gitleaks (--redact, .gitleaks.toml) for secrets, plus
-# emails / US phones / SSNs on added lines. gitleaks missing FAILS with the
-# install command (brew install gitleaks); one push without it:
-# SKIP_SECRET_SCAN=1 git push. Reviewed PII false positive: `pii-allow` on the line.
-echo "Secret + PII scan (pushed commits; fails closed without gitleaks)…"
-node scripts/hooks/secret-pii-scan.mjs
-
-# Runs next: it is cheap, and when it is going to fail the slow gates below
-# should not burn minutes first. Fix: name the issue in a commit message
-# (`Refs ops#1057`); its receipt comment is the record (ops#1057).
-# Replaces "update it at intervals": status.json/CHANGELOG.md going stale is a
-# convention nothing enforced (hds#249). A push is the state change the fleet
-# dashboard shows, so this runs here rather than per-commit.
-echo "Record freshness (status.json + changeset presence)…"
-node scripts/check-record-freshness.mjs
-
-# TDD gate (ported from ops#502): a branch that changes src/ or scripts/ code
-# must also change a test file (globs read from vitest.config.ts). Cheap git
-# diff, so it sits before the slow test run. Escape: a "no-test: <reason>"
-# line in a branch commit message.
-echo "TDD gate (source changes ship with a test)…"
-node scripts/check-tests-with-code.mjs
-
-# Tiered gate (ops#1057; rule in scripts/lib/gate-tier.mjs): docs-only diffs
-# run no tests; small diffs run eslint on changed files + typecheck + vitest
-# related; deps, build/test config, tokens/theme, scripts/, >25 files or
-# HDS_FULL_GATE=1 run the full tier (check:fast + tests + smoke:consumer). The
-# full tier's tests are only the ones the diff reaches (scripts/lib/test-lanes.mjs,
-# hds#1090); shared config, tokens, generators or hooks still run the whole suite.
-echo "Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + affected tests + smoke)…"
-node scripts/pre-push-gate.mjs
+# 1. Secret + PII scan (hirobius/ops#943): vendored
+#    scripts/hooks/secret-pii-scan.mjs from ops, template ops
+#    scripts/hooks/fleet/pre-push. Stays the FIRST stage: it reads git's
+#    pre-push stdin (hook-run.mjs forwards it to every stage; in raw mode the
+#    first step inherits it) and scans only the commits this push adds:
+#    gitleaks (--redact, .gitleaks.toml) for secrets, plus emails / US phones /
+#    SSNs on added lines. gitleaks missing FAILS with the install command
+#    (brew install gitleaks); one push without it: SKIP_SECRET_SCAN=1 git push.
+#    Reviewed PII false positive: `pii-allow` on the line.
+#
+# 2. Record freshness (hds#249): cheap, and when it is going to fail the slow
+#    gates below should not burn minutes first. Fix: name the issue in a commit
+#    message (`Refs ops#1057`); its receipt comment is the record (ops#1057).
+#    A push is the state change the fleet dashboard shows, so this runs here
+#    rather than per-commit.
+#
+# 3. TDD gate (ported from ops#502): a branch that changes src/ or scripts/
+#    code must also change a test file (globs read from vitest.config.ts).
+#    Cheap git diff, so it sits before the slow test run. Escape: a
+#    "no-test: <reason>" line in a branch commit message.
+#
+# 4. Tiered gate (ops#1057; rule in scripts/lib/gate-tier.mjs): docs-only
+#    diffs run no tests; small diffs run eslint on changed files + typecheck +
+#    vitest related; deps, build/test config, tokens/theme, scripts/, >25 files
+#    or HDS_FULL_GATE=1 run the full tier (check:fast + tests + smoke:consumer).
+#    The full tier's tests are only the ones the diff reaches
+#    (scripts/lib/test-lanes.mjs, hds#1090); shared config, tokens, generators
+#    or hooks still run the whole suite.
+node scripts/run-lane.mjs pre-push

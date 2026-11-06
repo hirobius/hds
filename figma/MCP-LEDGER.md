@@ -1051,3 +1051,66 @@ Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 f
 | Session total: 6 calls (2 writes, 4 reads). No publish. |
 
 Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 and 6).
+
+## 2026-11-06 · Agent sync: uiRegular + meta/commit (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                      | Tool        | Kind  | Target                                                    | Why             | Result                                                    |
+| ------------------------------------------------------ | ----------- | ----- | --------------------------------------------------------- | --------------- | --------------------------------------------------------- |
+| 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against e14b048c | uiRegular, meta | OK. updated 1, created 7; post 6082c48f; receipt written. |
+| Session total: 1 use_figma call (1 write). No publish. |
+
+## 2026-11-06 · Agent sync: meta/commit after #1243 (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                      | Tool        | Kind  | Target                                                    | Why         | Result                                         |
+| ------------------------------------------------------ | ----------- | ----- | --------------------------------------------------------- | ----------- | ---------------------------------------------- |
+| 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 6082c48f | meta/commit | OK. updated 1; post cd0f8050; receipt written. |
+| Session total: 1 use_figma call (1 write). No publish. |
+
+## 2026-11-06 · References page made product-neutral (files 2VgBbVpKiDnu0aftJEVyBQ, 7US9lA0qsUP0uwmtQtA8Ss)
+
+| #                                                       | Tool           | Kind  | Target                            | Why             | Result                                |
+| ------------------------------------------------------- | -------------- | ----- | --------------------------------- | --------------- | ------------------------------------- |
+| 1                                                       | `get_metadata` | read  | library References page 2190:2    | Adrian question | OK. Roleforge reference cards.        |
+| 2                                                       | `use_figma`    | read  | Explorations References page text | find app names  | OK. 47 hits.                          |
+| 3                                                       | `use_figma`    | write | Explorations References page text | Adrian request  | OK. 43 texts rewritten, tags renamed. |
+| 4                                                       | `use_figma`    | read  | Explorations References page text | find leftovers  | OK. 10 hits.                          |
+| 5                                                       | `use_figma`    | write | Explorations References page text | Adrian request  | OK. 9 texts rewritten.                |
+| Session total: 5 calls (2 writes, 3 reads). No publish. |
+
+## 2026-11-06 · Roleforge renamed to Roleflame (file T6rf1cUp3qM16UpWNGh3fR)
+
+| #                                                      | Tool              | Kind  | Target                           | Why        | Result                                 |
+| ------------------------------------------------------ | ----------------- | ----- | -------------------------------- | ---------- | -------------------------------------- |
+| 1                                                      | `get_figma_skill` | read  | figma-use SKILL.md               | skill load | OK.                                    |
+| 2                                                      | `create_session`  | read  | roleflame T6rf1cUp3qM16UpWNGh3fR | session    | OK.                                    |
+| 3                                                      | `use_figma`       | read  | all pages: names and text        | find hits  | OK. References 2:2: 1 name, 1 text.    |
+| 4                                                      | `use_figma`       | write | References text 2:7              | rename     | OK. 1 text, name follows (autoRename). |
+| 5                                                      | `use_figma`       | read  | all pages: names and text        | verify     | OK. 0 hits.                            |
+| Session total: 5 calls (1 write, 4 reads). No publish. |
+
+## 2026-11-06 · EmptyState and Radio unused properties (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                        | Tool             | Kind  | Target                                                                                                             | Why               | Result                                                                                                                                                |
+| -------------------------------------------------------- | ---------------- | ----- | ------------------------------------------------------------------------------------------------------------------ | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1                                                        | `create_session` | read  | library 2VgBbVpKiDnu0aftJEVyBQ                                                                                     | session           | OK.                                                                                                                                                   |
+| 2                                                        | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 properties and references                                                       | find unused       | OK. EmptyState Description#2337:10 (duplicate of Show description), Radio Label#36:0.                                                                 |
+| 3                                                        | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 screenshots                                                                     | before            | OK. figma/shots/*-props-before.png.                                                                                                                   |
+| 4                                                        | `use_figma`      | write | Radio Label texts 2337:16393, 16396, 16399, 16403, 16407, 16411, 16415, 16420, 16423, 16427; EmptyState 2337:14631 | publish dialog    | OK. Labels bound to Label#36:0; Description#2337:10 removed. 0 unused.                                                                                |
+| 5                                                        | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 screenshots                                                                     | after             | OK. No visual change.                                                                                                                                 |
+| 6                                                        | `use_figma`      | read  | Radio Focused 2337:16397, 2337:16412 structure                                                                     | focus ring        | OK. Ring 28x28 at -4 (gap 2 + width 2), label at 24: touches, as in code. Stroke on borderWidth/emphasis and border/accent.                           |
+| 7                                                        | `use_figma`      | read  | Radio Focused 2337:16397 screenshot 4x                                                                             | before            | OK. figma/shots/radio-focus-before.png.                                                                                                               |
+| 8                                                        | `use_figma`      | write | Focus ring 2337:16400, 2337:16416                                                                                  | match code tokens | OK. Bound focus/ring/width, focus/ring/color, focus/radius/pill/ringRadius. Geometry kept. After shot inline: figma/shots/radio-focus-after.png.      |
+| 9                                                        | `use_figma`      | read  | library page list                                                                                                  | alphabetize       | OK. 84 pages; 1 separator "———" 20:6.                                                                                                                 |
+| 10                                                       | `use_figma`      | write | all 84 pages (root order only)                                                                                     | Adrian request    | OK. Cover, Getting Started, "———", then 81 pages A–Z. No renames.                                                                                     |
+| 11                                                       | `use_figma`      | write | all 84 pages (root order only)                                                                                     | pin groups        | OK. Cover, Getting Started, 3 Foundations, "———", 75 pages A–Z, Archive, Archive / Deprecated, References. No second separator exists.                |
+| 12                                                       | `use_figma`      | write | all 84 pages (root order only)                                                                                     | tail group        | OK. Head, A–Z, then Button v2 (review), Logo explorations, Spec sheet kit, Archive, Archive / Deprecated, Deprecated. References 2190:2 still exists. |
+| Session total: 12 calls (5 writes, 7 reads). No publish. |
+
+## 2026-11-06 · Agent sync: disclosure paddingY after #1252 (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                      | Tool        | Kind  | Target                                                                                                                                                                      | Why          | Result                                                    |
+| ------------------------------------------------------ | ----------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------------------------------------- |
+| 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against cd0f8050 (new VariableID:2534:50 disclosure/paddingY, VariableID:14:9 nav/paddingY hidden, VariableID:2475:51 meta/commit) | token change | OK. updated 2, created 1; post 550212e6; receipt written. |
+| Session total: 1 use_figma call (1 write). No publish. |
+
+Calls logged for 2026-11-06: 25 of 200 (1, 1, 5, 5, 12 and 1).

@@ -349,6 +349,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.zIndex.control": "Raises an interactive control (e.g. a native range input) above its visual decoration for hit-testing.",
   "semantic.zIndex.sticky": "Sticky-positioned elements, such as a table header row.",
   "component.nav.paddingY": "Vertical padding inside nav items.",
+  "component.disclosure.paddingY": "Vertical padding of the nav-variant Disclosure trigger.",
   "component.tag.background": "Unselected tag surface color (matches the rendered pill; the active fill is activeBackground).",
   "component.tag.text": "Unselected tag text color (the active label uses activeText).",
   "component.tag.border": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",

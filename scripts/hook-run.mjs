@@ -7,7 +7,9 @@
  *
  * The hook's own arguments (e.g. commit-msg's message file) are forwarded to
  * every stage as its positional parameters, so a stage reads them as "$1"….
- * Parses .husky/<hook> into stages (echo "<title>…" + the commands under it),
+ * Parses .husky/<hook> into stages (echo "<title>…" + the commands under it;
+ * a `node scripts/run-lane.mjs <lane>` line becomes one stage per step of that
+ * registry lane, hds#1095),
  * runs them serially via `sh -c`, and captures output to
  * $(git rev-parse --git-dir)/hook-logs/<hook>-<timestamp>.log (newest 5 kept).
  * Green: one summary line. Red: only the failing stage's excerpt, the full-log
@@ -28,6 +30,7 @@ import {
   stageLabel,
   summaryLine,
 } from './lib/hook-output.mjs';
+import { expandHookLanes } from './lib/gate-lanes.mjs';
 
 const hook = process.argv[2];
 const hookArgs = process.argv.slice(3);
@@ -47,7 +50,16 @@ if (verbose) {
   process.exit(r.status ?? 1);
 }
 
-const stages = parseHookStages(fs.readFileSync(hookFile, 'utf8')).map((s) => ({
+// A lane-backed hook needs the registry. If it is missing or broken the lane
+// line stays unexpanded, parses to no stage, and the hook fails closed below.
+let registry = null;
+try {
+  registry = JSON.parse(fs.readFileSync(path.join(root, 'docs/guardrails/registry.json'), 'utf8'));
+} catch {
+  /* no registry: hooks without a lane call parse as before */
+}
+const hookText = expandHookLanes(fs.readFileSync(hookFile, 'utf8'), registry);
+const stages = parseHookStages(hookText).map((s) => ({
   name: s.name,
   cmd: s.commands.join(' && '),
 }));

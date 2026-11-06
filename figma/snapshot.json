@@ -1,15 +1,15 @@
 {
-  "checksum": "e14b048c",
+  "checksum": "550212e6",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-05T22:14:02.019Z",
+    "takenAt": "2026-11-06T01:11:25.063Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "ad1f26c8",
-      "pushedAt": "2026-11-05T22:11:48.942Z",
+      "modelHash": "da4e8b23",
+      "pushedAt": "2026-11-06T01:11:25.024Z",
       "scope": null
     },
     "collections": [
@@ -9274,6 +9274,122 @@
                 "value": 24
               }
             }
+          },
+          {
+            "id": "VariableID:2523:50",
+            "name": "typography/uiRegular/font-family",
+            "path": "semantic.typography.uiRegular.font-family",
+            "resolvedType": "STRING",
+            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+            "scopes": [
+              "FONT_FAMILY"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiRegular-font-family)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:31",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              },
+              "Dark": {
+                "alias": "VariableID:5:31",
+                "to": "Hirobius/Primitives: typography/family/primary"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2523:51",
+            "name": "typography/uiRegular/font-size",
+            "path": "semantic.typography.uiRegular.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Varies by density: its value comes from Hirobius/Density.",
+            "scopes": [
+              "FONT_SIZE"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiRegular-font-size)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2523:55",
+                "to": "Hirobius/Density: semantic/typography/uiRegular/font-size"
+              },
+              "Dark": {
+                "alias": "VariableID:2523:55",
+                "to": "Hirobius/Density: semantic/typography/uiRegular/font-size"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2523:52",
+            "name": "typography/uiRegular/font-weight",
+            "path": "semantic.typography.uiRegular.font-weight",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiRegular-font-weight)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
+              },
+              "Dark": {
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2523:53",
+            "name": "typography/uiRegular/letter-spacing",
+            "path": "semantic.typography.uiRegular.letter-spacing",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from 0em at 16px.",
+            "scopes": [
+              "LETTER_SPACING"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiRegular-letter-spacing)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 0
+              },
+              "Dark": {
+                "value": 0
+              }
+            }
+          },
+          {
+            "id": "VariableID:2523:54",
+            "name": "typography/uiRegular/line-height",
+            "path": "semantic.typography.uiRegular.line-height",
+            "resolvedType": "FLOAT",
+            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from 1.5 × 16px.",
+            "scopes": [
+              "LINE_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-uiRegular-line-height)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "value": 24
+              },
+              "Dark": {
+                "value": 24
+              }
+            }
           }
         ]
       },
@@ -10790,6 +10906,26 @@
             }
           },
           {
+            "id": "VariableID:2534:50",
+            "name": "disclosure/paddingY",
+            "path": "component.disclosure.paddingY",
+            "resolvedType": "FLOAT",
+            "description": "Vertical padding of the nav-variant Disclosure trigger.",
+            "scopes": [
+              "GAP"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-disclosure-paddingY)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:6",
+                "to": "Hirobius/Primitives: space/2"
+              }
+            }
+          },
+          {
             "id": "VariableID:2150:14",
             "name": "inlineCode/bg",
             "path": "component.inlineCode.bg",
@@ -11222,7 +11358,7 @@
             "scopes": [
               "GAP"
             ],
-            "hiddenFromPublishing": false,
+            "hiddenFromPublishing": true,
             "codeSyntax": {
               "WEB": "var(--component-nav-paddingY)"
             },
@@ -12482,6 +12618,26 @@
                 "to": "Hirobius/Primitives: typography/size/sm"
               }
             }
+          },
+          {
+            "id": "VariableID:2523:55",
+            "name": "semantic/typography/uiRegular/font-size",
+            "path": "density.semantic.typography.uiRegular.font-size",
+            "resolvedType": "FLOAT",
+            "description": "Density value of semantic.typography.uiRegular.font-size: Comfortable is the rest value, Compact applies under [data-density=\"compact\"].",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Comfortable": {
+                "alias": "VariableID:5:37",
+                "to": "Hirobius/Primitives: typography/size/base"
+              },
+              "Compact": {
+                "alias": "VariableID:5:36",
+                "to": "Hirobius/Primitives: typography/size/sm"
+              }
+            }
           }
         ]
       },
@@ -13383,7 +13539,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "9f57805"
+                "value": "ab3d5fe"
               }
             }
           },
@@ -13825,6 +13981,31 @@
           "letterSpacing": "VariableID:2477:73",
           "lineHeight": "VariableID:2477:74"
         }
+      },
+      {
+        "id": "S:be7fa533bf6ca9cecde2b81f1fe1261f1382d00f,",
+        "name": "typography/uiRegular",
+        "path": "semantic.typography.uiRegular",
+        "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "fontFamily": "Plus Jakarta Sans",
+        "fontStyle": "Regular",
+        "fontSize": 16,
+        "lineHeight": {
+          "unit": "PIXELS",
+          "value": 24
+        },
+        "letterSpacing": {
+          "unit": "PIXELS",
+          "value": 0
+        },
+        "textCase": "ORIGINAL",
+        "boundVariables": {
+          "fontFamily": "VariableID:2523:50",
+          "fontSize": "VariableID:2523:51",
+          "fontWeight": "VariableID:2523:52",
+          "letterSpacing": "VariableID:2523:53",
+          "lineHeight": "VariableID:2523:54"
+        }
       }
     ],
     "effectStyles": [
@@ -14168,5 +14349,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:943487d17dc03dac5b314a3faef50e22d5546abc56c2f27227c62778b274e896"
+  "tokensHash": "sha256:33e0fb0fc37bd10b889eadd9a66c93987e5ad700d15a090c26c8a4a0c1938ddd"
 }

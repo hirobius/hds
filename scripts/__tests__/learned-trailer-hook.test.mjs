@@ -18,6 +18,7 @@ const FILES = [
   '.husky/commit-msg',
   'scripts/hook-run.mjs',
   'scripts/lib/hook-output.mjs',
+  'scripts/lib/gate-lanes.mjs',
   'scripts/check-learned-trailer.mjs',
 ];
 

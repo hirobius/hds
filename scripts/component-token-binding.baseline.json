@@ -43,5 +43,5 @@
     "card.padding": "LITERAL-MATCH",
     "card.radius": "LITERAL-MATCH"
   },
-  "findings": ["borrowed:src/app/components/disclosure.tsx->nav.paddingY"]
+  "findings": []
 }

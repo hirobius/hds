@@ -3087,7 +3087,15 @@
       "paddingY": {
         "$type": "dimension",
         "$value": "{primitive.space.2}",
-        "$description": "Vertical padding inside nav items."
+        "$description": "Vertical padding inside nav items.",
+        "$deprecated": "superseded by component.disclosure.paddingY (hds#1147); removed in 1.0.0"
+      }
+    },
+    "disclosure": {
+      "paddingY": {
+        "$type": "dimension",
+        "$value": "{primitive.space.2}",
+        "$description": "Vertical padding of the nav-variant Disclosure trigger."
       }
     },
     "tag": {

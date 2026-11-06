@@ -12,9 +12,14 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { expandHookLanes } from '../lib/gate-lanes.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
+// .husky/pre-push takes its stages from a registry lane (hds#1095): read the
+// hook with lane calls expanded, the same text hook-run.mjs runs.
+const readHook = (rel) =>
+  expandHookLanes(read(rel), JSON.parse(read('docs/guardrails/registry.json')));
 
 function parseHook(text) {
   const steps = [];
@@ -82,13 +87,13 @@ describe('parsers', () => {
 
 describe('CONTRIBUTING.md gate table matches the files that run the gates', () => {
   it('pre-commit', () => {
-    expect(table['pre-commit']).toEqual(parseHook(read('.husky/pre-commit')));
+    expect(table['pre-commit']).toEqual(parseHook(readHook('.husky/pre-commit')));
   });
   it('commit-msg', () => {
-    expect(table['commit-msg']).toEqual(parseHook(read('.husky/commit-msg')));
+    expect(table['commit-msg']).toEqual(parseHook(readHook('.husky/commit-msg')));
   });
   it('pre-push', () => {
-    expect(table['pre-push']).toEqual(parseHook(read('.husky/pre-push')));
+    expect(table['pre-push']).toEqual(parseHook(readHook('.husky/pre-push')));
   });
   it('ci', () => {
     expect(table.ci).toEqual(parseWorkflow(read('.github/workflows/ci.yml')));
