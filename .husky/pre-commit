@@ -90,6 +90,11 @@ node scripts/check-type-ramp.mjs
 echo "No ALL CAPS (nothing transforms text to uppercase)…"
 node scripts/check-no-uppercase.mjs
 
+# No ordinal number before a page, section or nav name (Adrian, 2026-11-06):
+# "Color", not "02 Color". Reads content/, figma/spec-sheets/ and the spec-sheet generator.
+echo "No ordinal labels…"
+node scripts/check-no-ordinal-labels.mjs
+
 # hds#756: letter-spacing comes from the type tokens only (CSS side of hds/no-custom-tracking).
 echo "No hand-set letter-spacing…"
 node scripts/check-no-custom-tracking.mjs
