@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-06T09:02:32.921Z",
+  "generated": "2026-11-06T09:50:30.662Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -17373,6 +17373,14 @@
         "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
         "alias": "{semantic.size.row.compact}",
         "resolvedValue": "40px"
+      },
+      {
+        "path": "component.table.cell.paddingX",
+        "cssVar": "--component-table-cell-paddingX",
+        "type": "dimension",
+        "description": "Table header and body cell inline padding: scale.md (28px, 16px compact). Its own token, so a tenant's roomier surface.padding does not widen every cell (hds#1339).",
+        "alias": "{semantic.space.scale.md}",
+        "resolvedValue": "28px"
       }
     ],
     "role": [

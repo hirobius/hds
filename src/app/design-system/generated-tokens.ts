@@ -791,6 +791,11 @@ export const tokens = {
     },
     pagination: {
       compactControlSize: "var(--component-pagination-compactControlSize)"
+    },
+    table: {
+      cell: {
+        paddingX: "var(--component-table-cell-paddingX)"
+      }
     }
   },
   role: {

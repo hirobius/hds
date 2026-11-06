@@ -51,7 +51,7 @@ const COLUMN_FLOOR = { true: 'min-w-[var(--semantic-size-tile)]', false: '' } as
 
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-density paddingY/minHeight + sticky-header offset tokens have no Tailwind-theme utility; var()-based so still token-driven
 const tableHeaderCellVariants = /* @__PURE__ */ cva(
-  'flex items-center bg-[var(--semantic-color-surface-raised)] px-[var(--semantic-space-surface-padding)] break-words',
+  'flex items-center bg-[var(--semantic-color-surface-raised)] px-[var(--component-table-cell-paddingX)] break-words',
   {
     variants: {
       // The rule under the header band. Off when the table has no body rows, so the
@@ -123,7 +123,7 @@ const tableDataCellVariants = /* @__PURE__ */ cva(
   // items-center (not items-start) so mixed cell content lines up on a shared
   // vertical center — a badge/status slot no longer floats above its text
   // siblings in the same row. Matches the header cell's items-center.
-  'flex items-center px-[var(--semantic-space-surface-padding)]',
+  'flex items-center px-[var(--component-table-cell-paddingX)]',
   {
     variants: {
       align: {

@@ -659,6 +659,7 @@ declare module 'react' {
     '--component-inlineLink-size-lg-fontSize'?: string | undefined;
     '--component-inlineLink-size-lg-iconSize'?: string | undefined;
     '--component-pagination-compactControlSize'?: string | undefined;
+    '--component-table-cell-paddingX'?: string | undefined;
     '--role-background'?: string | undefined;
     '--role-foreground'?: string | undefined;
     '--role-card'?: string | undefined;

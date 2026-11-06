@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Table cells now pad with --component-table-cell-paddingX (28px, 16px compact), not --semantic-space-surface-padding, so a tenant or brand that set surface padding larger to widen table cells must now set --component-table-cell-paddingX."
+}
