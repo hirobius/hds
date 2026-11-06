@@ -424,6 +424,28 @@
       "supportsJson": false
     },
     {
+      "id": "check-figma-bindings",
+      "description": "Code <-> Figma variable bindings (hds#595, hds#1147). figma/bindings.json is a read-only use_figma snapshot (--emit-script, run it unmodified, --ingest) of the Hirobius/Component variables each mapped component set binds (a Button tone variable counts as the component variables it aliases). Compares it with check-component-token-binding --json and gives each component token one status: both, code-only, figma-only, neither, not-snapshotted. Report only: exits 0. Never writes to Figma.",
+      "severity": "warn",
+      "gateScript": "scripts/check-figma-bindings.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand",
+      "supportsJson": true
+    },
+    {
+      "id": "audit-figma-pixels",
+      "description": "Code render vs Figma render per variant (hds#1147), on the check-figma-components sets (Button, IconButton). Renders each Variant x Size x State from dist/ in Chromium (inside [data-hds], on the Figma canvas colour), crops the variant from the committed figma/pixels/<Name>.png using figma/pixels/<Name>.geometry.json (a read-only use_figma read), and reports pixelmatch diff % and size per variant. Needs pnpm build:lib; CHROMIUM_PATH picks a browser outside Playwright's cache. Report only: exits 0. Never writes to Figma.",
+      "severity": "warn",
+      "gateScript": "scripts/audit-figma-pixels.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "on-demand",
+      "supportsJson": true
+    },
+    {
       "id": "check-figma-mapping",
       "description": "Enforces the component parity contract (docs/architecture/variant-contract.md#figma-mapping): manifest variantAxes, componentProperties and figmaPropertyMapping must bind to props the component really accepts (TypeScript checker), contract axes backed by cva must be declared with matching enum values, inverted booleans must be \"Show …\" toggles, and Code Connect templates must map the same contract axes. Title Case property names are advisory warnings.",
       "severity": "error",

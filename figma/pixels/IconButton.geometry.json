@@ -1,0 +1,269 @@
+{
+  "nodeId": "2399:26744",
+  "render": {
+    "x": 0,
+    "y": 1292,
+    "width": 276,
+    "height": 908
+  },
+  "box": {
+    "x": 0,
+    "y": 1292,
+    "width": 276,
+    "height": 908
+  },
+  "variants": [
+    {
+      "name": "Variant=secondary, Size=md, State=rest",
+      "x": 32,
+      "y": 32,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=primary, Size=sm, State=rest",
+      "x": 112,
+      "y": 320,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=primary, Size=sm, State=hover",
+      "x": 112,
+      "y": 392,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=primary, Size=sm, State=pressed",
+      "x": 112,
+      "y": 464,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=primary, Size=sm, State=disabled",
+      "x": 112,
+      "y": 536,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=primary, Size=md, State=rest",
+      "x": 32,
+      "y": 320,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=primary, Size=md, State=hover",
+      "x": 32,
+      "y": 392,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=primary, Size=md, State=pressed",
+      "x": 32,
+      "y": 464,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=primary, Size=md, State=disabled",
+      "x": 32,
+      "y": 536,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=primary, Size=lg, State=rest",
+      "x": 192,
+      "y": 320,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=primary, Size=lg, State=hover",
+      "x": 192,
+      "y": 392,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=primary, Size=lg, State=pressed",
+      "x": 192,
+      "y": 464,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=primary, Size=lg, State=disabled",
+      "x": 192,
+      "y": 536,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=secondary, Size=sm, State=rest",
+      "x": 112,
+      "y": 32,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=secondary, Size=sm, State=hover",
+      "x": 112,
+      "y": 104,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=secondary, Size=sm, State=pressed",
+      "x": 112,
+      "y": 176,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=secondary, Size=sm, State=disabled",
+      "x": 112,
+      "y": 248,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=secondary, Size=md, State=hover",
+      "x": 32,
+      "y": 104,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=secondary, Size=md, State=pressed",
+      "x": 32,
+      "y": 176,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=secondary, Size=md, State=disabled",
+      "x": 32,
+      "y": 248,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=secondary, Size=lg, State=rest",
+      "x": 192,
+      "y": 32,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=secondary, Size=lg, State=hover",
+      "x": 192,
+      "y": 104,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=secondary, Size=lg, State=pressed",
+      "x": 192,
+      "y": 176,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=secondary, Size=lg, State=disabled",
+      "x": 192,
+      "y": 248,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=tertiary, Size=sm, State=rest",
+      "x": 112,
+      "y": 608,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=tertiary, Size=sm, State=hover",
+      "x": 112,
+      "y": 680,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=tertiary, Size=sm, State=pressed",
+      "x": 112,
+      "y": 752,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=tertiary, Size=sm, State=disabled",
+      "x": 112,
+      "y": 824,
+      "width": 36,
+      "height": 36
+    },
+    {
+      "name": "Variant=tertiary, Size=md, State=rest",
+      "x": 32,
+      "y": 608,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=tertiary, Size=md, State=hover",
+      "x": 32,
+      "y": 680,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=tertiary, Size=md, State=pressed",
+      "x": 32,
+      "y": 752,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=tertiary, Size=md, State=disabled",
+      "x": 32,
+      "y": 824,
+      "width": 44,
+      "height": 44
+    },
+    {
+      "name": "Variant=tertiary, Size=lg, State=rest",
+      "x": 192,
+      "y": 608,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=tertiary, Size=lg, State=hover",
+      "x": 192,
+      "y": 680,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=tertiary, Size=lg, State=pressed",
+      "x": 192,
+      "y": 752,
+      "width": 52,
+      "height": 52
+    },
+    {
+      "name": "Variant=tertiary, Size=lg, State=disabled",
+      "x": 192,
+      "y": 824,
+      "width": 52,
+      "height": 52
+    }
+  ]
+}
