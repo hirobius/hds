@@ -119,6 +119,24 @@
       "pnpm typecheck",
       "node scripts/lib/test-lanes.mjs run",
       "pnpm lint"
+    ],
+    "pre-push": [
+      {
+        "name": "Secret + PII scan (pushed commits; fails closed without gitleaks)",
+        "run": "node scripts/hooks/secret-pii-scan.mjs"
+      },
+      {
+        "name": "Record freshness (status.json + changeset presence)",
+        "run": "node scripts/check-record-freshness.mjs"
+      },
+      {
+        "name": "TDD gate (source changes ship with a test)",
+        "run": "node scripts/check-tests-with-code.mjs"
+      },
+      {
+        "name": "Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + affected tests + smoke)",
+        "run": "node scripts/pre-push-gate.mjs"
+      }
     ]
   },
   "gates": [

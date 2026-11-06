@@ -20,6 +20,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findPii, resolveRanges, parsePushLines } from '../hooks/secret-pii-scan.mjs';
 import { parseHookStages } from '../lib/hook-output.mjs';
+import { expandHookLanes } from '../lib/gate-lanes.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SCRIPT = join(ROOT, 'scripts', 'hooks', 'secret-pii-scan.mjs');
@@ -166,7 +167,10 @@ describe('hds fixtures through gitleaks + .gitleaks.toml', () => {
 
 describe('.husky/pre-push wiring', () => {
   it('runs the scan as the first stage', () => {
-    const [first] = parseHookStages(readFileSync(join(ROOT, '.husky', 'pre-push'), 'utf8'));
+    // The hook's stages live in the registry's pre-push lane (hds#1095).
+    const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
+    const hook = readFileSync(join(ROOT, '.husky', 'pre-push'), 'utf8');
+    const [first] = parseHookStages(expandHookLanes(hook, registry));
     expect(first.commands).toEqual(['node scripts/hooks/secret-pii-scan.mjs']);
   });
   it('hook-run.mjs forwards git pre-push stdin to the scan, so a leak blocks the push', () => {
@@ -174,6 +178,11 @@ describe('.husky/pre-push wiring', () => {
     mkdirSync(join(r.dir, '.husky'));
     mkdirSync(join(r.dir, 'scripts', 'hooks'), { recursive: true });
     copyFileSync(join(ROOT, '.husky', 'pre-push'), join(r.dir, '.husky', 'pre-push'));
+    mkdirSync(join(r.dir, 'docs', 'guardrails'), { recursive: true });
+    copyFileSync(
+      join(ROOT, 'docs/guardrails/registry.json'),
+      join(r.dir, 'docs/guardrails/registry.json'),
+    );
     copyFileSync(SCRIPT, join(r.dir, 'scripts', 'hooks', 'secret-pii-scan.mjs'));
     const out = spawnSync('node', [join(ROOT, 'scripts', 'hook-run.mjs'), 'pre-push'], {
       cwd: r.dir,

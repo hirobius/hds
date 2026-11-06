@@ -11,12 +11,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  expandHookLanes,
   expandLaneCalls,
   expandLaneScripts,
   laneCommands,
+  laneStages,
   readLaneScripts,
   runLane,
 } from '../lib/gate-lanes.mjs';
+import { parseHookStages } from '../lib/hook-output.mjs';
 
 const ROOT = join(import.meta.dirname, '..', '..');
 const registry = JSON.parse(readFileSync(join(ROOT, 'docs/guardrails/registry.json'), 'utf8'));
@@ -174,5 +177,152 @@ describe('expandLaneCalls', () => {
     const out = expandLaneCalls('X="$(node scripts/run-lane.mjs r --dry-run)"', reg);
     expect(out).toContain('pnpm check:contrast\nnode a.mjs');
     expect(expandLaneCalls('no lanes here', reg)).toBe('no lanes here');
+  });
+});
+
+// .husky/pre-push's stages, exactly as the hook listed them on main before
+// the pre-push lane (hds#1095): the echo title, then the one command under it.
+const OLD_PRE_PUSH_STAGES = [
+  [
+    'Secret + PII scan (pushed commits; fails closed without gitleaks)',
+    'node scripts/hooks/secret-pii-scan.mjs',
+  ],
+  [
+    'Record freshness (status.json + changeset presence)',
+    'node scripts/check-record-freshness.mjs',
+  ],
+  ['TDD gate (source changes ship with a test)', 'node scripts/check-tests-with-code.mjs'],
+  [
+    'Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + affected tests + smoke)',
+    'node scripts/pre-push-gate.mjs',
+  ],
+];
+
+describe('pre-push lane', () => {
+  const hook = readFileSync(join(ROOT, '.husky/pre-push'), 'utf8');
+
+  it('holds the stages .husky/pre-push hard-coded, in order', () => {
+    expect(laneStages(registry, 'pre-push')).toEqual(
+      OLD_PRE_PUSH_STAGES.map(([title, run]) => ({ title, run })),
+    );
+    expect(laneCommands(registry, 'pre-push')).toEqual(OLD_PRE_PUSH_STAGES.map(([, run]) => run));
+  });
+
+  it('the hook calls the lane and hard-codes no stage', () => {
+    expect(hook).toMatch(/^node scripts\/run-lane\.mjs pre-push$/m);
+    expect(parseHookStages(hook)).toEqual([]);
+  });
+
+  it('expanding the hook gives hook-run the exact old stages', () => {
+    const stages = parseHookStages(expandHookLanes(hook, registry));
+    expect(stages.map((s) => [s.title, ...s.commands])).toEqual(OLD_PRE_PUSH_STAGES);
+    expect(stages.map((s) => s.name)).toEqual([
+      'secret-pii-scan',
+      'record-freshness',
+      'tests-with-code',
+      'pre-push-gate',
+    ]);
+  });
+});
+
+describe('laneStages', () => {
+  it('titles a plain command step with the command itself', () => {
+    const reg = { lanes: { a: ['node x.mjs', { name: 'Why', run: 'pnpm y' }] } };
+    expect(laneStages(reg, 'a')).toEqual([
+      { title: 'node x.mjs', run: 'node x.mjs' },
+      { title: 'Why', run: 'pnpm y' },
+    ]);
+    expect(laneCommands(reg, 'a')).toEqual(['node x.mjs', 'pnpm y']);
+    expect(laneStages(reg, 'zzz')).toBeNull();
+  });
+});
+
+describe('expandHookLanes', () => {
+  const reg = { lanes: { p: [{ name: 'One', run: 'node a.mjs' }, 'pnpm b'] } };
+
+  it('replaces a lane call line with one echo stage per step', () => {
+    const text = 'set -e\n# note\n  node scripts/run-lane.mjs p\n';
+    expect(expandHookLanes(text, reg)).toBe(
+      'set -e\n# note\necho "One…"\nnode a.mjs\necho "pnpm b…"\npnpm b\n',
+    );
+  });
+
+  it('leaves text without a lane call, or calling an unknown lane, untouched', () => {
+    expect(expandHookLanes('echo "A…"\nnode a.mjs\n', reg)).toBe('echo "A…"\nnode a.mjs\n');
+    const unknown = 'node scripts/run-lane.mjs nope\n';
+    expect(expandHookLanes(unknown, reg)).toBe(unknown);
+  });
+});
+
+describe('hook-run.mjs runs a lane-backed hook stage by stage', () => {
+  const dirs = [];
+  afterEach(() => dirs.splice(0).forEach((d) => rmSync(d, { recursive: true, force: true })));
+
+  /** A git repo with the real .husky/pre-push and `lane` as its pre-push lane. */
+  function hookRepo(lane, env = {}) {
+    const dir = mkdtempSync(join(tmpdir(), 'hds-hook-lane-'));
+    dirs.push(dir);
+    spawnSync('git', ['init', '-q'], { cwd: dir });
+    mkdirSync(join(dir, '.husky'));
+    mkdirSync(join(dir, 'scripts/lib'), { recursive: true });
+    mkdirSync(join(dir, 'docs/guardrails'), { recursive: true });
+    cpSync(join(ROOT, '.husky/pre-push'), join(dir, '.husky/pre-push'));
+    for (const f of [
+      'run-lane.mjs',
+      'lib/gate-lanes.mjs',
+      'lib/guardrail-core.mjs',
+      'lib/gate-scope.mjs',
+    ])
+      cpSync(join(ROOT, 'scripts', f), join(dir, 'scripts', f));
+    writeFileSync(
+      join(dir, 'docs/guardrails/registry.json'),
+      JSON.stringify({ lanes: lane ? { 'pre-push': lane } : {}, gates: [] }),
+    );
+    return spawnSync('node', [join(ROOT, 'scripts/hook-run.mjs'), 'pre-push'], {
+      cwd: dir,
+      input: 'refs/heads/x 1 refs/heads/x 2\n',
+      encoding: 'utf8',
+      env: { ...process.env, HOOK_VERBOSE: '', ...env },
+    });
+  }
+
+  it('names each stage in the summary and feeds git stdin to every stage', () => {
+    const r = hookRepo([
+      { name: 'Read stdin', run: 'grep -q refs/heads/x' },
+      { name: 'Two', run: 'node -e 0' },
+    ]);
+    expect(r.stderr).toBe('');
+    expect(r.status).toBe(0);
+    expect(r.stdout).toMatch(/✓ pre-push: grep, node \(/);
+  });
+
+  it('stops at the first red stage with its exit code and names it', () => {
+    const r = hookRepo([
+      { name: 'One', run: 'node -e 0' },
+      { name: 'Two', run: 'node -e "process.exit(4)"' },
+      { name: 'Three', run: 'touch three' },
+    ]);
+    expect(r.status).toBe(4);
+    expect(r.stderr).toMatch(/pre-push: node failed \(exit 4\)/);
+  });
+
+  it('fails closed when the lane is missing', () => {
+    const r = hookRepo(null);
+    expect(r.status).not.toBe(0);
+  });
+
+  it('HOOK_VERBOSE=1 runs the hook file raw through run-lane, titles shown', () => {
+    const r = hookRepo(
+      [
+        { name: 'Read stdin', run: 'grep -q refs/heads/x' },
+        { name: 'Fails', run: 'exit 3' },
+        { name: 'Never', run: 'echo never' },
+      ],
+      { HOOK_VERBOSE: '1' },
+    );
+    expect(r.status).toBe(3);
+    expect(r.stdout).toContain('Read stdin…');
+    expect(r.stdout).toContain('Fails…');
+    expect(r.stdout).not.toContain('never');
   });
 });

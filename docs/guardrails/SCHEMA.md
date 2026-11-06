@@ -9,7 +9,7 @@ automated quality gate in the Hirobius repo.
 {
   "version": "1.0.0",
   "generated": "<ISO 8601 timestamp>",
-  "lanes": { "<lane name>": [ "<shell command>", ... ] },
+  "lanes": { "<lane name>": [ "<shell command>" | { "name": "<title>", "run": "<shell command>" }, ... ] },
   "gates": [ <GateEntry>, ... ]
 }
 ```
@@ -18,9 +18,13 @@ automated quality gate in the Hirobius repo.
 in `package.json`: `check:fast`, `check:full` and `pretest`. `package.json` calls
 `node scripts/run-lane.mjs <lane>`, which runs the commands in order and stops
 at the first failure. The `ralph-gate` lane holds the steps `ralph/gate.sh`
-runs (it reads them with `run-lane.mjs ralph-gate --dry-run`). `check-validator-wiring`
-expands lane calls in package.json and in `ralph/gate.sh` back to the lane's
-commands, so a gate run only from a lane still counts as wired.
+runs (it reads them with `run-lane.mjs ralph-gate --dry-run`). The `pre-push` lane
+holds the stages of `.husky/pre-push`; its steps are `{ "name", "run" }` objects,
+and the name is the stage title `hook-run.mjs` prints and `CONTRIBUTING.md`'s gate
+table lists. `hook-run.mjs` turns the hook's `node scripts/run-lane.mjs pre-push`
+line back into one stage per step (`expandHookLanes`). `check-validator-wiring`
+expands lane calls in package.json, `ralph/gate.sh` and `.husky/pre-push` back to
+the lane's commands, so a gate run only from a lane still counts as wired.
 `scripts/__tests__/gate-lanes.test.mjs` pins each lane to the chain it
 replaced.
 

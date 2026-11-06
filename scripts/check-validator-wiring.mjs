@@ -68,7 +68,7 @@ import { hashPrecommit } from './lib/precommit-canonical.mjs';
 
 import { reachableScripts } from './lib/script-reachability.mjs';
 import { expandPrePushHook } from './lib/gate-tier.mjs';
-import { expandLaneCalls, expandLaneScripts } from './lib/gate-lanes.mjs';
+import { expandHookLanes, expandLaneCalls, expandLaneScripts } from './lib/gate-lanes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -478,8 +478,11 @@ function runWiringCheck(
 
   const precommitContent = readSafe(precommitPath);
   const parsedPrecommit = parseHookLines(precommitContent);
-  // The tiered gate (pre-push-gate.mjs) is read as its full tier, which runs `pnpm test`.
-  const prepushContent = prepushPath ? expandPrePushHook(readSafe(prepushPath)) : '';
+  // The hook's stages come from the registry's pre-push lane (hds#1095); the tiered
+  // gate (pre-push-gate.mjs) is read as its full tier, which runs `pnpm test`.
+  const prepushContent = prepushPath
+    ? expandPrePushHook(expandHookLanes(readSafe(prepushPath), registryObj))
+    : '';
   const commitmsgContent = commitmsgPath ? readSafe(commitmsgPath) : '';
   // ralph/gate.sh reads its steps from the registry's ralph-gate lane (hds#1095).
   const ralphGateContent = ralphGatePath
