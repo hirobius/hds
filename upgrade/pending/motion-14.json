@@ -1,4 +1,15 @@
 {
-  "impact": "none",
-  "plain": "HDS now ships Motion 14.3.1 with no API change, so if your app imports motion itself, move it to 14.x to keep one copy."
+  "impact": "breaking",
+  "plain": "If your app imports motion itself, move it to 14.x so HDS and your code share one copy of Motion.",
+  "steps": [
+    {
+      "id": "dependency/motion",
+      "kind": "dependency",
+      "impact": "breaking",
+      "plain": "If your app imports motion itself, move it to 14.x so HDS and your code share one copy, and Motion types such as MotionValue from @hirobius/design-system/scroll and the motion recipes match your own.",
+      "detect": {
+        "bareImports": ["motion", "framer-motion"]
+      }
+    }
+  ]
 }
