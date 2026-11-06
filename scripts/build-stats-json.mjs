@@ -45,7 +45,8 @@
  * that last changed a number, and it is kept while the numbers hold (a commit
  * cannot name its own sha). `--check` therefore compares every field but it.
  * `delivery` is refreshed only on purpose: `pnpm stats:build --delivery`. Every
- * other run, a write or `--check`, keeps the committed block, so two PRs that
+ * other run, a write or `--check`, keeps the committed block (or, when the
+ * working file has none, the one committed on origin/main), so two PRs that
  * each regenerate the stats do not conflict on a count that moves with every
  * commit. A refresh that cannot count (a shallow clone, no origin/main, no git)
  * keeps the committed block or omits the field when there is none; it never
@@ -165,8 +166,24 @@ export function collectDelivery(root) {
  * count; otherwise, or when nothing can be counted, the committed block stays,
  * and the field is left out when there is none.
  */
-export function pickDelivery({ fresh, committed, refresh }) {
-  return refresh ? (fresh ?? committed) : committed;
+export function pickDelivery({ fresh, committed, onMain, refresh }) {
+  const held = committed ?? onMain;
+  return refresh ? (fresh ?? held) : held;
+}
+
+/**
+ * The delivery block committed on origin/main, or undefined. The fallback for a
+ * working file that has none: the hds-generated merge driver keeps ours where
+ * both sides changed nearby lines, so a branch merging main can drop main's
+ * block, and a held block is not rebuilt from source (hds#1332 review).
+ */
+export function mainDelivery(root) {
+  try {
+    const text = gitOut(root, ['show', `refs/remotes/origin/main:${STATS_PATH}`]);
+    return JSON.parse(text).delivery ?? undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 /** The commit `root` is checked out at, or null outside a git checkout. */
@@ -205,6 +222,7 @@ export function renderStats(root, { refreshDelivery = false } = {}) {
   const delivery = pickDelivery({
     fresh: refreshDelivery ? collectDelivery(root) : null,
     committed: committed?.delivery,
+    onMain: committed?.delivery ? undefined : mainDelivery(root),
     refresh: refreshDelivery,
   });
   const out = { ...stats, ...(delivery ? { delivery } : {}), generatedFrom };

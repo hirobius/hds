@@ -7,11 +7,11 @@
  * names the commit it was counted at, or omits the field when there is none.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { collectDelivery, pickDelivery, prOfSubject } from '../build-stats-json.mjs';
+import { collectDelivery, mainDelivery, pickDelivery, prOfSubject } from '../build-stats-json.mjs';
 
 const dirs = [];
 afterEach(() => {
@@ -148,5 +148,54 @@ describe('pickDelivery', () => {
   it('a refresh that cannot count keeps the committed block, and omits the field when there is none', () => {
     expect(pickDelivery({ fresh: null, committed, refresh: true })).toBe(committed);
     expect(pickDelivery({ fresh: null, committed: undefined, refresh: true })).toBeUndefined();
+  });
+});
+
+// The hds-generated merge driver keeps ours where both sides changed nearby
+// lines. A branch without `delivery` merging main kept its own side, and the
+// post-merge regen kept that, because the block is held, not recomputed
+// (hds#1332 review). The committed block on origin/main is the fallback.
+describe('a working file that lost its delivery block', () => {
+  const block = {
+    commitsOnMain: 5,
+    mergedPullRequests: 4,
+    firstCommitDate: '2026-07-01',
+    changelogVersions: 2,
+    asOf: 'abc',
+    asOfDate: '2026-07-05',
+  };
+
+  it('mainDelivery reads the block committed on origin/main', () => {
+    const root = repo();
+    mkdirSync(join(root, 'public'), { recursive: true });
+    writeFileSync(join(root, 'public/hds-stats.json'), JSON.stringify({ delivery: block }));
+    git(root, 'add', '-A');
+    git(root, 'commit', '-q', '-m', 'stats');
+    git(root, 'update-ref', 'refs/remotes/origin/main', 'HEAD');
+    writeFileSync(join(root, 'public/hds-stats.json'), JSON.stringify({}));
+    expect(mainDelivery(root)).toEqual(block);
+  });
+
+  it('mainDelivery is undefined without origin/main or without the file there', () => {
+    const root = repo();
+    expect(mainDelivery(root)).toBeUndefined();
+    git(root, 'update-ref', '-d', 'refs/remotes/origin/main');
+    expect(mainDelivery(root)).toBeUndefined();
+  });
+
+  it('pickDelivery falls back to main when the working file has none', () => {
+    expect(pickDelivery({ fresh: null, committed: undefined, onMain: block, refresh: false })).toBe(
+      block,
+    );
+    expect(pickDelivery({ fresh: null, committed: undefined, onMain: block, refresh: true })).toBe(
+      block,
+    );
+  });
+
+  it('a committed block still wins over main, and a fresh count over both', () => {
+    const committed = { ...block, asOf: 'branch' };
+    const fresh = { ...block, asOf: 'fresh' };
+    expect(pickDelivery({ fresh: null, committed, onMain: block, refresh: false })).toBe(committed);
+    expect(pickDelivery({ fresh, committed, onMain: block, refresh: true })).toBe(fresh);
   });
 });
