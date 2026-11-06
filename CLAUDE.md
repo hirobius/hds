@@ -19,12 +19,13 @@ _"North-star drift: park or proceed?"_ — then do what Adrian decides.
 - **NEVER git push from local machines.** Local commits only — with one exception: remote Claude Code sessions (Claude Code on the web / GitHub integration) may push to their designated `claude/*` working branch. Pushing to `main` or any other branch remains forbidden everywhere.
 - **NEVER run `pnpm check:release` or deploy commands.**
 
-## GitHub Actions is OFF (2026-10-30)
+## GitHub Actions: only Release runs (2026-11-06)
 
-No CI, Chromatic, `ralph-gate`, `claude.yml` or Actions release runs: don't wait
-on them or edit `.github/workflows/`. Run checks locally before push; paste them
-in the PR. Merging needs an independent `Reviewed: PASS — <sha>` comment.
-Release: `pnpm release:local`, owner only, npm 2FA (`docs/RELEASING.md`).
+`release.yml` runs on every push to `main`: it opens the "Version Packages" PR and
+publishes when that PR merges. CI, Chromatic, `ralph-gate` and `claude.yml` do not
+run on PRs: don't wait on them or edit `.github/workflows/`. Run checks locally
+before push; paste them in the PR. Merging needs an independent
+`Reviewed: PASS — <sha>` comment. Fallback: `pnpm release:local`, owner only, npm 2FA (`docs/RELEASING.md`).
 
 ---
 
