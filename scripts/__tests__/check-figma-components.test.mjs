@@ -5,7 +5,8 @@
  * 576-variant snapshot fails listing every difference.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, mkdirSync, cpSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -75,7 +76,7 @@ describe('check-figma-components', () => {
       expect(icon.rootPadding).toBe(0);
     });
 
-    it('a Figma IconButton with padding fails the diff; no snapshot script before it is drawn', () => {
+    it('a Figma IconButton with padding fails the diff', () => {
       const snap = {
         variantAxes: {
           Variant: icon.variantAxes.Variant.values,
@@ -99,7 +100,19 @@ describe('check-figma-components', () => {
       expect(diffContract(icon, { ...snap, rootPadding: 8 })).toEqual([
         'root padding: contract 0, Figma 8',
       ]);
-      expect(() => buildSnapshotScript('IconButton')).toThrow(/not drawn/);
+    });
+
+    it('snapshot script reads the square root, the Icon layer and the root padding', () => {
+      const s = buildSnapshotScript('IconButton');
+      expect(s.length).toBeLessThan(40000);
+      expect(s).toContain("'2399:26744'");
+      expect(s).toContain("for (const f of ['width', 'height']) add(size, 'root.' + f");
+      expect(s).toContain("n.name === 'Icon'");
+      expect(s).toContain('snap.rootPadding');
+      // paddingTop draws the hover/press face sink, so it is not part of the padding check.
+      expect(s).toContain('[v.paddingRight, v.paddingBottom, v.paddingLeft]');
+      expect(s).not.toContain('Lead Icon');
+      expect(s).not.toMatch(/\.(set\w+|remove|createComponent|appendChild)\(/);
     });
   });
 
@@ -118,14 +131,37 @@ describe('check-figma-components', () => {
     ]);
   });
 
-  it('the real committed Button snapshot fails today', () => {
-    const snap = json(path.join(REPO, 'figma/components/Button.snapshot.json')).snapshot;
-    const d = diffContract(contract, snap);
-    expect(d).toContain('variant count: contract 48, Figma 576');
-    expect(d).toContain('variable-mode collection "Button tone" (code: tone) is missing');
+  it('the committed Button and IconButton snapshots match their contracts (hds#1147)', () => {
+    for (const n of ['Button', 'IconButton']) {
+      const snap = json(path.join(REPO, `figma/components/${n}.snapshot.json`)).snapshot;
+      expect(diffContract(buildContract(n), snap), n).toEqual([]);
+    }
+    expect(run(['--check'], { log: () => {}, error: () => {} })).toBe(0);
+  });
+
+  it('--check fails and --report passes when Figma drifts', () => {
+    // A repo-shaped root: real sources and contracts, Button's snapshot swapped for the fail fixture.
+    const root = mkdtempSync(path.join(os.tmpdir(), 'figma-components-'));
+    for (const f of [
+      'src/app/components/button.tsx',
+      'figma/spec-sheets/Button.json',
+      'figma/contracts/Button.json',
+      'figma/contracts/IconButton.json',
+      'figma/components/IconButton.snapshot.json',
+    ]) {
+      mkdirSync(path.dirname(path.join(root, f)), { recursive: true });
+      cpSync(path.join(REPO, f), path.join(root, f));
+    }
+    writeFileSync(
+      path.join(root, 'figma/components/Button.snapshot.json'),
+      JSON.stringify({ checksum: 'x', snapshot: json(path.join(FIX, 'fail.snapshot.json')) }),
+    );
     const lines = [];
-    expect(run(['--check'], { log: () => {}, error: (l) => lines.push(l) })).toBe(1);
-    expect(run(['--report'], { log: () => {}, error: () => {} })).toBe(0);
+    expect(run(['--check', '--root', root], { log: () => {}, error: (l) => lines.push(l) })).toBe(
+      1,
+    );
+    expect(lines.join('\n')).toMatch(/Button: Figma differs from the code contract \(5\)/);
+    expect(run(['--report', '--root', root], { log: () => {}, error: () => {} })).toBe(0);
   });
 
   it('snapshot script stays under 40k chars and reads the library only', () => {

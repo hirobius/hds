@@ -11,7 +11,7 @@
  *   - loading and focus as boolean properties;
  *   - icon-only as its own component, IconButton (owner decision 2026-11-05): Button's
  *     Variant axis minus link, a square root bound to button/size/<s>/height with padding 0,
- *     an "Icon" layer bound to button/size/<s>/iconSize; same tone modes. No Figma node yet;
+ *     an "Icon" layer bound to button/size/<s>/iconSize; same tone modes (2399:26744);
  *   - every Figma property mapped to a code prop;
  *   - size-driven variable bindings on the key layers (root, lead icon).
  *
@@ -22,15 +22,15 @@
  * Figma still matches, or the full new snapshot when it does not.
  *
  * Usage:
- *   node scripts/check-figma-components.mjs --check        exit 1 on a stale contract or any mismatch
- *   node scripts/check-figma-components.mjs --report       same output, exit 0 (advisory; wired into pretest)
+ *   node scripts/check-figma-components.mjs --check        exit 1 on a stale contract or any mismatch (blocking in pretest)
+ *   node scripts/check-figma-components.mjs --report       same output, exit 0 (advisory)
  *   node scripts/check-figma-components.mjs --write        regenerate figma/contracts/*.json from code
  *   node scripts/check-figma-components.mjs --emit-script  write figma/push/use-figma/component-snapshot-<Name>.js
  *   node scripts/check-figma-components.mjs --ingest <file> [--component Button]
  *                                                          verify and write the snapshot use_figma returned
  *   --root <dir>   read inputs from <dir> instead of the repo (fixtures/tests)
  *
- * Advisory until the condensed Figma Button lands; then pretest switches --report to --check.
+ * Both Button (2399:11077) and IconButton (2399:26744) match since hds#1147, so pretest runs --check.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
@@ -41,16 +41,18 @@ const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /** Components under parity. Each entry names its source and Figma node. */
 export const COMPONENTS = Object.freeze({
+  // The condensed set (page "Button", 2026-11-05). The 576-variant 28:138 is on
+  // "Archive / Deprecated".
   Button: {
     source: 'src/app/components/button.tsx',
     specSheet: 'figma/spec-sheets/Button.json',
-    nodeId: '28:138',
+    nodeId: '2399:11077',
   },
-  // <Button iconOnly> in code. nodeId is null until it is drawn in the library.
+  // <Button iconOnly> in code; its own Figma component (owner decision 2026-11-05).
   IconButton: {
     source: 'src/app/components/button.tsx',
     specSheet: 'figma/spec-sheets/Button.json',
-    nodeId: null,
+    nodeId: '2399:26744',
     shape: 'iconOnly',
   },
 });
@@ -277,6 +279,37 @@ export function diffContract(contract, snap) {
 
 // ── Snapshot script (use_figma, read only) ───────────────────────────────────
 
+/** Per-variant reads inside the generated script: the Button shape (lead icon, padded root). */
+const BUTTON_LOOP = `for (const v of set.children) {
+  const size = (v.variantProperties || {}).Size || '?';
+  const bv = v.boundVariables || {};
+  const zeroPad = ZERO_PAD_X.indexOf(String((v.variantProperties || {}).Variant).toLowerCase()) !== -1;
+  for (const f of ['height', 'paddingLeft', 'paddingRight', 'itemSpacing']) if (!(zeroPad && /^padding/.test(f))) add(size, 'root.' + f, (await varName(bv[f])) || '(unbound)');
+  const icon = v.findOne((n) => n.name === 'Lead Icon');
+  add(size, 'Lead Icon.width', (icon && (await varName((icon.boundVariables || {}).width))) || '(unbound)');
+  const fills = Array.isArray(v.fills) ? v.fills.filter((p) => p.visible !== false) : [];
+  if (fills.length && !(bv.fills && bv.fills.length)) snap.unboundRootFills.push(v.name);
+}
+`;
+/**
+ * IconButton: a square root, an "Icon" layer and one padding value for every variant.
+ * paddingTop is left out: on primary and secondary it draws the face sink of the hard
+ * edge (2 on hover, 6 on press: the icon moves 1px and 3px, as the code translate does).
+ */
+const ICON_ONLY_LOOP = `const pads = [];
+for (const v of set.children) {
+  const size = (v.variantProperties || {}).Size || '?';
+  const bv = v.boundVariables || {};
+  for (const f of ['width', 'height']) add(size, 'root.' + f, (await varName(bv[f])) || '(unbound)');
+  const icon = v.findOne((n) => n.name === 'Icon');
+  for (const f of ['width', 'height']) add(size, 'Icon.' + f, (icon && (await varName((icon.boundVariables || {})[f]))) || '(unbound)');
+  for (const p of [v.paddingRight, v.paddingBottom, v.paddingLeft]) if (pads.indexOf(p) === -1) pads.push(p);
+  const fills = Array.isArray(v.fills) ? v.fills.filter((p) => p.visible !== false) : [];
+  if (fills.length && !(bv.fills && bv.fills.length)) snap.unboundRootFills.push(v.name);
+}
+snap.rootPadding = pads.length === 1 ? pads[0] : pads.sort();
+`;
+
 export function buildSnapshotScript(name, { root = REPO } = {}) {
   const def = COMPONENTS[name];
   if (!def.nodeId)
@@ -286,7 +319,7 @@ export function buildSnapshotScript(name, { root = REPO } = {}) {
   const links = readJson(join(root, 'figma/links.json'));
   const retired = (links.retiredFiles || []).map((f) => f.fileKey);
   const snapPath = join(root, 'figma/components', `${name}.snapshot.json`);
-  const zeroPadX = buildContract(name, { root }).zeroPaddingXVariants;
+  const zeroPadX = buildContract(name, { root }).zeroPaddingXVariants || [];
   const committed = existsSync(snapPath) ? readJson(snapPath).checksum : null;
   const script = `// HDS component snapshot for ${name}. Generated by scripts/check-figma-components.mjs --emit-script; run it unmodified.
 // Reads only. Save the returned JSON, then: node scripts/check-figma-components.mjs --ingest <file> --component ${name}
@@ -313,17 +346,7 @@ for (const c of await figma.variables.getLocalVariableCollectionsAsync())
 const names = {};
 const varName = async (a) => { if (!a) return null; if (!(a.id in names)) { const v = await figma.variables.getVariableByIdAsync(a.id); names[a.id] = v ? v.name : '(missing ' + a.id + ')'; } return names[a.id]; };
 const add = (size, field, n) => { const s = (snap.sizeBindings[size] = snap.sizeBindings[size] || {}); const l = (s[field] = s[field] || []); if (l.indexOf(n) === -1) l.push(n); };
-for (const v of set.children) {
-  const size = (v.variantProperties || {}).Size || '?';
-  const bv = v.boundVariables || {};
-  const zeroPad = ZERO_PAD_X.indexOf(String((v.variantProperties || {}).Variant).toLowerCase()) !== -1;
-  for (const f of ['height', 'paddingLeft', 'paddingRight', 'itemSpacing']) if (!(zeroPad && /^padding/.test(f))) add(size, 'root.' + f, (await varName(bv[f])) || '(unbound)');
-  const icon = v.findOne((n) => n.name === 'Lead Icon');
-  add(size, 'Lead Icon.width', (icon && (await varName((icon.boundVariables || {}).width))) || '(unbound)');
-  const fills = Array.isArray(v.fills) ? v.fills.filter((p) => p.visible !== false) : [];
-  if (fills.length && !(bv.fills && bv.fills.length)) snap.unboundRootFills.push(v.name);
-}
-for (const s of Object.values(snap.sizeBindings)) for (const k of Object.keys(s)) s[k].sort();
+${def.shape === 'iconOnly' ? ICON_ONLY_LOOP : BUTTON_LOOP}for (const s of Object.values(snap.sizeBindings)) for (const k of Object.keys(s)) s[k].sort();
 const out = stable(snap);
 const checksum = hdsChecksum(JSON.stringify(out));
 if (checksum === COMMITTED) return { unchanged: true, checksum };
