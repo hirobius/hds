@@ -10131,7 +10131,7 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null,
+      "docsPage": "/docs/components/composer",
       "publicDataAttributes": [],
       "usage": {
         "when": "Capture a prompt or a quick note where a long paste should not flood the field.",
@@ -10360,7 +10360,7 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/theme-toggle",
       "publicDataAttributes": [
         "data-theme-state"
       ],
@@ -10934,7 +10934,7 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/token-field",
       "publicDataAttributes": [
         "data-state",
         "data-token"
@@ -11184,7 +11184,7 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/sheet",
       "publicDataAttributes": [
         "data-state"
       ],
