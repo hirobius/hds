@@ -1,20 +1,22 @@
 /**
  * One release's upgrade steps for /upgrade/<version> (hds#445): the page a
- * release notice links to. Sorts the ledger into the four lists UPGRADING.md
+ * release notice links to. Sorts the ledger into the lists UPGRADING.md
  * prints. The rule mirrors listOf in scripts/upgrade/compile.mjs;
  * tests/docs-site/upgrade-release.test.tsx fails if the two disagree on any
  * step in the ledger.
  */
 import type { LedgerRelease, LedgerStep } from './upgrade-ledger';
 
-export type ReleaseListKey = 'fixedForYou' | 'looksDifferent' | 'comingNext' | 'doByHand';
+export type ReleaseListKey =
+  'fixedForYou' | 'looksDifferent' | 'comingNext' | 'doByHand' | 'goodToKnow';
 
-/** The four lists, in the order UPGRADING.md prints them. */
+/** The lists, in the order UPGRADING.md prints them; Good to know is informational. */
 export const RELEASE_LISTS: { key: ReleaseListKey; title: string }[] = [
   { key: 'fixedForYou', title: 'Fixed for you' },
   { key: 'looksDifferent', title: 'Looks different' },
   { key: 'comingNext', title: 'Coming next' },
   { key: 'doByHand', title: 'Do by hand' },
+  { key: 'goodToKnow', title: 'Good to know' },
 ];
 
 /** Least to most severe, as upgrade/schema.json orders impact. */
@@ -31,6 +33,7 @@ const REMOVING = new Set([
 function listOf(step: LedgerStep): ReleaseListKey {
   if (step.kind === 'deprecated') return 'comingNext';
   if (step.auto) return 'fixedForYou';
+  if (step.kind === 'peer' && step.impact === 'additive') return 'goodToKnow';
   if (step.impact === 'look' && !REMOVING.has(step.kind) && step.kind !== 'manual') {
     return 'looksDifferent';
   }
@@ -44,6 +47,7 @@ export function releaseLists(release: LedgerRelease): Record<ReleaseListKey, Led
     looksDifferent: [],
     comingNext: [],
     doByHand: [],
+    goodToKnow: [],
   };
   for (const step of release.steps) lists[listOf(step)].push(step);
   const severity = (s: LedgerStep) => IMPACTS.indexOf(s.impact);

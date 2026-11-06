@@ -76,11 +76,13 @@ const REMOVING = new Set([
 /**
  * The list a step belongs to, as UPGRADING.md prints it
  * (scripts/upgrade/compile.mjs listOf).
- * @returns {'fixedForYou' | 'looksDifferent' | 'comingNext' | 'doByHand'}
+ * @returns {'fixedForYou' | 'looksDifferent' | 'comingNext' | 'doByHand' | 'goodToKnow'}
  */
 export function listOf(step) {
   if (step.kind === 'deprecated') return 'comingNext';
   if (step.auto) return 'fixedForYou';
+  // A new optional peer: informational (compile.mjs prints it under Good to know).
+  if (step.kind === 'peer' && step.impact === 'additive') return 'goodToKnow';
   if (step.impact === 'look' && !REMOVING.has(step.kind) && step.kind !== 'manual') {
     return 'looksDifferent';
   }
