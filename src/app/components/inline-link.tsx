@@ -73,6 +73,19 @@ const SIZE_ROLE: Record<InlineLinkSize, 'ui' | 'body' | 'title'> = {
 const EXTERNAL_ICON_NUDGE =
   'transition-[translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] group-hover:translate-x-[0.125em] group-hover:-translate-y-[0.125em] group-focus-visible:translate-x-[0.125em] group-focus-visible:-translate-y-[0.125em]';
 
+/**
+ * A text label splits before its last word, so that word can share a no-wrap
+ * span with the external icon. Any other label keeps its nodes and gets a word
+ * joiner (U+2060) in front of the icon instead.
+ */
+function splitLastWord(children: React.ReactNode): { lead: React.ReactNode; tail: string } {
+  if (typeof children === 'string') {
+    const m = /^([\s\S]*\s)?(\S+)\s*$/.exec(children);
+    if (m) return { lead: m[1] ?? '', tail: m[2] };
+  }
+  return { lead: children, tail: '\u2060' };
+}
+
 type LinkKind = 'internal' | 'external' | 'plain';
 
 /**
@@ -119,6 +132,7 @@ export function InlineLink({
     );
   }
 
+  const { lead, tail } = splitLastWord(children);
   return (
     <a
       href={safe}
@@ -126,22 +140,30 @@ export function InlineLink({
       rel="noopener noreferrer"
       className={`group hds-focus hds-link${modifierClass}`}
     >
-      {children}
-      <span className="sr-only"> (opens in new tab)</span>
-      {externalIcon && (
-        <Icon
-          icon={ExternalLinkIcon}
-          size="var(--component-inlineLink-iconSize)"
-          color="currentColor"
-          aria-hidden
-          className={EXTERNAL_ICON_NUDGE}
-          style={{
-            display: 'inline',
-            verticalAlign: 'middle',
-            marginLeft: 'var(--component-inlineLink-iconGap)',
-          }}
-        />
+      {externalIcon ? (
+        <>
+          {lead}
+          {/* The last word and the icon break together, never the icon alone (hds#1277). */}
+          <span style={{ whiteSpace: 'nowrap' }}>
+            {tail}
+            <Icon
+              icon={ExternalLinkIcon}
+              size="var(--component-inlineLink-iconSize)"
+              color="currentColor"
+              aria-hidden
+              className={EXTERNAL_ICON_NUDGE}
+              style={{
+                display: 'inline',
+                verticalAlign: 'middle',
+                marginLeft: 'var(--component-inlineLink-iconGap)',
+              }}
+            />
+          </span>
+        </>
+      ) : (
+        children
       )}
+      <span className="sr-only"> (opens in new tab)</span>
     </a>
   );
 }
