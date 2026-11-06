@@ -12,6 +12,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import {
   parseDocument,
@@ -169,6 +170,62 @@ describe('parseDocument', () => {
       },
     ]);
     expect(inventory.pages.find((page) => page.name === 'IconButton').kind).toBe('empty');
+  });
+
+  // Doc pages redesign (2026-11-06): the guide and every "Foundations: <name>" page are
+  // doc pages, including the new Surface and Motion pages, which hold live component
+  // instances but no component sets.
+  it('classifies Getting Started and every "Foundations: <name>" page as doc', () => {
+    const doc = {
+      name: FILE.name,
+      document: {
+        id: '0:0',
+        name: 'Document',
+        type: 'DOCUMENT',
+        children: [
+          'Getting Started',
+          'Foundations: Color',
+          'Foundations: Typography',
+          'Foundations: Spacing',
+          'Foundations: Surface',
+          'Foundations: Motion',
+        ].map((name, i) => ({
+          id: `20:${i + 2}`,
+          name,
+          type: 'CANVAS',
+          children: [{ id: `30:${i}`, name: `${name} — doc sheet`, type: 'FRAME', children: [] }],
+        })),
+      },
+    };
+    const kinds = parseDocument(doc, FILE_KEY).pages.map((page) => page.kind);
+    expect(kinds).toEqual(['doc', 'doc', 'doc', 'doc', 'doc', 'doc']);
+  });
+
+  it('keeps the committed inventory in step: the doc pages are recorded as doc', () => {
+    const committed = JSON.parse(
+      readFileSync(
+        path.join(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '..',
+          '..',
+          'figma',
+          'inventory.json',
+        ),
+        'utf8',
+      ),
+    );
+    const doc = committed.pages.filter(
+      (p) => p.name === 'Getting Started' || p.name.startsWith('Foundations: '),
+    );
+    expect(doc.map((p) => p.name)).toEqual([
+      'Getting Started',
+      'Foundations: Color',
+      'Foundations: Typography',
+      'Foundations: Spacing',
+      'Foundations: Surface',
+      'Foundations: Motion',
+    ]);
+    for (const p of doc) expect(p.kind, p.name).toBe('doc');
   });
 
   // hds#1147: the deprecated 576-variant Button set 28:138 lives on
