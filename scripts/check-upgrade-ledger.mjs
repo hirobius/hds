@@ -25,7 +25,8 @@
  *      never existed); or a step of package.json's ledger citing
  *      `.changeset/<name>.md`, which its own Version PR deletes (compile.mjs
  *      found no CHANGELOG entry for that changeset);
- *   3. something is breaking (a breaking fact, a note that says so, or a step
+ *   3. something is breaking (a breaking fact, a dom-changed fact below 1.0,
+ *      a note that says so, or a step
  *      that removes, moves, renames or folds something public, or renames a
  *      prop or maps away its values) and the
  *      changesets bump @hirobius/design-system by less than minor below 1.0
@@ -392,6 +393,8 @@ function releasedNotes(state, versionPr) {
  * are that release's, so they do not count toward the next bump; their steps
  * still cover their facts (factViolations).
  */
+const isDomFact = (fact) => fact.kind === 'dom-changed';
+
 function breakingEvidence(state, versionPr) {
   const released = new Set(releasedNotes(state, versionPr));
   const releasedFacts = new Set(
@@ -400,7 +403,13 @@ function breakingEvidence(state, versionPr) {
       .flatMap((step) => (Array.isArray(step.facts) ? step.facts : [])),
   );
   const facts = versionPr ? state.facts : newFacts(state).filter((f) => !releasedFacts.has(f.id));
-  const evidence = facts.filter((fact) => factImpact(fact) === 'breaking').map((fact) => fact.id);
+  // A DOM or accessibility-tree change (dom-changed) is a behavior fact, but
+  // below 1.0 it also forces the breaking bump: a consumer that selects on
+  // the structure (`a > svg`, getByRole('row')) breaks (#1344).
+  const preOne = major(versionPr ? state.previousVersion : state.version) === 0;
+  const evidence = facts
+    .filter((fact) => factImpact(fact) === 'breaking' || (preOne && isDomFact(fact)))
+    .map((fact) => fact.id);
   for (const note of state.notes) {
     if (released.has(note)) continue;
     if (noteImpact(note) === 'breaking') evidence.push(note.file);

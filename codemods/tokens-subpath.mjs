@@ -5,7 +5,7 @@
  * Rewrites `import { hds, tokens } from '@hirobius/design-system'` to
  * `import { hds, tokens } from '@hirobius/design-system/tokens'`. 0.34.0
  * deprecated the root copies of the token bridge (`hds`) and the raw DTCG
- * tokens (`tokens`); 0.35.0 removes them. Other root names stay on the root.
+ * tokens (`tokens`); 0.36.0 removes them. Other root names stay on the root.
  * The move is the one patterns-subpath does (`transformSource` there):
  * aliases, `type` modifiers, layout and comments are kept, and an existing
  * `/tokens` import of the same kind is extended instead of duplicated. A

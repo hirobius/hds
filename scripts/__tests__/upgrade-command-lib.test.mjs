@@ -167,6 +167,23 @@ describe('the shipped record', () => {
     expect(steps.sort()).toEqual(indexed.sort());
   });
 
+  it('shows only the latest step when a later release deprecates the same uses again', () => {
+    const step = (version, removeIn) => ({
+      id: `${version}/deprecated/hds`,
+      kind: 'deprecated',
+      impact: 'none',
+      plain: 'hds still works but is deprecated.',
+      detect: { imports: [{ from: PKG, names: ['hds'] }] },
+      removeIn,
+    });
+    const ledgers = [
+      { version: '0.11.0', steps: [step('0.11.0', '0.13.0')] },
+      { version: '0.12.0', steps: [step('0.12.0', '0.14.0')] },
+    ];
+    expect(comingNextSteps(ledgers, '0.11.0').map((s) => s.id)).toEqual(['0.11.0/deprecated/hds']);
+    expect(comingNextSteps(ledgers, '0.12.0').map((s) => s.id)).toEqual(['0.12.0/deprecated/hds']);
+  });
+
   it('drops a deprecation once the target reaches its removeIn', () => {
     const at = (target) => comingNextSteps(record.ledgers, target).map((s) => s.id);
     expect(at('0.20.0')).toContain('0.20.0/deprecated/StatusDot');

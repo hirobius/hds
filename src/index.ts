@@ -131,20 +131,21 @@ export * from './app/components/toast';
 
 // ── Token bridge: deprecated root copies (hds#1205) ──
 // `hds` and `tokens` moved to `@hirobius/design-system/tokens`. The root keeps
-// them for one minor so imports keep working; they leave in 0.35.0. While they
+// them so imports keep working; they leave in 0.36.0 (moved from 0.35.0 when
+// 0.35.0 became a minor; removal tracked in its own issue). While they
 // are here the main entry graph still counts the token JSON; a consumer's
 // bundler drops it when nothing imports `tokens`.
 import { hds as hdsBridge, tokens as tokensJson } from './app/design-system/tokens';
 /**
  * The token bridge (CSS variables wrapped as TS constants).
  * @deprecated Import `hds` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.
- * @removeIn 0.35.0
+ * @removeIn 0.36.0
  */
 export const hds = hdsBridge;
 /**
  * Raw DTCG design tokens (the contents of `hirobius.tokens.json`).
  * @deprecated Import `tokens` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.
- * @removeIn 0.35.0
+ * @removeIn 0.36.0
  */
 export const tokens = tokensJson;
 

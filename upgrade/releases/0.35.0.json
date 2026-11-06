@@ -1,0 +1,588 @@
+{
+  "version": "0.35.0",
+  "date": "2026-11-06",
+  "bump": "minor",
+  "summary": "1 change to make by hand, 28 that look different and 2 deprecations.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.35.0/deprecated/hds",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.",
+      "auto": {
+        "codemod": "hds-tokens-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "hds"
+            ]
+          }
+        ]
+      },
+      "removeIn": "0.36.0",
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.35.0/deprecated/tokens",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.",
+      "auto": {
+        "codemod": "hds-tokens-subpath",
+        "args": []
+      },
+      "detect": {
+        "imports": [
+          {
+            "from": "@hirobius/design-system",
+            "names": [
+              "tokens"
+            ]
+          }
+        ]
+      },
+      "removeIn": "0.36.0",
+      "source": "CHANGELOG.md:27"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-button-bg",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --component-button-bg takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--component-button-bg"
+        ],
+        "cssVarWrites": [
+          "--component-button-bg"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-bg:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-button-bgHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --component-button-bgHover takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--component-button-bgHover"
+        ],
+        "cssVarWrites": [
+          "--component-button-bgHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-bgHover:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-button-secondary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --component-button-secondary-bg-hover takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-hover:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-button-secondary-border-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --component-button-secondary-border-hover takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-border-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-border-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-border-hover:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-inlineLink-size-lg-iconSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Figma px size for lg links is now 24 (was 20); if you set this variable yourself, check the icon next to title-size text.",
+      "detect": {
+        "cssVars": [
+          "--component-inlineLink-size-lg-iconSize"
+        ],
+        "cssVarWrites": [
+          "--component-inlineLink-size-lg-iconSize"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-inlineLink-size-lg-iconSize::root"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-inlineLink-size-md-iconSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Figma px size for md links is now 16 (was 12); if you set this variable yourself, check the icon next to body-size text.",
+      "detect": {
+        "cssVars": [
+          "--component-inlineLink-size-md-iconSize"
+        ],
+        "cssVarWrites": [
+          "--component-inlineLink-size-md-iconSize"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-inlineLink-size-md-iconSize::root"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-inlineLink-size-sm-iconSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Figma px size for sm links is now 16 (was 12); if you set this variable yourself, check the icon next to ui-size text.",
+      "detect": {
+        "cssVars": [
+          "--component-inlineLink-size-sm-iconSize"
+        ],
+        "cssVarWrites": [
+          "--component-inlineLink-size-sm-iconSize"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-inlineLink-size-sm-iconSize::root"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-tag-activeBackground",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --component-tag-activeBackground takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeBackground"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeBackground"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBackground:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-tag-activeBorder",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --component-tag-activeBorder takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeBorder"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeBorder"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBorder:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--component-tag-activeHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --component-tag-activeHover takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeHover"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeHover:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --hds-edge-primary takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent='cobalt']",
+        "css-var-changed:--hds-edge-primary:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--primitive-inlineIcon-size",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The inline icon is now 1em instead of 0.75em; if you override this variable to keep the old look, set it to 0.75em.",
+      "detect": {
+        "cssVars": [
+          "--primitive-inlineIcon-size"
+        ],
+        "cssVarWrites": [
+          "--primitive-inlineIcon-size"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-inlineIcon-size::root"
+      ],
+      "source": "CHANGELOG.md:25"
+    },
+    {
+      "id": "0.35.0/value-changed/--role-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --role-accent takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--role-accent"
+        ],
+        "cssVarWrites": [
+          "--role-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-accent:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--role-accent-foreground",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --role-accent-foreground takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--role-accent-foreground"
+        ],
+        "cssVarWrites": [
+          "--role-accent-foreground"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-accent-foreground:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--role-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --role-primary takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--role-primary"
+        ],
+        "cssVarWrites": [
+          "--role-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-primary:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--role-ring",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --role-ring takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--role-ring"
+        ],
+        "cssVarWrites": [
+          "--role-ring"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-ring:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-accent-content",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-accent-content takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-content"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-content"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-content:[data-accent='cobalt']",
+        "css-var-changed:--semantic-accent-content:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-accent-contentHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-accent-contentHover takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-contentHover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-contentHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-contentHover:[data-accent='cobalt']",
+        "css-var-changed:--semantic-accent-contentHover:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-accent-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-accent-hover takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-hover"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-hover:[data-accent='cobalt']",
+        "css-var-changed:--semantic-accent-hover:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-accent-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-accent-pressed takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-pressed:[data-accent='cobalt']",
+        "css-var-changed:--semantic-accent-pressed:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-accent-rest takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-rest"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-rest"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-rest:[data-accent='cobalt']",
+        "css-var-changed:--semantic-accent-rest:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-accent-subtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-accent-subtle takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-subtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-subtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-subtle:[data-accent='cobalt']",
+        "css-var-changed:--semantic-accent-subtle:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-color-border-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-color-border-accent takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-accent:[data-accent='cobalt']",
+        "css-var-changed:--semantic-color-border-accent:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-color-content-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-color-content-accent takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-accent:[data-accent='cobalt']",
+        "css-var-changed:--semantic-color-content-accent:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-color-content-onAccent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-color-content-onAccent takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-onAccent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-onAccent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-onAccent:[data-accent='cobalt']",
+        "css-var-changed:--semantic-color-content-onAccent:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-color-surface-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-color-surface-accent takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accent:[data-accent='cobalt']",
+        "css-var-changed:--semantic-color-surface-accent:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-color-surface-accentSubtle",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-color-surface-accentSubtle takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accentSubtle"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accentSubtle"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-accent='cobalt']",
+        "css-var-changed:--semantic-color-surface-accentSubtle:[data-accent='cobalt'][data-theme='dark']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/value-changed/--semantic-focus-ring-color",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "From variables.css, --semantic-focus-ring-color takes its cobalt value only inside data-accent=\"cobalt\"; without data-accent it is unchanged.",
+      "detect": {
+        "cssVars": [
+          "--semantic-focus-ring-color"
+        ],
+        "cssVarWrites": [
+          "--semantic-focus-ring-color"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-focus-ring-color:[data-accent='cobalt']"
+      ],
+      "source": "CHANGELOG.md:29"
+    },
+    {
+      "id": "0.35.0/behavior/InlineLink.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The external icon is now inside a span in the link, so update a selector like `a > svg` to `a svg`.",
+      "detect": {
+        "jsx": [
+          "InlineLink"
+        ],
+        "regex": [
+          "a\\s*>\\s*svg"
+        ]
+      },
+      "facts": [
+        "dom-changed:InlineLink",
+        "dom-changed:Table"
+      ],
+      "source": "CHANGELOG.md:19"
+    }
+  ]
+}

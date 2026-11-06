@@ -48,14 +48,14 @@
       "name": "hds",
       "file": "src/index.ts",
       "note": "Import `hds` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.",
-      "removeIn": "0.35.0",
+      "removeIn": "0.36.0",
       "useInstead": null
     },
     {
       "name": "tokens",
       "file": "src/index.ts",
       "note": "Import `tokens` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.",
-      "removeIn": "0.35.0",
+      "removeIn": "0.36.0",
       "useInstead": null
     }
   ],

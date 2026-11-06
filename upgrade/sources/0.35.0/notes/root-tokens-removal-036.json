@@ -1,0 +1,24 @@
+{
+  "impact": "none",
+  "plain": "Import hds and tokens from @hirobius/design-system/tokens instead of the package root; the root copies still work and now leave in 0.36.0.",
+  "steps": [
+    {
+      "id": "deprecated/hds",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.",
+      "auto": { "codemod": "hds-tokens-subpath", "args": [] },
+      "detect": { "imports": [{ "from": "@hirobius/design-system", "names": ["hds"] }] },
+      "removeIn": "0.36.0"
+    },
+    {
+      "id": "deprecated/tokens",
+      "kind": "deprecated",
+      "impact": "none",
+      "plain": "Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead.",
+      "auto": { "codemod": "hds-tokens-subpath", "args": [] },
+      "detect": { "imports": [{ "from": "@hirobius/design-system", "names": ["tokens"] }] },
+      "removeIn": "0.36.0"
+    }
+  ]
+}
