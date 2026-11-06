@@ -1,6 +1,6 @@
 ---
 name: visual-fix
-description: Visual bug fix in HDS or a consumer app (Roleforge/job-hunt, ops), at the root and guarded. Use when a screen looks wrong or a visual bug returns.
+description: Visual bug fix in HDS or a consumer app (Roleflame/job-hunt, ops), at the root and guarded. Use when a screen looks wrong or a visual bug returns.
 ---
 
 **v0, meant to be tuned.** Each time you run it, append one line to the Tuning log at the bottom: what helped, or what was missing.
