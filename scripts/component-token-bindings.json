@@ -225,6 +225,11 @@
       "cva": "disclosureTriggerVariants",
       "rules": [{ "match": "paddingY", "ctx": { "variant": "nav" } }]
     },
+    "table": {
+      "source": "src/app/components/table.tsx",
+      "cva": "tableDataCellVariants",
+      "rules": [{ "match": "cell.paddingX", "prop": "paddingX" }]
+    },
     "nav": {
       "orphan": "TopNav, NavItem and SideNav were removed in 0.20.0 (hds#394) and their tokens after 0.32.0 (hds#431). component.nav.paddingY is deprecated (hds#1147): Disclosure reads component.disclosure.paddingY now."
     }

@@ -300,10 +300,12 @@ function MenuDemo() {
 }
 
 // A link, prose and an action row are what used to shear a table on desktop
-// (tests/visual/table-clipping.spec.ts guards it). Project and the literal columns
-// (status, date, actions) size to their content, so Summary takes the spare width. Summary floors at
-// one and a half tiles: the table fits the 868px docs frame with a 1em external-link
-// icon (hds#1327), and on a 390px phone the frame scrolls instead of squeezing it.
+// (tests/visual/table-clipping.spec.ts guards it). The literal columns (status, date,
+// actions) size to their content. Project and Summary share the spare width 1 : 1.5:
+// in compact, Project gets room for one line; in comfortable, Summary keeps the
+// priority (a max-content Project would take the space first and push Summary to its
+// floor, hds#1339). Summary floors at one and a half tiles; on a 390px phone the
+// frame scrolls instead of squeezing it.
 const TABLE_DEMO_ROWS = [
   {
     key: 'portfolio',
@@ -329,11 +331,11 @@ function TableDemo() {
       caption="Recent projects"
       emphasizeFirstColumn
       columns={[
-        { key: 'name', label: 'Project', width: 'min-content' },
+        { key: 'name', label: 'Project', width: 'minmax(min-content, 1fr)' },
         {
           key: 'summary',
           label: 'Summary',
-          width: 'minmax(calc(var(--semantic-size-tile) * 1.5), 1fr)',
+          width: 'minmax(calc(var(--semantic-size-tile) * 1.5), 1.5fr)',
         },
         { key: 'status', label: 'Status', width: 'max-content' },
         { key: 'updated', label: 'Updated', align: 'right', width: 'max-content' },

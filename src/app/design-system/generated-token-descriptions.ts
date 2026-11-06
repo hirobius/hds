@@ -458,6 +458,7 @@ export const tokenDescriptions: Record<string, string> = {
   "component.inlineLink.size.lg.fontSize": "Link text size: the size step's type role (sm ui, md body, lg title).",
   "component.inlineLink.size.lg.iconSize": "Figma icon size: the largest px step not larger than fontSize (code draws 1em). Code draws iconSize.",
   "component.pagination.compactControlSize": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
+  "component.table.cell.paddingX": "Table cell inline padding: scale.md (28px, 16px compact). Own token, so tenant surface padding never widens cells.",
   "role.background": "Page background. shadcn role: background.",
   "role.foreground": "Default text on background. shadcn role: foreground.",
   "role.card": "Card surface. shadcn role: card.",

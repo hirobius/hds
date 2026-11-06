@@ -3766,6 +3766,15 @@
         "$value": "{semantic.size.row.compact}",
         "$description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square)."
       }
+    },
+    "table": {
+      "cell": {
+        "paddingX": {
+          "$type": "dimension",
+          "$value": "{semantic.space.scale.md}",
+          "$description": "Table cell inline padding: scale.md (28px, 16px compact). Own token, so tenant surface padding never widens cells."
+        }
+      }
     }
   },
   "role": {

@@ -260,3 +260,25 @@ describe('Table — full outline and vertical centering (hds#1198)', () => {
     }
   });
 });
+
+// hds#1339: cells read their own paddingX, not semantic.space.surface.padding. A tenant
+// that makes surfaces roomy (soft-demo: scale.lg, 40px) no longer inflates every cell,
+// which pushed a five-column table past an 868px frame.
+describe('Table — cell padding', () => {
+  it('header and body cells pad with component.table.cell.paddingX', () => {
+    render(<Table columns={columnsWith({})} rows={rows} />);
+    const header = screen.getByRole('columnheader', { name: 'Name' });
+    const cell = screen.getAllByRole('cell')[0];
+    for (const el of [header, cell]) {
+      expect(el.className).toContain('px-[var(--component-table-cell-paddingX)]');
+      expect(el.className).not.toContain('px-[var(--semantic-space-surface-padding)]');
+    }
+  });
+
+  it('the token follows the density scale, not the surface padding', async () => {
+    const tokens = (await import('../../../hirobius.tokens.json')).default as {
+      component: { table?: { cell?: { paddingX?: { $value: string } } } };
+    };
+    expect(tokens.component.table?.cell?.paddingX?.$value).toBe('{semantic.space.scale.md}');
+  });
+});

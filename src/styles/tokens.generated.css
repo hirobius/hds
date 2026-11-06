@@ -675,6 +675,7 @@
   --component-inlineLink-size-lg-fontSize: var(--primitive-typography-size-title);
   --component-inlineLink-size-lg-iconSize: var(--primitive-size-24);
   --component-pagination-compactControlSize: var(--semantic-size-row-compact);
+  --component-table-cell-paddingX: var(--semantic-space-scale-md);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */
   --role-background: var(--semantic-color-surface-page);
@@ -879,6 +880,7 @@
   --component-card-gap: var(--semantic-space-scale-sm);
   --component-list-groupGap: var(--semantic-space-scale-xl);
   --component-list-rowPadding: var(--semantic-space-scale-sm);
+  --component-table-cell-paddingX: var(--semantic-space-scale-md);
 }
 /* Raised edges (hds#897): computed fills stepped darker (C2); Button edges alias component.button.edge.*. scripts/lib/raised-edge.mjs */
 :root{--hds-edge-primary:var(--component-button-edge-primary);--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);--hds-edge-kbd:#b7b7b9;}

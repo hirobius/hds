@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Table cells pad with --component-table-cell-paddingX (28px, 16px compact) instead of surface padding, so brutalist-demo cells grow from 20px to 28px (8px to 16px compact) unless you set --component-table-cell-paddingX."
+}
