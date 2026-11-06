@@ -1,5 +1,5 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
-   from docs/api/releases/0.34.0.json: every Tailwind utility that release shipped stays emitted,
+   from docs/api/releases/0.35.0.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
    ./tokens.css by accident. To drop one, list utility-removed:<class> in a step
    (upgrade/pending/<changeset>.json), then run node scripts/build-utility-safelist.mjs. */
@@ -541,6 +541,9 @@
 @source inline("pl-2.5");
 @source inline("pl-7");
 @source inline("pl-9");
+@source inline("pl-[var(--component-input-paddingX)]");
+@source inline("pl-[var(--component-input-size-lg-paddingX)]");
+@source inline("pl-[var(--component-input-size-sm-paddingX)]");
 @source inline("pl-[var(--component-tag-paddingX)]");
 @source inline("pl-[var(--semantic-space-scale-xs)]");
 @source inline("pl-[var(--semantic-space-surface-padding)]");
@@ -559,6 +562,9 @@
 @source inline("pr-7");
 @source inline("pr-8");
 @source inline("pr-9");
+@source inline("pr-[var(--component-input-paddingX)]");
+@source inline("pr-[var(--component-input-size-lg-paddingX)]");
+@source inline("pr-[var(--component-input-size-sm-paddingX)]");
 @source inline("pr-[var(--component-list-rowPadding)]");
 @source inline("pr-[var(--semantic-space-subgrid-gap)]");
 @source inline("pr-fixed-2xs");
