@@ -181,6 +181,26 @@
  * chunks/useBreakpoint-*.js (84 kB raw) it imports; its full graph was
  * 64.94 kB, already over the 60 kB limit. The limits are not changed here.
  */
+/*
+ * Re-baselined 2026-11-06 (hds#1205, owner-approved plan step 4), measured on
+ * main after #1261, #1267 and #1269 merged (gzip unless raw):
+ *   main entry graph      68.55 kB -> 70 kB  unchanged. It still counts the
+ *                         deprecated root `hds`/`tokens` copies; when 0.35.0
+ *                         removes them it falls to about the components-only
+ *                         figure, and this limit goes back to 60 kB (hds#1205).
+ *   components-only graph 52.36 kB -> 55 kB  (was 60 kB, the hds#1205 target)
+ *   manifest graph        65.75 kB -> 70 kB  unchanged
+ *   tokens.css            23.94 kB -> 25 kB  (was 23 kB; growth since
+ *                         2026-10-07 is new components and the safelist, after
+ *                         the safelist prune and the demo directions moved out)
+ *   styles.css            23.17 kB -> 24 kB  (was 22 kB, same cause)
+ *   fonts.css + woff2     61.73 kB -> 65 kB raw (was 146 kB, set for four
+ *                         faces; three ship now)
+ *   Button-only           74.22 kB -> 78 kB  (was 119 kB, set before hds#1145)
+ *   tokens graph           4.54 kB ->  5 kB  (was 7 kB)
+ *   tokens JSON graph     20.55 kB -> 22 kB  unchanged
+ * Margins are about 3-7%, so the next real regression fails the budget.
+ */
 module.exports = [
   {
     name: 'main entry graph (hirobius-ui.js + the modules it re-exports)',
@@ -197,7 +217,7 @@ module.exports = [
     // the probe build fails if the token JSON reaches it. Measured 52.38 kB (size-limit).
     name: 'components-only root graph (hirobius-ui.js minus hds/tokens)',
     path: 'dist/probe/hirobius-ui.components.graph.js',
-    limit: '60 kB',
+    limit: '55 kB',
     gzip: true,
   },
   {
@@ -209,35 +229,35 @@ module.exports = [
   {
     name: 'tokens.css (CSS bundle, no fonts)',
     path: 'dist/tokens.css',
-    limit: '23 kB',
+    limit: '25 kB',
     gzip: true,
   },
   {
     name: 'styles.css (scoped-only CSS bundle)',
     path: 'dist/styles.css',
-    limit: '22 kB',
+    limit: '24 kB',
     gzip: true,
   },
   {
-    // Opt-in fonts (hds#479): fonts.css plus its four woff2 files, raw bytes
+    // Opt-in fonts (hds#479): fonts.css plus its three woff2 files, raw bytes
     // (woff2 is already compressed, so gzip would only hide the real transfer).
     name: 'fonts.css + woff2 files (opt-in, raw)',
     path: ['dist/fonts.css', 'dist/fonts/*.woff2'],
-    limit: '146 kB',
+    limit: '65 kB',
     gzip: false,
     brotli: false,
   },
   {
     name: 'Button-only root import (dist/probe/button-only.js)',
     path: 'dist/probe/button-only.js',
-    limit: '119 kB',
+    limit: '78 kB',
     gzip: true,
   },
   {
     // hds, ct and tokenValues from /tokens: everything but the raw JSON.
     name: 'tokens graph (token bridge constants)',
     path: 'dist/probe/tokens.graph.js',
-    limit: '7 kB',
+    limit: '5 kB',
     gzip: true,
   },
   {
