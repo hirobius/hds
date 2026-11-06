@@ -1077,4 +1077,15 @@ Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 an
 | 5                                                       | `use_figma`    | write | Explorations References page text | Adrian request  | OK. 9 texts rewritten.                |
 | Session total: 5 calls (2 writes, 3 reads). No publish. |
 
-Calls logged for 2026-11-06: 7 of 200 (1, 1 and 5).
+## 2026-11-06 · Roleforge renamed to Roleflame (file T6rf1cUp3qM16UpWNGh3fR)
+
+| #                                                      | Tool              | Kind  | Target                           | Why        | Result                                 |
+| ------------------------------------------------------ | ----------------- | ----- | -------------------------------- | ---------- | -------------------------------------- |
+| 1                                                      | `get_figma_skill` | read  | figma-use SKILL.md               | skill load | OK.                                    |
+| 2                                                      | `create_session`  | read  | roleflame T6rf1cUp3qM16UpWNGh3fR | session    | OK.                                    |
+| 3                                                      | `use_figma`       | read  | all pages: names and text        | find hits  | OK. References 2:2: 1 name, 1 text.    |
+| 4                                                      | `use_figma`       | write | References text 2:7              | rename     | OK. 1 text, name follows (autoRename). |
+| 5                                                      | `use_figma`       | read  | all pages: names and text        | verify     | OK. 0 hits.                            |
+| Session total: 5 calls (1 write, 4 reads). No publish. |
+
+Calls logged for 2026-11-06: 12 of 200 (1, 1, 5 and 5).
