@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-11-05",
+  "generatedAt": "2026-11-06",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -144,7 +144,7 @@
       "parent": null,
       "category": "Actions",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2399-11077"
     },
     {
       "name": "Callout",

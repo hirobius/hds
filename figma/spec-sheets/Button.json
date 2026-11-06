@@ -2,7 +2,7 @@
   "component": "Button",
   "description": "Triggers an action when activated.",
   "docsPage": "/docs/components/button",
-  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=28-138",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2399-11077",
   "anatomy": [
     {
       "part": "Root"
