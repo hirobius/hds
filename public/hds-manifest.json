@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-06T15:34:55.326Z",
+  "generated": "2026-11-06T14:57:22.007Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -3824,6 +3824,7 @@
         "src/app/components/sheet.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
+        "src/app/design-system/motion-extras.ts",
         "src/app/design-system/motion-tokens.ts",
         "src/app/hooks/useHdsMotion.ts",
         "src/form/index.ts",
@@ -13944,6 +13945,20 @@
         "value": "10px"
       },
       {
+        "path": "primitive.blur.2",
+        "cssVar": "--primitive-blur-2",
+        "type": "dimension",
+        "description": "Motion blur for in-place swaps of text and icons (hds#751).",
+        "value": "2px"
+      },
+      {
+        "path": "primitive.blur.4",
+        "cssVar": "--primitive-blur-4",
+        "type": "dimension",
+        "description": "Motion blur for content revealing into place (hds#751).",
+        "value": "4px"
+      },
+      {
         "path": "primitive.blur.8",
         "cssVar": "--primitive-blur-8",
         "type": "dimension",
@@ -14299,6 +14314,20 @@
         "value": "400ms"
       },
       {
+        "path": "primitive.duration.stagger",
+        "cssVar": "--primitive-duration-stagger",
+        "type": "duration",
+        "description": "Offset between items that arrive one after another (lists, digits, menu items) (hds#751).",
+        "value": "40ms"
+      },
+      {
+        "path": "primitive.duration.extended",
+        "cssVar": "--primitive-duration-extended",
+        "type": "duration",
+        "description": "Long reveals: skeleton to content, page-level entrances (hds#751).",
+        "value": "600ms"
+      },
+      {
         "path": "primitive.easing.emphasized",
         "cssVar": "--primitive-easing-emphasized",
         "type": "cubicBezier",
@@ -14325,6 +14354,48 @@
         "type": "spring",
         "description": "Spring response defined by stiffness, damping, and mass parameters.",
         "value": "linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1)"
+      },
+      {
+        "path": "primitive.easing.spatialFast",
+        "cssVar": "--primitive-easing-spatialFast",
+        "type": "spring",
+        "description": "Spring for small moves: indicators, thumbs, chips (damping ratio 0.9).",
+        "value": "linear(0, 0.04, 0.15, 0.27, 0.4, 0.52, 0.62, 0.71, 0.78, 0.84, 0.88, 0.92, 0.94, 0.96, 0.97, 0.98, 1)"
+      },
+      {
+        "path": "primitive.easing.spatialDefault",
+        "cssVar": "--primitive-easing-spatialDefault",
+        "type": "spring",
+        "description": "Spring for panels, menus and cards moving into place (damping ratio 0.9).",
+        "value": "linear(0, 0.04, 0.15, 0.27, 0.4, 0.51, 0.62, 0.71, 0.78, 0.84, 0.88, 0.92, 0.94, 0.96, 0.97, 0.98, 1)"
+      },
+      {
+        "path": "primitive.easing.spatialSlow",
+        "cssVar": "--primitive-easing-spatialSlow",
+        "type": "spring",
+        "description": "Spring for large travel: sheets, page-level moves (damping ratio 0.9).",
+        "value": "linear(0, 0.04, 0.15, 0.27, 0.39, 0.51, 0.62, 0.7, 0.78, 0.83, 0.88, 0.91, 0.94, 0.96, 0.97, 0.98, 1)"
+      },
+      {
+        "path": "primitive.easing.effectsFast",
+        "cssVar": "--primitive-easing-effectsFast",
+        "type": "spring",
+        "description": "Critically damped spring for quick fades and colour changes; never overshoots.",
+        "value": "linear(0, 0.08, 0.21, 0.37, 0.51, 0.63, 0.72, 0.8, 0.85, 0.89, 0.92, 0.95, 0.96, 0.97, 0.98, 0.99, 1)"
+      },
+      {
+        "path": "primitive.easing.effectsDefault",
+        "cssVar": "--primitive-easing-effectsDefault",
+        "type": "spring",
+        "description": "Critically damped spring for opacity and blur changes; never overshoots.",
+        "value": "linear(0, 0.07, 0.21, 0.37, 0.51, 0.62, 0.72, 0.79, 0.85, 0.89, 0.92, 0.94, 0.96, 0.97, 0.98, 0.99, 1)"
+      },
+      {
+        "path": "primitive.easing.effectsSlow",
+        "cssVar": "--primitive-easing-effectsSlow",
+        "type": "spring",
+        "description": "Critically damped spring for slow reveals; never overshoots.",
+        "value": "linear(0, 0.07, 0.21, 0.36, 0.5, 0.62, 0.72, 0.79, 0.85, 0.89, 0.92, 0.94, 0.96, 0.97, 0.98, 0.99, 1)"
       },
       {
         "path": "primitive.shadow.color",
@@ -14667,6 +14738,27 @@
         "type": "dimension",
         "description": "2.5-unit stroke.",
         "value": "2.5px"
+      },
+      {
+        "path": "primitive.scale.96",
+        "cssVar": "--primitive-scale-96",
+        "type": "number",
+        "description": "96% scale.",
+        "value": "0.96"
+      },
+      {
+        "path": "primitive.scale.97",
+        "cssVar": "--primitive-scale-97",
+        "type": "number",
+        "description": "97% scale.",
+        "value": "0.97"
+      },
+      {
+        "path": "primitive.scale.98",
+        "cssVar": "--primitive-scale-98",
+        "type": "number",
+        "description": "98% scale.",
+        "value": "0.98"
       }
     ],
     "semantic": [
@@ -14717,6 +14809,62 @@
         "description": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242).",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
+      },
+      {
+        "path": "semantic.motion.nudge",
+        "cssVar": "--semantic-motion-nudge",
+        "type": "dimension",
+        "description": "Small travel for text swaps and nudges (hds#751).",
+        "alias": "{primitive.space.1}",
+        "resolvedValue": "4px"
+      },
+      {
+        "path": "semantic.motion.slide",
+        "cssVar": "--semantic-motion-slide",
+        "type": "dimension",
+        "description": "Travel for menus, toasts and items sliding in (hds#751).",
+        "alias": "{primitive.space.2}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "semantic.motion.blurSwap",
+        "cssVar": "--semantic-motion-blurSwap",
+        "type": "dimension",
+        "description": "Blur while text or an icon swaps in place (hds#751).",
+        "alias": "{primitive.blur.2}",
+        "resolvedValue": "2px"
+      },
+      {
+        "path": "semantic.motion.blurReveal",
+        "cssVar": "--semantic-motion-blurReveal",
+        "type": "dimension",
+        "description": "Blur while content reveals into place (hds#751).",
+        "alias": "{primitive.blur.4}",
+        "resolvedValue": "4px"
+      },
+      {
+        "path": "semantic.motion.scaleDialog",
+        "cssVar": "--semantic-motion-scaleDialog",
+        "type": "number",
+        "description": "Scale a dialog opens from and closes to (hds#751).",
+        "alias": "{primitive.scale.96}",
+        "resolvedValue": "0.96"
+      },
+      {
+        "path": "semantic.motion.scaleMenu",
+        "cssVar": "--semantic-motion-scaleMenu",
+        "type": "number",
+        "description": "Scale a menu, popover or select opens from (hds#751).",
+        "alias": "{primitive.scale.97}",
+        "resolvedValue": "0.97"
+      },
+      {
+        "path": "semantic.motion.scaleTooltip",
+        "cssVar": "--semantic-motion-scaleTooltip",
+        "type": "number",
+        "description": "Scale a tooltip opens from (hds#751).",
+        "alias": "{primitive.scale.98}",
+        "resolvedValue": "0.98"
       },
       {
         "path": "semantic.color.surface.page",

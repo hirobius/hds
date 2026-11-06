@@ -171,8 +171,10 @@ export const NOT_IN_FIGMA = [
   {
     id: 'motion-distance',
     reason:
-      "Figma prototyping derives travel distance from a layer's own frame position, not a bindable scalar variable — a translateY offset has nothing to bind to, same as duration/easing (hds#242).",
-    matches: (token) => token.path[1] === 'motion' && token.path[2] === 'distance',
+      "Figma prototyping derives travel, scale and blur during a transition from the layers' own frames, not from bindable scalar variables — a translateY offset, an enter scale or a swap blur has nothing to bind to, same as duration/easing (hds#242, hds#751).",
+    matches: (token) =>
+      (token.path[0] === 'semantic' && token.path[1] === 'motion') ||
+      (token.path[0] === 'primitive' && token.path[1] === 'scale'),
   },
   {
     id: 'relative-typography',

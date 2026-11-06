@@ -17,6 +17,7 @@ export const motion = {
   },
   expressive: {
     duration: msToSeconds(tokenValues.primitive.duration.medium),
+    // primitive.easing.elastic; motion-springs.test.ts keeps it equal to hds.motion.springs.elastic.
     easing: { type: 'spring', stiffness: 300, damping: 20, mass: 1 } as const,
   },
   spatial: {

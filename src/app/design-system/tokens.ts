@@ -12,7 +12,10 @@ import React from 'react';
 import tokensJson from '../../../hirobius.tokens.json';
 import { tokenValues } from './generated-token-values';
 import { tokenRefs } from './generated-token-refs';
-import { motion } from './motion-tokens';
+import { motion as motionRoles } from './motion-tokens';
+import { motionExtras } from './motion-extras';
+
+const motion = { ...motionRoles, ...motionExtras } as const;
 
 const FONT_FAMILY_PRIMARY = 'var(--primitive-typography-family-primary)';
 const FONT_FAMILY_MONO = 'var(--primitive-typography-family-mono)';
