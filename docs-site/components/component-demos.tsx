@@ -13,6 +13,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
+  AlertDialog,
   Avatar,
   AvatarGroup,
   Badge,
@@ -843,6 +844,36 @@ function ThemeToggleDemo() {
   );
 }
 
+function AlertDialogDemo() {
+  return (
+    <AlertDialog>
+      <AlertDialog.Trigger asChild>
+        <Button variant="secondary" tone="danger">
+          Delete project
+        </Button>
+      </AlertDialog.Trigger>
+      <AlertDialog.Content>
+        <AlertDialog.Header>
+          <AlertDialog.Title>Delete project?</AlertDialog.Title>
+          <AlertDialog.Description>
+            Its boards and files are removed for everyone. This cannot be undone.
+          </AlertDialog.Description>
+        </AlertDialog.Header>
+        <AlertDialog.Footer>
+          <AlertDialog.Cancel asChild>
+            <Button variant="secondary">Cancel</Button>
+          </AlertDialog.Cancel>
+          <AlertDialog.Action asChild>
+            <Button variant="primary" tone="danger">
+              Delete
+            </Button>
+          </AlertDialog.Action>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
+  );
+}
+
 function PinDemo() {
   // A short scroll box stands in for the page: scroll it and the heading stays put.
   return (
@@ -1596,6 +1627,7 @@ function RevealDemo() {
 }
 
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
+  AlertDialog: AlertDialogDemo,
   Pin: PinDemo,
   Sidebar: SidebarDemo,
   Switcher: SwitcherDemo,

@@ -6,7 +6,6 @@
  * @usage Capture a prompt or a quick note where a long paste should not flood the field.
  * @whenNot A plain multi-line field with no submit action, or a form with several fields.
  * @useInstead Textarea a plain multi-line field
- * @doc-exempt: demo lives in docs-site/components/component-demos.tsx
  *
  * Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer than
  * `pasteFoldThreshold` characters never enters the field: it becomes an

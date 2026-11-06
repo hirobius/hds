@@ -16,6 +16,7 @@
     "tokens": "{/* generated: tokens */}"
   },
   "pagedComponents": [
+    "AlertDialog",
     "AvatarGroup",
     "Blockquote",
     "Board",

@@ -6911,7 +6911,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level @figma would claim this one for all three.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
@@ -6966,7 +6965,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Label + description + error wrapper that wires the a11y relationships onto its single child control via cloneElement. Validation-library agnostic — pass `error` from whatever you use. For controls with an externally-managed callback ref (e.g. react-hook-form), use `FormFieldShell` + `useFieldWiring` instead.",
       "figmaUrl": null,
@@ -7071,7 +7069,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "docExempt": true,
       "filePath": "src/app/components/form.tsx",
       "description": "Presentational label + control slot + helper/error markup. Renders `children` verbatim — it does NOT clone — so it is safe to use with controls that own a callback ref. Pair it with `useFieldWiring` to apply ids/aria yourself.",
       "figmaUrl": null,
@@ -7539,7 +7536,6 @@
       "category": "Overlays",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "docExempt": true,
       "filePath": "src/app/components/alert-dialog.tsx",
       "description": "AlertDialog root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24",
@@ -7647,7 +7643,7 @@
           "owner": "consumer"
         }
       ],
-      "docsPage": null,
+      "docsPage": "/docs/components/alert-dialog",
       "publicDataAttributes": [],
       "usage": {
         "when": "Confirm a destructive or irreversible action (delete, archive, remove) before it runs, with Cancel and Action buttons.",
@@ -10023,7 +10019,6 @@
       "category": "Inputs",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "docExempt": true,
       "filePath": "src/app/components/composer.tsx",
       "description": "Composer — prompt and capture box that grows with its text and folds long pastes into cards. Built from Textarea, Button, Tag, Dialog and Kbd. A paste longer than `pasteFoldThreshold` characters never enters the field: it becomes an attachment card (a Tag) that opens a Dialog to edit or remove the text. Cmd/Ctrl+Enter submits; plain Enter stays a newline. `text` and `attachments` can each be controlled or uncontrolled; an uncontrolled composer clears itself after a submit.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2201-277",
@@ -10296,7 +10291,6 @@
       "category": "Actions",
       "categorySource": "jsdoc",
       "governedCategory": true,
-      "docExempt": true,
       "filePath": "src/app/components/theme-toggle.tsx",
       "description": "One-button light/dark switch with a sun-to-moon morph.",
       "a11yRules": [

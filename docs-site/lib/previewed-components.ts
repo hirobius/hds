@@ -15,6 +15,7 @@ export const PREVIEWED_COMPONENTS = [
   'Table',
   'MetricTiles',
   'Alert',
+  'AlertDialog',
   'Avatar',
   'AvatarGroup',
   'Badge',

@@ -6,7 +6,6 @@
  * @usage A single header or menu control to switch between the light and dark theme.
  * @whenNot Choosing between three or more modes, or a setting that belongs in a form.
  * @useInstead SegmentedControl for a labelled choice of several modes
- * @doc-exempt: demo lives in docs-site/components/component-demos.tsx
  *
  * Reads and sets the theme through ThemeContext (`useTheme`): it follows the OS
  * until the user picks, then the pick is remembered and `data-theme` on `<html>`
