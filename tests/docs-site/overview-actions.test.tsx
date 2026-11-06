@@ -3,7 +3,8 @@
  * on the removed /tour page, and each one points at a page that exists. The tour's
  * "Upgrade guide" pointed at /docs/guides/upgrading and 404'd (Adrian, 2026-11-05).
  */
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -21,6 +22,17 @@ const pageExists = (href: string) => {
 };
 
 describe('Overview actions', () => {
+  // content/docs/components/ is build output (gitignored), so a fresh clone has no
+  // /docs/components folder until the generator runs. Run it here so the check holds there too.
+  beforeAll(() => {
+    if (!existsSync(join(ROOT, 'content/docs/components'))) {
+      execFileSync(process.execPath, [join(ROOT, 'scripts/generate-docs-components.mjs')], {
+        cwd: ROOT,
+        stdio: 'ignore',
+      });
+    }
+  });
+
   it('links to the components index and the upgrade guide', () => {
     expect(hrefs()).toEqual(['/docs/components', '/docs/guides/upgrade']);
   });
