@@ -15,6 +15,10 @@ import { BRANDS, matrixCases, type Brand, type Density } from './tenant-matrix';
  */
 type Mode = { brand: Brand | null; density: Density; read?: string };
 
+// Per-pixel colour distance (YIQ, 0 to 1), as in docs-baselines.spec.ts: the default 0.2
+// let dark surface and page-tint changes pass, so baselines went stale unseen (hds#1335).
+const SHOT = { ...DEMO_SHOT, threshold: 0.05 };
+
 /**
  * The docs density switch re-applies its saved choice on hydrate and would strip
  * a data-density set before it ran, so seed that saved choice too.
@@ -83,7 +87,7 @@ test.describe('tenant matrix baselines @baseline', () => {
       const demo = page.locator(DEMO_SELECTOR).first();
       await expect(demo).toBeVisible();
       await page.mouse.move(0, 0);
-      await expect(demo).toHaveScreenshot(`${c.name}.png`, DEMO_SHOT);
+      await expect(demo).toHaveScreenshot(`${c.name}.png`, SHOT);
     });
   }
 });
