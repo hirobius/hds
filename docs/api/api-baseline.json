@@ -10,6 +10,7 @@
     "./mui": "src/mui/index.ts",
     "./brand": "src/brand/index.ts",
     "./scroll": "src/scroll/index.ts",
+    "./number": "src/number/index.ts",
     "./patterns": "src/patterns.ts",
     "./icons": "src/icons.ts"
   },
@@ -29,8 +30,6 @@
       "HdsThemeProviderProps",
       "HdsThemeValue",
       "cn",
-      "hds",
-      "tokens",
       "useAtLeast",
       "useBreakpoint",
       "useHdsRouter",
@@ -267,6 +266,7 @@
       "useLenis",
       "useScrollProgress"
     ],
+    "@subpath/number": ["NumberValue", "NumberValueProps"],
     "@subpath/patterns": [
       "AppShell",
       "AppShellProps",
