@@ -33,11 +33,11 @@ Three Figma areas (ADR-026, amended 2026-10-07; named in `figma/links.json`).
 `pnpm figma:links --check` fails while any of the three is unnamed there, or
 while two areas share one key or one name:
 
-| Area                | File                                                                  | Who may write                                                                                                            | Who may delete                              | Who publishes                                                   |
-| ------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- | --------------------------------------------------------------- |
-| Library (locked)    | `HDS Tokens & Components` (`libraryFileKey`)                          | Adrian; agents restyle, fix, add, copy or redraw components. Variables and styles only from code, via Sync or `delta.js` | No agent, ever; Adrian only (promote prune) | Adrian only                                                     |
-| Staging             | `HDS Staging` (`stagingFileKey`)                                      | Agents drafting a new component                                                                                          | Agents, their own drafts, after the ingest  | No one — never published; Sync never targets it                 |
-| Visual explorations | Not created yet (`explorationsFileKey`, once Adrian creates the file) | Adrian; agents drafting explorations                                                                                     | Adrian; agents, their own drafts            | No one — a pick is redrawn in the library, like a staging draft |
+| Area                | File                                         | Who may write                                                                                                            | Who may delete                              | Who publishes                                                   |
+| ------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- | --------------------------------------------------------------- |
+| Library (locked)    | `HDS Tokens & Components` (`libraryFileKey`) | Adrian; agents restyle, fix, add, copy or redraw components. Variables and styles only from code, via Sync or `delta.js` | No agent, ever; Adrian only (promote prune) | Adrian only                                                     |
+| Staging             | `HDS Staging` (`stagingFileKey`)             | Agents drafting a new component                                                                                          | Agents, their own drafts, after the ingest  | No one — never published; Sync never targets it                 |
+| Visual explorations | `HDS Explorations` (`explorationsFileKey`)   | Adrian; agents drafting explorations                                                                                     | Adrian; agents, their own drafts            | No one — a pick is redrawn in the library, like a staging draft |
 
 - **The HDS library**, `HDS Tokens & Components` (`2VgBbVpKiDnu0aftJEVyBQ`,
   `libraryFileKey`): the one file consumers subscribe to. The staging copy became this
@@ -48,13 +48,11 @@ while two areas share one key or one name:
   ingests it by redrawing it in the library and deletes the draft
   ([below](#new-components-draft-in-staging-ingest-to-the-library)). Sync, `delta.js` and
   the promote plugin never target it.
-- **Visual explorations** (`explorationsFileKey`): the third area, for visual
-  exploration drafts that are neither staging drafts nor library work. No file
-  exists yet, so `figma/links.json` names no key for it — a key is never
-  invented. Adrian creates the file in Figma, then its key and name go into
-  `figma/links.json` and the table above. Until then `pnpm figma:links --check`
-  prints a loud warning naming the missing key and exits 0 (hds#1104 makes it
-  an error again once the file exists).
+- **HDS Explorations** (`7US9lA0qsUP0uwmtQtA8Ss`, `explorationsFileKey`): the third
+  area, for visual exploration drafts that are neither staging drafts nor library work.
+  Adrian created it on 2026-11-04 (hds#763, hds#1104). It is scratch: nothing syncs to
+  it, nothing is published from it, and no component links it — a pick is redrawn in the
+  library.
 
 The rules:
 
