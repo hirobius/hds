@@ -1220,6 +1220,26 @@
       "supportsJson": true
     },
     {
+      "id": "check-learned-trailer",
+      "description": "Every fix: and revert: commit must end with a `Learned: <one line>` trailer (`Learned: none` is allowed), so each fix feeds the fleet lessons ledger (ops#612, ops#1043). feat: and other types are untouched; merges skip. Wired from .husky/commit-msg as `node scripts/check-learned-trailer.mjs \"$1\"`; FIXTURE_FILE=<path> reads the message from a file.",
+      "severity": "error",
+      "gateScript": "scripts/check-learned-trailer.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "commit-msg"
+    },
+    {
+      "id": "check-pack-scan",
+      "description": "Before publish, packs the real npm tarball and scans every byte that would ship (ops#27; 0.12 and 0.13 shipped client PII): every file must sit under package.json \"files\" (or be a file npm always adds) with no .status, .env*, fixtures or tests segment; gitleaks with .gitleaks.toml over the unpacked package (gitleaks missing fails, except in CI); and the PII denylist. Runs last in `pnpm release` and in `pnpm release:local` before publish, so nothing built after it ships unscanned. Fixtures: fixtures/pack-scan.",
+      "severity": "error",
+      "gateScript": "scripts/check-pack-scan.mjs",
+      "fixturePath": "fixtures/pack-scan",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
+    },
+    {
       "id": "check-lockfile-integrity",
       "description": "Fails when an entry in pnpm-lock.yaml or docs-site/pnpm-lock.yaml has no sha512 integrity, a weaker hash, or resolves from a tarball URL, git repo or directory (hds#1145). blockExoticSubdeps covers transitive deps only; this also covers direct deps. Read-only, no network. Runs in pretest, so pre-push and pnpm test fire it. Fixtures: fixtures/check-lockfile-integrity/{passing,violating}.example.yaml (FIXTURE_FILE substitutes the lock).",
       "severity": "error",
