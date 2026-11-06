@@ -72,15 +72,36 @@ const isToken = (d, step) => !!step?.detect?.cssVars || /^(?:primitive|semantic)
 export const DEPRECATED_TOKENS_NOTE =
   'Deprecated design tokens are not listed: the `hds/no-deprecated-token` lint rule flags each use and names its replacement.';
 
+/**
+ * Each deprecated export or prop's removal version as the source states it now
+ * (deprecations.json, built from the @removeIn tags), keyed the way
+ * upgrade/index.json names them: `hds`, `Blockquote.size`. A release's ledger
+ * records the removeIn of its day; a later move (root hds/tokens, 0.35.0 to
+ * 0.36.0, #1348) shows up here, not in the released record.
+ */
+function currentRemoveIn(root) {
+  let current;
+  try {
+    current = JSON.parse(readFileSync(join(root, 'deprecations.json'), 'utf8'));
+  } catch {
+    return new Map();
+  }
+  return new Map([
+    ...(current.exports ?? []).map((e) => [e.name, e.removeIn]),
+    ...(current.props ?? []).map((p) => [`${p.owner.replace(/Props$/, '')}.${p.name}`, p.removeIn]),
+  ]);
+}
+
 /** [{ name, removeIn, plain }] for every deprecated name still shipped (upgrade/index.json), tokens aside. */
 export function deprecatedRows(root) {
   const index = JSON.parse(readFileSync(join(root, 'upgrade/index.json'), 'utf8'));
   const steps = new Map(ledgers(root).flatMap((l) => l.steps.map((s) => [s.id, s])));
+  const current = currentRemoveIn(root);
   return (index.deprecated ?? [])
     .filter((d) => !isToken(d, steps.get(d.step)))
     .map((d) => ({
       name: d.name,
-      removeIn: d.removeIn,
+      removeIn: current.get(d.name) ?? d.removeIn,
       plain: steps.get(d.step)?.plain ?? '',
     }));
 }
