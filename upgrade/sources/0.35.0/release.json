@@ -1,0 +1,42 @@
+{
+  "$comment": "Frozen inputs of the 0.35.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.35.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.35.0",
+  "previous": "0.34.0",
+  "date": "2026-11-06",
+  "summary": "1 change to make by hand, 28 that look different and 2 deprecations.",
+  "backfilled": false,
+  "notes": {
+    "display-min-rem": {
+      "needle": "1912d44: `primitive.typography.size.displayMin`",
+      "source": "CHANGELOG.md:23"
+    },
+    "fluid-display": {
+      "needle": "491a574: Opt-in fluid display size (hds#1300):",
+      "source": "CHANGELOG.md:24"
+    },
+    "inline-link-icon-1em": {
+      "needle": "5bfa674: `InlineLink`: the external-link",
+      "source": "CHANGELOG.md:25"
+    },
+    "inline-link-icon-nowrap": {
+      "needle": "1dd68f3: `InlineLink`: the external-link",
+      "source": "CHANGELOG.md:19"
+    },
+    "input-size-padding": {
+      "needle": "93544b4: Input reads its horizontal padding",
+      "source": "CHANGELOG.md:26"
+    },
+    "root-tokens-removal-036": {
+      "needle": "9e06ec7: The root `hds` and `tokens` exports",
+      "source": "CHANGELOG.md:27"
+    },
+    "stats-delivery": {
+      "needle": "f16d56f: `@hirobius/design-system/stats.json`",
+      "source": "CHANGELOG.md:28"
+    },
+    "variables-data-accent": {
+      "needle": "23edf3c: `variables.css` now ships the opt-in",
+      "source": "CHANGELOG.md:29"
+    }
+  }
+}
