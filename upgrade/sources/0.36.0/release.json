@@ -1,0 +1,30 @@
+{
+  "$comment": "Frozen inputs of the 0.36.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.36.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.36.0",
+  "previous": "0.35.0",
+  "date": "2026-11-06",
+  "summary": "1 change to make by hand, 2 fixed for you by a codemod and 1 that looks different.",
+  "backfilled": false,
+  "notes": {
+    "number-subpath": {
+      "needle": "1a60adb: New opt-in subpath `@hirobius/design-system/number`",
+      "source": "CHANGELOG.md:22"
+    },
+    "remove-root-tokens": {
+      "needle": "e3d1723: Breaking: the root `hds` and `tokens`",
+      "source": "CHANGELOG.md:18"
+    },
+    "table-cell-padding": {
+      "needle": "39b9a14: `Table`: header and body cells read",
+      "source": "CHANGELOG.md:23"
+    },
+    "upgrading-code-spans": {
+      "needle": "209693c: UPGRADING.md and the release upgrade",
+      "source": "CHANGELOG.md:24"
+    },
+    "view-transition-helper": {
+      "needle": "8552e61: New `withViewTransition(update)`",
+      "source": "CHANGELOG.md:25"
+    }
+  }
+}
