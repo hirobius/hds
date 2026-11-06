@@ -146,7 +146,7 @@ describe('README "In use" section', () => {
     expect(snapshot.commit).toMatch(/^[0-9a-f]{40}$/);
   });
 
-  it('publishes the confirmed split: ops and Roleforge are the product apps (2026-10-12)', () => {
+  it('publishes the confirmed split: ops and Roleflame are the product apps (2026-10-12)', () => {
     expect(snapshot.consumersConfirmed).toBe(true);
     expect(snapshot.consumers.productApps).toBe(2);
     expect(readme).toMatch(/^## In use$/m);
