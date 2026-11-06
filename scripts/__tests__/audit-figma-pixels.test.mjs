@@ -15,6 +15,7 @@ import {
   compare,
   buildGeometryScript,
   rebaseFontUrls,
+  requireBrandFont,
 } from '../audit-figma-pixels.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -59,6 +60,24 @@ describe('audit-figma-pixels', () => {
     const c = compare(a, solid(12, 10, [10, 20, 30, 255]));
     expect(c.sizeCode).toEqual([10, 10]);
     expect(c.sizeFigma).toEqual([12, 10]);
+  });
+
+  // hds#1296: a face moved down 3px must show as a difference.
+  it('a block shifted down 3px gives a non-zero diff at the same size', () => {
+    const block = (dy) => {
+      const p = solid(20, 20, [255, 255, 255, 255]);
+      for (let y = 4 + dy; y < 14 + dy; y++)
+        for (let x = 4; x < 16; x++) p.data.set([0, 0, 0, 255], (y * 20 + x) * 4);
+      return p;
+    };
+    const c = compare(block(0), block(3));
+    expect(c.sizeCode).toEqual(c.sizeFigma);
+    expect(c.diffPercent).toBeGreaterThan(0);
+  });
+
+  it('aborts the code render when the brand font did not load (hds#1295)', () => {
+    expect(() => requireBrandFont(false)).toThrow(/Plus Jakarta Sans.*did not load/);
+    expect(() => requireBrandFont(true)).not.toThrow();
   });
 
   it('the geometry script reads the parity sets in the library only', () => {
