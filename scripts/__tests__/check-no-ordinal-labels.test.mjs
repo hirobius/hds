@@ -50,6 +50,14 @@ describe('findViolationsInText: where a label is read', () => {
     expect(count('Body text that says 01 here.\n', 'content/docs/x.mdx')).toBe(0);
   });
 
+  it('skips fenced code blocks in Markdown and MDX', () => {
+    const fenced = '```bash\n# 01 install the package\npnpm add x\n```\n';
+    expect(count(fenced, 'content/docs/x.mdx')).toBe(0);
+    const tilde = "~~~yaml\ntitle: '02 Color'\n~~~\n";
+    expect(count(tilde, 'content/docs/x.mdx')).toBe(0);
+    expect(count(fenced + '## 03 After the fence\n', 'content/docs/x.mdx')).toBe(1);
+  });
+
   it('flags nav titles and page entries in meta.json', () => {
     expect(count('{ "title": "01 Foundations" }', 'content/docs/meta.json')).toBe(1);
     expect(count('{ "pages": ["---02 Components---", "button"] }', 'content/docs/meta.json')).toBe(
