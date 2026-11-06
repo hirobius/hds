@@ -42,6 +42,11 @@ one term per session in ledger order:
 `Calls logged for <date>: <sum> of 200 (<a>, <b> and <c>).`
 `figma-one-library-rule.test.mjs` checks the sum.
 
+Add rows with `pnpm ledger:append --session "<text in your heading>" --row "| N | … |" [--total "Session total: …"]`,
+not with sed: it writes only into the one section whose heading matches, checks the row
+number, and re-sums the day line (hds#1297). `ledger-append.test.mjs` fails when a table
+repeats a row number.
+
 | #   | Time (UTC) | Tool | Kind | Purpose | Result |
 | --- | ---------- | ---- | ---- | ------- | ------ |
 
