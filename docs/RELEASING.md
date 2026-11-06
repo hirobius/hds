@@ -1,44 +1,51 @@
 # Releasing @hirobius/design-system
 
-GitHub Actions is disabled on hirobius/hds (Adrian, 2026-10-30) to keep the repo
-free. `.github/workflows/release.yml` never runs, so every release is cut by hand
-by the owner. Agents never merge, publish or release.
+Releases publish from GitHub Actions: `.github/workflows/release.yml` runs on
+every push to `main` (checked 2026-11-06). Agents never merge the release PR,
+publish or release.
 
 ## Who
 
-Owner only (Adrian), from his own laptop, signed in with `npm login` on an
-account that can publish the package. npm asks for 2FA at publish.
+The owner (Adrian) merges the "Version Packages" PR. The Release workflow then
+publishes through npm Trusted Publishing (OIDC): no npm token, no laptop login.
 
 ## Steps
 
-1. **Version PR.** On a branch, run `pnpm changeset:version`. It applies the
-   pending `.changeset/*.md`, bumps the version, writes the changelog and
-   rebuilds the release artifacts. Open it as the "Version Packages" PR.
-2. **Check locally.** Run `pnpm typecheck && pnpm test && pnpm smoke:consumer`
-   and paste the results into the PR. No CI will run them.
+1. **Version PR.** Each push to `main` makes the Release workflow open or update
+   the "Version Packages" PR (`changeset-release/main`): it applies the pending
+   `.changeset/*.md`, bumps the version and writes the changelog.
+2. **Figma first.** `pnpm release` starts with `pnpm check:figma-release`, which
+   refuses to publish when the committed `figma/snapshot.json` differs from code,
+   above all `meta/version` against the version being released. So the agent
+   delta sync (`figma/README.md`, "Agent sync (zero clicks)") and its snapshot PR
+   must land before the publish runs.
 3. **Review.** The PR needs an independent `Reviewed: PASS — <sha>` comment for
    its head commit, from someone other than the author. A new push voids it.
-4. **Merge** the PR (owner), then pull `main` locally.
-5. **Dry run.** `pnpm release:local`: every check, the build, the consumer smoke
+4. **Merge** the PR (owner). The Release workflow runs `pnpm release`:
+   `check:figma-release`, `pnpm audit`, `build:lib`, the consumer smoke, the pack
+   scan, then `changeset publish`.
+5. **Announce.** The workflow does not announce. After the publish, run
+   `pnpm release:announce <version> --apply` by hand. It files one standing
+   upgrade issue per consumer repo that is behind and posts five lines on Discord
+   unless every change is none or additive. It needs `HDS_FLEET_TOKEN` and
+   `DISCORD_WEBHOOK_URL`; a missing one skips its step, and it never fails the
+   release.
+
+## Fallback: release from the laptop
+
+When the workflow cannot publish (Trusted Publisher entry missing, Actions
+down), the owner releases by hand, signed in with `npm login` (npm asks for 2FA):
+
+1. Pull `main` after the Version Packages merge.
+2. **Dry run.** `pnpm release:local`: every check, the build, the consumer smoke
    and `pnpm publish --dry-run`. Publishes nothing, needs no login.
-6. **Publish.** `pnpm release:local --publish`. It refuses unless HEAD is a clean
+3. **Publish.** `pnpm release:local --publish`. It refuses unless HEAD is a clean
    checkout of `origin/main` with no pending changesets, and stops if the
-   version is already on npm. After the publish it runs
-   `pnpm release:announce <version> --apply`: one standing upgrade issue per
-   consumer repo that is behind (filed, retargeted, or reopened; never closed),
-   and five lines on Discord unless every change is none or additive. Export
-   `HDS_FLEET_TOKEN` and `DISCORD_WEBHOOK_URL` in your shell first; a missing
-   one skips its step. It never fails the release: re-run it by hand with the
-   same command once a token is fixed.
+   version is already on npm. It then runs `pnpm release:announce` as in step 5.
 
-## What changed from the Actions release
-
-- **No provenance.** npm provenance came from OIDC in Actions. Don't pass
-  `--provenance`; it fails outside a supported CI.
-- **The tag stays local.** `changeset publish` tags `v<version>` on the laptop;
-  pushing from a laptop is forbidden (CLAUDE.md §0).
-- **No Chromatic, no CI.** Visual changes carry before/after screenshots in the
-  PR; checks are the husky hooks plus the commands in step 2.
+A laptop release differs from the workflow: it has no npm provenance (do not pass
+`--provenance`), and the `v<version>` tag stays local, because pushing from a
+laptop is forbidden (CLAUDE.md §0).
 
 Script: `scripts/release-local.mjs` (ops#771). The rest of this file is what
 to do when a release goes wrong.
