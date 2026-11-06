@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "If you use static.css, you can now style an <a> as a Button with .hds-button and its variant and size classes, and a text link with .hds-link; nothing you use today changes."
+}
