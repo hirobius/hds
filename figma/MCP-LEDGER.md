@@ -1397,4 +1397,12 @@ Session total: 1 use_figma call (1 write). No publish.
 
 Session total: 18 calls (9 use_figma writes in the library, 2 of them no-ops and 1 rolled back; no deletes). No publish.
 
-Calls logged for 2026-11-06: 152 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1 and 18).
+## 2026-11-06 · HDS ops: delta after hds#1379 (package.json, Motion 14)
+
+| #   | Tool        | Kind  | Target                                                                                             | Why                 | Result                                         |
+| --- | ----------- | ----- | -------------------------------------------------------------------------------------------------- | ------------------- | ---------------------------------------------- |
+| 1   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against ef45e5e7 (VariableID:2475:51 meta/commit 4e0f47f) | package.json change | OK. updated 1; post b7e2abde; receipt written. |
+
+Session total: 1 use_figma call (1 write). No publish.
+
+Calls logged for 2026-11-06: 153 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 18 and 1).
