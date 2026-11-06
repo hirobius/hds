@@ -1148,4 +1148,13 @@ Session total: 22 calls (6 writes, all in HDS Explorations; 2 of them failed). L
 | 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 550212e6 (VariableID:2475:51 meta/commit) | meta/commit | OK. updated 1; post c0a16504; receipt written. |
 | Session total: 1 use_figma call (1 write). No publish. |
 
-Calls logged for 2026-11-06: 48 of 200 (1, 1, 5, 5, 12, 1, 22 and 1).
+## 2026-11-06 · Control-to-label gap after #1276 (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                                | Tool        | Kind  | Target                                                                                                               | Why                | Result                                                                   |
+| ---------------------------------------------------------------- | ----------- | ----- | -------------------------------------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------ |
+| 1                                                                | `use_figma` | read  | Checkbox 35:29, Radio 36:17, Toggle 37:19: variant itemSpacing; screenshots                                          | before             | OK. 35 variants, 4px on space/subgrid/gap. figma/shots/*-gap-before.png. |
+| 2                                                                | `use_figma` | write | itemSpacing of the 35 variants (Checkbox 35:3 … 2337:30145, Radio 2337:16391 … 2337:16424, Toggle 37:3 … 2335:18105) | match code (#1276) | OK. Bound to space/scale/xs VariableID:2061:878: 8px.                    |
+| 3                                                                | `use_figma` | read  | the 3 sets: screenshots, label fit                                                                                   | after              | OK. 0 clipped labels. figma/shots/*-gap-after.png.                       |
+| Session total: 3 use_figma calls (1 write, 2 reads). No publish. |
+
+Calls logged for 2026-11-06: 51 of 200 (1, 1, 5, 5, 12, 1, 22, 1 and 3).
