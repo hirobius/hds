@@ -60,19 +60,33 @@ function repo() {
   commit('fix(y): two (#7)', '2026-07-03');
   commit('docs: no pr', '2026-07-04');
   commit('Merge pull request #9 from hirobius/claude/z', '2026-07-05');
+  commit('fix: revert (#3) again (#11)', '2026-07-06');
+  // main is the commit before the branch work below.
+  git(root, 'update-ref', 'refs/remotes/origin/main', 'HEAD');
+  commit('feat: on a branch, not on main yet (#12)', '2026-07-07');
   return root;
 }
 
 describe('collectDelivery', () => {
-  it('counts commits, merged PRs (squash "(#N)" and merge commits), the first-commit day and the CHANGELOG releases', () => {
+  it('counts at the merge-base with origin/main: commits, squash-merged PRs, days and CHANGELOG versions', () => {
     const root = repo();
+    const base = git(root, 'rev-parse', 'origin/main');
     expect(collectDelivery(root)).toEqual({
-      commitsOnMain: 5,
+      commitsOnMain: 6,
+      // #3, #7 and #11 (the last "(#N)" of a subject). A merge commit and the
+      // unmerged branch commit (#12) are not squash merges on main.
       mergedPullRequests: 3,
       firstCommitDate: '2026-07-01',
-      releases: 2,
-      asOf: git(root, 'rev-parse', 'HEAD'),
+      changelogVersions: 2,
+      asOf: base,
+      asOfDate: '2026-07-06',
     });
+  });
+
+  it('counts nothing without an origin/main to anchor on', () => {
+    const root = repo();
+    git(root, 'update-ref', '-d', 'refs/remotes/origin/main');
+    expect(collectDelivery(root)).toBeNull();
   });
 
   it('counts nothing in a shallow clone, which cannot see the history', () => {
@@ -95,21 +109,22 @@ describe('pickDelivery', () => {
     commitsOnMain: 9,
     mergedPullRequests: 4,
     firstCommitDate: '2026-07-01',
-    releases: 2,
+    changelogVersions: 2,
     asOf: 'b',
+    asOfDate: '2026-07-09',
   };
-  const committed = { ...fresh, commitsOnMain: 8, asOf: 'a' };
+  const committed = { ...fresh, commitsOnMain: 8, asOf: 'a', asOfDate: '2026-07-08' };
 
-  it('a write in a full clone takes the fresh count', () => {
-    expect(pickDelivery({ fresh, committed, check: false })).toBe(fresh);
+  it('only an explicit --delivery refresh takes a fresh count', () => {
+    expect(pickDelivery({ fresh, committed, refresh: true })).toBe(fresh);
   });
 
-  it('--check keeps the committed block: the count moves with every commit, like generatedFrom', () => {
-    expect(pickDelivery({ fresh, committed, check: true })).toBe(committed);
+  it('every other run (write or --check) keeps the committed block, so parallel PRs do not conflict', () => {
+    expect(pickDelivery({ fresh, committed, refresh: false })).toBe(committed);
   });
 
-  it('a shallow clone keeps the committed block, and omits the field when there is none', () => {
-    expect(pickDelivery({ fresh: null, committed, check: false })).toBe(committed);
-    expect(pickDelivery({ fresh: null, committed: undefined, check: false })).toBeUndefined();
+  it('a refresh that cannot count keeps the committed block, and omits the field when there is none', () => {
+    expect(pickDelivery({ fresh: null, committed, refresh: true })).toBe(committed);
+    expect(pickDelivery({ fresh: null, committed: undefined, refresh: true })).toBeUndefined();
   });
 });

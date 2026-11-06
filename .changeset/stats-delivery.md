@@ -2,4 +2,4 @@
 '@hirobius/design-system': patch
 ---
 
-`@hirobius/design-system/stats.json` gains a `delivery` block, counted offline from git: `commitsOnMain`, `mergedPullRequests` (distinct PR numbers in first-parent subjects), `firstCommitDate`, `releases` (versions in CHANGELOG.md) and `asOf` (the commit they were counted at). A shallow clone never computes it: the committed block stays, or the field is left out when there is none.
+`@hirobius/design-system/stats.json` gains a `delivery` block, counted offline from git at the merge-base with `origin/main`: `commitsOnMain`, `mergedPullRequests` (PRs whose squash merge is on main's first-parent history), `firstCommitDate`, `changelogVersions` (version headings in CHANGELOG.md; not a count of npm publishes), `asOf` and `asOfDate`. It is recounted only by `pnpm stats:build --delivery`; every other run, release CI included, keeps the committed block.

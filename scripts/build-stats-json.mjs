@@ -21,14 +21,18 @@
  *                             file as `source` and the day it was confirmed
  *                             (null while the snapshot says it is unconfirmed)
  *   version                   package.json version
- *   delivery                  counted offline from git (never the GitHub API):
- *     .commitsOnMain          commits reachable from HEAD (the stats are built on main)
- *     .mergedPullRequests     distinct PR numbers in first-parent subjects: a
- *                             squash subject ending "(#N)" or "Merge pull request #N"
+ *   delivery                  counted offline from git (never the GitHub API), at
+ *                             `git merge-base HEAD origin/main`, so it always describes a
+ *                             commit on main:
+ *     .commitsOnMain          commits reachable from that commit
+ *     .mergedPullRequests     PRs whose squash merge is on main's first-parent history:
+ *                             distinct N of the last "(#N)" in each first-parent subject
+ *                             (a plain merge commit is not counted)
  *     .firstCommitDate        day of the root commit (YYYY-MM-DD)
- *     .releases               versions with a `## x.y.z` heading in CHANGELOG.md (the
- *                             changesets record; git tags and docs/api/releases miss some)
- *     .asOf                   the commit these were counted at
+ *     .changelogVersions      versions with a `## x.y.z` heading in CHANGELOG.md at that
+ *                             commit. Not "releases": git tags and docs/api/releases each
+ *                             miss some versions, and a heading is not proof of a publish
+ *     .asOf, .asOfDate        that commit and its day (%cs)
  *   generatedFrom             the commit the numbers were computed on top of
  *
  * The counting rules are build-readme-counts.mjs's and lib/core-set.mjs's, so
@@ -37,13 +41,15 @@
  * `generatedFrom` is provenance, not a value: it is the HEAD of the checkout
  * that last changed a number, and it is kept while the numbers hold (a commit
  * cannot name its own sha). `--check` therefore compares every field but it.
- * `delivery` is the same kind of field: its counts move with every commit, so
- * `--check` keeps the committed block and a write refreshes it. A shallow clone
- * (release CI checks out with depth 1) cannot count history: it computes
- * nothing, keeps the committed block (its `asOf` says when it was counted) and
- * omits the field when there is none. It never writes a guessed number.
- *
+ * `delivery` is refreshed only on purpose: `pnpm stats:build --delivery`. Every
+ * other run, a write or `--check`, keeps the committed block, so two PRs that
+ * each regenerate the stats do not conflict on a count that moves with every
+ * commit. A refresh that cannot count (a shallow clone, no origin/main, no git)
+ * keeps the committed block or omits the field when there is none; it never
+ * writes a guessed number. Release CI (depth-1 checkout, changeset:version runs
+ * this script) therefore republishes the committed block as it is. *
  * Run: pnpm stats:build  (also part of `pnpm tokens`, after the README counts it shares rules with)
+ *      pnpm stats:build --delivery  (also recounts `delivery`; needs a full clone with origin/main)
  * Check: node scripts/build-stats-json.mjs --check  (exit 1 when the file would change; writes nothing)
  *        --root <dir> reads and writes under <dir> (tests).
  */
@@ -104,38 +110,38 @@ const gitOut = (root, args) =>
     maxBuffer: 64 * 1024 * 1024,
   }).trim();
 
-/** PR numbers a first-parent subject names: squash "(#N)" or a merge commit. */
-const PR_SUBJECT = [/\(#(\d+)\)$/, /^Merge pull request #(\d+)\b/];
+/** Every "(#N)" in a subject; the last one is the PR that merged it. */
+const PR_REF = /\(#(\d+)\)/g;
 
 /**
- * Delivery counts from git at `root`, or null when they cannot be counted
- * truthfully: not a git checkout, or a shallow clone.
+ * Delivery counts at the merge-base of HEAD and origin/main, or null when they
+ * cannot be counted truthfully: no git, a shallow clone, or no origin/main.
  */
 export function collectDelivery(root) {
   try {
     if (gitOut(root, ['rev-parse', '--is-shallow-repository']) !== 'false') return null;
+    const base = gitOut(root, ['merge-base', 'HEAD', 'refs/remotes/origin/main']);
     const prs = new Set();
-    for (const subject of gitOut(root, ['log', '--first-parent', '--format=%s', 'HEAD']).split(
+    for (const subject of gitOut(root, ['log', '--first-parent', '--format=%s', base]).split(
       '\n',
     )) {
-      for (const re of PR_SUBJECT) {
-        const m = re.exec(subject);
-        if (m) prs.add(Number(m[1]));
-      }
+      const refs = [...subject.matchAll(PR_REF)];
+      if (refs.length) prs.add(Number(refs[refs.length - 1][1]));
     }
-    const roots = gitOut(root, ['log', '--max-parents=0', '--format=%cs', 'HEAD'])
-      .split('\n')
-      .sort();
-    const changelog = join(root, 'CHANGELOG.md');
-    const releases = existsSync(changelog)
-      ? new Set(readFileSync(changelog, 'utf8').match(/^## \d+\.\d+\.\d+\S*/gm) ?? []).size
-      : 0;
+    const roots = gitOut(root, ['log', '--max-parents=0', '--format=%cs', base]).split('\n').sort();
+    let changelog = '';
+    try {
+      changelog = gitOut(root, ['show', `${base}:CHANGELOG.md`]);
+    } catch {
+      changelog = '';
+    }
     return {
-      commitsOnMain: Number(gitOut(root, ['rev-list', '--count', 'HEAD'])),
+      commitsOnMain: Number(gitOut(root, ['rev-list', '--count', base])),
       mergedPullRequests: prs.size,
       firstCommitDate: roots[0],
-      releases,
-      asOf: gitOut(root, ['rev-parse', 'HEAD']),
+      changelogVersions: new Set(changelog.match(/^## \d+\.\d+\.\d+\S*/gm) ?? []).size,
+      asOf: base,
+      asOfDate: gitOut(root, ['show', '-s', '--format=%cs', base]),
     };
   } catch {
     return null;
@@ -143,13 +149,12 @@ export function collectDelivery(root) {
 }
 
 /**
- * Which delivery block the file carries: `--check` keeps the committed one (the
- * counts move with every commit), a write takes a fresh count, and when nothing
- * can be counted the committed block stays or the field is left out.
+ * Which delivery block the file carries: only an explicit refresh takes a fresh
+ * count; otherwise, or when nothing can be counted, the committed block stays,
+ * and the field is left out when there is none.
  */
-export function pickDelivery({ fresh, committed, check }) {
-  if (check) return committed;
-  return fresh ?? committed;
+export function pickDelivery({ fresh, committed, refresh }) {
+  return refresh ? (fresh ?? committed) : committed;
 }
 
 /** The commit `root` is checked out at, or null outside a git checkout. */
@@ -180,15 +185,15 @@ function committedStats(root) {
  * numbers equal today's, its `generatedFrom` stays; a changed number takes the
  * current HEAD.
  */
-export function renderStats(root, { check = false } = {}) {
+export function renderStats(root, { refreshDelivery = false } = {}) {
   const stats = collectStats(root);
   const committed = committedStats(root);
   const held = committed && isDeepStrictEqual(withoutProvenance(committed), stats);
   const generatedFrom = held ? committed.generatedFrom : headSha(root);
   const delivery = pickDelivery({
-    fresh: check ? null : collectDelivery(root),
+    fresh: refreshDelivery ? collectDelivery(root) : null,
     committed: committed?.delivery,
-    check,
+    refresh: refreshDelivery,
   });
   const out = { ...stats, ...(delivery ? { delivery } : {}), generatedFrom };
   return `${JSON.stringify(out, null, 2)}\n`;
@@ -204,7 +209,11 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const ROOT = rootFromArgv(join(dirname(fileURLToPath(import.meta.url)), '..'));
   await runGenerator({
     root: ROOT,
-    outputs: { [STATS_PATH]: renderStats(ROOT, { check: process.argv.includes('--check') }) },
+    outputs: {
+      [STATS_PATH]: renderStats(ROOT, {
+        refreshDelivery: process.argv.includes('--delivery') && !process.argv.includes('--check'),
+      }),
+    },
     label: 'build-stats-json',
     fix: 'pnpm stats:build',
   });

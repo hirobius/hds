@@ -24,10 +24,11 @@
   },
   "delivery": {
     "commitsOnMain": 1052,
-    "mergedPullRequests": 818,
+    "mergedPullRequests": 787,
     "firstCommitDate": "2026-06-17",
-    "releases": 40,
-    "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82"
+    "changelogVersions": 40,
+    "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",
+    "asOfDate": "2026-11-06"
   },
   "generatedFrom": "f2b84dfd2fe8bfc2903f8b5a64b980e34f76d5fa"
 }
