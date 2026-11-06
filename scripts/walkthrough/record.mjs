@@ -32,6 +32,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
+import { writeWalkthroughEvidence } from '../check-walkthrough-evidence.mjs';
 import { chromiumPath } from '../lib/browser-host.mjs';
 import { CHAPTERS, buildVtt, terminalPanelHtml } from './chapters.mjs';
 import { collectEvidence } from './evidence.mjs';
@@ -52,11 +53,15 @@ const evidence = collectEvidence(ROOT);
 // The captions say Figma matches and the release gate is green. Record only
 // when that is true (right after a release's Figma delta sync), never a video
 // whose panels contradict its captions.
-const red = [
+const gateRuns = [
   ['check:figma-drift', evidence.drift],
   ['check:figma-release', evidence.release.gate],
-].filter(([, r]) => r.code !== 0);
-if (red.length && !process.argv.includes('--allow-red')) {
+];
+const red = gateRuns.filter(([, r]) => r.code !== 0);
+// --allow-red is for a local look only: the evidence file records it, and
+// check-walkthrough-evidence (pre-commit) refuses to commit that media.
+const allowRed = process.argv.includes('--allow-red');
+if (red.length && !allowRed) {
   for (const [name, r] of red)
     console.error(`✗ walkthrough — ${name} is red:\n  ${r.lines.join('\n  ')}`);
   console.error('Record after the Figma delta sync makes both green (or pass --allow-red).');
@@ -357,6 +362,15 @@ writeFileSync(
   buildVtt(cues.map((c) => ({ ...c, start: c.start - trimMs, end: c.end - trimMs }))),
 );
 rmSync(videoDir, { recursive: true, force: true });
+const commit = spawnSync('git', ['rev-parse', '--short=7', 'HEAD'], {
+  cwd: ROOT,
+  encoding: 'utf8',
+});
+writeWalkthroughEvidence(OUT, {
+  commit: commit.stdout.trim(),
+  allowRed,
+  gates: Object.fromEntries(gateRuns.map(([name, r]) => [name, r.code])),
+});
 
 const bytes = statSync(mp4).size;
 const seconds = ((cues[cues.length - 1].end - trimMs) / 1000).toFixed(1);

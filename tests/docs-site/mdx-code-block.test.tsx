@@ -9,6 +9,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const { MdxPre } = await import('../../docs-site/components/mdx-code-block');
+const { Mermaid } = await import('../../docs-site/components/mermaid');
 
 const ROOT = join(__dirname, '..', '..');
 
@@ -72,5 +73,14 @@ describe('MDX code fences', () => {
     expect(mdx).toMatch(/pre:\s*MdxPre/);
     const config = readFileSync(join(ROOT, 'docs-site/source.config.ts'), 'utf8');
     expect(config).toMatch(/rehypeCodeOptions:\s*false/);
+  });
+
+  it('render a mermaid fence as a diagram, not a code block (hds#1148)', () => {
+    const chart = 'flowchart LR\n  A --> B';
+    const el = MdxPre({
+      children: <code className="language-mermaid">{`${chart}\n`}</code>,
+    }) as { type: unknown; props: { chart: string } };
+    expect(el.type).toBe(Mermaid);
+    expect(el.props.chart).toBe(chart);
   });
 });

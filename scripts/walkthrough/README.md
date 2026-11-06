@@ -11,15 +11,20 @@ pnpm walkthrough:record   # writes docs-site/public/walkthrough/
 
 Record when Figma matches code: right after a release's Figma delta sync.
 The script stops when `check:figma-drift` or `check:figma-release` is red,
-because the captions say both are green (`--allow-red` overrides).
+because the captions say both are green. `--allow-red` records anyway for a
+local look, but the media can't be committed: the recorder writes
+`walkthrough.evidence.json` (gate exit codes, `allowRed`, media hashes) and
+the pre-commit gate `check-walkthrough-evidence` refuses red or
+`--allow-red` media, or media changed after recording.
 
 Output, served by the docs site at `/walkthrough/`:
 
-| File              | What it is                                            |
-| ----------------- | ----------------------------------------------------- |
-| `walkthrough.mp4` | H.264, 1440×900, no sound, about 80 s; must be < 8 MB |
-| `poster.jpg`      | The first frame the page shows before play            |
-| `walkthrough.vtt` | The captions, timed from the recording                |
+| File                        | What it is                                                  |
+| --------------------------- | ----------------------------------------------------------- |
+| `walkthrough.mp4`           | H.264, 1440×900, no sound, about 80 s; must be < 8 MB       |
+| `poster.jpg`                | The first frame the page shows before play                  |
+| `walkthrough.vtt`           | The captions, timed from the recording                      |
+| `walkthrough.evidence.json` | When, at which commit, which gates were green, media hashes |
 
 ## Files
 

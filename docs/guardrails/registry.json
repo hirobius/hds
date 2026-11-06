@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "generated": "2026-05-05T00:00:00.000Z",
-  "precommitStructureHash": "efdcb923992f0f6640e073a26af4836c1d3f358d0503c5c7ea5647bc6bf9f84e",
-  "precommitStructureHashUpdatedAt": "2026-11-06T04:25:39.707Z",
+  "precommitStructureHash": "7771c22c95d4f9804f8b9ec4257c65437b3dacd37a1ad43e5ccbae8f8eddd570",
+  "precommitStructureHashUpdatedAt": "2026-11-06T05:17:00.639Z",
   "lanes": {
     "check:fast": [
       "node scripts/validate-manifest.mjs",
@@ -659,6 +659,18 @@
       "fixturePath": "fixtures/check-spacing-vocabulary",
       "owner": "Adrian",
       "source": "human",
+      "firingChannel": "pre-commit",
+      "firingChannels": ["pre-commit"],
+      "supportsJson": true
+    },
+    {
+      "id": "check-walkthrough-evidence",
+      "description": "hds#1148 -- committed walkthrough media (docs-site/public/walkthrough/) must carry walkthrough.evidence.json, written by scripts/walkthrough/record.mjs, saying it was recorded with check:figma-drift and check:figma-release green and not with --allow-red, with sha256 hashes that match every media file. The video's captions say both gates are green and its panels show their live output, so a red or --allow-red recording would contradict itself. Reads files only. Error severity, run by .husky/pre-commit; its vitest suite covers each failure.",
+      "severity": "error",
+      "gateScript": "scripts/check-walkthrough-evidence.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
       "firingChannel": "pre-commit",
       "firingChannels": ["pre-commit"],
       "supportsJson": true
