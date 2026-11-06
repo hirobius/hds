@@ -16,6 +16,7 @@ import { MdxLink } from './components/mdx-link';
 import { OverviewActions } from './components/overview-actions';
 import { MdxCode, MdxImg, MdxTable } from './components/mdx-prose';
 import { Mermaid } from './components/mermaid';
+import { WalkthroughVideo } from './components/walkthrough-video';
 import { PrinciplesAndPractices } from './components/principles-and-practices';
 import { TokenTable } from './components/token-table';
 import {
@@ -58,6 +59,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     OverviewActions,
     IconGallery,
     Mermaid,
+    WalkthroughVideo,
     PrinciplesAndPractices,
     ReleaseLedger,
     DeprecationLedger,
