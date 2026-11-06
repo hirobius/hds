@@ -1106,4 +1106,11 @@ Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 an
 | 12                                                       | `use_figma`      | write | all 84 pages (root order only)                                                                                     | tail group        | OK. Head, A–Z, then Button v2 (review), Logo explorations, Spec sheet kit, Archive, Archive / Deprecated, Deprecated. References 2190:2 still exists. |
 | Session total: 12 calls (5 writes, 7 reads). No publish. |
 
-Calls logged for 2026-11-06: 24 of 200 (1, 1, 5, 5 and 12).
+## 2026-11-06 · Agent sync: disclosure paddingY after #1252 (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #                                                      | Tool        | Kind  | Target                                                                                                                                                                      | Why          | Result                                                    |
+| ------------------------------------------------------ | ----------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------------------------------------- |
+| 1                                                      | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against cd0f8050 (new VariableID:2534:50 disclosure/paddingY, VariableID:14:9 nav/paddingY hidden, VariableID:2475:51 meta/commit) | token change | OK. updated 2, created 1; post 550212e6; receipt written. |
+| Session total: 1 use_figma call (1 write). No publish. |
+
+Calls logged for 2026-11-06: 25 of 200 (1, 1, 5, 5, 12 and 1).
