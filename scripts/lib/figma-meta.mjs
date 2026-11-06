@@ -25,7 +25,7 @@
  * meta/commit is unknowable and is left out too: deepenSyncedHistory first.
  */
 
-import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { createHash } from 'crypto';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
@@ -41,36 +41,23 @@ export const SYNCED_INPUTS = Object.freeze([
   'package.json',
 ]);
 
-const SHORT_SHA = 7;
-
-/** Every file under SYNCED_INPUTS in `root`, relative, sorted (a directory is walked). */
-function syncedFiles(root) {
-  const walk = (rel) => {
-    const abs = join(root, rel);
-    if (!existsSync(abs)) return [];
-    if (!statSync(abs).isDirectory()) return [rel];
-    return readdirSync(abs).flatMap((name) => walk(`${rel}/${name}`));
-  };
-  return SYNCED_INPUTS.flatMap(walk).sort();
-}
+export const SHORT_SHA = 7;
 
 /**
- * `sha256:<hex>` of what the library is synced from: each SYNCED_INPUTS file's
- * path and bytes. Ingest records it in figma/snapshot.json; a squash merge
- * keeps the tree, so the release gate can tell that Figma was synced from this
- * content even though meta/commit names the pre-merge sha (hds#1359).
- * Undefined when none of the files exists (a fixture mini-root).
+ * `sha256:<hex>` of what the library is synced from, as git records it: the
+ * `git ls-tree -r HEAD` lines (mode, blob id, path) of SYNCED_INPUTS. A squash
+ * merge keeps the tree, so it keeps every blob id: the release gate can tell
+ * that Figma was synced from this content even though meta/commit names the
+ * pre-merge sha (hds#1359). Blob ids, not file bytes, so a checkout's line
+ * endings or an uncommitted edit cannot change it. Undefined without git or
+ * when HEAD holds none of the inputs.
+ * @param {string} root
+ * @param {{ git?: (root: string, args: string[]) => string|null }} [options]
  */
-export function syncedInputsHash(root) {
-  const files = syncedFiles(root);
-  if (!files.length) return undefined;
-  const hash = createHash('sha256');
-  for (const rel of files) {
-    hash.update(`${rel}\0`);
-    hash.update(readFileSync(join(root, rel)));
-    hash.update('\0');
-  }
-  return `sha256:${hash.digest('hex')}`;
+export function syncedInputsHash(root, { git = runGit } = {}) {
+  const tree = git(root, ['ls-tree', '-r', '--full-tree', 'HEAD', '--', ...SYNCED_INPUTS]);
+  if (!tree) return undefined;
+  return `sha256:${createHash('sha256').update(tree).digest('hex')}`;
 }
 
 /** `git+https://host/o/r.git`, `git@host:o/r.git` or `{ url }` → `https://host/o/r`. */

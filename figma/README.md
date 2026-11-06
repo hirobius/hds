@@ -663,9 +663,11 @@ them into Figma.
 
 No value comes from the clock, so the same commit always builds the same
 values. No counts. `meta/commit` names a commit on the branch you push from.
-A squash merge gives a branch commit a new SHA on main, so `--ingest` also
-records `syncedHash`, the sha256 of the synced inputs' content, in
-`figma/snapshot.json`. The release gate takes Figma's `meta/commit` when that
+A squash merge gives a branch commit a new SHA on main. So when the Figma being
+ingested shows the `meta/commit` the checkout's history names, `--ingest` also
+records `syncedCommit` (that commit) and `syncedHash` (the sha256 of the synced
+inputs' `git ls-tree` lines: blob ids, not file bytes) in `figma/snapshot.json`.
+The release gate takes Figma's `meta/commit` when it is `syncedCommit` and the
 hash equals main's: the content Figma was synced from is the content being
 released (hds#1359). A changed synced input or version still fails.
 

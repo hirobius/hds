@@ -53,7 +53,12 @@ import { rebuildFromReceipt } from './lib/figma-receipt.mjs';
 import { readIngestSource, unwrapPromoteReceipt } from './lib/figma-promote-receipt.mjs';
 import { rebuildFromDiff } from './lib/figma-diff-rebuild.mjs';
 import { syncConfigFromLinks } from './lib/figma-scripts.mjs';
-import { syncedInputsHash } from './lib/figma-meta.mjs';
+import {
+  SHORT_SHA,
+  snapshotMeta,
+  syncedInputsCommit,
+  syncedInputsHash,
+} from './lib/figma-meta.mjs';
 import { readLinks, writePushArtifacts } from './figma-push.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -77,16 +82,29 @@ export function ingestSnapshot({ root, from, text = readFileSync(from, 'utf8') }
     : { ...parsed, bindingFallbacks: committedFallbacks(outPath) };
   // The tokens this snapshot matches: the release gate fails when the file
   // hashes differently (scripts/check-figma-release.mjs, hds#801).
-  // syncedHash: what meta/commit was pushed from, by content, so a squash merge
-  // of the synced Version PR still passes the release gate (hds#1359).
   const verified = {
     ...withFallbacks,
     tokensHash: tokensFileHash(root),
-    syncedHash: syncedInputsHash(root),
+    ...syncedBinding(root, withFallbacks.snapshot),
   };
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, serializeSnapshotFile(verified));
   return { ...verified, outPath };
+}
+
+/**
+ * `{ syncedCommit, syncedHash }` when the Figma being ingested shows the
+ * meta/commit this checkout's history names (the last synced-input commit):
+ * the commit Figma was pushed from, bound to the git content of its synced
+ * inputs, so a squash merge of the synced Version PR still passes the release
+ * gate (hds#1359). Empty otherwise, so the gate falls back to the strict check.
+ */
+export function syncedBinding(root, snapshot) {
+  const synced = syncedInputsCommit(root);
+  const figmaCommit = snapshotMeta(snapshot).commit;
+  if (!synced?.complete || figmaCommit !== synced.sha.slice(0, SHORT_SHA)) return {};
+  const syncedHash = syncedInputsHash(root);
+  return syncedHash ? { syncedCommit: figmaCommit, syncedHash } : {};
 }
 
 /** The bound-colour fallback record in the committed snapshot file, or undefined (none, or the file does not verify). */

@@ -61,7 +61,7 @@ Log every use_figma call in [`MCP-LEDGER.md`](MCP-LEDGER.md) first.
 7. **Commit** `figma/snapshot.json` in the same PR as the token change it
    matches, and paste the before and after `check:figma-release` output on it.
    For a release, that PR is the Version PR: sync from its head before the
-   merge. The snapshot's `syncedHash` lets the gate accept the squash commit
+   merge. The snapshot's `syncedCommit` and `syncedHash` let the gate accept the squash commit
    (hds#1359), so Release passes in one run with no snapshot PR after it.
 
 If the Figma connection is unavailable, the token PR does not merge with known
@@ -69,11 +69,11 @@ drift: label it Figma-sync-pending and say which step stopped.
 
 ## The drift checks
 
-| Check                        | Runs in                      | Fails when                                                                                                                                                                                                                                                                              |
-| ---------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm check:figma-drift`     | by hand                      | any drift (exit 1), or no snapshot (exit 2)                                                                                                                                                                                                                                             |
-| `check-figma-drift.mjs --ci` | `ci.yml`                     | only drift a push cannot explain (Figma was pushed from this exact model, yet differs); other drift is a warning                                                                                                                                                                        |
-| `pnpm check:figma-release`   | first step of `pnpm release` | any drift not baselined, a stale or wrong baseline, a `tokensHash` that no longer matches `hirobius.tokens.json`, a `meta/version` or `meta/commit` Figma does not show (a squash of the synced Version PR passes when `syncedHash` matches), or a library component with no Figma node |
+| Check                        | Runs in                      | Fails when                                                                                                                                                                                                                                                                                               |
+| ---------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm check:figma-drift`     | by hand                      | any drift (exit 1), or no snapshot (exit 2)                                                                                                                                                                                                                                                              |
+| `check-figma-drift.mjs --ci` | `ci.yml`                     | only drift a push cannot explain (Figma was pushed from this exact model, yet differs); other drift is a warning                                                                                                                                                                                         |
+| `pnpm check:figma-release`   | first step of `pnpm release` | any drift not baselined, a stale or wrong baseline, a `tokensHash` that no longer matches `hirobius.tokens.json`, a `meta/version` or `meta/commit` Figma does not show (a squash of the synced Version PR passes when `syncedCommit` and `syncedHash` match), or a library component with no Figma node |
 
 ### Release drift baseline
 

@@ -6,6 +6,7 @@
  * run against a temp root holding tokens and a snapshot; no git needed.
  */
 import { describe, it, expect } from 'vitest';
+import { execFileSync } from 'child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, cpSync, readFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
@@ -299,64 +300,109 @@ describe('meta gate covers every Hirobius/Meta value', () => {
 
 describe('a squash merge of a Version PR synced before the merge', () => {
   // The ops agent pushes Figma and ingests the snapshot on the Version PR head
-  // (sha 1111111…). The squash merge lands the same tree under a new sha
-  // (2222222…), so meta/commit cannot equal HEAD's; the synced-input content can.
-  const at = (sha) => ({ git: (_r, args) => (args.includes('--format=%H') ? sha : null) });
-  const HEAD_OF_PR = at('1111111aaaa');
-  const SQUASH = at('2222222bbbb');
+  // (commit A). The squash merge lands the same tree as a new commit (B), so
+  // meta/commit cannot equal HEAD's; the git content of the synced inputs can.
+  const env = {
+    ...process.env,
+    GIT_AUTHOR_NAME: 't',
+    GIT_AUTHOR_EMAIL: 't@t',
+    GIT_COMMITTER_NAME: 't',
+    GIT_COMMITTER_EMAIL: 't@t',
+  };
+  const git = (dir, ...args) =>
+    execFileSync('git', args, { cwd: dir, env, encoding: 'utf8' }).trim();
+  const commitAll = (dir, message) => {
+    git(dir, 'add', '-A', '--', 'hirobius.tokens.json', 'package.json', 'figma/disposition.json');
+    git(dir, 'commit', '-q', '-m', message);
+    return git(dir, 'rev-parse', 'HEAD');
+  };
+  /** A commit with HEAD's tree and no parent: what a squash merge lands on main. */
+  const squash = (dir) => {
+    const sha = git(dir, 'commit-tree', 'HEAD^{tree}', '-m', 'squash');
+    git(dir, 'reset', '-q', '--soft', sha);
+    return sha;
+  };
 
-  /** A root whose Figma was pushed and ingested at the Version PR head, version 1.0.0. */
+  /** A git root whose Figma was pushed from, and ingested at, its head commit A. */
   async function syncedOnPrHead() {
     const dir = await root();
     writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'a', version: '1.0.0' }));
-    const { buildFigmaModel } = await import('../lib/figma-model.mjs');
-    const { readFigmaMeta } = await import('../lib/figma-meta.mjs');
-    const tokens = JSON.parse(readFileSync(join(dir, 'hirobius.tokens.json'), 'utf8'));
-    const model = buildFigmaModel(tokens, { meta: readFigmaMeta(dir, HEAD_OF_PR) });
+    git(dir, 'init', '-q');
+    const head = commitAll(dir, 'Version Packages');
+    const { model } = loadFigmaInputs(dir);
     const figma = newFixtureFile();
     const { payload, checksum } = buildPushPayload(model);
     await hdsRunPush(figma, payload, checksum);
     ingestSnapshot({ root: dir, text: serializeSnapshotFile(await hdsRunSnapshot(figma)) });
-    return dir;
+    return { dir, head };
   }
+  const snapshotFile = (dir) =>
+    parseSnapshotFile(readFileSync(join(dir, 'figma', 'snapshot.json'), 'utf8'));
 
-  it('ingest records the synced-input content hash', async () => {
-    const dir = await syncedOnPrHead();
+  it('ingest binds the synced-input content to the commit Figma shows', async () => {
+    const { dir, head } = await syncedOnPrHead();
     const { syncedInputsHash } = await import('../lib/figma-meta.mjs');
-    const file = parseSnapshotFile(readFileSync(join(dir, 'figma', 'snapshot.json'), 'utf8'));
+    const file = snapshotFile(dir);
+    expect(file.syncedCommit).toBe(head.slice(0, 7));
     expect(file.syncedHash).toMatch(/^sha256:[0-9a-f]{64}$/);
     expect(file.syncedHash).toBe(syncedInputsHash(dir));
   });
 
-  it('passes on the squash sha when the synced content is the same', async () => {
-    const dir = await syncedOnPrHead();
-    expect(runReleaseGate({ root: dir, ...HEAD_OF_PR }).exitCode).toBe(0);
-    const squash = runReleaseGate({ root: dir, ...SQUASH });
-    expect(squash.output).not.toMatch(/meta\/commit/);
-    expect(squash.exitCode).toBe(0);
-    expect(runMetaGate({ root: dir, ...SQUASH }).exitCode).toBe(0);
+  it('ingest binds nothing when Figma shows another meta/commit', async () => {
+    const { dir } = await syncedOnPrHead();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'a', version: '1.0.0', x: 1 }));
+    commitAll(dir, 'a later synced-input change, not pushed to Figma');
+    const { snapshot, checksum } = snapshotFile(dir);
+    ingestSnapshot({ root: dir, text: serializeSnapshotFile({ checksum, snapshot }) });
+    expect(snapshotFile(dir)).not.toHaveProperty('syncedHash');
+    expect(snapshotFile(dir)).not.toHaveProperty('syncedCommit');
+  });
+
+  it('passes on the squash commit when the synced content is the same', async () => {
+    const { dir } = await syncedOnPrHead();
+    expect(runReleaseGate({ root: dir }).exitCode).toBe(0);
+    squash(dir);
+    const r = runReleaseGate({ root: dir });
+    expect(r.output).not.toMatch(/meta\/commit/);
+    expect(r.exitCode).toBe(0);
+    expect(runMetaGate({ root: dir }).exitCode).toBe(0);
   });
 
   it('fails when a synced input changed after the ingest', async () => {
-    const dir = await syncedOnPrHead();
+    const { dir, head } = await syncedOnPrHead();
     writeFileSync(
       join(dir, 'package.json'),
       JSON.stringify({ name: 'a', version: '1.0.0', description: 'changed after the push' }),
     );
-    for (const r of [
-      runReleaseGate({ root: dir, ...SQUASH }),
-      runMetaGate({ root: dir, ...SQUASH }),
-    ]) {
+    const later = commitAll(dir, 'change');
+    const pattern = new RegExp(
+      `meta/commit is ${head.slice(0, 7)} in Figma but code says ${later.slice(0, 7)}`,
+    );
+    for (const r of [runReleaseGate({ root: dir }), runMetaGate({ root: dir })]) {
       expect(r.exitCode).toBe(1);
-      expect(r.output).toMatch(/meta\/commit is 1111111 in Figma but code says 2222222/);
+      expect(r.output).toMatch(pattern);
     }
   });
 
   it('fails when the version is not the one Figma shows', async () => {
-    const dir = await syncedOnPrHead();
+    const { dir } = await syncedOnPrHead();
     writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'a', version: '1.0.1' }));
-    const r = runReleaseGate({ root: dir, ...SQUASH });
+    commitAll(dir, 'bump');
+    const r = runReleaseGate({ root: dir });
     expect(r.exitCode).toBe(1);
     expect(r.output).toMatch(/meta\/version is 1\.0\.0 in Figma but this release is 1\.0\.1/);
+  });
+
+  it('refuses a stand-in whose syncedCommit is not the meta/commit Figma shows', async () => {
+    const { dir } = await syncedOnPrHead();
+    const file = snapshotFile(dir);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...file, syncedCommit: 'deadbee' }),
+    );
+    squash(dir);
+    const r = runMetaGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/meta\/commit is .* in Figma but code says/);
   });
 });

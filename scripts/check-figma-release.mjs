@@ -20,8 +20,8 @@
  *      even though step 1 counts it as drift too. meta/commit may name a
  *      commit that is not HEAD's history: the Version PR head the ops agent
  *      synced from before the squash merge. The gate takes Figma's meta/commit
- *      when the snapshot's `syncedHash` (syncedInputsHash at ingest) equals the
- *      content now (syncedCommitStandIn, hds#1359); any other change fails.
+ *      when it is the snapshot's `syncedCommit` and `syncedHash` (the git
+ *      content of the synced inputs at that commit) equals the content now (syncedCommitStandIn, hds#1359); any other change fails.
  *
  * --meta runs step 4 alone: `pnpm release:local` runs it before the build,
  * so a laptop release cannot ship with a stale cover.
@@ -78,22 +78,26 @@ function readSnapshotFile(root) {
 
 /**
  * The meta/commit Figma shows, when Figma was synced from exactly the content
- * now checked out: the snapshot's `syncedHash` equals syncedInputsHash(root).
+ * now checked out: Figma's meta/commit is the snapshot's `syncedCommit`, and
+ * its `syncedHash` equals syncedInputsHash(root) (git blob ids, not bytes).
  * The ops agent pushes and ingests on the Version PR head, before the merge; a
  * squash merge keeps that tree under a new sha, so meta/commit cannot be HEAD's,
  * but the content proves the sync (hds#1359). Null otherwise: then meta/commit
  * must be the last synced-input commit, as before.
  */
-export function syncedCommitStandIn(root) {
+export function syncedCommitStandIn(root, options = {}) {
   const file = readSnapshotFile(root);
-  if (!file?.syncedHash || file.syncedHash !== syncedInputsHash(root)) return null;
-  return snapshotMeta(file.snapshot).commit ?? null;
+  if (!file?.syncedCommit || !file.syncedHash) return null;
+  // Bound at ingest: Figma's meta/commit must be the commit the hash was taken at.
+  if (snapshotMeta(file.snapshot).commit !== file.syncedCommit) return null;
+  if (file.syncedHash !== syncedInputsHash(root, options)) return null;
+  return file.syncedCommit;
 }
 
 /** readFigmaMeta options: the caller's, plus the stand-in commit when there is one. */
 function metaOptionsFor(root, options) {
   if (!existsSync(join(root, 'package.json'))) return options;
-  const commit = syncedCommitStandIn(root);
+  const commit = syncedCommitStandIn(root, options);
   return commit ? { ...options, commit } : options;
 }
 
@@ -132,7 +136,7 @@ export function metaVersionGap(root, options = {}) {
  */
 function metaProblems(root, options) {
   // With a stand-in commit the history is not read, so a shallow clone is fine.
-  const standIn = existsSync(join(root, 'package.json')) && syncedCommitStandIn(root);
+  const standIn = existsSync(join(root, 'package.json')) && syncedCommitStandIn(root, options);
   const synced =
     existsSync(join(root, 'package.json')) && !standIn ? syncedInputsCommit(root, options) : null;
   const shallow =

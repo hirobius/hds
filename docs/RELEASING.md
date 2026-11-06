@@ -21,8 +21,9 @@ publishes through npm Trusted Publishing (OIDC): no npm token, no laptop login.
    delta sync (`figma/README.md`, "Agent sync (zero clicks)") from the Version PR
    head, ingests the snapshot and commits `figma/snapshot.json` to that PR. The
    squash merge gives that commit a new sha, so `meta/commit` cannot equal it;
-   the gate instead takes Figma's `meta/commit` when the snapshot's `syncedHash`
-   (the content of the synced inputs at ingest) equals main's (hds#1359). One
+   the gate instead takes Figma's `meta/commit` when it is the snapshot's
+   `syncedCommit` and its `syncedHash` (the git blob ids of the synced inputs at
+   that commit) equals main's (hds#1359). One
    Release run, no snapshot PR after the merge.
 3. **Review.** The PR needs an independent `Reviewed: PASS — <sha>` comment for
    its head commit, from someone other than the author. A new push voids it.

@@ -22,7 +22,8 @@ export const SNAPSHOT_SCHEMA_VERSION = 1;
  * `bindingFallbacks` (the bound-colour fallback sweep, figma-fallbacks.mjs) is
  * a sibling of `snapshot`, not part of it (so is `tokensHash`, the hash of
  * hirobius.tokens.json at ingest, which the release gate reads, hds#801, and
- * `syncedHash`, syncedInputsHash at ingest, hds#1359): it has its own checksum and its own
+ * `syncedCommit` + `syncedHash`, the commit Figma was pushed from and its
+ * synced-input content, hds#1359): it has its own checksum and its own
  * `takenAt`, so the snapshot's checksum, the base a receipt or diff names and
  * the delta codec are untouched by it.
  */
@@ -31,12 +32,16 @@ export function serializeSnapshotFile({
   snapshot,
   bindingFallbacks,
   tokensHash,
+  syncedCommit,
   syncedHash,
 }) {
   const file = { checksum, snapshot };
   if (bindingFallbacks) file.bindingFallbacks = bindingFallbacks;
   if (tokensHash) file.tokensHash = tokensHash;
-  if (syncedHash) file.syncedHash = syncedHash;
+  if (syncedCommit && syncedHash) {
+    file.syncedCommit = syncedCommit;
+    file.syncedHash = syncedHash;
+  }
   return `${JSON.stringify(file, null, 2)}\n`;
 }
 
@@ -144,6 +149,9 @@ export function parseSnapshotFile(text) {
     result.bindingFallbacks = verifyBindingFallbacks(parsed.bindingFallbacks);
   }
   if (tokensHash) result.tokensHash = tokensHash;
-  if (typeof parsed.syncedHash === 'string') result.syncedHash = parsed.syncedHash;
+  if (typeof parsed.syncedCommit === 'string' && typeof parsed.syncedHash === 'string') {
+    result.syncedCommit = parsed.syncedCommit;
+    result.syncedHash = parsed.syncedHash;
+  }
   return result;
 }
