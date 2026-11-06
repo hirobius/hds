@@ -701,7 +701,7 @@
     },
     {
       "id": "check-no-ordinal-labels",
-      "description": "No ordinal number before a page, section or nav name (Adrian, 2026-11-06): \"Color\", not \"01 Color\", \"02 — Color\" or \"1. Color\". Reads Markdown/MDX headings and frontmatter titles and meta.json titles and page entries in content/, label keys (title, heading, section, label, name, page) in figma/spec-sheets/*.json, and string literals in scripts/generate-spec-sheets.mjs. A zero-padded number, or a number with a list mark (. ) · — – :), at the start of a label fails; \"3 ways\", \"2xs\" and \"0.33.1\" pass. A line is exempt with ordinal-ok: <reason> on the same line or either line above; the reason is required. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
+      "description": "No ordinal number before a page, section or nav name (Adrian, 2026-11-06): \"Color\", not \"01 Color\", \"02 — Color\" or \"1. Color\". Reads Markdown/MDX headings and frontmatter titles (outside fenced code blocks) and meta.json titles and page entries in content/, label keys (title, heading, section, label, name, page) in figma/spec-sheets/*.json, and string literals in scripts/generate-spec-sheets.mjs. A zero-padded number, or a number with a list mark (. ) · — – :), at the start of a label fails; \"3 ways\", \"2xs\" and \"0.33.1\" pass. A line is exempt with ordinal-ok: <reason> on the same line or either line above; the reason is required. Error severity, run by .husky/pre-commit, and its vitest suite runs it over the repo in pnpm test.",
       "severity": "error",
       "gateScript": "scripts/check-no-ordinal-labels.mjs",
       "fixturePath": "fixtures/check-no-ordinal-labels",
