@@ -12,11 +12,9 @@
  * - dark 1.5:1 — a shadow cannot darken near-black, so the edge alone must
  *   carry the separation.
  */
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { contrastRatio } from '../../app/utils/colorUtils';
-import { tokenHex, type TokenMode } from './style-test-helpers';
+import { repoFile, tokenHex, type TokenMode } from './style-test-helpers';
 
 const FLOOR: Record<TokenMode, number> = { Light: 1.15, Dark: 1.5 };
 const FILL = 'role.popover';
@@ -60,7 +58,7 @@ const OVERLAY_SOURCES = [
 
 describe('overlay surfaces draw the hairline', () => {
   it.each(OVERLAY_SOURCES)('%s pairs bg-popover with border-border', (file) => {
-    const src = readFileSync(resolve(__dirname, '../../app/components', file), 'utf8');
+    const src = repoFile(`src/app/components/${file}`);
     expect(src).toContain('bg-popover');
     expect(src).toMatch(/\bborder border-border\b/);
   });

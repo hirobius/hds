@@ -12,11 +12,9 @@
  * - border.strong must stay at least as strong as border.default, or the
  *   Divider `strong` variant would read weaker than the default rule.
  */
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { contrastRatio } from '../../app/utils/colorUtils';
-import { tokenHex, type TokenMode } from './style-test-helpers';
+import { repoFile, tokenHex, type TokenMode } from './style-test-helpers';
 
 const FLOOR: Record<TokenMode, number> = { Light: 1.45, Dark: 1.4 };
 // Divider (+ .hds-divider), Table rows, MetadataList rows, MenuSeparator (role.border).
@@ -65,12 +63,12 @@ const DIVIDER_SOURCES: Array<[string, RegExp]> = [
 
 describe('divider sources use a pinned token', () => {
   it.each(DIVIDER_SOURCES)('%s', (file, re) => {
-    const src = readFileSync(resolve(__dirname, '../../app/components', file), 'utf8');
+    const src = repoFile(`src/app/components/${file}`);
     expect(src).toMatch(re);
   });
 
   it('.hds-divider uses border.default', () => {
-    const css = readFileSync(resolve(__dirname, '../static.css'), 'utf8');
+    const css = repoFile('src/styles/static.css');
     expect(css).toMatch(/\.hds-divider \{[^}]*--semantic-color-border-default/);
   });
 });
