@@ -1102,6 +1102,7 @@ Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 an
 | 8                                                        | `use_figma`      | write | Focus ring 2337:16400, 2337:16416                                                                                  | match code tokens | OK. Bound focus/ring/width, focus/ring/color, focus/radius/pill/ringRadius. Geometry kept. After shot inline: figma/shots/radio-focus-after.png. |
 | 9                                                        | `use_figma`      | read  | library page list                                                                                                  | alphabetize       | OK. 84 pages; 1 separator "———" 20:6.                                                                                                            |
 | 10                                                       | `use_figma`      | write | all 84 pages (root order only)                                                                                     | Adrian request    | OK. Cover, Getting Started, "———", then 81 pages A–Z. No renames.                                                                                |
-| Session total: 10 calls (3 writes, 7 reads). No publish. |
+| 11                                                       | `use_figma`      | write | all 84 pages (root order only)                                                                                     | pin groups        | OK. Cover, Getting Started, 3 Foundations, "———", 75 pages A–Z, Archive, Archive / Deprecated, References. No second separator exists.           |
+| Session total: 11 calls (4 writes, 7 reads). No publish. |
 
-Calls logged for 2026-11-06: 22 of 200 (1, 1, 5, 5 and 10).
+Calls logged for 2026-11-06: 23 of 200 (1, 1, 5, 5 and 11).
