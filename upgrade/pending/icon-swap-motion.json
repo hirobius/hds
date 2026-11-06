@@ -6,7 +6,7 @@
       "id": "behavior/CodeBlock.dom",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "CodeBlock's copy button icon now sits inside a span.hds-icon-swap wrapper; a test or selector that expects the svg as the button's direct child must look one level deeper.",
+      "plain": "CodeBlock's copy button icon now sits inside a span[data-hds-icon-swap] wrapper; a test or selector that expects the svg as the button's direct child must look one level deeper.",
       "detect": {
         "jsx": ["CodeBlock"],
         "regex": ["button\\s*>\\s*svg"]

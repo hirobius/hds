@@ -2,7 +2,8 @@
  * hds#751 (components: swap): when CodeBlock's copy icon swaps to a check,
  * the new icon pops in (fade + scale) on --hds-anim-appear: the productive
  * duration with the expressive easing. The keyed wrapper remounts on each
- * swap so the animation replays. theme.css zeroes the duration and drops the
+ * swap so the animation replays. The first render does not animate, so a page of
+ * CodeBlocks does not pop on load. theme.css zeroes the duration and drops the
  * animation under prefers-reduced-motion.
  */
 import { readFileSync } from 'node:fs';
@@ -17,7 +18,7 @@ afterEach(cleanup);
 const theme = readFileSync(resolve(__dirname, '../../styles/theme.css'), 'utf8');
 
 function swapOf(button: HTMLElement) {
-  return button.querySelector('.hds-icon-swap');
+  return button.querySelector('[data-hds-icon-swap]');
 }
 
 describe('CodeBlock copy icon swap (hds#751)', () => {
@@ -31,11 +32,14 @@ describe('CodeBlock copy icon swap (hds#751)', () => {
       render(<CodeBlock code="pnpm i" variant={variant} />);
       const before = swapOf(screen.getByRole('button', { name: 'Copy code' }));
       expect(before).not.toBeNull();
+      // First mount: the wrapper is there but does not animate.
+      expect(before?.classList.contains('hds-icon-swap')).toBe(false);
       await user.click(screen.getByRole('button', { name: 'Copy code' }));
       await waitFor(() => expect(screen.getByRole('button', { name: 'Copied' })).toBeTruthy());
       const after = swapOf(screen.getByRole('button', { name: 'Copied' }));
       expect(after).not.toBeNull();
       expect(after).not.toBe(before);
+      expect(after?.classList.contains('hds-icon-swap')).toBe(true);
     });
   }
 

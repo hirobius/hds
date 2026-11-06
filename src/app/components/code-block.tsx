@@ -202,6 +202,8 @@ export function CodeBlock({
   className,
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  // False until the first copy: the swap pop plays on a swap, never on first mount (hds#751).
+  const [swapped, setSwapped] = useState(false);
   const [expanded, setExpanded] = useState(defaultExpanded);
   const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -220,6 +222,7 @@ export function CodeBlock({
   function handleCopy() {
     navigator.clipboard.writeText(code).then(() => {
       setCopied(true);
+      setSwapped(true);
       setTimeout(() => setCopied(false), 2000);
     });
   }
@@ -237,7 +240,11 @@ export function CodeBlock({
           aria-label={copied ? 'Copied' : 'Copy code'}
           className={cn('hds-focus', copyButtonVariants({ variant: 'inline' }))}
         >
-          <CopyIcon copied={copied} color="var(--semantic-color-content-primary)" />
+          <CopyIcon
+            copied={copied}
+            swapped={swapped}
+            color="var(--semantic-color-content-primary)"
+          />
         </button>
         <CopyStatus copied={copied} />
       </div>
@@ -282,7 +289,7 @@ export function CodeBlock({
         iconOnly
         shadow="none"
         label={copied ? 'Copied' : 'Copy code'}
-        iconLeft={<CopyIcon copied={copied} />}
+        iconLeft={<CopyIcon copied={copied} swapped={swapped} />}
         onClick={handleCopy}
         className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
       />
@@ -336,21 +343,34 @@ export function CodeBlock({
 }
 
 /**
- * Polite live region for the copy result (4.1.3). It is always mounted, empty until
- * a copy lands, because a region added with its text already in it is not announced.
- */
-/**
  * The copy/check glyph. Keyed on `copied`, so each swap remounts the wrapper and replays the
  * `.hds-icon-swap` pop (theme.css: --hds-anim-appear, dropped under reduced motion) (hds#751).
+ * `swapped` stays false until the first copy, so a page of CodeBlocks does not pop on load.
  */
-function CopyIcon({ copied, color }: { copied: boolean; color?: IconColor }) {
+function CopyIcon({
+  copied,
+  swapped,
+  color,
+}: {
+  copied: boolean;
+  swapped: boolean;
+  color?: IconColor;
+}) {
   return (
-    <span key={copied ? 'check' : 'copy'} className="hds-icon-swap inline-flex">
+    <span
+      key={copied ? 'check' : 'copy'}
+      data-hds-icon-swap=""
+      className={cn('inline-flex', swapped && 'hds-icon-swap')}
+    >
       <Icon icon={copied ? Check : Copy} size="small" color={color} />
     </span>
   );
 }
 
+/**
+ * Polite live region for the copy result (4.1.3). It is always mounted, empty until
+ * a copy lands, because a region added with its text already in it is not announced.
+ */
 function CopyStatus({ copied }: { copied: boolean }) {
   return (
     <span role="status" className="sr-only">

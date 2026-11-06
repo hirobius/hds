@@ -391,7 +391,7 @@
       "        span",
       "        span",
       "    button aria-label=\"Copy code\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
-      "      span",
+      "      span data-hds-icon-swap",
       "        svg aria-hidden=\"true\" data-hds-icon",
       "    span role=\"status\""
     ],
