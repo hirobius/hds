@@ -1,0 +1,24 @@
+{
+  "impact": "breaking",
+  "plain": "Import hds and tokens from @hirobius/design-system/tokens: the package root no longer exports them.",
+  "steps": [
+    {
+      "id": "removed/hds",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The package root no longer exports hds; import it from @hirobius/design-system/tokens.",
+      "auto": { "codemod": "hds-tokens-subpath", "args": [] },
+      "detect": { "imports": [{ "from": "@hirobius/design-system", "names": ["hds"] }] },
+      "facts": ["removed:.:hds"]
+    },
+    {
+      "id": "removed/tokens",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The package root no longer exports tokens; import it from @hirobius/design-system/tokens.",
+      "auto": { "codemod": "hds-tokens-subpath", "args": [] },
+      "detect": { "imports": [{ "from": "@hirobius/design-system", "names": ["tokens"] }] },
+      "facts": ["removed:.:tokens"]
+    }
+  ]
+}

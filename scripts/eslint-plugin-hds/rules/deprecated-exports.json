@@ -43,20 +43,6 @@
       "note": "Compose a Card instead, with the same content and surface (hds#622): `<Card padding=\"item\" className=\"border-0\"><Card.Row trailing={trailing}><Card.RowTitle>{title}</Card.RowTitle>{notes.map((note) => <Card.RowNote key={note}>{note}</Card.RowNote>)}</Card.Row></Card>`. Drop `tone`: StatusTile never painted it, and Card's `tone` paints a border.",
       "removeIn": "1.0.0",
       "useInstead": "Card"
-    },
-    {
-      "name": "hds",
-      "file": "src/index.ts",
-      "note": "Import `hds` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.",
-      "removeIn": "0.36.0",
-      "useInstead": null
-    },
-    {
-      "name": "tokens",
-      "file": "src/index.ts",
-      "note": "Import `tokens` from `@hirobius/design-system/tokens` (hds#1205); `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the import.",
-      "removeIn": "0.36.0",
-      "useInstead": null
     }
   ],
   "props": [
