@@ -145,6 +145,11 @@ const TYPES_WITHOUT_CLEAR: ReadonlySet<InputFieldType> = new Set<InputFieldType>
 // the component.input paddingX tokens (md: input.paddingX; sm/lg:
 // input.size.<s>.paddingX, hds#1323), so Figma binds the same values.
 
+// Density risk (hds#1332 review): --component-input-size-sm-paddingX is
+// var(--semantic-space-scale-xs), resolved where it is declared (:root). If the
+// compact density ever overrides --semantic-space-scale-xs, a [data-density]
+// scope will not reach this var: re-declare --component-input-size-sm-paddingX
+// in the compact block too (build-tokens emits Compact modes per token).
 const ADORNMENT_BY_SIZE = {
   sm: {
     restPadL: 'pl-[var(--component-input-size-sm-paddingX)]',
