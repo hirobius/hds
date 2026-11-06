@@ -37,7 +37,8 @@ describe('fluidPreferred', () => {
 
 describe('the display tokens', () => {
   it('give display a 40px floor and keep its size at 56px (Figma draws the max)', () => {
-    expect(tokens.primitive.typography.size.displayMin.$value).toEqual({ value: 40, unit: 'px' });
+    // rem, so the floor follows the user's browser font size (a11y, #1334 review).
+    expect(tokens.primitive.typography.size.displayMin.$value).toEqual({ value: 2.5, unit: 'rem' });
     expect(tokens.semantic.typography.display.$value.fontSizeMin).toBe(
       '{primitive.typography.size.displayMin}',
     );
@@ -50,9 +51,27 @@ describe('the display tokens', () => {
     );
   });
 
+  it('emit the floor in rem, 40px at the default 16px root', () => {
+    expect(css).toContain('--primitive-typography-size-displayMin: 2.5rem;');
+  });
+
   it('leave the display size itself unchanged', () => {
     expect(css).toContain(
       '--semantic-typography-display-font-size: var(--primitive-typography-size-display);',
     );
+  });
+});
+
+describe('Figma', () => {
+  it('draws the rem floor as px at a 16px root', async () => {
+    const { buildFigmaModel } = await import('../lib/figma-model.mjs');
+    const model = buildFigmaModel(tokens);
+    const all = JSON.stringify(model);
+    expect(all).toContain('displayMin');
+    const v = model.collections
+      .flatMap((c) => c.variables ?? [])
+      .find((x) => (x.name ?? '').endsWith('displayMin'));
+    expect(v).toBeTruthy();
+    expect(JSON.stringify(v)).toMatch(/:40\b/);
   });
 });
