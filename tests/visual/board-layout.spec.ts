@@ -4,14 +4,12 @@ import { test, expect } from '@playwright/test';
  * Regression (hds#1114): at the Board's @3xl container width and wider, the first
  * BoardColumn must keep its 16rem floor (it collapsed to ~0 under the leftover
  * `grid-cols-1` track), and the visually-hidden count text must not widen the page.
- * Below @3xl the columns stack at the full Board width. It used the Board on /tour; the tour
- * is gone and Board has no docs page yet, so the spec waits on hds#1220 (test.fixme below).
+ * Below @3xl the columns stack at the full Board width. It reads the Board on its docs page
+ * (hds#1220).
  *
  * Run: `pnpm docs:build && pnpm exec playwright test tests/visual/board-layout.spec.ts`
  */
-// hds#1220: point at Board's docs page once it exists, then drop the fixme.
-const route = '/tour';
-test.fixme(true, 'hds#1220: Board has no docs page since /tour was removed');
+const route = '/docs/components/board';
 
 for (const width of [1440, 1280, 390]) {
   test(`Board lays out its columns at ${width}px without widening the page`, async ({ page }) => {
@@ -21,7 +19,7 @@ for (const width of [1440, 1280, 390]) {
     const report = await page.evaluate(() => {
       const board = document.querySelector<HTMLElement>('[data-hds-component="Board"]');
       // The bug needs more columns than fit at the 16rem floor (the leftover 1fr track
-      // only collapses when the row overflows), so pad the tour's Board out to eight.
+      // only collapses when the row overflows), so pad the demo Board out to eight.
       const track = board?.querySelector<HTMLElement>('[data-hds-board-track]');
       const last = track?.lastElementChild;
       while (track && last && track.children.length < 8) track.append(last.cloneNode(true));

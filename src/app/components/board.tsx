@@ -76,12 +76,38 @@ export const Board = /* @__PURE__ */ React.forwardRef<HTMLDivElement, BoardProps
   { children, className, ...rest },
   ref,
 ) {
+  const rootRef = React.useRef<HTMLDivElement | null>(null);
+  const setRefs = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      rootRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
+  // Past the column floors the track scrolls sideways inside the Board. A keyboard
+  // user must reach that scroll (WCAG 2.1.1, axe scrollable-region-focusable), so the
+  // Board is a Tab stop while it overflows, and only then (hds#1220).
+  const [scrolls, setScrolls] = React.useState(false);
+  React.useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const measure = () => setScrolls(el.scrollWidth > el.clientWidth);
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    if (el.firstElementChild) ro.observe(el.firstElementChild);
+    return () => ro.disconnect();
+  }, []);
   return (
     <div
       role="group"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling group must be keyboard-scrollable
+      tabIndex={scrolls ? 0 : undefined}
       {...rest}
-      ref={ref}
-      className={cn(ROOT_CLASS, className)}
+      ref={setRefs}
+      className={cn(ROOT_CLASS, scrolls && 'hds-focus', className)}
       data-hds-component="Board"
     >
       <div className={TRACK_CLASS} data-hds-board-track="">

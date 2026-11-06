@@ -137,6 +137,34 @@ describe('Board', () => {
     expect(screen.getByRole('group', { name: 'Pipeline' })).toBeTruthy();
   });
 
+  // hds#1220: past its column floors the Board scrolls sideways, so axe's
+  // scrollable-region-focusable asks for a keyboard stop. Only while it overflows:
+  // a Board that fits (or stacks) adds no extra Tab stop.
+  it('is a keyboard stop only while its columns overflow and scroll', () => {
+    const sizes = { scroll: 900, client: 600 };
+    const sw = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollWidth');
+    const cw = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientWidth');
+    Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+      configurable: true,
+      get: () => sizes.scroll,
+    });
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+      configurable: true,
+      get: () => sizes.client,
+    });
+    try {
+      const { unmount } = renderBoard();
+      expect(screen.getByRole('group', { name: 'Pipeline' }).getAttribute('tabindex')).toBe('0');
+      unmount();
+      sizes.scroll = 600;
+      renderBoard();
+      expect(screen.getByRole('group', { name: 'Pipeline' }).hasAttribute('tabindex')).toBe(false);
+    } finally {
+      if (sw) Object.defineProperty(HTMLElement.prototype, 'scrollWidth', sw);
+      if (cw) Object.defineProperty(HTMLElement.prototype, 'clientWidth', cw);
+    }
+  });
+
   it('is read-only: no element is draggable and no drag handler is attached', () => {
     const { container } = renderBoard();
     for (const el of container.querySelectorAll('*')) {

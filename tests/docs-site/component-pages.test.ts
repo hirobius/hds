@@ -33,6 +33,10 @@ import { PREVIEWED_COMPONENTS } from '../../docs-site/lib/previewed-components';
 const ROOT = join(__dirname, '..', '..');
 const PROVIDERS = ['HdsRouterProvider', 'HdsThemeProvider', 'ToastProvider'];
 const UTILITIES = ['Box', 'Container', 'VisuallyHidden'];
+// Standalone components outside the core set with a page of their own (hds#1227).
+const PAGED: string[] = JSON.parse(
+  readFileSync(join(ROOT, 'scripts/docs-rules.json'), 'utf8'),
+).pagedComponents;
 
 const fixtureManifest = {
   componentSpecs: {
@@ -188,7 +192,7 @@ describe('drift: every core component has a generated page', () => {
     const pages = buildComponentPages({
       manifest,
       api,
-      core: CORE_COMPONENTS,
+      core: [...CORE_COMPONENTS, ...PAGED],
       providers: PROVIDERS,
       utilities: UTILITIES,
     });
@@ -202,7 +206,7 @@ describe('drift: every core component has a generated page', () => {
     for (const [slug, mdx] of pages as Map<string, string>) {
       writeFileSync(join(root, 'content/docs/components', `${slug}.mdx`), mdx);
     }
-    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(43);
+    expect(readdirSync(join(root, 'content/docs/components'))).toHaveLength(43 + PAGED.length);
     expect(() =>
       execFileSync('node', ['scripts/check-docs.mjs', '--root', root], {
         cwd: ROOT,
@@ -474,6 +478,7 @@ describe('fold labels (Adrian, 2026-10-22)', () => {
 describe('docsPageFor: where each component is documented', () => {
   const routing = {
     core: ['Button', 'SegmentedControl', 'Box', 'ToastProvider'],
+    paged: ['Board'],
     patterns: ['MetricTiles'],
     providers: ['ToastProvider'],
     utilities: ['Box'],
@@ -487,18 +492,21 @@ describe('docsPageFor: where each component is documented', () => {
     ['Box', '/docs/components/utilities'],
     ['ToastProvider', '/docs/guides/providers'],
     ['MetricTiles', '/docs/patterns/metric-tiles'],
+    ['Board', '/docs/components/board'],
   ])('%s -> %s', (name, path) => {
     expect(docsPageFor(name, routing)?.path).toBe(path);
   });
 
-  it('has no page for a component outside the core set and the patterns', () => {
+  it('has no page for a component outside the core set, paged and the patterns', () => {
     expect(docsPageFor('Blockquote', routing)).toBeNull();
   });
 
   it('agrees with the manifest on every component: docsPage is set exactly where a page is generated', () => {
     const manifest = JSON.parse(readFileSync(join(ROOT, 'public/hds-manifest.json'), 'utf8'));
+    const rules = JSON.parse(readFileSync(join(ROOT, 'scripts/docs-rules.json'), 'utf8'));
     const real = {
       core: CORE_COMPONENTS as string[],
+      paged: rules.pagedComponents as string[],
       patterns: patternComponents(readFileSync(join(ROOT, 'src/patterns.ts'), 'utf8')) as string[],
       providers: PROVIDERS,
       utilities: UTILITIES,

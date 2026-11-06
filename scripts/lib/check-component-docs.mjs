@@ -269,7 +269,7 @@ function fidelityGrade(percent, missingCount) {
 
 export function runComponentDocsCheck() {
   const routing = loadDocsRouting(ROOT);
-  const documentedSurface = new Set([...routing.core, ...routing.patterns]);
+  const documentedSurface = new Set([...routing.core, ...routing.paged, ...routing.patterns]);
   const documentedNames = collectDocumentedComponentNames(routing);
   const manifest = readJson(MANIFEST_PATH);
   const componentApi = readJson(COMPONENT_API_PATH);

@@ -7,6 +7,8 @@
  * resources and documentation links. The page rules are docsPageFor() in
  * docs-component-pages.mjs; this module feeds it the repo's own lists (the core
  * set, scripts/docs-rules.json and the modules src/patterns.ts re-exports).
+ * `paged` is docs-rules.json pagedComponents: components outside the core set
+ * with a components/ page of their own.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -28,6 +30,7 @@ export function loadDocsRouting(root) {
   const patternsFile = path.join(root, 'src/patterns.ts');
   return {
     core: CORE_COMPONENTS,
+    paged: rules.pagedComponents ?? [],
     patterns: existsSync(patternsFile) ? patternComponents(readFileSync(patternsFile, 'utf8')) : [],
     providers: rules.providerComponents,
     utilities: rules.utilityComponents,

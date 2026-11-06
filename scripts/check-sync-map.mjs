@@ -95,7 +95,10 @@ for (const [name, spec] of Object.entries(specs)) {
 }
 const expectDocs = new Set(
   Object.keys(specs).filter(
-    (name) => routing.core.includes(name) || routing.patterns.includes(name),
+    (name) =>
+      routing.core.includes(name) ||
+      routing.paged.includes(name) ||
+      routing.patterns.includes(name),
   ),
 );
 

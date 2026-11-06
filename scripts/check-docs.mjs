@@ -57,7 +57,10 @@ const rules = JSON.parse(readFileSync(join(scriptDir, 'docs-rules.json'), 'utf8'
 const { CORE_COMPONENTS } = await import(
   pathToFileURL(join(scriptDir, 'lib', 'core-components.mjs')).href
 );
-const core = new Set(CORE_COMPONENTS);
+// Names with a components/ page: the core set plus docs-rules.json pagedComponents
+// (standalone components outside the core set, hds#1227).
+const pagedNames = [...CORE_COMPONENTS, ...(rules.pagedComponents ?? [])];
+const core = new Set(pagedNames);
 // Pattern pages (content/docs/patterns/) document the modules the /patterns
 // entry re-exports, read from the repo's own src/patterns.ts.
 const { patternComponents, docsPageFor } = await import(
@@ -254,7 +257,7 @@ function checkFrontmatter(file, fm) {
       file,
       1,
       'membership',
-      `frontmatter component "${data.component}" is not in CORE_COMPONENTS or the /patterns entry — removed/deprecated names live only in ${rules.deprecationGuide}`,
+      `frontmatter component "${data.component}" is not in CORE_COMPONENTS, pagedComponents or the /patterns entry — removed/deprecated names live only in ${rules.deprecationGuide}`,
     );
   }
   if (Array.isArray(data.related)) {
@@ -413,7 +416,7 @@ for (const file of files) {
         r,
         1,
         'membership',
-        `component page "${slug}" maps to "${name}", which is not in CORE_COMPONENTS — removed/deprecated components are documented only in ${rules.deprecationGuide} (content-model Rule 4)`,
+        `component page "${slug}" maps to "${name}", which is not in CORE_COMPONENTS or pagedComponents — removed/deprecated components are documented only in ${rules.deprecationGuide} (content-model Rule 4)`,
       );
     } else if (fm && String(fm.data.component ?? '') !== name) {
       err(
@@ -462,14 +465,14 @@ for (const file of files) {
 }
 
 if (componentsArmed) {
-  const expected = CORE_COMPONENTS.filter((n) => !providers.has(n));
+  const expected = pagedNames.filter((n) => !providers.has(n));
   const missing = expected.filter((n) => !seenComponentPages.has(n));
   for (const name of missing) {
     err(
       `${rules.contentRoot}/components/`,
       null,
       'completeness',
-      `core component "${name}" has no page (expected components/${name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}.mdx)`,
+      `component "${name}" has no page (expected components/${name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}.mdx)`,
     );
   }
   const providerGuidePath = join(contentDir, rules.providerGuide);
