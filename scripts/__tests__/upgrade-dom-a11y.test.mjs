@@ -15,7 +15,9 @@ import {
   changeset,
   cleanUpRepos,
   domRepo,
+  editPkg,
   note,
+  recordRelease,
   readNote,
   write,
   writeDomBaseline,
@@ -95,6 +97,21 @@ describe('dom facts', () => {
     expect(rules(result)).toEqual(['bump-too-small']);
     expect(result.violations[0].message).toContain('dom-changed:Table');
     expect(result.violations[0].message).toMatch(/minor/);
+  });
+
+  it('from 1.0 it is a behavior fact only: a patch with its behavior step passes', () => {
+    const root = domRepo();
+    editPkg(root, (pkg) => (pkg.version = '1.2.0'));
+    write(root, 'upgrade/ALLOW_1_0', '');
+    recordRelease(root, '1.2.0');
+    writeDomBaseline(root, roleChanged);
+    changeset(root, 'table-rows', 'patch');
+    note(root, 'table-rows', {
+      impact: 'behavior',
+      plain: behaviorStep().plain,
+      steps: [behaviorStep()],
+    });
+    expect(checkUpgradeLedger(root).violations).toEqual([]);
   });
 
   it('passes with a behavior step that detects by regex, under a minor', () => {
