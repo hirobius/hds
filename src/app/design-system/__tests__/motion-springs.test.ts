@@ -25,6 +25,10 @@ describe('hds.motion springs', () => {
     }
   });
 
+  it('gives the expressive role the elastic spring', () => {
+    expect(hds.motion.expressive.easing).toEqual(hds.motion.springs.elastic);
+  });
+
   it('has the scale and duration tokens', () => {
     const scale = json.primitive.scale;
     expect(hds.motion.scale).toEqual({
