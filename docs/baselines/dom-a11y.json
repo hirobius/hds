@@ -30,6 +30,15 @@
       "alert"
     ]
   },
+  "AlertDialog": {
+    "dom": [
+      "button aria-expanded=\"false\" aria-haspopup=\"dialog\" data-hover-effect=\"wipe\" data-state=\"closed\" data-tone=\"danger\" data-variant=\"secondary\"",
+      "span aria-hidden=\"true\" data-hds-portal-anchor"
+    ],
+    "reader": [
+      "button, Delete project, not expanded, has popup dialog"
+    ]
+  },
   "AppShell": {
     "dom": [
       "div",

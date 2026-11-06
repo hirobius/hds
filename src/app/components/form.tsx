@@ -2,7 +2,6 @@
  * Form + FormField — validation-agnostic form layout + field-wiring seam.
  * @category Inputs
  * @tier pattern
- * @doc-exempt: no Inputs/forms doc page yet — add demo when created
  *
  * HDS does not depend on a form/validation library. `FormField` owns the a11y
  * wiring (label↔control association, aria-invalid, aria-describedby for

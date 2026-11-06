@@ -12,8 +12,8 @@
       "internal": 12
     },
     "docsCoverage": {
-      "expected": 77,
-      "covered": 77
+      "expected": 78,
+      "covered": 78
     },
     "figmaCoverage": {
       "expected": 75,
@@ -37,11 +37,11 @@
       "name": "AlertDialog",
       "class": "library",
       "filePath": "src/app/components/alert-dialog.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/alert-dialog",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2035-24",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
