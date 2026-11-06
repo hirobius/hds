@@ -11,7 +11,15 @@ import {
   type DimensionStep,
 } from '../lib/foundation-visuals';
 import { loadAccentThemes, loadTokens } from '../lib/site-data';
-import { CopyCard, MotionDemo, SoftSurfacesDemo } from './foundation-visuals-client';
+import {
+  CopyCard,
+  ElevationOnComponents,
+  MotionDemo,
+  SoftSurfacesDemo,
+  SurfaceOnComponents,
+  type OnComponentsRow,
+} from './foundation-visuals-client';
+import { tokenRow } from '../lib/token-tables';
 import { IconSizes } from './icon-gallery';
 
 /** Sample text per role: long enough to show the leading, short enough for a phone. */
@@ -216,6 +224,60 @@ function ElevationCards() {
   );
 }
 
+const SURFACE_STEPS = [
+  'page',
+  'raised',
+  'muted',
+  'overlay',
+  'floating',
+  'sunken',
+  'soft',
+  'softHover',
+  'inverse',
+];
+
+/** A token as a row on an "on components" list, with its square fills. */
+function swatchRow(path: string, { dotted = false } = {}): OnComponentsRow[] {
+  const r = tokenRow(loadTokens(), path);
+  if (!r) return [];
+  return [
+    {
+      token: r.token,
+      name: dotted ? r.token : (r.cssVar ?? r.token),
+      note: r.description,
+      fill: r.fill,
+      darkFill: r.darkFill ?? r.fill,
+    },
+  ];
+}
+
+function ElevationPage() {
+  const levels: OnComponentsRow[] = elevationLevels(loadTokens()).map((e) => ({
+    token: e.token,
+    name: e.token,
+    note: e.description,
+  }));
+  return (
+    <>
+      <ElevationCards />
+      <ElevationOnComponents
+        rows={[...levels, ...swatchRow('semantic.color.shadow.hard', { dotted: true })]}
+      />
+    </>
+  );
+}
+
+function SoftSurfacesPage() {
+  return (
+    <>
+      <SoftSurfacesDemo />
+      <SurfaceOnComponents
+        rows={SURFACE_STEPS.flatMap((s) => swatchRow(`semantic.color.surface.${s}`))}
+      />
+    </>
+  );
+}
+
 function MotionDemos() {
   return (
     <Section title="Presets">
@@ -254,9 +316,9 @@ const VISUALS: Record<string, () => ReactNode> = {
   typography: TypeSpecimens,
   spacing: SpacingBars,
   radius: RadiusBoxes,
-  elevation: ElevationCards,
+  elevation: ElevationPage,
   motion: MotionDemos,
-  'soft-surfaces': SoftSurfacesDemo,
+  'soft-surfaces': SoftSurfacesPage,
   icons: IconSizeBoxes,
 };
 
