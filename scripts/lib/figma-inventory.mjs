@@ -32,7 +32,18 @@ const ASSET_TYPES = new Set(['COMPONENT_SET', 'COMPONENT']);
  * carry no component sets, so they never produce coverage findings, but naming
  * them keeps the inventory honest about what a page is for.
  */
-const DOC_PAGE_NAMES = new Set(['Cover', 'Color', 'Typography', 'ColorDoc', 'TypographyDoc']);
+const DOC_PAGE_NAMES = new Set([
+  'Cover',
+  'Getting Started',
+  'Color',
+  'Typography',
+  'ColorDoc',
+  'TypographyDoc',
+]);
+// Every "Foundations: <name>" page is a doc page (Color, Typography, Spacing, Surface,
+// Motion; doc pages redesign 2026-11-06). Surface holds live component instances, but
+// instances are not assets, so it still carries no component sets.
+const DOC_PAGE_PREFIX = 'Foundations: ';
 
 /**
  * The page a component removed from code moves to instead of being deleted
@@ -94,7 +105,10 @@ export function parseDocument(file, fileKey) {
 function classifyPage(canvas, assets) {
   if (canvas.name === ARCHIVE_PAGE_NAME || canvas.name.startsWith(ARCHIVE_SUBPAGE_PREFIX))
     return 'archive';
-  if (assets.length === 0) return DOC_PAGE_NAMES.has(canvas.name) ? 'doc' : 'empty';
+  if (assets.length === 0)
+    return DOC_PAGE_NAMES.has(canvas.name) || canvas.name.startsWith(DOC_PAGE_PREFIX)
+      ? 'doc'
+      : 'empty';
   const allIcons = assets.every(
     (asset) => asset.type === 'COMPONENT' && asset.name.startsWith('Icon/'),
   );
