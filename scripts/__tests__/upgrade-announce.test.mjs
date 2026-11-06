@@ -4,6 +4,7 @@
  * quiet. Every GitHub and Discord call here is mocked.
  */
 import { describe, expect, it } from 'vitest';
+import { fakeFetch } from './fake-fetch.mjs';
 import {
   announce,
   discordLines,
@@ -40,26 +41,6 @@ const LEDGERS = [
   },
 ];
 const PUBLISHED = ['0.32.0', '0.33.0', '0.33.1'];
-
-/** A fake GitHub + Discord: answers from `routes`, records every call. */
-function fakeFetch(routes) {
-  const calls = [];
-  const fetch = async (url, init = {}) => {
-    const method = init.method ?? 'GET';
-    const u = String(url);
-    calls.push({ method, url: u, body: init.body ? JSON.parse(init.body) : null });
-    const state = /[?&]state=(\w+)/.exec(u)?.[1];
-    const key = `${method} ${u.replace(/\?.*$/, '')}${state ? ` ${state}` : ''}`;
-    const hit = routes[key] ?? routes[`${method} ${u.replace(/\?.*$/, '')}`];
-    const [status, body] =
-      typeof hit === 'function' ? hit() : (hit ?? [404, { message: 'Not Found' }]);
-    return new Response(status === 204 ? null : JSON.stringify(body), {
-      status,
-      headers: { 'content-type': 'application/json' },
-    });
-  };
-  return { fetch, calls, writes: () => calls.filter((c) => c.method !== 'GET') };
-}
 
 const consumer = (repo, resolved, extra = {}) => ({
   repo,

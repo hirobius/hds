@@ -5,6 +5,7 @@
  * last good one. Dry run is the default; every GitHub call here is mocked.
  */
 import { describe, expect, it } from 'vitest';
+import { fakeFetch } from './fake-fetch.mjs';
 import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -14,24 +15,6 @@ import { rollbackLines } from '../upgrade/rollback.mjs';
 
 const PUBLISHED = ['0.30.0', '0.31.0', '0.31.1', '0.32.0', '0.33.0'];
 const MARKER = '<!-- hds-upgrade -->';
-
-/** A fake GitHub + Discord: answers from `routes`, records every call. */
-function fakeFetch(routes) {
-  const calls = [];
-  const fetch = async (url, init = {}) => {
-    const method = init.method ?? 'GET';
-    calls.push({ method, url: String(url), body: init.body ? JSON.parse(init.body) : null });
-    const key = `${method} ${String(url).replace(/\?.*$/, '')}`;
-    const hit = routes[key];
-    const [status, body] =
-      typeof hit === 'function' ? hit() : (hit ?? [404, { message: 'Not Found' }]);
-    return new Response(status === 204 ? null : JSON.stringify(body), {
-      status,
-      headers: { 'content-type': 'application/json' },
-    });
-  };
-  return { fetch, calls, writes: () => calls.filter((c) => c.method !== 'GET') };
-}
 
 const issue = (number, version, extra = {}) => ({
   number,
