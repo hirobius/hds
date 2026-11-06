@@ -124,6 +124,41 @@ describe('ledger-append', () => {
     ).toBe(true);
   });
 
+  it('--new-session matches its heading exactly, even when it is a substring of an older one', () => {
+    const file = path.join(mkdtempSync(path.join(os.tmpdir(), 'ledger-')), 'L.md');
+    writeFileSync(file, FIX);
+    const out = [];
+    // "2026-11-06 · doc" is a substring of the existing "2026-11-06 · doc pages".
+    run(
+      [
+        '--new-session',
+        '2026-11-06 · doc',
+        '--row',
+        '| 1 | x | read | t | w | OK. |',
+        '--total',
+        'Session total: 1 call.',
+      ],
+      { file, log: (l) => out.push(l) },
+    );
+    const text = readFileSync(file, 'utf8');
+    expect(text).toContain(
+      '## 2026-11-06 · doc\n\n| # | Tool | Kind | Target | Why | Result |\n| - | ---- | ---- | ------ | --- | ------ |\n| 1 | x |',
+    );
+    expect(out).toEqual(['Calls logged for 2026-11-06: 24 of 200 (12, 11 and 1).']);
+  });
+
+  it('--new-session without --total is refused before the file changes', () => {
+    const file = path.join(mkdtempSync(path.join(os.tmpdir(), 'ledger-')), 'L.md');
+    writeFileSync(file, FIX);
+    expect(() =>
+      run(['--new-session', '2026-11-06 · session y', '--row', '| 1 | x | read | t | w | OK. |'], {
+        file,
+        log: () => {},
+      }),
+    ).toThrow(/--new-session needs --total/);
+    expect(readFileSync(file, 'utf8')).toBe(FIX);
+  });
+
   it('the CLI writes the file and prints the day line', () => {
     const file = path.join(mkdtempSync(path.join(os.tmpdir(), 'ledger-')), 'L.md');
     writeFileSync(file, FIX);

@@ -73,8 +73,11 @@ export function duplicateRowNumbers(text) {
   return out;
 }
 
-function findSection(text, match) {
-  const hits = sections(text).filter((s) => s.heading.includes(match));
+/** The one section whose heading contains `match` (or equals it, with `exact`). */
+function findSection(text, match, exact = false) {
+  const hits = sections(text).filter((s) =>
+    exact ? s.heading === match : s.heading.includes(match),
+  );
   if (hits.length !== 1)
     throw new Error(
       `--session "${match}" matches ${hits.length} headings${hits.length ? ': ' + hits.map((h) => h.heading).join(' | ') : ''}; it must match exactly one.`,
@@ -83,8 +86,8 @@ function findSection(text, match) {
 }
 
 /** Append rows (and optionally set the total) in the one section whose heading contains `match`. */
-export function appendRows(text, match, rows, total = null) {
-  const s = findSection(text, match);
+export function appendRows(text, match, rows, total = null, { exact = false } = {}) {
+  const s = findSection(text, match, exact);
   const lines = text.slice(s.start, s.end).split('\n');
   let last = -1;
   lines.forEach((l, i) => {
@@ -166,11 +169,17 @@ export function run(argv, { file = LEDGER, log = console.log } = {}) {
   const one = (f) => all(f)[0] ?? null;
   let text = readFileSync(file, 'utf8');
   let date = one('--resum');
-  if (one('--new-session')) text = newSession(text, one('--new-session'));
-  const session = one('--new-session') || one('--session');
+  // A new session's heading is matched exactly: it may be a substring of an older one.
+  const fresh = one('--new-session');
+  if (fresh && !one('--total'))
+    throw new Error(
+      '--new-session needs --total "Session total: N calls …" (the day line sums it).',
+    );
+  if (fresh) text = newSession(text, fresh);
+  const session = fresh || one('--session');
   if (session) {
-    text = appendRows(text, session, all('--row'), one('--total'));
-    date = findSection(text, session).date;
+    text = appendRows(text, session, all('--row'), one('--total'), { exact: !!fresh });
+    date = findSection(text, session, !!fresh).date;
   }
   if (!date)
     throw new Error(
