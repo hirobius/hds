@@ -237,6 +237,10 @@ describe('normalizeSignature', () => {
     expect(normalizeSignature(sig)).toBe('(a: string | number, b: "x" | Foo) => "z" | "y"[]');
   });
 
+  it('keeps a literal that contains " | " whole', () => {
+    expect(normalizeSignature('(m: "b | c" | "a") => void')).toBe('(m: "a" | "b | c") => void');
+  });
+
   it('still reports a real change: a literal added to the union', () => {
     expect(normalizeSignature('(m: "a" | "b") => void')).not.toBe(
       normalizeSignature('(m: "a" | "b" | "c") => void'),

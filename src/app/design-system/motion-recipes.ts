@@ -56,6 +56,10 @@ const open = (scale: number, y = 0): MotionRecipe => ({
   transition: m.springs.spatialDefault,
 });
 
+/**
+ * The full-motion recipes. They do not check reduced motion: use `useMotionRecipe`,
+ * or pass `{ reduced }` to `motionRecipe` yourself.
+ */
 export const MOTION_RECIPES = {
   /** Dialogs and alert dialogs. */
   openDialog: open(m.scale.dialog),
@@ -139,7 +143,8 @@ function still(target: Target | false | undefined): Target | false | undefined {
 
 /**
  * A recipe by name. With `reduced`, the same recipe without movement or blur
- * and with no duration: things still appear and disappear, instantly.
+ * and with no duration: things still appear and disappear, instantly. In a
+ * component, use `useMotionRecipe`, or pass `{ reduced }` yourself.
  */
 export function motionRecipe(name: MotionRecipeName, { reduced = false } = {}): MotionRecipe {
   const recipe: MotionRecipe = MOTION_RECIPES[name];

@@ -320,3 +320,17 @@ describe('failures never fail the release', () => {
     expect(logs.join('\n')).toMatch(/set DISCORD_WEBHOOK_URL/);
   });
 });
+
+describe('rangeSummary and Good to know', () => {
+  it('does not count an additive peer step', () => {
+    const ledgers = [
+      {
+        version: '0.40.0',
+        summary: 'x',
+        steps: [{ id: '0.40.0/peer/x', kind: 'peer', impact: 'additive', plain: 'x.' }],
+      },
+    ];
+    const { counts } = rangeSummary(ledgers, null, '0.40.0');
+    expect(counts).toEqual({ fixedForYou: 0, looksDifferent: 0, comingNext: 0, doByHand: 0 });
+  });
+});

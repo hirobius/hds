@@ -285,7 +285,7 @@ An expandable list row (one-line preview, actions beside the trigger) is `Disclo
 - Don't outline a container to group it; use a surface step or space (soft surfaces, ADR-064). Don't default repeated groups to outlined cards; prefer open bands, section dividers, accent rails, tabs, disclosures, and whitespace. Cards are for genuinely discrete repeated objects, not the primary layout language.
 - Don't sticker badges onto the ends of prose lines. Status and progress should live in a predictable metadata slot, rail, header zone, table column, or progress surface; badges are reserved for compact state markers where their placement is intentional.
 - Don't add decorative illustration, ornamental icons, or trend-driven filler that lacks functional or structural purpose.
-- Don't ship motion that ignores `prefers-reduced-motion`. Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
+- Don't ship motion that ignores `prefers-reduced-motion`, or motion that looks accidental: every animation must be effective and intentional (ADR-065). Spring or expressive motion and a small press transform (such as a `whileTap` scale) are welcome where they add delight; under reduced motion, drop the transform and keep the color and state change.
 - Don't define a global disabled-state rule (opacity multiplier, saturation ramp, etc.); disabled presentation is governed per-component through its dedicated disabled tokens.
 
 ## Open Questions

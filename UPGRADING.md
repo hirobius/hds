@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.35.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.36.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -20,6 +20,25 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
 
+## 0.36.0
+
+Released 2026-11-06 (minor). 1 change to make by hand, 2 fixed for you by a codemod and 1 that looks different.
+
+### Fixed for you
+
+The upgrade command runs these codemods for you.
+
+- The package root no longer exports hds; import it from @hirobius/design-system/tokens. Codemod: `hds-tokens-subpath`.
+- The package root no longer exports tokens; import it from @hirobius/design-system/tokens. Codemod: `hds-tokens-subpath`.
+
+### Looks different
+
+- Table cells pad with --component-table-cell-paddingX (28px, 16px compact) instead of surface padding, so brutalist-demo cells grow from 20px to 28px (8px to 16px compact) unless you set --component-table-cell-paddingX.
+
+### Good to know
+
+- @number-flow/react is a new optional peer, needed only if you import @hirobius/design-system/number; nothing changes if you do not.
+
 ## 0.35.0
 
 Released 2026-11-06 (minor). 1 change to make by hand, 28 that look different and 2 deprecations.
@@ -34,8 +53,8 @@ Released 2026-11-06 (minor). 1 change to make by hand, 28 that look different an
 
 ### Coming next
 
-- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.36.0.
-- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.36.0.
+- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in [0.36.0](#0360).
+- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in [0.36.0](#0360).
 
 ### Do by hand
 
@@ -55,8 +74,8 @@ Released 2026-11-06 (minor). 2 changes to make by hand, 5 that look different an
 
 ### Coming next
 
-- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.35.0.
-- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.35.0.
+- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed late, in [0.36.0](#0360) (planned for 0.35.0).
+- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed late, in [0.36.0](#0360) (planned for 0.35.0).
 
 ### Do by hand
 

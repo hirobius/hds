@@ -393,6 +393,22 @@ describe('a squash merge of a Version PR synced before the merge', () => {
     expect(r.output).toMatch(/meta\/version is 1\.0\.0 in Figma but this release is 1\.0\.1/);
   });
 
+  it('refuses a stand-in when the synced commit is here and its tree differs from HEAD', async () => {
+    const { dir } = await syncedOnPrHead();
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'a', version: '1.0.0', y: 1 }));
+    commitAll(dir, 'a synced-input change after the push');
+    // A recorded hash that matches HEAD, but taken from no tree of the synced commit.
+    const { syncedInputsHash } = await import('../lib/figma-meta.mjs');
+    const file = snapshotFile(dir);
+    writeFileSync(
+      join(dir, 'figma', 'snapshot.json'),
+      serializeSnapshotFile({ ...file, syncedHash: syncedInputsHash(dir) }),
+    );
+    const r = runMetaGate({ root: dir });
+    expect(r.exitCode).toBe(1);
+    expect(r.output).toMatch(/meta\/commit is .* in Figma but code says/);
+  });
+
   it('refuses a stand-in whose syncedCommit is not the meta/commit Figma shows', async () => {
     const { dir } = await syncedOnPrHead();
     const file = snapshotFile(dir);

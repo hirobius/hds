@@ -4,7 +4,9 @@
  */
 import { describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { requiredDurationVars } from '../lib/reduced-motion-vars.mjs';
 
 const tokens = JSON.parse(readFileSync('hirobius.tokens.json', 'utf8'));
@@ -38,5 +40,41 @@ describe('check-reduced-motion on the repo', () => {
     expect(() =>
       execFileSync('node', ['scripts/check-reduced-motion.mjs'], { stdio: 'pipe' }),
     ).not.toThrow();
+  });
+});
+
+// hds#751 slice 3: a component that animates must take its springs and recipes
+// through useMotionRecipe / useHdsMotion, never the raw records, which ignore
+// reduced motion.
+describe('check-reduced-motion Layer 2: springs and recipes', () => {
+  const run = (body) => {
+    const dir = mkdtempSync(join(tmpdir(), 'rm-'));
+    const file = join(dir, 'x.tsx');
+    const block = readFileSync('fixtures/check-reduced-motion/passing.example.tsx', 'utf8')
+      .split('export function App')[0]
+      .replace(/^import .*$/gm, '');
+    writeFileSync(file, `import { motion } from 'motion/react';\n${block}\n${body}\n`);
+    try {
+      execFileSync('node', ['scripts/check-reduced-motion.mjs'], {
+        stdio: 'pipe',
+        env: { ...process.env, HDS_FIXTURE_MODE: '1', FIXTURE_FILE: file },
+      });
+      return 0;
+    } catch (error) {
+      return error.status;
+    }
+  };
+
+  it('fails on raw MOTION_RECIPES or motionExtras springs', () => {
+    expect(run("import { MOTION_RECIPES } from 'x';\nconst r = MOTION_RECIPES.openMenu;")).toBe(1);
+    expect(run("import { motionExtras } from 'x';\nconst s = motionExtras.springs.elastic;")).toBe(
+      1,
+    );
+  });
+
+  it('passes through useMotionRecipe', () => {
+    expect(
+      run("import { useMotionRecipe } from 'x';\nconst r = useMotionRecipe('openMenu');"),
+    ).toBe(0);
   });
 });
