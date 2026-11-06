@@ -1,0 +1,41 @@
+---
+title: 'Accessibility'
+description: 'What HDS guarantees for accessibility, and what you must still do when you use a component.'
+status: 'stable'
+since: '0.33.1'
+---
+
+HDS targets **WCAG 2.2 level AA**. Every docs page is scanned with axe in light and dark, and the
+build fails on a serious or critical violation. Each component states its accessibility
+contract in `@a11y` tags in its source. The tables on this page are built from those tags,
+the tokens and the repo checks, so they change when the code changes.
+
+## Tokens
+
+The keyboard focus ring: one width, gap and colour for every focusable component. Nothing
+in HDS removes the outline. In forced-colors mode the ring uses the system `Highlight`
+colour.
+
+{/* generated: tokens */}
+
+## What HDS guarantees
+
+<A11yGuarantees />
+
+**Reduced motion.** Under `prefers-reduced-motion`, motion from `useHdsMotion` has zero
+duration. Spinners stop, and transforms such as a press scale are removed. The colour and
+state change stay.
+
+## What you must still do
+
+A component cannot know your content. These rules are yours to keep. Each row comes from an
+`@a11y consumer` tag in the component source.
+
+<A11yConsumerChecklist />
+
+## Contracts by component
+
+The number of rules each side keeps. Open a component page and expand **Accessibility** to
+read each rule and the test that proves it.
+
+<A11yContractIndex />

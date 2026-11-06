@@ -1,5 +1,10 @@
 import type { MDXComponents } from 'mdx/types';
 
+import {
+  A11yConsumerChecklist,
+  A11yContractIndex,
+  A11yGuarantees,
+} from './components/a11y-contracts';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
@@ -43,6 +48,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...hdsElements,
     TokenTable,
+    A11yGuarantees,
+    A11yConsumerChecklist,
+    A11yContractIndex,
     ComponentTokens,
     ComponentPreview,
     ComponentIndex,

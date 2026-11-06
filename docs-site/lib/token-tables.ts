@@ -61,6 +61,7 @@ const PAGE_GROUPS: Record<string, string> = {
   elevation: 'semantic.shadow',
   'soft-surfaces': 'semantic.color.surface',
   icons: 'semantic.size.icon',
+  accessibility: 'semantic.focus',
 };
 
 export const TOKEN_PAGES = Object.keys(PAGE_GROUPS);
