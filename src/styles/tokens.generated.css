@@ -152,6 +152,8 @@
   --primitive-space-px2: 2px;
   --primitive-space-px6: 6px;
   --primitive-space-px10: 10px;
+  --primitive-blur-2: 2px;
+  --primitive-blur-4: 4px;
   --primitive-blur-8: 8px;
   --primitive-blur-16: 16px;
   --primitive-radius-0: 0px;
@@ -205,10 +207,18 @@
   --primitive-duration-short: 150ms;
   --primitive-duration-medium: 250ms;
   --primitive-duration-long: 400ms;
+  --primitive-duration-stagger: 40ms;
+  --primitive-duration-extended: 600ms;
   --primitive-easing-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
   --primitive-easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
   --primitive-easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
   --primitive-easing-elastic: linear(0, 0.11, 0.34, 0.6, 0.83, 0.98, 1.07, 1.1, 1.1, 1.08, 1.05, 1.03, 1.01, 1, 0.99, 0.99, 1);
+  --primitive-easing-spatialFast: linear(0, 0.04, 0.15, 0.27, 0.4, 0.52, 0.62, 0.71, 0.78, 0.84, 0.88, 0.92, 0.94, 0.96, 0.97, 0.98, 1);
+  --primitive-easing-spatialDefault: linear(0, 0.04, 0.15, 0.27, 0.4, 0.51, 0.62, 0.71, 0.78, 0.84, 0.88, 0.92, 0.94, 0.96, 0.97, 0.98, 1);
+  --primitive-easing-spatialSlow: linear(0, 0.04, 0.15, 0.27, 0.39, 0.51, 0.62, 0.7, 0.78, 0.83, 0.88, 0.91, 0.94, 0.96, 0.97, 0.98, 1);
+  --primitive-easing-effectsFast: linear(0, 0.08, 0.21, 0.37, 0.51, 0.63, 0.72, 0.8, 0.85, 0.89, 0.92, 0.95, 0.96, 0.97, 0.98, 0.99, 1);
+  --primitive-easing-effectsDefault: linear(0, 0.07, 0.21, 0.37, 0.51, 0.62, 0.72, 0.79, 0.85, 0.89, 0.92, 0.94, 0.96, 0.97, 0.98, 0.99, 1);
+  --primitive-easing-effectsSlow: linear(0, 0.07, 0.21, 0.36, 0.5, 0.62, 0.72, 0.79, 0.85, 0.89, 0.92, 0.94, 0.96, 0.97, 0.98, 0.99, 1);
   --primitive-shadow-color: 220 13% 18%;
   --primitive-breakpoint-xs: 375px;
   --primitive-breakpoint-sm: 640px;
@@ -260,6 +270,9 @@
   --primitive-strokeWidth-175: 1.75px;
   --primitive-strokeWidth-200: 2px;
   --primitive-strokeWidth-250: 2.5px;
+  --primitive-scale-96: 0.96;
+  --primitive-scale-97: 0.97;
+  --primitive-scale-98: 0.98;
 
   /* ── Semantic (light mode defaults) ────────────────────────────────────── */
   /* semantic.motion.productive */
@@ -275,6 +288,13 @@
   --hds-motion-exit-duration: var(--primitive-duration-instant);
   --hds-motion-exit-easing: var(--primitive-easing-accelerate);
   --semantic-motion-distance: var(--primitive-space-6);
+  --semantic-motion-nudge: var(--primitive-space-1);
+  --semantic-motion-slide: var(--primitive-space-2);
+  --semantic-motion-blurSwap: var(--primitive-blur-2);
+  --semantic-motion-blurReveal: var(--primitive-blur-4);
+  --semantic-motion-scaleDialog: var(--primitive-scale-96);
+  --semantic-motion-scaleMenu: var(--primitive-scale-97);
+  --semantic-motion-scaleTooltip: var(--primitive-scale-98);
   --semantic-color-surface-page: var(--primitive-color-neutral-white);
   --semantic-color-surface-raised: var(--primitive-color-neutral-150);
   --semantic-color-surface-overlay: var(--primitive-color-neutral-250);

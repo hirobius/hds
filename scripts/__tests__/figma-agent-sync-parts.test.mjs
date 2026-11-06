@@ -69,7 +69,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     vi.setSystemTime(new Date('2026-10-09T00:00:00.000Z'));
   });
 
-  it('builds the same delta.js, byte for byte (golden; re-captured for aliases to a variable an earlier part created)', async () => {
+  it('builds the same delta.js, byte for byte (golden; re-captured for the motion not-in-Figma reason, hds#751)', async () => {
     const s = await pending({
       edit: (model) => {
         variableOf(model, 'primitive.space.2').description = 'Two steps: tight gap and more.';
@@ -80,7 +80,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
       chars: 31842,
-      sha: '047b955d9289df44bc3e607b0f1dd4817124de87144c0a3c8257abf7c825d37a',
+      sha: 'db5701bcc3801b4122929516b138bd12ce668538817a9f59d4ef61ee856d78b2',
     });
   });
 });
