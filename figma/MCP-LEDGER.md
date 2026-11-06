@@ -1300,4 +1300,12 @@ Session total: 13 calls (7 use_figma: 3 read + 4 write, 6 get_screenshot; reused
 
 Session total: 3 calls (1 use_figma write, 2 get_screenshot; reused Figma session 143c3e71). No delete. No publish. No variable change.
 
-Calls logged for 2026-11-06: 125 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13 and 3).
+## 2026-11-06 · Agent sync: inlineLink iconSize + meta/commit after #1327 (file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #   | Tool        | Kind  | Target                                                                                                                                                        | Why          | Result                                         |
+| --- | ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------- |
+| 1   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js against 2b942a35 (VariableID:2477:85, 2477:87, 2477:89 inlineLink sm/md/lg iconSize; VariableID:2475:51 meta/commit) | token change | OK. updated 4; post fdf0bf17; receipt written. |
+
+Session total: 1 use_figma call (1 write). No publish.
+
+Calls logged for 2026-11-06: 126 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3 and 1).
