@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.35.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The external icon is now inside a span in the link, so update a selector like \`a > svg\` to \`a svg\`.
+- Looks different: From variables.css, each of these takes its cobalt value only inside data-accent="cobalt"; without data-accent it is unchanged: `--component-button-bg`, `--component-button-bgHover`, `--component-button-secondary-bg-hover`, `--component-button-secondary-border-hover`, `--component-tag-activeBackground`, `--component-tag-activeBorder`, `--component-tag-activeHover`, `--hds-edge-primary`, `--role-accent`, `--role-accent-foreground`, `--role-primary`, `--role-ring`, `--semantic-accent-content`, `--semantic-accent-contentHover`, `--semantic-accent-hover`, `--semantic-accent-pressed`, `--semantic-accent-rest`, `--semantic-accent-subtle`, `--semantic-color-border-accent`, `--semantic-color-content-accent`, `--semantic-color-content-onAccent`, `--semantic-color-surface-accent`, `--semantic-color-surface-accentSubtle` and `--semantic-focus-ring-color`.
+- Looks different: The Figma px size for lg links is now 24 (was 20); if you set this variable yourself, check the icon next to title-size text.
+- Looks different: The Figma px size for md links is now 16 (was 12); if you set this variable yourself, check the icon next to body-size text.
+- And 4 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0350).
+
+### Minor Changes
+
+- 1dd68f3: `InlineLink`: the external-link icon no longer wraps alone onto the next line. Breaking (DOM): the icon now sits inside a span in the link, so a selector like `a > svg` must become `a svg`. The icon and the link's last word now always break together, for example in a narrow table cell.
+
+### Patch Changes
+
+- 1912d44: `primitive.typography.size.displayMin` is `2.5rem`, not `40px` (hds#1334 review): the floor of `--semantic-typography-display-font-size-fluid` now follows the user's browser font size. At the default 16px root it is still 40px, and the fluid curve is unchanged. Figma draws it as 40px.
+- 491a574: Opt-in fluid display size (hds#1300): `--semantic-typography-display-font-size-fluid` is `clamp(2.5rem, 1.6rem + 4vw, <display size>)`. It runs from 2.5rem (40px at the default font size) at a 360px viewport to the full 56px at 760px, and its floor grows with a larger browser font size. Set it as `font-size` on a hero that must fit a phone, in place of a hand-rolled clamp. The display size itself (`--semantic-typography-display-font-size`, 56px) does not change. New tokens: `primitive.typography.size.displayMin` (2.5rem) and the optional `fontSizeMin` key on `semantic.typography.display`.
+- 5bfa674: `InlineLink`: the external-link icon is now sized to the text (1em, was 0.75em), so it reads at the same size as the link label. `primitive.inlineIcon.size` is `1em`; the Figma px sizes for the sm, md and lg link sizes follow (16, 16, 24).
+- 93544b4: Input reads its horizontal padding from component tokens at every size (hds#1323): `component.input.paddingX` (12px) is now documented as the medium (default) value, and the new `component.input.size.sm.paddingX` (8px) and `component.input.size.lg.paddingX` (16px) cover small and large. The rendered padding is unchanged; Figma can bind each size to its own variable.
+- 9e06ec7: The root `hds` and `tokens` exports stay one release longer: they are removed in 0.36.0, not 0.35.0 (hds#1205, #1347). Import them from `@hirobius/design-system/tokens`; `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the imports.
+- f16d56f: `@hirobius/design-system/stats.json` gains a `delivery` block, counted offline from git at the merge-base with `origin/main`: `commitsOnMain`, `mergedPullRequests` (PRs merged into main, by squash or merge commit), `firstCommitDate`, `changelogVersions` (version headings in CHANGELOG.md; not a count of npm publishes), `asOf` and `asOfDate`. It is recounted only by `pnpm stats:build --delivery`; every other run, release CI included, keeps the committed block.
+- 23edf3c: `variables.css` now ships the opt-in accent blocks (`[data-accent='cobalt']`, light and dark), the same ones `styles.css` and `tokens.css` carry (hds#1313). A token-only consumer that loads only `variables.css` can set `data-accent="cobalt"` on `<html>` or a wrapper to switch the accent. Without `data-accent`, nothing changes.
+
 ## 0.34.0
 
 ### Upgrade

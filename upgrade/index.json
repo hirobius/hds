@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.34.0",
+  "latest": "0.35.0",
   "floor": "0.9.0",
   "versions": [
     {
@@ -240,20 +240,27 @@
       "bump": "minor",
       "breaking": 0,
       "summary": "2 changes to make by hand, 5 that look different and 2 deprecations."
+    },
+    {
+      "version": "0.35.0",
+      "date": "2026-11-06",
+      "bump": "minor",
+      "breaking": 0,
+      "summary": "1 change to make by hand, 28 that look different and 2 deprecations."
     }
   ],
   "deprecated": [
     {
       "name": "hds",
       "entry": ".",
-      "removeIn": "0.35.0",
-      "step": "0.34.0/deprecated/hds"
+      "removeIn": "0.36.0",
+      "step": "0.35.0/deprecated/hds"
     },
     {
       "name": "tokens",
       "entry": ".",
-      "removeIn": "0.35.0",
-      "step": "0.34.0/deprecated/tokens"
+      "removeIn": "0.36.0",
+      "step": "0.35.0/deprecated/tokens"
     },
     {
       "name": "Blockquote.size",

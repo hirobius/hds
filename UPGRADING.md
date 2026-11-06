@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.34.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.35.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,27 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.35.0
+
+Released 2026-11-06 (minor). 1 change to make by hand, 28 that look different and 2 deprecations.
+
+### Looks different
+
+- From variables.css, each of these takes its cobalt value only inside data-accent="cobalt"; without data-accent it is unchanged: `--component-button-bg`, `--component-button-bgHover`, `--component-button-secondary-bg-hover`, `--component-button-secondary-border-hover`, `--component-tag-activeBackground`, `--component-tag-activeBorder`, `--component-tag-activeHover`, `--hds-edge-primary`, `--role-accent`, `--role-accent-foreground`, `--role-primary`, `--role-ring`, `--semantic-accent-content`, `--semantic-accent-contentHover`, `--semantic-accent-hover`, `--semantic-accent-pressed`, `--semantic-accent-rest`, `--semantic-accent-subtle`, `--semantic-color-border-accent`, `--semantic-color-content-accent`, `--semantic-color-content-onAccent`, `--semantic-color-surface-accent`, `--semantic-color-surface-accentSubtle` and `--semantic-focus-ring-color`.
+- The Figma px size for lg links is now 24 (was 20); if you set this variable yourself, check the icon next to title-size text.
+- The Figma px size for md links is now 16 (was 12); if you set this variable yourself, check the icon next to body-size text.
+- The Figma px size for sm links is now 16 (was 12); if you set this variable yourself, check the icon next to ui-size text.
+- The inline icon is now 1em instead of 0.75em; if you override this variable to keep the old look, set it to 0.75em.
+
+### Coming next
+
+- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.36.0.
+- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed in 0.36.0.
+
+### Do by hand
+
+- The external icon is now inside a span in the link, so update a selector like \`a > svg\` to \`a svg\`.
 
 ## 0.34.0
 
