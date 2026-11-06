@@ -6,6 +6,9 @@
  * reduced version (no movement), which is what users with that setting get.
  */
 import { useState } from 'react';
+// motion/react resolves to the root install, the same copy the package uses (link:..).
+// Do not add motion to docs-site/package.json: a second copy brings a second
+// motion-dom, and its types do not match the package's recipes (hds#751).
 import { AnimatePresence, motion } from 'motion/react';
 import { Button, Text, useMotionRecipe, type MotionRecipeName } from '@hirobius/design-system';
 import { DemoFrame } from './component-demos';
