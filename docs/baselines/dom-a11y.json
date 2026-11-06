@@ -789,11 +789,16 @@
   "InlineLink": {
     "dom": [
       "p",
-      "  a"
+      "  a",
+      "  a",
+      "    span",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "    span"
     ],
     "reader": [
       "paragraph",
-      "link, upgrade guide"
+      "link, upgrade guide",
+      "link, release notes(opens in new tab)"
     ]
   },
   "Input": {

@@ -1,17 +1,17 @@
 {
   "impact": "behavior",
-  "plain": "An external InlineLink keeps its icon on the same line as its last word; nothing to change in your code.",
+  "plain": "An external InlineLink keeps its icon on the same line as its last word.",
   "steps": [
     {
-      "id": "behavior/Table.dom",
+      "id": "behavior/InlineLink.dom",
       "kind": "behavior",
       "impact": "behavior",
       "plain": "The external icon is now inside a span in the link, so update a selector like `a > svg` to `a svg`.",
       "detect": {
-        "jsx": ["Table"],
+        "jsx": ["InlineLink"],
         "regex": ["a\\s*>\\s*svg"]
       },
-      "facts": ["dom-changed:Table"]
+      "facts": ["dom-changed:InlineLink", "dom-changed:Table"]
     }
   ]
 }
