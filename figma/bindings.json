@@ -1,5 +1,5 @@
 {
-  "checksum": "456ebafb",
+  "checksum": "7a8cd205",
   "bindings": {
     "2353:315": {
       "name": "List",
@@ -132,11 +132,13 @@
     "88:453": {
       "name": "Disclosure",
       "variables": [
+        "button/fontWeight",
         "button/radius",
+        "button/size/sm/fontSize",
         "button/size/sm/height",
         "button/size/sm/itemSpacing",
         "button/size/sm/paddingX",
-        "nav/paddingY"
+        "disclosure/paddingY"
       ]
     },
     "89:155": {
