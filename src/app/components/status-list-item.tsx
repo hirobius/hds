@@ -7,6 +7,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
+import { VisuallyHidden } from './visually-hidden';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Non-interactive — no hover/active/focus states. Tone drives only the leading
@@ -46,6 +47,11 @@ export type StatusListItemTone = NonNullable<StatusListItemVariantProps['tone']>
 export interface StatusListItemProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>, StatusListItemVariantProps {
   title: React.ReactNode;
+  /**
+   * The status in words, such as "Overdue". The tone dot is hidden from screen
+   * readers, so without this they hear no status; it is read after the title.
+   */
+  statusLabel?: string;
   notes?: React.ReactNode[];
   trailing?: React.ReactNode;
 }
@@ -54,9 +60,11 @@ export interface StatusListItemProps
 
 /**
  * Status dot + title row with optional muted notes and trailing slot (e.g. badge).
+ * @a11y component required a11y:status-list-item.status-named The dot is hidden; statusLabel is read after the title.
+ * @a11y consumer required Pass statusLabel whenever the tone carries meaning.
  */
 export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, StatusListItemProps>(
-  function StatusListItem({ tone, title, notes, trailing, className, ...props }, ref) {
+  function StatusListItem({ tone, title, statusLabel, notes, trailing, className, ...props }, ref) {
     return (
       <div
         ref={ref}
@@ -66,7 +74,10 @@ export const StatusListItem = /* @__PURE__ */ React.forwardRef<HTMLDivElement, S
       >
         <span aria-hidden="true" className={statusListItemDotVariants({ tone })} />
         <div className="min-w-0 flex-1">
-          <p className="m-0 hds-type-ui text-foreground">{title}</p>
+          <p className="m-0 hds-type-ui text-foreground">
+            {title}
+            {statusLabel ? <VisuallyHidden>{`, ${statusLabel}`}</VisuallyHidden> : null}
+          </p>
           {notes?.map((note, i) => (
             <p key={i} className="m-0 hds-type-caption text-muted-foreground">
               {note}

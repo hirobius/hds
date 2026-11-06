@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Pass statusLabel to each StatusListItem whose tone carries meaning, so screen readers hear the status."
+}

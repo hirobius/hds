@@ -3371,6 +3371,12 @@
       "values": null,
       "default": null
     },
+    "statusLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
     "title": {
       "type": "ReactNode",
       "optional": false,
