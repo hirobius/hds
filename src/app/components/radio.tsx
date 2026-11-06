@@ -55,9 +55,9 @@ const radioInputVariants = /* @__PURE__ */ cva('absolute inset-0 m-0 opacity-0',
  * position, no gap), which is half of the #225 rendering bug — see
  * `radioRingVariants` below for the other half.
  */
-// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven gap; var()-based, no Tailwind-theme utility exists
+// eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven padding; var()-based, no Tailwind-theme utility exists
 const radioRootVariants = /* @__PURE__ */ cva(
-  'relative inline-flex items-center gap-[var(--semantic-space-subgrid-gap)] py-[var(--semantic-space-subgrid-gap)] select-none hds-touch-row',
+  'relative inline-flex items-center gap-scale-xs py-[var(--semantic-space-subgrid-gap)] select-none hds-touch-row',
   {
     variants: {
       state: {
