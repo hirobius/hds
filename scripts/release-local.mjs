@@ -231,7 +231,12 @@ function main() {
   // already, and the check above saw it there now.
   const [cmd, args] = announceStep(s.version);
   console.log(`\n$ ${cmd} ${args.join(' ')}`);
-  spawnSync(cmd, args, { cwd: ROOT, stdio: 'inherit' });
+  const announced = spawnSync(cmd, args, { cwd: ROOT, stdio: 'inherit' });
+  if (announced.error || announced.status !== 0) {
+    console.error(
+      `release-local: the announce did not run (${announced.error?.message ?? `exit ${announced.status}`}). The publish is done; re-run: pnpm release:announce ${s.version} --apply`,
+    );
+  }
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

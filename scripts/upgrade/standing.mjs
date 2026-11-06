@@ -7,7 +7,12 @@
  * An issue is the standing one when its body has MARKER, or, for one filed by
  * hand before the marker existed, its title starts with TITLE_PREFIX.
  */
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { HDS_PACKAGE } from '../../codemods/lib/installed-version.mjs';
+
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 export const API = 'https://api.github.com';
 /** The hidden marker a standing upgrade issue carries. */
@@ -64,3 +69,10 @@ export async function listIssues(gh, repo, state, maxPages = 10) {
   }
   return issues;
 }
+
+/**
+ * upgrade/published.json: every published version, plus the one the merged
+ * Version PR publishes next (compile.mjs --release adds it there).
+ */
+export const readPublished = (root = REPO_ROOT) =>
+  JSON.parse(readFileSync(path.join(root, 'upgrade/published.json'), 'utf8')).versions;

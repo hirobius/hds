@@ -148,12 +148,10 @@ describe('announceStep (hds#456)', () => {
 });
 
 describe('package.json wiring', () => {
+  const pkg = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
   it('exposes pnpm release:announce', () => {
-    const pkg = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
     expect(pkg.scripts['release:announce']).toBe('node scripts/upgrade/announce.mjs');
   });
-
-  const pkg = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
   it('exposes pnpm release:local', () => {
     expect(pkg.scripts['release:local']).toBe('node scripts/release-local.mjs');
   });

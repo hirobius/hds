@@ -32,7 +32,6 @@
  *
  * Exit 0: done (or the dry run printed). 1: a step failed. 2: refused.
  */
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readDeprecated } from '../../codemods/lib/deprecated.mjs';
@@ -40,14 +39,21 @@ import { HDS_PACKAGE } from '../../codemods/lib/installed-version.mjs';
 import { compareVersions, isVersion } from '../../codemods/lib/semver.mjs';
 import { SELF_REPO, TOKEN_VAR, discoverConsumers, fleetToken } from './consumers.mjs';
 import { NO_BACKPORTS, rollbackLines } from './rollback.mjs';
-import { API, MARKER, github, isStanding, listIssues, targetOf } from './standing.mjs';
+import {
+  API,
+  MARKER,
+  github,
+  isStanding,
+  listIssues,
+  readPublished,
+  targetOf,
+} from './standing.mjs';
 
 export { MARKER, targetOf };
 
 const PACKAGE = HDS_PACKAGE;
 const ACCESS_URL = `https://www.npmjs.com/package/${PACKAGE}/access`;
 const ROLLBACK_URL = 'https://github.com/hirobius/hds/blob/main/UPGRADING.md#if-a-release-is-bad';
-const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 export const USAGE = `usage: pnpm release:yank <version> <reason> [--good <version>] [--apply]
 
@@ -149,9 +155,6 @@ function discordLines({ version, good, reason, release, edited, closed }) {
     `Took ${version} already? Roll back: ${ROLLBACK_URL}`,
   ];
 }
-
-const readPublished = () =>
-  JSON.parse(readFileSync(path.join(REPO_ROOT, 'upgrade/published.json'), 'utf8')).versions;
 
 /**
  * @param {{ version: string, reason: string, good?: string|null, apply?: boolean,

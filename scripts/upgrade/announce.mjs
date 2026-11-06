@@ -38,12 +38,19 @@
  */
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFileSync } from 'node:fs';
 import { HDS_PACKAGE } from '../../codemods/lib/installed-version.mjs';
 import { listOf, loadRecord } from '../../codemods/lib/record.mjs';
 import { compareVersions, isVersion } from '../../codemods/lib/semver.mjs';
 import { TOKEN_VAR, discoverConsumers, fleetToken } from './consumers.mjs';
-import { API, MARKER, TITLE_PREFIX, github, isStanding, listIssues } from './standing.mjs';
+import {
+  API,
+  MARKER,
+  TITLE_PREFIX,
+  github,
+  isStanding,
+  listIssues,
+  readPublished,
+} from './standing.mjs';
 
 const PACKAGE = HDS_PACKAGE;
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -194,9 +201,6 @@ export function discordLines({ version, ledger, filed, edited, reopened }) {
   ];
 }
 
-const readPublished = () =>
-  JSON.parse(readFileSync(path.join(REPO_ROOT, 'upgrade/published.json'), 'utf8')).versions;
-
 /** An error message that names the token when the token is the cause. */
 export function explain(error, tokenVar = TOKEN_VAR) {
   const status = error?.status ?? /answered (\d{3})/.exec(error?.message ?? '')?.[1];
@@ -261,7 +265,7 @@ export async function announce({
           const body = issueBody({ repo: name, from, version, summary });
           const labels = labelsFor(summary);
           const open = await listIssues(gh, name, 'open');
-          const closed = open.some(isStanding) ? [] : await listIssues(gh, name, 'closed', 3);
+          const closed = open.some(isStanding) ? [] : await listIssues(gh, name, 'closed');
           const plan = pickStanding(open, closed);
           const url = (n) => `${API}/repos/${name}/issues${n ? `/${n}` : ''}`;
           if (plan.action === 'create') {
