@@ -17,7 +17,7 @@
  * that table. --total replaces the section's "Session total:" line (or adds one).
  * The day line ("Calls logged for <date>: …") is rewritten from every session total
  * of that date, in ledger order; it is added below the day's last section when
- * missing. duplicateRowNumbers() backs the check in figma-one-library-rule.test.mjs.
+ * missing. duplicateRowNumbers() backs the check in ledger-append.test.mjs.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
