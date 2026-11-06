@@ -10,6 +10,9 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   parseDocument,
   mappedNodes,
@@ -382,5 +385,26 @@ describe('resolveTarget', () => {
     ]) {
       expect(resolveTarget(args, links).isDefault).toBe(false);
     }
+  });
+});
+
+// hds#1147: `pnpm figma:inventory` said "52 of 58 mapped" while
+// check-figma-coverage said 58 of 58 — the report skipped
+// figma/mapping-overrides.json. Both now read the same overrides.
+describe('figma:inventory report (the committed repo)', () => {
+  const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+  const run = (script, args = []) =>
+    spawnSync(process.execPath, [path.join(ROOT, 'scripts', script), ...args], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+
+  it('counts the mapping overrides, so it agrees with check-figma-coverage', () => {
+    const report = JSON.parse(run('figma-inventory.mjs', ['--json']).stdout);
+    const gate = run('check-figma-coverage.mjs');
+    const [, mapped, total] = /(\d+) of (\d+) Figma asset/.exec(gate.stdout) ?? [];
+    expect(report.unmapped).toEqual([]);
+    expect(report.overridden.length).toBeGreaterThan(0);
+    expect([report.mapped, report.total]).toEqual([Number(mapped), Number(total)]);
   });
 });
