@@ -20,7 +20,7 @@ import { cva } from 'class-variance-authority';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
-import { Icon } from './icon';
+import { Icon, type IconColor } from './icon';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `variant` here mirrors CodeBlockProps.variant 1:1 — it is only used on the
@@ -202,6 +202,8 @@ export function CodeBlock({
   className,
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  // False until the first copy: the swap pop plays on a swap, never on first mount (hds#751).
+  const [swapped, setSwapped] = useState(false);
   const [expanded, setExpanded] = useState(defaultExpanded);
   const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -220,6 +222,7 @@ export function CodeBlock({
   function handleCopy() {
     navigator.clipboard.writeText(code).then(() => {
       setCopied(true);
+      setSwapped(true);
       setTimeout(() => setCopied(false), 2000);
     });
   }
@@ -237,11 +240,11 @@ export function CodeBlock({
           aria-label={copied ? 'Copied' : 'Copy code'}
           className={cn('hds-focus', copyButtonVariants({ variant: 'inline' }))}
         >
-          {copied ? (
-            <Icon icon={Check} size="small" color="var(--semantic-color-content-primary)" />
-          ) : (
-            <Icon icon={Copy} size="small" color="var(--semantic-color-content-primary)" />
-          )}
+          <CopyIcon
+            copied={copied}
+            swapped={swapped}
+            color="var(--semantic-color-content-primary)"
+          />
         </button>
         <CopyStatus copied={copied} />
       </div>
@@ -286,7 +289,7 @@ export function CodeBlock({
         iconOnly
         shadow="none"
         label={copied ? 'Copied' : 'Copy code'}
-        iconLeft={<Icon icon={copied ? Check : Copy} size="small" />}
+        iconLeft={<CopyIcon copied={copied} swapped={swapped} />}
         onClick={handleCopy}
         className={cn('hds-focus', copyButtonVariants({ variant: 'block' }))}
       />
@@ -336,6 +339,31 @@ export function CodeBlock({
       {headerEl}
       {codePanel(false)}
     </div>
+  );
+}
+
+/**
+ * The copy/check glyph. Keyed on `copied`, so each swap remounts the wrapper and replays the
+ * `.hds-icon-swap` pop (theme.css: --hds-anim-appear, dropped under reduced motion) (hds#751).
+ * `swapped` stays false until the first copy, so a page of CodeBlocks does not pop on load.
+ */
+function CopyIcon({
+  copied,
+  swapped,
+  color,
+}: {
+  copied: boolean;
+  swapped: boolean;
+  color?: IconColor;
+}) {
+  return (
+    <span
+      key={copied ? 'check' : 'copy'}
+      data-hds-icon-swap=""
+      className={cn('inline-flex', swapped && 'hds-icon-swap')}
+    >
+      <Icon icon={copied ? Check : Copy} size="small" color={color} />
+    </span>
   );
 }
 
