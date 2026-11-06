@@ -71,7 +71,7 @@ These are not copied implementations. They are reference points used for structu
 - Registry ID: reference-material-design
 - Type: Design-system convention reference
 - Usage: component categorization and DS baseline comparison; density modes (`src/styles/theme.css`, compact density); motion duration and easing roles as a reference for the HDS motion tokens (hds#751). Ideas only, no code copied
-- License: Apache-2.0 (Material Design guidance and Material Components)
+- License: Material Components Apache-2.0; guidance per m3.material.io terms (CC BY 4.0)
 - Source: [Material Design](https://m3.material.io/) · [Motion](https://m3.material.io/styles/motion/overview)
 - License link: [Apache-2.0](https://github.com/material-components/material-web/blob/main/LICENSE)
 
