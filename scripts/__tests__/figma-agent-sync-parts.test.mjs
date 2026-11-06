@@ -214,7 +214,7 @@ const forged = (text, edit) => {
     );
 };
 
-describe('a type-ramp change too big for one delta.js (about 59,000 characters with hero, bodyStrong and uiItalic; 53,000 before them; 57,000 before Fix A)', () => {
+describe('a type-ramp change too big for one delta.js (about 60,700 characters with uiRegular; 59,000 with hero, bodyStrong and uiItalic; 53,000 before them; 57,000 before Fix A)', () => {
   let s;
   let single;
   beforeEach(async () => {
@@ -225,13 +225,15 @@ describe('a type-ramp change too big for one delta.js (about 59,000 characters w
   it('is more than one delta.js holds, and becomes ordered parts that each fit', () => {
     expect(single.built.chars, 'the one-script size of the scenario').toBeGreaterThan(45000);
     // Scenario size, not a budget: the per-part cap (45,000) below is the limit that matters.
-    // 54,000 until three text styles and 16 variables joined the real model (2026-11-05).
-    expect(single.built.chars).toBeLessThan(60000);
+    // 54,000 until three text styles and 16 variables joined the real model (2026-11-05);
+    // 60,000 until uiRegular (hds#1198) added one more text style.
+    expect(single.built.chars).toBeLessThan(62000);
     const { parts } = s.built;
     expect(s.built.text).toBeNull();
     // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 until the
-    // canvas-font retry and weight.mono (2026-10-20) grew the runtime and the ramp; 3 now.
-    expect(parts.length).toBe(3);
+    // canvas-font retry and weight.mono (2026-10-20) grew the runtime and the ramp; 3 until
+    // uiRegular (hds#1198) pushed the scenario past 3 x 45,000 packing; 4 now.
+    expect(parts.length).toBe(4);
     expect(parts.map((p) => p.file)).toEqual(
       parts.map((_, i) => `delta-${i + 1}-of-${parts.length}.js`),
     );

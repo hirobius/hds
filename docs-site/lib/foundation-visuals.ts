@@ -198,6 +198,16 @@ export const radiusScales = (tokens: Json) => [
   { title: 'Primitive steps', steps: dimensionSteps(tokens, 'primitive.radius', true) },
 ];
 
+/** Icon's `size` prop value for each semantic.size.icon step (the --hds-icon-* bridge). */
+const ICON_SIZE_PROP: Record<string, string> = { sm: 'small', md: 'medium', lg: 'large' };
+
+/** Icons: the semantic icon boxes, each with the Icon `size` value that draws it. */
+export const iconSizes = (tokens: Json) =>
+  dimensionSteps(tokens, 'semantic.size.icon', false).map((s) => ({
+    ...s,
+    prop: ICON_SIZE_PROP[s.name] ?? null,
+  }));
+
 export interface ElevationLevel {
   name: string;
   token: string;

@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import {
   colorGalleries,
   elevationLevels,
+  iconSizes,
   motionTokens,
   radiusScales,
   spaceScales,
@@ -11,6 +12,7 @@ import {
 } from '../lib/foundation-visuals';
 import { loadAccentThemes, loadTokens } from '../lib/site-data';
 import { CopyCard, MotionDemo, SoftSurfacesDemo } from './foundation-visuals-client';
+import { IconSizes } from './icon-gallery';
 
 /** Sample text per role: long enough to show the leading, short enough for a phone. */
 const SAMPLES: Record<string, string> = {
@@ -237,6 +239,14 @@ function MotionDemos() {
   );
 }
 
+function IconSizeBoxes() {
+  return (
+    <Section title="Sizes">
+      <IconSizes steps={iconSizes(loadTokens())} />
+    </Section>
+  );
+}
+
 const VISUALS: Record<string, () => ReactNode> = {
   color: ColorGallery,
   typography: TypeSpecimens,
@@ -245,6 +255,7 @@ const VISUALS: Record<string, () => ReactNode> = {
   elevation: ElevationCards,
   motion: MotionDemos,
   'soft-surfaces': SoftSurfacesDemo,
+  icons: IconSizeBoxes,
 };
 
 /** The visual gallery for a Foundations page, or nothing for a page without one. */

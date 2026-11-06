@@ -145,6 +145,10 @@ it is an extension outside the ramp instead.
   model maps italic to the font's italic instance (`Medium Italic`). The docs
   specimen shows neither, because it shows the ramp. No italic face ships in
   `fonts.css`, so browsers synthesize it, as EmptyState already does.
+- **uiRegular (hds#1198, 2026-11-05).** A third variant: `ui` at
+  `weight.regular` (400), what Table body cells render, so the medium header
+  and an emphasised first column read stronger. It replaces Table's hand-built
+  ui-plus-body-weight style and emits as the text style `typography/uiRegular`.
 - **Adding another extension** follows the same path: a name in
   `MARKETING_ROLES`, a "Marketing-only" description, and an addendum here.
 

@@ -142,13 +142,6 @@ describe('slice 2: sidebar, drawer, contents rail, images', () => {
     );
   });
 
-  it('the Sharp override is down to .rounded; cards follow --role-radius (hds#806)', () => {
-    const block = /data-docs-corners='sharp'\]\s*([^{]*)\{/g;
-    const selectors = [...css().matchAll(block)].map((m) => m[1].trim()).filter(Boolean);
-    // .rounded is the --hds-radius-4 primitive (Kbd, Skeleton text); rounded-lg/.hds-card clamp to 0.
-    expect(selectors).toEqual(['.rounded']);
-  });
-
   it('renders MDX images with the HDS radius class, not rounded-lg', () => {
     const { container } = render(<MdxImg src="/x.png" alt="x" width={10} height={10} />);
     const img = container.querySelector('img');
@@ -169,27 +162,40 @@ describe('slice 3: search result rows and the MDX map (hds#806)', () => {
     expect(body).toContain('border-radius: var(--semantic-radius-action)');
   });
 
-  it('drops the unused Fumadocs components from the MDX map', () => {
+  it('maps no Fumadocs component in the MDX map', () => {
     const mdx = read('docs-site/mdx-components.tsx');
-    // The defaults are spread only after the Fumadocs chrome is destructured out.
-    expect(mdx).toMatch(/\.\.\.baseMdxComponents/);
-    expect(mdx).not.toMatch(/\.\.\.defaultMdxComponents/);
-    for (const name of [
-      'Callout',
-      'Card',
-      'Cards',
-      'CodeBlockTab',
-      'CodeBlockTabs',
-      'CodeBlockTabsList',
-      'CodeBlockTabsTrigger',
-    ]) {
-      expect(mdx).toContain(`${name}: _fumadocs${name},`);
+    // Fumadocs' defaults are not spread, so its Callout, Cards and CodeBlockTabs never render.
+    expect(mdx).not.toMatch(/defaultMdxComponents|baseMdxComponents/);
+    for (const name of ['Callout', 'Card', 'Cards', 'CodeBlockTabs']) {
+      expect(mdx).not.toMatch(new RegExp(`^\\s+${name}[,:]`, 'm'));
     }
     // The HDS mappings that slices 1-2 landed stay in the map.
     expect(mdx).toMatch(/table:\s*MdxTable/);
     expect(mdx).toMatch(/code:\s*MdxCode/);
     expect(mdx).toMatch(/img:\s*MdxImg/);
     expect(mdx).toMatch(/pre:\s*MdxPre/);
+  });
+});
+
+describe('slice 4: no Fumadocs MDX defaults left (hds#806)', () => {
+  afterEach(cleanup);
+
+  it('no longer imports the Fumadocs MDX map', () => {
+    expect(read('docs-site/mdx-components.tsx')).not.toMatch(/fumadocs-ui\/mdx/);
+  });
+
+  it('renders every heading level plain: the id stays, no Fumadocs copy-link button', async () => {
+    const { mdxHeadings } = await import('../../docs-site/components/mdx-headings');
+    const map = mdxHeadings as Record<string, (p: object) => JSX.Element>;
+    expect(read('docs-site/mdx-components.tsx')).toMatch(/\.\.\.mdxHeadings/);
+    for (const level of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
+      const Heading = map[level];
+      const { container } = render(<Heading id={`x-${level}`}>Title</Heading>);
+      const el = container.querySelector(level);
+      expect(el?.id).toBe(`x-${level}`);
+      expect(el?.querySelector('a, svg, button')).toBeNull();
+      cleanup();
+    }
   });
 });
 

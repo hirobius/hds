@@ -3,10 +3,9 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // The hard shadow ships as the default since hds#888/#891: Button (.hds-btn-hard) and Kbd
-// (.hds-kbd) live in theme.css; the docs Shadow preview only re-points elevation tokens.
+// (.hds-kbd) live in theme.css.
 describe('Kbd shadow follows the Button light source', () => {
   const theme = readFileSync(resolve(__dirname, '../src/styles/theme.css'), 'utf8');
-  const docs = readFileSync(resolve(__dirname, '../docs-site/app/globals.css'), 'utf8');
   const colour = 'var(--hds-edge, var(--component-button-edge-secondary))';
 
   it('shipped Kbd takes a 2px straight-down key shadow in its own-colour edge, through --semantic-shadow-key', () => {
@@ -28,11 +27,6 @@ describe('Kbd shadow follows the Button light source', () => {
     expect(theme).not.toMatch(
       /[1-9]px [1-9]px 0 var\(--(hds-(btn|kbd)-edge|hds-edge|semantic-color-shadow-hard)/,
     );
-  });
-
-  it('the docs preview no longer re-declares Button or Kbd shadows', () => {
-    expect(docs).not.toMatch(/data-docs-shadow='hard'\] button\[data-variant/);
-    expect(docs).not.toMatch(/data-docs-shadow='hard'\] \.hds-kbd/);
   });
 
   it('semantic.color.shadow.hard is the shadow ink in Light and border.interactive in Dark (never black)', () => {

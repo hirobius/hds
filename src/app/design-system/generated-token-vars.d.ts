@@ -391,6 +391,12 @@ declare module 'react' {
     '--semantic-typography-ui-letter-spacing'?: string | undefined;
     '--semantic-typography-ui-line-height'?: string | undefined;
     '--semantic-typography-ui-max-width'?: string | undefined;
+    '--semantic-typography-uiRegular-font-family'?: string | undefined;
+    '--semantic-typography-uiRegular-font-size'?: string | undefined;
+    '--semantic-typography-uiRegular-font-weight'?: string | undefined;
+    '--semantic-typography-uiRegular-letter-spacing'?: string | undefined;
+    '--semantic-typography-uiRegular-line-height'?: string | undefined;
+    '--semantic-typography-uiRegular-max-width'?: string | undefined;
     '--semantic-typography-uiItalic-font-family'?: string | undefined;
     '--semantic-typography-uiItalic-font-size'?: string | undefined;
     '--semantic-typography-uiItalic-font-weight'?: string | undefined;

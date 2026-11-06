@@ -8,14 +8,12 @@
  *
  * @unit ADR-052
  */
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 // @ts-expect-error — untyped .mjs module
 import { buildFigmaModel } from '../../../scripts/lib/figma-model.mjs';
+import { repoFile } from './style-test-helpers';
 
-const ROOT = resolve(__dirname, '../../..');
-const tokens = JSON.parse(readFileSync(resolve(ROOT, 'hirobius.tokens.json'), 'utf8'));
+const tokens = JSON.parse(repoFile('hirobius.tokens.json'));
 const hero = tokens.semantic.typography.hero;
 const display = tokens.semantic.typography.display;
 
