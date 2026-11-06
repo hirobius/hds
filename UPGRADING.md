@@ -35,7 +35,7 @@ The upgrade command runs these codemods for you.
 
 - Table cells pad with --component-table-cell-paddingX (28px, 16px compact) instead of surface padding, so brutalist-demo cells grow from 20px to 28px (8px to 16px compact) unless you set --component-table-cell-paddingX.
 
-### Do by hand
+### Good to know
 
 - @number-flow/react is a new optional peer, needed only if you import @hirobius/design-system/number; nothing changes if you do not.
 
@@ -74,8 +74,8 @@ Released 2026-11-06 (minor). 2 changes to make by hand, 5 that look different an
 
 ### Coming next
 
-- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed early, in [0.36.0](#0360) (planned for 0.35.0).
-- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed early, in [0.36.0](#0360) (planned for 0.35.0).
+- Importing hds from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed late, in [0.36.0](#0360) (planned for 0.35.0).
+- Importing tokens from the package root still works but is deprecated; import it from @hirobius/design-system/tokens instead. Removed late, in [0.36.0](#0360) (planned for 0.35.0).
 
 ### Do by hand
 

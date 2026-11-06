@@ -117,7 +117,10 @@ export function rangeSummary(ledgers, from, to) {
   );
   const steps = inRange.flatMap((l) => l.steps);
   const counts = Object.fromEntries(LISTS.map((list) => [list, 0]));
-  for (const step of steps) counts[listOf(step)] += 1;
+  for (const step of steps) {
+    const list = listOf(step);
+    if (list in counts) counts[list] += 1; // Good to know is informational: not counted
+  }
   return {
     releases: inRange.map((l) => l.version),
     counts,
