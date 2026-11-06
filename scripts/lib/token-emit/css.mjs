@@ -213,12 +213,53 @@ export const TYPO_PROPS = [
   // fontStyle: optional, `italic` only today (semantic.typography.uiItalic,
   // ADR-052 addendum). Composites without it emit no var line.
   ['font-style', 'fontStyle', 'string'],
+  // fontSizeMin: optional fluid floor (hds#1300). Emits `<base>-font-size-min`
+  // and, through fluidFontSizeLine, `<base>-font-size-fluid`.
+  ['font-size-min', 'fontSizeMin', 'dimension'],
 ];
 
 // Typography composite keys that are optional. Composites may omit these; the
 // emitter skips them silently (no CSS var line, no ref leaf, no var name). All
 // other TYPO_PROPS entries are required.
-export const TYPO_OPTIONAL_KEYS = new Set(['maxWidth', 'textTransform', 'fontStyle']);
+export const TYPO_OPTIONAL_KEYS = new Set([
+  'maxWidth',
+  'textTransform',
+  'fontStyle',
+  'fontSizeMin',
+]);
+
+// ── Fluid type (hds#1300) ─────────────────────────────────────────────────────
+// A typography composite with an optional `fontSizeMin` also emits
+// `<base>-font-size-fluid: clamp(<min>, <preferred>, <fontSize>)`, an opt-in var:
+// `<base>-font-size` itself is unchanged. The preferred term is linear from the
+// floor at FLUID_VIEWPORT.min to the full size at FLUID_VIEWPORT.max, computed
+// from the resolved px values, never typed by hand.
+export const FLUID_VIEWPORT = Object.freeze({ min: 360, max: 760 });
+
+const round = (n) => Number(n.toFixed(4));
+
+/** `<rem> + <vw>` that runs from `minPx` at FLUID_VIEWPORT.min to `maxPx` at .max. */
+export function fluidPreferred(minPx, maxPx) {
+  const slope = (maxPx - minPx) / (FLUID_VIEWPORT.max - FLUID_VIEWPORT.min);
+  const interceptPx = minPx - slope * FLUID_VIEWPORT.min;
+  return `${round(interceptPx / 16)}rem + ${round(slope * 100)}vw`;
+}
+
+const pxOf = (val, root) => {
+  const leaf = typeof val === 'string' && val.startsWith('{') ? resolveAlias(val, root) : val;
+  if (!leaf || leaf.unit !== 'px' || typeof leaf.value !== 'number')
+    throw new Error(`fluid type needs px sizes, got ${JSON.stringify(leaf)}`);
+  return leaf.value;
+};
+
+/** The fluid line for a composite that sets fontSizeMin, or null. */
+export function fluidFontSizeLine(pathParts, val, root) {
+  if (val?.fontSizeMin == null) return null;
+  const base = pathToCSSVar(pathParts);
+  const min = valueToCSS(val.fontSizeMin, 'dimension', true);
+  const preferred = fluidPreferred(pxOf(val.fontSizeMin, root), pxOf(val.fontSize, root));
+  return `  ${base}-font-size-fluid: clamp(${min}, ${preferred}, var(${base}-font-size));`;
+}
 
 export const MOTION_PROPS = [
   ['duration', 'duration', 'duration'],
@@ -275,6 +316,8 @@ export function buildCSSSection(tokens, label, root = null) {
       for (const { cssVar: v, cssValue } of expandTypography(path, value)) {
         if (cssValue != null) rootLines.push(`  ${v}: ${cssValue};`);
       }
+      const fluid = fluidFontSizeLine(path, value, root);
+      if (fluid) rootLines.push(fluid);
       // A Compact mode on a composite is partial: it names only the sub-properties
       // that move (today fontSize), and only those are re-declared.
       if (compact) {

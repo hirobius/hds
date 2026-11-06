@@ -14137,6 +14137,13 @@
         "value": "56px"
       },
       {
+        "path": "primitive.typography.size.displayMin",
+        "cssVar": "--primitive-typography-size-displayMin",
+        "type": "dimension",
+        "description": "Display floor at a 360px viewport (hds#1300): the low end of the fluid display size.",
+        "value": "40px"
+      },
+      {
         "path": "primitive.typography.size.hero",
         "cssVar": "--primitive-typography-size-hero",
         "type": "dimension",
@@ -15622,7 +15629,8 @@
           "fontSize": "56px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
-          "lineHeight": "1.05"
+          "lineHeight": "1.05",
+          "fontSizeMin": "40px"
         }
       },
       {

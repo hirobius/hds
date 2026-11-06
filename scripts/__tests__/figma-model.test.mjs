@@ -651,6 +651,7 @@ describe('summarizeFigmaModel', () => {
         'z-index': 1,
         breakpoints: 1,
         'motion-distance': 0,
+        'fluid-type-floor': 0,
         'relative-typography': 5,
         'text-measure': 1,
       },

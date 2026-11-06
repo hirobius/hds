@@ -136,6 +136,7 @@ const config = {
         '4xl': 'var(--primitive-typography-size-4xl)',
         '5xl': 'var(--primitive-typography-size-5xl)',
         display: 'var(--primitive-typography-size-display)',
+        displayMin: 'var(--primitive-typography-size-displayMin)',
         hero: 'var(--primitive-typography-size-hero)',
         '6xl': 'var(--primitive-typography-size-6xl)',
         code: 'var(--primitive-typography-size-code)',

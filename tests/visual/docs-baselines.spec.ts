@@ -22,6 +22,11 @@ import { DEMO_SHOT, openThemed } from './theme';
  */
 const pages: string[] = discoverPages('docs-site/out');
 
+// `threshold` is the per-pixel colour distance (YIQ, 0 to 1). Playwright's default 0.2
+// let a dark page re-tint and dark surface changes pass, so 78 of 147 baselines went
+// stale unseen (hds#1333). 0.05 fails those; antialiasing stays under maxDiffPixelRatio.
+const SHOT = { ...DEMO_SHOT, threshold: 0.05 };
+
 test.describe('docs demo baselines @baseline', () => {
   test('docs-site/out has component and pattern pages', () => {
     expect(pages.length).toBeGreaterThan(0);
@@ -35,7 +40,7 @@ test.describe('docs demo baselines @baseline', () => {
         const demo = page.locator(DEMO_SELECTOR).first();
         await expect(demo).toBeVisible();
         await page.mouse.move(0, 0);
-        await expect(demo).toHaveScreenshot(`${name}-${theme}.png`, DEMO_SHOT);
+        await expect(demo).toHaveScreenshot(`${name}-${theme}.png`, SHOT);
       });
     }
   }

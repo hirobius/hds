@@ -146,6 +146,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.typography.size.4xl": "Tailwind 4 default text-4xl (hds#283 ramp).",
   "primitive.typography.size.5xl": "Tailwind 4 default text-5xl (hds#283 ramp).",
   "primitive.typography.size.display": "Display role size (hds#847): the page's one hero heading, a clear step above title.",
+  "primitive.typography.size.displayMin": "Display floor at a 360px viewport (hds#1300): the low end of the fluid display size.",
   "primitive.typography.size.hero": "Hero size (ADR-052 addendum): covers and marketing headers only, a step above display.",
   "primitive.typography.size.6xl": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl.",
   "primitive.typography.size.code": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text.",

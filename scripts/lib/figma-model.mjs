@@ -181,6 +181,12 @@ export const NOT_IN_FIGMA = [
     matches: (token, graph) => isRelativeTypography(graph, token),
   },
   {
+    id: 'fluid-type-floor',
+    reason:
+      'A Figma text style has one size. The fluid floor only feeds the CSS clamp() of --<style>-font-size-fluid (hds#1300); Figma draws fontSize, the top of that range.',
+    subProperty: 'fontSizeMin',
+  },
+  {
     id: 'text-measure',
     reason:
       'Text styles have no max-width (measure) property; prose frames use the layout/prose/maxWidth variable instead.',

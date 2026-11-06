@@ -840,6 +840,13 @@
           },
           "$description": "Display role size (hds#847): the page's one hero heading, a clear step above title."
         },
+        "displayMin": {
+          "$value": {
+            "value": 40,
+            "unit": "px"
+          },
+          "$description": "Display floor at a 360px viewport (hds#1300): the low end of the fluid display size."
+        },
         "hero": {
           "$value": {
             "value": 120,
@@ -2316,6 +2323,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
           "fontSize": "{primitive.typography.size.display}",
+          "fontSizeMin": "{primitive.typography.size.displayMin}",
           "fontWeight": "{primitive.typography.weight.display}",
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.display}"
