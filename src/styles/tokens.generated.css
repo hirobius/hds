@@ -646,6 +646,8 @@
   --component-input-radius: var(--semantic-radius-action);
   --component-input-focus-gapRadius: var(--primitive-radius-10);
   --component-input-focus-ringRadius: var(--primitive-radius-12);
+  --component-input-size-sm-paddingX: var(--semantic-space-scale-xs);
+  --component-input-size-lg-paddingX: var(--semantic-space-fixed-sm);
   --component-input-paddingX: var(--primitive-space-3);
   --component-input-paddingY: var(--primitive-space-3);
   --component-card-bg: var(--semantic-color-surface-raised);

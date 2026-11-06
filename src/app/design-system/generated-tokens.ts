@@ -746,6 +746,14 @@ export const tokens = {
         gapRadius: "var(--component-input-focus-gapRadius)",
         ringRadius: "var(--component-input-focus-ringRadius)"
       },
+      size: {
+        sm: {
+          paddingX: "var(--component-input-size-sm-paddingX)"
+        },
+        lg: {
+          paddingX: "var(--component-input-size-lg-paddingX)"
+        }
+      },
       paddingX: "var(--component-input-paddingX)",
       paddingY: "var(--component-input-paddingY)"
     },

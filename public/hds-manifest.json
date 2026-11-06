@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-06T03:38:29.210Z",
+  "generated": "2026-11-06T08:39:08.460Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -17181,9 +17181,26 @@
         "resolvedValue": "12px"
       },
       {
+        "path": "component.input.size.sm.paddingX",
+        "cssVar": "--component-input-size-sm-paddingX",
+        "type": "dimension",
+        "description": "Small input horizontal padding (8px).",
+        "alias": "{semantic.space.scale.xs}",
+        "resolvedValue": "8px"
+      },
+      {
+        "path": "component.input.size.lg.paddingX",
+        "cssVar": "--component-input-size-lg-paddingX",
+        "type": "dimension",
+        "description": "Large input horizontal padding (16px).",
+        "alias": "{semantic.space.fixed.sm}",
+        "resolvedValue": "16px"
+      },
+      {
         "path": "component.input.paddingX",
         "cssVar": "--component-input-paddingX",
         "type": "dimension",
+        "description": "Medium (default) input horizontal padding (12px). Small and large: input.size.sm/lg.paddingX.",
         "alias": "{primitive.space.3}",
         "resolvedValue": "12px"
       },

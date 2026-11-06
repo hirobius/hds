@@ -141,45 +141,47 @@ const TYPES_WITHOUT_CLEAR: ReadonlySet<InputFieldType> = new Set<InputFieldType>
 // shorthand: tailwind-merge drops a per-side class that precedes px-*
 // (twMerge('pl-2', 'px-3') is 'px-3'), and the unlayered px-* rules in
 // styles/utilities.css beat a layered pr-*, so a mix would let the text jump
-// sideways when the clear button appears.
+// sideways when the clear button appears. The rest and prefix/suffix pads read
+// the component.input paddingX tokens (md: input.paddingX; sm/lg:
+// input.size.<s>.paddingX, hds#1323), so Figma binds the same values.
 
 const ADORNMENT_BY_SIZE = {
   sm: {
-    restPadL: 'pl-scale-xs',
-    restPadR: 'pr-scale-xs',
+    restPadL: 'pl-[var(--component-input-size-sm-paddingX)]',
+    restPadR: 'pr-[var(--component-input-size-sm-paddingX)]',
     leadPad: 'pl-7',
     trailPad: 'pr-7',
     inset: 'inset-y-0 px-scale-xs',
     iconClass: 'size-3.5',
     iconWrap: '[&_svg]:size-3.5',
-    prefixPad: 'pl-scale-xs',
-    suffixPad: 'pr-scale-xs',
+    prefixPad: 'pl-[var(--component-input-size-sm-paddingX)]',
+    suffixPad: 'pr-[var(--component-input-size-sm-paddingX)]',
     prefixGap: 'pl-1.5',
     suffixGap: 'pr-1.5',
   },
   md: {
-    restPadL: 'pl-fixed-xs',
-    restPadR: 'pr-fixed-xs',
+    restPadL: 'pl-[var(--component-input-paddingX)]',
+    restPadR: 'pr-[var(--component-input-paddingX)]',
     leadPad: 'pl-9',
     trailPad: 'pr-9',
     inset: 'inset-y-0 px-2.5',
     iconClass: 'size-4',
     iconWrap: '[&_svg]:size-4',
-    prefixPad: 'pl-fixed-xs',
-    suffixPad: 'pr-fixed-xs',
+    prefixPad: 'pl-[var(--component-input-paddingX)]',
+    suffixPad: 'pr-[var(--component-input-paddingX)]',
     prefixGap: 'pl-scale-xs',
     suffixGap: 'pr-scale-xs',
   },
   lg: {
-    restPadL: 'pl-fixed-sm',
-    restPadR: 'pr-fixed-sm',
+    restPadL: 'pl-[var(--component-input-size-lg-paddingX)]',
+    restPadR: 'pr-[var(--component-input-size-lg-paddingX)]',
     leadPad: 'pl-11',
     trailPad: 'pr-11',
     inset: 'inset-y-0 px-fixed-xs',
     iconClass: 'size-5',
     iconWrap: '[&_svg]:size-5',
-    prefixPad: 'pl-fixed-sm',
-    suffixPad: 'pr-fixed-sm',
+    prefixPad: 'pl-[var(--component-input-size-lg-paddingX)]',
+    suffixPad: 'pr-[var(--component-input-size-lg-paddingX)]',
     prefixGap: 'pl-2.5',
     suffixGap: 'pr-2.5',
   },
@@ -227,13 +229,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
 
   const frozenState = useFrozenState();
   const effectiveDemoState = frozenState as
-    | 'rest'
-    | 'focused'
-    | 'filled'
-    | 'error'
-    | 'disabled'
-    | 'loading'
-    | null;
+    'rest' | 'focused' | 'filled' | 'error' | 'disabled' | 'loading' | null;
 
   const hasError = Boolean(error) || effectiveDemoState === 'error';
   // FormField marks its control aria-invalid without an `error` prop: draw the same red border for it.

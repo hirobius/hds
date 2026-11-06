@@ -129,17 +129,23 @@ describe('Input horizontal padding (hds#393 review)', () => {
 
   const SIZES = {
     sm: {
-      rest: ['pl-scale-xs', 'pr-scale-xs'],
+      rest: [
+        'pl-[var(--component-input-size-sm-paddingX)]',
+        'pr-[var(--component-input-size-sm-paddingX)]',
+      ],
       gap: ['pl-1.5', 'pr-1.5'],
       lead: 'pl-7',
     },
     md: {
-      rest: ['pl-fixed-xs', 'pr-fixed-xs'],
+      rest: ['pl-[var(--component-input-paddingX)]', 'pr-[var(--component-input-paddingX)]'],
       gap: ['pl-scale-xs', 'pr-scale-xs'],
       lead: 'pl-9',
     },
     lg: {
-      rest: ['pl-fixed-sm', 'pr-fixed-sm'],
+      rest: [
+        'pl-[var(--component-input-size-lg-paddingX)]',
+        'pr-[var(--component-input-size-lg-paddingX)]',
+      ],
       gap: ['pl-2.5', 'pr-2.5'],
       lead: 'pl-11',
     },

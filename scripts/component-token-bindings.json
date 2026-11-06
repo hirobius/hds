@@ -129,6 +129,15 @@
             "keys": ["restPadL", "restPadR"]
           }
         },
+        {
+          "match": "size.*.paddingX",
+          "ctx": { "size": "$1" },
+          "classesFrom": {
+            "const": "ADORNMENT_BY_SIZE",
+            "trail": ["$1"],
+            "keys": ["restPadL", "restPadR"]
+          }
+        },
         { "match": "paddingY", "ctx": { "size": "md" } }
       ]
     },

@@ -427,19 +427,19 @@ describe('CLI modes', () => {
 // ── The repo itself (acceptance fixture: audit at origin/main 7895210) ───────
 
 describe('repo counts', () => {
-  it('counts after Disclosure gets its own paddingY (hds#1147): 63 BOUND / 36 LITERAL-MATCH / 6 LITERAL-MISMATCH / 12 UNUSED of 117 (disclosure.paddingY bound; the deprecated nav.paddingY it borrowed is now unused; was 63/36/6/11 of 116 after the primary edge token, hds#1161: button.edge.primary is a declared alias: Button paints --hds-edge-primary, which reads the token; was 63/35/6/11 of 115 after the focus ring tokens, hds#1176; button, input and card focus.{gapRadius,ringRadius} are binding-ok mismatches: the .hds-focus outline derives them from the element radius, the tokens are the Figma binding; tag.focus.* match radius.full) (was 63/33/0/11 of 107 after compact Pagination binds its control size, hds#1150; was 62 BOUND of 106 after InlineLink adds its icon and size tokens, hds#1164); iconSize and iconGap bound, the three size fontSizes declared through the type roles, the three Figma-only size iconSizes unused (was 60/30/0/8 of 98 after Input binds bg and text and Button lg binds its paddingX, hds#595; was 57/33/0/8 after List binds its five rhythm tokens; was 52 BOUND of 93 after Button binds its five edge tokens, hds#897; was 47/33/0/8 of 88 after Button bound its heights and the new fontWeight, hds#760; was 43/36/0/8 of 87 after the 0.20.0 orphan tokens went, hds#431: lightbox and 7 nav tokens, all UNUSED; was 16 UNUSED of 95 after Badge paddingShift, hds#757; was 42 BOUND of 94 after the C2 ghost, tertiary binds bg.hover/pressed; was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is rounded-sm (role.radius - 2px) since hds#757, the action radius through rounded-md since bug bash 24; button.bgPressed bound, hds#748)', () => {
+  it('counts after Input binds its paddingX per size (hds#1323): 66 BOUND / 35 LITERAL-MATCH / 6 LITERAL-MISMATCH / 12 UNUSED of 119 (input.paddingX and the new input.size.sm/lg.paddingX bound; was 63/36/6/12 of 117 after Disclosure got its own paddingY, hds#1147: disclosure.paddingY bound; the deprecated nav.paddingY it borrowed is now unused; was 63/36/6/11 of 116 after the primary edge token, hds#1161: button.edge.primary is a declared alias: Button paints --hds-edge-primary, which reads the token; was 63/35/6/11 of 115 after the focus ring tokens, hds#1176; button, input and card focus.{gapRadius,ringRadius} are binding-ok mismatches: the .hds-focus outline derives them from the element radius, the tokens are the Figma binding; tag.focus.* match radius.full) (was 63/33/0/11 of 107 after compact Pagination binds its control size, hds#1150; was 62 BOUND of 106 after InlineLink adds its icon and size tokens, hds#1164); iconSize and iconGap bound, the three size fontSizes declared through the type roles, the three Figma-only size iconSizes unused (was 60/30/0/8 of 98 after Input binds bg and text and Button lg binds its paddingX, hds#595; was 57/33/0/8 after List binds its five rhythm tokens; was 52 BOUND of 93 after Button binds its five edge tokens, hds#897; was 47/33/0/8 of 88 after Button bound its heights and the new fontWeight, hds#760; was 43/36/0/8 of 87 after the 0.20.0 orphan tokens went, hds#431: lightbox and 7 nav tokens, all UNUSED; was 16 UNUSED of 95 after Badge paddingShift, hds#757; was 42 BOUND of 94 after the C2 ghost, tertiary binds bg.hover/pressed; was 40 BOUND of 92 after soft surfaces, hds#891: secondary Button binds bg.rest/hover/pressed, its three border tokens are no longer drawn; was 39/40/0/13 after Tag bound its unselected surface, hds#595; was 36/44/0/13; Tag background, border, text bound; before that 20/44/4/11; inlineCode.bg bound; badge.radius is rounded-sm (role.radius - 2px) since hds#757, the action radius through rounded-md since bug bash 24; button.bgPressed bound, hds#748)', () => {
     const r = cli(['--json']);
     expect(r.status).toBe(0);
     const { summary } = JSON.parse(r.out);
-    expect(summary.total).toBe(117);
+    expect(summary.total).toBe(119);
     expect(summary.counts).toMatchObject({
-      BOUND: 63,
-      'LITERAL-MATCH': 36,
+      BOUND: 66,
+      'LITERAL-MATCH': 35,
       'LITERAL-MISMATCH': 6,
       UNUSED: 12,
     });
     expect(summary.allowed).toBe(9);
-    expect(summary.matchKinds).toEqual({ alias: 19, 'type-role': 8, literal: 9 });
+    expect(summary.matchKinds).toEqual({ alias: 19, 'type-role': 8, literal: 8 });
   });
 
   it('--enforce passes on the committed baseline', () => {
