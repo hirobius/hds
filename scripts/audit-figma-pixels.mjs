@@ -29,13 +29,12 @@ import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
-import { COMPONENTS } from './check-figma-components.mjs';
+import { COMPONENTS, readJson, cliArgs, writeUseFigmaScript } from './check-figma-components.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PIXELS = 'figma/pixels';
 /** pixelmatch colour threshold; anti-aliased pixels are not counted. */
 const THRESHOLD = 0.1;
-const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 
 /** `Variant=primary, Size=md, State=hover` -> { variant, size, state }. */
 export function parseVariant(name) {
@@ -223,16 +222,9 @@ export async function audit({ root = REPO, outDir = null } = {}) {
 }
 
 export async function run(argv, { log = console.log } = {}) {
-  const arg = (f) => {
-    const i = argv.indexOf(f);
-    return i === -1 ? null : argv[i + 1];
-  };
-  const root = arg('--root') ? resolve(arg('--root')) : REPO;
+  const { arg, root } = cliArgs(argv);
   if (argv.includes('--emit-script')) {
-    const p = join(root, 'figma/push/use-figma/pixel-geometry.js');
-    mkdirSync(dirname(p), { recursive: true });
-    writeFileSync(p, buildGeometryScript({ root }));
-    log(`wrote ${p}`);
+    writeUseFigmaScript(root, 'pixel-geometry.js', buildGeometryScript({ root }), log);
     return 0;
   }
   if (arg('--ingest')) {

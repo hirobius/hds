@@ -26,28 +26,22 @@
  *
  * Report mode only: it never fails. Never writes to Figma.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hdsChecksum } from './lib/figma-runtime.mjs';
-import { COMPONENTS } from './check-figma-components.mjs';
+import {
+  COMPONENTS,
+  readJson,
+  stable,
+  cliArgs,
+  writeUseFigmaScript,
+} from './check-figma-components.mjs';
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BINDINGS = 'figma/bindings.json';
 const SCRIPT_MAX_CHARS = 40000;
-
-const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
-const stable = (v) =>
-  Array.isArray(v)
-    ? v.map(stable)
-    : v && typeof v === 'object'
-      ? Object.fromEntries(
-          Object.keys(v)
-            .sort()
-            .map((k) => [k, stable(v[k])]),
-        )
-      : v;
 
 /**
  * Each token group in scripts/component-token-bindings.json -> the Figma component
@@ -170,17 +164,9 @@ function codeResults(root) {
 }
 
 export function run(argv, { log = console.log } = {}) {
-  const arg = (f) => {
-    const i = argv.indexOf(f);
-    return i === -1 ? null : argv[i + 1];
-  };
-  const root = arg('--root') ? resolve(arg('--root')) : REPO;
+  const { arg, root } = cliArgs(argv);
   if (argv.includes('--emit-script')) {
-    const p = join(root, 'figma/push/use-figma/bindings-snapshot.js');
-    mkdirSync(dirname(p), { recursive: true });
-    const s = buildBindingsScript({ root });
-    writeFileSync(p, s);
-    log(`wrote ${p} (${s.length} chars)`);
+    writeUseFigmaScript(root, 'bindings-snapshot.js', buildBindingsScript({ root }), log);
     return 0;
   }
   if (arg('--ingest')) {

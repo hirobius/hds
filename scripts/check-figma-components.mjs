@@ -67,8 +67,9 @@ const STATES = [
 
 const SCRIPT_MAX_CHARS = 40000;
 
-const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
-const stable = (v) =>
+export const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
+/** Keys sorted at every level, so a checksum does not depend on key order. */
+export const stable = (v) =>
   Array.isArray(v)
     ? v.map(stable)
     : v && typeof v === 'object'
@@ -373,12 +374,25 @@ export function ingestResult(result) {
 
 // ── CLI ──────────────────────────────────────────────────────────────────────
 
-export function run(argv, { log = console.log, error = console.error } = {}) {
+/** `arg('--flag')` reads the value after a flag; `root` is --root or the repo. Shared by the Figma CLIs. */
+export function cliArgs(argv) {
   const arg = (f) => {
     const i = argv.indexOf(f);
     return i === -1 ? null : argv[i + 1];
   };
-  const root = arg('--root') ? resolve(arg('--root')) : REPO;
+  return { arg, root: arg('--root') ? resolve(arg('--root')) : REPO };
+}
+
+/** Write a generated use_figma script to figma/push/use-figma/<file>. */
+export function writeUseFigmaScript(root, file, script, log) {
+  const p = join(root, 'figma/push/use-figma', file);
+  mkdirSync(dirname(p), { recursive: true });
+  writeFileSync(p, script);
+  log(`wrote ${p} (${script.length} chars)`);
+}
+
+export function run(argv, { log = console.log, error = console.error } = {}) {
+  const { arg, root } = cliArgs(argv);
   const names = arg('--component') ? [arg('--component')] : Object.keys(COMPONENTS);
 
   if (argv.includes('--write')) {
@@ -395,11 +409,12 @@ export function run(argv, { log = console.log, error = console.error } = {}) {
         log(`skipped ${n}: not drawn in the library yet (no nodeId)`);
         continue;
       }
-      const p = join(root, 'figma/push/use-figma', `component-snapshot-${n}.js`);
-      mkdirSync(dirname(p), { recursive: true });
-      const s = buildSnapshotScript(n, { root });
-      writeFileSync(p, s);
-      log(`wrote ${p} (${s.length} chars)`);
+      writeUseFigmaScript(
+        root,
+        `component-snapshot-${n}.js`,
+        buildSnapshotScript(n, { root }),
+        log,
+      );
     }
     return 0;
   }
