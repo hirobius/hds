@@ -292,7 +292,9 @@ The `data-*` attributes each component renders for you to select on:
 - `AsyncState`: `data-crossfade-view`, `data-slot`, `data-status`
 - `Avatar`: `data-size`
 - `Badge`: `data-tone`
+- `Blockquote`: `data-size`
 - `Button`: `data-crossfade-label`, `data-hover-effect`, `data-pressed`, `data-size`, `data-slot`, `data-tone`, `data-variant`
+- `Callout`: `data-tone`
 - `Card`: `data-bordered`, `data-format`, `data-interactive`, `data-padding`, `data-slot`, `data-tone`, `data-variant`
 - `DataTableSection`: `data-slot`
 - `DestructiveSection`: `data-slot`
@@ -303,6 +305,7 @@ The `data-*` attributes each component renders for you to select on:
 - `ErrorPattern`: `data-role`
 - `Field`: `data-tone`
 - `FormActions`: `data-slot`
+- `InlineCode`: `data-copy-glyph`, `data-density`
 - `Input`: `data-size`, `data-state`
 - `Kbd`: `data-size`
 - `List`: `data-leading`, `data-slot`, `data-variant`
@@ -324,6 +327,7 @@ The `data-*` attributes each component renders for you to select on:
 - `Textarea`: `data-state`
 - `ThemeToggle`: `data-theme-state`
 - `Timeline`: `data-format`, `data-timeline-marker`, `data-tone`
+- `Timestamp`: `data-format`
 - `TokenField`: `data-state`, `data-token`
 - `Tooltip`: `data-state`
 

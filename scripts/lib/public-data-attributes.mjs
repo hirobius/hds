@@ -32,6 +32,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   Alert: ['data-size'],
   Avatar: ['data-size'],
   Badge: ['data-tone'],
+  Blockquote: ['data-size'],
   Button: [
     'data-crossfade-label',
     'data-hover-effect',
@@ -41,6 +42,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
     'data-tone',
     'data-variant',
   ],
+  Callout: ['data-tone'],
   Card: [
     'data-bordered',
     'data-format',
@@ -59,6 +61,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   ErrorPattern: ['data-role'],
   Field: ['data-tone'],
   FormActions: ['data-slot'],
+  InlineCode: ['data-copy-glyph', 'data-density'],
   Input: ['data-size', 'data-state'],
   Kbd: ['data-size'],
   Menu: ['data-state'],
@@ -81,6 +84,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
   Textarea: ['data-state'],
   ThemeToggle: ['data-theme-state'],
   Timeline: ['data-format', 'data-timeline-marker', 'data-tone'],
+  Timestamp: ['data-format'],
   TokenField: ['data-state', 'data-token'],
   Tooltip: ['data-state'],
 };

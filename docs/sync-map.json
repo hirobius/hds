@@ -12,8 +12,8 @@
       "internal": 12
     },
     "docsCoverage": {
-      "expected": 67,
-      "covered": 67
+      "expected": 71,
+      "covered": 71
     },
     "figmaCoverage": {
       "expected": 75,
@@ -121,11 +121,11 @@
       "name": "Blockquote",
       "class": "library",
       "filePath": "src/app/components/blockquote.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/blockquote",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2024-18",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -193,11 +193,11 @@
       "name": "Callout",
       "class": "library",
       "filePath": "src/app/components/callout.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/callout",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-85",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -841,11 +841,11 @@
       "name": "InlineCode",
       "class": "library",
       "filePath": "src/app/components/inline-code.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/inline-code",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
@@ -1525,11 +1525,11 @@
       "name": "Timestamp",
       "class": "library",
       "filePath": "src/app/components/timestamp.tsx",
-      "docsPage": null,
+      "docsPage": "/docs/components/timestamp",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2031-11",
       "figmaVia": "manifest",
       "expectFigma": true,
-      "expectDocs": false,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },
