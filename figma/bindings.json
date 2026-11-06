@@ -1,0 +1,151 @@
+{
+  "checksum": "456ebafb",
+  "bindings": {
+    "2353:315": {
+      "name": "List",
+      "variables": ["list/groupGap", "list/headingGap"]
+    },
+    "2399:11077": {
+      "name": "Button",
+      "variables": [
+        "button/bg",
+        "button/bgHover",
+        "button/bgPressed",
+        "button/edge/danger",
+        "button/edge/info",
+        "button/edge/primary",
+        "button/edge/secondary",
+        "button/edge/success",
+        "button/edge/warning",
+        "button/fontWeight",
+        "button/primary/bgDisabled",
+        "button/primary/textDisabled",
+        "button/radius",
+        "button/secondary/bg/hover",
+        "button/secondary/bg/pressed",
+        "button/secondary/bg/rest",
+        "button/size/lg/fontSize",
+        "button/size/lg/height",
+        "button/size/lg/iconSize",
+        "button/size/lg/itemSpacing",
+        "button/size/lg/paddingX",
+        "button/size/md/fontSize",
+        "button/size/md/height",
+        "button/size/md/iconSize",
+        "button/size/md/itemSpacing",
+        "button/size/md/paddingX",
+        "button/size/sm/fontSize",
+        "button/size/sm/height",
+        "button/size/sm/iconSize",
+        "button/size/sm/itemSpacing",
+        "button/size/sm/paddingX",
+        "button/tertiary/bg/hover",
+        "button/tertiary/bg/pressed",
+        "button/text"
+      ]
+    },
+    "2399:26744": {
+      "name": "IconButton",
+      "variables": [
+        "button/bg",
+        "button/bgHover",
+        "button/bgPressed",
+        "button/edge/danger",
+        "button/edge/info",
+        "button/edge/primary",
+        "button/edge/secondary",
+        "button/edge/success",
+        "button/edge/warning",
+        "button/primary/bgDisabled",
+        "button/radius",
+        "button/secondary/bg/hover",
+        "button/secondary/bg/pressed",
+        "button/secondary/bg/rest",
+        "button/size/lg/height",
+        "button/size/lg/iconSize",
+        "button/size/md/height",
+        "button/size/md/iconSize",
+        "button/size/sm/height",
+        "button/size/sm/iconSize",
+        "button/tertiary/bg/hover",
+        "button/tertiary/bg/pressed"
+      ]
+    },
+    "31:15": {
+      "name": "Badge",
+      "variables": [
+        "badge/danger/bg",
+        "badge/danger/text",
+        "badge/height",
+        "badge/inProgress/bg",
+        "badge/inProgress/text",
+        "badge/info/bg",
+        "badge/info/text",
+        "badge/minWidth",
+        "badge/neutral/bg",
+        "badge/neutral/text",
+        "badge/paddingX",
+        "badge/paddingY",
+        "badge/radius",
+        "badge/success/bg",
+        "badge/success/text",
+        "badge/warning/bg",
+        "badge/warning/text"
+      ]
+    },
+    "32:11": {
+      "name": "Tag",
+      "variables": [
+        "button/edge/primary",
+        "tag/activeBackground",
+        "tag/activeBorder",
+        "tag/activeHover",
+        "tag/activeText",
+        "tag/background",
+        "tag/border",
+        "tag/minHeight",
+        "tag/minWidth",
+        "tag/paddingX",
+        "tag/paddingY",
+        "tag/radius",
+        "tag/text"
+      ]
+    },
+    "38:20": {
+      "name": "Input",
+      "variables": ["input/bg", "input/border", "input/borderError", "input/radius", "input/text"]
+    },
+    "39:11": {
+      "name": "Card",
+      "variables": ["card/bg", "card/radius"]
+    },
+    "86:194": {
+      "name": "Variant=default",
+      "variables": [
+        "button/primary/bgDisabled",
+        "button/radius",
+        "button/secondary/bg/rest",
+        "button/size/sm/height",
+        "button/size/sm/paddingX"
+      ]
+    },
+    "88:453": {
+      "name": "Disclosure",
+      "variables": [
+        "button/radius",
+        "button/size/sm/height",
+        "button/size/sm/itemSpacing",
+        "button/size/sm/paddingX",
+        "nav/paddingY"
+      ]
+    },
+    "89:155": {
+      "name": "InlineCode",
+      "variables": []
+    },
+    "89:161": {
+      "name": "InlineLink",
+      "variables": []
+    }
+  }
+}
