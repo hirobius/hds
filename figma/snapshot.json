@@ -1,15 +1,15 @@
 {
-  "checksum": "d6205d37",
+  "checksum": "aa338597",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-06T09:28:57.787Z",
+    "takenAt": "2026-11-06T10:04:17.696Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "63d8fdea",
-      "pushedAt": "2026-11-06T09:28:57.729Z",
+      "modelHash": "1ab16b3d",
+      "pushedAt": "2026-11-06T10:04:17.636Z",
       "scope": null
     },
     "collections": [
@@ -3925,7 +3925,7 @@
             "name": "typography/size/displayMin",
             "path": "primitive.typography.size.displayMin",
             "resolvedType": "FLOAT",
-            "description": "Display floor at a 360px viewport (hds#1300): the low end of the fluid display size.",
+            "description": "Display floor at a 360px viewport (hds#1300): 40px at a 16px root, in rem to follow the user's font size.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -13556,7 +13556,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "491a574"
+                "value": "1912d44"
               }
             }
           },
@@ -14366,5 +14366,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:34730c6438b7e03c98ef58a4b023b771d878105f256175eb36110083b7ab74fe"
+  "tokensHash": "sha256:225c948ed81d467cd8c7c88efcc3fe381d88c30c871dcd4d65ed6bc83bfecdc6"
 }

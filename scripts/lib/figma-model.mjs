@@ -265,6 +265,8 @@ function toFigmaValue(graph, value, type) {
     case 'dimension':
       if (value?.unit === 'px') return value.value;
       if (value?.unit === 'ch') return chToPx(graph, value.value);
+      // Figma has no rem: draw it at the 16px default root (displayMin, hds#1334).
+      if (value?.unit === 'rem') return value.value * 16;
       throw new Error(`No px conversion for dimension ${JSON.stringify(value)}`);
     case 'fontWeight':
     case 'number':
@@ -283,7 +285,7 @@ const modeEntry = (graph, ref, type) =>
 /** 'px' for a dimension that resolves to px (or converts from ch), else null. */
 function unitOf(graph, token) {
   if (token.type !== 'dimension') return null;
-  return ['px', 'ch'].includes(graph.resolveToken(token).value?.unit) ? 'px' : null;
+  return ['px', 'ch', 'rem'].includes(graph.resolveToken(token).value?.unit) ? 'px' : null;
 }
 
 function createGraph(raw) {
