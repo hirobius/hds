@@ -32,4 +32,8 @@ describe('variables.css', () => {
   it('refuses an input with a selector that could restyle the host', () => {
     expect(() => varsCss(tokens, 'body {\n  color: red;\n}\n')).toThrow(/non-vars selectors/);
   });
+
+  it('refuses a universal `*` rule too (it would reach every host element)', () => {
+    expect(() => varsCss(tokens, '* {\n  color: red;\n}\n')).toThrow(/non-vars selectors/);
+  });
 });

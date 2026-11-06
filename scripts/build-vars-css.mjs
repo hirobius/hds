@@ -34,7 +34,7 @@ const HOST_SAFE = /(:root|\[data-theme|\[data-density|\[data-accent|\.dark)/;
 export function offendingSelectors(css) {
   return css
     .split('\n')
-    .filter((line) => /^[^\s/}@*][^{]*\{/.test(line))
+    .filter((line) => /^[^\s/}@][^{]*\{/.test(line))
     .filter((line) => !HOST_SAFE.test(line));
 }
 
