@@ -151,6 +151,20 @@ function compareFacts(a, b) {
 const fact = (body) => ({ id: factId(body), ...body });
 const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
+// A union made only of string literals, not part of a longer union and not an array element.
+const LITERAL = String.raw`"(?:[^"\\]|\\.)*"`;
+const LITERAL_UNION = new RegExp(`(?<!\\| )${LITERAL}(?: \\| ${LITERAL})+(?! \\|)(?!\\[)`, 'g');
+
+/**
+ * A printed signature with each string-literal union sorted. TypeScript prints a
+ * union in the order it created its literals, so an unrelated import can reorder
+ * `"onBlur" | "all"` in a signature that did not change (hds#751).
+ */
+export const normalizeSignature = (sig) =>
+  sig.replace(LITERAL_UNION, (union) => union.match(new RegExp(LITERAL, 'g')).sort().join(' | '));
+
+const sameSignatures = (a, b) => same(a?.map(normalizeSignature), b?.map(normalizeSignature));
+
 function nameFacts(prev, next) {
   const facts = [];
   const moved = new Set();
@@ -399,7 +413,7 @@ function typeFacts(prev, next) {
         facts.push(fact({ kind: 'export-type-only', entry, name }));
         continue;
       }
-      if (before.signatures && !same(before.signatures, after.signatures)) {
+      if (before.signatures && !sameSignatures(before.signatures, after.signatures)) {
         const [from, to] = [before.signatures, after.signatures ?? []];
         facts.push(fact({ kind: 'signature-changed', entry, name, from, to }));
       }
