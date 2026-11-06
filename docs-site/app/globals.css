@@ -1087,6 +1087,48 @@ a code[data-density] {
   font-size: var(--semantic-typography-caption-font-size);
 }
 
+/* "… on components" lists (Elevation, Soft surfaces): a token and its swatch on the left,
+   the live components that use it on the right; open rows split by a hairline. */
+.hds-oncomp-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: var(--semantic-space-scale-lg);
+  align-items: center;
+  padding-block: var(--semantic-space-scale-md);
+  border-bottom: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
+}
+.hds-oncomp-row:last-child {
+  border-bottom: 0;
+}
+.hds-oncomp-label {
+  display: flex;
+  gap: var(--semantic-space-scale-sm);
+  align-items: center;
+  min-width: 0;
+}
+.hds-oncomp-note {
+  font-size: 0.8125rem;
+  color: var(--semantic-color-content-tertiary);
+}
+.hds-oncomp-live {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--semantic-space-scale-sm);
+  align-items: center;
+  min-width: 0;
+}
+.hds-oncomp-card {
+  max-width: 20rem;
+  /* The interactive card is a <button>: keep its text aligned like the static card. */
+  text-align: left;
+}
+@media (width < 40rem) {
+  .hds-oncomp-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--semantic-space-scale-sm);
+  }
+}
+
 /* The site footer: the one line that carries the released version, on every route. */
 .hds-site-footer {
   padding: var(--semantic-space-scale-md)
