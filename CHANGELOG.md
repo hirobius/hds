@@ -8,7 +8,7 @@
 npx @hirobius/design-system@latest upgrade
 ```
 
-- Do by hand: The external icon is now inside a span in the link, so update a selector like \`a > svg\` to \`a svg\`.
+- Do by hand: The external icon is now inside a span in the link, so update a selector like `a > svg` to `a svg`.
 - Looks different: From variables.css, each of these takes its cobalt value only inside data-accent="cobalt"; without data-accent it is unchanged: `--component-button-bg`, `--component-button-bgHover`, `--component-button-secondary-bg-hover`, `--component-button-secondary-border-hover`, `--component-tag-activeBackground`, `--component-tag-activeBorder`, `--component-tag-activeHover`, `--hds-edge-primary`, `--role-accent`, `--role-accent-foreground`, `--role-primary`, `--role-ring`, `--semantic-accent-content`, `--semantic-accent-contentHover`, `--semantic-accent-hover`, `--semantic-accent-pressed`, `--semantic-accent-rest`, `--semantic-accent-subtle`, `--semantic-color-border-accent`, `--semantic-color-content-accent`, `--semantic-color-content-onAccent`, `--semantic-color-surface-accent`, `--semantic-color-surface-accentSubtle` and `--semantic-focus-ring-color`.
 - Looks different: The Figma px size for lg links is now 24 (was 20); if you set this variable yourself, check the icon next to title-size text.
 - Looks different: The Figma px size for md links is now 16 (was 12); if you set this variable yourself, check the icon next to body-size text.

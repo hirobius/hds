@@ -266,9 +266,17 @@ function bulletsOf(steps, tailOf) {
 /**
  * Prose as Markdown text: the characters GitHub would read as markup are
  * escaped, in a form Prettier leaves as written (it keeps an underscore
- * between two letters unescaped, so this does too).
+ * between two letters unescaped, so this does too). A paired backtick span
+ * (`a > svg`) is a code span the note meant, so it stays as written.
  */
 export function md(text) {
+  return text
+    .split(/(`[^`\n]+`)/)
+    .map((part, i) => (i % 2 === 1 ? part : mdProse(part)))
+    .join('');
+}
+
+function mdProse(text) {
   return text.replace(/[\\`*[<~$_]/g, (char, i) => {
     if (
       char === '_' &&

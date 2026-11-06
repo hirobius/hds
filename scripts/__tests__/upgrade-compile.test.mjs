@@ -25,6 +25,7 @@ import {
   compileOutputs,
   leadsWithCommand,
   listOf,
+  md,
   releaseSections,
   upgradeBlock,
 } from '../upgrade/compile.mjs';
@@ -1713,5 +1714,20 @@ describe('wiring', () => {
   it('keeps the generated files out of Prettier, whose reflow would make them stale', () => {
     const ignored = read(REPO, '.prettierignore').split('\n');
     expect(ignored).toEqual(expect.arrayContaining(['UPGRADING.md', 'upgrade/index.json']));
+  });
+});
+
+describe('md', () => {
+  it('keeps a paired backtick span as code, escaping only the prose around it', () => {
+    expect(md('update a selector like `a > svg` to `a svg`.')).toBe(
+      'update a selector like `a > svg` to `a svg`.',
+    );
+    expect(md('An `Omit<TextProps, …>` with *stars* and <tags>')).toBe(
+      'An `Omit<TextProps, …>` with \\*stars\\* and \\<tags>',
+    );
+  });
+
+  it('escapes a backtick with no partner', () => {
+    expect(md('a lone ` tick')).toBe('a lone \\` tick');
   });
 });
