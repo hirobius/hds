@@ -172,7 +172,19 @@ async function renderCode(
       );
       await page.goto(pathToFileURL(htmlPath).href);
       await page.evaluate(() => document.fonts.ready);
-      requireBrandFont(await page.evaluate((f) => document.fonts.check(f), BRAND_FONT));
+      // Not document.fonts.check(): it can return true for a face in the 'error' state and when
+      // no face matches the family, so it would not catch the #1295 fallback. load() returns
+      // the matching faces; each must have status 'loaded'.
+      requireBrandFont(
+        await page.evaluate(async (f) => {
+          try {
+            const faces = await document.fonts.load(f);
+            return faces.length > 0 && faces.every((x) => x.status === 'loaded');
+          } catch {
+            return false;
+          }
+        }, BRAND_FONT),
+      );
       const btn = page.locator('#c > *').first();
       await page.mouse.move(0, 0);
       // The rest box, like Figma's variant frame: hover and press move the face (translate)
