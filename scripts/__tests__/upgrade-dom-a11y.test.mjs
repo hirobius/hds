@@ -80,10 +80,27 @@ describe('dom facts', () => {
     expect(factImpact({ kind: 'dom-changed', name: 'Table' })).toBe('behavior');
   });
 
-  it('passes with a behavior step that detects by regex, under a patch', () => {
+  // Below 1.0 a DOM change is breaking for a consumer that selects on the
+  // structure (`a > svg`, getByRole('row')), so it needs a minor (#1344).
+  it('wants a minor below 1.0, even with its behavior step', () => {
     const root = domRepo();
     writeDomBaseline(root, roleChanged);
     changeset(root, 'table-rows', 'patch');
+    note(root, 'table-rows', {
+      impact: 'behavior',
+      plain: behaviorStep().plain,
+      steps: [behaviorStep()],
+    });
+    const result = checkUpgradeLedger(root);
+    expect(rules(result)).toEqual(['bump-too-small']);
+    expect(result.violations[0].message).toContain('dom-changed:Table');
+    expect(result.violations[0].message).toMatch(/minor/);
+  });
+
+  it('passes with a behavior step that detects by regex, under a minor', () => {
+    const root = domRepo();
+    writeDomBaseline(root, roleChanged);
+    changeset(root, 'table-rows', 'minor');
     note(root, 'table-rows', {
       impact: 'behavior',
       plain: behaviorStep().plain,
@@ -95,7 +112,7 @@ describe('dom facts', () => {
   it('refuses a step for a dom fact with no detect regex', () => {
     const root = domRepo();
     writeDomBaseline(root, roleChanged);
-    changeset(root, 'table-rows', 'patch');
+    changeset(root, 'table-rows', 'minor');
     const step = behaviorStep({ detect: { jsx: ['Table'] } });
     note(root, 'table-rows', { impact: 'behavior', plain: step.plain, steps: [step] });
     expect(rules(checkUpgradeLedger(root))).toEqual(['dom-step-without-detect']);
@@ -104,7 +121,7 @@ describe('dom facts', () => {
   it('refuses a step for a dom fact that is not a behavior step', () => {
     const root = domRepo();
     writeDomBaseline(root, roleChanged);
-    changeset(root, 'table-rows', 'patch');
+    changeset(root, 'table-rows', 'minor');
     const step = behaviorStep({ id: 'look/Table.dom', kind: 'look', impact: 'look' });
     note(root, 'table-rows', { impact: 'look', plain: step.plain, steps: [step] });
     expect(rules(checkUpgradeLedger(root))).toEqual(['dom-step-without-detect']);
@@ -113,7 +130,7 @@ describe('dom facts', () => {
   it('pnpm upgrade:note pre-fills a behavior step the gate still refuses until it has a regex', () => {
     const root = domRepo();
     writeDomBaseline(root, roleChanged);
-    changeset(root, 'table-rows', 'patch');
+    changeset(root, 'table-rows', 'minor');
     writeNote(root, { name: 'table-rows' });
     const [step] = readNote(root, 'table-rows').steps;
     expect(step).toMatchObject({
