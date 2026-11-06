@@ -12,8 +12,10 @@ Token renames live in
 2. **Give a codemod.** A script in `codemods/` rewrites consumer code, supports
    `--check` (exit 1 when a rewrite is needed, writes nothing) and `--dry-run`,
    and has unit tests against fixture files.
-3. **Run it on a real consumer.** The dry-run diff is filed as an issue on the
-   consumer's repo. HDS never pushes to it.
+3. **Run it on a real consumer.** After each publish, `pnpm release:announce`
+   (run by `pnpm release:local --publish`) keeps one standing upgrade issue in
+   each consumer repo that is behind, with the step counts and the
+   `upgrade --check` Definition of Done. HDS never pushes to it.
 4. **Remove** at the announced window. Before 1.0 a removal may ship in a 0.x
    minor: semver allows the break, and a caret range such as `^0.19` never
    resolves to 0.20. Each one is announced here in a dated section, one row per
