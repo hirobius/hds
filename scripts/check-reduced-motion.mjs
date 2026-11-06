@@ -114,7 +114,8 @@ try {
 // ── Layer 2: JS/Motion (motion/react) reactive duration coverage (#190) ───────
 
 const MOTION_IMPORT_RE = /from\s+['"]motion\/react['"]/;
-const RAW_HDS_MOTION_RE = /hds\.motion\./;
+// hds.motion.* (springs included), and the raw records behind the recipes (hds#751).
+const RAW_HDS_MOTION_RE = /hds\.motion\.|\bmotionExtras\b|\bMOTION_RECIPES\b/;
 
 function scanComponentSource(source, label) {
   if (!MOTION_IMPORT_RE.test(source)) return;
@@ -123,11 +124,12 @@ function scanComponentSource(source, label) {
   failures.push({
     file: label,
     msg:
-      'Reads `hds.motion.*` directly while importing motion/react.\n' +
+      'Reads `hds.motion.*`, `motionExtras` or `MOTION_RECIPES` directly while importing motion/react.\n' +
       "       hds.motion.<category> is a static JS number — it won't collapse under\n" +
       "       prefers-reduced-motion. Call useHdsMotion('<category>') from\n" +
       '       src/app/hooks/useHdsMotion.ts instead, e.g.:\n\n' +
       "         const productiveMotion = useHdsMotion('productive');\n" +
+      "       or, for a spring or a recipe: const recipe = useMotionRecipe('openMenu');\n" +
       '         transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}',
   });
 }

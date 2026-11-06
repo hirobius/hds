@@ -161,7 +161,7 @@ const LITERAL_UNION = new RegExp(`(?<!\\| )${LITERAL}(?: \\| ${LITERAL})+(?! \\|
  * `"onBlur" | "all"` in a signature that did not change (hds#751).
  */
 export const normalizeSignature = (sig) =>
-  sig.replace(LITERAL_UNION, (union) => union.split(' | ').sort().join(' | '));
+  sig.replace(LITERAL_UNION, (union) => union.match(new RegExp(LITERAL, 'g')).sort().join(' | '));
 
 const sameSignatures = (a, b) => same(a?.map(normalizeSignature), b?.map(normalizeSignature));
 
