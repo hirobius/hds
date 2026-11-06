@@ -203,6 +203,7 @@ if (RUN_ALL || OVERRIDES_ONLY) {
   const SKIP_EXACT_FILES = new Set([
     'src/styles/tokens.generated.css',
     'src/styles/tenants.css',
+    'src/styles/tenants-docs-only.css',
     'src/styles/fonts.css',
   ]);
 

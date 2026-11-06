@@ -84,7 +84,8 @@ const SURFACE_PX = {
   // Design-explorations demo directions (hds#628): soft-demo opens surfaces up (scale.lg, scale.md
   // compact); accent-pair-demo changes colour only.
   'soft-demo': [40, 16],
-  'accent-pair-demo': [28, 16],};
+  'accent-pair-demo': [28, 16],
+};
 /** Today's region.gutter in px per viewport width, [comfortable, compact]. Same for every tenant. */
 const GUTTER_PX = { 1280: [40, 24], 640: [40, 24], 639: [20, 12], 400: [20, 12] };
 
@@ -93,6 +94,7 @@ const GUTTER_PX = { 1280: [40, 24], 640: [40, 24], 639: [20, 12], 400: [20, 12] 
 const PAGE_CSS = [
   read('src/styles/tokens.generated.css'),
   read('src/styles/tenants.css'),
+  read('src/styles/tenants-docs-only.css'),
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
 ].join('\n');
 

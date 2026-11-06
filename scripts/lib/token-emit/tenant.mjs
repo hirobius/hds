@@ -224,6 +224,13 @@ function overlayDeclarations(overlay, baseRaw, deprecatedAliases) {
 }
 
 /**
+ * Directions that exist for the design explorations (hds#628) and the docs
+ * site, not for consumers: emitted to src/styles/tenants-docs-only.css instead
+ * of the shipped tenants.css (hds#1205).
+ */
+export const DOCS_ONLY_DIRECTIONS = ['soft-demo', 'accent-pair-demo'];
+
+/**
  * Walks directions/* (skipping _template and any dir without tokens.json),
  * validates each overlay, and returns CSS text for tenants.css.
  *
@@ -251,6 +258,9 @@ export function buildTenantCSS(
     strict = true,
     attributes = ['data-brand', 'data-tenant'],
     header: headerLines = TENANT_HEADER,
+    // Slug filter: `include` emits only these, `exclude` all but these.
+    include = null,
+    exclude = [],
   } = {},
 ) {
   const allErrors = [];
@@ -271,6 +281,8 @@ export function buildTenantCSS(
     const slug = entry.name;
     // Skip reserved directories (e.g. _template)
     if (slug.startsWith('_')) continue;
+    if (include && !include.includes(slug)) continue;
+    if (exclude.includes(slug)) continue;
     // Validate slug format: lowercase, kebab-case, ASCII
     if (!/^[a-z0-9-]+$/.test(slug)) {
       allErrors.push(`[${slug}] invalid slug format — must match [a-z0-9-]+`);

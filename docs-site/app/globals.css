@@ -5,6 +5,11 @@
    render with their real classes (bg-primary, border-input, etc). */
 @import '@hirobius/design-system/styles.css';
 
+/* The design-explorations demo directions (soft-demo, accent-pair-demo), which
+   the package does not ship (hds#1205): the docs site and its visual tests
+   still render them. */
+@import '../../src/styles/tenants-docs-only.css';
+
 /*
  * Theme Fumadocs' own chrome with HDS tokens instead of its defaults.
  * Fumadocs exposes its palette as --color-fd-* custom properties (set in
