@@ -20,7 +20,7 @@
  * many pages exist. `GET /v1/files/:key` is not plan-gated. See ADR-026.
  */
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseDocument, coverage, fetchFile, resolveTarget } from './lib/figma-inventory.mjs';
@@ -30,6 +30,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const INVENTORY = path.join(ROOT, 'figma/inventory.json');
 const LINKS = path.join(ROOT, 'figma/links.json');
 const MANIFEST = path.join(ROOT, 'public/hds-manifest.json');
+// The same accepted modelling mismatches check-figma-coverage counts (hds#1147).
+const OVERRIDES = path.join(ROOT, 'figma/mapping-overrides.json');
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
@@ -118,7 +120,8 @@ async function refetch() {
 function report() {
   const inventory = readJson(INVENTORY, 'the Figma inventory');
   const manifest = readJson(MANIFEST, 'the manifest');
-  const result = coverage(inventory, manifest);
+  const overrides = existsSync(OVERRIDES) ? readJson(OVERRIDES, 'the mapping overrides') : {};
+  const result = coverage(inventory, manifest, overrides);
 
   if (asJson) {
     console.log(JSON.stringify({ ...result, complete: inventory.complete !== false }, null, 2));
