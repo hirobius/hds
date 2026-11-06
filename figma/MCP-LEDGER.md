@@ -1224,4 +1224,16 @@ Session total: 16 calls (1 skill, 1 create_session, 10 use_figma: 8 read + 2 wri
 
 Session total: 1 use_figma call (1 write). No publish.
 
-Calls logged for 2026-11-06: 80 of 200 (1, 1, 5, 5, 12, 1, 31, 1, 3, 1, 16, 1, 1 and 1).
+## 2026-11-06 · session `claude/figma-button-page-move` (hds#1147, owner-approved move, file 2VgBbVpKiDnu0aftJEVyBQ)
+
+| #   | Tool             | Kind  | Target                                                                                                                        | Why                                | Result                                                                                                               |
+| --- | ---------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 1   | `create_session` | read  | library                                                                                                                       | session                            | OK. 143c3e71.                                                                                                        |
+| 2   | `use_figma`      | read  | library: pages 28:2 and 2399:10548 contents; instances of 2399:11077, 2399:26744                                              | before                             | OK. 28:2 holds the spec sheet 2291:804 at x 1080; 278 and 65 instances.                                              |
+| 3   | `get_screenshot` | read  | library: page Button 28:2                                                                                                     | before                             | OK. figma/shots/button-page-move-before.png.                                                                         |
+| 4   | `use_figma`      | write | library: move 2399:11077 (x 0, y 0) and 2399:26744 (x 0, y 1292) to page 28:2; rename page 2399:10548 to "_Button v2 (moved)" | Adrian approved (via orchestrator) | OK. Same ids, 48 and 36 variants, instances 278 and 65 before and after. Old page keeps frame 2399:14035. No delete. |
+| 5   | `get_screenshot` | read  | library: page Button 28:2                                                                                                     | after                              | OK. figma/shots/button-page-move-after.png.                                                                          |
+
+Session total: 5 calls (1 create_session, 2 use_figma: 1 read + 1 write, 2 get_screenshot). No delete. No publish.
+
+Calls logged for 2026-11-06: 85 of 200 (1, 1, 5, 5, 12, 1, 31, 1, 3, 1, 16, 1, 1, 1 and 5).
