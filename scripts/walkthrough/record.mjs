@@ -184,11 +184,13 @@ try {
   await go('/docs/case-study');
   trimMs = Date.now() - t0;
   await chapter('case-study');
-  await hold(4500);
+  await hold(4000);
   await scrollTo('#the-limits');
-  await hold(5000);
-  await scrollTo('#tokens-are-the-source-of-truth');
-  await hold(4500);
+  await hold(3500);
+  // The architecture diagram renders on the client (components/mermaid.tsx).
+  await page.waitForSelector('figure.hds-mermaid svg');
+  await scrollTo('#the-architecture');
+  await hold(6500);
 
   // 2 — a component page: live demo, generated API, then its tokens
   await go('/docs/components/button');
