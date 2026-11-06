@@ -978,7 +978,8 @@ Add `.hds-link-standalone` for a link outside running text (a 24px hit area,
 44px on touch), and `.hds-link--sm` / `--md` / `--lg` for its own size; leave
 the size off inside running text. For an external link, put the last word and
 the icon in `.hds-link__tail`, so the icon never wraps alone, and say "opens in
-new tab" in visually hidden text:
+new tab" in visually hidden text. `static.css` has no visually-hidden class:
+bring your own (`sr-only` below stands for it):
 
 ```html
 <a class="hds-link" href="/work">See the work</a>
