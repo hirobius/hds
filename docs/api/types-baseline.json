@@ -629,6 +629,152 @@
     "ListVariant": {
       "kind": "type"
     },
+    "MOTION_RECIPES": {
+      "kind": "value",
+      "keys": [
+        "arrive",
+        "arrive.animate",
+        "arrive.animate.opacity",
+        "arrive.animate.scale",
+        "arrive.initial",
+        "arrive.initial.opacity",
+        "arrive.initial.scale",
+        "arrive.transition",
+        "arrive.transition.damping",
+        "arrive.transition.mass",
+        "arrive.transition.stiffness",
+        "arrive.transition.type",
+        "check",
+        "check.animate",
+        "check.animate.opacity",
+        "check.animate.pathLength",
+        "check.exit",
+        "check.exit.opacity",
+        "check.exit.pathLength",
+        "check.exit.transition",
+        "check.initial",
+        "check.initial.opacity",
+        "check.initial.pathLength",
+        "check.transition",
+        "check.transition.damping",
+        "check.transition.mass",
+        "check.transition.stiffness",
+        "check.transition.type",
+        "expand",
+        "expand.animate",
+        "expand.animate.height",
+        "expand.animate.opacity",
+        "expand.exit",
+        "expand.exit.height",
+        "expand.exit.opacity",
+        "expand.exit.transition",
+        "expand.initial",
+        "expand.initial.height",
+        "expand.initial.opacity",
+        "expand.transition",
+        "expand.transition.damping",
+        "expand.transition.mass",
+        "expand.transition.stiffness",
+        "expand.transition.type",
+        "listItem",
+        "listItem.animate",
+        "listItem.animate.opacity",
+        "listItem.animate.y",
+        "listItem.exit",
+        "listItem.exit.opacity",
+        "listItem.exit.scale",
+        "listItem.exit.transition",
+        "listItem.initial",
+        "listItem.initial.opacity",
+        "listItem.initial.y",
+        "listItem.layout",
+        "listItem.transition",
+        "listItem.transition.damping",
+        "listItem.transition.mass",
+        "listItem.transition.stiffness",
+        "listItem.transition.type",
+        "openDialog",
+        "openDialog.animate",
+        "openDialog.exit",
+        "openDialog.initial",
+        "openDialog.layout",
+        "openDialog.transition",
+        "openMenu",
+        "openMenu.animate",
+        "openMenu.exit",
+        "openMenu.initial",
+        "openMenu.layout",
+        "openMenu.transition",
+        "openTooltip",
+        "openTooltip.animate",
+        "openTooltip.exit",
+        "openTooltip.initial",
+        "openTooltip.layout",
+        "openTooltip.transition",
+        "openTooltip.transition.damping",
+        "openTooltip.transition.mass",
+        "openTooltip.transition.stiffness",
+        "openTooltip.transition.type",
+        "reveal",
+        "reveal.animate",
+        "reveal.animate.filter",
+        "reveal.animate.opacity",
+        "reveal.animate.y",
+        "reveal.initial",
+        "reveal.initial.filter",
+        "reveal.initial.opacity",
+        "reveal.initial.y",
+        "reveal.transition",
+        "reveal.transition.damping",
+        "reveal.transition.mass",
+        "reveal.transition.stiffness",
+        "reveal.transition.type",
+        "shake",
+        "shake.animate",
+        "shake.animate.x",
+        "shake.initial",
+        "shake.transition",
+        "shake.transition.duration",
+        "shake.transition.ease",
+        "swap",
+        "swap.animate",
+        "swap.animate.filter",
+        "swap.animate.opacity",
+        "swap.animate.y",
+        "swap.exit",
+        "swap.exit.filter",
+        "swap.exit.opacity",
+        "swap.exit.transition",
+        "swap.exit.y",
+        "swap.initial",
+        "swap.initial.filter",
+        "swap.initial.opacity",
+        "swap.initial.y",
+        "swap.transition",
+        "swap.transition.damping",
+        "swap.transition.mass",
+        "swap.transition.stiffness",
+        "swap.transition.type",
+        "toast",
+        "toast.animate",
+        "toast.animate.opacity",
+        "toast.animate.scale",
+        "toast.animate.y",
+        "toast.exit",
+        "toast.exit.opacity",
+        "toast.exit.scale",
+        "toast.exit.transition",
+        "toast.initial",
+        "toast.initial.opacity",
+        "toast.initial.scale",
+        "toast.initial.y",
+        "toast.transition",
+        "toast.transition.damping",
+        "toast.transition.mass",
+        "toast.transition.stiffness",
+        "toast.transition.type"
+      ]
+    },
     "Menu": {
       "kind": "value",
       "signatures": [
@@ -671,6 +817,12 @@
       "kind": "type"
     },
     "MetadataListProps": {
+      "kind": "type"
+    },
+    "MotionRecipe": {
+      "kind": "type"
+    },
+    "MotionRecipeName": {
       "kind": "type"
     },
     "NavList": {
@@ -1093,10 +1245,22 @@
         "(...inputs: ClassValue[]): string"
       ]
     },
+    "motionRecipe": {
+      "kind": "value",
+      "signatures": [
+        "(name: \"openDialog\" | \"openMenu\" | \"openTooltip\" | \"toast\" | \"reveal\" | \"swap\" | \"arrive\" | \"check\" | \"shake\" | \"expand\" | \"listItem\", { reduced }?: { reduced?: boolean | undefined; }): MotionRecipe"
+      ]
+    },
     "paginationRange": {
       "kind": "value",
       "signatures": [
         "(page: number, count: number, siblingCount?: number): PageToken[]"
+      ]
+    },
+    "staggerDelay": {
+      "kind": "value",
+      "signatures": [
+        "(index: number): number"
       ]
     },
     "useAtLeast": {
@@ -1121,6 +1285,12 @@
       "kind": "value",
       "signatures": [
         "(): HdsThemeValue"
+      ]
+    },
+    "useMotionRecipe": {
+      "kind": "value",
+      "signatures": [
+        "(name: \"openDialog\" | \"openMenu\" | \"openTooltip\" | \"toast\" | \"reveal\" | \"swap\" | \"arrive\" | \"check\" | \"shake\" | \"expand\" | \"listItem\"): MotionRecipe"
       ]
     },
     "useToast": {
@@ -1302,7 +1472,7 @@
     "useHdsForm": {
       "kind": "value",
       "signatures": [
-        "<TFieldValues extends FieldValues>(schema: ZodType<TFieldValues, unknown, $ZodTypeInternals<TFieldValues, unknown>>, options?: Omit<Partial<{ mode: \"onBlur\" | \"onChange\" | \"onSubmit\" | \"onTouched\" | \"all\"; disabled: boolean; reValidateMode: \"onBlur\" | \"onChange\" | \"onSubmit\"; defaultValues: AsyncDefaultValues<TFieldValues> | DefaultValues<TFieldValues>; values: TFieldValues; errors: FieldErrors<TFieldValues>; resetOptions: Partial<{ keepDirtyValues: boolean; keepErrors: boolean; keepDirty: boolean; keepValues: boolean; keepDefaultValues: boolean; keepIsSubmitted: boolean; keepIsSubmitSuccessful: boolean; keepTouched: boolean; keepIsValidating: boolean; keepIsValid: boolean; keepSubmitCount: boolean; keepFieldsRef: boolean; }> | undefined; resolver: Resolver<TFieldValues, any, TFieldValues>; context: any; shouldFocusError: boolean; shouldUnregister: boolean; shouldUseNativeValidation: boolean; progressive: boolean; criteriaMode: CriteriaMode; delayError: number; formControl?: Omit<UseFormReturn<TFieldValues, any, TFieldValues>, \"formState\"> | undefined; validate: ValidateForm<TFieldValues>; }>, \"resolver\"> | undefined): UseFormReturn<TFieldValues>"
+        "<TFieldValues extends FieldValues>(schema: ZodType<TFieldValues, unknown, $ZodTypeInternals<TFieldValues, unknown>>, options?: Omit<Partial<{ mode: \"all\" | \"onBlur\" | \"onChange\" | \"onSubmit\" | \"onTouched\"; disabled: boolean; reValidateMode: \"onBlur\" | \"onChange\" | \"onSubmit\"; defaultValues: AsyncDefaultValues<TFieldValues> | DefaultValues<TFieldValues>; values: TFieldValues; errors: FieldErrors<TFieldValues>; resetOptions: Partial<{ keepDirtyValues: boolean; keepErrors: boolean; keepDirty: boolean; keepValues: boolean; keepDefaultValues: boolean; keepIsSubmitted: boolean; keepIsSubmitSuccessful: boolean; keepTouched: boolean; keepIsValidating: boolean; keepIsValid: boolean; keepSubmitCount: boolean; keepFieldsRef: boolean; }> | undefined; resolver: Resolver<TFieldValues, any, TFieldValues>; context: any; shouldFocusError: boolean; shouldUnregister: boolean; shouldUseNativeValidation: boolean; progressive: boolean; criteriaMode: CriteriaMode; delayError: number; formControl?: Omit<UseFormReturn<TFieldValues, any, TFieldValues>, \"formState\"> | undefined; validate: ValidateForm<TFieldValues>; }>, \"resolver\"> | undefined): UseFormReturn<TFieldValues>"
       ]
     }
   },

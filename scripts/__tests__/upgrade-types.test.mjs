@@ -10,7 +10,7 @@ import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkUpgradeLedger } from '../check-upgrade-ledger.mjs';
-import { diffSnapshots } from '../upgrade/diff.mjs';
+import { diffSnapshots, normalizeSignature } from '../upgrade/diff.mjs';
 import { factImpact } from '../upgrade/ledger.mjs';
 import { writeNote } from '../upgrade/note.mjs';
 import { buildTypes, writeTypesBaseline } from '../upgrade/types.mjs';
@@ -219,5 +219,27 @@ describe('type facts in the upgrade gate', () => {
     write(root, 'docs/api/releases/0.20.0.json', JSON.stringify(snapshotFromSource(root)));
     change(root, 'src/hooks.ts', 'export function useCount(): number { return 0; }\n');
     expect(checkUpgradeLedger(root).violations).toEqual([]);
+  });
+});
+
+// hds#751: TypeScript prints a string-literal union in the order it created the
+// literals, so a new import elsewhere can reorder `"onBlur" | "all"` in a signature
+// that did not change. That is not a signature change.
+describe('normalizeSignature', () => {
+  it('sorts the members of a string-literal union', () => {
+    expect(normalizeSignature('(mode: "onBlur" | "onChange" | "all") => void')).toBe(
+      '(mode: "all" | "onBlur" | "onChange") => void',
+    );
+  });
+
+  it('leaves a union with a non-literal member, and other text, as it is', () => {
+    const sig = '(a: string | number, b: "x" | Foo) => "z" | "y"[]';
+    expect(normalizeSignature(sig)).toBe('(a: string | number, b: "x" | Foo) => "z" | "y"[]');
+  });
+
+  it('still reports a real change: a literal added to the union', () => {
+    expect(normalizeSignature('(m: "a" | "b") => void')).not.toBe(
+      normalizeSignature('(m: "a" | "b" | "c") => void'),
+    );
   });
 });

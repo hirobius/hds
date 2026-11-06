@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Use useMotionRecipe('openMenu') and the other ten named recipes on a motion element instead of hand-written timings; each one goes still under reduced motion, and nothing existing changes."
+}

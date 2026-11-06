@@ -143,6 +143,11 @@ export { withViewTransition } from './lib/view-transition';
 // `Breakpoint` (the key type) ships from Box with the `sx` types.
 export { useAtLeast, useBreakpoint } from './app/hooks/useBreakpoint';
 
+// ── Motion recipes (hds#751): named motions built from hds.motion, reduced-motion aware ──
+export { MOTION_RECIPES, motionRecipe, staggerDelay } from './app/design-system/motion-recipes';
+export type { MotionRecipe, MotionRecipeName } from './app/design-system/motion-recipes';
+export { useMotionRecipe } from './app/hooks/useMotionRecipe';
+
 // ── Theming contract (framework-agnostic data-* dials; zero-JS compatible) ──
 export { HdsThemeProvider, useHdsTheme } from './app/context/hds-theme';
 export type {
