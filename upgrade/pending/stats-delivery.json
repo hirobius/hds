@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "If you read stats.json, you can now show the delivery numbers from its new delivery block; every other field is unchanged."
+}
