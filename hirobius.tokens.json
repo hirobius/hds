@@ -3755,7 +3755,7 @@
         "paddingX": {
           "$type": "dimension",
           "$value": "{semantic.space.scale.md}",
-          "$description": "Table header and body cell inline padding: scale.md (28px, 16px compact). Its own token, so a tenant's roomier surface.padding does not widen every cell (hds#1339)."
+          "$description": "Table cell inline padding: scale.md (28px, 16px compact). Own token, so tenant surface padding never widens cells."
         }
       }
     }
