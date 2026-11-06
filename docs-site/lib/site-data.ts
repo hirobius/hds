@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import type { LedgerIndex, LedgerRelease } from './upgrade-ledger';
 import type { A11ySpec } from './a11y-contracts';
+import type { CaseStudySources } from './case-study';
 
 /** Walk up from the working directory so this works whether Next runs from docs-site/ or the repo root. */
 export function findUp(relative: string, start = process.cwd()): string {
@@ -74,4 +75,15 @@ export function loadUpgradeReleases(): LedgerRelease[] {
   return readdirSync(join(dir, 'releases'))
     .filter((f) => f.endsWith('.json'))
     .map((f) => readJson(`upgrade/releases/${f}`) as LedgerRelease);
+}
+
+/** The repo files behind the case study page's numbers (lib/case-study.ts). */
+export function loadCaseStudySources(): CaseStudySources {
+  const root = dirname(findUp('hirobius.tokens.json'));
+  return {
+    stats: readJson('public/hds-stats.json') as CaseStudySources['stats'],
+    registry: readJson('docs/guardrails/registry.json') as CaseStudySources['registry'],
+    adrFiles: readdirSync(join(root, 'docs', 'adr')),
+    changelog: readFileSync(join(root, 'CHANGELOG.md'), 'utf8'),
+  };
 }
