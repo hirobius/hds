@@ -18,7 +18,7 @@
 
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import hds, { tokenValues } from '../design-system/tokens';
 import { cn } from '../../lib/utils';
@@ -217,30 +217,32 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
         className={cn('hds-focus', toggleInputVariants({ state: visualState }))}
         {...rest}
       />
-      <motion.span
-        aria-hidden="true"
-        animate={{
-          scale: isPressed ? 0.96 : isHover || isFocused ? 1.04 : 1,
-        }}
-        transition={{
-          duration: productiveMotion.duration,
-          ease: productiveMotion.easing,
-        }}
-        style={{
-          transition: CONTROL_COLOR_FADE,
-        }}
-        className={toggleTrackVariants({ on: checked, disabled: isDisabled })}
-      >
-        <motion.span
-          initial={false}
-          animate={{ x: checked ? TOGGLE_THUMB_TRAVEL : 0 }}
+      <LazyMotion features={domAnimation}>
+        <m.span
+          aria-hidden="true"
+          animate={{
+            scale: isPressed ? 0.96 : isHover || isFocused ? 1.04 : 1,
+          }}
           transition={{
             duration: productiveMotion.duration,
             ease: productiveMotion.easing,
           }}
-          className={toggleThumbVariants({ on: checked, disabled: isDisabled })}
-        />
-      </motion.span>
+          style={{
+            transition: CONTROL_COLOR_FADE,
+          }}
+          className={toggleTrackVariants({ on: checked, disabled: isDisabled })}
+        >
+          <m.span
+            initial={false}
+            animate={{ x: checked ? TOGGLE_THUMB_TRAVEL : 0 }}
+            transition={{
+              duration: productiveMotion.duration,
+              ease: productiveMotion.easing,
+            }}
+            className={toggleThumbVariants({ on: checked, disabled: isDisabled })}
+          />
+        </m.span>
+      </LazyMotion>
       <ControlLabelText pressed={isPressed} disabled={isDisabled} className="text-muted-foreground">
         {label}
       </ControlLabelText>

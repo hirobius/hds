@@ -102,6 +102,21 @@ export default [
       tailwindcss: tailwindPlugin,
     },
     rules: {
+      // hds#1386: the full `motion` component ships every Motion feature (layout,
+      // drag, ...) in each consumer bundle, and an app-level LazyMotion cannot
+      // remove a static import of it. Render `m.*` inside
+      // <LazyMotion features={domAnimation}> instead (see button.tsx).
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: ['motion/react', 'framer-motion'].map((name) => ({
+            name,
+            importNames: ['motion'],
+            message:
+              'Use `m` inside <LazyMotion features={domAnimation}>: the full `motion` component adds about 14 kB gzip to every consumer (hds#1386).',
+          })),
+        },
+      ],
       // --- @typescript-eslint/recommended rules ------------------------
       ...tsPlugin.configs.recommended.rules,
       // Allow _-prefixed names to be intentionally unused (mirrors TS noUnusedLocals convention)

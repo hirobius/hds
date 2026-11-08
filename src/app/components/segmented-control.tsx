@@ -32,7 +32,7 @@
  */
 // Motion: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
 import { forwardRef, useRef, useState } from 'react';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
@@ -426,111 +426,113 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class; the edge-fade mask is runtime too (scroll position)
           style={{ padding: railPadding ?? '4px', ...scrollEdgeFadeStyle(overflow) }}
         >
-          {options.map((option) => {
-            const active = option.value === value;
-            const showHover = demoState
-              ? demoState === 'hover' && active
-              : hoveredValue === option.value;
-            const showPressed = demoState === 'pressed' && active;
-            const showFocused = demoState
-              ? demoState === 'focused' && active
-              : focusedValue === option.value;
-            const showDisabled = isDisabled;
-            const interaction: NonNullable<
-              VariantProps<typeof segmentedControlIndicatorVariants>['interaction']
-            > = showPressed ? 'pressed' : showHover ? 'hover' : 'rest';
-            const demoFocusRing = Boolean(demoState) && showFocused;
-            const segmentState = { variant, active, interaction, disabled: showDisabled };
+          <LazyMotion features={domAnimation}>
+            {options.map((option) => {
+              const active = option.value === value;
+              const showHover = demoState
+                ? demoState === 'hover' && active
+                : hoveredValue === option.value;
+              const showPressed = demoState === 'pressed' && active;
+              const showFocused = demoState
+                ? demoState === 'focused' && active
+                : focusedValue === option.value;
+              const showDisabled = isDisabled;
+              const interaction: NonNullable<
+                VariantProps<typeof segmentedControlIndicatorVariants>['interaction']
+              > = showPressed ? 'pressed' : showHover ? 'hover' : 'rest';
+              const demoFocusRing = Boolean(demoState) && showFocused;
+              const segmentState = { variant, active, interaction, disabled: showDisabled };
 
-            return (
-              <ToggleGroup.Item
-                asChild
-                key={option.value}
-                value={option.value}
-                disabled={showDisabled}
-              >
-                <motion.button
-                  type="button"
-                  onHoverStart={() => !demoState && setHoveredValue(option.value)}
-                  onHoverEnd={() => !demoState && setHoveredValue(null)}
-                  onFocus={() => {
-                    if (demoState) return;
-                    setFocusedValue(option.value);
-                    if (performance.now() - lastNavKeyAt.current < 100 && !active)
-                      onChange(option.value);
-                  }}
-                  onBlur={() => !demoState && setFocusedValue(null)}
-                  animate={
-                    isSecondary
-                      ? {
-                          y: active ? 0 : showPressed ? 1 : 0,
-                          scale: active ? 1 : showHover ? 0.995 : 1,
-                        }
-                      : undefined
-                  }
-                  transition={
-                    isSecondary
-                      ? {
-                          duration: productiveMotion.duration,
-                          ease: productiveMotion.easing,
-                        }
-                      : undefined
-                  }
-                  className={cn(
-                    'hds-focus',
-                    segmentedControlItemVariants({
-                      size,
-                      fullWidth,
-                      variant,
-                      active,
-                      interaction,
-                      disabled: showDisabled,
-                    }),
-                    // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
-                    // keyboard focus (:focus-visible can't be faked).
-                    demoFocusRing && 'hds-focus-ring',
-                  )}
-                  // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
-                  style={
-                    segmentPaddingX === undefined
-                      ? undefined
-                      : { paddingLeft: segmentPaddingX, paddingRight: segmentPaddingX }
-                  }
+              return (
+                <ToggleGroup.Item
+                  asChild
+                  key={option.value}
+                  value={option.value}
+                  disabled={showDisabled}
                 >
-                  <span
-                    aria-hidden="true"
-                    // #225: cva only concatenates base + compound class strings — it
-                    // does not dedupe conflicting Tailwind utilities. The base here
-                    // always carries `bg-transparent`, so without a twMerge pass the
-                    // active/hover compounds' accent-background class
-                    // could lose the cascade to it (stylesheet order, not DOM class
-                    // order, decides ties) and the indicator never visibly paints.
-                    // `cn()` (clsx + tailwind-merge) makes the last conflicting
-                    // utility in the string win deterministically, same as every
-                    // other multi-source className in this file.
-                    className={cn(segmentedControlIndicatorVariants(segmentState))}
-                  />
-                  <span
-                    className={segmentedControlLabelVariants({
-                      size,
-                      lifted: active && variant === 'primary',
-                    })}
+                  <m.button
+                    type="button"
+                    onHoverStart={() => !demoState && setHoveredValue(option.value)}
+                    onHoverEnd={() => !demoState && setHoveredValue(null)}
+                    onFocus={() => {
+                      if (demoState) return;
+                      setFocusedValue(option.value);
+                      if (performance.now() - lastNavKeyAt.current < 100 && !active)
+                        onChange(option.value);
+                    }}
+                    onBlur={() => !demoState && setFocusedValue(null)}
+                    animate={
+                      isSecondary
+                        ? {
+                            y: active ? 0 : showPressed ? 1 : 0,
+                            scale: active ? 1 : showHover ? 0.995 : 1,
+                          }
+                        : undefined
+                    }
+                    transition={
+                      isSecondary
+                        ? {
+                            duration: productiveMotion.duration,
+                            ease: productiveMotion.easing,
+                          }
+                        : undefined
+                    }
+                    className={cn(
+                      'hds-focus',
+                      segmentedControlItemVariants({
+                        size,
+                        fullWidth,
+                        variant,
+                        active,
+                        interaction,
+                        disabled: showDisabled,
+                      }),
+                      // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
+                      // keyboard focus (:focus-visible can't be faked).
+                      demoFocusRing && 'hds-focus-ring',
+                    )}
+                    // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
+                    style={
+                      segmentPaddingX === undefined
+                        ? undefined
+                        : { paddingLeft: segmentPaddingX, paddingRight: segmentPaddingX }
+                    }
                   >
-                    {option.label}
-                  </span>
-                  {option.description && (
                     <span
-                      // Same cascade hazard as the indicator above (base
-                      // `text-[...secondary]` vs. compound `text-[...onAccent]`).
-                      className={cn(segmentedControlDescriptionVariants(segmentState))}
+                      aria-hidden="true"
+                      // #225: cva only concatenates base + compound class strings — it
+                      // does not dedupe conflicting Tailwind utilities. The base here
+                      // always carries `bg-transparent`, so without a twMerge pass the
+                      // active/hover compounds' accent-background class
+                      // could lose the cascade to it (stylesheet order, not DOM class
+                      // order, decides ties) and the indicator never visibly paints.
+                      // `cn()` (clsx + tailwind-merge) makes the last conflicting
+                      // utility in the string win deterministically, same as every
+                      // other multi-source className in this file.
+                      className={cn(segmentedControlIndicatorVariants(segmentState))}
+                    />
+                    <span
+                      className={segmentedControlLabelVariants({
+                        size,
+                        lifted: active && variant === 'primary',
+                      })}
                     >
-                      {option.description}
+                      {option.label}
                     </span>
-                  )}
-                </motion.button>
-              </ToggleGroup.Item>
-            );
-          })}
+                    {option.description && (
+                      <span
+                        // Same cascade hazard as the indicator above (base
+                        // `text-[...secondary]` vs. compound `text-[...onAccent]`).
+                        className={cn(segmentedControlDescriptionVariants(segmentState))}
+                      >
+                        {option.description}
+                      </span>
+                    )}
+                  </m.button>
+                </ToggleGroup.Item>
+              );
+            })}
+          </LazyMotion>
         </ToggleGroup.Root>
       </div>
     );

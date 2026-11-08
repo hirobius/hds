@@ -19,7 +19,7 @@
 
 import { forwardRef, useEffect, useRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { Check, Minus } from 'lucide-react';
 import { useHdsMotion } from '../hooks/useHdsMotion';
@@ -194,24 +194,26 @@ export const Checkbox = /* @__PURE__ */ forwardRef<HTMLInputElement, CheckboxPro
           className={checkboxInputVariants({ state: visualState })}
           {...rest}
         />
-        <motion.span
-          aria-hidden="true"
-          animate={{ scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1 }}
-          transition={{
-            duration: productiveMotion.duration,
-            ease: productiveMotion.easing,
-          }}
-          className={checkboxGlyphVariants({ state: visualState, on: isOn })}
-          style={{
-            transition: CONTROL_COLOR_FADE,
-          }}
-        >
-          {indeterminate ? (
-            <Icon icon={Minus} size={14} color={glyphColor} aria-hidden />
-          ) : checked ? (
-            <Icon icon={Check} size={14} color={glyphColor} aria-hidden />
-          ) : null}
-        </motion.span>
+        <LazyMotion features={domAnimation}>
+          <m.span
+            aria-hidden="true"
+            animate={{ scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1 }}
+            transition={{
+              duration: productiveMotion.duration,
+              ease: productiveMotion.easing,
+            }}
+            className={checkboxGlyphVariants({ state: visualState, on: isOn })}
+            style={{
+              transition: CONTROL_COLOR_FADE,
+            }}
+          >
+            {indeterminate ? (
+              <Icon icon={Minus} size={14} color={glyphColor} aria-hidden />
+            ) : checked ? (
+              <Icon icon={Check} size={14} color={glyphColor} aria-hidden />
+            ) : null}
+          </m.span>
+        </LazyMotion>
         <ControlLabelText
           pressed={isPressed}
           disabled={isDisabled}

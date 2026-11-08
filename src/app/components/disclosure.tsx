@@ -23,7 +23,7 @@
  */
 import React, { useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
@@ -187,7 +187,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
             </span>
           )}
         </div>
-        <motion.span
+        <m.span
           aria-hidden="true"
           animate={{ rotate: resolvedOpen ? 0 : -90 }}
           transition={{
@@ -201,12 +201,12 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
           className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
         >
           <Icon icon={ChevronDown} size="small" color="currentColor" />
-        </motion.span>
+        </m.span>
       </button>
     );
 
     const disclosureBody = (
-      <>
+      <LazyMotion features={domAnimation}>
         {isRow ? (
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale token has no Tailwind-theme utility; var()-based so still token-driven
           <div className="flex min-w-0 items-center gap-[var(--semantic-space-scale-xs)]">
@@ -219,7 +219,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
 
         <AnimatePresence initial={false}>
           {resolvedOpen && (
-            <motion.div
+            <m.div
               ref={panelRef}
               id={panelId}
               initial={{ opacity: 0, height: 0 }}
@@ -238,10 +238,10 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
               >
                 {children}
               </div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
-      </>
+      </LazyMotion>
     );
 
     if (isRow) {

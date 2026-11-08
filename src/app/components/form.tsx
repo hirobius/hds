@@ -30,7 +30,7 @@
  */
 
 import * as React from 'react';
-import { AnimatePresence, motion, useIsPresent } from 'motion/react';
+import { AnimatePresence, LazyMotion, domAnimation, m, useIsPresent } from 'motion/react';
 import { cn } from '../../lib/utils';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 
@@ -121,7 +121,7 @@ function FieldError({ id, message }: { id: string; message: string }) {
   const isPresent = useIsPresent();
   const productiveMotion = useHdsMotion('productive');
   return (
-    <motion.p
+    <m.p
       id={isPresent ? id : undefined}
       role={isPresent ? 'alert' : undefined}
       aria-hidden={isPresent ? undefined : true}
@@ -133,7 +133,7 @@ function FieldError({ id, message }: { id: string; message: string }) {
       transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
     >
       {message}
-    </motion.p>
+    </m.p>
   );
 }
 
@@ -184,9 +184,11 @@ export const FormFieldShell = /* @__PURE__ */ React.forwardRef<HTMLDivElement, F
             {description}
           </p>
         ) : null}
-        <AnimatePresence initial={false}>
-          {error ? <FieldError key="error" id={errorId} message={error} /> : null}
-        </AnimatePresence>
+        <LazyMotion features={domAnimation}>
+          <AnimatePresence initial={false}>
+            {error ? <FieldError key="error" id={errorId} message={error} /> : null}
+          </AnimatePresence>
+        </LazyMotion>
       </div>
     );
   },

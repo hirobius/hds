@@ -3,7 +3,7 @@
  * @doc-ignore  label root shared by Checkbox, Toggle and Radio, not an HDS component
  */
 /**
- * The `<motion.label>` root that Checkbox, Toggle and Radio all render around
+ * The `<m.label>` root that Checkbox, Toggle and Radio all render around
  * their native input: one tab stop (`tabIndex={-1}`), the 0.99 tap scale on
  * the productive motion token, and, when `pointer` is passed, the hover/press
  * handlers of the useInteractionState machine. Radio leaves `pointer` out,
@@ -12,7 +12,7 @@
  */
 
 import type { ReactNode } from 'react';
-import { motion, type TargetAndTransition } from 'motion/react';
+import { LazyMotion, domAnimation, m, type TargetAndTransition } from 'motion/react';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useFrozenState } from '../context/DemoStateContext';
@@ -43,23 +43,25 @@ export function ControlLabel({
 }: ControlLabelProps) {
   const productiveMotion = useHdsMotion('productive');
   return (
-    <motion.label
-      // motion's whileTap puts tabindex=0 on a non-focusable element, which gave
-      // every control two tab stops (the label, then the input). An explicit
-      // tabindex keeps motion from adding it; the native input is the one stop (hds#522).
-      tabIndex={-1}
-      whileTap={disabled ? undefined : { scale: 0.99 }}
-      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
-      onMouseEnter={pointer?.onMouseEnter}
-      onMouseLeave={pointer?.onMouseLeave}
-      onPointerDown={pointer?.onPointerDown}
-      onPointerUp={pointer?.onPointerUp}
-      onPointerCancel={pointer?.onPointerCancel}
-      animate={animate}
-      className={className}
-    >
-      {children}
-    </motion.label>
+    <LazyMotion features={domAnimation}>
+      <m.label
+        // motion's whileTap puts tabindex=0 on a non-focusable element, which gave
+        // every control two tab stops (the label, then the input). An explicit
+        // tabindex keeps motion from adding it; the native input is the one stop (hds#522).
+        tabIndex={-1}
+        whileTap={disabled ? undefined : { scale: 0.99 }}
+        transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+        onMouseEnter={pointer?.onMouseEnter}
+        onMouseLeave={pointer?.onMouseLeave}
+        onPointerDown={pointer?.onPointerDown}
+        onPointerUp={pointer?.onPointerUp}
+        onPointerCancel={pointer?.onPointerCancel}
+        animate={animate}
+        className={className}
+      >
+        {children}
+      </m.label>
+    </LazyMotion>
   );
 }
 
@@ -80,22 +82,24 @@ export function ControlLabelText({
 }: ControlLabelTextProps) {
   const productiveMotion = useHdsMotion('productive');
   return (
-    <motion.span
-      className={className}
-      animate={{ x: pressed ? hds.semantic.space.subgrid.hairline : 0 }}
-      transition={{
-        duration: productiveMotion.duration,
-        ease: productiveMotion.easing,
-      }}
-      style={{
-        ...hds.typeStyles.ui,
-        color: disabled
-          ? 'var(--semantic-color-content-disabled)'
-          : 'var(--semantic-color-content-primary)',
-      }}
-    >
-      {children}
-    </motion.span>
+    <LazyMotion features={domAnimation}>
+      <m.span
+        className={className}
+        animate={{ x: pressed ? hds.semantic.space.subgrid.hairline : 0 }}
+        transition={{
+          duration: productiveMotion.duration,
+          ease: productiveMotion.easing,
+        }}
+        style={{
+          ...hds.typeStyles.ui,
+          color: disabled
+            ? 'var(--semantic-color-content-disabled)'
+            : 'var(--semantic-color-content-primary)',
+        }}
+      >
+        {children}
+      </m.span>
+    </LazyMotion>
   );
 }
 

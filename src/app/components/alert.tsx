@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { CircleCheck, TriangleAlert, CircleX, Info, type LucideIcon } from 'lucide-react';
 import hds from '../design-system/tokens';
@@ -84,50 +84,62 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
   const productiveMotion = useHdsMotion('productive');
 
   return (
-    <motion.div
-      ref={ref}
-      // Urgent tones interrupt (assertive); info and success are polite status
-      // messages, not alerts (hds#522).
-      role={tone === 'danger' || tone === 'warning' ? 'alert' : 'status'}
-      initial={{ opacity: 0, y: -4 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
-      data-size={size}
-      className={cn(alertVariants({ tone, hasTitle, size }))}
-    >
-      <Icon
-        icon={IconGlyph}
-        size="small"
-        color={colorVar}
-        weight="light"
-        className={cn(
-          'shrink-0',
-          // With a title, centre the 16px icon on the title's first line (titleSm size × leading, hds#847).
-          hasTitle
-            ? 'self-start mt-[calc((var(--semantic-typography-titleSm-font-size)*var(--semantic-typography-titleSm-line-height)-var(--semantic-size-icon-sm))/2)]'
-            : 'self-center',
-        )}
-      />
+    <LazyMotion features={domAnimation}>
+      <m.div
+        ref={ref}
+        // Urgent tones interrupt (assertive); info and success are polite status
+        // messages, not alerts (hds#522).
+        role={tone === 'danger' || tone === 'warning' ? 'alert' : 'status'}
+        initial={{ opacity: 0, y: -4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: productiveMotion.duration, ease: productiveMotion.easing }}
+        data-size={size}
+        className={cn(alertVariants({ tone, hasTitle, size }))}
+      >
+        <Icon
+          icon={IconGlyph}
+          size="small"
+          color={colorVar}
+          weight="light"
+          className={cn(
+            'shrink-0',
+            // With a title, centre the 16px icon on the title's first line (titleSm size × leading, hds#847).
+            hasTitle
+              ? 'self-start mt-[calc((var(--semantic-typography-titleSm-font-size)*var(--semantic-typography-titleSm-line-height)-var(--semantic-size-icon-sm))/2)]'
+              : 'self-center',
+          )}
+        />
 
-      {hasTitle ? (
-        // #226: title and body were adjacent inline `<span>`s with nothing
-        // between them, so every alert read as one run-on string ("InfoOne
-        // accent, used once."). Stacking them in a flex column — same pattern
-        // segmented-control.tsx uses for its own label+description pair —
-        // makes the title its own block instead of an inline sibling, with
-        // spacing from a semantic token rather than a literal.
-        // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic subgrid-hairline gap; var()-based, no Tailwind-theme utility exists
-        <span className="flex flex-col gap-[var(--semantic-space-subgrid-hairline)]">
-          {/* The title is a heading: the titleSm role brings the Sora face and its 700 weight (hds#847). */}
-          <span
-            style={{
-              ...hds.typeStyles.titleSm,
-              color: 'var(--semantic-color-content-primary)',
-              margin: 0,
-            }}
-          >
-            {title}
+        {hasTitle ? (
+          // #226: title and body were adjacent inline `<span>`s with nothing
+          // between them, so every alert read as one run-on string ("InfoOne
+          // accent, used once."). Stacking them in a flex column — same pattern
+          // segmented-control.tsx uses for its own label+description pair —
+          // makes the title its own block instead of an inline sibling, with
+          // spacing from a semantic token rather than a literal.
+          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- semantic subgrid-hairline gap; var()-based, no Tailwind-theme utility exists
+          <span className="flex flex-col gap-[var(--semantic-space-subgrid-hairline)]">
+            {/* The title is a heading: the titleSm role brings the Sora face and its 700 weight (hds#847). */}
+            <span
+              style={{
+                ...hds.typeStyles.titleSm,
+                color: 'var(--semantic-color-content-primary)',
+                margin: 0,
+              }}
+            >
+              {title}
+            </span>
+            <span
+              style={{
+                ...hds.typeStyles.caption,
+                color: 'var(--semantic-color-content-primary)',
+                margin: 0,
+              }}
+            >
+              {children}
+            </span>
           </span>
+        ) : (
           <span
             style={{
               ...hds.typeStyles.caption,
@@ -137,18 +149,8 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
           >
             {children}
           </span>
-        </span>
-      ) : (
-        <span
-          style={{
-            ...hds.typeStyles.caption,
-            color: 'var(--semantic-color-content-primary)',
-            margin: 0,
-          }}
-        >
-          {children}
-        </span>
-      )}
-    </motion.div>
+        )}
+      </m.div>
+    </LazyMotion>
   );
 });

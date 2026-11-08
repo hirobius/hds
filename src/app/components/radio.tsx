@@ -19,7 +19,7 @@
 
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { useHdsMotion } from '../hooks/useHdsMotion';
@@ -210,33 +210,35 @@ export const Radio = /* @__PURE__ */ forwardRef<HTMLInputElement, RadioProps>(fu
         className={cn('hds-focus', radioInputVariants({ state: visualState }))}
         {...rest}
       />
-      <motion.span
-        aria-hidden="true"
-        className={radioRingVariants({ state: visualState, on: checked })}
-        animate={{
-          scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1,
-        }}
-        transition={{
-          duration: productiveMotion.duration,
-          ease: productiveMotion.easing,
-        }}
-        style={{
-          transition: CONTROL_COLOR_FADE,
-        }}
-      >
-        {checked && (
-          <motion.span
-            initial={{ scale: 0.4, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.4, opacity: 0 }}
-            transition={{
-              duration: expressiveMotion.duration,
-              ease: productiveMotion.easing,
-            }}
-            className={radioDotVariants({ disabled: isDisabled })}
-          />
-        )}
-      </motion.span>
+      <LazyMotion features={domAnimation}>
+        <m.span
+          aria-hidden="true"
+          className={radioRingVariants({ state: visualState, on: checked })}
+          animate={{
+            scale: isPressed ? 0.94 : isHover || isFocused ? 1.04 : 1,
+          }}
+          transition={{
+            duration: productiveMotion.duration,
+            ease: productiveMotion.easing,
+          }}
+          style={{
+            transition: CONTROL_COLOR_FADE,
+          }}
+        >
+          {checked && (
+            <m.span
+              initial={{ scale: 0.4, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.4, opacity: 0 }}
+              transition={{
+                duration: expressiveMotion.duration,
+                ease: productiveMotion.easing,
+              }}
+              className={radioDotVariants({ disabled: isDisabled })}
+            />
+          )}
+        </m.span>
+      </LazyMotion>
       <ControlLabelText pressed={isPressed} disabled={isDisabled}>
         {label}
       </ControlLabelText>
