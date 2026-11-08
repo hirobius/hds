@@ -1,9 +1,11 @@
 /**
  * Raised edges (hds#897, C2): every hard "raised" edge is its item's own fill stepped
  * DARKER, same hue, C ×0.7225. Light: OKLCH L −0.12. Dark: L drops a third of the way to
- * the card (surface.raised), at least 0.03, so a dark edge never glows lighter than its
- * fill. The shipped --hds-edge-* values in tokens.generated.css / accents.css must equal
- * that rule applied to today's fill tokens.
+ * the card (surface.raised), at least 0.03. A Button's computed edge also keeps a 2:1 floor
+ * against its fill (hds#1387): it steps further darker, or lighter when the fill is too dark
+ * for that (the near-black light primary, whose C2 edge sat at 1.16:1 and read flat). The
+ * shipped --hds-edge-* values in tokens.generated.css / accents.css must equal that rule
+ * applied to today's fill tokens.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -11,6 +13,8 @@ import { resolve } from 'node:path';
 import {
   EDGE_COMPUTED_TOKENS,
   EDGE_FILLS,
+  EDGE_FLOORED,
+  EDGE_FLOOR_CONTRAST,
   EDGE_MIN_CONTRAST,
   EDGE_TOKEN_FILLS,
   EDGE_TOKENS,
@@ -48,13 +52,41 @@ function shipped(mode: Mode): Record<string, string> {
   );
 }
 
+/** WCAG 2 contrast, written out independently of the generator. */
+function ratio(a: string, b: string): number {
+  const lum = (hex: string) => {
+    const [r, g, bl] = [1, 3, 5].map((i) => {
+      const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
 /** The rule, written out independently of the generator. */
 function expected(tree: object, key: string, mode: Mode): string {
   const f = toOklch(resolveColor(tree, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode));
-  if (mode === 'Light') return oklchToHex({ l: f.l - 0.12, c: f.c * 0.7225, h: f.h });
-  const card = hexToOklch(resolveHex(tree, 'semantic.color.surface.raised', mode));
-  const dl = Math.max((f.l - card.l) / 3, 0.03);
-  return oklchToHex({ l: f.l - dl, c: f.c * 0.7225, h: f.h });
+  const card =
+    mode === 'Dark' ? hexToOklch(resolveHex(tree, 'semantic.color.surface.raised', mode)) : null;
+  const dl = card ? Math.max((f.l - card.l) / 3, 0.03) : 0.12;
+  const at = (l: number) => oklchToHex({ l, c: f.c * 0.7225, h: f.h });
+  if (!['primary'].includes(key)) return at(f.l - dl);
+  // hds#1387 floor: the C2 step if it keeps 2:1, else the nearest darker lightness that
+  // does, else (a fill too dark) the nearest lighter one.
+  const fill = oklchToHex(f);
+  const ok = (l: number) => ratio(fill, at(l)) >= 2;
+  if (ok(f.l - dl)) return at(f.l - dl);
+  const search = (pass: number, fail: number) => {
+    for (let i = 0; i < 40; i += 1) {
+      const mid = (pass + fail) / 2;
+      if (ok(mid)) pass = mid;
+      else fail = mid;
+    }
+    return at(pass);
+  };
+  return ok(0) ? search(0, f.l - dl) : search(1, f.l);
 }
 
 /** Each sRGB channel within `tol` of the target (the C2 reference values are "≈"). */
@@ -92,18 +124,30 @@ describe.each(MODES)('raised edges (%s)', (mode) => {
     expect(shipped(mode)[key]).toBe(expected(raw, key, mode));
   });
 
-  it.each(KEYS)('%s: the edge is darker than its fill (never a lighter rim)', (key) => {
-    const fill = toOklch(resolveColor(raw, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode));
-    const edge = hexToOklch(shipped(mode)[key]);
-    expect(edge.l).toBeLessThan(fill.l - 0.02);
-    if (mode === 'Light') expect(edge.l).toBeCloseTo(fill.l - 0.12, 2);
+  it.each(KEYS.filter((k) => !EDGE_FLOORED.includes(k)))(
+    '%s: the edge is the plain C2 step, darker than its fill',
+    (key) => {
+      const fill = toOklch(resolveColor(raw, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode));
+      const edge = hexToOklch(shipped(mode)[key]);
+      expect(edge.l).toBeLessThan(fill.l - 0.02);
+      if (mode === 'Light') expect(edge.l).toBeCloseTo(fill.l - 0.12, 2);
+    },
+  );
+
+  // hds#1387: the light primary's C2 edge was 1.16:1 against its near-black fill, so the
+  // button read flat. Every Button edge must be visible against the fill it sits under.
+  it.each(EDGE_FLOORED)('%s: keeps the 2:1 floor against its fill', (key) => {
+    const fill = resolveHex(raw, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode);
+    expect(EDGE_FLOOR_CONTRAST).toBe(2);
+    expect(ratio(fill, shipped(mode)[key])).toBeGreaterThanOrEqual(2);
   });
 });
 
-// Primary edges follow the graphite fill, near-black / near-white since hds#887.
+// Primary edges follow the graphite fill, near-black / near-white since hds#887. Light is a
+// lighter lip under the near-black fill (hds#1387); dark is the plain C2 step.
 describe('C2 reference edges (graphite defaults)', () => {
-  it('light: primary ≈ #010207', () => {
-    near(shipped('Light').primary, '#010207', 1);
+  it('light: primary ≈ #424a56', () => {
+    near(shipped('Light').primary, '#424a56', 1);
   });
   it('dark: primary ≈ #a5a6a9', () => {
     near(shipped('Dark').primary, '#a5a6a9');
@@ -128,7 +172,7 @@ describe('accent themes re-derive the primary edge', () => {
 describe('wiring', () => {
   it('Button and Kbd default their hooks to the own-colour edge; shadow.hard stays exported', () => {
     expect(theme.replace(/\s+/g, ' ')).toContain(
-      '0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
+      '0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
     );
     expect(theme.replace(/\s+/g, ' ').replace(/\( | \)/g, (m) => m.trim())).toContain(
       'var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)))',
@@ -206,7 +250,7 @@ describe('computed edges that ship as tokens', () => {
     expect(EDGE_COMPUTED_TOKENS.primary).toBe('semantic.color.edge.primary');
     const hex = (mode: Mode) => resolveHex(raw, EDGE_COMPUTED_TOKENS.primary, mode);
     expect({ Light: hex('Light'), Dark: hex('Dark') }).toEqual({
-      Light: '#010207',
+      Light: '#424a56',
       Dark: '#a5a6a9',
     });
     for (const mode of MODES) expect(hex(mode)).toBe(expected(raw, 'primary', mode));

@@ -808,14 +808,14 @@ describe('delta.js for the real model (the library pushed from main, then a chan
     expect(committedPlanLine(s)).toBe(NOTHING_LINE);
   });
 
-  it('the 19-variable Primitives space/* rename (hds#206 item 2) returns at most 15,000 chars, inline', async () => {
+  it('the 20-variable Primitives space/* rename (hds#206 item 2; space/px3 joined in hds#1387) returns at most 15,000 chars, inline', async () => {
     const spaces = collectionOf(real, 'primitive').variables.filter((v) =>
       v.name.startsWith('space/'),
     );
     expect(
       spaces,
       'the case hds#397 measured: re-point this test if the space scale was renamed',
-    ).toHaveLength(19);
+    ).toHaveLength(20);
     // Each step renamed to its pixel value, as TOKEN_MIGRATION.md would record it.
     const renames = Object.fromEntries(
       spaces.map((v) => [
@@ -823,7 +823,7 @@ describe('delta.js for the real model (the library pushed from main, then a chan
         `primitive.space-px.${String(v.valuesByMode.Default.value).replace('.', '_')}`,
       ]),
     );
-    expect(new Set(Object.values(renames)).size).toBe(19);
+    expect(new Set(Object.values(renames)).size).toBe(20);
     const renamed = (model) => {
       const to = (path) => renames[path] || path;
       model.collections.forEach((c) =>
@@ -846,7 +846,7 @@ describe('delta.js for the real model (the library pushed from main, then a chan
       return model;
     };
     const s = await pending({ base: real, edit: renamed, renames });
-    expect(s.built.line).toBe('updated 19 · created 0 · deleted 0');
+    expect(s.built.line).toBe('updated 20 · created 0 · deleted 0');
     expect(s.built.chars).toBeLessThanOrEqual(45000);
     const read = await runDelta(s.built.text, s.figma);
     expect(JSON.stringify(read).length).toBeLessThanOrEqual(15000);

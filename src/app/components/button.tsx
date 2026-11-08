@@ -70,6 +70,9 @@ import { installWipeListeners } from './button-wipe';
 // heights (and the icon-only width) bind `size.<s>.height`, and the label weight binds
 // `component.button.fontWeight`, which beats the hds-type-* role's weight (utilities layer, hds#760).
 // binding-ok: button.focus.gapRadius drawn by the .hds-focus outline, which follows the button radius (radius + semantic.focus.gap.width); the token is the Figma binding
+// binding-ok: button.depth.edge drawn by theme.css .hds-btn-hard (edge height and hit band, hds#1387)
+// binding-ok: button.depth.hoverOffset drawn by theme.css .hds-btn-hard:hover (face travel, hds#1387)
+// binding-ok: button.depth.pressedOffset drawn by theme.css .hds-btn-hard:active (face travel, hds#1387)
 // binding-ok: button.focus.ringRadius drawn by the .hds-focus outline (radius + gap + semantic.focus.ring.width); the token is the Figma binding
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- compound transition list (no single utility for transition-[colors,filter]), the 9999px inset-shadow pressed wash, and content-disabled (no named utility; var()-based, token-driven)
 const buttonVariants = /* @__PURE__ */ cva(
@@ -84,7 +87,8 @@ const buttonVariants = /* @__PURE__ */ cva(
         secondary:
           'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground hover:bg-[color:var(--component-button-secondary-bg-hover)] active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent',
         // Ghost (C2): transparent at rest, no edge and no movement (shadow is forced off
-        // below); component.button.tertiary.bg.hover (surface.hover) on hover and, in the
+        // below). The one deliberate flat exception (hds#1387): an edge needs a fill to sit
+        // under, and a ghost's job is to recede beside raised actions; component.button.tertiary.bg.hover (surface.hover) on hover and, in the
         // neutral tone, the deeper .pressed (surface.soft) on press, wash swapped out like
         // secondary (the compoundVariants: quiet keeps the base wash instead).
         tertiary: 'text-foreground hover:bg-[color:var(--component-button-tertiary-bg-hover)]',
@@ -146,8 +150,10 @@ const buttonVariants = /* @__PURE__ */ cva(
         wipe: 'hds-btn-wipe relative isolate',
       },
       // Hard (zero-blur) edge, theme.css `.hds-btn-hard` (hds#888, C2 fixed base): the face
-      // sinks 1px on hover and 3px on press while the edge under it shrinks by the same
-      // amount, so the button compresses (hds#1196). `none` opts out. Tertiary (ghost) never takes it.
+      // sinks component.button.depth.hoverOffset (1px) on hover and .pressedOffset (3px) on
+      // press while the edge (.edge, 3px) shrinks by the same amount, so the button
+      // compresses (hds#1196, one token set since hds#1387). `none` opts out. Tertiary
+      // (ghost) and link never take it.
       shadow: {
         hard: 'hds-btn-hard',
         none: '',
@@ -236,7 +242,7 @@ export interface ButtonProps
   variant?: ButtonVariantProps['variant'];
   /** `wipe` (default) slides the hover fill in from the pointer's edge; `none` changes it in place. */
   hoverEffect?: 'none' | 'wipe';
-  /** `hard` (default) draws the zero-blur shadow on primary and secondary; `none` opts out. Tertiary never has one. Its colour is the button's own fill stepped darker (`--hds-btn-edge` overrides it). */
+  /** `hard` (default) raises every filled Button (primary, secondary, each tone, toggles, icon-only) on one edge and press depth, `component.button.depth.*`; `none` opts out. Tertiary (ghost) and link never have one. Its colour is the `component.button.edge.*` token for the variant or tone (`--hds-btn-edge` overrides it). */
   shadow?: 'hard' | 'none';
   /** Drop the inline padding (tertiary), so a back link's icon lines up with the heading below it. The height stays. */
   flush?: boolean;

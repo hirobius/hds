@@ -148,6 +148,7 @@ declare module 'react' {
     '--primitive-space-32'?: string | undefined;
     '--primitive-space-px1'?: string | undefined;
     '--primitive-space-px2'?: string | undefined;
+    '--primitive-space-px3'?: string | undefined;
     '--primitive-space-px6'?: string | undefined;
     '--primitive-space-px10'?: string | undefined;
     '--primitive-blur-2'?: string | undefined;
@@ -610,6 +611,9 @@ declare module 'react' {
     '--component-button-edge-success'?: string | undefined;
     '--component-button-edge-warning'?: string | undefined;
     '--component-button-edge-info'?: string | undefined;
+    '--component-button-depth-edge'?: string | undefined;
+    '--component-button-depth-hoverOffset'?: string | undefined;
+    '--component-button-depth-pressedOffset'?: string | undefined;
     '--component-button-text'?: string | undefined;
     '--component-button-radius'?: string | undefined;
     '--component-button-focus-gapRadius'?: string | undefined;

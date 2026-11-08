@@ -179,7 +179,6 @@ export function AppShell({
               variant="tertiary"
               size="sm"
               iconOnly
-              shadow="none"
               label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               aria-expanded={!collapsed}
               aria-controls={navId}
@@ -193,7 +192,6 @@ export function AppShell({
                   variant="tertiary"
                   size="sm"
                   iconOnly
-                  shadow="none"
                   label="Open menu"
                   iconLeft={<Icon icon={Menu} size="small" />}
                 />

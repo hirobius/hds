@@ -287,7 +287,6 @@ export function CodeBlock({
         variant="secondary"
         size="sm"
         iconOnly
-        shadow="none"
         label={copied ? 'Copied' : 'Copy code'}
         iconLeft={<CopyIcon copied={copied} swapped={swapped} />}
         onClick={handleCopy}

@@ -54,7 +54,7 @@
   --semantic-focus-ring-color: var(
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --hds-edge-primary: #4b2c90; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primary: #3e1b7f; /* css-ok: raised edge (hds#897) */
 }
 [data-brand='accent-lilac'][data-theme='dark'],
 [data-tenant='accent-lilac'][data-theme='dark'] {
@@ -79,7 +79,6 @@
   --semantic-color-content-accent: var(
     --primitive-color-lilac-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --hds-edge-primary: #533699; /* css-ok: raised edge (hds#897) */
 }
 
 /* ── brutalist-demo ────────────────────────────────────────────────────── */

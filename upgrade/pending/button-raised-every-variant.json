@@ -1,0 +1,16 @@
+{
+  "impact": "look",
+  "plain": "Primary Buttons in light mode now show a visible bottom edge, so check screens that set their own Button shadow or --hds-btn-edge.",
+  "steps": [
+    {
+      "id": "look/button-raised-edge",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The light primary Button edge is now a lighter lip (#424a56) instead of near-black, and Pagination's current page and CodeBlock's copy button are raised; if you override --hds-edge-primary or --hds-btn-edge, check that your value still shows against the fill.",
+      "detect": {
+        "cssVars": ["--hds-edge-primary", "--hds-btn-edge", "--component-button-edge-primary"],
+        "cssVarWrites": ["--hds-edge-primary", "--hds-btn-edge"]
+      }
+    }
+  ]
+}

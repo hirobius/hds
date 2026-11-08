@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-06T21:01:06.398Z",
+  "generated": "2026-11-08T10:31:46.783Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13931,6 +13931,13 @@
         "value": "2px"
       },
       {
+        "path": "primitive.space.px3",
+        "cssVar": "--primitive-space-px3",
+        "type": "dimension",
+        "description": "3px: the raised edge height of a Button (hds#1387).",
+        "value": "3px"
+      },
+      {
         "path": "primitive.space.px6",
         "cssVar": "--primitive-space-px6",
         "type": "dimension",
@@ -15249,8 +15256,8 @@
         "path": "semantic.color.edge.primary",
         "cssVar": "--semantic-color-edge-primary",
         "type": "color",
-        "description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
-        "value": "oklch(0.0875 0.0215 266.83)",
+        "description": "Primary Button raised edge, computed by scripts/lib/raised-edge.mjs (#424a56 light, #a5a6a9 dark): the fill stepped darker, or lighter when darker cannot keep 2:1 against the near-black light fill (hds#1387); build fails on drift.",
+        "value": "oklch(0.4066 0.0227 258.37)",
         "dark": {
           "alias": "oklch(0.7253 0.0044 271.35)",
           "resolvedValue": "oklch(0.7253 0.0044 271.35)"
@@ -16956,7 +16963,7 @@
         "type": "color",
         "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
         "alias": "{semantic.color.edge.primary}",
-        "resolvedValue": "oklch(0.0875 0.0215 266.83)"
+        "resolvedValue": "oklch(0.4066 0.0227 258.37)"
       },
       {
         "path": "component.button.edge.secondary",
@@ -16997,6 +17004,30 @@
         "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897).",
         "alias": "{semantic.color.edge.info}",
         "resolvedValue": "oklch(0.70 0.2903 266.54)"
+      },
+      {
+        "path": "component.button.depth.edge",
+        "cssVar": "--component-button-depth-edge",
+        "type": "dimension",
+        "description": "Height of the hard raised edge under a Button at rest (3px). The face sinks onto it, so the edge shrinks by the face offset.",
+        "alias": "{primitive.space.px3}",
+        "resolvedValue": "3px"
+      },
+      {
+        "path": "component.button.depth.hoverOffset",
+        "cssVar": "--component-button-depth-hoverOffset",
+        "type": "dimension",
+        "description": "How far the Button face sinks on hover (1px); the edge shrinks by the same amount.",
+        "alias": "{primitive.space.px1}",
+        "resolvedValue": "1px"
+      },
+      {
+        "path": "component.button.depth.pressedOffset",
+        "cssVar": "--component-button-depth-pressedOffset",
+        "type": "dimension",
+        "description": "How far the Button face sinks on press (3px, the full edge height): the edge drops to 0.",
+        "alias": "{primitive.space.px3}",
+        "resolvedValue": "3px"
       },
       {
         "path": "component.button.text",
