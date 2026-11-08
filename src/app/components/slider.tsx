@@ -17,7 +17,7 @@
  */
 
 import { useId, useState, forwardRef } from 'react';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { FORM_CONTROL_WIDTH } from './form-control';
@@ -66,59 +66,63 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
         >
           {label}
         </label>
-        <motion.span
-          key={value}
-          className="text-muted-foreground shrink-0"
-          initial={{ opacity: 0.72, y: hds.semantic.space.subgrid.xs }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: productiveMotion.duration,
-            ease: productiveMotion.easing,
-          }}
-          style={{ ...hds.typeStyles.mono }}
-        >
-          {value}
-        </motion.span>
-      </div>
-      {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven height; var()-based, no Tailwind-theme utility exists */}
-      <motion.div className="relative h-[var(--semantic-size-control-md)] hds-touch-row grid items-center">
-        <div
-          aria-hidden="true"
-          // A bare track, not a padded Surface: Surface's inset padding made the track a 48px slab with a 0px fill (hds#522).
-          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven inset/height/color; var()-based, no Tailwind-theme utility exists
-          className="absolute [inset-inline:0] top-1/2 h-[var(--semantic-size-control-sm)] -translate-y-1/2 rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-border-default)] overflow-hidden" // tier-ok: radius-full is the "fully round" constant
-        >
-          <motion.div
-            animate={{
-              width: progressPercent,
-              opacity: isActive ? 1 : 0.92,
-            }}
+        <LazyMotion features={domAnimation}>
+          <m.span
+            key={value}
+            className="text-muted-foreground shrink-0"
+            initial={{ opacity: 0.72, y: hds.semantic.space.subgrid.xs }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{
-              duration: expressiveMotion.duration,
+              duration: productiveMotion.duration,
               ease: productiveMotion.easing,
             }}
-            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/color; var()-based, no Tailwind-theme utility exists
-            className="h-full rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-accent)]" // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186
+            style={{ ...hds.typeStyles.mono }}
+          >
+            {value}
+          </m.span>
+        </LazyMotion>
+      </div>
+      <LazyMotion features={domAnimation}>
+        {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven height; var()-based, no Tailwind-theme utility exists */}
+        <m.div className="relative h-[var(--semantic-size-control-md)] hds-touch-row grid items-center">
+          <div
+            aria-hidden="true"
+            // A bare track, not a padded Surface: Surface's inset padding made the track a 48px slab with a 0px fill (hds#522).
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven inset/height/color; var()-based, no Tailwind-theme utility exists
+            className="absolute [inset-inline:0] top-1/2 h-[var(--semantic-size-control-sm)] -translate-y-1/2 rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-border-default)] overflow-hidden" // tier-ok: radius-full is the "fully round" constant
+          >
+            <m.div
+              animate={{
+                width: progressPercent,
+                opacity: isActive ? 1 : 0.92,
+              }}
+              transition={{
+                duration: expressiveMotion.duration,
+                ease: productiveMotion.easing,
+              }}
+              // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven radius/color; var()-based, no Tailwind-theme utility exists
+              className="h-full rounded-[var(--primitive-radius-full)] bg-[var(--semantic-color-surface-accent)]" // tier-ok: radius-full (9999px) is the mathematical "fully round" constant — one possible value, not a design-scale choice. hds#186
+            />
+          </div>
+          <input
+            ref={ref}
+            id={inputId}
+            type="range"
+            aria-valuetext={valueText}
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(e) => onChange(Number(e.target.value))}
+            onPointerDown={() => setIsActive(true)}
+            onPointerUp={() => setIsActive(false)}
+            onPointerCancel={() => setIsActive(false)}
+            onBlur={() => setIsActive(false)}
+            // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven accent-color/z-index; var()-based, no Tailwind-theme utility exists
+            className="hds-focus hds-touch-row hds-slider-input w-full h-full block m-0 bg-transparent accent-[var(--semantic-color-surface-accent)] cursor-pointer relative z-[var(--semantic-zIndex-control)]"
           />
-        </div>
-        <input
-          ref={ref}
-          id={inputId}
-          type="range"
-          aria-valuetext={valueText}
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          onPointerDown={() => setIsActive(true)}
-          onPointerUp={() => setIsActive(false)}
-          onPointerCancel={() => setIsActive(false)}
-          onBlur={() => setIsActive(false)}
-          // eslint-disable-next-line tailwindcss/no-arbitrary-value -- token-driven accent-color/z-index; var()-based, no Tailwind-theme utility exists
-          className="hds-focus hds-touch-row hds-slider-input w-full h-full block m-0 bg-transparent accent-[var(--semantic-color-surface-accent)] cursor-pointer relative z-[var(--semantic-zIndex-control)]"
-        />
-      </motion.div>
+        </m.div>
+      </LazyMotion>
     </div>
   );
 });

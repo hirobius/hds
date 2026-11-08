@@ -51,8 +51,8 @@ rmSync(PROBE_DIR, { recursive: true, force: true });
 mkdirSync(PROBE_DIR, { recursive: true });
 writeFileSync(ENTRY, "export { Button } from '../hirobius-ui.js';\n");
 
-let esbuildProbe;
-try {
+/** Bundle `entry` the way a consumer's bundler would (rollup, minified, react external). */
+async function rollupProbe(entry, fileName) {
   await build({
     root: ROOT,
     configFile: false,
@@ -63,7 +63,7 @@ try {
       emptyOutDir: false,
       minify: 'esbuild',
       cssCodeSplit: false,
-      lib: { entry: ENTRY, formats: ['es'], fileName: () => 'button-only.js' },
+      lib: { entry, formats: ['es'], fileName: () => fileName },
       rollupOptions: {
         external: [/^react($|\/)/, /^react-dom($|\/)/],
         output: { inlineDynamicImports: true },
@@ -74,6 +74,11 @@ try {
       },
     },
   });
+}
+
+let esbuildProbe;
+try {
+  await rollupProbe(ENTRY, 'button-only.js');
   console.log(
     'build-button-probe — wrote dist/probe/button-only.js (rollup; size-limit measures it)',
   );
@@ -93,6 +98,21 @@ try {
   );
 } finally {
   rmSync(ENTRY, { force: true });
+}
+
+// Consumer-entry probe (hds#1386): Toast + Alert + Disclosure from the root,
+// the import Roleflame measured. All three animate with motion/react, so this
+// budget fails if one of them goes back to the full `motion` component.
+const CONSUMER_ENTRY = join(PROBE_DIR, 'consumer-entry.js');
+writeFileSync(
+  CONSUMER_ENTRY,
+  "export { ToastProvider, useToast, Alert, Disclosure } from '../hirobius-ui.js';\n",
+);
+try {
+  await rollupProbe(CONSUMER_ENTRY, 'toast-alert-disclosure.js');
+  console.log('build-button-probe — wrote dist/probe/toast-alert-disclosure.js (rollup)');
+} finally {
+  rmSync(CONSUMER_ENTRY, { force: true });
 }
 
 // Entry-graph probes (hds#1145): dist/<entry>.js is only re-exports since the

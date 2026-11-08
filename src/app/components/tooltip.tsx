@@ -19,7 +19,7 @@
  * handler is provided — no per-call configuration needed at the call site.
  */
 
-import { motion, AnimatePresence } from 'motion/react';
+import { LazyMotion, domAnimation, m, AnimatePresence } from 'motion/react';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { hdsDomPortal as CursorPortal } from '../context/hds-portal';
@@ -63,7 +63,7 @@ function Pill({ label }: { label: string }) {
   const productiveMotion = useHdsMotion('productive');
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, scale: 0.82 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.82 }}
@@ -74,7 +74,7 @@ function Pill({ label }: { label: string }) {
           <span>{label}</span>
         </Stack>
       </Surface>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -82,45 +82,49 @@ export function ExpandTooltip({ visible, mode, label = 'Expand', x = 0, y = 0 }:
   if (mode === 'cursor') {
     return (
       <CursorPortal>
-        <AnimatePresence>
-          {visible && (
-            <Stack
-              gap="xs"
-              style={{
-                position: 'fixed',
-                left: x,
-                top: y,
-                zIndex: hds.zIndex.modal,
-                transform: 'translate(14px, -50%)',
-                pointerEvents: 'none',
-              }}
-            >
-              <Pill label={label} />
-            </Stack>
-          )}
-        </AnimatePresence>
+        <LazyMotion features={domAnimation}>
+          <AnimatePresence>
+            {visible && (
+              <Stack
+                gap="xs"
+                style={{
+                  position: 'fixed',
+                  left: x,
+                  top: y,
+                  zIndex: hds.zIndex.modal,
+                  transform: 'translate(14px, -50%)',
+                  pointerEvents: 'none',
+                }}
+              >
+                <Pill label={label} />
+              </Stack>
+            )}
+          </AnimatePresence>
+        </LazyMotion>
       </CursorPortal>
     );
   }
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <Grid
-          columns={1}
-          gap="tight"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            alignItems: 'center',
-            justifyItems: 'center',
-            pointerEvents: 'none',
-            zIndex: hds.zIndex.focus,
-          }}
-        >
-          <Pill label={label} />
-        </Grid>
-      )}
-    </AnimatePresence>
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence>
+        {visible && (
+          <Grid
+            columns={1}
+            gap="tight"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              alignItems: 'center',
+              justifyItems: 'center',
+              pointerEvents: 'none',
+              zIndex: hds.zIndex.focus,
+            }}
+          >
+            <Pill label={label} />
+          </Grid>
+        )}
+      </AnimatePresence>
+    </LazyMotion>
   );
 }

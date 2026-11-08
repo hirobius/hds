@@ -9,7 +9,7 @@ import { resolve } from 'path';
 import { resolveAlias } from '../../../scripts/lib/token-tree.mjs';
 
 /** The repo root, for tests that read committed files. */
-export const ROOT = resolve(__dirname, '../../..');
+const ROOT = resolve(__dirname, '../../..');
 
 /** A committed file's text, by its path from the repo root. */
 export function repoFile(relPath: string): string {

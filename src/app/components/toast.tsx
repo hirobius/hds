@@ -45,7 +45,7 @@
 
 import * as React from 'react';
 import * as ToastPrimitive from '@radix-ui/react-toast';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Info, CircleCheck, TriangleAlert, CircleX, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -177,72 +177,74 @@ export function ToastProvider({
     <ToastContext.Provider value={value}>
       <ToastPrimitive.Provider duration={duration} swipeDirection={swipeDirection}>
         {children}
-        {toasts.map((t) => {
-          const tone = t.tone ?? 'neutral';
-          return (
-            <ToastPrimitive.Root
-              key={t.id}
-              asChild
-              duration={t.duration ?? duration}
-              onOpenChange={(open) => {
-                if (!open) remove(t.id);
-              }}
-              className={cn(
-                'hds-toast pointer-events-auto relative flex w-full items-start gap-fixed-xs',
-                // Not `p-4 pr-8`: utilities.css ships an unlayered .p-4 that beat pr-8, so the text ran under
-                // the X at every width. Below sm the dismiss button grows to its 44px touch target
-                // (right-2 + 44px = 52px), so the text column steps in to 64px there (on the spacing grid).
-                'rounded-md border border-border bg-popover py-fixed-sm pl-fixed-sm pr-fixed-lg max-sm:pr-16',
-                'text-popover-foreground shadow-overlay hds-focus',
-              )}
-            >
-              <motion.li
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: productiveMotion.duration,
-                  ease: productiveMotion.easing,
+        <LazyMotion features={domAnimation}>
+          {toasts.map((t) => {
+            const tone = t.tone ?? 'neutral';
+            return (
+              <ToastPrimitive.Root
+                key={t.id}
+                asChild
+                duration={t.duration ?? duration}
+                onOpenChange={(open) => {
+                  if (!open) remove(t.id);
                 }}
+                className={cn(
+                  'hds-toast pointer-events-auto relative flex w-full items-start gap-fixed-xs',
+                  // Not `p-4 pr-8`: utilities.css ships an unlayered .p-4 that beat pr-8, so the text ran under
+                  // the X at every width. Below sm the dismiss button grows to its 44px touch target
+                  // (right-2 + 44px = 52px), so the text column steps in to 64px there (on the spacing grid).
+                  'rounded-md border border-border bg-popover py-fixed-sm pl-fixed-sm pr-fixed-lg max-sm:pr-16',
+                  'text-popover-foreground shadow-overlay hds-focus',
+                )}
               >
-                <Icon
-                  icon={TONE_ICON[tone]}
-                  size="small"
-                  color="currentColor"
-                  className={toastIconVariants({ tone })}
-                  aria-hidden
-                />
-                <div className="flex min-w-0 flex-col gap-fixed-2xs">
-                  <ToastPrimitive.Title className="hds-type-ui">{t.title}</ToastPrimitive.Title>
-                  {t.description ? (
-                    <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
-                      {t.description}
-                    </ToastPrimitive.Description>
-                  ) : null}
-                  {t.actions?.length ? (
-                    <div className="flex flex-wrap gap-scale-xs pt-fixed-2xs">
-                      {t.actions.map((a, i) => (
-                        <ToastPrimitive.Action key={i} altText={a.altText ?? a.label} asChild>
-                          <Button size="sm" variant="secondary" onClick={a.onSelect}>
-                            {a.label}
-                          </Button>
-                        </ToastPrimitive.Action>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-                <ToastPrimitive.Close
-                  aria-label="Dismiss"
-                  className={cn(
-                    'absolute right-2 top-2 inline-flex size-6 hds-touch-target items-center justify-center',
-                    'rounded-sm text-muted-foreground transition-colors hover:text-foreground hds-focus',
-                  )}
+                <m.li
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: productiveMotion.duration,
+                    ease: productiveMotion.easing,
+                  }}
                 >
-                  <Icon icon={X} size="small" color="currentColor" aria-hidden />
-                </ToastPrimitive.Close>
-              </motion.li>
-            </ToastPrimitive.Root>
-          );
-        })}
+                  <Icon
+                    icon={TONE_ICON[tone]}
+                    size="small"
+                    color="currentColor"
+                    className={toastIconVariants({ tone })}
+                    aria-hidden
+                  />
+                  <div className="flex min-w-0 flex-col gap-fixed-2xs">
+                    <ToastPrimitive.Title className="hds-type-ui">{t.title}</ToastPrimitive.Title>
+                    {t.description ? (
+                      <ToastPrimitive.Description className="hds-type-ui text-muted-foreground">
+                        {t.description}
+                      </ToastPrimitive.Description>
+                    ) : null}
+                    {t.actions?.length ? (
+                      <div className="flex flex-wrap gap-scale-xs pt-fixed-2xs">
+                        {t.actions.map((a, i) => (
+                          <ToastPrimitive.Action key={i} altText={a.altText ?? a.label} asChild>
+                            <Button size="sm" variant="secondary" onClick={a.onSelect}>
+                              {a.label}
+                            </Button>
+                          </ToastPrimitive.Action>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                  <ToastPrimitive.Close
+                    aria-label="Dismiss"
+                    className={cn(
+                      'absolute right-2 top-2 inline-flex size-6 hds-touch-target items-center justify-center',
+                      'rounded-sm text-muted-foreground transition-colors hover:text-foreground hds-focus',
+                    )}
+                  >
+                    <Icon icon={X} size="small" color="currentColor" aria-hidden />
+                  </ToastPrimitive.Close>
+                </m.li>
+              </ToastPrimitive.Root>
+            );
+          })}
+        </LazyMotion>
         <ToastPrimitive.Viewport
           className={cn(
             'fixed bottom-0 right-0 z-50 m-0 flex w-full list-none flex-col gap-scale-xs p-fixed-sm',

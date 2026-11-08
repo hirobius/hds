@@ -15,7 +15,7 @@ interface NavOption {
 }
 
 /** Index of the first selectable option, or 0 when none is (nothing to land on). */
-export function firstEnabledIndex(list: readonly NavOption[]): number {
+function firstEnabledIndex(list: readonly NavOption[]): number {
   const i = list.findIndex((o) => !o.disabled);
   return i === -1 ? 0 : i;
 }

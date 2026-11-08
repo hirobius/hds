@@ -4,7 +4,7 @@
  * @usage Show an error with a short message and a Back button, in place or as a full page.
  * @tier template
  */
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m } from 'motion/react';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Button } from './button';
@@ -49,42 +49,44 @@ export function ErrorPattern({
       data-role="error-recovery"
     >
       <Surface padding="component" className="min-w-0 max-w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 2 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: spatialMotion.duration, ease: spatialMotion.easing }}
-        >
-          <Stack gap="normal" style={{ alignItems: 'center', textAlign: 'center' }}>
-            <Text
-              variant="display"
-              as="h1"
-              className="text-foreground"
-              style={{ overflowWrap: 'anywhere' }}
-            >
-              {displayText}
-            </Text>
+        <LazyMotion features={domAnimation}>
+          <m.div
+            initial={{ opacity: 0, y: 2 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: spatialMotion.duration, ease: spatialMotion.easing }}
+          >
+            <Stack gap="normal" style={{ alignItems: 'center', textAlign: 'center' }}>
+              <Text
+                variant="display"
+                as="h1"
+                className="text-foreground"
+                style={{ overflowWrap: 'anywhere' }}
+              >
+                {displayText}
+              </Text>
 
-            <Text
-              variant="title"
-              as="p"
-              className="text-muted-foreground"
-              style={{ overflowWrap: 'anywhere' }}
-            >
-              {message}
-            </Text>
+              <Text
+                variant="title"
+                as="p"
+                className="text-muted-foreground"
+                style={{ overflowWrap: 'anywhere' }}
+              >
+                {message}
+              </Text>
 
-            <Button
-              variant="primary"
-              onClick={() => {
-                // History "back" — router-agnostic and identical to react-router's
-                // navigate(-1) since both drive window.history.
-                if (typeof window !== 'undefined') window.history.back();
-              }}
-            >
-              Back
-            </Button>
-          </Stack>
-        </motion.div>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  // History "back" — router-agnostic and identical to react-router's
+                  // navigate(-1) since both drive window.history.
+                  if (typeof window !== 'undefined') window.history.back();
+                }}
+              >
+                Back
+              </Button>
+            </Stack>
+          </m.div>
+        </LazyMotion>
       </Surface>
     </div>
   );

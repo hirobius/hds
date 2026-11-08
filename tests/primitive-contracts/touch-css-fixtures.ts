@@ -10,10 +10,10 @@ import { resolve } from 'path';
 import { expect } from 'vitest';
 
 export const theme = readFileSync(resolve(__dirname, '../../src/styles/theme.css'), 'utf8');
-export const TOUCH_QUERY = '@media (max-width: 639px), (pointer: coarse)';
+const TOUCH_QUERY = '@media (max-width: 639px), (pointer: coarse)';
 
 /** The text from `from` to the end of the first `{ ... }` block after it. */
-export function block(css: string, from: number): string {
+function block(css: string, from: number): string {
   let depth = 0;
   for (let i = css.indexOf('{', from); i < css.length; i++) {
     if (css[i] === '{') depth++;

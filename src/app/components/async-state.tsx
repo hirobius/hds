@@ -23,7 +23,7 @@
 // overlap at all — the swap is instant and only the live block renders.
 
 import * as React from 'react';
-import { AnimatePresence, motion, useIsPresent } from 'motion/react';
+import { AnimatePresence, LazyMotion, domAnimation, m, useIsPresent } from 'motion/react';
 import { crossfadeFade, useHdsMotion } from '../hooks/useHdsMotion';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { Alert } from './alert';
@@ -160,7 +160,7 @@ function CrossfadeBlock({
     }
   }, [isPresent]);
   return (
-    <motion.div
+    <m.div
       ref={blockRef}
       className="col-start-1 row-start-1"
       data-crossfade-view={statusKey}
@@ -169,7 +169,7 @@ function CrossfadeBlock({
       {...crossfadeFade(productiveMotion)}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -274,11 +274,13 @@ export const AsyncState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Async
           view
         ) : (
           <div className="grid">
-            <AnimatePresence initial={false}>
-              <CrossfadeBlock key={`${status}-${fade.cycle}`} statusKey={status}>
-                {view}
-              </CrossfadeBlock>
-            </AnimatePresence>
+            <LazyMotion features={domAnimation}>
+              <AnimatePresence initial={false}>
+                <CrossfadeBlock key={`${status}-${fade.cycle}`} statusKey={status}>
+                  {view}
+                </CrossfadeBlock>
+              </AnimatePresence>
+            </LazyMotion>
           </div>
         )}
       </div>

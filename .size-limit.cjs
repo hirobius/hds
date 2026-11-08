@@ -259,6 +259,16 @@ module.exports = [
     brotli: false,
   },
   {
+    // hds#1386: the root import Roleflame measured (Toast + Alert + Disclosure,
+    // react external). All three animate through motion/react; the full
+    // `motion` component put this at about 104.6 kB
+    // gzip, `m` + LazyMotion at 86.66 kB (size-limit, 2026-11-08).
+    name: 'Toast + Alert + Disclosure root import (dist/probe/toast-alert-disclosure.js)',
+    path: 'dist/probe/toast-alert-disclosure.js',
+    limit: '90 kB',
+    gzip: true,
+  },
+  {
     name: 'Button-only root import (dist/probe/button-only.js)',
     path: 'dist/probe/button-only.js',
     limit: '78 kB',

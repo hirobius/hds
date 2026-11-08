@@ -10,7 +10,7 @@
  * @a11y consumer recommended Pass a string child when copyable; the text copied is the child.
  */
 import { useState } from 'react';
-import { AnimatePresence, motion, useIsPresent } from 'motion/react';
+import { AnimatePresence, LazyMotion, domAnimation, m, useIsPresent } from 'motion/react';
 import type { CSSProperties, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Copy, Check } from 'lucide-react';
@@ -30,14 +30,14 @@ function CopyGlyph({ copied }: { copied: boolean }) {
   const isPresent = useIsPresent();
   const productiveMotion = useHdsMotion('productive');
   return (
-    <motion.span
+    <m.span
       className="col-start-1 row-start-1 flex"
       data-copy-glyph={copied ? 'check' : 'copy'}
       aria-hidden={!isPresent || undefined}
       {...crossfadeFade(productiveMotion)}
     >
       <Icon icon={copied ? Check : Copy} size="small" />
-    </motion.span>
+    </m.span>
   );
 }
 
@@ -145,9 +145,11 @@ export function InlineCode({
         style={copied ? { color: 'var(--semantic-color-content-accent)' } : undefined}
         iconLeft={
           <span className="grid">
-            <AnimatePresence initial={false}>
-              <CopyGlyph key={copied ? 'check' : 'copy'} copied={copied} />
-            </AnimatePresence>
+            <LazyMotion features={domAnimation}>
+              <AnimatePresence initial={false}>
+                <CopyGlyph key={copied ? 'check' : 'copy'} copied={copied} />
+              </AnimatePresence>
+            </LazyMotion>
           </span>
         }
       />

@@ -19,6 +19,10 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  // Run the animation frame Motion scheduled under fake timers before dropping
+  // them. Otherwise its frame loop waits on a callback that never fires, and
+  // the next test's crossfade never finishes (Motion's loop is module-wide).
+  if (vi.isFakeTimers()) vi.runOnlyPendingTimers();
   vi.useRealTimers();
 });
 
