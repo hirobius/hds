@@ -2031,7 +2031,7 @@
       "edge": {
         "primary": {
           "$value": "oklch(0.4066 0.0227 258.37)",
-          "$description": "Primary Button raised edge, computed by scripts/lib/raised-edge.mjs (#424a56 light, #a5a6a9 dark): the fill stepped darker, or lighter when darker cannot keep 2:1 against the near-black light fill (hds#1387); build fails on drift.",
+          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, or lighter to keep 2:1 (hds#1387).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -3561,10 +3561,10 @@
       },
       "depth": {
         "$type": "dimension",
-        "$description": "Raised Button depth (hds#1387, C2 fixed base): one edge height and one face travel for every raised variant, tone, size and icon-only Button.",
+        "$description": "Raised Button depth (hds#1387): one edge height and face travel for every raised Button.",
         "edge": {
           "$value": "{primitive.space.px3}",
-          "$description": "Height of the hard raised edge under a Button at rest (3px). The face sinks onto it, so the edge shrinks by the face offset."
+          "$description": "Raised edge height under a Button at rest (3px); the face sinks onto it."
         },
         "hoverOffset": {
           "$value": "{primitive.space.px1}",

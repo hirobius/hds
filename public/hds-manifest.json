@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-08T10:31:46.783Z",
+  "generated": "2026-11-08T11:11:56.843Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -15256,7 +15256,7 @@
         "path": "semantic.color.edge.primary",
         "cssVar": "--semantic-color-edge-primary",
         "type": "color",
-        "description": "Primary Button raised edge, computed by scripts/lib/raised-edge.mjs (#424a56 light, #a5a6a9 dark): the fill stepped darker, or lighter when darker cannot keep 2:1 against the near-black light fill (hds#1387); build fails on drift.",
+        "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, or lighter to keep 2:1 (hds#1387).",
         "value": "oklch(0.4066 0.0227 258.37)",
         "dark": {
           "alias": "oklch(0.7253 0.0044 271.35)",
@@ -17009,7 +17009,7 @@
         "path": "component.button.depth.edge",
         "cssVar": "--component-button-depth-edge",
         "type": "dimension",
-        "description": "Height of the hard raised edge under a Button at rest (3px). The face sinks onto it, so the edge shrinks by the face offset.",
+        "description": "Raised edge height under a Button at rest (3px); the face sinks onto it.",
         "alias": "{primitive.space.px3}",
         "resolvedValue": "3px"
       },
