@@ -1179,7 +1179,7 @@
     },
     {
       "id": "build-button-probe",
-      "description": "Builds the tree-shaken Button-only root-import bundle (dist/probe/button-only.js) that .size-limit.cjs budgets at 119 kB gzip; runs inside `pnpm check:size` after build:lib.",
+      "description": "Builds the tree-shaken root-import probes .size-limit.cjs budgets: Button-only (dist/probe/button-only.js, 78 kB gzip) and Toast + Alert + Disclosure (dist/probe/toast-alert-disclosure.js, 90 kB gzip, hds#1386), plus the entry-graph probes; runs inside `pnpm check:size` after build:lib.",
       "severity": "error",
       "gateScript": "scripts/build-button-probe.mjs",
       "fixturePath": null,
