@@ -87,10 +87,11 @@ const buttonVariants = /* @__PURE__ */ cva(
         secondary:
           'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground hover:bg-[color:var(--component-button-secondary-bg-hover)] active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent',
         // Ghost (C2): transparent at rest, no edge and no movement (shadow is forced off
-        // below). The one deliberate flat exception (hds#1387): an edge needs a fill to sit
-        // under, and a ghost's job is to recede beside raised actions; component.button.tertiary.bg.hover (surface.hover) on hover and, in the
+        // below); component.button.tertiary.bg.hover (surface.hover) on hover and, in the
         // neutral tone, the deeper .pressed (surface.soft) on press, wash swapped out like
-        // secondary (the compoundVariants: quiet keeps the base wash instead).
+        // secondary (the compoundVariants: quiet keeps the base wash instead). Ghost and
+        // link are the one deliberate flat exception (hds#1387): an edge needs a fill to
+        // sit under, and a ghost recedes beside the raised actions next to it.
         tertiary: 'text-foreground hover:bg-[color:var(--component-button-tertiary-bg-hover)]',
         // Link-styled (hds#863): underlined text, no fill, no inline padding (the compound
         // below), no hard shadow and no wipe (both forced off in the component). It keeps the

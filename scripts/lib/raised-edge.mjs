@@ -16,6 +16,8 @@
  * accents.css, tenants.css); tests/raised-edge.test.ts recomputes them from the fill tokens.
  */
 
+import { contrastRatio } from '../../validators/contrast.mjs'; // one WCAG implementation, shared (hds#1011)
+
 const DL = 0.06 * 2; // light: two steps of L −0.06
 const CK = 0.85 ** 2; // two steps of C ×0.85
 const DARK_SHARE = 1 / 3; // dark: share of the fill→card lightness gap the edge drops
@@ -158,6 +160,9 @@ export function edgeFor(fill, mode, card, { floor = false } = {}) {
   // button read flat). Step further DARKER to the nearest lightness that keeps
   // EDGE_FLOOR_CONTRAST (2:1; the token edges keep 1.5:1); only a fill too dark for that steps
   // LIGHTER instead (a light lip under a black key). Same hue and chroma rule either way.
+  // at(l): the edge colour at lightness l. meets(l): it keeps the floor. search: bisect
+  // between a lightness that meets the floor and one that does not, returning the passing
+  // colour nearest the failing side (the smallest change from the C2 step or the fill).
   const at = (l) => oklchToHex({ l, c: f.c * CK, h: f.h });
   const meets = (l) => contrastRatio(fillHex, at(l)) >= EDGE_FLOOR_CONTRAST;
   const search = (passing, failing) => {
@@ -171,19 +176,6 @@ export function edgeFor(fill, mode, card, { floor = false } = {}) {
   if (meets(0)) return search(0, f.l - dl);
   if (meets(1)) return search(1, f.l);
   return darker;
-}
-
-/** WCAG 2 contrast ratio of two #rrggbb colours. */
-export function contrastRatio(a, b) {
-  const lum = (hex) => {
-    const [r, g, bl] = [1, 3, 5].map((i) => {
-      const c = parseInt(hex.slice(i, i + 2), 16) / 255;
-      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-    });
-    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
-  };
-  const [x, y] = [lum(a), lum(b)];
-  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 }
 
 // ── Token resolution ─────────────────────────────────────────────────────────
