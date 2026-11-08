@@ -15,11 +15,17 @@ describe('Kbd shadow follows the Button light source', () => {
   });
 
   it('shipped Button rests, compresses on hover and presses straight down in its own-colour edge', () => {
-    expect(theme.replace(/\s+/g, ' ')).toContain(
-      `0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, ${colour})`,
+    // One depth token set since hds#1387: the edge height and both offsets are tokens.
+    const flat = theme.replace(/\s+/g, ' ');
+    expect(flat).toContain(
+      `0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, ${colour})`,
     );
-    expect(theme).toContain('--hds-hs: 2px;');
-    expect(theme).toContain('--hds-hs: 0px;');
+    expect(flat).toContain(
+      '--hds-hs: calc( var(--component-button-depth-edge) - var(--component-button-depth-hoverOffset) );',
+    );
+    expect(flat).toContain(
+      '--hds-hs: calc( var(--component-button-depth-edge) - var(--component-button-depth-pressedOffset) );',
+    );
   });
 
   it('every hard shadow drops straight down: no x offset anywhere', () => {

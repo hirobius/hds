@@ -177,6 +177,7 @@ export const tokenValues = {
       "32": "128px",
       px1: "1px",
       px2: "2px",
+      px3: "3px",
       px6: "6px",
       px10: "10px"
     },

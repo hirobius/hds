@@ -252,7 +252,6 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
                 <Button
                   variant={token === page ? 'secondary' : 'tertiary'}
                   size="sm"
-                  shadow="none"
                   className="hds-touch-target"
                   aria-label={`Page ${token}`}
                   aria-current={token === page ? 'page' : undefined}

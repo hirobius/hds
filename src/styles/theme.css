@@ -694,10 +694,12 @@
 .hds-kbd {
   box-shadow: var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)));
 }
-/* Button (shadow="hard", the default, primary and secondary), C2 "fixed base": the face
- * moves down and the edge under it shrinks by the same amount, so the bottom of the edge
- * never moves and the button compresses (hds#1196). Rest translateY(0) on a 3px edge; hover
- * (hover-capable pointers only) 1px on 2px; press 3px on 0px (fully down). The face moves,
+/* Button (shadow="hard", the default: primary, secondary, every status tone, toggles and
+ * icon-only), C2 "fixed base": the face moves down and the edge under it shrinks by the same
+ * amount, so the bottom of the edge never moves and the button compresses (hds#1196). The
+ * depth is one token set, component.button.depth.* (hds#1387): rest translateY(0) on the
+ * edge (3px); hover (hover-capable pointers only) hoverOffset (1px) on 2px; press
+ * pressedOffset (3px) on 0px (fully down). The face moves,
  * so a ::after hit band reaches 3px above it and over the edge below (it moves with the
  * face, so it always spans the rest box): a pointer on the top row stays on the button
  * when it sinks, so a hover can't flicker and a press can't slide off. The face moves with `translate` (it composes
@@ -708,7 +710,7 @@
  * transition property list is on Button itself (its utility outranks this layer). */
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
-    --tw-shadow: 0 var(--hds-hs, 3px) 0
+    --tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0
       var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)));
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
@@ -722,17 +724,21 @@
   .hds-btn-hard:not(:disabled, [aria-disabled='true'])::after {
     content: '';
     position: absolute;
-    inset: -3px 0 -3px;
+    inset: calc(-1 * var(--component-button-depth-edge)) 0;
   }
   @media (hover: hover) {
     .hds-btn-hard:hover {
-      --hds-ty: 1px;
-      --hds-hs: 2px;
+      --hds-ty: var(--component-button-depth-hoverOffset);
+      --hds-hs: calc(
+        var(--component-button-depth-edge) - var(--component-button-depth-hoverOffset)
+      );
     }
   }
   .hds-btn-hard:active {
-    --hds-ty: 3px;
-    --hds-hs: 0px;
+    --hds-ty: var(--component-button-depth-pressedOffset);
+    --hds-hs: calc(
+      var(--component-button-depth-edge) - var(--component-button-depth-pressedOffset)
+    );
   }
 }
 
@@ -747,9 +753,9 @@
     var(--tw-inset-ring-shadow),
     var(--tw-shadow),
     0 0 0 2px var(--role-background),
-    0 var(--hds-hs, 3px) 0 2px var(--role-background),
+    0 var(--hds-hs, var(--component-button-depth-edge)) 0 2px var(--role-background),
     0 0 0 4px var(--role-ring),
-    0 var(--hds-hs, 3px) 0 4px var(--role-ring);
+    0 var(--hds-hs, var(--component-button-depth-edge)) 0 4px var(--role-ring);
 }
 
 /* Forced colors drop box-shadow, and Button's focus-visible:outline-none sits in the

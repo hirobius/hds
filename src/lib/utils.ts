@@ -36,6 +36,7 @@ export const SPACING_KEYS = [
   'sidebar-railPadding',
   'px1',
   'px2',
+  'px3',
   'px6',
   'px10',
 ] as const;

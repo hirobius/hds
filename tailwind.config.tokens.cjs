@@ -104,6 +104,7 @@ const config = {
         'sidebar-railPadding': 'var(--semantic-space-sidebar-railPadding)',
         px1: 'var(--primitive-space-px1)',
         px2: 'var(--primitive-space-px2)',
+        px3: 'var(--primitive-space-px3)',
         px6: 'var(--primitive-space-px6)',
         px10: 'var(--primitive-space-px10)',
       },

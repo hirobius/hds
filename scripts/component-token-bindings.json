@@ -38,39 +38,138 @@
         }
       },
       "rules": [
-        { "match": "bg", "ctx": { "variant": "primary" } },
-        { "match": "bgHover", "ctx": { "variant": "primary" } },
-        { "match": "text", "ctx": { "variant": "primary" } },
-        { "match": "focus.*", "prop": "radius" },
-        { "match": "radius" },
-        { "match": "paddingX", "ctx": { "size": "md" } },
-        { "match": "paddingY", "ctx": { "size": "md" } },
-        { "match": "size.*.paddingX", "ctx": { "size": "$1" } },
-        { "match": "size.*.paddingY", "ctx": { "size": "$1" } },
-        { "match": "size.*.fontSize", "ctx": { "size": "$1" } },
-        { "match": "size.*.iconSize", "ctx": { "size": "$1" }, "state": "[&_svg]" },
-        { "match": "size.*.height", "ctx": { "size": "$1" } },
-        { "match": "size.*.itemSpacing", "ctx": { "size": "$1" } },
+        {
+          "match": "bg",
+          "ctx": {
+            "variant": "primary"
+          }
+        },
+        {
+          "match": "bgHover",
+          "ctx": {
+            "variant": "primary"
+          }
+        },
+        {
+          "match": "text",
+          "ctx": {
+            "variant": "primary"
+          }
+        },
+        {
+          "match": "focus.*",
+          "prop": "radius"
+        },
+        {
+          "match": "radius"
+        },
+        {
+          "match": "paddingX",
+          "ctx": {
+            "size": "md"
+          }
+        },
+        {
+          "match": "paddingY",
+          "ctx": {
+            "size": "md"
+          }
+        },
+        {
+          "match": "size.*.paddingX",
+          "ctx": {
+            "size": "$1"
+          }
+        },
+        {
+          "match": "size.*.paddingY",
+          "ctx": {
+            "size": "$1"
+          }
+        },
+        {
+          "match": "size.*.fontSize",
+          "ctx": {
+            "size": "$1"
+          }
+        },
+        {
+          "match": "size.*.iconSize",
+          "ctx": {
+            "size": "$1"
+          },
+          "state": "[&_svg]"
+        },
+        {
+          "match": "size.*.height",
+          "ctx": {
+            "size": "$1"
+          }
+        },
+        {
+          "match": "size.*.itemSpacing",
+          "ctx": {
+            "size": "$1"
+          }
+        },
         {
           "match": "primary.textDisabled",
-          "ctx": { "variant": "primary" },
+          "ctx": {
+            "variant": "primary"
+          },
           "prop": "color",
           "state": ["disabled", ""]
         },
         {
           "match": "primary.bgDisabled",
-          "ctx": { "variant": "primary" },
+          "ctx": {
+            "variant": "primary"
+          },
           "prop": "fill",
           "state": ["disabled", ""]
         },
-        { "match": "secondary.*.*", "ctx": { "variant": "secondary" } },
-        { "match": "secondary.text", "ctx": { "variant": "secondary" } },
+        {
+          "match": "secondary.*.*",
+          "ctx": {
+            "variant": "secondary"
+          }
+        },
+        {
+          "match": "secondary.text",
+          "ctx": {
+            "variant": "secondary"
+          }
+        },
         {
           "match": "edge.primary",
           "declared": {
             "token": "component.button.edge.primary",
             "evidence": "primary: 'var(--hds-edge-primary)'",
             "note": "Button paints the primary edge through --hds-edge-primary, which tokens.generated.css sets to var(--component-button-edge-primary); accents and tenants override --hds-edge-primary with their own computed edge (scripts/lib/raised-edge.mjs)."
+          }
+        },
+        {
+          "match": "depth.edge",
+          "declared": {
+            "token": "component.button.depth.edge",
+            "evidence": "hard: 'hds-btn-hard'",
+            "note": "Button takes its depth from the .hds-btn-hard class; theme.css reads var(--component-button-depth-edge) there for the edge height and the ::after hit band (hds#1387)."
+          }
+        },
+        {
+          "match": "depth.hoverOffset",
+          "declared": {
+            "token": "component.button.depth.hoverOffset",
+            "evidence": "hard: 'hds-btn-hard'",
+            "note": "Button takes its depth from the .hds-btn-hard class; theme.css reads var(--component-button-depth-hoverOffset) there for the face travel on hover (the edge shrinks by it) (hds#1387)."
+          }
+        },
+        {
+          "match": "depth.pressedOffset",
+          "declared": {
+            "token": "component.button.depth.pressedOffset",
+            "evidence": "hard: 'hds-btn-hard'",
+            "note": "Button takes its depth from the .hds-btn-hard class; theme.css reads var(--component-button-depth-pressedOffset) there for the face travel on press (the edge shrinks by it) (hds#1387)."
           }
         }
       ]
@@ -98,16 +197,51 @@
         }
       },
       "rules": [
-        { "match": "focus.*", "prop": "radius" },
-        { "match": "background", "ctx": { "selected": "false" } },
-        { "match": "text", "ctx": { "selected": "false" } },
-        { "match": "border", "ctx": { "selected": "false" } },
-        { "match": "activeText", "ctx": { "selected": "true" } },
-        { "match": "activeBackground", "ctx": { "selected": "true" } },
-        { "match": "activeBorder", "ctx": { "selected": "true" } },
+        {
+          "match": "focus.*",
+          "prop": "radius"
+        },
+        {
+          "match": "background",
+          "ctx": {
+            "selected": "false"
+          }
+        },
+        {
+          "match": "text",
+          "ctx": {
+            "selected": "false"
+          }
+        },
+        {
+          "match": "border",
+          "ctx": {
+            "selected": "false"
+          }
+        },
+        {
+          "match": "activeText",
+          "ctx": {
+            "selected": "true"
+          }
+        },
+        {
+          "match": "activeBackground",
+          "ctx": {
+            "selected": "true"
+          }
+        },
+        {
+          "match": "activeBorder",
+          "ctx": {
+            "selected": "true"
+          }
+        },
         {
           "match": "activeHover",
-          "ctx": { "selected": "true" },
+          "ctx": {
+            "selected": "true"
+          },
           "prop": "fill",
           "state": "group-hover"
         }
@@ -141,20 +275,45 @@
         }
       },
       "rules": [
-        { "match": "*.bg", "ctx": { "tone": "$1" } },
-        { "match": "*.text", "ctx": { "tone": "$1" } }
+        {
+          "match": "*.bg",
+          "ctx": {
+            "tone": "$1"
+          }
+        },
+        {
+          "match": "*.text",
+          "ctx": {
+            "tone": "$1"
+          }
+        }
       ]
     },
     "input": {
       "source": "src/app/components/input.tsx",
       "cva": "inputVariants",
       "rules": [
-        { "match": "focus.*", "prop": "radius" },
-        { "match": "borderError", "ctx": { "invalid": "true" } },
-        { "match": "border", "ctx": { "invalid": "false" } },
+        {
+          "match": "focus.*",
+          "prop": "radius"
+        },
+        {
+          "match": "borderError",
+          "ctx": {
+            "invalid": "true"
+          }
+        },
+        {
+          "match": "border",
+          "ctx": {
+            "invalid": "false"
+          }
+        },
         {
           "match": "paddingX",
-          "ctx": { "size": "md" },
+          "ctx": {
+            "size": "md"
+          },
           "classesFrom": {
             "const": "ADORNMENT_BY_SIZE",
             "trail": ["md"],
@@ -163,14 +322,21 @@
         },
         {
           "match": "size.*.paddingX",
-          "ctx": { "size": "$1" },
+          "ctx": {
+            "size": "$1"
+          },
           "classesFrom": {
             "const": "ADORNMENT_BY_SIZE",
             "trail": ["$1"],
             "keys": ["restPadL", "restPadR"]
           }
         },
-        { "match": "paddingY", "ctx": { "size": "md" } }
+        {
+          "match": "paddingY",
+          "ctx": {
+            "size": "md"
+          }
+        }
       ]
     },
     "inlineCode": {
@@ -199,10 +365,17 @@
         }
       },
       "rules": [
-        { "match": "focus.*", "prop": "radius" },
+        {
+          "match": "focus.*",
+          "prop": "radius"
+        },
         {
           "match": "border",
-          "ctx": { "variant": "default", "tone": "neutral", "bordered": "true" }
+          "ctx": {
+            "variant": "default",
+            "tone": "neutral",
+            "bordered": "true"
+          }
         },
         {
           "match": "padding",
@@ -265,12 +438,24 @@
     "disclosure": {
       "source": "src/app/components/disclosure.tsx",
       "cva": "disclosureTriggerVariants",
-      "rules": [{ "match": "paddingY", "ctx": { "variant": "nav" } }]
+      "rules": [
+        {
+          "match": "paddingY",
+          "ctx": {
+            "variant": "nav"
+          }
+        }
+      ]
     },
     "table": {
       "source": "src/app/components/table.tsx",
       "cva": "tableDataCellVariants",
-      "rules": [{ "match": "cell.paddingX", "prop": "paddingX" }]
+      "rules": [
+        {
+          "match": "cell.paddingX",
+          "prop": "paddingX"
+        }
+      ]
     },
     "nav": {
       "orphan": "TopNav, NavItem and SideNav were removed in 0.20.0 (hds#394) and their tokens after 0.32.0 (hds#431). component.nav.paddingY is deprecated (hds#1147): Disclosure reads component.disclosure.paddingY now."

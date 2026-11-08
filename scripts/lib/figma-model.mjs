@@ -345,6 +345,8 @@ const FLOAT_SCOPE_RULES = [
   { any: ['thickness'], scopes: ['STROKE_FLOAT'] },
   { any: ['radius'], scopes: ['CORNER_RADIUS'] },
   { any: ['blur'], scopes: ['EFFECT_FLOAT'] },
+  // Button depth (hds#1387): the drop-shadow offset of the raised edge, an effect float.
+  { any: ['depth', 'offset'], scopes: ['EFFECT_FLOAT'] },
   { any: ['width', 'height', 'size'], scopes: ['WIDTH_HEIGHT'] },
   { any: ['padding', 'gap', 'spacing', 'space', 'indent', 'inset', 'stack'], scopes: ['GAP'] },
 ];

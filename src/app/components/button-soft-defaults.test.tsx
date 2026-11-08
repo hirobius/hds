@@ -149,19 +149,24 @@ describe('theme.css hard shadow', () => {
     return theme.slice(at, theme.indexOf('}', at));
   };
 
-  it('rests 3px straight down in --hds-btn-edge (default: own-colour edge), composing with ring + inset wash', () => {
+  it('rests on the depth.edge token (3px) straight down in --hds-btn-edge (default: own-colour edge), composing with ring + inset wash', () => {
     const r = rule(".hds-btn-hard:not(:disabled, [aria-disabled='true'])");
     expect(r.replace(/\s+/g, ' ')).toContain(
-      '--tw-shadow: 0 var(--hds-hs, 3px) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
+      '--tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
     );
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });
 
-  it('C2 fixed base compresses: hover sinks onto a 2px edge (hover pointers only), press onto 0px', () => {
-    expect(rule('.hds-btn-hard:hover')).toContain('--hds-hs: 2px;');
+  it('C2 fixed base compresses: hover sinks onto edge - hoverOffset (hover pointers only), press onto edge - pressedOffset', () => {
+    const flat = (sel: string) => rule(sel).replace(/\s+/g, ' ');
+    expect(flat('.hds-btn-hard:hover')).toContain(
+      '--hds-hs: calc( var(--component-button-depth-edge) - var(--component-button-depth-hoverOffset) );',
+    );
     const hoverAt = theme.indexOf('.hds-btn-hard:hover');
     expect(theme.slice(hoverAt - 40, hoverAt)).toContain('(hover: hover)');
-    expect(rule('.hds-btn-hard:active')).toContain('--hds-hs: 0px;');
+    expect(flat('.hds-btn-hard:active')).toContain(
+      '--hds-hs: calc( var(--component-button-depth-edge) - var(--component-button-depth-pressedOffset) );',
+    );
   });
 
   it('lives in the components layer, so a consumer shadow utility still wins', () => {

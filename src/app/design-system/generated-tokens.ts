@@ -175,6 +175,7 @@ export const tokens = {
       "32": "var(--primitive-space-32)",
       px1: "var(--primitive-space-px1)",
       px2: "var(--primitive-space-px2)",
+      px3: "var(--primitive-space-px3)",
       px6: "var(--primitive-space-px6)",
       px10: "var(--primitive-space-px10)"
     },
@@ -697,6 +698,11 @@ export const tokens = {
         success: "var(--component-button-edge-success)",
         warning: "var(--component-button-edge-warning)",
         info: "var(--component-button-edge-info)"
+      },
+      depth: {
+        edge: "var(--component-button-depth-edge)",
+        hoverOffset: "var(--component-button-depth-hoverOffset)",
+        pressedOffset: "var(--component-button-depth-pressedOffset)"
       },
       text: "var(--component-button-text)",
       radius: "var(--component-button-radius)",

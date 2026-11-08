@@ -78,7 +78,7 @@
   --semantic-focus-ring-color: var(
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --hds-edge-primary: #402733; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primary: #2c1521; /* css-ok: raised edge (hds#897) */
 }
 [data-brand='accent-pair-demo'][data-theme='dark'],
 [data-tenant='accent-pair-demo'][data-theme='dark'] {
@@ -112,7 +112,7 @@
   --semantic-color-content-accent: var(
     --primitive-color-mauve-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --hds-edge-primary: #87747d; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primary: #837079; /* css-ok: raised edge (hds#897) */
 }
 
 /* ── soft-demo ─────────────────────────────────────────────────────────── */

@@ -150,6 +150,7 @@
   --primitive-space-32: 128px;
   --primitive-space-px1: 1px;
   --primitive-space-px2: 2px;
+  --primitive-space-px3: 3px;
   --primitive-space-px6: 6px;
   --primitive-space-px10: 10px;
   --primitive-blur-2: 2px;
@@ -327,7 +328,7 @@
   --semantic-color-border-accent: var(--primitive-color-graphite-700);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
-  --semantic-color-edge-primary: oklch(0.0875 0.0215 266.83);
+  --semantic-color-edge-primary: oklch(0.4066 0.0227 258.37);
   --semantic-color-edge-neutral: var(--primitive-color-neutral-400);
   --semantic-color-edge-danger: var(--primitive-color-red-400);
   --semantic-color-edge-success: var(--primitive-color-green-400);
@@ -624,6 +625,9 @@
   --component-button-edge-success: var(--semantic-color-edge-success);
   --component-button-edge-warning: var(--semantic-color-edge-warning);
   --component-button-edge-info: var(--semantic-color-edge-info);
+  --component-button-depth-edge: var(--primitive-space-px3);
+  --component-button-depth-hoverOffset: var(--primitive-space-px1);
+  --component-button-depth-pressedOffset: var(--primitive-space-px3);
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-radius: var(--semantic-radius-action);
   --component-button-focus-gapRadius: var(--primitive-radius-10);

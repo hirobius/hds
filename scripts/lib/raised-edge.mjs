@@ -5,6 +5,9 @@
  * hue, clamped into sRGB by reducing chroma.
  *
  * Light: two steps of OKLCH lightness −0.06 (L −0.12).
+ * Floor (hds#1387): a Button's computed edge keeps EDGE_FLOOR_CONTRAST (2:1) against its fill,
+ * stepping further darker, or lighter when the fill is too dark for that (the near-black
+ * light primary).
  * Dark: L drops a third of the way toward the card (surface.raised), never less than 0.03,
  * so a light primary fill gets a deep edge and a dark tonal fill still gets a visible one.
  * The old "lighter rim" (step lighter below 1.5:1) made dark buttons glow; C2 dropped it.
@@ -23,6 +26,13 @@ export const EDGE_FILLS = {
   primary: 'semantic.color.surface.accent', // role.primary (bg-primary)
   kbd: 'semantic.color.surface.overlay', // role.muted (bg-muted)
 };
+
+/**
+ * Computed edges that keep the EDGE_FLOOR_CONTRAST floor against their fill (hds#1387). The
+ * token Button edges keep EDGE_MIN_CONTRAST by their approved values. Kbd keeps
+ * the plain C2 step: its light fill cannot reach the floor either way.
+ */
+export const EDGE_FLOORED = ['primary'];
 
 /**
  * Computed edges that also ship as tokens, so Figma (button/edge/primary) has a code source.
@@ -60,6 +70,13 @@ export const EDGE_TOKEN_FILLS = {
 
 /** Smallest WCAG contrast a token edge keeps against its fill. */
 export const EDGE_MIN_CONTRAST = 1.5;
+
+/**
+ * Floor for computed Button edges (EDGE_FLOORED, hds#1387): 2:1 against the fill, above the
+ * token edges' 1.5:1, because a contrast ratio understates a step near black: at 1.5:1 the
+ * lip under the near-black light primary still read flat beside secondary's (1.71:1).
+ */
+export const EDGE_FLOOR_CONTRAST = 2;
 
 /** The card a Button or Kbd usually sits on: the dark step is measured toward it. */
 export const EDGE_CARD = 'semantic.color.surface.raised';
@@ -127,12 +144,50 @@ export function oklchToHex(lch) {
 
 /**
  * The edge for one fill. `card` (dark only) is the surface the step is measured toward.
+ * `floor` applies the EDGE_FLOOR_CONTRAST floor (Button edges, EDGE_FLOORED).
  * @returns {string} lowercase #rrggbb
  */
-export function edgeFor(fill, mode, card) {
+export function edgeFor(fill, mode, card, { floor = false } = {}) {
   const f = toOklch(fill);
   const dl = mode === 'Dark' ? Math.max((f.l - toOklch(card).l) * DARK_SHARE, DARK_MIN) : DL;
-  return oklchToHex({ l: f.l - dl, c: f.c * CK, h: f.h });
+  const darker = oklchToHex({ l: f.l - dl, c: f.c * CK, h: f.h });
+  const fillHex = oklchToHex(f);
+  if (!floor || contrastRatio(fillHex, darker) >= EDGE_FLOOR_CONTRAST) return darker;
+  // Contrast floor (hds#1387): the C2 step left some edges too close to their fill (the
+  // near-black light primary got #010207 under #0f1726, 1.16:1, so the lip vanished and the
+  // button read flat). Step further DARKER to the nearest lightness that keeps
+  // EDGE_FLOOR_CONTRAST (2:1; the token edges keep 1.5:1); only a fill too dark for that steps
+  // LIGHTER instead (a light lip under a black key). Same hue and chroma rule either way.
+  // at(l): the edge colour at lightness l. meets(l): it keeps the floor. search: bisect
+  // between a lightness that meets the floor and one that does not, returning the passing
+  // colour nearest the failing side (the smallest change from the C2 step or the fill).
+  const at = (l) => oklchToHex({ l, c: f.c * CK, h: f.h });
+  const meets = (l) => contrastRatio(fillHex, at(l)) >= EDGE_FLOOR_CONTRAST;
+  const search = (passing, failing) => {
+    for (let i = 0; i < 40; i += 1) {
+      const mid = (passing + failing) / 2;
+      if (meets(mid)) passing = mid;
+      else failing = mid;
+    }
+    return at(passing);
+  };
+  if (meets(0)) return search(0, f.l - dl);
+  if (meets(1)) return search(1, f.l);
+  return darker;
+}
+
+/**
+ * WCAG 2 contrast of two #rrggbb colours, on this file's own `lin` (the same 0.04045 sRGB
+ * threshold as validators/contrast.mjs). Local, not imported: build-tokens copies only
+ * scripts/ into its fixtures (manifest-generator-order.test), so this file stays self-contained.
+ */
+export function contrastRatio(a, b) {
+  const lum = (hex) => {
+    const [r, g, bl] = [1, 3, 5].map((i) => lin(parseInt(hex.slice(i, i + 2), 16) / 255));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const [x, y] = [lum(a), lum(b)];
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 }
 
 // ── Token resolution ─────────────────────────────────────────────────────────
@@ -172,7 +227,7 @@ export function computeEdges(tree) {
     out[mode] = Object.fromEntries(
       Object.entries(EDGE_FILLS).map(([k, fill]) => [
         k,
-        edgeFor(resolveColor(tree, fill, mode), mode, card),
+        edgeFor(resolveColor(tree, fill, mode), mode, card, { floor: EDGE_FLOORED.includes(k) }),
       ]),
     );
   }

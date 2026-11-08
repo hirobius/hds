@@ -612,6 +612,13 @@
           "unit": "px"
         }
       },
+      "px3": {
+        "$value": {
+          "value": 3,
+          "unit": "px"
+        },
+        "$description": "3px: the raised edge height of a Button (hds#1387)."
+      },
       "px6": {
         "$value": {
           "value": 6,
@@ -2023,12 +2030,12 @@
       },
       "edge": {
         "primary": {
-          "$value": "oklch(0.0875 0.0215 266.83)",
-          "$description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
+          "$value": "oklch(0.4066 0.0227 258.37)",
+          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, or lighter to keep 2:1 (hds#1387).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "oklch(0.0875 0.0215 266.83)",
+                "Light": "oklch(0.4066 0.0227 258.37)",
                 "Dark": "oklch(0.7253 0.0044 271.35)"
               }
             }
@@ -3550,6 +3557,22 @@
           "$type": "color",
           "$value": "{semantic.color.edge.info}",
           "$description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897)."
+        }
+      },
+      "depth": {
+        "$type": "dimension",
+        "$description": "Raised Button depth (hds#1387): one edge height and face travel for every raised Button.",
+        "edge": {
+          "$value": "{primitive.space.px3}",
+          "$description": "Raised edge height under a Button at rest (3px); the face sinks onto it."
+        },
+        "hoverOffset": {
+          "$value": "{primitive.space.px1}",
+          "$description": "How far the Button face sinks on hover (1px); the edge shrinks by the same amount."
+        },
+        "pressedOffset": {
+          "$value": "{primitive.space.px3}",
+          "$description": "How far the Button face sinks on press (3px, the full edge height): the edge drops to 0."
         }
       },
       "text": {
