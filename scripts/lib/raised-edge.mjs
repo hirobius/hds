@@ -16,8 +16,6 @@
  * accents.css, tenants.css); tests/raised-edge.test.ts recomputes them from the fill tokens.
  */
 
-import { contrastRatio } from '../../validators/contrast.mjs'; // one WCAG implementation, shared (hds#1011)
-
 const DL = 0.06 * 2; // light: two steps of L −0.06
 const CK = 0.85 ** 2; // two steps of C ×0.85
 const DARK_SHARE = 1 / 3; // dark: share of the fill→card lightness gap the edge drops
@@ -176,6 +174,20 @@ export function edgeFor(fill, mode, card, { floor = false } = {}) {
   if (meets(0)) return search(0, f.l - dl);
   if (meets(1)) return search(1, f.l);
   return darker;
+}
+
+/**
+ * WCAG 2 contrast of two #rrggbb colours, on this file's own `lin` (the same 0.04045 sRGB
+ * threshold as validators/contrast.mjs). Local, not imported: build-tokens copies only
+ * scripts/ into its fixtures (manifest-generator-order.test), so this file stays self-contained.
+ */
+export function contrastRatio(a, b) {
+  const lum = (hex) => {
+    const [r, g, bl] = [1, 3, 5].map((i) => lin(parseInt(hex.slice(i, i + 2), 16) / 255));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const [x, y] = [lum(a), lum(b)];
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 }
 
 // ── Token resolution ─────────────────────────────────────────────────────────
