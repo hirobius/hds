@@ -1,15 +1,15 @@
 {
-  "checksum": "b4079845",
+  "checksum": "83e210cc",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-06T20:56:05.657Z",
+    "takenAt": "2026-11-08T16:49:42.935Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "e91ebb9d",
-      "pushedAt": "2026-11-06T20:56:05.588Z",
+      "modelHash": "48172d57",
+      "pushedAt": "2026-11-08T16:49:42.793Z",
       "scope": null
     },
     "collections": [
@@ -3632,6 +3632,23 @@
             }
           },
           {
+            "id": "VariableID:2579:50",
+            "name": "space/px3",
+            "path": "primitive.space.px3",
+            "resolvedType": "FLOAT",
+            "description": "3px: the raised edge height of a Button (hds#1387).",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-space-px3)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": 3
+              }
+            }
+          },
+          {
             "id": "VariableID:5:21",
             "name": "space/px6",
             "path": "primitive.space.px6",
@@ -5191,7 +5208,7 @@
             "name": "color/edge/primary",
             "path": "semantic.color.edge.primary",
             "resolvedType": "COLOR",
-            "description": "Primary Button raised edge: the fill stepped darker by scripts/lib/raised-edge.mjs (#010207 light, #a5a6a9 dark); build fails on drift.",
+            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, or lighter to keep 2:1 (hds#1387).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5203,9 +5220,9 @@
             "valuesByMode": {
               "Light": {
                 "value": {
-                  "r": 0.003919,
-                  "g": 0.007835,
-                  "b": 0.027408,
+                  "r": 0.258901,
+                  "g": 0.290232,
+                  "b": 0.337226,
                   "a": 1
                 }
               },
@@ -9958,6 +9975,66 @@
             }
           },
           {
+            "id": "VariableID:2579:51",
+            "name": "button/depth/edge",
+            "path": "component.button.depth.edge",
+            "resolvedType": "FLOAT",
+            "description": "Raised edge height under a Button at rest (3px); the face sinks onto it.",
+            "scopes": [
+              "EFFECT_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-depth-edge)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2579:50",
+                "to": "Hirobius/Primitives: space/px3"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2579:52",
+            "name": "button/depth/hoverOffset",
+            "path": "component.button.depth.hoverOffset",
+            "resolvedType": "FLOAT",
+            "description": "How far the Button face sinks on hover (1px); the edge shrinks by the same amount.",
+            "scopes": [
+              "EFFECT_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-depth-hoverOffset)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:5:19",
+                "to": "Hirobius/Primitives: space/px1"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2579:53",
+            "name": "button/depth/pressedOffset",
+            "path": "component.button.depth.pressedOffset",
+            "resolvedType": "FLOAT",
+            "description": "How far the Button face sinks on press (3px, the full edge height): the edge drops to 0.",
+            "scopes": [
+              "EFFECT_FLOAT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--component-button-depth-pressedOffset)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "alias": "VariableID:2579:50",
+                "to": "Hirobius/Primitives: space/px3"
+              }
+            }
+          },
+          {
             "id": "VariableID:2501:6895",
             "name": "button/edge/danger",
             "path": "component.button.edge.danger",
@@ -13650,7 +13727,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "c009078"
+                "value": "ce33de0"
               }
             }
           },
@@ -14460,7 +14537,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:556953ea0aa41805adbaac1303537ab97f5cc24c0dac634ea3a43a324935eeb1",
-  "syncedCommit": "c009078",
-  "syncedHash": "sha256:140c21416e454f5f414928f4f48b93efb08a4bef69dbe8541b65d4a1633faf5f"
+  "tokensHash": "sha256:4b08c1c6e26617d509ba8a31f1abfc8066275675294c2add54a5b871d08dee0d",
+  "syncedCommit": "ce33de0",
+  "syncedHash": "sha256:80e96121e13e3b1c26ed9a4c1bb89d73746cb168847755395c5eb53d85d6e471"
 }

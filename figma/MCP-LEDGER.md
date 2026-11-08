@@ -894,12 +894,12 @@ Session total: 2 calls
 
 ## 2026-11-05 · prune pre-check (session 9b0192f2), read-only
 
-| #   | Time (UTC) | Tool             | Kind | Purpose                                           | Result                                                                                |
-| --- | ---------- | ---------------- | ---- | ------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| 1   | —          | `create_session` | read | open file session                                 | OK                                                                                    |
-| 2   | —          | `use_figma`      | read | find nav/* + button/edge/primary, aliases, styles | OK; 8 targets (incl. nav/paddingY), 2 aliases from Button tone primary/edge, 0 styles |
-| 3   | —          | `use_figma`      | read | bound nodes on NavList page                       | OK; 0                                                                                 |
-| 4   | —          | `use_figma`      | read | bound nodes on Button page                        | OK; 1056 bindings                                                                     |
+| #   | Time (UTC) | Tool             | Kind | Purpose                                            | Result                                                                                |
+| --- | ---------- | ---------------- | ---- | -------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| 1   | —          | `create_session` | read | open file session                                  | OK                                                                                    |
+| 2   | —          | `use_figma`      | read | find nav/\* + button/edge/primary, aliases, styles | OK; 8 targets (incl. nav/paddingY), 2 aliases from Button tone primary/edge, 0 styles |
+| 3   | —          | `use_figma`      | read | bound nodes on NavList page                        | OK; 0                                                                                 |
+| 4   | —          | `use_figma`      | read | bound nodes on Button page                         | OK; 1056 bindings                                                                     |
 
 Session total: 4 calls. No writes. No deletes.
 
@@ -912,8 +912,8 @@ Session total: 4 calls. No writes. No deletes.
 | 3   | —          | `use_figma`      | read  | variant options, Button tone collection                    | OK; 6 tone modes                                      |
 | 4   | —          | `use_figma`      | read  | inventory old Button instances (getInstancesAsync)         | OK; 200 instances (160 top, 40 nested), 14 icon-only  |
 | 5   | —          | `use_figma`      | write | swap top-level old Button instances to v2 / IconButton     | OK; 160 swapped (149 Button, 11 IconButton), 0 errors |
-| 6   | —          | `use_figma`      | read  | verify 0 old instances left; list nav/* vars               | OK; 0 left; 7 nav vars                                |
-| 7   | —          | `use_figma`      | read  | scan all pages for nav/* bindings                          | OK; 16 nodes (2 Disclosure, 14 Archive)               |
+| 6   | —          | `use_figma`      | read  | verify 0 old instances left; list nav/\* vars              | OK; 0 left; 7 nav vars                                |
+| 7   | —          | `use_figma`      | read  | scan all pages for nav/\* bindings                         | OK; 16 nodes (2 Disclosure, 14 Archive)               |
 | 8   | —          | `use_figma`      | write | create page "Archive / Deprecated" 2482:37190; move 28:138 | OK                                                    |
 | 9   | —          | `use_figma`      | read  | find sheet frames for screenshots                          | OK                                                    |
 | 10  | —          | `get_screenshot` | read  | Toast 93:367                                               | OK                                                    |
@@ -926,9 +926,9 @@ Session total: 12 calls (1 create_session, 8 use_figma: 6 read + 2 write, 3 get_
 
 | # | tool | kind | target | reason | result |
 | 1 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | owner-approved clean slate 11-05 | OK |
-| 2 | `use_figma` | read | 14 _NavItem IDs, parents, nav vars | owner-approved clean slate 11-05 | OK. Page mismatch found. STOPPED before writes. |
-| 3 | `use_figma` | read | all pages: bindings to VariableID:14:3-14:8 + NavItem/NavGroup instances | owner-approved clean slate 11-05 | OK. 2 _NavGroup instances (86:333, 86:352 in 86:332) still bound. STOPPED before writes. |
-| 4 | `use_figma` | write | delete 86:333, 86:352, 86:332 (_SideNav, empty), 86:258, 86:304; delete vars 14:3-14:8 | owner-approved clean slate 11-05 | OK. 0 bindings left. Kept nav/paddingY, button/edge/primary. |
+| 2 | `use_figma` | read | 14 \_NavItem IDs, parents, nav vars | owner-approved clean slate 11-05 | OK. Page mismatch found. STOPPED before writes. |
+| 3 | `use_figma` | read | all pages: bindings to VariableID:14:3-14:8 + NavItem/NavGroup instances | owner-approved clean slate 11-05 | OK. 2 \_NavGroup instances (86:333, 86:352 in 86:332) still bound. STOPPED before writes. |
+| 4 | `use_figma` | write | delete 86:333, 86:352, 86:332 (\_SideNav, empty), 86:258, 86:304; delete vars 14:3-14:8 | owner-approved clean slate 11-05 | OK. 0 bindings left. Kept nav/paddingY, button/edge/primary. |
 | 5 | `get_screenshot` | read | Disclosure 2337:1257 | owner-approved clean slate 11-05 | OK |
 | 6 | `get_screenshot` | read | Button v2 2399:11077 | owner-approved clean slate 11-05 | OK |
 Session total: 6 calls (1 create_session, 3 use_figma: 2 read + 1 write, 2 get_screenshot). 5 nodes deleted. 6 variables deleted. No publish.
@@ -938,7 +938,7 @@ Session total: 6 calls (1 create_session, 3 use_figma: 2 read + 1 write, 2 get_s
 | # | tool | kind | target | reason | result |
 | 1 | `create_session` | — | 2VgBbVpKiDnu0aftJEVyBQ | unify spec-sheet tables to code Table default | OK |
 | 2 | `use_figma` | read | page list | find sheets and kit | OK |
-| 3 | `use_figma` | read | Spec sheet kit 2290:804 tree | find shared table masters | OK. Kit says: do not edit unless task names _SpecSheet/* explicitly. |
+| 3 | `use_figma` | read | Spec sheet kit 2290:804 tree | find shared table masters | OK. Kit says: do not edit unless task names \_SpecSheet/\* explicitly. |
 | 4 | `use_figma` | read | KeyMap 2315:22, TableHeaderRow 2290:831, TableRow 2290:842 | compare to code | OK |
 | 5 | `use_figma` | read | instance counts of 3 masters | scope | OK. KeyMap 31, HeaderRow 661, Row 2713. |
 Session total: 5 calls (1 create_session, 4 use_figma read). 0 writes. No publish. Stopped: kit guard + code mismatch need owner decision.
@@ -974,13 +974,13 @@ Source: scratchpad figma-scrub.md. Spec sheet kit, 65 sheet gap overrides, Butto
 | 5 | `use_figma` | write | same 2 nodes | restore layer index 16; read layout | OK; restored |
 | 6 | `use_figma` | read | variant grid positions | plan re-layout | OK |
 | 7 | `use_figma` | write | 2399:11077 (40 moved), 2399:26744 (32 moved) | rows secondary-first, columns md-first | OK; default = secondary/md/rest on both |
-| 8 | `use_figma` | write | 118 nodes in 18 components | bind 180 raw fields (borderWidth/xs,sm; space/*; radius/12, radius/full) | OK |
+| 8 | `use_figma` | write | 118 nodes in 18 components | bind 180 raw fields (borderWidth/xs,sm; space/\*; radius/12, radius/full) | OK |
 | 9-11 | `use_figma` | read | same components | re-check, binding keys, black colour vars | OK |
 Session total: 11 calls (1 skill, 1 create_session, 6 read, 3 write). No publish.
 
 ## 2026-11-05 · session clip-fix (Figma session d0ada18d)
 
-Fix bottom clipping of hard-shadow buttons. File 2VgBbVpKiDnu0aftJEVyBQ. No publish. _SpecSheet kit masters not touched.
+Fix bottom clipping of hard-shadow buttons. File 2VgBbVpKiDnu0aftJEVyBQ. No publish. \_SpecSheet kit masters not touched.
 
 | # | tool | kind | target | reason | result |
 | 1 | `get_figma_skill` | read | figma-use SKILL.md | load skill | OK |
@@ -989,8 +989,8 @@ Fix bottom clipping of hard-shadow buttons. File 2VgBbVpKiDnu0aftJEVyBQ. No publ
 | 4-7 | `use_figma` x4 | read | pages in 4 groups (no Archive, no Spec sheet kit) | scan clip overflow | 0 hits; absoluteRenderBounds is already clipped, so scan invalid |
 | 8 | `use_figma` | read | Composer 2201:277 Send ancestors | diagnose | Face drop shadow y3 clipped by Footer (clip, h44) |
 | 9-12 | `use_figma` x4 | read | same 4 page groups | rescan with bounds + effect extent | OK; 78 clip ancestors found, triaged |
-| 13 | `use_figma` | read | local variables space/* | find padding token | |
-Resumed fd1a0881 after Adrian's change: full outline + centered cells, then explicit approval to edit _SpecSheet/KeyMap, TableHeaderRow, TableRow.
+| 13 | `use_figma` | read | local variables space/\* | find padding token | |
+Resumed fd1a0881 after Adrian's change: full outline + centered cells, then explicit approval to edit \_SpecSheet/KeyMap, TableHeaderRow, TableRow.
 | 6 | `use_figma` | read | radius vars, Cell set, row masters | plan | OK. Masters already CENTER/HUG. |
 | 7 | `use_figma` | read | Slider anatomy rows | find cause | OK. Rows sat loose in Section Content slot (gap 40), no table frame. |
 | 8-9 | `use_figma` | write | KeyMap 2315:22 radius -> radius/scale/md, clip | full outline | OK (#8 failed on null parent, retried). |
@@ -1014,7 +1014,7 @@ Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 f
 - use_figma (read) x6 inspect PageHeader/Composer: OK (first scan used renderBounds; it found 0; rewrote scan to add drop-shadow and outside-stroke extents)
 - use_figma (read) x6 parallel full scan, 79 pages (Archive 2083:2 and Archive / Deprecated 2482:37190 skipped): OK, 2879 clipping nodes, 16 flagged
 - use_figma (read) x4 inspect Callout, Form example, InlineLink, variables: OK
-- get_screenshot x6 before: OK -> shots/*-before.png
+- get_screenshot x6 before: OK -> shots/\*-before.png
 - use_figma (write) 2121:19 clip off: OK
 - use_figma (write) 2075:119, 2075:177 clip off: OK
 - use_figma (write) Deprecated 82:260, 2075:4, 2075:14, 2075:54, 2075:60, 2075:66, 2075:71, 2075:77, 2075:82, 85:121 clip off: OK
@@ -1024,8 +1024,8 @@ Session total: 25 calls (1 create_session, 24 use_figma: 11 read + 13 write, 2 f
 - use_figma (read) rescan: 1 false positive left (hidden External icon in 89:161)
 - use_figma (write) 89:157, 89:159, 2295:2542 HUG (no size change): OK
 - use_figma (read) icon visibility check: OK
-- get_screenshot x6 after: OK -> shots/*-after.png
-  No publish. No _SpecSheet kit master changed.
+- get_screenshot x6 after: OK -> shots/\*-after.png
+  No publish. No \_SpecSheet kit master changed.
   Follow-up hds#1206 (body text weight 400):
   | 26 | `use_figma` | write | Cell Body 2290:811, Body muted 2290:814, KeyMapRow Action 2315:21: bind fontWeight typography/weight/regular | code weight | No effect: text style kept 500. |
   | 27 | `use_figma` | write | same 3 texts: remove typography/ui style, rebind ui size/lh/family/letter-spacing vars, font Regular, weight -> typography/weight/regular | code weight | OK. 400. |
@@ -1100,7 +1100,7 @@ Calls logged for 2026-11-05: 138 of 200 (9, 2, 4, 12, 6, 5, 26, 11, 25, 28, 4 an
 | -------------------------------------------------------- | ---------------- | ----- | ------------------------------------------------------------------------------------------------------------------ | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1                                                        | `create_session` | read  | library 2VgBbVpKiDnu0aftJEVyBQ                                                                                     | session           | OK.                                                                                                                                                   |
 | 2                                                        | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 properties and references                                                       | find unused       | OK. EmptyState Description#2337:10 (duplicate of Show description), Radio Label#36:0.                                                                 |
-| 3                                                        | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 screenshots                                                                     | before            | OK. figma/shots/*-props-before.png.                                                                                                                   |
+| 3                                                        | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 screenshots                                                                     | before            | OK. figma/shots/\*-props-before.png.                                                                                                                  |
 | 4                                                        | `use_figma`      | write | Radio Label texts 2337:16393, 16396, 16399, 16403, 16407, 16411, 16415, 16420, 16423, 16427; EmptyState 2337:14631 | publish dialog    | OK. Labels bound to Label#36:0; Description#2337:10 removed. 0 unused.                                                                                |
 | 5                                                        | `use_figma`      | read  | EmptyState 2337:14631, Radio 36:17 screenshots                                                                     | after             | OK. No visual change.                                                                                                                                 |
 | 6                                                        | `use_figma`      | read  | Radio Focused 2337:16397, 2337:16412 structure                                                                     | focus ring        | OK. Ring 28x28 at -4 (gap 2 + width 2), label at 24: touches, as in code. Stroke on borderWidth/emphasis and border/accent.                           |
@@ -1166,7 +1166,7 @@ Draft built in HDS Explorations 7US9lA0qsUP0uwmtQtA8Ss, page "Doc pages redesign
 | 42  | `use_figma`            | write | library 2555:3288: 6 Button instances swapped (case-insensitive match)                                                                                                                                                                                        | fix                         | OK. 3 left (Default is "rest").                                                                                              |
 | 43  | `use_figma`            | write | library 2555:3288: last 3 Buttons to State=rest                                                                                                                                                                                                               | fix                         | OK. 0 remote instances; 50 instances.                                                                                        |
 | 44  | `use_figma`            | write | library: new page 2555:4288 "Foundations: Motion", sheet 2555:4289                                                                                                                                                                                            | Draft 2 rebuild             | OK. 170 nodes.                                                                                                               |
-| 45  | `use_figma`            | write | library: 24:2, 25:2, 26:2, 26:29 moved to Archive 2083:2 as "_<Name> (archived 2026-11-06)"; new sheets placed at 0,0                                                                                                                                         | archive, no deletes         | OK.                                                                                                                          |
+| 45  | `use_figma`            | write | library: 24:2, 25:2, 26:2, 26:29 moved to Archive 2083:2 as "\_<Name> (archived 2026-11-06)"; new sheets placed at 0,0                                                                                                                                        | archive, no deletes         | OK.                                                                                                                          |
 | 46  | `use_figma`            | write | library: page order only, Foundations: Typography 20:4 after Color                                                                                                                                                                                            | page order                  | OK. Color, Typography, Spacing, Surface, Motion.                                                                             |
 | 47  | `use_figma`            | read  | library 39:2: Card set Hover vs Default (hds#1299)                                                                                                                                                                                                            | issue check                 | Failed in the script before any read (a stray figma.group([]) call). No change.                                              |
 | 48  | `use_figma`            | read  | library 39:11 Card set, effect styles elevation/raised and shadow/subtle; screenshots of 39:3 and 2337:21544                                                                                                                                                  | hds#1299                    | OK. Hover 2337:21544 already carries elevation/raised (= shadow.subtle: 0 1 2 4%, 0 1 1 6%), matching code. No write needed. |
@@ -1184,11 +1184,11 @@ Session total: 50 calls (24 writes: 11 in HDS Explorations, 2 of them failed; 13
 
 ## 2026-11-06 · Control-to-label gap after #1276 (file 2VgBbVpKiDnu0aftJEVyBQ)
 
-| #                                                                | Tool        | Kind  | Target                                                                                                               | Why                | Result                                                                   |
-| ---------------------------------------------------------------- | ----------- | ----- | -------------------------------------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------ |
-| 1                                                                | `use_figma` | read  | Checkbox 35:29, Radio 36:17, Toggle 37:19: variant itemSpacing; screenshots                                          | before             | OK. 35 variants, 4px on space/subgrid/gap. figma/shots/*-gap-before.png. |
-| 2                                                                | `use_figma` | write | itemSpacing of the 35 variants (Checkbox 35:3 … 2337:30145, Radio 2337:16391 … 2337:16424, Toggle 37:3 … 2335:18105) | match code (#1276) | OK. Bound to space/scale/xs VariableID:2061:878: 8px.                    |
-| 3                                                                | `use_figma` | read  | the 3 sets: screenshots, label fit                                                                                   | after              | OK. 0 clipped labels. figma/shots/*-gap-after.png.                       |
+| #                                                                | Tool        | Kind  | Target                                                                                                               | Why                | Result                                                                    |
+| ---------------------------------------------------------------- | ----------- | ----- | -------------------------------------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------- |
+| 1                                                                | `use_figma` | read  | Checkbox 35:29, Radio 36:17, Toggle 37:19: variant itemSpacing; screenshots                                          | before             | OK. 35 variants, 4px on space/subgrid/gap. figma/shots/\*-gap-before.png. |
+| 2                                                                | `use_figma` | write | itemSpacing of the 35 variants (Checkbox 35:3 … 2337:30145, Radio 2337:16391 … 2337:16424, Toggle 37:3 … 2335:18105) | match code (#1276) | OK. Bound to space/scale/xs VariableID:2061:878: 8px.                     |
+| 3                                                                | `use_figma` | read  | the 3 sets: screenshots, label fit                                                                                   | after              | OK. 0 clipped labels. figma/shots/\*-gap-after.png.                       |
 | Session total: 3 use_figma calls (1 write, 2 reads). No publish. |
 
 ## 2026-11-06 · Agent sync: release 0.34.0 meta after #1231 (file 2VgBbVpKiDnu0aftJEVyBQ)
@@ -1214,7 +1214,7 @@ Session total: 50 calls (24 writes: 11 in HDS Explorations, 2 of them failed; 13
 | 10  | `get_screenshot`  | read  | library: IconButton 2399:26744                                                                                                                         | after                                            | OK. figma/shots/iconbutton-padding-after.png, byte-identical to before.                                                                                                                         |
 | 11  | `use_figma`       | read  | library: instances of the 576 variants of old Button 28:138 (getInstancesAsync)                                                                        | orchestrator: count instances on the old set     | OK. 0 instances on any page.                                                                                                                                                                    |
 | 12  | `use_figma`       | read  | library: generated bindings-snapshot.js on 11 sets (Button, IconButton, Tag, Badge, Input, InlineCode, List, Pagination, Card, InlineLink, Disclosure) | figma/bindings.json                              |                                                                                                                                                                                                 |
-| 13  | `use_figma`       | read  | library: generated pixel-geometry.js on 2399:11077, 2399:26744                                                                                         | pixel compare: variant boxes                     | OK. figma/pixels/*.geometry.json (48 and 36 variants).                                                                                                                                          |
+| 13  | `use_figma`       | read  | library: generated pixel-geometry.js on 2399:11077, 2399:26744                                                                                         | pixel compare: variant boxes                     | OK. figma/pixels/\*.geometry.json (48 and 36 variants).                                                                                                                                         |
 | 14  | `get_screenshot`  | read  | library: Button 2399:11077 (asked 4096 max; came back 1x)                                                                                              | pixel compare: Figma render                      | OK. figma/pixels/Button.png 485x1196.                                                                                                                                                           |
 | 15  | `get_screenshot`  | read  | library: IconButton 2399:26744 (1x)                                                                                                                    | pixel compare: Figma render                      | OK. figma/pixels/IconButton.png 276x908.                                                                                                                                                        |
 | 16  | `use_figma`       | read  | library: parent page of 2399:26744, 2399:11077, 28:138                                                                                                 | orchestrator: is IconButton on page Button 28:2? | OK. No: IconButton and Button are on Button v2 (review) 2399:10548; 28:138 on Archive / Deprecated.                                                                                             |
@@ -1245,13 +1245,13 @@ Session total: 1 use_figma call (1 write). No publish.
 
 ## 2026-11-06 · session `claude/figma-button-page-move` (hds#1147, owner-approved move, file 2VgBbVpKiDnu0aftJEVyBQ)
 
-| #   | Tool             | Kind  | Target                                                                                                                        | Why                                | Result                                                                                                               |
-| --- | ---------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 1   | `create_session` | read  | library                                                                                                                       | session                            | OK. 143c3e71.                                                                                                        |
-| 2   | `use_figma`      | read  | library: pages 28:2 and 2399:10548 contents; instances of 2399:11077, 2399:26744                                              | before                             | OK. 28:2 holds the spec sheet 2291:804 at x 1080; 278 and 65 instances.                                              |
-| 3   | `get_screenshot` | read  | library: page Button 28:2                                                                                                     | before                             | OK. figma/shots/button-page-move-before.png.                                                                         |
-| 4   | `use_figma`      | write | library: move 2399:11077 (x 0, y 0) and 2399:26744 (x 0, y 1292) to page 28:2; rename page 2399:10548 to "_Button v2 (moved)" | Adrian approved (via orchestrator) | OK. Same ids, 48 and 36 variants, instances 278 and 65 before and after. Old page keeps frame 2399:14035. No delete. |
-| 5   | `get_screenshot` | read  | library: page Button 28:2                                                                                                     | after                              | OK. figma/shots/button-page-move-after.png.                                                                          |
+| #   | Tool             | Kind  | Target                                                                                                                         | Why                                | Result                                                                                                               |
+| --- | ---------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 1   | `create_session` | read  | library                                                                                                                        | session                            | OK. 143c3e71.                                                                                                        |
+| 2   | `use_figma`      | read  | library: pages 28:2 and 2399:10548 contents; instances of 2399:11077, 2399:26744                                               | before                             | OK. 28:2 holds the spec sheet 2291:804 at x 1080; 278 and 65 instances.                                              |
+| 3   | `get_screenshot` | read  | library: page Button 28:2                                                                                                      | before                             | OK. figma/shots/button-page-move-before.png.                                                                         |
+| 4   | `use_figma`      | write | library: move 2399:11077 (x 0, y 0) and 2399:26744 (x 0, y 1292) to page 28:2; rename page 2399:10548 to "\_Button v2 (moved)" | Adrian approved (via orchestrator) | OK. Same ids, 48 and 36 variants, instances 278 and 65 before and after. Old page keeps frame 2399:14035. No delete. |
+| 5   | `get_screenshot` | read  | library: page Button 28:2                                                                                                      | after                              | OK. figma/shots/button-page-move-after.png.                                                                          |
 
 Session total: 5 calls (1 create_session, 2 use_figma: 1 read + 1 write, 2 get_screenshot). No delete. No publish.
 
@@ -1414,3 +1414,16 @@ Session total: 1 use_figma call (1 write). No publish.
 Session total: 1 use_figma call (1 write). No publish.
 
 Calls logged for 2026-11-06: 154 of 200 (1, 1, 5, 5, 12, 1, 50, 1, 3, 1, 16, 1, 1, 1, 5, 4, 1, 13, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 18, 1 and 1).
+
+## 2026-11-08 · Daily release check: delta after hds#1391 (Button depth)
+
+Main ce33de0 (0.37.0). Plan updated 2 · created 4 · deleted 0.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                    | Result                                                      |
+| --- | ---------- | ---------------- | ----- | ------------------------------------------ | ----------------------------------------------------------- |
+| 1   | 16:47      | `create_session` | read  | open file session                          | OK                                                          |
+| 2   | 16:47      | `use_figma`      | write | delta.js unmodified (4 created, 2 updated) | OK; 616 → 620 variables, post 83e210cc; drift 0, plan 0/0/0 |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-08: 2 of 200 (2).
