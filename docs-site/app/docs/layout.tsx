@@ -7,6 +7,7 @@ import { SiteMark } from '@/components/site-mark';
 import { TopBarTitle } from '@/components/top-bar-title';
 import { SidebarGroupLabel } from '@/components/sidebar-group-label';
 import { SearchTriggerFull, SearchTriggerSmall } from '@/components/search-trigger';
+import { FoldHash } from '@/components/fold-hash';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -27,6 +28,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         ),
       }}
     >
+      <FoldHash />
       {children}
     </DocsLayout>
   );
