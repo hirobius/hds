@@ -1,54 +1,32 @@
 'use client';
 
 /**
- * The Icons foundation gallery (hds#1229): every icon the
- * `@hirobius/design-system/icons` entry exports, with a search field. The list is
- * read from the export at build time, so it cannot drift from the package.
+ * The Icons foundation visuals. hds#1396 removed the full gallery: the glyphs are Lucide's
+ * (ISC), so the page shows a short sample and links to the Lucide site for the full set.
  */
-import { useId, useMemo, useState } from 'react';
-import { Icon, Input } from '@hirobius/design-system';
+import { Icon } from '@hirobius/design-system';
 import * as Icons from '@hirobius/design-system/icons';
 import type { LucideIcon } from 'lucide-react';
 
-import { filterIconNames, iconNames } from '../lib/icon-gallery';
-
 const ICONS = Icons as unknown as Record<string, LucideIcon>;
-const NAMES = iconNames(ICONS);
 
-export function IconGallery() {
-  const [query, setQuery] = useState('');
-  const shown = useMemo(() => filterIconNames(NAMES, query), [query]);
-  const listId = useId();
+/** Icons HDS components draw themselves (hds#1396): a short sample, not the whole set. */
+export const SAMPLE_ICONS = ['X', 'Check', 'ChevronDown', 'Copy', 'Search', 'Info'] as const;
 
+/**
+ * A row of the icons HDS components use internally. The full set lives on the Lucide site;
+ * HDS re-exports a curated subset and does not own the glyphs.
+ */
+export function IconSample() {
   return (
-    <div className="hds-icon-gallery not-prose">
-      <Input
-        type="search"
-        label="Search icons"
-        placeholder="Search by name, such as arrow or check"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        aria-controls={listId}
-        autoComplete="off"
-      />
-      <p role="status" className="hds-visual-note">
-        {shown.length} of {NAMES.length} icons
-      </p>
-      {shown.length ? (
-        <ul id={listId} className="hds-icon-grid" aria-label="Icons">
-          {shown.map((name) => (
-            <li key={name} className="hds-icon-tile">
-              <Icon icon={ICONS[name]!} size="large" />
-              <code className="hds-step-name">{name}</code>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p id={listId} className="hds-visual-note">
-          No icon matches “{query.trim()}”. Ask for a new icon in an issue.
-        </p>
-      )}
-    </div>
+    <ul className="hds-icon-grid not-prose" aria-label="Icons HDS components use">
+      {SAMPLE_ICONS.map((name) => (
+        <li key={name} className="hds-icon-tile">
+          <Icon icon={ICONS[name]!} size="large" />
+          <code className="hds-step-name">{name}</code>
+        </li>
+      ))}
+    </ul>
   );
 }
 

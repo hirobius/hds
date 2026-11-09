@@ -14810,6 +14810,26 @@
         }
       },
       {
+        "path": "semantic.motion.transitionColor",
+        "cssVar": "--hds-motion-transitionColor",
+        "type": "motion",
+        "description": "Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399).",
+        "composite": {
+          "duration": "150ms",
+          "easing": "cubic-bezier(0, 0, 0.2, 1)"
+        }
+      },
+      {
+        "path": "semantic.motion.transitionShadow",
+        "cssVar": "--hds-motion-transitionShadow",
+        "type": "motion",
+        "description": "Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399).",
+        "composite": {
+          "duration": "150ms",
+          "easing": "cubic-bezier(0, 0, 0.2, 1)"
+        }
+      },
+      {
         "path": "semantic.motion.distance",
         "cssVar": "--semantic-motion-distance",
         "type": "dimension",

@@ -288,6 +288,12 @@
   /* semantic.motion.exit */
   --hds-motion-exit-duration: var(--primitive-duration-instant);
   --hds-motion-exit-easing: var(--primitive-easing-accelerate);
+  /* semantic.motion.transitionColor */
+  --hds-motion-transitionColor-duration: var(--primitive-duration-short);
+  --hds-motion-transitionColor-easing: var(--primitive-easing-decelerate);
+  /* semantic.motion.transitionShadow */
+  --hds-motion-transitionShadow-duration: var(--primitive-duration-short);
+  --hds-motion-transitionShadow-easing: var(--primitive-easing-decelerate);
   --semantic-motion-distance: var(--primitive-space-6);
   --semantic-motion-nudge: var(--primitive-space-1);
   --semantic-motion-slide: var(--primitive-space-2);

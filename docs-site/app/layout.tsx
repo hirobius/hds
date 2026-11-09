@@ -44,6 +44,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             // attributes to <html> for Fumadocs' `.dark` chrome AND HDS's
             // token cascade to flip together.
             attribute: ['class', 'data-theme'],
+            // hds#1399: a theme switch is instant; no colour fades between themes.
+            disableTransitionOnChange: true,
           }}
           search={{ options: { type: 'static' } }}
         >

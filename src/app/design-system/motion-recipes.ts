@@ -107,7 +107,9 @@ export const MOTION_RECIPES = {
   },
   /** A short horizontal shake on an error. Key the element on the error so it replays. */
   shake: {
-    initial: false,
+    // A start state, not `initial: false` (hds#1397): with false, a keyed remount takes the
+    // last keyframe as its first frame and the shake never plays.
+    initial: { x: 0 },
     animate: { x: [0, -6, 6, -4, 4, 0] },
     transition: { duration: m.spatial.duration, ease: 'easeOut' },
   },

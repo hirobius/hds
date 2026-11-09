@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Button, Text, useMotionRecipe, type MotionRecipeName } from '@hirobius/design-system';
 import { DemoFrame } from './component-demos';
+import { MotionSample } from './motion-sample';
 
 const TILES: { name: MotionRecipeName; label: string; use: string }[] = [
   { name: 'openMenu', label: 'Open menu', use: 'Menus, popovers, selects' },
@@ -24,23 +25,21 @@ const TILES: { name: MotionRecipeName; label: string; use: string }[] = [
   { name: 'shake', label: 'Shake', use: 'A field with an error' },
 ];
 
-const surface = {
-  padding: 'var(--semantic-space-scale-sm)',
-  borderRadius: 'var(--semantic-radius-action)',
-  background: 'var(--semantic-color-surface-raised)',
-  boxShadow: 'var(--semantic-elevation-floating-shadow)',
-};
+/** Which recipes remount on every press (keyed on the run), instead of toggling in and out. */
+export const KEYED: readonly MotionRecipeName[] = ['swap', 'shake', 'arrive', 'reveal'];
 
-function Stage({ name, run }: { name: MotionRecipeName; run: number }) {
+export function Stage({ name, run }: { name: MotionRecipeName; run: number }) {
   const recipe = useMotionRecipe(name);
-  const keyed = name === 'swap' || name === 'shake' || name === 'arrive' || name === 'reveal';
-  const body: string = name === 'swap' ? (run % 2 ? 'Copied' : 'Copy') : 'Sample';
+  const keyed = KEYED.includes(name);
+  const body = name === 'swap' ? (run % 2 ? 'Copied' : 'Copy') : null;
+  // A fixed-height stage (hds#1397): every cell's button and caption sit on one line, whatever
+  // the recipe draws or scales.
   return (
-    <div style={{ minHeight: 'var(--primitive-size-64)', display: 'grid', placeItems: 'center' }}>
+    <div className="hds-motion-stage" data-recipe={name} data-run={run}>
       <AnimatePresence mode="wait" initial={false}>
         {(keyed || run % 2 === 1) && (
-          <motion.div key={keyed ? run : 'item'} style={surface} {...recipe}>
-            <Text variant="ui">{body}</Text>
+          <motion.div key={keyed ? run : 'item'} {...recipe}>
+            <MotionSample>{body}</MotionSample>
           </motion.div>
         )}
       </AnimatePresence>
@@ -51,7 +50,7 @@ function Stage({ name, run }: { name: MotionRecipeName; run: number }) {
 function Tile({ name, label, use }: (typeof TILES)[number]) {
   const [run, setRun] = useState(0);
   return (
-    <div style={{ display: 'grid', gap: 'var(--semantic-space-scale-xs)' }}>
+    <div className="hds-motion-cell">
       <Stage name={name} run={run} />
       <Button variant="secondary" onClick={() => setRun((r) => r + 1)}>
         {label}

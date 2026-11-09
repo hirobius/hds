@@ -373,6 +373,14 @@ export const tokenRefs = {
         duration: "var(--hds-motion-exit-duration)",
         easing: "var(--hds-motion-exit-easing)"
       },
+      transitionColor: {
+        duration: "var(--hds-motion-transitionColor-duration)",
+        easing: "var(--hds-motion-transitionColor-easing)"
+      },
+      transitionShadow: {
+        duration: "var(--hds-motion-transitionShadow-duration)",
+        easing: "var(--hds-motion-transitionShadow-easing)"
+      },
       distance: "var(--semantic-motion-distance)",
       nudge: "var(--semantic-motion-nudge)",
       slide: "var(--semantic-motion-slide)",

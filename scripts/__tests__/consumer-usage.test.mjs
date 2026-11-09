@@ -169,9 +169,10 @@ describe('README "In use" section', () => {
     expect(readme).toMatch(/Roleflame/);
   });
 
-  it('marks the re-confirm as due after the Roleforge -> Roleflame rename (hds#1312)', () => {
-    expect(JSON.stringify(snapshot.consumers)).not.toMatch(/Roleforge|roleforge/);
-    expect(snapshot.consumersReconfirmDue).toMatch(/hds#1312/);
+  it('re-confirmed both product apps after the Roleforge -> Roleflame rename (hds#1312)', () => {
+    expect(JSON.stringify(snapshot)).not.toMatch(/Roleforge|roleforge/);
+    expect(snapshot).not.toHaveProperty('consumersReconfirmDue');
+    expect(snapshot.consumersConfirmedAt >= '2026-11-09').toBe(true);
   });
 });
 
