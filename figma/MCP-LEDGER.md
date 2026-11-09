@@ -1476,3 +1476,17 @@ Session `7cea5cbf` (shared with hds#1406). Rows were filled in right after each 
 Session total: 3 calls (2 reads, 1 write).
 
 Calls logged for 2026-11-09: 11 of 200 (2, 1, 5 and 3).
+
+## 2026-11-09 · Release 0.39.0: meta delta sync on the Version PR (#1409)
+
+Version PR head `442ff2b`. `pnpm figma:push --delta`: updated 7 · created 0 · deleted 0 (5 `semantic.color.edge.*` from hds#1399, `meta.version`, `meta.commit`), against snapshot `7e21fb47`. Each row was logged before its call. Nothing was deleted or published.
+
+| #   | Tool              | Kind  | Target                                     | Why                   | Result                                                                            |
+| --- | ----------------- | ----- | ------------------------------------------ | --------------------- | --------------------------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | skill://figma/figma-use/SKILL.md           | load figma-use        | OK                                                                                |
+| 2   | `create_session`  | read  | library 2VgBbVpKiDnu0aftJEVyBQ             | session               | OK. Session `b4db8176`                                                            |
+| 3   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | meta delta for 0.39.0 | OK. updated 7 · created 0 · deleted 0; post `08f5201b`, 1-page receipt; re-plan 0 |
+
+Session total: 3 calls (2 reads, 1 write). No publish, no delete. `figma:snapshot --from-receipt` gave `syncedCommit` 442ff2b; `check:figma-drift` 0, `figma:push --plan` 0, `check:figma-release` passed. `docs/sync-map.json` regenerated (`check-sync-map.mjs --write`: only `generated` moved; 131/131 in sync).
+
+Calls logged for 2026-11-09: 14 of 200 (2, 1, 5, 3 and 3).
