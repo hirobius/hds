@@ -1,0 +1,4 @@
+{
+  "impact": "behavior",
+  "plain": "Theme switches now apply instantly; if you added your own transition-off code around a theme change, you can remove it."
+}
