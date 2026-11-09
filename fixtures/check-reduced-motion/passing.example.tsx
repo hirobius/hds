@@ -23,6 +23,8 @@ import { useHdsMotion } from '../../src/app/hooks/useHdsMotion';
  *     --hds-motion-expressive-duration: 0s;
  *     --hds-motion-spatial-duration: 0s;
  *     --hds-motion-exit-duration: 0s;
+ *     --hds-motion-transitionColor-duration: 0s;
+ *     --hds-motion-transitionShadow-duration: 0s;
  *   }
  * }
  */
