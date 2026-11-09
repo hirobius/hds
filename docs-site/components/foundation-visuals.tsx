@@ -302,7 +302,8 @@ function MotionDemos() {
         ))}
       </div>
       <p className="hds-visual-note">
-        Durations drop to zero when your system asks for reduced motion.
+        Each press sends the tile to the other end. Durations drop to zero when your system asks for
+        reduced motion, so the tile jumps.
       </p>
     </Section>
   );
