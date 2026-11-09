@@ -1039,8 +1039,11 @@ input[data-search-input='true'] {
     transform var(--primitive-duration-medium) var(--primitive-easing-emphasized),
     opacity var(--primitive-duration-short) var(--primitive-easing-accelerate);
 }
+/* The moon tilts (hds#1407): at 40deg the cut sat level with the centre and the crescent
+ * stood upright. 15deg leaves the cut about 24deg above level, so the crescent leans like a
+ * natural moon at rest; the morph itself is unchanged. */
 .hds-theme-toggle[data-theme-state='dark'] .hds-theme-toggle__icon {
-  transform: rotate(40deg);
+  transform: rotate(15deg);
 }
 .hds-theme-toggle[data-theme-state='dark'] .hds-theme-toggle__core {
   transform: scale(1.4);
