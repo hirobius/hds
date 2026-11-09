@@ -386,11 +386,15 @@ pre {
 
 /* Prose tables (components/mdx-prose.tsx): a raised tonal frame from HDS tokens (no outline,
    hds#891), so it follows the radius token. Fumadocs' own wrapper hard-codes an 8px radius. */
+/* The frame owns the outline and the rounded corners (hds#1398): the stroke draws the full
+   curve at every corner, also when a wide table scrolls under it on a phone. The table inside
+   has no border or radius of its own, so the frame never clips a cell border at a corner. */
 .hds-docs-table {
   position: relative;
   overflow: auto;
   margin: var(--semantic-space-scale-lg) 0;
   background: var(--semantic-color-surface-raised);
+  border: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
   border-radius: var(--semantic-radius-action);
 }
 /* The frame scrolls, so the table inside fills it instead of shrinking to its content. */
@@ -398,6 +402,9 @@ pre {
   display: table;
   width: 100%;
   margin: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
 }
 
 /* Search dialog (the Cmd+K one): Fumadocs sets rounded-xl and shadow-2xl on it. Radius and shadow

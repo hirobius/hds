@@ -118,6 +118,20 @@ describe('wiring', () => {
     const rule = /\.hds-docs-table\s*\{([^}]*)\}/.exec(css)?.[1] ?? '';
     expect(rule).toContain('var(--semantic-radius-action)');
   });
+
+  // hds#1398: the frame owns the stroke and the radius, so a wide table scrolling under it on
+  // a phone never loses the stroke at a rounded corner. The table has no border of its own.
+  it('draws the prose table outline on the frame, not on the table', () => {
+    const css = read('docs-site/app/globals.css');
+    const frame = /\.hds-docs-table\s*\{([^}]*)\}/.exec(css)?.[1] ?? '';
+    expect(frame).toMatch(
+      /border:\s*var\(--semantic-borderWidth-default\) solid var\(--semantic-color-border-default\)/,
+    );
+    expect(frame).toMatch(/overflow:\s*auto/);
+    const table = /\.prose \.hds-docs-table > table\s*\{([^}]*)\}/.exec(css)?.[1] ?? '';
+    expect(table).toMatch(/border:\s*0/);
+    expect(table).toMatch(/border-radius:\s*0/);
+  });
 });
 
 describe('slice 2: sidebar, drawer, contents rail, images', () => {
