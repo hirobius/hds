@@ -20,17 +20,23 @@ import { Star } from '@hirobius/design-system/icons';
 export const Favourite = () => <Icon icon={Star} size="medium" />;
 ```
 
-## Sizes
+<details className="hds-fold">
+<summary>Sizes and weights</summary>
 
 `Icon` takes `size="small"` (16px, the default), `"medium"` (20px) or `"large"` (24px). These are the `semantic.size.icon.sm`, `md` and `lg` boxes in the table above. Icon sizes come from the size scale, not the type ramp, so an icon keeps its size when text scales.
 
 `weight` sets the stroke: `thin`, `light`, `medium`, `regular` (the default) or `bold`, from the `semantic.borderWidth.icon.*` tokens. `color` defaults to `currentColor`, so an icon takes the colour of its text.
 
-## Accessibility
+</details>
+
+<details className="hds-fold">
+<summary>Accessibility</summary>
 
 - **Decoration:** `Icon` sets `aria-hidden` by default. Use this when text next to the icon already says the same thing, such as a Save button with a save icon.
 - **Meaning:** when the icon is the only thing that tells the user what something does, give the control a name. For an icon-only button, use `Button` with `iconOnly` and an `aria-label`. For a status icon with no visible text, put the meaning in text next to it, for example in `VisuallyHidden`.
 - Don't put `aria-label` on the `svg`. Name the control or the text, not the glyph.
+
+</details>
 
 ## Credit
 
