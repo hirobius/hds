@@ -1,0 +1,18 @@
+{
+  "$comment": "Frozen inputs of the 0.38.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.38.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.38.0",
+  "previous": "0.37.0",
+  "date": "2026-11-09",
+  "summary": "4 that look different.",
+  "backfilled": false,
+  "notes": {
+    "button-raised-every-variant": {
+      "needle": "ce33de0: Every filled Button now looks raised",
+      "source": "CHANGELOG.md:19"
+    },
+    "motion-lazy-components": {
+      "needle": "49845b6: Alert, Toast, Tooltip, Disclosure,",
+      "source": "CHANGELOG.md:23"
+    }
+  }
+}

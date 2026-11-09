@@ -207,7 +207,17 @@ Status is implied by content (hds#759). Flags the `dot` prop on `<Badge>` and a 
 ```
 
 Only lowercase intrinsic JSX names are checked; `<Button>` and
-`<AlertDialog.Action>` are components.
+`<AlertDialog.Action>` are components. A `<button>` whose `className` has the
+`hds-button` class (static.css, for CSS-only consumers) is an HDS control and
+passes, also through `cn(…)`, a template literal or a ternary. A modifier alone
+(`hds-button--primary`) does not count.
+
+```tsx
+// ✅ ok — static.css styles it as a Button, no JS root entry
+<button className="hds-button hds-button--primary" type="submit">
+  Save
+</button>
+```
 
 ### `hds/no-raw-hex`
 
