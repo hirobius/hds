@@ -42,12 +42,12 @@
         {
           "name": "activeBackground",
           "token": "component.tag.activeBackground",
-          "value": "#0f1726"
+          "value": "#3a4457"
         },
         {
           "name": "activeBorder",
           "token": "component.tag.activeBorder",
-          "value": "#0f1726"
+          "value": "#3a4457"
         }
       ]
     },

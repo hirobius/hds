@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-09T09:50:38.410Z",
+  "generated": "2026-11-09T22:32:28.680Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -33,7 +33,7 @@
     "consumeTypography": "hds.typeStyles.h1 (inline style object) — never Tailwind font classes"
   },
   "brand": {
-    "primaryColor": "#0f1726",
+    "primaryColor": "#3a4457",
     "primaryColorToken": "semantic.accent.rest",
     "font": "Plus Jakarta Sans variable 100–900, self-hosted",
     "spacingBase": "4px",
@@ -14969,9 +14969,9 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
-        "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#0f1726",
+        "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
           "resolvedValue": "#f2f4f8"
@@ -15276,8 +15276,8 @@
         "path": "semantic.color.edge.primary",
         "cssVar": "--semantic-color-edge-primary",
         "type": "color",
-        "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter (hds#1399).",
-        "value": "oklch(0 0 0)",
+        "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter; one step under the graphite.700 light fill (hds#1422).",
+        "value": "oklch(0.2646 0.0260 265.37)",
         "dark": {
           "alias": "oklch(0.7253 0.0044 271.35)",
           "resolvedValue": "oklch(0.7253 0.0044 271.35)"
@@ -15299,7 +15299,7 @@
         "path": "semantic.color.edge.danger",
         "cssVar": "--semantic-color-edge-danger",
         "type": "color",
-        "description": "Hard raised edge under danger-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+        "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
         "alias": "{primitive.color.red.400}",
         "resolvedValue": "#f87171",
         "dark": {
@@ -15311,7 +15311,7 @@
         "path": "semantic.color.edge.success",
         "cssVar": "--semantic-color-edge-success",
         "type": "color",
-        "description": "Hard raised edge under success-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+        "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
         "alias": "{primitive.color.green.400}",
         "resolvedValue": "#34d399",
         "dark": {
@@ -15323,7 +15323,7 @@
         "path": "semantic.color.edge.warning",
         "cssVar": "--semantic-color-edge-warning",
         "type": "color",
-        "description": "Hard raised edge under warning-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+        "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
         "alias": "{primitive.color.amber.400}",
         "resolvedValue": "#fbbf24",
         "dark": {
@@ -15335,12 +15335,12 @@
         "path": "semantic.color.edge.info",
         "cssVar": "--semantic-color-edge-info",
         "type": "color",
-        "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+        "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill (hds#1422).",
         "alias": "{primitive.color.blue.300}",
         "resolvedValue": "oklch(0.70 0.2903 266.54)",
         "dark": {
-          "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "alias": "{primitive.color.blue.900}",
+          "resolvedValue": "oklch(0.22 0.05 266.54)"
         }
       },
       {
@@ -15450,8 +15450,8 @@
         "alias": "{primitive.color.blue.50}",
         "resolvedValue": "oklch(0.96 0.03 266.54)",
         "dark": {
-          "alias": "{primitive.color.blue.900}",
-          "resolvedValue": "oklch(0.22 0.05 266.54)"
+          "alias": "{primitive.color.blue.800}",
+          "resolvedValue": "oklch(0.30 0.07 266.54)"
         }
       },
       {
@@ -16087,9 +16087,9 @@
         "path": "semantic.accent.rest",
         "cssVar": "--semantic-accent-rest",
         "type": "color",
-        "description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
-        "alias": "{primitive.color.graphite.950}",
-        "resolvedValue": "#0f1726",
+        "description": "Accent fill at rest — graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#3a4457",
         "dark": {
           "alias": "{primitive.color.graphite.50}",
           "resolvedValue": "#f2f4f8"
@@ -16099,7 +16099,7 @@
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
+        "description": "Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#263043",
         "dark": {
@@ -16755,7 +16755,7 @@
         "type": "color",
         "description": "Active tag fill color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "component.tag.activeBorder",
@@ -16763,7 +16763,7 @@
         "type": "color",
         "description": "Active tag border color.",
         "alias": "{semantic.accent.rest}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "component.tag.activeHover",
@@ -16959,7 +16959,7 @@
         "type": "color",
         "description": "Primary button fill.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "component.button.bgHover",
@@ -16983,7 +16983,7 @@
         "type": "color",
         "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
         "alias": "{semantic.color.edge.primary}",
-        "resolvedValue": "oklch(0 0 0)"
+        "resolvedValue": "oklch(0.2646 0.0260 265.37)"
       },
       {
         "path": "component.button.edge.secondary",
@@ -17671,7 +17671,7 @@
         "type": "color",
         "description": "Primary action surface. shadcn role: primary.",
         "alias": "{semantic.color.surface.accent}",
-        "resolvedValue": "#0f1726"
+        "resolvedValue": "#3a4457"
       },
       {
         "path": "role.primary-foreground",

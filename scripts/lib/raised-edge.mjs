@@ -5,7 +5,7 @@
  * hue, clamped into sRGB by reducing chroma.
  *
  * Light: two steps of OKLCH lightness −0.06 (L −0.12).
- * Floor (hds#1387): a Button's computed edge keeps EDGE_FLOOR_CONTRAST (2:1) against its fill,
+ * Floor (hds#1387): a Button's computed edge keeps EDGE_FLOOR_CONTRAST (1.5:1) against its fill,
  * stepping further darker; a fill too dark for that gets the darkest step, never a lighter
  * one (hds#1399).
  * Dark: L drops a third of the way toward the card (surface.raised), never less than 0.03,
@@ -72,11 +72,11 @@ export const EDGE_TOKEN_FILLS = {
 export const EDGE_MIN_CONTRAST = 1.5;
 
 /**
- * Floor for computed Button edges (EDGE_FLOORED, hds#1387): 2:1 against the fill, above the
- * token edges' 1.5:1, because a contrast ratio understates a step near black: at 1.5:1 the
- * lip under the near-black light primary still read flat beside secondary's (1.71:1).
+ * Floor for computed Button edges (EDGE_FLOORED, hds#1387): the token edges' 1.5:1. It was 2:1
+ * while the light primary fill was near-black; that pushed its edge to #000 and the button read
+ * too heavy. The light fill is now graphite.700, so the plain C2 step keeps 1.5:1 (hds#1422).
  */
-export const EDGE_FLOOR_CONTRAST = 2;
+export const EDGE_FLOOR_CONTRAST = 1.5;
 
 /** The card a Button or Kbd usually sits on: the dark step is measured toward it. */
 export const EDGE_CARD = 'semantic.color.surface.raised';

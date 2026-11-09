@@ -308,7 +308,7 @@
   --semantic-color-surface-floating: var(--primitive-color-neutral-white);
   --semantic-color-surface-scrim: var(--primitive-color-neutral-900);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-black);
-  --semantic-color-surface-accent: var(--primitive-color-graphite-950);
+  --semantic-color-surface-accent: var(--primitive-color-graphite-700);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-50);
   --semantic-color-surface-hover: var(--primitive-color-neutral-250);
   --semantic-color-surface-pressed: var(--primitive-color-neutral-300);
@@ -334,7 +334,7 @@
   --semantic-color-border-accent: var(--primitive-color-graphite-700);
   --semantic-color-border-success: var(--primitive-color-green-400);
   --semantic-color-border-warning: var(--primitive-color-amber-400);
-  --semantic-color-edge-primary: oklch(0 0 0);
+  --semantic-color-edge-primary: oklch(0.2646 0.0260 265.37);
   --semantic-color-edge-neutral: var(--primitive-color-neutral-400);
   --semantic-color-edge-danger: var(--primitive-color-red-400);
   --semantic-color-edge-success: var(--primitive-color-green-400);
@@ -498,7 +498,7 @@
   --semantic-docs-space-paragraph: var(--primitive-space-7);
   /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.xs */
   --semantic-docs-space-inline: var(--primitive-space-2);
-  --semantic-accent-rest: var(--primitive-color-graphite-950);
+  --semantic-accent-rest: var(--primitive-color-graphite-700);
   --semantic-accent-hover: var(--primitive-color-graphite-800);
   --semantic-accent-pressed: var(--primitive-color-graphite-900);
   --semantic-accent-inactive: var(--primitive-color-neutral-400);
@@ -772,7 +772,7 @@
   --semantic-color-edge-danger: var(--primitive-color-neutral-black);
   --semantic-color-edge-success: var(--primitive-color-neutral-black);
   --semantic-color-edge-warning: var(--primitive-color-neutral-black);
-  --semantic-color-edge-info: var(--primitive-color-neutral-black);
+  --semantic-color-edge-info: var(--primitive-color-blue-900);
   --semantic-color-shadow-hard: var(--primitive-color-neutral-500);
   --semantic-color-feedback-error: var(--primitive-color-red-400);
   --semantic-color-feedback-success: var(--primitive-color-green-400);
@@ -782,7 +782,7 @@
   --semantic-color-feedback-bg-error: var(--primitive-color-red-950);
   --semantic-color-feedback-bg-success: var(--primitive-color-green-950);
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-950);
-  --semantic-color-feedback-bg-info: var(--primitive-color-blue-900);
+  --semantic-color-feedback-bg-info: var(--primitive-color-blue-800);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-950);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
   --semantic-accent-rest: var(--primitive-color-graphite-50);

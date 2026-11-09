@@ -152,7 +152,7 @@ describe('theme.css hard shadow', () => {
   it('rests on the depth.edge token (3px) straight down in --hds-btn-edge (default: own-colour edge), composing with ring + inset wash', () => {
     const r = rule(".hds-btn-hard:not(:disabled, [aria-disabled='true'])");
     expect(r.replace(/\s+/g, ' ')).toContain(
-      '--tw-shadow: 0 max( 0px, calc(var(--hds-hs, var(--component-button-depth-edge)) - var(--hds-edge-line-width, 0px)) ) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary))), 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-edge-line, transparent);',
+      '--tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
     );
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });

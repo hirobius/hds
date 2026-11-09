@@ -1739,12 +1739,12 @@
           }
         },
         "accent": {
-          "$value": "{primitive.color.graphite.950}",
-          "$description": "Accent fill, midnight graphite: near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
+          "$value": "{primitive.color.graphite.700}",
+          "$description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.graphite.950}",
+                "Light": "{primitive.color.graphite.700}",
                 "Dark": "{primitive.color.graphite.50}"
               }
             }
@@ -2052,12 +2052,12 @@
       },
       "edge": {
         "primary": {
-          "$value": "oklch(0 0 0)",
-          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter (hds#1399).",
+          "$value": "oklch(0.2646 0.0260 265.37)",
+          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter; one step under the graphite.700 light fill (hds#1422).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "oklch(0 0 0)",
+                "Light": "oklch(0.2646 0.0260 265.37)",
                 "Dark": "oklch(0.7253 0.0044 271.35)"
               }
             }
@@ -2077,7 +2077,7 @@
         },
         "danger": {
           "$value": "{primitive.color.red.400}",
-          "$description": "Hard raised edge under danger-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+          "$description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2089,7 +2089,7 @@
         },
         "success": {
           "$value": "{primitive.color.green.400}",
-          "$description": "Hard raised edge under success-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+          "$description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2101,7 +2101,7 @@
         },
         "warning": {
           "$value": "{primitive.color.amber.400}",
-          "$description": "Hard raised edge under warning-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+          "$description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2113,12 +2113,12 @@
         },
         "info": {
           "$value": "{primitive.color.blue.300}",
-          "$description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
+          "$description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill (hds#1422).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.blue.300}",
-                "Dark": "{primitive.color.neutral.black}"
+                "Dark": "{primitive.color.blue.900}"
               }
             }
           }
@@ -2243,7 +2243,7 @@
               "com.figma.variables": {
                 "modes": {
                   "Light": "{primitive.color.blue.50}",
-                  "Dark": "{primitive.color.blue.900}"
+                  "Dark": "{primitive.color.blue.800}"
                 }
               }
             }
@@ -2823,12 +2823,12 @@
     "accent": {
       "$type": "color",
       "rest": {
-        "$value": "{primitive.color.graphite.950}",
-        "$description": "Accent fill at rest — near-black in light, near-white in dark (hds#887). Pair with content.onAccent.",
+        "$value": "{primitive.color.graphite.700}",
+        "$description": "Accent fill at rest — graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
-              "Light": "{primitive.color.graphite.950}",
+              "Light": "{primitive.color.graphite.700}",
               "Dark": "{primitive.color.graphite.50}"
             }
           }
@@ -2836,7 +2836,7 @@
       },
       "hover": {
         "$value": "{primitive.color.graphite.800}",
-        "$description": "Accent fill on hover, one step from rest (graphite.800 / 100).",
+        "$description": "Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
