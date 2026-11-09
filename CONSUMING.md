@@ -175,7 +175,9 @@ an Upgrade block.
 ```bash
 pnpm changeset add        # record a patch/minor/major bump + notes
 pnpm changeset:version    # on a branch: apply bumps, regenerate CHANGELOG.md, record the release (scripts/upgrade/compile.mjs) and refresh docs/api/api-baseline.json
-# open the "Version Packages" PR; after review + merge, on a clean main:
+# Normal path: Actions publishes when the Version PR merges
+# (docs/RELEASING.md).
+# Fallback only — after review + merge, on a clean main:
 pnpm release:local --publish   # owner only, npm 2FA
 ```
 
