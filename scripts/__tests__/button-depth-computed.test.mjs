@@ -184,8 +184,11 @@ describe.skipIf(!hasBrowser)('Button focus ring wraps the hard edge in Chromium'
   // Focus wraps face AND edge (Adrian 11-04): the gap and the ring are each drawn twice,
   // once on the border box and once offset by the edge height, so they follow the
   // face-plus-edge shape. The edge itself stays first and visible.
+  // The edge is two layers (hds#1399): the edge colour, then the page line under it (transparent
+  // and 0px wide in light, where these run).
   const ringFor = (edge, hs) =>
-    `0 ${hs} 0 ${edge}, 0 0 0 2px var(--role-background), 0 ${hs} 0 2px var(--role-background), ` +
+    `0 ${hs} 0 ${edge}, 0 ${hs} 0 transparent, ` +
+    `0 0 0 2px var(--role-background), 0 ${hs} 0 2px var(--role-background), ` +
     `0 0 0 4px var(--role-ring), 0 ${hs} 0 4px var(--role-ring)`;
   // Button's focus-visible:outline-none and ring-* utilities, in Tailwind's utilities layer
   // (which outranks components): the focus rule must beat them.

@@ -174,7 +174,7 @@ describe('accent themes re-derive the primary edge', () => {
 describe('wiring', () => {
   it('Button and Kbd default their hooks to the own-colour edge; shadow.hard stays exported', () => {
     expect(theme.replace(/\s+/g, ' ')).toContain(
-      '0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary))), 0 calc(var(--hds-hs, var(--component-button-depth-edge)) + 1px) 0 var(--hds-edge-line, transparent)',
+      'var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary))), 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-edge-line, transparent)',
     );
     expect(theme.replace(/\s+/g, ' ').replace(/\( | \)/g, (m) => m.trim())).toContain(
       'var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)))',
@@ -311,9 +311,9 @@ describe('every Button edge, both themes (hds#1399)', () => {
 
   it('dark sets the page line; light has none', () => {
     const flat = theme.replace(/\s+/g, ' ');
-    expect(flat).toContain(':root { --hds-edge-line: transparent; }');
+    expect(flat).toContain(':root { --hds-edge-line: transparent; --hds-edge-line-width: 0px; }');
     expect(flat).toContain(
-      "[data-theme='dark'] { --hds-edge-line: var(--semantic-color-border-default); }",
+      "[data-theme='dark'] { --hds-edge-line: var(--semantic-color-border-default); --hds-edge-line-width: 1px; }",
     );
   });
 });
