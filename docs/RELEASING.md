@@ -9,8 +9,8 @@ Packages" PR after the steps below, with no per-release approval (Adrian,
 ## Who
 
 The orchestrator agent (or Adrian) merges the "Version Packages" PR when the
-release is ready. Adrian can hold a release by saying so. The Release workflow
-then
+release is ready. Adrian can hold a release by saying so. Then the Release
+workflow
 publishes through npm Trusted Publishing (OIDC): no npm token, no laptop login.
 
 ## Steps
