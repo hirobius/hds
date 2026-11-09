@@ -75,7 +75,7 @@ function expected(tree: object, key: string, mode: Mode): string {
   const at = (l: number) => oklchToHex({ l, c: f.c * 0.7225, h: f.h });
   if (!['primary'].includes(key)) return at(f.l - dl);
   // hds#1387 floor: the C2 step if it keeps 2:1, else the nearest darker lightness that
-  // does, else (a fill too dark, hds#1399) the darkest step, never a lighter one.
+  // does, else (no darker step keeps it) the nearest lighter lightness that does.
   const fill = oklchToHex(f);
   const ok = (l: number) => ratio(fill, at(l)) >= 2;
   if (ok(f.l - dl)) return at(f.l - dl);
@@ -87,7 +87,15 @@ function expected(tree: object, key: string, mode: Mode): string {
     }
     return at(pass);
   };
-  return ok(0) ? search(0, f.l - dl) : at(0);
+  if (ok(0)) return search(0, f.l - dl);
+  let up = 1;
+  let below = f.l;
+  for (let i = 0; i < 40; i += 1) {
+    const mid = (up + below) / 2;
+    if (ok(mid)) up = mid;
+    else below = mid;
+  }
+  return at(up);
 }
 
 /** Each sRGB channel within `tol` of the target (the C2 reference values are "≈"). */
@@ -137,19 +145,20 @@ describe.each(MODES)('raised edges (%s)', (mode) => {
 
   // hds#1387: the light primary's C2 edge was 1.16:1 against its near-black fill, so the
   // button read flat. Every Button edge must be visible against the fill it sits under.
-  it.each(EDGE_FLOORED)('%s: keeps the 2:1 floor, or is the darkest step', (key) => {
+  it.each(EDGE_FLOORED)('%s: keeps the 2:1 floor against its fill, with no exception', (key) => {
     const fill = resolveHex(raw, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode);
     expect(EDGE_FLOOR_CONTRAST).toBe(2);
     const edge = shipped(mode)[key];
-    if (edge !== '#000000') expect(ratio(fill, edge)).toBeGreaterThanOrEqual(2);
+    expect(ratio(fill, edge)).toBeGreaterThanOrEqual(2);
   });
 });
 
-// Primary edges follow the graphite fill, near-black / near-white since hds#887. Light is the
-// darkest step under the near-black fill (hds#1399); dark is the plain C2 step.
+// Primary edges follow the graphite fill, near-black / near-white since hds#887. Black is only
+// 1.17:1 against the near-black light fill, so light is the nearest lighter step that keeps
+// 2:1 (hds#1416 review); dark is the plain C2 step.
 describe('C2 reference edges (graphite defaults)', () => {
-  it('light: primary is #000000, darker than its fill', () => {
-    near(shipped('Light').primary, '#000000', 0);
+  it('light: primary ≈ #424a56, the nearest step that keeps 2:1', () => {
+    near(shipped('Light').primary, '#424a56');
   });
   it('dark: primary ≈ #a5a6a9', () => {
     near(shipped('Dark').primary, '#a5a6a9');
@@ -193,14 +202,14 @@ describe('Button edge tokens', () => {
       warning: 'amber.400',
       info: 'blue.300',
     },
-    // hds#1399: dark tone fills are near-black, so their edge is the darkest step (always
-    // darker than the fill); the page line lifts it off the page.
+    // Dark tone fills are near-black: black is under 1.5:1 against them, so the edge is a
+    // lighter hue step that keeps 1.5:1 (hds#1416 review); the page line still sits under it.
     Dark: {
       secondary: 'neutral.725',
-      danger: 'neutral.black',
-      success: 'neutral.black',
-      warning: 'neutral.black',
-      info: 'neutral.black',
+      danger: 'red.700',
+      success: 'green.700',
+      warning: 'amber.800',
+      info: 'blue.500',
     },
   };
   const lum = (hex: string) => {
@@ -231,13 +240,12 @@ describe('Button edge tokens', () => {
   );
 
   it.each(MODES.flatMap((m) => TOKEN_KEYS.map((k) => [m, k] as const)))(
-    '%s %s: at least 1.5:1 against its fill, or the darkest step',
+    '%s %s: at least 1.5:1 against its fill, with no exception',
     (mode, key) => {
       const edge = resolveHex(raw, EDGE_TOKENS[key], mode);
       const ratio = contrast(edge, resolveHex(raw, EDGE_TOKEN_FILLS[key], mode));
       expect(EDGE_MIN_CONTRAST).toBe(1.5);
-      if (edge !== resolveHex(raw, 'primitive.color.neutral.black', mode))
-        expect(ratio).toBeGreaterThanOrEqual(EDGE_MIN_CONTRAST);
+      expect(ratio).toBeGreaterThanOrEqual(EDGE_MIN_CONTRAST);
     },
   );
 
@@ -253,7 +261,7 @@ describe('computed edges that ship as tokens', () => {
     expect(EDGE_COMPUTED_TOKENS.primary).toBe('semantic.color.edge.primary');
     const hex = (mode: Mode) => resolveHex(raw, EDGE_COMPUTED_TOKENS.primary, mode);
     expect({ Light: hex('Light'), Dark: hex('Dark') }).toEqual({
-      Light: '#000000',
+      Light: '#424a56',
       Dark: '#a5a6a9',
     });
     for (const mode of MODES) expect(hex(mode)).toBe(expected(raw, 'primary', mode));
@@ -285,8 +293,10 @@ describe('computed edges that ship as tokens', () => {
   });
 });
 
-// hds#1399 (Adrian 11-09): every Button edge is a darker step of its OWN fill, and it is
-// visible against the page in both themes: the edge itself in light, the edge or the 1px
+// hds#1399 (Adrian 11-09): every Button edge is a darker step of its OWN fill when a darker
+// colour can keep its contrast floor against that fill; under a fill too dark for that (light
+// primary, dark tones) it is lighter, because a flat button is worse (hds#1416 review). It is
+// also visible against the page in both themes: the edge itself in light, the edge or the 1px
 // page line (semantic.color.border.default) under it in dark.
 describe('every Button edge, both themes (hds#1399)', () => {
   const PAIRS: Record<string, [string, string]> = {
@@ -295,11 +305,14 @@ describe('every Button edge, both themes (hds#1399)', () => {
   };
   const rows = MODES.flatMap((m) => Object.keys(PAIRS).map((k) => [m, k] as const));
 
-  it.each(rows)('%s %s: darker than its own fill', (mode, key) => {
+  it.each(rows)('%s %s: darker than its own fill when black keeps the floor', (mode, key) => {
     const [fill, edge] = PAIRS[key];
-    expect(hexToOklch(resolveHex(raw, edge, mode)).l).toBeLessThan(
-      toOklch(resolveColor(raw, fill, mode)).l,
-    );
+    const fillHex = oklchToHex(toOklch(resolveColor(raw, fill, mode)));
+    const min = key === 'primary' ? EDGE_FLOOR_CONTRAST : EDGE_MIN_CONTRAST;
+    const e = resolveHex(raw, edge, mode);
+    expect(ratio(fillHex, e)).toBeGreaterThanOrEqual(min);
+    const darker = hexToOklch(e).l < hexToOklch(fillHex).l;
+    expect(darker).toBe(ratio(fillHex, '#000000') >= min);
   });
 
   it.each(rows)('%s %s: at least 1.5:1 against the page', (mode, key) => {
