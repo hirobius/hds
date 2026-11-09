@@ -154,8 +154,8 @@ run, so never wait on them or treat a missing check as pass or fail. Leave
   CLAUDE.md), from someone other than the author, naming the head commit. A new
   push voids it.
 - **Release:** from GitHub Actions on merge of the Version Packages PR. The
-  orchestrator may merge it only after Adrian's "ship <version>" in chat and an
-  independent PASS on its head. Agents never `npm publish` by hand. See
+  orchestrator may cut the release itself: it merges it after the Figma meta
+  sync and an independent PASS on its head, then reports to Adrian. Agents never `npm publish` by hand. See
   `docs/RELEASING.md` (Adrian, 2026-11-09).
 
 ## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
