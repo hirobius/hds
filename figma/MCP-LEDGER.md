@@ -1464,3 +1464,17 @@ Session `7cea5cbf`. Rows were filled in right after each call, not before it. Th
 | 5   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: pages 2041:2, 2201:5, 2399:10548, 2083:2, 2482:37190, 2157:826, 2435:67, 2290:804  | case-insensitive re-sort | OK. Final order recorded in `figma/page-order.json`                                             |
 
 Session total: 5 calls (3 reads, 2 writes). No publish, no delete, no rename.
+
+## 2026-11-09 · hds#1405: parity audit and bind-only fixes
+
+Session `7cea5cbf` (shared with hds#1406). Rows were filled in right after each call; that slip is the same as above. Audit comment: hds#1405. Nothing was deleted or published.
+
+| #   | Tool        | Kind  | Target                                                                         | Why                            | Result                                                                                                       |
+| --- | ----------- | ----- | ------------------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| 6   | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: every component page (loadAsync)               | axes, descriptions, raw paints | OK. 71 pages; raw paints only on ThemeToggle (8) and Tooltip (4)                                             |
+| 7   | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: ThemeToggle 2201:2, Tooltip 87:6               | list the raw paints            | OK                                                                                                           |
+| 8   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: 2337:13332, 2337:13336, 2337:13340, 2337:13344 | bind arrow strokes             | OK. 4 strokes bound to the arrow fill variable; the 8 ThemeToggle ellipses were skipped (no source variable) |
+
+Session total for hds#1405: 3 calls (2 reads, 1 write).
+
+Calls logged for 2026-11-09: 11 of 200.
