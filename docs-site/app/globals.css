@@ -843,26 +843,48 @@ div:has(> .hds-docs-display) {
 .hds-motion-track {
   position: relative;
   flex: 1;
-  height: 1.5rem;
-  border-radius: var(--primitive-radius-full);
+  height: 3.5rem;
+  border-radius: var(--semantic-radius-action);
   background: var(--semantic-color-surface-muted);
 }
-.hds-motion-dot {
-  position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
-  width: 1rem;
-  height: 1rem;
-  border-radius: var(--primitive-radius-full);
+/* The shared motion sample (components/motion-sample.tsx, hds#1397): a cobalt rounded square,
+   the accent token under data-accent="cobalt", so it reads as the thing that moves. */
+.hds-motion-sample {
+  --hds-motion-tile-size: 2.5rem;
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--hds-motion-tile-size);
+  height: var(--hds-motion-tile-size);
+  padding: 0 0.5rem;
+  border-radius: var(--semantic-radius-action);
   background: var(--semantic-color-surface-accent);
+  color: var(--semantic-color-content-inverse);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
-.hds-motion-dot--run {
-  animation: hds-motion-travel var(--hds-demo-duration) var(--hds-demo-easing) both;
+.hds-motion-tile {
+  position: absolute;
+  top: 0.5rem;
+  padding: 0;
+  width: var(--hds-motion-tile-size);
+  transition: left var(--hds-demo-duration) var(--hds-demo-easing);
 }
-@keyframes hds-motion-travel {
-  to {
-    left: calc(100% - 1.25rem);
+@media (prefers-reduced-motion: reduce) {
+  .hds-motion-tile {
+    transition: none;
   }
+}
+/* Recipe demos: one fixed-height stage per cell, so buttons and captions line up. */
+.hds-motion-cell {
+  display: grid;
+  grid-template-rows: 6rem auto auto;
+  align-content: start;
+  gap: var(--semantic-space-scale-xs);
+}
+.hds-motion-stage {
+  display: grid;
+  place-items: center;
+  height: 6rem;
 }
 .hds-motion-replay {
   flex: none;
