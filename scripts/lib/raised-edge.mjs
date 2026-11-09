@@ -6,8 +6,8 @@
  *
  * Light: two steps of OKLCH lightness −0.06 (L −0.12).
  * Floor (hds#1387): a Button's computed edge keeps EDGE_FLOOR_CONTRAST (2:1) against its fill,
- * stepping further darker, or lighter when the fill is too dark for that (the near-black
- * light primary).
+ * stepping further darker; a fill too dark for that gets the darkest step, never a lighter
+ * one (hds#1399).
  * Dark: L drops a third of the way toward the card (surface.raised), never less than 0.03,
  * so a light primary fill gets a deep edge and a dark tonal fill still gets a visible one.
  * The old "lighter rim" (step lighter below 1.5:1) made dark buttons glow; C2 dropped it.
@@ -152,28 +152,26 @@ export function edgeFor(fill, mode, card, { floor = false } = {}) {
   const dl = mode === 'Dark' ? Math.max((f.l - toOklch(card).l) * DARK_SHARE, DARK_MIN) : DL;
   const darker = oklchToHex({ l: f.l - dl, c: f.c * CK, h: f.h });
   const fillHex = oklchToHex(f);
-  if (!floor || contrastRatio(fillHex, darker) >= EDGE_FLOOR_CONTRAST) return darker;
-  // Contrast floor (hds#1387): the C2 step left some edges too close to their fill (the
-  // near-black light primary got #010207 under #0f1726, 1.16:1, so the lip vanished and the
-  // button read flat). Step further DARKER to the nearest lightness that keeps
-  // EDGE_FLOOR_CONTRAST (2:1; the token edges keep 1.5:1); only a fill too dark for that steps
-  // LIGHTER instead (a light lip under a black key). Same hue and chroma rule either way.
+  const min = floor === true ? EDGE_FLOOR_CONTRAST : floor || 0;
+  if (!min || contrastRatio(fillHex, darker) >= min) return darker;
+  // Contrast floor (hds#1387): the C2 step left some edges too close to their fill. Step
+  // further DARKER to the nearest lightness that keeps the floor. The edge is ALWAYS darker
+  // than its own fill (hds#1399): a fill too dark to reach the floor gets the darkest step
+  // (lightness 0) instead of a lighter lip, which read as a light edge under a dark button.
   // at(l): the edge colour at lightness l. meets(l): it keeps the floor. search: bisect
   // between a lightness that meets the floor and one that does not, returning the passing
-  // colour nearest the failing side (the smallest change from the C2 step or the fill).
+  // colour nearest the failing side (the smallest change from the C2 step).
   const at = (l) => oklchToHex({ l, c: f.c * CK, h: f.h });
-  const meets = (l) => contrastRatio(fillHex, at(l)) >= EDGE_FLOOR_CONTRAST;
-  const search = (passing, failing) => {
-    for (let i = 0; i < 40; i += 1) {
-      const mid = (passing + failing) / 2;
-      if (meets(mid)) passing = mid;
-      else failing = mid;
-    }
-    return at(passing);
-  };
-  if (meets(0)) return search(0, f.l - dl);
-  if (meets(1)) return search(1, f.l);
-  return darker;
+  const meets = (l) => contrastRatio(fillHex, at(l)) >= min;
+  if (!meets(0)) return at(0);
+  let passing = 0;
+  let failing = f.l - dl;
+  for (let i = 0; i < 40; i += 1) {
+    const mid = (passing + failing) / 2;
+    if (meets(mid)) passing = mid;
+    else failing = mid;
+  }
+  return at(passing);
 }
 
 /**

@@ -2,8 +2,9 @@
  * Raised edges (hds#897, C2): every hard "raised" edge is its item's own fill stepped
  * DARKER, same hue, C ×0.7225. Light: OKLCH L −0.12. Dark: L drops a third of the way to
  * the card (surface.raised), at least 0.03. A Button's computed edge also keeps a 2:1 floor
- * against its fill (hds#1387): it steps further darker, or lighter when the fill is too dark
- * for that (the near-black light primary, whose C2 edge sat at 1.16:1 and read flat). The
+ * against its fill (hds#1387): it steps further darker, and a fill too dark for that gets the
+ * darkest step, never a lighter one (hds#1399: a light lip under the near-black light primary
+ * read as a lighter edge). In dark, a 1px page line sits under every Button edge. The
  * shipped --hds-edge-* values in tokens.generated.css / accents.css must equal that rule
  * applied to today's fill tokens.
  */
@@ -74,7 +75,7 @@ function expected(tree: object, key: string, mode: Mode): string {
   const at = (l: number) => oklchToHex({ l, c: f.c * 0.7225, h: f.h });
   if (!['primary'].includes(key)) return at(f.l - dl);
   // hds#1387 floor: the C2 step if it keeps 2:1, else the nearest darker lightness that
-  // does, else (a fill too dark) the nearest lighter one.
+  // does, else (a fill too dark, hds#1399) the darkest step, never a lighter one.
   const fill = oklchToHex(f);
   const ok = (l: number) => ratio(fill, at(l)) >= 2;
   if (ok(f.l - dl)) return at(f.l - dl);
@@ -86,7 +87,7 @@ function expected(tree: object, key: string, mode: Mode): string {
     }
     return at(pass);
   };
-  return ok(0) ? search(0, f.l - dl) : search(1, f.l);
+  return ok(0) ? search(0, f.l - dl) : at(0);
 }
 
 /** Each sRGB channel within `tol` of the target (the C2 reference values are "≈"). */
@@ -136,18 +137,19 @@ describe.each(MODES)('raised edges (%s)', (mode) => {
 
   // hds#1387: the light primary's C2 edge was 1.16:1 against its near-black fill, so the
   // button read flat. Every Button edge must be visible against the fill it sits under.
-  it.each(EDGE_FLOORED)('%s: keeps the 2:1 floor against its fill', (key) => {
+  it.each(EDGE_FLOORED)('%s: keeps the 2:1 floor, or is the darkest step', (key) => {
     const fill = resolveHex(raw, EDGE_FILLS[key as keyof typeof EDGE_FILLS], mode);
     expect(EDGE_FLOOR_CONTRAST).toBe(2);
-    expect(ratio(fill, shipped(mode)[key])).toBeGreaterThanOrEqual(2);
+    const edge = shipped(mode)[key];
+    if (edge !== '#000000') expect(ratio(fill, edge)).toBeGreaterThanOrEqual(2);
   });
 });
 
-// Primary edges follow the graphite fill, near-black / near-white since hds#887. Light is a
-// lighter lip under the near-black fill (hds#1387); dark is the plain C2 step.
+// Primary edges follow the graphite fill, near-black / near-white since hds#887. Light is the
+// darkest step under the near-black fill (hds#1399); dark is the plain C2 step.
 describe('C2 reference edges (graphite defaults)', () => {
-  it('light: primary ≈ #424a56', () => {
-    near(shipped('Light').primary, '#424a56', 1);
+  it('light: primary is #000000, darker than its fill', () => {
+    near(shipped('Light').primary, '#000000', 0);
   });
   it('dark: primary ≈ #a5a6a9', () => {
     near(shipped('Dark').primary, '#a5a6a9');
@@ -172,7 +174,7 @@ describe('accent themes re-derive the primary edge', () => {
 describe('wiring', () => {
   it('Button and Kbd default their hooks to the own-colour edge; shadow.hard stays exported', () => {
     expect(theme.replace(/\s+/g, ' ')).toContain(
-      '0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
+      '0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary))), 0 calc(var(--hds-hs, var(--component-button-depth-edge)) + 1px) 0 var(--hds-edge-line, transparent)',
     );
     expect(theme.replace(/\s+/g, ' ').replace(/\( | \)/g, (m) => m.trim())).toContain(
       'var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)))',
@@ -191,12 +193,14 @@ describe('Button edge tokens', () => {
       warning: 'amber.400',
       info: 'blue.300',
     },
+    // hds#1399: dark tone fills are near-black, so their edge is the darkest step (always
+    // darker than the fill); the page line lifts it off the page.
     Dark: {
       secondary: 'neutral.725',
-      danger: 'red.700',
-      success: 'green.700',
-      warning: 'amber.800',
-      info: 'blue.500',
+      danger: 'neutral.black',
+      success: 'neutral.black',
+      warning: 'neutral.black',
+      info: 'neutral.black',
     },
   };
   const lum = (hex: string) => {
@@ -227,14 +231,13 @@ describe('Button edge tokens', () => {
   );
 
   it.each(MODES.flatMap((m) => TOKEN_KEYS.map((k) => [m, k] as const)))(
-    '%s %s: at least 1.5:1 against its fill',
+    '%s %s: at least 1.5:1 against its fill, or the darkest step',
     (mode, key) => {
-      const ratio = contrast(
-        resolveHex(raw, EDGE_TOKENS[key], mode),
-        resolveHex(raw, EDGE_TOKEN_FILLS[key], mode),
-      );
+      const edge = resolveHex(raw, EDGE_TOKENS[key], mode);
+      const ratio = contrast(edge, resolveHex(raw, EDGE_TOKEN_FILLS[key], mode));
       expect(EDGE_MIN_CONTRAST).toBe(1.5);
-      expect(ratio).toBeGreaterThanOrEqual(EDGE_MIN_CONTRAST);
+      if (edge !== resolveHex(raw, 'primitive.color.neutral.black', mode))
+        expect(ratio).toBeGreaterThanOrEqual(EDGE_MIN_CONTRAST);
     },
   );
 
@@ -250,7 +253,7 @@ describe('computed edges that ship as tokens', () => {
     expect(EDGE_COMPUTED_TOKENS.primary).toBe('semantic.color.edge.primary');
     const hex = (mode: Mode) => resolveHex(raw, EDGE_COMPUTED_TOKENS.primary, mode);
     expect({ Light: hex('Light'), Dark: hex('Dark') }).toEqual({
-      Light: '#424a56',
+      Light: '#000000',
       Dark: '#a5a6a9',
     });
     for (const mode of MODES) expect(hex(mode)).toBe(expected(raw, 'primary', mode));
@@ -279,5 +282,38 @@ describe('computed edges that ship as tokens', () => {
     );
     expect(edgeTokenDrift(tree)).toHaveLength(1);
     expect(() => buildEdgeCSS(tree)).toThrow(/semantic\.color\.edge\.primary \(Dark\)/);
+  });
+});
+
+// hds#1399 (Adrian 11-09): every Button edge is a darker step of its OWN fill, and it is
+// visible against the page in both themes: the edge itself in light, the edge or the 1px
+// page line (semantic.color.border.default) under it in dark.
+describe('every Button edge, both themes (hds#1399)', () => {
+  const PAIRS: Record<string, [string, string]> = {
+    primary: [EDGE_FILLS.primary, EDGE_COMPUTED_TOKENS.primary],
+    ...Object.fromEntries(TOKEN_KEYS.map((k) => [k, [EDGE_TOKEN_FILLS[k], EDGE_TOKENS[k]]])),
+  };
+  const rows = MODES.flatMap((m) => Object.keys(PAIRS).map((k) => [m, k] as const));
+
+  it.each(rows)('%s %s: darker than its own fill', (mode, key) => {
+    const [fill, edge] = PAIRS[key];
+    expect(hexToOklch(resolveHex(raw, edge, mode)).l).toBeLessThan(
+      toOklch(resolveColor(raw, fill, mode)).l,
+    );
+  });
+
+  it.each(rows)('%s %s: at least 1.5:1 against the page', (mode, key) => {
+    const page = resolveHex(raw, 'semantic.color.surface.page', mode);
+    const edge = resolveHex(raw, PAIRS[key][1], mode);
+    const line = mode === 'Dark' ? resolveHex(raw, 'semantic.color.border.default', mode) : edge;
+    expect(Math.max(ratio(page, edge), ratio(page, line))).toBeGreaterThanOrEqual(1.5);
+  });
+
+  it('dark sets the page line; light has none', () => {
+    const flat = theme.replace(/\s+/g, ' ');
+    expect(flat).toContain(':root { --hds-edge-line: transparent; }');
+    expect(flat).toContain(
+      "[data-theme='dark'] { --hds-edge-line: var(--semantic-color-border-default); }",
+    );
   });
 });

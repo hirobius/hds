@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Raised Button edges now always sit darker than the fill, with a 1px page line in dark; update visual baselines that show Buttons."
+}
