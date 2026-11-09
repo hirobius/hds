@@ -73,6 +73,16 @@ describe('collectStats', () => {
     expect(stats.consumers.confirmedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
+  it('carries the in-sync count of docs/sync-map.json as figmaSync, with its source (hds#1385)', () => {
+    const { summary } = readJson('docs/sync-map.json');
+    expect(stats.figmaSync).toEqual({
+      synced: summary.synced,
+      total: summary.components,
+      source: 'docs/sync-map.json',
+    });
+    expect(stats.figmaSync.synced).toBeLessThanOrEqual(stats.figmaSync.total);
+  });
+
   it('omits the split while the snapshot says it is unconfirmed', () => {
     const temp = copyRoot();
     const snapPath = join(temp, 'docs/data/consumer-usage.json');
@@ -93,6 +103,7 @@ const INPUTS = [
   'hirobius.tokens.json',
   'public/hds-manifest.json',
   'docs/data/consumer-usage.json',
+  'docs/sync-map.json',
   'package.json',
   STATS_PATH,
 ];
