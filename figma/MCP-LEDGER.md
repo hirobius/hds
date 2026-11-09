@@ -1487,24 +1487,17 @@ Version PR head `442ff2b`. `pnpm figma:push --delta`: updated 7 · created 0 · 
 
 Session total: 3 calls (2 reads, 1 write). No publish, no delete. `figma:snapshot --from-receipt` gave `syncedCommit` 442ff2b; `check:figma-drift` 0, `figma:push --plan` 0, `check:figma-release` passed. `docs/sync-map.json` regenerated (`check-sync-map.mjs --write`: only `generated` moved; 131/131 in sync).
 
-Calls logged for 2026-11-09: 14 of 200 (2, 1, 5, 3 and 3).
-
 ## 2026-11-09 · hds#1422: single Button edge, lighter light primary (delta sync)
 
-Branch `claude/hds-1422-single-edge`. `pnpm figma:push --delta`: updated 10 · created 0 · deleted 0 (`semantic.color.surface.accent`, `semantic.accent.rest`, `semantic.accent.hover`, `semantic.color.edge.{primary,danger,success,warning,info}`, `semantic.color.feedback.bg.info`, `meta.commit`), against snapshot `08f5201b`. Each row was logged before its call. Nothing was deleted or published.
+Branch `claude/hds-1422-single-edge`. `pnpm figma:push --delta`: updated 10 · created 0 · deleted 0 (`semantic.color.surface.accent`, `semantic.accent.rest`, `semantic.accent.hover`, `semantic.color.edge.{primary,danger,success,warning,info}`, `semantic.color.feedback.bg.info`, `meta.commit`), against snapshot `08f5201b`. A pre-push gate then found the `semantic.color.edge.primary` description over 20 words; it was shortened, and a second delta ran (updated 2: that description and `meta.commit`, against `49bffd0c`). Each row was logged before its call. Nothing was deleted or published.
 
-| #   | Tool              | Kind  | Target                                     | Why                  | Result                                                                             |
-| --- | ----------------- | ----- | ------------------------------------------ | -------------------- | ---------------------------------------------------------------------------------- |
-| 1   | `get_figma_skill` | read  | skill://figma/figma-use/SKILL.md           | load figma-use       | OK                                                                                 |
-| 2   | `create_session`  | read  | library 2VgBbVpKiDnu0aftJEVyBQ             | session              | OK. Session `04f799b0`                                                             |
-| 3   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | hds#1422 token delta | OK. updated 10 · created 0 · deleted 0; post `49bffd0c`, 1-page receipt; re-plan 0 |
+| #   | Tool              | Kind  | Target                                     | Why                      | Result                                                                             |
+| --- | ----------------- | ----- | ------------------------------------------ | ------------------------ | ---------------------------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | skill://figma/figma-use/SKILL.md           | load figma-use           | OK                                                                                 |
+| 2   | `create_session`  | read  | library 2VgBbVpKiDnu0aftJEVyBQ             | session                  | OK. Session `04f799b0`                                                             |
+| 3   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | hds#1422 token delta     | OK. updated 10 · created 0 · deleted 0; post `49bffd0c`, 1-page receipt; re-plan 0 |
+| 4   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | shorter edge description | OK. updated 2 · created 0 · deleted 0; post `80545b20`, 1-page receipt; re-plan 0  |
 
-Session total: 3 calls (2 reads, 1 write). No publish, no delete. `figma:snapshot --from-receipt` re-based `figma/snapshot.json`.
+Session total: 4 calls (2 reads, 2 writes). No publish, no delete. `figma:snapshot --from-receipt` after each write; `check:figma-drift` 0, `figma:push --plan` 0.
 
-A pre-push gate then found the `semantic.color.edge.primary` description over 20 words. It was shortened, and a second delta ran: updated 2 · created 0 · deleted 0 (that description, `meta.commit`), against snapshot `49bffd0c`.
-
-| #   | Tool        | Kind  | Target                                     | Why                      | Result                                                                            |
-| --- | ----------- | ----- | ------------------------------------------ | ------------------------ | --------------------------------------------------------------------------------- |
-| 4   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | shorter edge description | OK. updated 2 · created 0 · deleted 0; post `80545b20`, 1-page receipt; re-plan 0 |
-
-Session total: 4 calls (2 reads, 2 writes). No publish, no delete. `check:figma-drift` 0, `figma:push --plan` 0.
+Calls logged for 2026-11-09: 18 of 200 (2, 1, 5, 3, 3 and 4).
