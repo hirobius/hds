@@ -1609,7 +1609,7 @@
           },
           "timingFunction": "{primitive.easing.decelerate}"
         },
-        "$description": "Colour transitions on hover and state changes (color, background-color, border-color, fill, stroke, outline-color): productive, 150ms decelerate. A theme switch skips it (hds#1399)."
+        "$description": "Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399)."
       },
       "transitionShadow": {
         "$value": {

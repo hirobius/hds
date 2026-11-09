@@ -881,7 +881,7 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `semantic.motion.expressive` | `250ms` | For teaching moments and significant UI entries. Includes physics-based squish. |
 | `semantic.motion.spatial` | `400ms` | For elements traveling long distances across the viewport. |
 | `semantic.motion.exit` | `100ms` | For elements being removed from the DOM. |
-| `semantic.motion.transitionColor` | `150ms` | Colour transitions on hover and state changes (color, background-color, border-color, fill, stroke, outline-color): productive, 150ms decelerate. A theme switch skips it (hds#1399). |
+| `semantic.motion.transitionColor` | `150ms` | Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399). |
 | `semantic.motion.transitionShadow` | `150ms` | Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399). |
 
 Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.
