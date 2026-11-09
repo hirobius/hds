@@ -1427,3 +1427,26 @@ Main ce33de0 (0.37.0). Plan updated 2 · created 4 · deleted 0.
 Session total: 2 calls
 
 Calls logged for 2026-11-08: 2 of 200 (2).
+
+## 2026-11-09 · HDS ops: release 0.38.0 meta delta from Version PR #1389 head e1e8322
+
+Plan updated 3 · created 0 · deleted 0, against figma/snapshot.json 83e210cc. Its snapshot commit was not pushed (pre-push steering budget, fixed by hds#1408); the receipt is chained below.
+
+| #   | Tool             | Kind  | Target                                                               | Why          | Result                                         |
+| --- | ---------------- | ----- | -------------------------------------------------------------------- | ------------ | ---------------------------------------------- |
+| 1   | `create_session` | read  | library 2VgBbVpKiDnu0aftJEVyBQ                                       | open session | OK                                             |
+| 2   | `use_figma`      | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js unmodified against 83e210cc | release meta | OK. updated 3; post 74664478; receipt written. |
+
+Session total: 2 calls (1 write). No publish.
+
+## 2026-11-09 · HDS ops: release 0.38.0 meta delta, re-run on Version PR #1389 head dcac542
+
+The head moved after hds#1408. The snapshot is chained from the e1e8322 receipt (post 74664478). Plan updated 1 · created 0 · deleted 0.
+
+| #   | Tool        | Kind  | Target                                                               | Why          | Result                                                             |
+| --- | ----------- | ----- | -------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------ |
+| 1   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: delta.js unmodified against 74664478 | release meta | OK. updated 1; post 7e21fb47; receipt written; drift 0, plan 0/0/0 |
+
+Session total: 1 call (1 write). No publish.
+
+Calls logged for 2026-11-09: 3 of 200 (2 and 1).
