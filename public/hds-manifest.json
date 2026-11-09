@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-09T05:14:52.676Z",
+  "generated": "2026-11-09T05:21:39.794Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -15276,8 +15276,8 @@
         "path": "semantic.color.edge.primary",
         "cssVar": "--semantic-color-edge-primary",
         "type": "color",
-        "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, or lighter to keep 2:1 (hds#1387).",
-        "value": "oklch(0.4066 0.0227 258.37)",
+        "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter (hds#1399).",
+        "value": "oklch(0 0 0)",
         "dark": {
           "alias": "oklch(0.7253 0.0044 271.35)",
           "resolvedValue": "oklch(0.7253 0.0044 271.35)"
@@ -15299,48 +15299,48 @@
         "path": "semantic.color.edge.danger",
         "cssVar": "--semantic-color-edge-danger",
         "type": "color",
-        "description": "Hard raised edge under danger-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "description": "Hard raised edge under danger-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
         "alias": "{primitive.color.red.400}",
         "resolvedValue": "#f87171",
         "dark": {
-          "alias": "{primitive.color.red.700}",
-          "resolvedValue": "#b91c1c"
+          "alias": "{primitive.color.neutral.black}",
+          "resolvedValue": "#060a13"
         }
       },
       {
         "path": "semantic.color.edge.success",
         "cssVar": "--semantic-color-edge-success",
         "type": "color",
-        "description": "Hard raised edge under success-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "description": "Hard raised edge under success-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
         "alias": "{primitive.color.green.400}",
         "resolvedValue": "#34d399",
         "dark": {
-          "alias": "{primitive.color.green.700}",
-          "resolvedValue": "#047857"
+          "alias": "{primitive.color.neutral.black}",
+          "resolvedValue": "#060a13"
         }
       },
       {
         "path": "semantic.color.edge.warning",
         "cssVar": "--semantic-color-edge-warning",
         "type": "color",
-        "description": "Hard raised edge under warning-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "description": "Hard raised edge under warning-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
         "alias": "{primitive.color.amber.400}",
         "resolvedValue": "#fbbf24",
         "dark": {
-          "alias": "{primitive.color.amber.800}",
-          "resolvedValue": "#92400e"
+          "alias": "{primitive.color.neutral.black}",
+          "resolvedValue": "#060a13"
         }
       },
       {
         "path": "semantic.color.edge.info",
         "cssVar": "--semantic-color-edge-info",
         "type": "color",
-        "description": "Hard raised edge under info-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
         "alias": "{primitive.color.blue.300}",
         "resolvedValue": "oklch(0.70 0.2903 266.54)",
         "dark": {
-          "alias": "{primitive.color.blue.500}",
-          "resolvedValue": "#1E2EFD"
+          "alias": "{primitive.color.neutral.black}",
+          "resolvedValue": "#060a13"
         }
       },
       {
@@ -16983,7 +16983,7 @@
         "type": "color",
         "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
         "alias": "{semantic.color.edge.primary}",
-        "resolvedValue": "oklch(0.4066 0.0227 258.37)"
+        "resolvedValue": "oklch(0 0 0)"
       },
       {
         "path": "component.button.edge.secondary",

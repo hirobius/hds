@@ -2052,12 +2052,12 @@
       },
       "edge": {
         "primary": {
-          "$value": "oklch(0.4066 0.0227 258.37)",
-          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, or lighter to keep 2:1 (hds#1387).",
+          "$value": "oklch(0 0 0)",
+          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter (hds#1399).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "oklch(0.4066 0.0227 258.37)",
+                "Light": "oklch(0 0 0)",
                 "Dark": "oklch(0.7253 0.0044 271.35)"
               }
             }
@@ -2077,48 +2077,48 @@
         },
         "danger": {
           "$value": "{primitive.color.red.400}",
-          "$description": "Hard raised edge under danger-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$description": "Hard raised edge under danger-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.red.400}",
-                "Dark": "{primitive.color.red.700}"
+                "Dark": "{primitive.color.neutral.black}"
               }
             }
           }
         },
         "success": {
           "$value": "{primitive.color.green.400}",
-          "$description": "Hard raised edge under success-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$description": "Hard raised edge under success-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.green.400}",
-                "Dark": "{primitive.color.green.700}"
+                "Dark": "{primitive.color.neutral.black}"
               }
             }
           }
         },
         "warning": {
           "$value": "{primitive.color.amber.400}",
-          "$description": "Hard raised edge under warning-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$description": "Hard raised edge under warning-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.amber.400}",
-                "Dark": "{primitive.color.amber.800}"
+                "Dark": "{primitive.color.neutral.black}"
               }
             }
           }
         },
         "info": {
           "$value": "{primitive.color.blue.300}",
-          "$description": "Hard raised edge under info-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.blue.300}",
-                "Dark": "{primitive.color.blue.500}"
+                "Dark": "{primitive.color.neutral.black}"
               }
             }
           }
