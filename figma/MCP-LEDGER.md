@@ -1449,8 +1449,6 @@ The head moved after hds#1408. The snapshot is chained from the e1e8322 receipt 
 
 Session total: 1 call (1 write). No publish.
 
-Calls logged for 2026-11-09: 3 of 200 (2 and 1).
-
 ## 2026-11-09 · hds#1406: sort the library pages A–Z (reorder only)
 
 Session `7cea5cbf`. Rows were filled in right after each call, not before it. That breaks the log-first rule, and this note records the slip. Each move is `figma.root.insertChild` only. No page was renamed or deleted, and nothing was published.
@@ -1475,6 +1473,6 @@ Session `7cea5cbf` (shared with hds#1406). Rows were filled in right after each 
 | 7   | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: ThemeToggle 2201:2, Tooltip 87:6               | list the raw paints            | OK                                                                                                           |
 | 8   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: 2337:13332, 2337:13336, 2337:13340, 2337:13344 | bind arrow strokes             | OK. 4 strokes bound to the arrow fill variable; the 8 ThemeToggle ellipses were skipped (no source variable) |
 
-Session total for hds#1405: 3 calls (2 reads, 1 write).
+Session total: 3 calls (2 reads, 1 write).
 
-Calls logged for 2026-11-09: 11 of 200.
+Calls logged for 2026-11-09: 11 of 200 (2, 1, 5 and 3).
