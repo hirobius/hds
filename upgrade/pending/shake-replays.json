@@ -1,0 +1,4 @@
+{
+  "impact": "behavior",
+  "plain": "A field keyed on its error now shakes each time with the shake recipe; no code change needed."
+}

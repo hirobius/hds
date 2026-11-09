@@ -16,6 +16,7 @@ import {
   Text,
   Tooltip,
 } from '@hirobius/design-system';
+import { MotionSample } from './motion-sample';
 
 /**
  * A swatch card that copies its token name on tap. The whole card is the
@@ -48,20 +49,34 @@ export function CopyCard({ copy, children }: { copy: string; children: ReactNode
   );
 }
 
-/** A dot that travels its track with one motion token's duration and curve; replays on demand. */
+/**
+ * The motion sample on a track, moved by one motion token's duration and curve (hds#1397).
+ * The button is a direction toggle: each press sends the tile to the other end, so both
+ * directions show. Under reduced motion the token durations are zero, so the tile jumps.
+ */
 export function MotionDemo({ duration, easing }: { duration: string; easing: string }) {
-  const [run, setRun] = useState(0);
+  const [atEnd, setAtEnd] = useState(false);
   return (
     <div className="hds-motion-demo">
       <div className="hds-motion-track">
-        <span
-          key={run}
-          className={run ? 'hds-motion-dot hds-motion-dot--run' : 'hds-motion-dot'}
-          style={{ '--hds-demo-duration': duration, '--hds-demo-easing': easing } as CSSProperties}
+        <MotionSample
+          className="hds-motion-tile"
+          style={
+            {
+              '--hds-demo-duration': duration,
+              '--hds-demo-easing': easing,
+              left: atEnd ? 'calc(100% - var(--hds-motion-tile-size) - 0.5rem)' : '0.5rem',
+            } as CSSProperties
+          }
         />
       </div>
-      <button type="button" className="hds-motion-replay" onClick={() => setRun((n) => n + 1)}>
-        {run ? 'Replay' : 'Play'}
+      <button
+        type="button"
+        className="hds-motion-replay"
+        aria-pressed={atEnd}
+        onClick={() => setAtEnd((v) => !v)}
+      >
+        {atEnd ? '← Play' : 'Play →'}
       </button>
     </div>
   );
