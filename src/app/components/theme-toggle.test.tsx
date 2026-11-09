@@ -2,6 +2,7 @@
  * Tests for ThemeToggle — reads and sets the theme through ThemeContext (or the
  * isDark / onToggle props), follows the OS until the user picks, remembers the pick.
  */
+import { readFileSync } from 'node:fs';
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { ThemeProvider } from '../context/ThemeContext';
@@ -105,5 +106,22 @@ describe('ThemeToggle', () => {
     fireEvent.click(screen.getByRole('button'));
     expect(warn).not.toHaveBeenCalled();
     warn.mockRestore();
+  });
+});
+
+// hds#1407: the moon leans instead of standing upright. The icon's dark rotation places the
+// mask cut (centre (17,8), vector (5,-4) from the glyph centre) about 20-30deg above level.
+describe('moon tilt (hds#1407)', () => {
+  it('rotates the dark icon so the crescent tilts 20-30deg', () => {
+    const css = readFileSync('src/styles/theme.css', 'utf8');
+    const deg = Number(
+      /\[data-theme-state='dark'\] \.hds-theme-toggle__icon \{\s*transform: rotate\((-?[\d.]+)deg\)/.exec(
+        css,
+      )?.[1],
+    );
+    const cut = (Math.atan2(4, 5) * 180) / Math.PI; // degrees above level before rotation
+    const tilt = cut - deg;
+    expect(tilt).toBeGreaterThanOrEqual(20);
+    expect(tilt).toBeLessThanOrEqual(30);
   });
 });
