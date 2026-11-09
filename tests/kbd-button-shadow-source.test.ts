@@ -18,7 +18,11 @@ describe('Kbd shadow follows the Button light source', () => {
     // One depth token set since hds#1387: the edge height and both offsets are tokens.
     const flat = theme.replace(/\s+/g, ' ');
     expect(flat).toContain(
-      `0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, ${colour})`,
+      `0 max( 0px, calc(var(--hds-hs, var(--component-button-depth-edge)) - var(--hds-edge-line-width, 0px)) ) 0 var(--hds-btn-edge, ${colour})`,
+    );
+    // hds#1399: the page line sits inside the edge height, so the base holds.
+    expect(flat).toContain(
+      '0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-edge-line, transparent)',
     );
     expect(flat).toContain(
       '--hds-hs: calc( var(--component-button-depth-edge) - var(--component-button-depth-hoverOffset) );',
