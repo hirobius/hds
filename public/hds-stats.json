@@ -22,6 +22,11 @@
     "source": "docs/data/consumer-usage.json",
     "confirmedAt": "2026-11-09"
   },
+  "figmaSync": {
+    "synced": 131,
+    "total": 131,
+    "source": "docs/sync-map.json"
+  },
   "delivery": {
     "commitsOnMain": 1052,
     "mergedPullRequests": 819,
