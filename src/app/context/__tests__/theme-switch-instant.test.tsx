@@ -18,7 +18,7 @@ function Probe() {
 }
 
 describe('instant theme switch (hds#1399)', () => {
-  it('suspends transitions for one frame while data-theme flips', () => {
+  it('suspends transitions through one painted frame while data-theme flips', () => {
     const frames: FrameRequestCallback[] = [];
     vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb));
     render(
@@ -26,13 +26,15 @@ describe('instant theme switch (hds#1399)', () => {
         <Probe />
       </ThemeProvider>,
     );
-    frames.splice(0).forEach((cb) => cb(0));
+    for (let i = 0; i < 2; i += 1) frames.splice(0).forEach((cb) => cb(0)); // settle the mount
     const root = document.documentElement;
     const before = root.getAttribute('data-theme');
     act(() => ref.api?.toggleDark());
     expect(root.getAttribute('data-theme')).not.toBe(before);
     expect(root.hasAttribute('data-hds-theme-switching')).toBe(true);
-    frames.splice(0).forEach((cb) => cb(0));
+    frames.splice(0).forEach((cb) => cb(0)); // first frame paints with transitions off
+    expect(root.hasAttribute('data-hds-theme-switching')).toBe(true);
+    frames.splice(0).forEach((cb) => cb(0)); // second frame resumes them
     expect(root.hasAttribute('data-hds-theme-switching')).toBe(false);
     vi.unstubAllGlobals();
   });

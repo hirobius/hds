@@ -74,15 +74,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
     } catch {}
 
-    // hds#1399: switch instantly. Suspend transitions for one frame (theme.css
+    // hds#1399: switch instantly. Suspend transitions through one painted frame (theme.css
     // [data-hds-theme-switching]), so colours do not fade from one theme to the other.
     const root = document.documentElement;
     root.setAttribute('data-hds-theme-switching', '');
     root.setAttribute('data-theme', nextTheme);
     root.classList.toggle('dark', nextIsDark);
     void root.offsetHeight; // flush styles with transitions off
+    // Two frames: the first paints the new theme with transitions off, the second resumes.
     const resume = () => root.removeAttribute('data-hds-theme-switching');
-    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(resume);
+    if (typeof requestAnimationFrame === 'function')
+      requestAnimationFrame(() => requestAnimationFrame(resume));
     else resume();
   }, []);
 
