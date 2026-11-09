@@ -7,6 +7,8 @@ import { sectionLandings, type SectionLanding } from '@/lib/section-landings';
 import { getMDXComponents } from '@/mdx-components';
 import { ComponentIndex } from '@/components/component-index';
 import { PageLinks } from '@/components/page-links';
+import { PagePager, pagerLabel } from '@/components/page-pager';
+import { findNeighbour } from 'fumadocs-core/page-tree';
 import { titleWordEm } from '@/lib/title-fit';
 
 /** Frontmatter is loose (source.config.ts), so read the link fields defensively. */
@@ -71,6 +73,12 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   const MDXContent = page.data.body;
   // A short page doesn't need a contents rail; prev/next cards repeat the sidebar.
   const hasToc = page.data.toc.length >= MIN_TOC_ITEMS;
+  // Previous / next in the sidebar order, within the page's own section (hds#1393).
+  const { previous, next } = findNeighbour(source.pageTree, page.url, { separateRoot: true });
+  const sameSection = (url?: string) =>
+    url && params.slug?.[0] && url.startsWith(`/docs/${params.slug[0]}/`);
+  const link = (n?: { url: string; name: unknown }) =>
+    n && sameSection(n.url) ? { url: n.url, name: String(n.name) } : undefined;
 
   return (
     <DocsPage
@@ -88,6 +96,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
       <PageLinks figma={str(page.data.figma)} source={str(page.data.source)} />
       <DocsBody>
         <MDXContent components={getMDXComponents()} />
+        <PagePager previous={link(previous)} next={link(next)} label={pagerLabel(params.slug)} />
       </DocsBody>
     </DocsPage>
   );

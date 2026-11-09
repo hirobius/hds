@@ -1138,3 +1138,29 @@ a code[data-density] {
   color: var(--semantic-color-content-tertiary);
   text-align: center;
 }
+
+/* Previous / next cards (components/page-pager.tsx, hds#1393): stacked full width on a
+   phone, side by side from 640px. Each card is one link with the Card focus ring. */
+.hds-page-pager {
+  display: grid;
+  gap: var(--semantic-space-scale-sm);
+  margin-top: var(--semantic-space-scale-xl);
+}
+@media (min-width: 640px) {
+  .hds-page-pager {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.hds-page-pager__card {
+  display: grid;
+  gap: var(--semantic-space-scale-2xs);
+  padding: var(--semantic-space-surface-padding);
+  text-decoration: none;
+  color: var(--semantic-color-content-primary);
+}
+.hds-page-pager__card--next {
+  text-align: right;
+}
+.hds-page-pager__dir {
+  color: var(--semantic-color-content-secondary);
+}
