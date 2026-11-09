@@ -6,8 +6,8 @@
  *
  * Light: two steps of OKLCH lightness −0.06 (L −0.12).
  * Floor (hds#1387): a Button's computed edge keeps EDGE_FLOOR_CONTRAST (2:1) against its fill,
- * stepping further darker. A fill too dark for any darker step to keep it gets the nearest
- * lighter step that does, so the edge stays visible (hds#1399 review).
+ * stepping further darker; a fill too dark for that gets the darkest step, never a lighter
+ * one (hds#1399).
  * Dark: L drops a third of the way toward the card (surface.raised), never less than 0.03,
  * so a light primary fill gets a deep edge and a dark tonal fill still gets a visible one.
  * The old "lighter rim" (step lighter below 1.5:1) made dark buttons glow; C2 dropped it.
@@ -155,25 +155,15 @@ export function edgeFor(fill, mode, card, { floor = false } = {}) {
   const min = floor === true ? EDGE_FLOOR_CONTRAST : floor || 0;
   if (!min || contrastRatio(fillHex, darker) >= min) return darker;
   // Contrast floor (hds#1387): the C2 step left some edges too close to their fill. Step
-  // further DARKER to the nearest lightness that keeps the floor. A fill too dark for that
-  // (no darker step keeps it) gets the nearest lighter step instead, below.
+  // further DARKER to the nearest lightness that keeps the floor. The edge is ALWAYS darker
+  // than its own fill (hds#1399): a fill too dark to reach the floor gets the darkest step
+  // (lightness 0) instead of a lighter lip, which read as a light edge under a dark button.
   // at(l): the edge colour at lightness l. meets(l): it keeps the floor. search: bisect
   // between a lightness that meets the floor and one that does not, returning the passing
   // colour nearest the failing side (the smallest change from the C2 step).
   const at = (l) => oklchToHex({ l, c: f.c * CK, h: f.h });
   const meets = (l) => contrastRatio(fillHex, at(l)) >= min;
-  if (!meets(0)) {
-    // No darker step keeps the floor (the near-black light primary: black is 1.17:1). A flat
-    // button is worse than a lighter lip, so take the nearest LIGHTER lightness that keeps it.
-    let up = 1;
-    let below = f.l;
-    for (let i = 0; i < 40; i += 1) {
-      const mid = (up + below) / 2;
-      if (meets(mid)) up = mid;
-      else below = mid;
-    }
-    return at(up);
-  }
+  if (!meets(0)) return at(0);
   let passing = 0;
   let failing = f.l - dl;
   for (let i = 0; i < 40; i += 1) {
