@@ -18,7 +18,7 @@ describe('PagePager (hds#1393)', () => {
     expect(links).toHaveLength(2);
     expect(links[0]!.getAttribute('href')).toBe('/docs/components/accordion');
     expect(links[0]!.getAttribute('rel')).toBe('prev');
-    expect(links[0]!.textContent).toBe('← PreviousAccordion');
+    expect(links[0]!.textContent).toBe('← Previous: Accordion');
     expect(links[1]!.getAttribute('href')).toBe('/docs/components/avatar');
     expect(links[1]!.getAttribute('rel')).toBe('next');
   });

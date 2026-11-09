@@ -384,8 +384,8 @@ pre {
   overflow-x: auto;
 }
 
-/* Prose tables (components/mdx-prose.tsx): a raised tonal frame from HDS tokens (no outline,
-   hds#891), so it follows the radius token. Fumadocs' own wrapper hard-codes an 8px radius. */
+/* Prose tables (components/mdx-prose.tsx): a raised tonal frame from HDS tokens, so it follows
+   the radius token. Fumadocs' own wrapper hard-codes an 8px radius. */
 /* The frame owns the outline and the rounded corners (hds#1398): the stroke draws the full
    curve at every corner, also when a wide table scrolls under it on a phone. The table inside
    has no border or radius of its own, so the frame never clips a cell border at a corner. */

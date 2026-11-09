@@ -70,12 +70,7 @@ export function MotionDemo({ duration, easing }: { duration: string; easing: str
           }
         />
       </div>
-      <button
-        type="button"
-        className="hds-motion-replay"
-        aria-pressed={atEnd}
-        onClick={() => setAtEnd((v) => !v)}
-      >
+      <button type="button" className="hds-motion-replay" onClick={() => setAtEnd((v) => !v)}>
         {atEnd ? '← Play' : 'Play →'}
       </button>
     </div>
