@@ -1469,7 +1469,7 @@ Session `7cea5cbf` (shared with hds#1406). Rows were filled in right after each 
 
 | #   | Tool        | Kind  | Target                                                                         | Why                            | Result                                                                                                       |
 | --- | ----------- | ----- | ------------------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| 6   | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: every component page (loadAsync)               | axes, descriptions, raw paints | OK. 71 pages; raw paints only on ThemeToggle (8) and Tooltip (4)                                             |
+| 6   | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: every component page (loadAsync)               | axes, descriptions, raw paints | OK. 72 pages; raw paints only on ThemeToggle (8) and Tooltip (4)                                             |
 | 7   | `use_figma` | read  | library 2VgBbVpKiDnu0aftJEVyBQ: ThemeToggle 2201:2, Tooltip 87:6               | list the raw paints            | OK                                                                                                           |
 | 8   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: 2337:13332, 2337:13336, 2337:13340, 2337:13344 | bind arrow strokes             | OK. 4 strokes bound to the arrow fill variable; the 8 ThemeToggle ellipses were skipped (no source variable) |
 
