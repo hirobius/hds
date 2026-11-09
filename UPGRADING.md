@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.37.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.38.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,17 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.38.0
+
+Released 2026-11-09 (minor). 4 that look different.
+
+### Looks different
+
+- Under data-accent="cobalt" the primary Button edge is a little deeper (it now keeps 2:1 against the fill); nothing to do unless you match its colour by hand.
+- --semantic-color-edge-primary is now #424a56 in light mode (was #010207), the visible lip under the primary Button; update any hand-drawn copy of it.
+- The light primary Button edge is now a lighter lip (#424a56) instead of near-black, and Pagination's current page and CodeBlock's copy button are raised; if you override --hds-edge-primary or --hds-btn-edge, check that your value still shows against the fill.
+- Under the accent-lilac brand the primary Button edge is a little deeper in light and dark; check pages that use it after upgrading.
 
 ## 0.37.0
 
