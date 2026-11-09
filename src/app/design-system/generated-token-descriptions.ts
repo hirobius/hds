@@ -254,7 +254,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.color.border.accent": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
   "semantic.color.border.success": "Success-toned border for status outlines and success-state inputs.",
   "semantic.color.border.warning": "Warning-toned border for status outlines and warning-state inputs.",
-  "semantic.color.edge.primary": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter; one step under the graphite.700 light fill (hds#1422).",
+  "semantic.color.edge.primary": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422).",
   "semantic.color.edge.neutral": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
   "semantic.color.edge.danger": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
   "semantic.color.edge.success": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",

@@ -2053,7 +2053,7 @@
       "edge": {
         "primary": {
           "$value": "oklch(0.2646 0.0260 265.37)",
-          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter; one step under the graphite.700 light fill (hds#1422).",
+          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {

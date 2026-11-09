@@ -1500,3 +1500,11 @@ Branch `claude/hds-1422-single-edge`. `pnpm figma:push --delta`: updated 10 · c
 | 3   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | hds#1422 token delta | OK. updated 10 · created 0 · deleted 0; post `49bffd0c`, 1-page receipt; re-plan 0 |
 
 Session total: 3 calls (2 reads, 1 write). No publish, no delete. `figma:snapshot --from-receipt` re-based `figma/snapshot.json`.
+
+A pre-push gate then found the `semantic.color.edge.primary` description over 20 words. It was shortened, and a second delta ran: updated 2 · created 0 · deleted 0 (that description, `meta.commit`), against snapshot `49bffd0c`.
+
+| #   | Tool        | Kind  | Target                                     | Why                      | Result                                                                            |
+| --- | ----------- | ----- | ------------------------------------------ | ------------------------ | --------------------------------------------------------------------------------- |
+| 4   | `use_figma` | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | shorter edge description | OK. updated 2 · created 0 · deleted 0; post `80545b20`, 1-page receipt; re-plan 0 |
+
+Session total: 4 calls (2 reads, 2 writes). No publish, no delete. `check:figma-drift` 0, `figma:push --plan` 0.

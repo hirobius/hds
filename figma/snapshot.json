@@ -1,15 +1,15 @@
 {
-  "checksum": "49bffd0c",
+  "checksum": "80545b20",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-09T22:44:34.359Z",
+    "takenAt": "2026-11-09T22:52:00.165Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "9e155ec4",
-      "pushedAt": "2026-11-09T22:44:34.188Z",
+      "modelHash": "22b6a8c5",
+      "pushedAt": "2026-11-09T22:52:00.108Z",
       "scope": null
     },
     "collections": [
@@ -5208,7 +5208,7 @@
             "name": "color/edge/primary",
             "path": "semantic.color.edge.primary",
             "resolvedType": "COLOR",
-            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter; one step under the graphite.700 light fill (hds#1422).",
+            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -13727,7 +13727,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "c83e89c"
+                "value": "28e9de3"
               }
             }
           },
@@ -14537,7 +14537,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:5524da78434519c583c7892d8abeb1b58c7ea11031cd47bfc91e201c8ada5f50",
-  "syncedCommit": "c83e89c",
-  "syncedHash": "sha256:8ac1963ac09d7ff5f138f839daa624251538b78f800b77ae5bc618a13ed88f4e"
+  "tokensHash": "sha256:c5df652ba40a7f7efd64311efeec8ad2028997369d5f58a38a2b9e310df840e7",
+  "syncedCommit": "28e9de3",
+  "syncedHash": "sha256:da409d79a5104de0b2b637fb5f110f50aba188f4bf6f4b41bace8dcf67dbfb96"
 }
