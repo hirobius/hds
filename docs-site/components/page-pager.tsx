@@ -29,6 +29,8 @@ export function PagePager({
             <Text variant="caption" className="hds-page-pager__dir">
               ← Previous
             </Text>
+            {/* A spoken and copied separator, so the link reads "← Previous: Accordion" (hds#1393). */}
+            <span className="sr-only">: </span>
             <Text variant="ui">{previous.name}</Text>
           </a>
         </Card>
@@ -41,6 +43,7 @@ export function PagePager({
             <Text variant="caption" className="hds-page-pager__dir">
               Next →
             </Text>
+            <span className="sr-only">: </span>
             <Text variant="ui">{next.name}</Text>
           </a>
         </Card>

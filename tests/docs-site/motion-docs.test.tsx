@@ -39,11 +39,10 @@ describe('MotionSample on both motion pages (hds#1397)', () => {
     const { container } = render(<MotionDemo duration="150ms" easing="ease" />);
     expect(container.querySelector('.hds-motion-sample[data-accent="cobalt"]')).not.toBeNull();
     const button = screen.getByRole('button', { name: 'Play →' });
-    expect(button.getAttribute('aria-pressed')).toBe('false');
+    // The label change carries the state, so there is no aria-pressed as well.
+    expect(button.hasAttribute('aria-pressed')).toBe(false);
     fireEvent.click(button);
-    expect(screen.getByRole('button', { name: '← Play' }).getAttribute('aria-pressed')).toBe(
-      'true',
-    );
+    expect(screen.getByRole('button', { name: '← Play' }).hasAttribute('aria-pressed')).toBe(false);
     fireEvent.click(screen.getByRole('button', { name: '← Play' }));
     expect(screen.getByRole('button', { name: 'Play →' })).toBeTruthy();
   });
