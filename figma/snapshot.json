@@ -1,15 +1,15 @@
 {
-  "checksum": "7e21fb47",
+  "checksum": "08f5201b",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-09T03:21:33.309Z",
+    "takenAt": "2026-11-09T09:53:47.231Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "31d3ba80",
-      "pushedAt": "2026-11-09T03:21:33.244Z",
+      "modelHash": "78345aa1",
+      "pushedAt": "2026-11-09T09:53:47.084Z",
       "scope": null
     },
     "collections": [
@@ -5133,7 +5133,7 @@
             "name": "color/edge/danger",
             "path": "semantic.color.edge.danger",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under danger-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "description": "Hard raised edge under danger-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5148,8 +5148,8 @@
                 "to": "Hirobius/Primitives: color/red/400"
               },
               "Dark": {
-                "alias": "VariableID:3:29",
-                "to": "Hirobius/Primitives: color/red/700"
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
               }
             }
           },
@@ -5158,7 +5158,7 @@
             "name": "color/edge/info",
             "path": "semantic.color.edge.info",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under info-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5173,8 +5173,8 @@
                 "to": "Hirobius/Primitives: color/blue/300"
               },
               "Dark": {
-                "alias": "VariableID:3:22",
-                "to": "Hirobius/Primitives: color/blue/500"
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
               }
             }
           },
@@ -5208,7 +5208,7 @@
             "name": "color/edge/primary",
             "path": "semantic.color.edge.primary",
             "resolvedType": "COLOR",
-            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, or lighter to keep 2:1 (hds#1387).",
+            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker, never lighter (hds#1399).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5220,9 +5220,9 @@
             "valuesByMode": {
               "Light": {
                 "value": {
-                  "r": 0.258901,
-                  "g": 0.290232,
-                  "b": 0.337226,
+                  "r": 0,
+                  "g": 0,
+                  "b": 0,
                   "a": 1
                 }
               },
@@ -5241,7 +5241,7 @@
             "name": "color/edge/success",
             "path": "semantic.color.edge.success",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under success-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "description": "Hard raised edge under success-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5256,8 +5256,8 @@
                 "to": "Hirobius/Primitives: color/green/400"
               },
               "Dark": {
-                "alias": "VariableID:3:33",
-                "to": "Hirobius/Primitives: color/green/700"
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
               }
             }
           },
@@ -5266,7 +5266,7 @@
             "name": "color/edge/warning",
             "path": "semantic.color.edge.warning",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under warning-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "description": "Hard raised edge under warning-tone raised controls: always darker than the fill; dark sits on a page line (hds#1399).",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5281,8 +5281,8 @@
                 "to": "Hirobius/Primitives: color/amber/400"
               },
               "Dark": {
-                "alias": "VariableID:3:41",
-                "to": "Hirobius/Primitives: color/amber/800"
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
               }
             }
           },
@@ -13727,7 +13727,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "dcac542"
+                "value": "442ff2b"
               }
             }
           },
@@ -13812,7 +13812,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "0.38.0"
+                "value": "0.39.0"
               }
             }
           }
@@ -14537,7 +14537,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:4b08c1c6e26617d509ba8a31f1abfc8066275675294c2add54a5b871d08dee0d",
-  "syncedCommit": "dcac542",
-  "syncedHash": "sha256:3c647b2bbed788a844d13bd8c65213e11310097845671a105ad077ab9e57723e"
+  "tokensHash": "sha256:7ef26e6864002e6a69345d4a5ece26e44692c2199165e92841cf2d3f920b20b1",
+  "syncedCommit": "442ff2b",
+  "syncedHash": "sha256:8ac1963ac09d7ff5f138f839daa624251538b78f800b77ae5bc618a13ed88f4e"
 }

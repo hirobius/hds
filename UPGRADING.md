@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.38.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.39.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,24 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.39.0
+
+Released 2026-11-09 (minor). 2 changes to make by hand and 6 that look different.
+
+### Looks different
+
+- In dark mode the danger button edge is now black, darker than its fill; if you read --semantic-color-edge-danger elsewhere, check that it still looks right.
+- In dark mode the info button edge is now black, darker than its fill; if you read --semantic-color-edge-info elsewhere, check that it still looks right.
+- The primary button edge is now black (darker than its own fill); if you read --semantic-color-edge-primary for another surface, check that it still looks right.
+- In dark mode the success button edge is now black, darker than its fill; if you read --semantic-color-edge-success elsewhere, check that it still looks right.
+- In dark mode the warning button edge is now black, darker than its fill; if you read --semantic-color-edge-warning elsewhere, check that it still looks right.
+- The ThemeToggle moon now tilts; update visual baselines that show it in dark mode.
+
+### Do by hand
+
+- Theme switches now apply instantly; if you added your own transition-off code around a theme change, you can remove it.
+- A field keyed on its error now shakes each time with the shake recipe; no code change needed.
 
 ## 0.38.0
 
