@@ -1450,3 +1450,17 @@ The head moved after hds#1408. The snapshot is chained from the e1e8322 receipt 
 Session total: 1 call (1 write). No publish.
 
 Calls logged for 2026-11-09: 3 of 200 (2 and 1).
+
+## 2026-11-09 · hds#1406: sort the library pages A–Z (reorder only)
+
+Session `7cea5cbf`. Rows were filled in right after each call, not before it. That breaks the log-first rule, and this note records the slip. Each move is `figma.root.insertChild` only. No page was renamed or deleted, and nothing was published.
+
+| #   | Tool              | Kind  | Target                                                                                                             | Why                      | Result                                                                                          |
+| --- | ----------------- | ----- | ------------------------------------------------------------------------------------------------------------------ | ------------------------ | ----------------------------------------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | skill://figma/figma-use/SKILL.md                                                                                   | load figma-use           | OK                                                                                              |
+| 2   | `create_session`  | read  | library 2VgBbVpKiDnu0aftJEVyBQ                                                                                     | session                  | OK                                                                                              |
+| 3   | `use_figma`       | read  | library 2VgBbVpKiDnu0aftJEVyBQ: list pages                                                                         | current order            | OK. 86 pages                                                                                    |
+| 4   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: pages 2555:4288, 20:4, 2083:2, 2482:37190, 2157:826, 2435:67, 2290:804, 2399:10548 | reorder (localeCompare)  | OK, but the sandbox `localeCompare` sorts by code point, so it put MetaLine before MetadataList |
+| 5   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: pages 2041:2, 2201:5, 2399:10548, 2083:2, 2482:37190, 2157:826, 2435:67, 2290:804  | case-insensitive re-sort | OK. Final order recorded in `figma/page-order.json`                                             |
+
+Session total: 5 calls (3 reads, 2 writes). No publish, no delete, no rename.
