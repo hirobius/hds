@@ -1,47 +1,18 @@
 /**
- * Seam under test: the Icons foundation page (hds#1229) — the gallery data
- * (docs-site/lib/icon-gallery.ts), the size steps it reads from the tokens, and
- * the client gallery's search.
+ * Seam under test: the Icons foundation page. hds#1396 removed the full gallery (the glyphs
+ * are Lucide's, ISC): the page credits Lucide with an external link, shows a short sample of
+ * the icons HDS components use, and NOTICE.md carries the licence notice.
  */
 import { afterEach, describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import * as Icons from '@hirobius/design-system/icons';
-import { filterIconNames, iconNames } from '../../docs-site/lib/icon-gallery';
 import { iconSizes } from '../../docs-site/lib/foundation-visuals';
 import { buildTokenSections } from '../../docs-site/lib/token-tables';
-import { IconGallery } from '../../docs-site/components/icon-gallery';
+import { IconSample, SAMPLE_ICONS } from '../../docs-site/components/icon-gallery';
 
 const tokens = JSON.parse(readFileSync('hirobius.tokens.json', 'utf8'));
-const exported = (readFileSync('src/icons.ts', 'utf8').match(/export \{([\s\S]*?)\}/)?.[1] ?? '')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
-
-describe('iconNames', () => {
-  it('lists every name the icons entry exports, sorted', () => {
-    const names = iconNames(Icons);
-    expect(names).toEqual([...exported].sort((a, b) => a.localeCompare(b)));
-  });
-
-  it('skips exports that are not components', () => {
-    expect(iconNames({ Star: Icons.Star, version: '1', meta: { a: 1 } })).toEqual(['Star']);
-  });
-});
-
-describe('filterIconNames', () => {
-  const names = ['ArrowUp', 'ArrowUpRight', 'Check', 'CircleCheck'];
-
-  it('returns every name for an empty query', () => {
-    expect(filterIconNames(names, '  ')).toEqual(names);
-  });
-
-  it('matches case-insensitively and ignores spaces and dashes', () => {
-    expect(filterIconNames(names, 'arrow up')).toEqual(['ArrowUp', 'ArrowUpRight']);
-    expect(filterIconNames(names, 'arrow-up-right')).toEqual(['ArrowUpRight']);
-    expect(filterIconNames(names, 'CHECK')).toEqual(['Check', 'CircleCheck']);
-  });
-});
+const page = readFileSync('content/docs/foundations/icons.mdx', 'utf8');
 
 describe('icon sizes', () => {
   it('reads sm, md and lg from semantic.size.icon', () => {
@@ -62,29 +33,29 @@ describe('icon sizes', () => {
   });
 });
 
-describe('<IconGallery />', () => {
+describe('Icons page credit (hds#1396)', () => {
   afterEach(cleanup);
 
-  it('renders one tile per icon, with the glyph hidden from assistive tech', () => {
-    const { container } = render(<IconGallery />);
-    const tiles = screen.getAllByRole('listitem');
-    expect(tiles).toHaveLength(exported.length);
-    const svgs = container.querySelectorAll('li svg');
-    expect(svgs.length).toBe(exported.length);
-    svgs.forEach((svg) => expect(svg.getAttribute('aria-hidden')).toBe('true'));
+  it('has no full gallery, and credits Lucide with its licence and an external link', () => {
+    expect(page).not.toMatch(/<IconGallery/);
+    expect(page).toMatch(/\[Lucide\]\(https:\/\/lucide\.dev\/icons\)/);
+    expect(page).toMatch(/ISC/);
   });
 
-  it('filters by the search field and announces the count', () => {
-    render(<IconGallery />);
-    fireEvent.change(screen.getByLabelText('Search icons'), { target: { value: 'chevron' } });
-    expect(screen.getAllByRole('listitem')).toHaveLength(4);
-    expect(screen.getByRole('status').textContent).toBe('4 of ' + exported.length + ' icons');
+  it('shows about six icons HDS components use, each exported and hidden from assistive tech', () => {
+    const { container } = render(<IconSample />);
+    expect(screen.getAllByRole('listitem')).toHaveLength(SAMPLE_ICONS.length);
+    expect(SAMPLE_ICONS.length).toBeLessThanOrEqual(8);
+    for (const name of SAMPLE_ICONS) expect(name in Icons).toBe(true);
+    container
+      .querySelectorAll('li svg')
+      .forEach((svg) => expect(svg.getAttribute('aria-hidden')).toBe('true'));
   });
 
-  it('says so when nothing matches', () => {
-    render(<IconGallery />);
-    fireEvent.change(screen.getByLabelText('Search icons'), { target: { value: 'zzz' } });
-    expect(screen.queryAllByRole('listitem')).toHaveLength(0);
-    expect(screen.getByText(/No icon matches/)).toBeTruthy();
+  it('NOTICE.md (shipped in the package) carries the Lucide ISC notice', () => {
+    const notice = readFileSync('NOTICE.md', 'utf8');
+    expect(notice).toMatch(/Lucide[\s\S]*ISC License/);
+    const files = JSON.parse(readFileSync('package.json', 'utf8')).files as string[];
+    expect(files).toContain('NOTICE.md');
   });
 });
