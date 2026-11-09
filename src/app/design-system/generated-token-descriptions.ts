@@ -217,6 +217,8 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.motion.expressive": "For teaching moments and significant UI entries. Includes physics-based squish.",
   "semantic.motion.spatial": "For elements traveling long distances across the viewport.",
   "semantic.motion.exit": "For elements being removed from the DOM.",
+  "semantic.motion.transitionColor": "Colour transitions on hover and state changes (color, background-color, border-color, fill, stroke, outline-color): productive, 150ms decelerate. A theme switch skips it (hds#1399).",
+  "semantic.motion.transitionShadow": "Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399).",
   "semantic.motion.distance": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242).",
   "semantic.motion.nudge": "Small travel for text swaps and nudges (hds#751).",
   "semantic.motion.slide": "Travel for menus, toasts and items sliding in (hds#751).",

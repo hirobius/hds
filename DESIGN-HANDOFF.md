@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 642 tokens, aliases, and TS refs in one shot.
+Checks all 646 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -544,12 +544,14 @@ Or via `useTheme().setDensity('compact')`
 
 ### Semantic motion intents
 
-| Token                        | Duration | Easing                          | Purpose                                                                         |
-| ---------------------------- | -------- | ------------------------------- | ------------------------------------------------------------------------------- |
-| `semantic.motion.productive` | `150ms`  | `{primitive.easing.decelerate}` | For micro-interactions and status changes. No deformation.                      |
-| `semantic.motion.expressive` | `250ms`  | `{primitive.easing.elastic}`    | For teaching moments and significant UI entries. Includes physics-based squish. |
-| `semantic.motion.spatial`    | `400ms`  | `{primitive.easing.emphasized}` | For elements traveling long distances across the viewport.                      |
-| `semantic.motion.exit`       | `100ms`  | `{primitive.easing.accelerate}` | For elements being removed from the DOM.                                        |
+| Token                              | Duration | Easing                          | Purpose                                                                                                                                                                               |
+| ---------------------------------- | -------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `semantic.motion.productive`       | `150ms`  | `{primitive.easing.decelerate}` | For micro-interactions and status changes. No deformation.                                                                                                                            |
+| `semantic.motion.expressive`       | `250ms`  | `{primitive.easing.elastic}`    | For teaching moments and significant UI entries. Includes physics-based squish.                                                                                                       |
+| `semantic.motion.spatial`          | `400ms`  | `{primitive.easing.emphasized}` | For elements traveling long distances across the viewport.                                                                                                                            |
+| `semantic.motion.exit`             | `100ms`  | `{primitive.easing.accelerate}` | For elements being removed from the DOM.                                                                                                                                              |
+| `semantic.motion.transitionColor`  | `150ms`  | `{primitive.easing.decelerate}` | Colour transitions on hover and state changes (color, background-color, border-color, fill, stroke, outline-color): productive, 150ms decelerate. A theme switch skips it (hds#1399). |
+| `semantic.motion.transitionShadow` | `150ms`  | `{primitive.easing.decelerate}` | Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399).                                                                   |
 
 ### Other semantic motion tokens
 
