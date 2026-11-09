@@ -1,0 +1,38 @@
+{
+  "$comment": "Frozen inputs of the 0.39.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.39.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.39.0",
+  "previous": "0.38.0",
+  "date": "2026-11-09",
+  "summary": "2 changes to make by hand and 6 that look different.",
+  "backfilled": false,
+  "notes": {
+    "instant-theme-switch": {
+      "needle": "062be98: Theme switch is instant (hds#1399).",
+      "source": "CHANGELOG.md:19"
+    },
+    "lucide-notice": {
+      "needle": "bedca28: NOTICE.md credits Lucide (ISC) for",
+      "source": "CHANGELOG.md:25"
+    },
+    "moon-tilt": {
+      "needle": "cab6769: ThemeToggle: the dark-mode moon",
+      "source": "CHANGELOG.md:20"
+    },
+    "no-raw-controls-hds-button": {
+      "needle": "7405a8b: `hds/no-raw-controls` accepts a",
+      "source": "CHANGELOG.md:26"
+    },
+    "raised-edge-darker": {
+      "needle": "842275b: Raised Button edges are always a",
+      "source": "CHANGELOG.md:21"
+    },
+    "shake-replays": {
+      "needle": "dd9ef4e: The `shake` motion recipe plays",
+      "source": "CHANGELOG.md:27"
+    },
+    "stats-figma-sync": {
+      "needle": "5be28e1: `public/hds-stats.json` gains `figmaSync:",
+      "source": "CHANGELOG.md:28"
+    }
+  }
+}

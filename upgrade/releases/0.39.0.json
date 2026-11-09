@@ -1,0 +1,124 @@
+{
+  "version": "0.39.0",
+  "date": "2026-11-09",
+  "bump": "minor",
+  "summary": "2 changes to make by hand and 6 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.39.0/value-changed/--semantic-color-edge-danger",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode the danger button edge is now black, darker than its fill; if you read --semantic-color-edge-danger elsewhere, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-danger"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-danger"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-danger:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-danger:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.39.0/value-changed/--semantic-color-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode the info button edge is now black, darker than its fill; if you read --semantic-color-edge-info elsewhere, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.39.0/value-changed/--semantic-color-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The primary button edge is now black (darker than its own fill); if you read --semantic-color-edge-primary for another surface, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-primary::root"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.39.0/value-changed/--semantic-color-edge-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode the success button edge is now black, darker than its fill; if you read --semantic-color-edge-success elsewhere, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-success"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-success"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-success:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-success:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.39.0/value-changed/--semantic-color-edge-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode the warning button edge is now black, darker than its fill; if you read --semantic-color-edge-warning elsewhere, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-warning"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-warning"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-warning:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.39.0/look/moon-tilt",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The ThemeToggle moon now tilts; update visual baselines that show it in dark mode.",
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.39.0/behavior/instant-theme-switch",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Theme switches now apply instantly; if you added your own transition-off code around a theme change, you can remove it.",
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.39.0/behavior/shake-replays",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A field keyed on its error now shakes each time with the shake recipe; no code change needed.",
+      "source": "CHANGELOG.md:27"
+    }
+  ]
+}

@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.39.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Theme switches now apply instantly; if you added your own transition-off code around a theme change, you can remove it.
+- Do by hand: A field keyed on its error now shakes each time with the shake recipe; no code change needed.
+- Looks different: In dark mode the danger button edge is now black, darker than its fill; if you read --semantic-color-edge-danger elsewhere, check that it still looks right.
+- Looks different: In dark mode the info button edge is now black, darker than its fill; if you read --semantic-color-edge-info elsewhere, check that it still looks right.
+- And 4 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0390).
+
+### Minor Changes
+
+- 062be98: Theme switch is instant (hds#1399). ThemeProvider sets `data-hds-theme-switching` on `<html>` for one frame while it flips `data-theme`, and theme.css turns every transition off during that frame, so colours no longer fade between themes. New motion tokens `semantic.motion.transitionColor` and `semantic.motion.transitionShadow` (productive, 150ms decelerate) back the `.transition-colors` and `.transition-all` utilities, and reduced motion zeroes them.
+- cab6769: ThemeToggle: the dark-mode moon leans about 25° instead of standing upright (hds#1407). The icon's dark rotation is now 15° (was 40°); the sun-to-moon morph keeps the same motion.
+- 842275b: Raised Button edges are always a darker step of the Button's own fill, in both themes (hds#1399). The light primary edge is now `#000000` (it was a lighter `#424a56` lip). In dark, the danger, success, warning and info edges are `primitive.color.neutral.black`, and a 1px `semantic.color.border.default` page line (`--hds-edge-line`) sits under every raised Button edge, so the edge reads against the page.
+
+### Patch Changes
+
+- bedca28: NOTICE.md credits Lucide (ISC) for the icons that `@hirobius/design-system/icons` re-exports (hds#1396). The Icons docs page drops the full gallery. It credits Lucide and links to lucide.dev/icons for the full set, and it shows a row of the icons that HDS components use.
+- 7405a8b: `hds/no-raw-controls` accepts a `<button>` whose `className` has the static.css `hds-button` class, as a string, a template literal, a ternary or a `cn(…)` argument (hds#1384). CSS-only consumers can drop their lint exception for such a button. A modifier class alone (`hds-button--primary`) still errors, and so do `<input>`, `<select>`, `<textarea>` and `<form>`.
+- dd9ef4e: The `shake` motion recipe plays again on every keyed remount (hds#1397). It started from `initial: false`, so a field keyed on its error took the last keyframe as its first frame and never shook. It now starts from `{ x: 0 }`.
+- 5be28e1: `public/hds-stats.json` gains `figmaSync: { synced, total, source }`: the components whose code, docs and Figma agree, of all that `docs/sync-map.json` maps (hds#1385). Like every other value in the file it is computed from the repo and checked before tests, so a consumer can cite it instead of typing a number.
+
 ## 0.38.0
 
 ### Upgrade
