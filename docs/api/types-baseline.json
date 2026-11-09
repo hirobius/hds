@@ -733,6 +733,7 @@
         "shake.animate",
         "shake.animate.x",
         "shake.initial",
+        "shake.initial.x",
         "shake.transition",
         "shake.transition.duration",
         "shake.transition.ease",
