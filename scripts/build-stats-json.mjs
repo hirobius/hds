@@ -20,6 +20,10 @@
  *                             docs/data/consumer-usage.json declares it, with that
  *                             file as `source` and the day it was confirmed
  *                             (null while the snapshot says it is unconfirmed)
+ *   figmaSync                 { synced, total } from the summary of docs/sync-map.json:
+ *                             components whose code, docs and Figma agree, of all
+ *                             it maps (check-sync-map's "in sync" line), with that
+ *                             file as `source` (hds#1385)
  *   version                   package.json version
  *   delivery                  counted offline from git (never the GitHub API), at
  *                             `git merge-base HEAD origin/main`, so it always describes a
@@ -70,6 +74,7 @@ import { collectCoreSet, countCore } from './lib/core-set.mjs';
 
 export const STATS_PATH = 'public/hds-stats.json';
 const CONSUMER_SNAPSHOT = 'docs/data/consumer-usage.json';
+const SYNC_MAP = 'docs/sync-map.json';
 
 const readJson = (root, rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
 
@@ -83,6 +88,11 @@ function consumerSplit(snapshot) {
     source: CONSUMER_SNAPSHOT,
     confirmedAt: snapshot.consumersConfirmedAt,
   };
+}
+
+/** The in-sync count of the sync map, as check-sync-map prints it. */
+function figmaSync({ summary }) {
+  return { synced: summary.synced, total: summary.components, source: SYNC_MAP };
 }
 
 /** Every number of public/hds-stats.json except `generatedFrom`, read from the repo at `root`. */
@@ -104,6 +114,7 @@ export function collectStats(root) {
       styleCount: readJson(root, 'public/hds-manifest.json').typographyRamp.styleCount,
     },
     consumers: consumerSplit(readJson(root, CONSUMER_SNAPSHOT)),
+    figmaSync: figmaSync(readJson(root, SYNC_MAP)),
   };
 }
 
