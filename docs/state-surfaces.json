@@ -65,7 +65,7 @@
     },
     {
       "path": "public/hds-stats.json",
-      "describes": "The HDS numbers other repos read (component, core, pattern and token counts, contrast pairs, typography styles, the consumer split), each computed from the code",
+      "describes": "The HDS numbers other repos read (component, core, pattern and token counts, contrast pairs, typography styles, the consumer split, the Figma sync count), each computed from the code",
       "kind": "generated",
       "by": "scripts/build-stats-json.mjs",
       "check": "node scripts/build-stats-json.mjs --check"

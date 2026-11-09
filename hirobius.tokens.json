@@ -1600,6 +1600,28 @@
         },
         "$description": "For elements being removed from the DOM."
       },
+      "transitionColor": {
+        "$value": {
+          "duration": "{primitive.duration.short}",
+          "delay": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "timingFunction": "{primitive.easing.decelerate}"
+        },
+        "$description": "Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399)."
+      },
+      "transitionShadow": {
+        "$value": {
+          "duration": "{primitive.duration.short}",
+          "delay": {
+            "value": 0,
+            "unit": "ms"
+          },
+          "timingFunction": "{primitive.easing.decelerate}"
+        },
+        "$description": "Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399)."
+      },
       "distance": {
         "$type": "dimension",
         "$value": "{primitive.space.6}",

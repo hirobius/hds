@@ -9,7 +9,7 @@ import { CaseStudyFacts } from './components/case-study-facts';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
-import { IconGallery } from './components/icon-gallery';
+import { IconSample } from './components/icon-gallery';
 import { MdxPre } from './components/mdx-code-block';
 import { mdxHeadings } from './components/mdx-headings';
 import { MdxLink } from './components/mdx-link';
@@ -59,7 +59,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ComponentPreview,
     ComponentIndex,
     OverviewActions,
-    IconGallery,
+    IconSample,
     Mermaid,
     WalkthroughVideo,
     PrinciplesAndPractices,

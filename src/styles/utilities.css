@@ -387,14 +387,14 @@
   }
 
   .transition-all {
-    transition: all 150ms ease;
+    transition: all var(--hds-motion-transition-color);
   }
   .transition-colors {
     transition-property:
       color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
       box-shadow, outline-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
+    transition-timing-function: var(--hds-motion-transitionColor-easing);
+    transition-duration: var(--hds-motion-transitionColor-duration);
   }
   .transition-transform {
     transition-property: transform;

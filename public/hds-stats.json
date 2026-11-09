@@ -7,7 +7,7 @@
     "patterns": 14
   },
   "tokens": {
-    "total": 578
+    "total": 580
   },
   "contrast": {
     "textPairs": 37,
@@ -20,7 +20,12 @@
     "productApps": 2,
     "tokenLevelSites": 4,
     "source": "docs/data/consumer-usage.json",
-    "confirmedAt": "2026-10-01"
+    "confirmedAt": "2026-11-09"
+  },
+  "figmaSync": {
+    "synced": 131,
+    "total": 131,
+    "source": "docs/sync-map.json"
   },
   "delivery": {
     "commitsOnMain": 1052,
@@ -30,5 +35,5 @@
     "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",
     "asOfDate": "2026-11-06"
   },
-  "generatedFrom": "2d8bc3c6de595aff22e442e13f5c848f9527f1c7"
+  "generatedFrom": "7405a8b35e072f617e0d317d44f3a0a25a4b2e62"
 }

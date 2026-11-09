@@ -280,6 +280,10 @@ declare module 'react' {
     '--hds-motion-spatial-easing'?: string | undefined;
     '--hds-motion-exit-duration'?: string | undefined;
     '--hds-motion-exit-easing'?: string | undefined;
+    '--hds-motion-transitionColor-duration'?: string | undefined;
+    '--hds-motion-transitionColor-easing'?: string | undefined;
+    '--hds-motion-transitionShadow-duration'?: string | undefined;
+    '--hds-motion-transitionShadow-easing'?: string | undefined;
     '--semantic-motion-distance'?: string | undefined;
     '--semantic-motion-nudge'?: string | undefined;
     '--semantic-motion-slide'?: string | undefined;

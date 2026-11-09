@@ -386,11 +386,15 @@ pre {
 
 /* Prose tables (components/mdx-prose.tsx): a raised tonal frame from HDS tokens (no outline,
    hds#891), so it follows the radius token. Fumadocs' own wrapper hard-codes an 8px radius. */
+/* The frame owns the outline and the rounded corners (hds#1398): the stroke draws the full
+   curve at every corner, also when a wide table scrolls under it on a phone. The table inside
+   has no border or radius of its own, so the frame never clips a cell border at a corner. */
 .hds-docs-table {
   position: relative;
   overflow: auto;
   margin: var(--semantic-space-scale-lg) 0;
   background: var(--semantic-color-surface-raised);
+  border: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
   border-radius: var(--semantic-radius-action);
 }
 /* The frame scrolls, so the table inside fills it instead of shrinking to its content. */
@@ -398,6 +402,9 @@ pre {
   display: table;
   width: 100%;
   margin: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
 }
 
 /* Search dialog (the Cmd+K one): Fumadocs sets rounded-xl and shadow-2xl on it. Radius and shadow
@@ -780,11 +787,6 @@ div:has(> .hds-docs-display) {
   background: var(--semantic-color-surface-muted);
   border-radius: var(--semantic-radius-action);
 }
-.hds-icon-gallery {
-  display: flex;
-  flex-direction: column;
-  gap: var(--semantic-space-scale-sm);
-}
 .hds-icon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
@@ -843,26 +845,48 @@ div:has(> .hds-docs-display) {
 .hds-motion-track {
   position: relative;
   flex: 1;
-  height: 1.5rem;
-  border-radius: var(--primitive-radius-full);
+  height: 3.5rem;
+  border-radius: var(--semantic-radius-action);
   background: var(--semantic-color-surface-muted);
 }
-.hds-motion-dot {
-  position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
-  width: 1rem;
-  height: 1rem;
-  border-radius: var(--primitive-radius-full);
+/* The shared motion sample (components/motion-sample.tsx, hds#1397): a cobalt rounded square,
+   the accent token under data-accent="cobalt", so it reads as the thing that moves. */
+.hds-motion-sample {
+  --hds-motion-tile-size: 2.5rem;
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--hds-motion-tile-size);
+  height: var(--hds-motion-tile-size);
+  padding: 0 0.5rem;
+  border-radius: var(--semantic-radius-action);
   background: var(--semantic-color-surface-accent);
+  color: var(--semantic-color-content-inverse);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
-.hds-motion-dot--run {
-  animation: hds-motion-travel var(--hds-demo-duration) var(--hds-demo-easing) both;
+.hds-motion-tile {
+  position: absolute;
+  top: 0.5rem;
+  padding: 0;
+  width: var(--hds-motion-tile-size);
+  transition: left var(--hds-demo-duration) var(--hds-demo-easing);
 }
-@keyframes hds-motion-travel {
-  to {
-    left: calc(100% - 1.25rem);
+@media (prefers-reduced-motion: reduce) {
+  .hds-motion-tile {
+    transition: none;
   }
+}
+/* Recipe demos: one fixed-height stage per cell, so buttons and captions line up. */
+.hds-motion-cell {
+  display: grid;
+  grid-template-rows: 6rem auto auto;
+  align-content: start;
+  gap: var(--semantic-space-scale-xs);
+}
+.hds-motion-stage {
+  display: grid;
+  place-items: center;
+  height: 6rem;
 }
 .hds-motion-replay {
   flex: none;
@@ -1137,4 +1161,30 @@ a code[data-density] {
   font-size: 0.8125rem;
   color: var(--semantic-color-content-tertiary);
   text-align: center;
+}
+
+/* Previous / next cards (components/page-pager.tsx, hds#1393): stacked full width on a
+   phone, side by side from 640px. Each card is one link with the Card focus ring. */
+.hds-page-pager {
+  display: grid;
+  gap: var(--semantic-space-scale-sm);
+  margin-top: var(--semantic-space-scale-xl);
+}
+@media (min-width: 640px) {
+  .hds-page-pager {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.hds-page-pager__card {
+  display: grid;
+  gap: var(--semantic-space-scale-2xs);
+  padding: var(--semantic-space-surface-padding);
+  text-decoration: none;
+  color: var(--semantic-color-content-primary);
+}
+.hds-page-pager__card--next {
+  text-align: right;
+}
+.hds-page-pager__dir {
+  color: var(--semantic-color-content-secondary);
 }

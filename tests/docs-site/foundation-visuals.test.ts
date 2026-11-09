@@ -137,7 +137,14 @@ describe('elevationLevels', () => {
 describe('motionTokens', () => {
   it('builds a valid timing function from the curve, never the spring var', () => {
     const motion = motionTokens(tokens);
-    expect(motion.map((m) => m.name)).toEqual(['productive', 'expressive', 'spatial', 'exit']);
+    expect(motion.map((m) => m.name)).toEqual([
+      'productive',
+      'expressive',
+      'spatial',
+      'exit',
+      'transitionColor',
+      'transitionShadow',
+    ]);
     for (const m of motion) expect(m.easing).toMatch(/^cubic-bezier\(/);
     expect(motion[0]!.durationVar).toBe('--primitive-duration-short');
     expect(motion[0]!.duration).toBe('150ms');

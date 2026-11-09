@@ -165,6 +165,11 @@
 
   /* -- Animation presets ------------------------------------------------------ */
   --hds-motion-productive: var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+  /* semantic.motion.transitionColor / transitionShadow (hds#1399): hover and state changes. */
+  --hds-motion-transition-color: var(--hds-motion-transitionColor-duration)
+    var(--hds-motion-transitionColor-easing);
+  --hds-motion-transition-shadow: var(--hds-motion-transitionShadow-duration)
+    var(--hds-motion-transitionShadow-easing);
   --hds-anim-appear: var(--hds-motion-productive-duration) var(--hds-motion-expressive-easing);
   --hds-anim-enter: var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing);
   --hds-anim-entrance: var(--hds-motion-expressive-duration) var(--hds-motion-expressive-easing);
@@ -671,6 +676,8 @@
     --hds-motion-expressive-duration: 0s;
     --hds-motion-spatial-duration: 0s;
     --hds-motion-exit-duration: 0s;
+    --hds-motion-transitionColor-duration: 0s;
+    --hds-motion-transitionShadow-duration: 0s;
   }
 }
 
@@ -1289,4 +1296,13 @@ input[data-search-input='true'] {
     --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
     --semantic-space-section-stack: var(--primitive-space-12);
   }
+}
+
+/* Instant theme switch (hds#1399): ThemeProvider sets data-hds-theme-switching on <html> for
+ * one frame while it flips data-theme, so no colour, background or shadow fades between
+ * themes. Hover and state transitions run again on the next frame. */
+:root[data-hds-theme-switching] *,
+:root[data-hds-theme-switching] *::before,
+:root[data-hds-theme-switching] *::after {
+  transition: none !important; /* css-ok: theme switch must beat every component transition */
 }
