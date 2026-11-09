@@ -153,8 +153,10 @@ run, so never wait on them or treat a missing check as pass or fail. Leave
 - **Merge rule:** an independent PASS review comment on the PR (format in
   CLAUDE.md), from someone other than the author, naming the head commit. A new
   push voids it.
-- **Release:** local only, `pnpm release:local` (Adrian, npm 2FA). Agents never
-  merge, publish or release. See `docs/RELEASING.md`.
+- **Release:** from GitHub Actions on merge of the Version Packages PR. The
+  orchestrator may cut the release itself: it merges it after the Figma meta
+  sync and an independent PASS on its head, then reports to Adrian. Agents
+  never `npm publish` by hand. See `docs/RELEASING.md` (Adrian, 2026-11-09).
 
 ## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
 

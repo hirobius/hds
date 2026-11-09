@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.38.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Under data-accent="cobalt" the primary Button edge is a little deeper (it now keeps 2:1 against the fill); nothing to do unless you match its colour by hand.
+- Looks different: --semantic-color-edge-primary is now #424a56 in light mode (was #010207), the visible lip under the primary Button; update any hand-drawn copy of it.
+- Looks different: The light primary Button edge is now a lighter lip (#424a56) instead of near-black, and Pagination's current page and CodeBlock's copy button are raised; if you override --hds-edge-primary or --hds-btn-edge, check that your value still shows against the fill.
+- Looks different: Under the accent-lilac brand the primary Button edge is a little deeper in light and dark; check pages that use it after upgrading.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0380).
+
+### Minor Changes
+
+- ce33de0: Every filled Button now looks raised (hds#1387). The primary Button's bottom edge was almost the same colour as its near-black fill in light mode (1.16:1), so it looked flat; it is now a visible lighter lip (`semantic.color.edge.primary` light `#424a56`, 2:1 against the fill). The default dark primary edge is unchanged. Computed primary edges for accents and tenants now keep the same 2:1 floor, so cobalt and accent-lilac edges get slightly deeper in light and dark. The edge height and the hover and press offsets are new tokens, `component.button.depth.{edge,hoverOffset,pressedOffset}` (3px, 1px, 3px), and every raised variant, tone, size, toggle and icon-only Button reads them. Pagination's current page and CodeBlock's copy button are now raised too. Ghost (tertiary) and link stay flat by design.
+
+### Patch Changes
+
+- 49845b6: Alert, Toast, Tooltip, Disclosure, SegmentedControl, Checkbox, Radio, Toggle, Slider, FormField, InlineCode, ErrorPattern and AsyncState now animate with Motion's `m` inside `LazyMotion` (`domAnimation`), as Button does since 0.37 (hds#1386). No module imports the full `motion` component, so apps ship less animation code: a Vite app that imports Toast, Alert and Disclosure drops from 121.3 kB to 106.8 kB gzip. Markup, timing and looks do not change.
+
 ## 0.37.0
 
 ### Upgrade

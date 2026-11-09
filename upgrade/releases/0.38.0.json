@@ -1,0 +1,87 @@
+{
+  "version": "0.38.0",
+  "date": "2026-11-09",
+  "bump": "minor",
+  "summary": "4 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.38.0/value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-accent=\"cobalt\" the primary Button edge is a little deeper (it now keeps 2:1 against the fill); nothing to do unless you match its colour by hand.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent='cobalt']",
+        "css-var-changed:--hds-edge-primary:[data-accent='cobalt'][data-theme='dark']",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.38.0/value-changed/--semantic-color-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "--semantic-color-edge-primary is now #424a56 in light mode (was #010207), the visible lip under the primary Button; update any hand-drawn copy of it.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-primary::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.38.0/look/button-raised-edge",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The light primary Button edge is now a lighter lip (#424a56) instead of near-black, and Pagination's current page and CodeBlock's copy button are raised; if you override --hds-edge-primary or --hds-btn-edge, check that your value still shows against the fill.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary",
+          "--hds-btn-edge",
+          "--component-button-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary",
+          "--hds-btn-edge"
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.38.0/tenant/accent-lilac",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Under the accent-lilac brand the primary Button edge is a little deeper in light and dark; check pages that use it after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac],[data-tenant=accent-lilac]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    }
+  ]
+}

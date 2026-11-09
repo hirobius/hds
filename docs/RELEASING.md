@@ -1,12 +1,16 @@
 # Releasing @hirobius/design-system
 
 Releases publish from GitHub Actions: `.github/workflows/release.yml` runs on
-every push to `main` (checked 2026-11-06). Agents never merge the release PR,
-publish or release.
+every push to `main` (checked 2026-11-06). Agents never publish to npm by hand.
+The orchestrator agent may cut a release itself: it merges the "Version
+Packages" PR after the steps below, with no per-release approval (Adrian,
+2026-11-09). It tells Adrian the version and run link afterwards.
 
 ## Who
 
-The owner (Adrian) merges the "Version Packages" PR. The Release workflow then
+The orchestrator agent (or Adrian) merges the "Version Packages" PR when the
+release is ready. Adrian can hold a release by saying so. Then the Release
+workflow
 publishes through npm Trusted Publishing (OIDC): no npm token, no laptop login.
 
 ## Steps
@@ -27,7 +31,8 @@ publishes through npm Trusted Publishing (OIDC): no npm token, no laptop login.
    Release run, no snapshot PR after the merge.
 3. **Review.** The PR needs an independent `Reviewed: PASS — <sha>` comment for
    its head commit, from someone other than the author. A new push voids it.
-4. **Merge** the PR (owner). The Release workflow runs `pnpm release`:
+4. **Merge** the PR (the orchestrator, after the Figma meta sync in step 2 and
+   the independent PASS; or Adrian). The Release workflow runs `pnpm release`:
    `check:figma-release`, `pnpm audit`, `build:lib`, the consumer smoke, the pack
    scan, then `changeset publish`.
 5. **Announce.** The workflow does not announce. After the publish, run
