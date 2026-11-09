@@ -25,7 +25,9 @@ _"North-star drift: park or proceed?"_ — then do what Adrian decides.
 publishes when that PR merges. CI, Chromatic, `ralph-gate` and `claude.yml` do not
 run on PRs: don't wait on them or edit `.github/workflows/`. Run checks locally
 before push; paste them in the PR. Merging needs an independent
-`Reviewed: PASS — <sha>` comment. Fallback: `pnpm release:local`, owner only, npm 2FA (`docs/RELEASING.md`).
+`Reviewed: PASS — <sha>` comment. The orchestrator may merge the Version PR
+itself after the Figma meta sync and a PASS (Adrian, 2026-11-09). Fallback:
+`pnpm release:local`, owner only, npm 2FA (`docs/RELEASING.md`).
 
 ---
 
