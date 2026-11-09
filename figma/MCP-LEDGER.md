@@ -1475,8 +1475,6 @@ Session `7cea5cbf` (shared with hds#1406). Rows were filled in right after each 
 
 Session total: 3 calls (2 reads, 1 write).
 
-Calls logged for 2026-11-09: 11 of 200 (2, 1, 5 and 3).
-
 ## 2026-11-09 · Release 0.39.0: meta delta sync on the Version PR (#1409)
 
 Version PR head `442ff2b`. `pnpm figma:push --delta`: updated 7 · created 0 · deleted 0 (5 `semantic.color.edge.*` from hds#1399, `meta.version`, `meta.commit`), against snapshot `7e21fb47`. Each row was logged before its call. Nothing was deleted or published.
