@@ -71,7 +71,7 @@ describe('colorGalleries accent themes', () => {
     const rest = value('Cobalt', 'semantic.accent.rest');
     expect(rest.value).toBe('#112de8');
     expect(rest.darkValue).toBe('#8a97f8');
-    expect(value('Graphite', 'semantic.accent.rest').value).toBe('#0f1726');
+    expect(value('Graphite', 'semantic.accent.rest').value).toBe('#3a4457');
   });
 
   it('keeps delight out of the semantic Accent group', () => {

@@ -31,23 +31,26 @@ const INK = 'primitive.color.neutral.900';
 
 describe('graphite (default accent)', () => {
   // hds#887: the 0.27 graphite fill (#4a4146 / #cbc6c9) read washed-out and, in
-  // dark, close to disabled. Rest is now near-black / near-white.
-  it('fills near-black in light and near-white in dark (hds#887)', () => {
-    expect(hex('semantic.accent.rest', 'Light')).toBe('#0f1726');
+  // dark, close to disabled. Rest became near-black / near-white; hds#1422 lifted light to
+  // graphite.700, because the near-black fill with a #000 edge read too heavy.
+  it('fills graphite.700 in light and near-white in dark (hds#887, hds#1422)', () => {
+    expect(hex('semantic.accent.rest', 'Light')).toBe('#3a4457');
     expect(hex('semantic.accent.rest', 'Dark')).toBe('#f2f4f8');
     for (const mode of ['Light', 'Dark'] as const) {
       expect(hex('semantic.color.surface.accent', mode)).toBe(hex('semantic.accent.rest', mode));
     }
   });
 
+  // Light is graphite.700 since hds#1422 (9.8:1 on the page), so its floors are lower.
   it('stands well clear of the page and the disabled primary fill (hds#887)', () => {
+    const FLOOR = { Light: { page: 9, muted: 7 }, Dark: { page: 15, muted: 13 } } as const;
     for (const mode of ['Light', 'Dark'] as const) {
       const fill = hex('semantic.color.surface.accent', mode);
       expect(contrastRatio(fill, hex('semantic.color.surface.page', mode))).toBeGreaterThanOrEqual(
-        15,
+        FLOOR[mode].page,
       );
       expect(contrastRatio(fill, hex('semantic.color.surface.muted', mode))).toBeGreaterThanOrEqual(
-        13,
+        FLOOR[mode].muted,
       );
     }
   });

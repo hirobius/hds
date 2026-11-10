@@ -13,7 +13,7 @@ Hirobius is a clean, structured visual language that bridges digital precision a
 <!-- auto:start:colors -->
 **One accent — one neutral system.**
 
-- **Accent** (`#0F1726`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a lever each direction or brand sets, not a fixed hue (ADR-035) (#208).
+- **Accent** (`#3A4457`, graphite): CTAs, active states, selected focus rings, and the single brand accent. `semantic.accent.rest` — a lever each direction or brand sets, not a fixed hue (ADR-035) (#208).
 - **Accent theme — Cobalt** (`#112DE8`): opt-in swap of the accent tokens only. Set `data-accent="cobalt"` on `<html>` (source `accents/cobalt/tokens.json`); graphite stays the default. Still one accent per screen.
 - **Neutral**: backgrounds, surfaces, borders, text. True monochromatic — `primitive.color.neutral.50` through `950`. Use `semantic.color.surface.*`, `semantic.color.content.*`, `semantic.color.border.*`; never reach directly for primitives in components.
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.

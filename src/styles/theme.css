@@ -715,28 +715,14 @@
  * --tw-shadow, so Tailwind's focus ring and the pressed inset wash compose into the same
  * box-shadow list. In the components layer, so a consumer shadow utility still wins; the
  * transition property list is on Button itself (its utility outranks this layer). */
-/* Page line (hds#1399): in dark, an edge one step darker than a dark fill can sit at or below
- * the page lightness, so the bottom 1px of the edge is a semantic.color.border.default line
- * that lifts it off the page (2.5:1 against it). The line is inside the edge height, so the
- * fixed base does not move. Light has no line: every light edge clears the page itself. */
-:root {
-  --hds-edge-line: transparent;
-  --hds-edge-line-width: 0px;
-}
-[data-theme='dark'] {
-  --hds-edge-line: var(--semantic-color-border-default);
-  --hds-edge-line-width: 1px;
-}
+/* One edge only (hds#1422): no page line under the edge. In dark, #1416 added a 1px
+ * border.default line under every raised edge, so filled Buttons showed a double bottom line.
+ * The edge is the darker step of its own fill; a fill that needs page separation is lifted a
+ * step instead (dark info fill: blue.800). */
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
-    --tw-shadow:
-      0
-        max(
-          0px,
-          calc(var(--hds-hs, var(--component-button-depth-edge)) - var(--hds-edge-line-width, 0px))
-        )
-        0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary))),
-      0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-edge-line, transparent);
+    --tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0
+      var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)));
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);
