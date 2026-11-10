@@ -1,0 +1,183 @@
+{
+  "version": "0.40.0",
+  "date": "2026-11-10",
+  "bump": "minor",
+  "summary": "2 changes to make by hand (2 breaking) and 7 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.40.0/removed/--hds-edge-line",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --hds-edge-line variable is gone because Buttons have no page line now; remove any code that reads or sets it.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-line"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-line"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--hds-edge-line"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/removed/--hds-edge-line-width",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The --hds-edge-line-width variable is gone because Buttons have no page line now; remove any code that reads or sets it.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-line-width"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-line-width"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--hds-edge-line-width"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The primary Button edge follows the lighter light fill; if you read --hds-edge-primary elsewhere, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent='cobalt']",
+        "css-var-changed:--hds-edge-primary:[data-accent='cobalt'][data-theme='dark']",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/value-changed/--semantic-accent-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In light mode the accent rest fill is now graphite 700, not near-black; if you pair --semantic-accent-rest with your own colours, check the contrast.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-rest"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-rest"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-rest::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/value-changed/--semantic-color-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode the info button edge is now blue 900, one step darker than its fill; if you read --semantic-color-edge-info elsewhere, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/value-changed/--semantic-color-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In light mode the primary button edge is now #1f2532, not black; if you read --semantic-color-edge-primary elsewhere, check that it still looks right.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-primary::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/value-changed/--semantic-color-feedback-bg-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In dark mode the info background is now blue 800, one step lighter; if you put your own text on --semantic-color-feedback-bg-info, check its contrast.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-bg-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-bg-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-bg-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-bg-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/value-changed/--semantic-color-surface-accent",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "In light mode the accent surface is now graphite 700, not near-black; if you pair --semantic-color-surface-accent with your own colours, check the contrast.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-accent"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-accent"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-accent::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.40.0/tenant/accent-lilac",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-lilac brand (data-brand=\"accent-lilac\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt]",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac],[data-tenant=accent-lilac]",
+        "css-var-changed:--hds-edge-primary:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]",
+        "css-var-changed:--semantic-accent-rest::root",
+        "css-var-changed:--semantic-color-surface-accent::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    }
+  ]
+}
