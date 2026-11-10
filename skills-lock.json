@@ -1,240 +1,6 @@
 {
   "version": 1,
   "skills": {
-    "code-review": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/code-review/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "47f4e52c21694def9c7c11cbfbf891ca35eac7a93e395797515be3c8a409ae50"
-    },
-    "codebase-design": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/codebase-design/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "bb10321e3b957c1c0a80698b66d17ab277941c03188366dc33e3cfa1ec34b0c8",
-      "paths": ["DEEPENING.md", "DESIGN-IT-TWICE.md"]
-    },
-    "diagnosing-bugs": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/diagnosing-bugs/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "4591f07fa1c22b1830e975748c05572c114e4d31f47329272c5ab37de10a355f",
-      "paths": ["scripts/hitl-loop.template.sh"]
-    },
-    "domain-modeling": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/domain-modeling/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "e30e59c07f792640d031fac6695016e59b4e713c003d5b14b7228a82b602225d",
-      "paths": ["ADR-FORMAT.md", "GLOSSARY-FORMAT.md"]
-    },
-    "extract-design": {
-      "source": "Manavarya09/design-extract",
-      "sourceType": "github",
-      "skillPath": "skills/extract-design/SKILL.md",
-      "pinnedCommit": "f6566b1a813733a273075b1a818a27f783d0727c",
-      "hashAlgorithm": "sha256",
-      "computedHash": "0523d33cadab98ad082d52b68effe0e35103d5453e98b301891f52cae63b5640",
-      "hashNote": "Reconciled 2026-09-14 (ops#203): the old computedHash predated pinnedCommit tracking and did not verify against any revision of skillPath found in source history — install-skills.mjs's canonical algorithm (sha256 of raw file bytes) recomputed against the pinnedCommit above and this hash is confirmed to match."
-    },
-    "grill-me": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/productivity/grill-me/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637"
-    },
-    "grilling": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/productivity/grilling/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2"
-    },
-    "implement": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/implement/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "6d3fd9e83b8f36e5213854779db49b256a457a7ebb4a503e53fa7dcff696adc3"
-    },
-    "implement-spec": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/implement-spec/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "7a22dd2e60b8fcece478ced9d2533582adf3520d695acd3ab715341535c9e56d"
-    },
-    "improve-codebase-architecture": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/improve-codebase-architecture/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "9471d6a379bda778ae9d0b32d44c3b32a1b2233ae75866f8db209c0e87a756f0",
-      "paths": ["HTML-REPORT.md"]
-    },
-    "pr": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/pr/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "4f2eb479b760c6804e82ed7d2bc4f3b6b5ae686e4465dee709edba412d520690",
-      "paths": ["CREDITS.md"]
-    },
-    "prototype": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/prototype/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "2a2640bef2b9ee1c66c655c11d1f430dbc9adc41d6e9691612a5de822723036b",
-      "paths": ["LOGIC.md", "UI.md"]
-    },
-    "research": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/research/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "985569f15739c713d6784887c3d186d4ef9ac85bec5ad9c068d25bf0739928e4"
-    },
-    "retro": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/retro/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "33fbc28568e3146f20fd908b12998bc0ab30aa4f4c87288199a40793efa94696"
-    },
-    "setup-matt-pocock-skills": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/setup-matt-pocock-skills/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "ef85a07a0a054af6c2f95e8c1ab7f7b41937182842a4ed849187561cc89c9654",
-      "paths": [
-        "domain.md",
-        "issue-tracker-github.md",
-        "issue-tracker-gitlab.md",
-        "issue-tracker-local.md",
-        "triage-labels.md"
-      ]
-    },
-    "show-me": {
-      "source": "humanlayer/skills",
-      "sourceType": "github",
-      "skillPath": "plugins/show-me/skills/show-me/SKILL.md",
-      "pinnedCommit": "ca7c8088db69e315a8b2deea43820270457f8f3c",
-      "hashAlgorithm": "sha256",
-      "computedHash": "434a2346cc95e313b0d367d477dda2e23ba642dd2181757415a09500664af100"
-    },
-    "tdd": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/tdd/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "22f4a6fa04dd1bcf0cba6ad83c4b767336f7320f954d0df0d03012fd496f8677",
-      "paths": ["mocking.md", "tests.md"]
-    },
-    "to-spec": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/to-spec/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "43ad9cf318e5e7d3d1fa360253a37021796dc87a0c2e595ad262661a10f85088"
-    },
-    "to-tickets": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/to-tickets/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "5c9fba69845c2519b9b35b9af42ae5142c21f8ca15ac2123dc2722002c8058ae"
-    },
-    "triage": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/triage/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "54a394b2da9768a551b1cc59a6818b1a6522d79b35aed6729973faa677253201",
-      "paths": ["AGENT-BRIEF.md", "OUT-OF-SCOPE.md"]
-    },
-    "vercel-composition-patterns": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/composition-patterns/SKILL.md",
-      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
-      "hashAlgorithm": "sha256",
-      "computedHash": "40b7667494dfee29a2f69dea6e2edbeb879b5b2c7ca8e824bad5d10f1b87dc1e",
-      "paths": [
-        "AGENTS.md",
-        "rules/architecture-avoid-boolean-props.md",
-        "rules/architecture-compound-components.md",
-        "rules/patterns-children-over-render-props.md",
-        "rules/patterns-explicit-variants.md",
-        "rules/react19-no-forwardref.md",
-        "rules/state-context-interface.md",
-        "rules/state-decouple-implementation.md",
-        "rules/state-lift-state.md"
-      ],
-      "license": "MIT",
-      "hashNote": "Installed under the id/dir vercel-composition-patterns (its SKILL.md name:); upstream directory is skills/composition-patterns/. rules/_sections.md, _template.md, README.md and metadata.json are authoring scaffolding and not vendored."
-    },
-    "web-design-guidelines": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/web-design-guidelines/SKILL.md",
-      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
-      "hashAlgorithm": "sha256",
-      "computedHash": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f",
-      "license": "MIT",
-      "hashNote": "hds#764. Review skill, not a check: SKILL.md fetches its rules at run time from vercel-labs/web-interface-guidelines (main, unpinned), so only the wrapper is pinned."
-    },
-    "humanizer": {
-      "source": "blader/humanizer",
-      "sourceType": "github",
-      "skillPath": "SKILL.md",
-      "pinnedCommit": "8c307f367c91bd974002f10f2be2965d642c13df",
-      "hashAlgorithm": "sha256",
-      "computedHash": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad",
-      "license": "MIT",
-      "hashNote": "hds#765. SKILL.md only; agents/openai.yaml and scripts/validate-package.py are upstream packaging and not vendored."
-    },
-    "wayfinder": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/engineering/wayfinder/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "fee6e1d0c50f0e736b4ef8a599060c959afae904c9a97d82c97f049fcc3aa0f1"
-    },
-    "writing-for-agents": {
-      "source": "mattpocock/skills",
-      "sourceType": "github",
-      "skillPath": "skills/productivity/writing-for-agents/SKILL.md",
-      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
-      "hashAlgorithm": "sha256",
-      "computedHash": "dc1da5e3006e41df9abbbb47eea37d9c7fe31da2e9fb8e813f13da3a94b40ee8",
-      "paths": ["SKILL-MECHANICS.md"]
-    },
     "api-and-interface-design": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -262,6 +28,14 @@
       "computedHash": "a6ed8ed56456b01ff8314c44eefc69897d9905ae4e06bb2b7036286efb79b5f0",
       "license": "MIT"
     },
+    "code-review": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/code-review/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "47f4e52c21694def9c7c11cbfbf891ca35eac7a93e395797515be3c8a409ae50"
+    },
     "code-review-and-quality": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -284,6 +58,18 @@
       "computedHash": "f0c5ed754057eb0c1e027e2587f59de816651feb5e837242296c43ea21cf621d",
       "license": "MIT"
     },
+    "codebase-design": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/codebase-design/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "bb10321e3b957c1c0a80698b66d17ab277941c03188366dc33e3cfa1ec34b0c8",
+      "paths": [
+        "DEEPENING.md",
+        "DESIGN-IT-TWICE.md"
+      ]
+    },
     "constraint-driven-development": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -291,7 +77,9 @@
       "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
       "hashAlgorithm": "sha256",
       "computedHash": "e2e72d16b76990498b6f4af798bb4477e41236c70a60202cc58651b20b1bedf0",
-      "paths": ["references/floor-guard.md"],
+      "paths": [
+        "references/floor-guard.md"
+      ],
       "license": "MIT"
     },
     "context-engineering": {
@@ -321,6 +109,17 @@
       "computedHash": "6a624f942e09c69863a4219b9bd5d56975026b67b0c70bc83385ffd2120b6142",
       "license": "MIT"
     },
+    "diagnosing-bugs": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/diagnosing-bugs/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "4591f07fa1c22b1830e975748c05572c114e4d31f47329272c5ab37de10a355f",
+      "paths": [
+        "scripts/hitl-loop.template.sh"
+      ]
+    },
     "documentation-and-adrs": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -330,6 +129,18 @@
       "computedHash": "359b22460045583b0233ec3f80223459c4096b0fa513f5c29ade9c3985207d65",
       "license": "MIT"
     },
+    "domain-modeling": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/domain-modeling/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "e30e59c07f792640d031fac6695016e59b4e713c003d5b14b7228a82b602225d",
+      "paths": [
+        "ADR-FORMAT.md",
+        "GLOSSARY-FORMAT.md"
+      ]
+    },
     "doubt-driven-development": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -337,8 +148,163 @@
       "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
       "hashAlgorithm": "sha256",
       "computedHash": "e5be6797dcbed94d70abea6410eb88da331f09b7ee74d74b0ff5cf17a0095136",
-      "paths": ["../../references/orchestration-patterns.md"],
+      "paths": [
+        "../../references/orchestration-patterns.md"
+      ],
       "license": "MIT"
+    },
+    "dxe": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "aa8174703726efa51577c3070c7af41ae8d258a3d2cdc652e311b5dcc417e598"
+    },
+    "dxe-ai-output-judgement": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-ai-output-judgement/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "f9370109b32c440d6f6b246eba419720051cbc78072767b10f921bbd197624d9"
+    },
+    "dxe-design-engineering": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-design-engineering/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "0eb0efa7b66d2557f01bcc5fe3c9e97d0bededc2944cb66dcfaaae6b3518d5b2"
+    },
+    "dxe-design-for-repetition": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-design-for-repetition/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "77574ec79ca3b0e5de38b65990fa5a68aff2fff67d687e16584553a3eda71ca1"
+    },
+    "dxe-design-system-evolution": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-design-system-evolution/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "9a5c5018b73397464a1fd8372b825ceb7b506358dae0c9f49f08b4863e77f890"
+    },
+    "dxe-fluid-design": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-fluid-design/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "13797209022fec116ca91e005934efaa6729c198706d51f1aa17825b5ae5e279"
+    },
+    "dxe-humane-functionalism": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-humane-functionalism/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "5e5e2afae7ac9cc365ac15837ac15d4472a55abc4a72652e7657e3c5419aad62"
+    },
+    "dxe-intentional-craft": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-intentional-craft/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "952c7af01caec231b7ed7453f4177a41e8858643977d08b2cd9a69fbf6608e03"
+    },
+    "dxe-interaction-contracts": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-interaction-contracts/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "544722c9ef0fb521271f960ac21b1fb53a84de9b152300e89f3efd9a7a7b95b2"
+    },
+    "dxe-interface-affordances": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-interface-affordances/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "9fb929eb5a0e959e93a17662743a263a3c28f06a96897e7c2f7ee4b1ebf36107"
+    },
+    "dxe-modern-css-html": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-modern-css-html/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "c6e58bc4964515a06a59f388b3d7211b7abd26844ee98bddbd724607869c340e"
+    },
+    "dxe-product-delight": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-product-delight/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "9a2d16c78adaa6b632e112f2374ae8f55905a158252ca7624b024ef9b05ce706"
+    },
+    "dxe-prototype-to-production": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-prototype-to-production/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "7e9a7e7ada84f2f17ec37b60db5800e1bbdc5aebdc98a94e80da37db5adaa803"
+    },
+    "dxe-real-content-design": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-real-content-design/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "8d8bbd0caf8987efe9c7d42948883c46842309345862e6b4b1e6014adb2eb756"
+    },
+    "dxe-semantic-html-first": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-semantic-html-first/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "e50c0ffd4478a55600883f97367465fa4f8e3589db11298b346f5d09103f6d9d"
+    },
+    "dxe-software-needs-hierarchy": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-software-needs-hierarchy/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "fb1452ccc0007ce9465daa1bbce5e3175783d7304ba8dfcd70e20fe47e7f9a0c"
+    },
+    "dxe-subtractive-design": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-subtractive-design/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "a1eaf2797330f62f8bc5187029ddcda2449e70c8ad8236565eb29ade207bc050"
+    },
+    "dxe-write-first-design": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dxe-write-first-design/SKILL.md",
+      "pinnedCommit": "6d92b73ce13554d7a4277993a4eee7f598592057",
+      "hashAlgorithm": "sha256",
+      "computedHash": "34c8eef3dd08f86cd7cd670a86c6ace5504c05303470cdcb85e81ee55a5f0998"
+    },
+    "extract-design": {
+      "source": "Manavarya09/design-extract",
+      "sourceType": "github",
+      "skillPath": "skills/extract-design/SKILL.md",
+      "pinnedCommit": "f6566b1a813733a273075b1a818a27f783d0727c",
+      "hashAlgorithm": "sha256",
+      "computedHash": "0523d33cadab98ad082d52b68effe0e35103d5453e98b301891f52cae63b5640",
+      "hashNote": "Reconciled 2026-09-14 (ops#203): the old computedHash predated pinnedCommit tracking and did not verify against any revision of skillPath found in source history \u2014 install-skills.mjs's canonical algorithm (sha256 of raw file bytes) recomputed against the pinnedCommit above and this hash is confirmed to match."
     },
     "frontend-ui-engineering": {
       "source": "addyosmani/agent-skills",
@@ -347,7 +313,9 @@
       "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
       "hashAlgorithm": "sha256",
       "computedHash": "3b50a3c9d913752bfb5a7da0f2dcca42f577f467d5b44a034de2a4171e4ffbf8",
-      "paths": ["../../references/accessibility-checklist.md"],
+      "paths": [
+        "../../references/accessibility-checklist.md"
+      ],
       "license": "MIT"
     },
     "git-workflow-and-versioning": {
@@ -359,6 +327,32 @@
       "computedHash": "b7465d187935c52546d39fdc7bd6ac36d94eda25a9500ef8c18b767d2eb116ea",
       "license": "MIT"
     },
+    "grill-me": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grill-me/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637"
+    },
+    "grilling": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grilling/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2"
+    },
+    "humanizer": {
+      "source": "blader/humanizer",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "pinnedCommit": "8c307f367c91bd974002f10f2be2965d642c13df",
+      "hashAlgorithm": "sha256",
+      "computedHash": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad",
+      "license": "MIT",
+      "hashNote": "hds#765. SKILL.md only; agents/openai.yaml and scripts/validate-package.py are upstream packaging and not vendored."
+    },
     "idea-refine": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -366,119 +360,12 @@
       "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
       "hashAlgorithm": "sha256",
       "computedHash": "632c5de8693ccb6ea96bea94fd1dc7a3363a569a87f550b9d6c890eef637a4a2",
-      "paths": ["examples.md", "frameworks.md", "refinement-criteria.md", "scripts/idea-refine.sh"],
-      "license": "MIT"
-    },
-    "incremental-implementation": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/incremental-implementation/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "692531e5e3f38e2d5f1467455844b353dde5fedd47206427dd8d37242aa75479",
-      "paths": ["../../references/definition-of-done.md"],
-      "license": "MIT"
-    },
-    "interview-me": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/interview-me/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "ace4b675999bb504593d572e0f73f3d7e803ad6fddf318445598c82c11939db2",
-      "license": "MIT"
-    },
-    "observability-and-instrumentation": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/observability-and-instrumentation/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "1c57d52f7fa808fd5c4f5082d2335066ecb353ca761f6f2540de64992fde6353",
-      "paths": ["../../references/observability-checklist.md"],
-      "license": "MIT"
-    },
-    "performance-optimization": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/performance-optimization/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "bbc07eab4e005bf29da8b9acc88cb335c6ab42e27ed976d00cf29661435ce6d6",
-      "paths": ["../../references/performance-checklist.md", "references/optimization-patterns.md"],
-      "license": "MIT"
-    },
-    "planning-and-task-breakdown": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/planning-and-task-breakdown/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "3679d45131cce4aab871502708eab8cd7f85653e3ca3bc9a4d09c2d2efe29ed5",
-      "paths": ["../../references/definition-of-done.md"],
-      "license": "MIT"
-    },
-    "security-and-hardening": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/security-and-hardening/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "9a8294aef2e7e1be1fa44b9517bc34539912a83977cccac930e682991815d9ef",
-      "paths": ["../../references/security-checklist.md", "references/hardening-patterns.md"],
-      "license": "MIT"
-    },
-    "shipping-and-launch": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/shipping-and-launch/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "4d8b480fee9fae6fe4d7487c656859c47ccbd9422e7f4f5773e4f7f1ae45a369",
       "paths": [
-        "../../references/accessibility-checklist.md",
-        "../../references/definition-of-done.md",
-        "../../references/performance-checklist.md",
-        "../../references/security-checklist.md"
+        "examples.md",
+        "frameworks.md",
+        "refinement-criteria.md",
+        "scripts/idea-refine.sh"
       ],
-      "license": "MIT"
-    },
-    "source-driven-development": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/source-driven-development/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "c59faf851377f0eeda45306398d16eb96d77ab1c2fd3e1a7fb58e9a0af33c1e9",
-      "license": "MIT"
-    },
-    "spec-driven-development": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/spec-driven-development/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "c4b97ce3d7f24be0e67fd612c7595f65504872e3a9f8d338d098b2363fdb66ef",
-      "license": "MIT"
-    },
-    "test-driven-development": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/test-driven-development/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "049a2771112ebff3e5750bf0ef3a6469ebe037a5a18f04d204b1480f33d532f8",
-      "paths": ["../../references/testing-patterns.md"],
-      "license": "MIT"
-    },
-    "using-agent-skills": {
-      "source": "addyosmani/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/using-agent-skills/SKILL.md",
-      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
-      "hashAlgorithm": "sha256",
-      "computedHash": "456537d294667cf312033670d9bf8fb1e25312a08d128fecaaac7b5713b7b1a4",
-      "paths": ["../../references/definition-of-done.md"],
       "license": "MIT"
     },
     "impeccable": {
@@ -509,6 +396,313 @@
         "scripts/pin.mjs"
       ],
       "license": "Apache-2.0"
+    },
+    "implement": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/implement/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "6d3fd9e83b8f36e5213854779db49b256a457a7ebb4a503e53fa7dcff696adc3"
+    },
+    "implement-spec": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/implement-spec/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "7a22dd2e60b8fcece478ced9d2533582adf3520d695acd3ab715341535c9e56d"
+    },
+    "improve-codebase-architecture": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/improve-codebase-architecture/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "9471d6a379bda778ae9d0b32d44c3b32a1b2233ae75866f8db209c0e87a756f0",
+      "paths": [
+        "HTML-REPORT.md"
+      ]
+    },
+    "incremental-implementation": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/incremental-implementation/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "692531e5e3f38e2d5f1467455844b353dde5fedd47206427dd8d37242aa75479",
+      "paths": [
+        "../../references/definition-of-done.md"
+      ],
+      "license": "MIT"
+    },
+    "interview-me": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/interview-me/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "ace4b675999bb504593d572e0f73f3d7e803ad6fddf318445598c82c11939db2",
+      "license": "MIT"
+    },
+    "observability-and-instrumentation": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/observability-and-instrumentation/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "1c57d52f7fa808fd5c4f5082d2335066ecb353ca761f6f2540de64992fde6353",
+      "paths": [
+        "../../references/observability-checklist.md"
+      ],
+      "license": "MIT"
+    },
+    "performance-optimization": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance-optimization/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "bbc07eab4e005bf29da8b9acc88cb335c6ab42e27ed976d00cf29661435ce6d6",
+      "paths": [
+        "../../references/performance-checklist.md",
+        "references/optimization-patterns.md"
+      ],
+      "license": "MIT"
+    },
+    "planning-and-task-breakdown": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/planning-and-task-breakdown/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "3679d45131cce4aab871502708eab8cd7f85653e3ca3bc9a4d09c2d2efe29ed5",
+      "paths": [
+        "../../references/definition-of-done.md"
+      ],
+      "license": "MIT"
+    },
+    "pr": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/pr/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "4f2eb479b760c6804e82ed7d2bc4f3b6b5ae686e4465dee709edba412d520690",
+      "paths": [
+        "CREDITS.md"
+      ]
+    },
+    "prototype": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/prototype/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "2a2640bef2b9ee1c66c655c11d1f430dbc9adc41d6e9691612a5de822723036b",
+      "paths": [
+        "LOGIC.md",
+        "UI.md"
+      ]
+    },
+    "research": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/research/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "985569f15739c713d6784887c3d186d4ef9ac85bec5ad9c068d25bf0739928e4"
+    },
+    "retro": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/retro/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "33fbc28568e3146f20fd908b12998bc0ab30aa4f4c87288199a40793efa94696"
+    },
+    "security-and-hardening": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/security-and-hardening/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "9a8294aef2e7e1be1fa44b9517bc34539912a83977cccac930e682991815d9ef",
+      "paths": [
+        "../../references/security-checklist.md",
+        "references/hardening-patterns.md"
+      ],
+      "license": "MIT"
+    },
+    "setup-matt-pocock-skills": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/setup-matt-pocock-skills/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "ef85a07a0a054af6c2f95e8c1ab7f7b41937182842a4ed849187561cc89c9654",
+      "paths": [
+        "domain.md",
+        "issue-tracker-github.md",
+        "issue-tracker-gitlab.md",
+        "issue-tracker-local.md",
+        "triage-labels.md"
+      ]
+    },
+    "shipping-and-launch": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/shipping-and-launch/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "4d8b480fee9fae6fe4d7487c656859c47ccbd9422e7f4f5773e4f7f1ae45a369",
+      "paths": [
+        "../../references/accessibility-checklist.md",
+        "../../references/definition-of-done.md",
+        "../../references/performance-checklist.md",
+        "../../references/security-checklist.md"
+      ],
+      "license": "MIT"
+    },
+    "show-me": {
+      "source": "humanlayer/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/show-me/skills/show-me/SKILL.md",
+      "pinnedCommit": "ca7c8088db69e315a8b2deea43820270457f8f3c",
+      "hashAlgorithm": "sha256",
+      "computedHash": "434a2346cc95e313b0d367d477dda2e23ba642dd2181757415a09500664af100"
+    },
+    "source-driven-development": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/source-driven-development/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "c59faf851377f0eeda45306398d16eb96d77ab1c2fd3e1a7fb58e9a0af33c1e9",
+      "license": "MIT"
+    },
+    "spec-driven-development": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/spec-driven-development/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "c4b97ce3d7f24be0e67fd612c7595f65504872e3a9f8d338d098b2363fdb66ef",
+      "license": "MIT"
+    },
+    "tdd": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/tdd/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "22f4a6fa04dd1bcf0cba6ad83c4b767336f7320f954d0df0d03012fd496f8677",
+      "paths": [
+        "mocking.md",
+        "tests.md"
+      ]
+    },
+    "test-driven-development": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/test-driven-development/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "049a2771112ebff3e5750bf0ef3a6469ebe037a5a18f04d204b1480f33d532f8",
+      "paths": [
+        "../../references/testing-patterns.md"
+      ],
+      "license": "MIT"
+    },
+    "to-spec": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/to-spec/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "43ad9cf318e5e7d3d1fa360253a37021796dc87a0c2e595ad262661a10f85088"
+    },
+    "to-tickets": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/to-tickets/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "5c9fba69845c2519b9b35b9af42ae5142c21f8ca15ac2123dc2722002c8058ae"
+    },
+    "triage": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/triage/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "54a394b2da9768a551b1cc59a6818b1a6522d79b35aed6729973faa677253201",
+      "paths": [
+        "AGENT-BRIEF.md",
+        "OUT-OF-SCOPE.md"
+      ]
+    },
+    "using-agent-skills": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/using-agent-skills/SKILL.md",
+      "pinnedCommit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "hashAlgorithm": "sha256",
+      "computedHash": "456537d294667cf312033670d9bf8fb1e25312a08d128fecaaac7b5713b7b1a4",
+      "paths": [
+        "../../references/definition-of-done.md"
+      ],
+      "license": "MIT"
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "hashAlgorithm": "sha256",
+      "computedHash": "40b7667494dfee29a2f69dea6e2edbeb879b5b2c7ca8e824bad5d10f1b87dc1e",
+      "paths": [
+        "AGENTS.md",
+        "rules/architecture-avoid-boolean-props.md",
+        "rules/architecture-compound-components.md",
+        "rules/patterns-children-over-render-props.md",
+        "rules/patterns-explicit-variants.md",
+        "rules/react19-no-forwardref.md",
+        "rules/state-context-interface.md",
+        "rules/state-decouple-implementation.md",
+        "rules/state-lift-state.md"
+      ],
+      "license": "MIT",
+      "hashNote": "Installed under the id/dir vercel-composition-patterns (its SKILL.md name:); upstream directory is skills/composition-patterns/. rules/_sections.md, _template.md, README.md and metadata.json are authoring scaffolding and not vendored."
+    },
+    "wayfinder": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/wayfinder/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "fee6e1d0c50f0e736b4ef8a599060c959afae904c9a97d82c97f049fcc3aa0f1"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "pinnedCommit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "hashAlgorithm": "sha256",
+      "computedHash": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f",
+      "license": "MIT",
+      "hashNote": "hds#764. Review skill, not a check: SKILL.md fetches its rules at run time from vercel-labs/web-interface-guidelines (main, unpinned), so only the wrapper is pinned."
+    },
+    "writing-for-agents": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/writing-for-agents/SKILL.md",
+      "pinnedCommit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "hashAlgorithm": "sha256",
+      "computedHash": "dc1da5e3006e41df9abbbb47eea37d9c7fe31da2e9fb8e813f13da3a94b40ee8",
+      "paths": [
+        "SKILL-MECHANICS.md"
+      ]
     }
   }
 }
