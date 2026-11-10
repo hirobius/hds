@@ -1,15 +1,15 @@
 {
-  "checksum": "80545b20",
+  "checksum": "7ae20981",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-09T22:52:00.165Z",
+    "takenAt": "2026-11-10T00:25:03.193Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "22b6a8c5",
-      "pushedAt": "2026-11-09T22:52:00.108Z",
+      "modelHash": "7f30004d",
+      "pushedAt": "2026-11-10T00:25:03.136Z",
       "scope": null
     },
     "collections": [
@@ -13727,7 +13727,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "28e9de3"
+                "value": "7b2330c"
               }
             }
           },
@@ -13778,7 +13778,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "2026-11-09"
+                "value": "2026-11-10"
               }
             }
           },
@@ -13812,7 +13812,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "0.39.0"
+                "value": "0.40.0"
               }
             }
           }
@@ -14538,6 +14538,6 @@
     "checksum": "99955183"
   },
   "tokensHash": "sha256:c5df652ba40a7f7efd64311efeec8ad2028997369d5f58a38a2b9e310df840e7",
-  "syncedCommit": "28e9de3",
-  "syncedHash": "sha256:da409d79a5104de0b2b637fb5f110f50aba188f4bf6f4b41bace8dcf67dbfb96"
+  "syncedCommit": "7b2330c",
+  "syncedHash": "sha256:c4bf25d760a60e12def3ee9c55e50bf678dbb9ebe78c1c8e47b84b86d84283f8"
 }

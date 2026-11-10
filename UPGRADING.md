@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.39.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.40.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,24 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.40.0
+
+Released 2026-11-10 (minor). 2 changes to make by hand (2 breaking) and 7 that look different.
+
+### Looks different
+
+- The primary Button edge follows the lighter light fill; if you read --hds-edge-primary elsewhere, check that it still looks right.
+- In light mode the accent rest fill is now graphite 700, not near-black; if you pair --semantic-accent-rest with your own colours, check the contrast.
+- In dark mode the info button edge is now blue 900, one step darker than its fill; if you read --semantic-color-edge-info elsewhere, check that it still looks right.
+- In light mode the primary button edge is now #1f2532, not black; if you read --semantic-color-edge-primary elsewhere, check that it still looks right.
+- In dark mode the info background is now blue 800, one step lighter; if you put your own text on --semantic-color-feedback-bg-info, check its contrast.
+- In light mode the accent surface is now graphite 700, not near-black; if you pair --semantic-color-surface-accent with your own colours, check the contrast.
+- Pages themed with the accent-lilac brand (data-brand="accent-lilac") may look different, so check them after upgrading.
+
+### Do by hand
+
+- The each of these variable is gone because Buttons have no page line now; remove any code that reads or sets it: `--hds-edge-line` and `--hds-edge-line-width`.
 
 ## 0.39.0
 

@@ -1501,3 +1501,12 @@ Branch `claude/hds-1422-single-edge`. `pnpm figma:push --delta`: updated 10 · c
 Session total: 4 calls (2 reads, 2 writes). No publish, no delete. `figma:snapshot --from-receipt` after each write; `check:figma-drift` 0, `figma:push --plan` 0.
 
 Calls logged for 2026-11-09: 18 of 200 (2, 1, 5, 3, 3 and 4).
+
+## 2026-11-10 — release 0.40.0 meta sync (Version PR #1424, head 7b2330c)
+
+| #   | Tool              | Kind  | Target                                     | Why                       | Result                                                                            |
+| --- | ----------------- | ----- | ------------------------------------------ | ------------------------- | --------------------------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | figma-use SKILL.md                         | required before use_figma | OK                                                                                |
+| 2   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | 0.40.0 meta delta         | OK. updated 3 · created 0 · deleted 0; post `7ae20981`, 1-page receipt; re-plan 0 |
+
+Session total: 2 calls (1 read, 1 write). No publish, no delete. `figma:snapshot --from-receipt`; `check:figma-drift` 0, `figma:push --plan` 0, `check:figma-release` OK.
