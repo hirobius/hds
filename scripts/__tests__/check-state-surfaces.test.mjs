@@ -681,6 +681,8 @@ describe("this repo: a generated surface's check actually runs somewhere", () =>
 // scripts below are not migrated yet, each with its reason. The list may only
 // shrink; a script leaves it the day it uses the runner.
 const NOT_YET_ON_RUNNER = {
+  'scripts/check-figma-deprecated-usage.mjs':
+    'a gate over a Figma audit (hds#483): the record comes from use_figma, so no generator can rebuild it',
   'scripts/build-readme-counts.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/generate-agents-md.mjs': 'checks through runCheck, but writes on its own path',
   'scripts/generate-llms-txt.mjs': 'checks through runCheck, but writes on its own path',

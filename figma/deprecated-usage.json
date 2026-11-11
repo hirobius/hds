@@ -1,0 +1,9 @@
+{
+  "$comment": "Written by pnpm figma:deprecated-usage --ingest from figma/reads/deprecated-usage.js run on the library. Read by scripts/check-figma-deprecated-usage.mjs. Do not edit.",
+  "takenAt": "2026-11-11T22:12:58.722Z",
+  "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
+  "styles": ["typography/eyebrow", "typography/h1", "typography/h2", "typography/h3"],
+  "variables": 44,
+  "pages": [],
+  "hits": []
+}

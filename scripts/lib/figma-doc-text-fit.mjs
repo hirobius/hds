@@ -21,6 +21,19 @@
  * sheets (fonts loaded first, as the Plugin API requires for text layout).
  */
 
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { guardPrelude } from './figma-deprecated-styles.mjs';
+
+const readTokens = () =>
+  JSON.parse(
+    readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'hirobius.tokens.json'),
+      'utf8',
+    ),
+  );
+
 export function hdsFitDocText(root, options = {}) {
   const slots = Boolean(options.slots);
   const changes = [];
@@ -99,8 +112,13 @@ export function hdsFitDocText(root, options = {}) {
   return changes;
 }
 
-export function docTextFitScript(sheetIds) {
-  return `${hdsFitDocText.toString()}
+/**
+ * docTextFitScript never applies a text style, but it carries the shared guard
+ * (lib/figma-deprecated-styles, hds#483): any edit added to it applies styles
+ * through hdsApplyTextStyle, which refuses a deprecated one in Figma.
+ */
+export function docTextFitScript(sheetIds, tree = readTokens()) {
+  return `${guardPrelude(tree)}${hdsFitDocText.toString()}
 const ids = ${JSON.stringify(sheetIds)};
 const out = {};
 for (const id of ids) {

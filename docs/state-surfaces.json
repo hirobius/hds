@@ -321,6 +321,20 @@
       "check": "node scripts/check-figma-drift.mjs"
     },
     {
+      "path": "figma/deprecated-usage.json",
+      "describes": "Library layers on a deprecated text style or variable, as last audited (hds#483)",
+      "kind": "generated",
+      "by": "scripts/figma-deprecated-usage.mjs",
+      "check": "node scripts/check-figma-deprecated-usage.mjs"
+    },
+    {
+      "path": "figma/reads/deprecated-usage.js",
+      "describes": "The read-only use_figma audit behind figma/deprecated-usage.json",
+      "kind": "generated",
+      "by": "scripts/figma-deprecated-usage.mjs",
+      "check": "node scripts/check-figma-deprecated-usage.mjs"
+    },
+    {
       "path": "figma/inventory.json",
       "describes": "Every page, component set and variant count in the Figma library",
       "kind": "generated",
