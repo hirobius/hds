@@ -94,7 +94,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-        environment: npm-publish
+    environment: npm-publish
     if: github.ref == 'refs/heads/main'
     steps:
       # FIRST step, before checkout: checkout below takes RELEASE_PAT, and an
