@@ -1540,3 +1540,15 @@ Session total: 2 calls (1 read, 1 failed write). No publish, no delete. Figma-sy
 Session total: 12 calls (5 reads, 7 writes: 2 failed and rolled back, then delta parts 1-5 of run cd0f5a61 OK). No publish, no delete. `figma:snapshot --from-receipt` with the 5 part results: post `9290fe54`; `check:figma-drift` 0, `figma:push --plan` 0.
 
 Calls logged for 2026-11-11: 12 of 200 (12).
+
+### 2026-11-11 — meta sync for 0.41.0 (Version PR #1452 head 6929a0e)
+
+| #   | Tool              | Kind  | Target                                                  | Purpose                                             | Result                                                   |
+| --- | ----------------- | ----- | ------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------- |
+| 13  | `get_figma_skill` | read  | skill://figma/figma-use/SKILL.md                        | load figma-use                                      | OK                                                       |
+| 14  | `create_session`  | read  | library 2VgBbVpKiDnu0aftJEVyBQ                          | session                                             | OK. Session `62151489`                                   |
+| 15  | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` (#1452 head) | meta delta: version, releasedAt, commit (3 updates) | OK. post `7a457a9c`, 1-page receipt, lastPush `c181429e` |
+
+Session total: 3 calls (2 reads, 1 write). No publish, no delete.
+
+Calls logged for 2026-11-11: 15 of 200.
