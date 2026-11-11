@@ -22,6 +22,7 @@
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { validateTenantOverlay } from './token-emit/tenant.mjs';
+import { EDGE_COMPUTED_TOKENS, computeEdges, layered } from './raised-edge.mjs';
 
 export const BRAND_MODES_FILE = 'figma/brand-modes.json';
 const SLUG = /^[a-z0-9-]+$/;
@@ -118,6 +119,89 @@ export function loadBrandModes(root, baseRaw, { validateOverlay = validateTenant
     }
     directions.push({ slug, overlay });
   }
+  // Accents (data-accent, accents/<name>/tokens.json): first-party, the same overlays
+  // accents.css is built from, so no direction metadata. Each is the Brand mode
+  // "accent-<name>", so Figma shows every accent the code ships (Adrian, 2026-11-11).
+  if (config.accents !== undefined && !Array.isArray(config.accents))
+    refuse(['accents must be an array of accent names.']);
+  for (const name of config.accents ?? []) {
+    if (typeof name !== 'string' || !SLUG.test(name)) {
+      problems.push(`"${name}" is not an accent name ([a-z0-9-]+).`);
+      continue;
+    }
+    const tokensPath = join(root, 'accents', name, 'tokens.json');
+    if (!existsSync(tokensPath)) {
+      problems.push(`accents/${name}/tokens.json does not exist.`);
+      continue;
+    }
+    const overlay = readJson(tokensPath, `accents/${name}/tokens.json`);
+    const errors = validateOverlay(overlay, baseRaw, name);
+    if (errors.length > 0) {
+      problems.push(...errors.map((e) => `${e} (accents/${name}/tokens.json)`));
+      continue;
+    }
+    directions.push({ slug: `accent-${name}`, overlay: withoutNoops(overlay, baseRaw) });
+  }
   if (problems.length > 0) refuse(problems);
-  return { baseMode: config.baseMode, directions };
+  return {
+    baseMode: config.baseMode,
+    directions: directions.map((d) => ({ ...d, overlay: withComputedEdges(baseRaw, d.overlay) })),
+  };
+}
+
+const at = (tree, path) => path.split('.').reduce((n, k) => n?.[k], tree);
+
+const modesOf = (leaf) => leaf?.$extensions?.['com.figma.variables']?.modes ?? null;
+
+/**
+ * The overlay without leaves that restate the base value (same $value, same modes). An accent
+ * restates some (component.tag.active*) for its CSS cascade; as a Brand override each would
+ * only add an alias every mode shares, into a later collection the native import cannot keep.
+ */
+function withoutNoops(overlay, base) {
+  if (!overlay || typeof overlay !== 'object') return overlay;
+  if ('$value' in overlay) {
+    const same =
+      base &&
+      JSON.stringify(base.$value) === JSON.stringify(overlay.$value) &&
+      JSON.stringify(modesOf(base)) === JSON.stringify(modesOf(overlay));
+    return same ? undefined : overlay;
+  }
+  const out = {};
+  for (const [k, v] of Object.entries(overlay)) {
+    const kept = k.startsWith('$') ? v : withoutNoops(v, base?.[k]);
+    if (kept !== undefined && !(typeof kept === 'object' && Object.keys(kept).length === 0))
+      out[k] = kept;
+  }
+  return out;
+}
+
+/**
+ * The overlay plus each computed edge token (semantic.color.edge.primary) it moves. Code
+ * computes the edge from the fill (raised-edge.mjs), so an overlay that changes the fill never
+ * carries it; without this, a Brand mode would draw its Button on the base edge. Unchanged
+ * edges and token trees without edge tokens (unit fixtures) leave the overlay as it is.
+ */
+function withComputedEdges(baseRaw, overlay) {
+  const paths = Object.entries(EDGE_COMPUTED_TOKENS).filter(([, path]) => at(baseRaw, path));
+  if (paths.length === 0) return overlay;
+  const base = computeEdges(baseRaw);
+  const mine = computeEdges(layered(baseRaw, overlay));
+  let out = overlay;
+  for (const [key, path] of paths) {
+    if (mine.Light[key] === base.Light[key] && mine.Dark[key] === base.Dark[key]) continue;
+    const leaf = {
+      $type: 'color',
+      $value: mine.Light[key],
+      $description: `Computed by raised-edge.mjs from this mode's fill (the same value its CSS ships).`,
+      $extensions: {
+        'com.figma.variables': { modes: { Light: mine.Light[key], Dark: mine.Dark[key] } },
+      },
+    };
+    out = layered(
+      out,
+      path.split('.').reduceRight((child, k) => ({ [k]: child }), leaf),
+    );
+  }
+  return out;
 }

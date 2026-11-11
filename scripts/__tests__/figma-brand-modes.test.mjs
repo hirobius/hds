@@ -12,7 +12,15 @@
  * overlay validator.
  */
 import { describe, it, expect, afterEach } from 'vitest';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync, copyFileSync, readFileSync } from 'fs';
+import {
+  mkdtempSync,
+  mkdirSync,
+  writeFileSync,
+  rmSync,
+  copyFileSync,
+  readFileSync,
+  readdirSync,
+} from 'fs';
 import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -215,5 +223,77 @@ describe('loadBrandModes', () => {
   it('refuses a config without a base mode or a directions list', () => {
     expect(() => miniRoot({ config: { directions: [] } }).load()).toThrow(/baseMode/);
     expect(() => miniRoot({ config: { baseMode: 'Hirobius' } }).load()).toThrow(/directions/);
+  });
+});
+
+// Adrian 2026-11-11: Figma must show each shipped accent (data-accent) so design stays 1:1 with
+// code. An accent is first-party (accents/<name>/tokens.json, the overlay accents.css is built
+// from), so it needs no direction metadata; it enters as the Brand mode "accent-<name>".
+describe('loadBrandModes: accents', () => {
+  const withAccent = (root, name, overlay) => {
+    mkdirSync(join(root, 'accents', name), { recursive: true });
+    writeFileSync(join(root, 'accents', name, 'tokens.json'), JSON.stringify(overlay));
+  };
+
+  it('adds each listed accent as an accent-<name> mode after the directions', () => {
+    const { root, load } = miniRoot({
+      config: { baseMode: 'Hirobius', directions: ['a-demo'], accents: ['cobalt'] },
+      directions: { 'a-demo': { metadata: demoMetadata('a-demo'), overlay: radiusOverlay } },
+    });
+    withAccent(root, 'cobalt', radiusOverlay);
+    expect(load().directions).toEqual([
+      { slug: 'a-demo', overlay: radiusOverlay },
+      { slug: 'accent-cobalt', overlay: radiusOverlay },
+    ]);
+  });
+
+  it('refuses a listed accent with no overlay, or one the validator rejects', () => {
+    const { root, load } = miniRoot({
+      config: { baseMode: 'Hirobius', directions: [], accents: ['cobalt', 'missing'] },
+    });
+    withAccent(root, 'cobalt', radiusOverlay);
+    expect(() => load()).toThrow(/accents\/missing\/tokens\.json does not exist/);
+    expect(() => load({ validateOverlay: () => ['bad overlay'] })).toThrow(/bad overlay/);
+  });
+
+  it('the repo lists every shipped accent', () => {
+    const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+    const config = JSON.parse(readFileSync(join(repo, 'figma', 'brand-modes.json'), 'utf8'));
+    const shipped = readdirSync(join(repo, 'accents'), { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name)
+      .sort();
+    expect(config.accents).toEqual(shipped);
+  });
+});
+
+// The primary Button edge is computed from the accent fill (raised-edge.mjs), so an overlay that
+// moves the fill does not carry it. Each Brand mode gets the edge code computes for it, or a
+// cobalt Button in Figma would sit on the graphite edge.
+describe('loadBrandModes: computed edges', () => {
+  it('gives the real cobalt accent the primary edge accents.css ships', async () => {
+    const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+    const baseRaw = JSON.parse(readFileSync(join(repo, 'hirobius.tokens.json'), 'utf8'));
+    const { computeEdges, layered } = await import('../lib/raised-edge.mjs');
+    const cobalt = loadBrandModes(repo, baseRaw).directions.find((d) => d.slug === 'accent-cobalt');
+    const want = computeEdges(
+      layered(baseRaw, JSON.parse(readFileSync(join(repo, 'accents/cobalt/tokens.json'), 'utf8'))),
+    );
+    const edge = cobalt.overlay.semantic.color.edge.primary;
+    expect(edge.$extensions['com.figma.variables'].modes).toEqual({
+      Light: want.Light.primary,
+      Dark: want.Dark.primary,
+    });
+    expect(readFileSync(join(repo, 'src/styles/accents.css'), 'utf8')).toContain(
+      `--hds-edge-primary: ${want.Light.primary};`,
+    );
+  });
+
+  it('leaves the edge alone when the overlay does not move the fill', () => {
+    const { load } = miniRoot({
+      config: { baseMode: 'Hirobius', directions: ['a-demo'] },
+      directions: { 'a-demo': { metadata: demoMetadata('a-demo'), overlay: radiusOverlay } },
+    });
+    expect(load().directions[0].overlay).toEqual(radiusOverlay);
   });
 });

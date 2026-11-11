@@ -16,9 +16,10 @@
  * Import order: Primitives, then Brand and Density, then the rest in model
  * order. Semantic and Role alias Brand and Density (that is how switching a
  * Brand or Density mode changes them), so the axes must exist first. The
- * aliases also run the other way: a Brand base mode holds the base token's own
- * alias, often into Semantic. That cycle has to break somewhere, and a static
- * base-mode value costs less than an axis that does nothing. Each file lists
+ * aliases also run the other way: a Brand mode that does not override a path (the
+ * base mode, and any direction or accent mode another mode's override leaves alone)
+ * holds the base token's own alias, often into Semantic. That cycle has to break
+ * somewhere, and a static value in those modes costs less than an axis that does nothing. Each file lists
  * the aliases it cannot keep in `forwardAliases`; `pnpm figma:push` restores
  * them after the import.
  *
