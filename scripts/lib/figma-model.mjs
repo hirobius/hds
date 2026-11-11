@@ -406,6 +406,16 @@ const FONT_STYLE_BY_WEIGHT = {
 };
 
 /**
+ * Named instances each family ships in Figma. A text style may only name one of
+ * these, so the model build fails here, not in a push that asks for a missing font.
+ * Sora (Google Fonts): no Medium, no Black, no italics. HDS uses Regular, SemiBold
+ * and Bold (ADR-063, amended 2026-11-11).
+ */
+export const FAMILY_STYLES = {
+  Sora: ['Thin', 'ExtraLight', 'Light', 'Regular', 'SemiBold', 'Bold', 'ExtraBold'],
+};
+
+/**
  * Families with no italic instances (Sora ships upright only). A text style keeps
  * the upright instance; the CSS font-style italic stays in code, where the browser
  * slants the upright face.
@@ -501,6 +511,10 @@ function expandTypography(graph, token) {
   const textCase = TEXT_CASE[v.textTransform ?? 'none'];
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);
+  if (FAMILY_STYLES[family] && !FAMILY_STYLES[family].includes(fontStyle))
+    throw new Error(
+      `${at('fontWeight')}: ${family} has no "${fontStyle}" style in Figma (it ships ${FAMILY_STYLES[family].join(', ')}). Use weight 400, 600 or 700.`,
+    );
   if (!textCase)
     throw new Error(
       `No Figma text case for textTransform "${v.textTransform}" at ${path} (uppercase is not allowed: sentence case only)`,

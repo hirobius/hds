@@ -25,7 +25,7 @@ export const fixtureModel = () =>
 export const FIXTURE_FONTS = Object.freeze([
   { family: 'Inter', style: 'Regular' },
   { family: 'Sora', style: 'Regular' },
-  { family: 'Sora', style: 'Medium' },
+  { family: 'Sora', style: 'SemiBold' },
   { family: 'Sora', style: 'Bold' },
   { family: 'Sora', style: 'ExtraBold' },
   { family: 'IBM Plex Mono', style: 'Medium' },

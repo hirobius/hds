@@ -240,6 +240,16 @@ describe('buildFigmaModel — ch widths', () => {
   });
 });
 
+describe("buildFigmaModel — Sora's Figma style list (ADR-063, amended 2026-11-11)", () => {
+  it('refuses a text style that names a style Sora does not ship in Figma', () => {
+    const changed = structuredClone(fixture);
+    changed.semantic.typography.h1.$value.fontWeight = '{primitive.typography.weight.medium}';
+    expect(() => buildFigmaModel(changed)).toThrow(
+      /semantic\.typography\.h1\.fontWeight: Sora has no "Medium" style in Figma/,
+    );
+  });
+});
+
 describe('buildFigmaModel — scopes', () => {
   const model = buildFigmaModel(fixture);
   const scopes = (path) => variable(model, path).scopes;
