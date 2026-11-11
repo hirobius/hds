@@ -422,26 +422,126 @@ export function buildUseFigmaDeltaScript(
  * collections, then variables with every alias target before the variables
  * that alias it (so a part never needs a later one), then text styles, then
  * effect styles (which bind variables, so they come last).
+ *
+ * One exception keeps a part from needing a later one's fonts (hds#1453): a
+ * changed text style and every changed variable its font fields
+ * (fontFamily, fontStyle, fontWeight) bind, through aliases, are one unit,
+ * and styles that share such a variable join it. Otherwise a new family
+ * lands in an early part while the styles' new fonts come later, and that
+ * part can only put the styles on the new family in their old style (run
+ * f58a5397: "Sora Medium", which static Sora lacks). The unit's other bound
+ * variables (letter spacing, size, line height) go in earlier units, as they
+ * do for any style: a style that met an old value would take it.
  */
 function unitsOf(push, plan) {
   const units = plan.collections.filter(changed).map((c) => ({ kind: 'collections', id: c.key }));
   const recordOf = new Map(push.collections.flatMap((c) => c.variables.map((v) => [v.path, v])));
   const todo = new Set(plan.variables.filter(changed).map((v) => v.path));
+  const fontGroup = fontGroupsOf(plan, recordOf, todo);
   const seen = new Set();
   const visit = (path) => {
     if (seen.has(path)) return;
     seen.add(path);
+    const group = fontGroup.get(path);
+    if (group) {
+      if (group.placed) return;
+      group.placed = true;
+      group.variables.forEach((p) => seen.add(p));
+      group.before.forEach(visit);
+      units.push({
+        kind: 'font',
+        id: group.textStyles.join(', '),
+        items: [
+          ...group.variables.map((p) => ['variables', p]),
+          ...group.textStyles.map((p) => ['textStyles', p]),
+        ],
+      });
+      return;
+    }
     Object.values(recordOf.get(path).valuesByMode).forEach(
       (entry) => 'alias' in entry && todo.has(entry.alias) && visit(entry.alias),
     );
     units.push({ kind: 'variables', id: path });
   };
   [...todo].forEach(visit);
-  plan.textStyles.filter(changed).forEach((s) => units.push({ kind: 'textStyles', id: s.path }));
+  const grouped = new Set([...fontGroup.values()].flatMap((g) => g.textStyles));
+  plan.textStyles
+    .filter((s) => changed(s) && !grouped.has(s.path))
+    .forEach((s) => units.push({ kind: 'textStyles', id: s.path }));
   plan.effectStyles
     .filter(changed)
     .forEach((s) => units.push({ kind: 'effectStyles', id: s.path }));
   return units;
+}
+
+const FONT_FIELDS = ['fontFamily', 'fontStyle', 'fontWeight'];
+
+/**
+ * Changed variable path → its font group { variables, textStyles, before }:
+ * each changed text style whose font fields (fontFamily, fontStyle,
+ * fontWeight) bind, through aliases, a changed variable, with those
+ * variables, merged with the other groups it shares one with. `before` is
+ * every other changed variable the group's styles bind (letter spacing,
+ * size, line height): unitsOf places them in earlier parts, as it does for
+ * any style, so the styles never meet an old value. One that reaches a group
+ * variable joins the group instead, so it never runs ahead of its target.
+ */
+function fontGroupsOf(plan, recordOf, todo) {
+  const closure = (path) => {
+    const reached = new Set();
+    const queue = [path];
+    while (queue.length) {
+      const next = queue.pop();
+      if (reached.has(next)) continue;
+      reached.add(next);
+      const record = recordOf.get(next);
+      if (record) {
+        Object.values(record.valuesByMode).forEach(
+          (entry) => 'alias' in entry && queue.push(entry.alias),
+        );
+      }
+    }
+    return [...reached].filter((p) => todo.has(p));
+  };
+  const groupOf = new Map();
+  for (const style of plan.textStyles.filter(changed)) {
+    const bound = Object.entries(style.set.boundVariables);
+    const variables = bound.flatMap(([field, path]) =>
+      FONT_FIELDS.includes(field) ? closure(path) : [],
+    );
+    if (!variables.length) continue;
+    const group = {
+      variables: new Set(variables),
+      textStyles: [style.path],
+      before: new Set(bound.flatMap(([, path]) => closure(path))),
+    };
+    for (const other of new Set(variables.map((path) => groupOf.get(path)).filter(Boolean))) {
+      other.variables.forEach((path) => group.variables.add(path));
+      other.before.forEach((path) => group.before.add(path));
+      group.textStyles.unshift(...other.textStyles);
+    }
+    group.variables.forEach((path) => groupOf.set(path, group));
+  }
+  const order = new Map(plan.variables.map((v, i) => [v.path, i]));
+  const styleOrder = new Map(plan.textStyles.map((s, i) => [s.path, i]));
+  new Set(groupOf.values()).forEach((group) => {
+    for (let grew = true; grew;) {
+      grew = false;
+      for (const path of group.before) {
+        if (group.variables.has(path) || !closure(path).some((p) => group.variables.has(p))) {
+          continue;
+        }
+        group.variables.add(path);
+        groupOf.set(path, group);
+        grew = true;
+      }
+    }
+    group.variables.forEach((path) => closure(path).forEach((p) => group.before.add(p)));
+    group.before = [...group.before].filter((p) => !group.variables.has(p));
+    group.variables = [...group.variables].sort((a, b) => order.get(a) - order.get(b));
+    group.textStyles.sort((a, b) => styleOrder.get(a) - styleOrder.get(b));
+  });
+  return groupOf;
 }
 
 const emptySelection = () => ({
@@ -510,10 +610,14 @@ function splitIntoParts({
       textStyles: new Set(select.textStyles),
       effectStyles: new Set(select.effectStyles),
     };
-    next[unit.kind].add(unit.id);
+    (unit.items || [[unit.kind, unit.id]]).forEach(([kind, id]) => next[kind].add(id));
     return next;
   };
-  const kindName = { collections: 'collection', variables: 'variable' };
+  const kindName = {
+    collections: 'collection',
+    variables: 'variable',
+    font: 'text styles with the font variables they bind:',
+  };
   // Pack to `budget`; a part that comes out over `maxChars` (more digits than the placeholders) is repacked tighter.
   for (let budget = partChars; budget > partChars - 4000; budget -= 250) {
     const selections = [];
