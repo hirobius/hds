@@ -484,14 +484,14 @@ describe('figma:push when a value a text style binds changes (hds#300)', () => {
     const figma = newFile();
     await push(figma);
     const tokens = JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8'));
-    tokens.semantic.typography.h1.$value.fontWeight = '{primitive.typography.weight.medium}';
+    tokens.semantic.typography.h1.$value.fontWeight = '{primitive.typography.weight.regular}';
     const reweighted = buildFigmaModel(tokens);
 
     const report = await push(figma, {}, reweighted);
 
     expect(report.changes).toContain('update text style typography/h1: font');
     const h1 = (await hdsReadState(figma)).textStyles.find((s) => s.name === 'typography/h1');
-    expect(h1.fontStyle).toBe('Medium');
+    expect(h1.fontStyle).toBe('Regular');
     expect(Object.keys(h1.boundVariables)).toEqual(boundFields);
     expect((await push(figma, {}, reweighted)).line).toBe('updated 0 · created 0 · deleted 0');
   });

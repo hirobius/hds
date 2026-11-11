@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "focus": "Publish the graphite Figma library, then close the agent-consistency gap (#593).",
+  "focus": "Finish the 0.41.0 release: Sora static weights (Regular, SemiBold, Bold) in code and Figma, then the delta sync on the Version PR.",
   "phase": "active",
   "note": "State is derived: ops reads release from package.json and next/blocked from issue labels. Only focus and phase are written by hand.",
-  "updatedAt": "2026-11-05T22:32:54Z",
+  "updatedAt": "2026-11-11T09:16:34Z",
   "consistency": {
     "date": "2026-10-31",
     "source": "harness",

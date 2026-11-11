@@ -98,7 +98,7 @@ export function createFakeFigma({
   fonts = [
     { family: 'Inter', style: 'Regular' },
     { family: 'Sora', style: 'Regular' },
-    { family: 'Sora', style: 'Medium' },
+    { family: 'Sora', style: 'SemiBold' },
     { family: 'Sora', style: 'Bold' },
   ],
   modeLimit = 10,
