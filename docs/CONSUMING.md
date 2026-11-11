@@ -73,7 +73,7 @@ All three:
 import '@hirobius/design-system/fonts.css'; // Sora (variable) + IBM Plex Mono 400
 ```
 
-`fonts.css` declares the three `@font-face` blocks with `font-display: swap`. Its
+`fonts.css` declares the two `@font-face` blocks (Sora variable, IBM Plex Mono 400) with `font-display: swap`. Its
 URLs are relative (`./fonts/sora-variable.woff2`), and the woff2 files ship in the
 package, so Vite, Next and webpack resolve and hash them; there is nothing to
 copy. Import it alongside one of the stylesheets above to keep the HDS fonts.

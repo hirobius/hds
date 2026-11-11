@@ -7,4 +7,4 @@
 - **Lucide icons** (`@hirobius/design-system/icons` re-exports a curated subset of [`lucide-react`](https://lucide.dev), a dependency; HDS does not own the glyphs): ISC License. Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022. The full licence text ships with `lucide-react`.
 - **IBM Plex Mono** (weight 400, by IBM, [source](https://github.com/IBM/plex)): SIL Open Font License 1.1.
 
-All three fonts ship as woff2 files in `dist/fonts/`, declared by the opt-in `dist/fonts.css`; each font's license text ships beside it as `dist/fonts/<family>-LICENSE.txt`. The MIT license does not cover the fonts. `dist/tokens.css`, `dist/styles.css` and `dist/variables.css` embed no fonts.
+Both fonts ship as woff2 files in `dist/fonts/`, declared by the opt-in `dist/fonts.css`; each font's license text ships beside it as `dist/fonts/<family>-LICENSE.txt`. The MIT license does not cover the fonts. `dist/tokens.css`, `dist/styles.css` and `dist/variables.css` embed no fonts.
