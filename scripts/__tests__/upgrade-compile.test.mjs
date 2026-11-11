@@ -287,7 +287,7 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
         '',
         '### Coming next',
         '',
-        '- Hero and HeroProps still work but are deprecated; use Banner instead. Removed in 0.14.0.',
+        '- Hero and HeroProps still work but are deprecated; use Banner instead. Deprecated. Will be removed in 0.14.0.',
         '',
         '### Do by hand',
         '',
@@ -316,7 +316,7 @@ describe('UPGRADING.md: how to upgrade, then every release, newest first', () =>
         '### Coming next',
         '',
         '- Tile still works but is deprecated; use Card instead. Removed early, in [0.12.0](#0120) (planned for 1.0.0).',
-        "- The spacing names 'tight' and 'loose' still work but are deprecated; use 'sm' and 'lg'. Removed in 1.0.0.",
+        "- The spacing names 'tight' and 'loose' still work but are deprecated; use 'sm' and 'lg'. Deprecated. Will be removed in 1.0.0 (hds#483).",
         '',
         // Breaking first, then behavior; ledger order within each.
         '### Do by hand',
@@ -547,7 +547,7 @@ describe('a deprecation a later release takes away completely', () => {
         '',
         '- The --old-space variable still works but is deprecated; use --space-md. Removed in [0.12.0](#0120).',
         "- Button's size prop still works but is deprecated; use scale. Removed in [0.12.0](#0120).",
-        '- The --old-gap variable still works but is deprecated; use --space-sm. Removed in 1.0.0.',
+        '- The --old-gap variable still works but is deprecated; use --space-sm. Deprecated. Will be removed in 1.0.0 (hds#483).',
         '',
       ].join('\n'),
     );
