@@ -97,9 +97,9 @@ export function createFakeFigma({
   fileName = 'HDS scratch file',
   fonts = [
     { family: 'Inter', style: 'Regular' },
-    { family: 'Plus Jakarta Sans', style: 'Regular' },
-    { family: 'Plus Jakarta Sans', style: 'Medium' },
-    { family: 'Plus Jakarta Sans', style: 'Bold' },
+    { family: 'Sora', style: 'Regular' },
+    { family: 'Sora', style: 'Medium' },
+    { family: 'Sora', style: 'Bold' },
   ],
   modeLimit = 10,
   variablePluginData = true,

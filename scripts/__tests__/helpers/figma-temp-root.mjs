@@ -58,10 +58,10 @@ export function useTempRoots(prefix, links = LINKS) {
 }
 
 /** A library file the Sync plugin pushed `model` into (it writes and reads raw text). */
-export async function pushedLibrary(model) {
+export async function pushedLibrary(model, extraFonts = []) {
   const figma = createFakeFigma({
     fileName: LINKS.libraryFileName,
-    fonts: textStyleFonts(model.textStyles),
+    fonts: [...textStyleFonts(model.textStyles), ...extraFonts],
   });
   figma.fileKey = LINKS.libraryFileKey;
   const { payload, checksum } = buildPushPayload(model);

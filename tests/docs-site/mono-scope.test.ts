@@ -1,7 +1,7 @@
 /**
  * Guard: IBM Plex Mono is only for code, token names and token values (Adrian's type rule).
  * Headings, eyebrows, captions and meta lines in the docs site take the HDS ramp instead
- * (Sora 700 headings, Plus Jakarta Sans captions). Every docs-site CSS rule that sets a mono
+ * (Sora 700 headings, Sora captions). Every docs-site CSS rule that sets a mono
  * font-family must be on the allowlist below, with what it shows; anything new fails here.
  */
 import { describe, expect, it } from 'vitest';

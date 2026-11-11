@@ -1510,3 +1510,28 @@ Calls logged for 2026-11-09: 18 of 200 (2, 1, 5, 3, 3 and 4).
 | 2   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | 0.40.0 meta delta         | OK. updated 3 · created 0 · deleted 0; post `7ae20981`, 1-page receipt; re-plan 0 |
 
 Session total: 2 calls (1 read, 1 write). No publish, no delete. `figma:snapshot --from-receipt`; `check:figma-drift` 0, `figma:push --plan` 0, `check:figma-release` OK.
+
+## 2026-11-11 — Sora type ramp delta (branch feat/sora-type-ramp)
+
+| #   | Tool              | Kind  | Target                                            | Why                       | Result                                                                                      |
+| --- | ----------------- | ----- | ------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | figma-use SKILL.md                                | required before use_figma | OK                                                                                          |
+| 2   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-2.js` | Sora type ramp delta      | Not run: the script did not reach Figma whole (parse error), so nothing was read or written |
+
+Session total: 2 calls (1 read, 1 failed write). No publish, no delete. Figma-sync-pending: run `pnpm figma:push --delta` from the PR head and both parts (or Sync).
+
+## 2026-11-11 · session hds-lane (main 035554d, Sora static weights + brand modes + button edge)
+
+| #   | Tool              | Kind  | Target                                                                                                | Why                                   | Result                                                                                                                                                                        |
+| --- | ----------------- | ----- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | figma-use SKILL.md                                                                                    | required before use_figma             | OK                                                                                                                                                                            |
+| 2   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-4.js`                                                     | token delta, run f58a5397             | FAILED in apply: font "Sora Medium" could not be loaded (preload of bound text styles' current style). Checksums passed. Partial write possible (variable metadata, creates). |
+| 3   | `get_figma_skill` | read  | skill://figma/figma-use/SKILL.md                                                                      | load figma-use (font-fix lane)        | OK                                                                                                                                                                            |
+| 4   | `create_session`  | read  | library 2VgBbVpKiDnu0aftJEVyBQ                                                                        | session                               | OK. Session `8afd9c9d`                                                                                                                                                        |
+| 5   | `use_figma`       | read  | library 2VgBbVpKiDnu0aftJEVyBQ: `snapshot-diff.js`                                                    | re-base on the partly written library | OK. 0 changed, 0 removed (live `4c5df3f3`): row 2 wrote nothing. Not ingested                                                                                                 |
+| 6   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-4.js` (fixed runtime, family + 7 text styles in one part) | token delta part 1                    | FAILED after apply, rolled back: "The push ran but the library still differs from the model in 7 item(s); no lastPush, receipt or marker was written." Not retried            |
+| 7   | `use_figma`       | read  | library 2VgBbVpKiDnu0aftJEVyBQ: `snapshot-diff.js`                                                    | did row 6 leave writes behind?        | OK. 0 changed, 0 removed (live `fa6c330b` = snapshot but `takenAt`): use_figma rolled the failed part back                                                                    |
+
+Session total: 7 calls (5 reads, 2 failed writes, both rolled back by use_figma: the library still equals `figma/snapshot.json` `7ae20981`). No publish, no delete. Figma-sync-pending: the fixed parts (hds#1453 PR) were not run; rows 5 and 7 were snapshot-diff reads, not ingested.
+
+Calls logged for 2026-11-11: 7 of 200 (7).

@@ -70,17 +70,17 @@ All three:
 ### Brand fonts (optional)
 
 ```ts
-import '@hirobius/design-system/fonts.css'; // Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400
+import '@hirobius/design-system/fonts.css'; // Sora (variable) + IBM Plex Mono 400
 ```
 
-`fonts.css` declares the three `@font-face` blocks with `font-display: swap`. Its
-URLs are relative (`./fonts/plus-jakarta-sans-variable.woff2`), and the woff2 files ship in the
+`fonts.css` declares the two `@font-face` blocks (Sora variable, IBM Plex Mono 400) with `font-display: swap`. Its
+URLs are relative (`./fonts/sora-variable.woff2`), and the woff2 files ship in the
 package, so Vite, Next and webpack resolve and hash them; there is nothing to
 copy. Import it alongside one of the stylesheets above to keep the HDS fonts.
 Skip it to bring your own: set `--hds-font-family` (and `--hds-font-family-mono`
 for code) to your font stack on any element — every HDS type role inside it
 follows. Without an override, text falls back to the brand stack
-(`"Plus Jakarta Sans", system-ui, …`).
+(`"Sora", system-ui, …`).
 
 HDS's own base styles (type baseline, resets) are scoped to the `[data-hds]`
 subtree (§4) in **all** bundles, so they never touch host elements. The only
@@ -259,7 +259,7 @@ export function Example() {
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@hirobius/design-system`                   | The 48-component core set ([README → What belongs in the system](../README.md#what-belongs-in-the-system)), the rest of the allow-list, and the router seam (`HdsRouterProvider`, `useHdsRouter`); the `pattern` tier is in `/patterns`                                                                                         |
 | `@hirobius/design-system/styles.css`        | Components + utilities + tokens, NO global reset (host-safe; recommended for embedding)                                                                                                                                                                                                                                         |
-| `@hirobius/design-system/fonts.css`         | Optional brand fonts: Plus Jakarta Sans (variable) + Sora 800 + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                                                                                                           |
+| `@hirobius/design-system/fonts.css`         | Optional brand fonts: Sora (variable) + IBM Plex Mono 400 (`@font-face`, relative woff2 URLs)                                                                                                                                                                                                                                   |
 | `@hirobius/design-system/tokens.css`        | The complete stylesheet — styles.css PLUS a global Tailwind-preflight reset                                                                                                                                                                                                                                                     |
 | `@hirobius/design-system/variables.css`     | Design tokens as CSS custom properties ONLY — no reset/preflight (host-safe)                                                                                                                                                                                                                                                    |
 | `@hirobius/design-system/tokens`            | Design tokens as typed TS: `hds` (the token bridge, also the default export), `tokens` (the raw DTCG JSON of `hirobius.tokens.json`), `ct` and `tokenValues`. The root `hds` and `tokens` exports are deprecated since 0.34.0 and leave in 0.36.0; `npx -p @hirobius/design-system@0.34 hds-tokens-subpath` moves the imports   |
@@ -674,7 +674,7 @@ rule core HDS gates itself with, over `.html`, `.css`, `.js`, `.mjs` and `.cjs`:
 | Rule           | Fails on                                                                        | Exempt a line with    |
 | -------------- | ------------------------------------------------------------------------------- | --------------------- |
 | `no-uppercase` | `text-transform: uppercase`, the Tailwind `uppercase` class, small caps         | `uppercase-ok: <why>` |
-| `fonts`        | any family but Plus Jakarta Sans, Sora, IBM Plex Mono and their token fallbacks | `font-ok: <why>`      |
+| `fonts`        | any family but Sora, IBM Plex Mono and their token fallbacks                    | `font-ok: <why>`      |
 | `shadows`      | a `box-shadow` that is not `var(--semantic-shadow-*)` (or the kit's `--shadow`) | `shadow-ok: <why>`    |
 | `raw-colors`   | hex, `rgb()` or `hsl()` outside a `var(--token, fallback)`                      | `color-ok: <why>`     |
 
@@ -701,7 +701,7 @@ are skipped.
 | `npm ERR! 404` on install                          | Check the package name spelling; if pinning a version, confirm it's published on npm (`npm view @hirobius/design-system version`). Public npm needs no auth (see §1–2). |
 | `ERR_REQUIRE_ESM` / `require() of ES Module`       | Consumer is CommonJS — switch to an ESM bundler (§9).                                                                                                                   |
 | Components render unstyled / wrong font            | Import `@hirobius/design-system/styles.css` (or `tokens.css`) at the app root (§3) **and** add `data-hds` to your root or section (§4).                                 |
-| Text uses the host font, not Plus Jakarta Sans     | Missing `data-hds` on an ancestor (§4).                                                                                                                                 |
+| Text uses the host font, not Sora                  | Missing `data-hds` on an ancestor (§4).                                                                                                                                 |
 | In-app links do a full page reload                 | Expected with no router. Inject your router via `<HdsRouterProvider>` for SPA nav (§5).                                                                                 |
 | Host app's spacing/layout shifted after adding HDS | Tailwind preflight ships global this release (§6); scope HDS to a section and isolate where possible.                                                                   |
 | Brand overlay has no effect on an Astro page       | Inject the overlay on an ancestor of the themed markup (usually `<html>`), and ensure `variables.css` is imported once (§12).                                           |

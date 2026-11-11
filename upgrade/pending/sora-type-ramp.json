@@ -1,0 +1,234 @@
+{
+  "impact": "breaking",
+  "plain": "All text is now Sora: fonts.css ships sora-variable.woff2 in place of the Plus Jakarta Sans and Sora 700 files, and weight.medium now aliases regular (400) while text tracking tightens to -0.01em, so re-take screenshots and load the Sora variable font if you host fonts yourself.",
+  "steps": [
+    {
+      "id": "value-changed/--hds-font-family",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The font dial default leads with Sora (was Plus Jakarta Sans); if you set it to rebrand, nothing changes for you.",
+      "detect": {
+        "cssVars": ["--hds-font-family"],
+        "cssVarWrites": ["--hds-font-family"]
+      },
+      "facts": ["css-var-changed:--hds-font-family::root"]
+    },
+    {
+      "id": "value-changed/--hds-font-family-display",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The display dial default is Sora then system-ui (Plus Jakarta Sans left the fallback).",
+      "detect": {
+        "cssVars": ["--hds-font-family-display"],
+        "cssVarWrites": ["--hds-font-family-display"]
+      },
+      "facts": ["css-var-changed:--hds-font-family-display::root"]
+    },
+    {
+      "id": "value-changed/--primitive-typography-family-display",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The display family is Sora then system-ui; Plus Jakarta Sans left the fallback.",
+      "detect": {
+        "cssVars": ["--primitive-typography-family-display"],
+        "cssVarWrites": ["--primitive-typography-family-display"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-family-display::root"]
+    },
+    {
+      "id": "value-changed/--primitive-typography-family-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The primary family leads with Sora (was Plus Jakarta Sans); text that reads this variable changes face.",
+      "detect": {
+        "cssVars": ["--primitive-typography-family-primary"],
+        "cssVarWrites": ["--primitive-typography-family-primary"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-family-primary::root"]
+    },
+    {
+      "id": "value-changed/--primitive-typography-weight-medium",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "weight.medium is 400 (was 500) and a deprecated alias of regular, because Figma's Sora has no Medium; text that reads it sets one step lighter, so use weight.regular.",
+      "detect": {
+        "cssVars": ["--primitive-typography-weight-medium"],
+        "cssVarWrites": ["--primitive-typography-weight-medium"]
+      },
+      "facts": ["css-var-changed:--primitive-typography-weight-medium::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-body-letter-spacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The body role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "detect": {
+        "cssVars": ["--semantic-typography-body-letter-spacing"],
+        "cssVarWrites": ["--semantic-typography-body-letter-spacing"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-body-letter-spacing::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-bodyStrong-letter-spacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The bodyStrong role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "detect": {
+        "cssVars": ["--semantic-typography-bodyStrong-letter-spacing"],
+        "cssVarWrites": ["--semantic-typography-bodyStrong-letter-spacing"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-bodyStrong-letter-spacing::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-caption-letter-spacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The caption role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "detect": {
+        "cssVars": ["--semantic-typography-caption-letter-spacing"],
+        "cssVarWrites": ["--semantic-typography-caption-letter-spacing"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-caption-letter-spacing::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-eyebrow-letter-spacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The eyebrow role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "detect": {
+        "cssVars": ["--semantic-typography-eyebrow-letter-spacing"],
+        "cssVarWrites": ["--semantic-typography-eyebrow-letter-spacing"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-eyebrow-letter-spacing::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-ui-letter-spacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The ui role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "detect": {
+        "cssVars": ["--semantic-typography-ui-letter-spacing"],
+        "cssVarWrites": ["--semantic-typography-ui-letter-spacing"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-ui-letter-spacing::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-uiItalic-letter-spacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The uiItalic role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "detect": {
+        "cssVars": ["--semantic-typography-uiItalic-letter-spacing"],
+        "cssVarWrites": ["--semantic-typography-uiItalic-letter-spacing"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-uiItalic-letter-spacing::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-uiRegular-letter-spacing",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The uiRegular role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "detect": {
+        "cssVars": ["--semantic-typography-uiRegular-letter-spacing"],
+        "cssVarWrites": ["--semantic-typography-uiRegular-letter-spacing"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-uiRegular-letter-spacing::root"]
+    },
+    {
+      "id": "look/font-face-Plus-Jakarta-Sans-200-800-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "fonts.css no longer declares Plus Jakarta Sans; drop any font-family: Plus Jakarta Sans of your own or load your own file.",
+      "detect": {
+        "regex": ["Plus Jakarta Sans"]
+      },
+      "facts": ["font-face-removed:Plus Jakarta Sans/200 800/normal"]
+    },
+    {
+      "id": "look/font-face-Sora-700-normal",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The static Sora 700 face is folded into the Sora variable face (100 to 800) in fonts.css; import fonts.css again, or load the variable file if you host Sora yourself.",
+      "detect": {
+        "regex": ["Sora"]
+      },
+      "facts": ["font-face-removed:Sora/700/normal"]
+    },
+    {
+      "id": "value-changed/--component-badge-fontWeight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "component-badge-fontWeight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.",
+      "detect": {
+        "cssVars": ["--component-badge-fontWeight"],
+        "cssVarWrites": ["--component-badge-fontWeight"]
+      },
+      "facts": ["css-var-changed:--component-badge-fontWeight::root"]
+    },
+    {
+      "id": "value-changed/--component-tag-fontWeight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "component-tag-fontWeight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.",
+      "detect": {
+        "cssVars": ["--component-tag-fontWeight"],
+        "cssVarWrites": ["--component-tag-fontWeight"]
+      },
+      "facts": ["css-var-changed:--component-tag-fontWeight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-caption-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "semantic-typography-caption-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.",
+      "detect": {
+        "cssVars": ["--semantic-typography-caption-font-weight"],
+        "cssVarWrites": ["--semantic-typography-caption-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-caption-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-eyebrow-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "semantic-typography-eyebrow-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.",
+      "detect": {
+        "cssVars": ["--semantic-typography-eyebrow-font-weight"],
+        "cssVarWrites": ["--semantic-typography-eyebrow-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-eyebrow-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-ui-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "semantic-typography-ui-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.",
+      "detect": {
+        "cssVars": ["--semantic-typography-ui-font-weight"],
+        "cssVarWrites": ["--semantic-typography-ui-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-ui-font-weight::root"]
+    },
+    {
+      "id": "value-changed/--semantic-typography-uiItalic-font-weight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "semantic-typography-uiItalic-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.",
+      "detect": {
+        "cssVars": ["--semantic-typography-uiItalic-font-weight"],
+        "cssVarWrites": ["--semantic-typography-uiItalic-font-weight"]
+      },
+      "facts": ["css-var-changed:--semantic-typography-uiItalic-font-weight::root"]
+    },
+    {
+      "id": "removed/tokenValues.primitive.typography.weight.medium",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "tokenValues no longer lists primitive.typography.weight.medium (a deprecated alias of regular, 400); read tokenValues.primitive.typography.weight.regular or the --primitive-typography-weight-regular variable instead.",
+      "detect": {
+        "regex": ["\\btokenValues\\.primitive\\.typography\\.weight\\.medium\\b"]
+      },
+      "facts": ["key-removed:./tokens:tokenValues.primitive.typography.weight.medium"]
+    }
+  ]
+}

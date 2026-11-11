@@ -150,6 +150,23 @@ export function readGlyphs(woff2: Buffer): Map<number, Contour[]> {
   return glyphs;
 }
 
+/** The flags byte of the first point of every simple glyph, by glyph id. */
+export function readFirstFlags(woff2: Buffer): Map<number, number> {
+  const { head, loca, glyf } = readTables(woff2);
+  const long = head.readInt16BE(50) === 1;
+  const n = loca.length / (long ? 4 : 2) - 1;
+  const off = (k: number) => (long ? loca.readUInt32BE(4 * k) : loca.readUInt16BE(2 * k) * 2);
+  const flags = new Map<number, number>();
+  for (let id = 0; id < n; id++) {
+    const g = glyf.subarray(off(id), off(id + 1));
+    if (g.length === 0 || g.readInt16BE(0) <= 0) continue; // empty or composite
+    const contours = g.readInt16BE(0);
+    const i = 10 + 2 * contours;
+    flags.set(id, g[i + 2 + g.readUInt16BE(i)]);
+  }
+  return flags;
+}
+
 const cross = (o: Point, a: Point, b: Point) =>
   (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
 

@@ -11,7 +11,7 @@ Install: `pnpm add @hirobius/design-system`. Upgrading: [UPGRADING.md](UPGRADING
 <!-- auto:start:front-door-counts -->
 
 - **64** public component modules, exported from `src/index.ts`
-- **580** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **581** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 
@@ -94,12 +94,12 @@ export const App = () => (
 
 Set these attributes on any element and HDS descendants re-skin:
 
-| Dial    | Attribute / var                                | Values          | Default                           |
-| ------- | ---------------------------------------------- | --------------- | --------------------------------- |
-| theme   | `data-theme`                                   | `dark`          | light (unset)                     |
-| density | `data-density`                                 | `compact`       | comfortable (unset)               |
-| brand   | `data-brand` (+ `data-tenant` alias)           | overlay slug    | base (unset)                      |
-| font    | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Plus Jakarta Sans / IBM Plex Mono |
+| Dial    | Attribute / var                                | Values          | Default              |
+| ------- | ---------------------------------------------- | --------------- | -------------------- |
+| theme   | `data-theme`                                   | `dark`          | light (unset)        |
+| density | `data-density`                                 | `compact`       | comfortable (unset)  |
+| brand   | `data-brand` (+ `data-tenant` alias)           | overlay slug    | base (unset)         |
+| font    | `--hds-font-family` / `--hds-font-family-mono` | any font-family | Sora / IBM Plex Mono |
 
 The router seam (`HdsRouterProvider`), `HdsThemeProvider`, scoping and MUI coexistence: [docs/CONSUMING.md](docs/CONSUMING.md).
 
@@ -165,4 +165,4 @@ eval measures the docs; it does not gate merges or constrain how agents work.
 
 ## License
 
-MIT ([LICENSE](LICENSE)). The embedded Plus Jakarta Sans and IBM Plex Mono fonts keep their own licenses: [NOTICE.md](NOTICE.md).
+MIT ([LICENSE](LICENSE)). The embedded Sora and IBM Plex Mono fonts keep their own licenses: [NOTICE.md](NOTICE.md).

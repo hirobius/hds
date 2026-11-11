@@ -110,16 +110,35 @@ describe('uiItalic (ADR-052 addendum)', () => {
     );
   });
 
-  it('emits typography/uiItalic as the ui style in the italic face', () => {
+  it('emits typography/uiItalic as the ui style, upright: Sora has no italic face', () => {
     const s = style('uiItalic');
     const ui = style('ui');
     expect(s).toBeDefined();
-    expect(s.fontStyle).toBe(`${ui.fontStyle} Italic`);
+    expect(s.fontFamily).toBe('Sora');
+    expect(s.fontStyle).toBe(ui.fontStyle);
     expect([s.fontFamily, s.fontSize, s.fontWeight, s.lineHeight]).toEqual([
       ui.fontFamily,
       ui.fontSize,
       ui.fontWeight,
       ui.lineHeight,
     ]);
+  });
+});
+
+describe('Sora static weights in the Figma model (Figma has no Sora Medium)', () => {
+  it('maps every Sora text style to Regular or Bold, never Medium', () => {
+    const sora = model.textStyles.filter((x: { fontFamily: string }) => x.fontFamily === 'Sora');
+    expect(sora.length).toBeGreaterThan(0);
+    for (const x of sora) {
+      expect(['Regular', 'SemiBold', 'Bold'], x.name).toContain(x.fontStyle);
+    }
+    expect(style('ui').fontStyle).toBe('Regular');
+    expect(style('caption').fontStyle).toBe('Regular');
+  });
+
+  it('keeps medium a deprecated alias of regular, and semibold and bold on SemiBold and Bold weights', () => {
+    const w = tokens.primitive.typography.weight;
+    expect([w.regular.$value, w.semibold.$value, w.bold.$value]).toEqual([400, 600, 700]);
+    expect(w.medium.$value).toBe('{primitive.typography.weight.regular}');
   });
 });

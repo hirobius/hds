@@ -27,7 +27,7 @@
  *   - classes: every class name a selector names, unescaped as a consumer
  *     writes it in className (`sm:inline-block`, `text-muted-foreground/70`), sorted;
  *   - fontFaces: each @font-face as { family, weight, style, src }, src being
- *     each url() basename (`plus-jakarta-sans-variable.woff2`), `data:<type>` for an inlined
+ *     each url() basename (`sora-variable.woff2`), `data:<type>` for an inlined
  *     face, or `local(<name>)`;
  *   - layers: the @layer names in the order they are declared (the order is
  *     the cascade, so it is not sorted).

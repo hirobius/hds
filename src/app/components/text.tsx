@@ -77,7 +77,8 @@ const textVariants = /* @__PURE__ */ cva('m-0 min-w-0', {
       // tier-ok: shipped weight steps (hds#825)
       regular: '[font-weight:var(--primitive-typography-weight-regular)]',
       // tier-ok: shipped weight steps (hds#825)
-      medium: '[font-weight:var(--primitive-typography-weight-medium)]',
+      // weight.medium is a deprecated alias of regular (Sora has no Medium in Figma)
+      medium: '[font-weight:var(--primitive-typography-weight-regular)]',
       // tier-ok: shipped weight steps, no semantic weight tokens exist (hds#825)
       bold: '[font-weight:var(--primitive-typography-weight-bold)]',
     },
@@ -162,14 +163,7 @@ export type TextVariant =
 
 /** The colour of the text: a semantic content token. Unset, it inherits. */
 export type TextTone =
-  | 'primary'
-  | 'secondary'
-  | 'disabled'
-  | 'accent'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'info';
+  'primary' | 'secondary' | 'disabled' | 'accent' | 'success' | 'warning' | 'danger' | 'info';
 
 /** A weight from the shipped weight tokens. Unset, the role's weight applies. */
 export type TextWeight = 'regular' | 'medium' | 'bold';

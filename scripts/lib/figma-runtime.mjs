@@ -782,6 +782,40 @@ export function hdsDescribePlan(plan) {
   return lines;
 }
 
+/**
+ * The text styles a value change re-families without the plan re-fonting
+ * them: each live style whose fontFamily binding reaches (directly or through
+ * aliases) a STRING variable the plan gives a new value, and that the plan
+ * does not move to a new font itself. Figma puts each on the new family in
+ * its current style, so that font must exist and be loaded before the value
+ * is written. Returns [{ style, font }]. `textStyles` and `variables` are the
+ * live Maps by id.
+ */
+export function hdsFamilyFonts(plan, textStyles, variables) {
+  // Figma refuses an alias cycle, so the walk ends.
+  const reaches = (id, target) =>
+    id === target ||
+    Object.values((variables.get(id) || {}).valuesByMode || {}).some(
+      (e) => e && e.type === 'VARIABLE_ALIAS' && reaches(e.id, target),
+    );
+  const hits = [];
+  plan.variables.forEach((pv) =>
+    pv.values.forEach((change) => {
+      if (typeof change.to.value !== 'string') return;
+      textStyles.forEach((style) => {
+        const b = (style.boundVariables || {}).fontFamily;
+        const refont = plan.textStyles.some(
+          (ps) => ps.id === style.id && ps.changes.indexOf('font') !== -1,
+        );
+        if (b && !refont && reaches(b.id, plan.index[pv.path])) {
+          hits.push({ style, font: { family: change.to.value, style: style.fontName.style } });
+        }
+      });
+    }),
+  );
+  return hits;
+}
+
 // ── Apply ────────────────────────────────────────────────────────────────────
 /**
  * Executes a plan made from a fresh hdsReadState() of the same file. Order:
@@ -930,34 +964,24 @@ export async function hdsApply(figma, plan) {
       addFont(ps.currentFont);
       addFont({ family: ps.set.fontFamily, style: ps.set.fontStyle });
     });
-  const reaches = (startId, targetId) => {
-    const seen = new Set();
-    const queue = [startId];
-    while (queue.length) {
-      const current = queue.shift();
-      if (current === targetId) return true;
-      if (seen.has(current)) continue;
-      seen.add(current);
-      const v = variables.get(current);
-      if (!v) continue;
-      Object.keys(v.valuesByMode).forEach((mode) => {
-        const entry = v.valuesByMode[mode];
-        if (entry && entry.type === 'VARIABLE_ALIAS') queue.push(entry.id);
-      });
-    }
-    return false;
-  };
-  valueChanges.forEach(({ pv, change }) => {
-    const v = byPath[pv.path];
-    if (!v || v.resolvedType !== 'STRING' || typeof change.to.value !== 'string') return;
-    textStyles.forEach((style) => {
-      const binding = (style.boundVariables || {}).fontFamily;
-      if (binding && reaches(binding.id, v.id)) {
-        addFont({ family: change.to.value, style: style.fontName.style });
-      }
-    });
-  });
+  // A style the plan re-fonts ends up on its new font (step 5a below); only a
+  // bound style the plan leaves alone takes the new family in its current
+  // style, and the preflight refused the push if the editor lacks that font.
+  hdsFamilyFonts(plan, textStyles, variables).forEach((hit) => addFont(hit.font));
   for (const key of Object.keys(fonts)) await figma.loadFontAsync(fonts[key]);
+  //    5a. A style the plan re-fonts drops its font bindings and takes its new
+  //    font now, before any value: otherwise a new family or weight on a
+  //    variable it binds would put it on that value in its old style (Sora
+  //    "Medium", hds#1453), a font the family may not have. Step 6 binds the
+  //    font fields again once the values are in place.
+  for (const ps of pendingText) {
+    if (ps.changes.indexOf('font') === -1) continue;
+    const style = need(textStyles, ps.id, 'Text style');
+    ['fontFamily', 'fontStyle', 'fontWeight'].forEach(
+      (f) => (style.boundVariables || {})[f] && style.setBoundVariable(f, null),
+    );
+    style.fontName = { family: ps.set.fontFamily, style: ps.set.fontStyle };
+  }
   const setValue = async ({ pv, change }) => {
     const v = byPath[pv.path];
     const collection = collectionByKey[pv.collection];
@@ -1062,25 +1086,39 @@ export async function hdsApply(figma, plan) {
 
 // ── Entry points ─────────────────────────────────────────────────────────────
 export async function hdsFontPreflight(figma, plan) {
-  const pending = plan.textStyles.filter((ps) => ps.action !== 'unchanged');
-  if (!pending.length) return [];
   const available = new Set(
     (await figma.listAvailableFontsAsync()).map((f) => f.fontName.family + '|' + f.fontName.style),
   );
   const problems = [];
-  pending.forEach((ps) => {
-    const wanted = ps.set.fontFamily + '|' + ps.set.fontStyle;
-    if (!available.has(wanted)) {
-      problems.push(
-        `Text style ${ps.set.name} needs the font "${ps.set.fontFamily} ${ps.set.fontStyle}", which this Figma editor does not have. Install it on this machine (Figma desktop reads installed fonts), then run the push again.`,
+  const lacks = (name, what, f, next) =>
+    !available.has(f.family + '|' + f.style) &&
+    problems.push(
+      `Text style ${name} ${what} "${f.family} ${f.style}", which this Figma editor lacks. ${next}, then push again.`,
+    );
+  plan.textStyles
+    .filter((ps) => ps.action !== 'unchanged')
+    .forEach((ps) => {
+      lacks(
+        ps.set.name,
+        'needs the font',
+        { family: ps.set.fontFamily, style: ps.set.fontStyle },
+        'Install it (Figma desktop reads installed fonts)',
       );
-    }
-    if (ps.currentFont && !available.has(ps.currentFont.family + '|' + ps.currentFont.style)) {
-      problems.push(
-        `Text style ${ps.previousName} uses the missing font "${ps.currentFont.family} ${ps.currentFont.style}", so Figma will not let the push edit it. Install that font or delete the style, then run the push again.`,
-      );
-    }
-  });
+      if (ps.currentFont) {
+        lacks(ps.previousName, 'uses the font', ps.currentFont, 'Install it or delete the style');
+      }
+    });
+  // A bound style the plan does not re-font. Reads only: this refusal writes nothing too.
+  const vars = new Map((await figma.variables.getLocalVariablesAsync()).map((v) => [v.id, v]));
+  const styles = new Map((await figma.getLocalTextStylesAsync()).map((s) => [s.id, s]));
+  hdsFamilyFonts(plan, styles, vars).forEach(({ style, font }) =>
+    lacks(
+      style.name,
+      'binds a changing family, so would take the font',
+      font,
+      'Re-font it in this push or install it',
+    ),
+  );
   return problems.filter((p, i) => problems.indexOf(p) === i);
 }
 

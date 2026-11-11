@@ -4,6 +4,8 @@
 
 **Amended 2026-10-20 (Adrian, hds#847):** two weights, not three. Display, title and title-sm move to Sora **700** (`weight.display` 700; `sora-700.woff2` replaces `sora-800.woff2`), body to **400** (`weight.regular`), and ui, labels and bold lead-ins stay at 500. Heading levels now differ by size: display 56px, title 28px, title-sm 20px (new `size.display` and `size.title`). The Alert title takes the title-sm role. The Decision below is the 2026-10-17 text.
 
+**Amended 2026-11-11 (Adrian):** Sora sets every role, not only display and title. One self-hosted Sora variable file (`sora-variable.woff2`, wght 100-800, Latin subset, from `@fontsource-variable/sora` 5.3.0) replaces both `plus-jakarta-sans-variable.woff2` and `sora-700.woff2`, and both family stacks fall back to system-ui. Sora sets about 7% wider and 10% darker than Plus Jakarta Sans at the same size and weight (measured in Chromium), so body, ui and caption take `letterSpacing.text` (-0.01em) to keep line length close. The text weights are the static ones Figma's Sora ships (Regular, SemiBold and Bold; no Medium), so code and Figma match: regular 400, semibold 600, bold 700, and `weight.medium` is a deprecated alias of regular (400). Display, title and title-sm keep Sora 700. A first pass tuned the weights along the variable axis (340/430/510/600, -0.02em); Adrian replaced it with the static weights the same day.
+
 ## Context
 
 Since the Satoshi swap (ADR-060, PR #585), one face, Plus Jakarta Sans, set every

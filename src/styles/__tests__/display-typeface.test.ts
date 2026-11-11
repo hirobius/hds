@@ -1,9 +1,9 @@
 /**
- * Contract test: display and title set in Sora 700, body at 400 (ADR-063, hds#847).
+ * Contract test: Sora sets every text role (ADR-063, Adrian 2026-11-11): display and
+ * title at 700, body and ui at 400 (Regular), semibold 600 and bold 700: the static weights Figma's Sora ships.
  *
- * The expressive-type change moves only the display face. This pins the token,
- * the root default of the display dial, the self-hosted @font-face, and that
- * body, ui, caption and mono did not move with it.
+ * This pins the tokens, the root default of the display dial, the self-hosted
+ * variable @font-face, and that mono stays on its own family.
  *
  * @unit ADR-063
  */
@@ -18,10 +18,12 @@ const family = tokens.primitive.typography.family;
 const roles = tokens.semantic.typography;
 
 describe('display typeface (ADR-063)', () => {
-  it('leads the display family with Sora and keeps the sans fallbacks', () => {
-    expect(family.display.$value[0]).toBe('Sora');
-    expect(family.display.$value).toContain('Plus Jakarta Sans');
-    expect(family.display.$value.at(-1)).toBe('sans-serif');
+  it('leads the display and primary families with Sora and a system-ui sans fallback', () => {
+    for (const f of [family.display, family.primary]) {
+      expect(f.$value[0]).toBe('Sora');
+      expect(f.$value[1]).toBe('system-ui');
+      expect(f.$value.at(-1)).toBe('sans-serif');
+    }
   });
 
   it('binds display, title and title-sm to the display family', () => {
@@ -30,8 +32,7 @@ describe('display typeface (ADR-063)', () => {
     }
   });
 
-  it('leaves body, ui, caption and mono on their own families', () => {
-    expect(family.primary.$value[0]).toBe('Plus Jakarta Sans');
+  it('keeps body, ui and caption on the primary family and mono on its own', () => {
     for (const role of ['body', 'ui', 'caption']) {
       expect(roles[role].$value.fontFamily, role).toBe('{primitive.typography.family.primary}');
     }
@@ -39,16 +40,21 @@ describe('display typeface (ADR-063)', () => {
   });
 
   it('defaults the display dial to Sora', () => {
-    expect(read('src/styles/theme.css')).toMatch(
-      /--hds-font-family-display:\s*'Sora',[^;]*'Plus Jakarta Sans'/,
-    );
+    expect(read('src/styles/theme.css')).toMatch(/--hds-font-family-display:\s*'Sora', system-ui,/);
   });
 
-  it('sets display, title and title-sm at weight 700 and body at 400 (hds#847)', () => {
+  it('sets display, title and title-sm at weight 700 and body at 400', () => {
     const weight = tokens.primitive.typography.weight;
     expect(weight.display.$value).toBe(700);
     expect(weight.regular.$value).toBe(400);
-    expect(weight.medium.$value).toBe(500);
+    expect(weight.semibold.$value).toBe(600);
+    expect(weight.bold.$value).toBe(700);
+    expect(weight.medium.$value).toBe('{primitive.typography.weight.regular}');
+    expect(weight.medium.$deprecated).toMatch(/weight\.regular/);
+    expect(tokens.primitive.typography.letterSpacing.text.$value).toEqual({
+      value: -0.01,
+      unit: 'em',
+    });
     for (const role of ['display', 'title', 'titleSm']) {
       expect(roles[role].$value.fontWeight, role).toBe('{primitive.typography.weight.display}');
     }
@@ -80,21 +86,17 @@ describe('display typeface (ADR-063)', () => {
     expect(roles.title.$value.fontFamily).toBe('{primitive.typography.family.display}');
   });
 
-  it('self-hosts both faces with their OFL licences, no CDN', () => {
+  it('self-hosts one variable Sora face with its OFL licence, no CDN', () => {
     const fonts = read('src/styles/fonts.css');
     expect(fonts).toMatch(
-      /font-family: 'Sora';\s*src: url\('\/fonts\/sora\/sora-700\.woff2'\) format\('woff2'\);\s*font-weight: 700;/,
+      /font-family: 'Sora';\s*src: url\('\/fonts\/sora\/sora-variable\.woff2'\) format\('woff2'\);\s*font-weight: 100 800;\s*font-style: normal;\s*font-display: swap;/,
     );
-    expect(fonts).toMatch(
-      /font-family: 'Plus Jakarta Sans';\s*src: url\('\/fonts\/plus-jakarta-sans\/plus-jakarta-sans-variable\.woff2'\)[^;]*;\s*font-weight: 200 800;/,
-    );
+    expect(fonts.match(/font-family: 'Sora';/g)).toHaveLength(1);
     expect(fonts).not.toMatch(/fonts\.(googleapis|gstatic)\.com/);
-    expect(fonts).not.toMatch(/Bricolage/i);
-    expect(fonts, 'vendor only the Sora weight in use').not.toMatch(/sora-800/);
-    expect(existsSync(resolve(ROOT, 'public/fonts/sora/sora-800.woff2'))).toBe(false);
-    for (const f of ['sora/sora-700.woff2', 'plus-jakarta-sans/plus-jakarta-sans-variable.woff2']) {
-      expect(existsSync(resolve(ROOT, 'public/fonts', f)), f).toBe(true);
-    }
+    expect(fonts).not.toMatch(/Bricolage|Jakarta/i);
+    expect(existsSync(resolve(ROOT, 'public/fonts/sora/sora-700.woff2'))).toBe(false);
+    expect(existsSync(resolve(ROOT, 'public/fonts/plus-jakarta-sans'))).toBe(false);
+    expect(existsSync(resolve(ROOT, 'public/fonts/sora/sora-variable.woff2'))).toBe(true);
     expect(read('public/fonts/sora/LICENSE.txt')).toMatch(/SIL Open Font License, Version 1\.1/);
     expect(existsSync(resolve(ROOT, 'public/fonts/bricolage-grotesque'))).toBe(false);
   });
