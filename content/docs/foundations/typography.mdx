@@ -17,10 +17,9 @@ Six text styles plus mono. Set one with `<Text variant="…">`, `hds.typeStyles.
 
 ### Principle
 
-Three typefaces, each with one job:
+Two typefaces, each with one job:
 
-- **Sora** sets headings: Bold (700) for display, titles and small titles. Heading levels differ by size (56, 28 and 20px), not weight.
-- **Plus Jakarta Sans** sets everything people read: 400 for body, 500 for controls, labels and bold lead-ins, 700 for bold text.
+- **Sora** sets all text from one variable file. Headings use Bold (700) for display, titles and small titles; heading levels differ by size (56, 28 and 20px), not weight. Text uses Regular (400) for body, controls and labels, SemiBold (600) for button labels and Bold (700) for bold text, with -0.01em tracking. These are the static weights Figma's Sora ships, so code and Figma match; `weight.medium` is a deprecated alias of regular.
 - **IBM Plex Mono** sets code, token names and ids.
 
 ### Best practices

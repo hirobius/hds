@@ -189,14 +189,17 @@ export function buildTypography(raw) {
 
   const declared = Object.keys(weightMap)
     .sort((a, b) => Number(weightMap[a]) - Number(weightMap[b]))
-    .map((k) => `\`${weightMap[k]}\` ${k}`)
+    .map((k) => `\`${weightMap[k]}\` ${k}${weights[k].$deprecated ? ' (deprecated)' : ''}`)
     .join(', ');
   const headingW = uniq(['display', 'title'].map(weightOf));
   const bodyW = uniq(['body', 'ui', 'caption'].map(weightOf));
   const phrase = (ws) => ws.map((w) => `\`${w.value}\` ${w.name}`).join(' / ');
   const monoW = uniq([weightOf('mono')]);
   const usedWeights = new Set([...headingW, ...bodyW, ...monoW].map((w) => w.name));
-  const unused = Object.keys(weightMap).filter((k) => !usedWeights.has(k));
+  // A deprecated weight (an alias kept for consumers) is retired, not unused.
+  const unused = Object.keys(weightMap).filter(
+    (k) => !usedWeights.has(k) && !weights[k].$deprecated,
+  );
 
   lines.push(
     `Weights declared: ${declared}. Heading styles (display · title) use ` +

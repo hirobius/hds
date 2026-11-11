@@ -71,7 +71,7 @@ describe('Text weight', () => {
     // tier-ok: asserts the emitted primitive
     ['regular', '[font-weight:var(--primitive-typography-weight-regular)]'],
     // tier-ok: asserts the emitted primitive
-    ['medium', '[font-weight:var(--primitive-typography-weight-medium)]'],
+    ['medium', '[font-weight:var(--primitive-typography-weight-regular)]'],
     // tier-ok: asserts the emitted primitive
     ['bold', '[font-weight:var(--primitive-typography-weight-bold)]'],
   ];

@@ -79,7 +79,7 @@ export function compare(a, b) {
 }
 
 /** The font the Button label uses; a render without it measures a fallback (hds#1295). */
-export const BRAND_FONT = '600 16px "Plus Jakarta Sans"';
+export const BRAND_FONT = '510 16px "Sora"';
 
 /** Abort the code render when the brand font did not load. */
 export function requireBrandFont(loaded) {

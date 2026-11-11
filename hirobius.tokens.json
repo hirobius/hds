@@ -742,26 +742,25 @@
         "$type": "fontFamily",
         "primary": {
           "$value": [
-            "Plus Jakarta Sans",
+            "Sora",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack."
+          "$description": "Sora variable (OFL)."
         },
         "display": {
           "$value": [
             "Sora",
-            "Plus Jakarta Sans",
             "system-ui",
             "-apple-system",
             "BlinkMacSystemFont",
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display and title face: Sora 700 (OFL, ADR-063, hds#847); falls back to Plus Jakarta Sans."
+          "$description": "Display face: Sora 700 (ADR-063)."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -894,22 +893,24 @@
         "$type": "fontWeight",
         "regular": {
           "$value": 400,
-          "$description": "Body weight (400, hds#847). Plus Jakarta Sans ships as a variable font."
+          "$description": "Body and UI weight: Sora Regular 400 (Figma's Sora ships Regular, SemiBold and Bold only)."
         },
         "medium": {
-          "$value": 500,
-          "$description": "UI, labels and bold lead-ins (hds#847)."
+          "$value": "{primitive.typography.weight.regular}",
+          "$description": "Alias of regular (400): Figma's Sora has no Medium, so code and Figma share one static weight.",
+          "$deprecated": "2026-11 Sora static weights, removed in 1.0.0 — use primitive.typography.weight.regular"
         },
         "semibold": {
           "$value": 600,
-          "$description": "Button label weight (hds#760)."
+          "$description": "Button label weight (hds#760): Sora SemiBold 600."
         },
         "bold": {
-          "$value": 700
+          "$value": 700,
+          "$description": "Bold text: Sora Bold 700."
         },
         "display": {
           "$value": 700,
-          "$description": "Display, title and title-sm weight, set in Sora 700 (ADR-063, hds#847). Heading levels differ by size, not weight."
+          "$description": "Display, title and title-sm weight, set in Sora 700 (ADR-063). Heading levels differ by size, not weight."
         },
         "mono": {
           "$value": 400,
@@ -958,6 +959,12 @@
         "normal": {
           "$value": {
             "value": 0,
+            "unit": "em"
+          }
+        },
+        "text": {
+          "$value": {
+            "value": -0.01,
             "unit": "em"
           }
         }
@@ -2568,7 +2575,7 @@
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.lg}",
           "fontWeight": "{primitive.typography.weight.regular}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.body}",
           "maxWidth": {
             "value": 60,
@@ -2591,14 +2598,14 @@
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.lg}",
           "fontWeight": "{primitive.typography.weight.bold}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.body}",
           "maxWidth": {
             "value": 60,
             "unit": "ch"
           }
         },
-        "$description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "$description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2613,15 +2620,15 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.base}",
-          "fontWeight": "{primitive.typography.weight.medium}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "fontWeight": "{primitive.typography.weight.regular}",
+          "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
             "value": 60,
             "unit": "ch"
           }
         },
-        "$description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
+        "$description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2637,14 +2644,14 @@
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.base}",
           "fontWeight": "{primitive.typography.weight.regular}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
             "value": 60,
             "unit": "ch"
           }
         },
-        "$description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "$description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2659,8 +2666,8 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.base}",
-          "fontWeight": "{primitive.typography.weight.medium}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "fontWeight": "{primitive.typography.weight.regular}",
+          "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
             "value": 60,
@@ -2683,11 +2690,11 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.sm}",
-          "fontWeight": "{primitive.typography.weight.medium}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "fontWeight": "{primitive.typography.weight.regular}",
+          "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
-        "$description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
+        "$description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2776,8 +2783,8 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.sm}",
-          "fontWeight": "{primitive.typography.weight.medium}",
-          "letterSpacing": "{primitive.typography.letterSpacing.normal}",
+          "fontWeight": "{primitive.typography.weight.regular}",
+          "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
         "$description": "deprecated: use semantic.typography.caption",
@@ -3350,7 +3357,7 @@
       },
       "fontWeight": {
         "$type": "fontWeight",
-        "$value": "{primitive.typography.weight.medium}",
+        "$value": "{primitive.typography.weight.regular}",
         "$description": "Tag label weight."
       },
       "lineHeight": {
@@ -3407,7 +3414,7 @@
       },
       "fontWeight": {
         "$type": "fontWeight",
-        "$value": "{primitive.typography.weight.medium}",
+        "$value": "{primitive.typography.weight.regular}",
         "$description": "Badge label weight."
       },
       "text": {

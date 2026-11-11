@@ -187,6 +187,7 @@ declare module 'react' {
     '--primitive-typography-size-6xl'?: string | undefined;
     '--primitive-typography-size-code'?: string | undefined;
     '--primitive-typography-weight-regular'?: string | undefined;
+    /** @deprecated 2026-11 Sora static weights, removed in 1.0.0 — use primitive.typography.weight.regular @removeIn 1.0.0 */
     '--primitive-typography-weight-medium'?: string | undefined;
     '--primitive-typography-weight-semibold'?: string | undefined;
     '--primitive-typography-weight-bold'?: string | undefined;
@@ -202,6 +203,7 @@ declare module 'react' {
     '--primitive-typography-lineHeight-body'?: string | undefined;
     '--primitive-typography-letterSpacing-tight'?: string | undefined;
     '--primitive-typography-letterSpacing-normal'?: string | undefined;
+    '--primitive-typography-letterSpacing-text'?: string | undefined;
     '--primitive-duration-instant'?: string | undefined;
     '--primitive-duration-short'?: string | undefined;
     '--primitive-duration-medium'?: string | undefined;

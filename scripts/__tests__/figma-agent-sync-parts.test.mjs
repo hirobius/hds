@@ -46,9 +46,9 @@ afterEach(() => {
 });
 const tempRoot = useTempRoots('hds-agent-parts-');
 /** The library after `base` was pushed, its snapshot committed, and main moved to `edit(base)`. */
-async function pending({ base = fixtureModel(), edit, ...options }) {
+async function pending({ base = fixtureModel(), edit, fonts = [], ...options }) {
   const root = tempRoot();
-  const figma = await pushedLibrary(base);
+  const figma = await pushedLibrary(base, fonts);
   const path = join(root, 'figma', 'snapshot.json');
   writeFileSync(path, serializeSnapshotFile(await hdsRunSnapshot(figma)));
   const snapshotFile = parseSnapshotFile(readFileSync(path, 'utf8'));
@@ -69,7 +69,7 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     vi.setSystemTime(new Date('2026-10-09T00:00:00.000Z'));
   });
 
-  it('builds the same delta.js, byte for byte (golden; re-captured for the motion not-in-Figma reason, hds#751)', async () => {
+  it('builds the same delta.js, byte for byte (golden; re-captured for the font preload fix, hds#1453)', async () => {
     const s = await pending({
       edit: (model) => {
         variableOf(model, 'primitive.space.2').description = 'Two steps: tight gap and more.';
@@ -79,8 +79,8 @@ describe('a plan that fits one delta.js is unchanged by the multi-part builder',
     });
     const sha = createHash('sha256').update(s.built.text).digest('hex');
     expect({ chars: s.built.chars, sha }).toEqual({
-      chars: 31842,
-      sha: 'db5701bcc3801b4122929516b138bd12ce668538817a9f59d4ef61ee856d78b2',
+      chars: 32207,
+      sha: 'f8c83822c0ad0f8ba866715f2ba7908ffdc1576d0c335bde6c557f34e604c9f4',
     });
   });
 });
@@ -232,8 +232,10 @@ describe('a type-ramp change too big for one delta.js (about 60,700 characters w
     expect(s.built.text).toBeNull();
     // 3 or more parts before the runtime was minified (Fix A, 2026-10-11); 2 until the
     // canvas-font retry and weight.mono (2026-10-20) grew the runtime and the ramp; 3 until
-    // uiRegular (hds#1198) pushed the scenario past 3 x 45,000 packing; 4 now.
-    expect(parts.length).toBe(4);
+    // uiRegular (hds#1198) pushed the scenario past 3 x 45,000 packing; 4 until text styles
+    // started sharing a part with the font variables they bind (hds#1453), which packs less
+    // tightly; 5 now.
+    expect(parts.length).toBe(5);
     expect(parts.map((p) => p.file)).toEqual(
       parts.map((_, i) => `delta-${i + 1}-of-${parts.length}.js`),
     );
@@ -494,6 +496,75 @@ describe('the parts of a run', () => {
   });
 });
 
+describe('a font family change and the text styles bound to it (hds#1453)', () => {
+  // Run f58a5397 put primitive.typography.family.primary (→ Sora) in part 1 and
+  // the text styles' new fonts in part 4, so part 1 could only give the bound
+  // styles the new family in their old style ("Sora Medium", which Sora lacks).
+  const newsans = [
+    { family: 'Newsans', style: 'Regular' },
+    { family: 'Newsans', style: 'SemiBold' },
+  ];
+  const refamily = (model) => {
+    variableOf(model, 'primitive.typography.family.primary').valuesByMode.Default = {
+      value: 'Newsans',
+    };
+    variableOf(model, 'primitive.typography.weight.bold').valuesByMode.Default = { value: 600 };
+    variableOf(model, 'primitive.space.2').description = 'Two steps, reworded.';
+    // A value the style binds outside its font fields: Figma gives the style
+    // the variable's value on rebind, so it must not land in a later part.
+    variableOf(model, 'semantic.typography.h1.letter-spacing').valuesByMode = {
+      Light: { value: -0.96 },
+      Dark: { value: -0.96 },
+    };
+    model.textStyles.find((s) => s.path === 'semantic.typography.h1').letterSpacing = {
+      unit: 'PIXELS',
+      value: -0.96,
+    };
+    model.textStyles.forEach((s) => {
+      if (s.fontFamily !== 'Sora') return;
+      s.fontFamily = 'Newsans';
+      if (s.fontStyle === 'Bold') s.fontStyle = 'SemiBold';
+    });
+    return model;
+  };
+
+  it('lands in one part with those styles, and the parts converge on a family that lacks their old style', async () => {
+    const s = await pending({ edit: refamily, fonts: newsans, ...{ split: true, partChars: 1 } });
+    const parts = s.built.parts.map((part) => {
+      const plan = planOf(part.text);
+      return {
+        variables: plan.slice
+          .flatMap((c) => c[3])
+          .filter((v) => !v[1] || Object.keys(v[2]).length)
+          .map((v) => v[0]),
+        styles: plan.textStyles.map((t) => t.path),
+      };
+    });
+    expect(parts.length).toBeGreaterThanOrEqual(2);
+    const family = parts.filter((p) => p.variables.includes('primitive.typography.family.primary'));
+    expect(family).toHaveLength(1);
+    expect(family[0].styles).toEqual(
+      expect.arrayContaining(['semantic.typography.h1', 'semantic.typography.body']),
+    );
+    expect(family[0].variables).toContain('primitive.typography.weight.bold');
+    expect(parts.filter((p) => p.styles.length)).toHaveLength(1);
+    // No style meets a variable it binds that a later part changes.
+    const partOf = (path) => parts.findIndex((p) => p.variables.includes(path));
+    const at = parts.findIndex((p) => p.styles.length);
+    expect(partOf('semantic.typography.h1.letter-spacing')).toBeLessThanOrEqual(at);
+    s.next.textStyles.forEach((style) =>
+      Object.values(style.boundVariables).forEach((path) =>
+        expect(partOf(path), `${style.path} binds ${path}`).toBeLessThanOrEqual(at),
+      ),
+    );
+
+    const { snapshot } = ingest(s.root, await runParts(s.built.parts, s.figma));
+    expect(planLine(s.next, { snapshot })).toBe(NOTHING_LINE);
+    const h1 = snapshot.textStyles.find((t) => t.path === 'semantic.typography.h1');
+    expect([h1.fontFamily, h1.fontStyle]).toEqual(['Newsans', 'SemiBold']);
+  });
+});
+
 // ── Every kind of change lands the same through parts as through one script ──
 const collectionOf = (model, key) => model.collections.find((c) => c.key === key);
 const kinds = {
@@ -501,26 +572,28 @@ const kinds = {
   // The live 0.26.1 push: part 1 created weight.display and pointed h1 at it;
   // a later part held h1 only as the anchor of its style, with no id for the
   // new primitive, and wrote an empty value (Figma: "Required value missing").
+  // A font field (weight, family) now shares a part with its style (hds#1453),
+  // so the scenario uses a size, which still splits that way.
   'a new primitive a style-bound token switches to, the style reworded in a later part': {
     edit: (model) => {
       collectionOf(model, 'primitive').variables.push(
         newVariable(
           model,
-          'primitive.typography.weight.bold',
-          'primitive.typography.weight.display',
-          'typography/weight/display',
+          'primitive.typography.size.4xl',
+          'primitive.typography.size.display',
+          'typography/size/display',
           {
-            Default: { value: 700 },
+            Default: { value: 48 },
           },
         ),
       );
-      const h1 = variableOf(model, 'semantic.typography.h1.font-weight');
+      const h1 = variableOf(model, 'semantic.typography.h1.font-size');
       h1.valuesByMode = {
-        Light: { alias: 'primitive.typography.weight.display' },
-        Dark: { alias: 'primitive.typography.weight.display' },
+        Light: { alias: 'primitive.typography.size.display' },
+        Dark: { alias: 'primitive.typography.size.display' },
       };
       const style = model.textStyles.find((s) => s.path === 'semantic.typography.h1');
-      style.description = `${style.description} Set in the display weight.`;
+      style.description = `${style.description} Set in the display size.`;
       return model;
     },
   },

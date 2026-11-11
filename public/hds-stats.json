@@ -7,7 +7,7 @@
     "patterns": 14
   },
   "tokens": {
-    "total": 580
+    "total": 581
   },
   "contrast": {
     "textPairs": 37,
@@ -35,5 +35,5 @@
     "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",
     "asOfDate": "2026-11-06"
   },
-  "generatedFrom": "01e0d267e8c7509eecf8a32bcf42362cb4095cb0"
+  "generatedFrom": "d484d7f75e2fddae4d9d4f814a5add3b0fdf0863"
 }

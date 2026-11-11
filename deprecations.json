@@ -430,6 +430,17 @@
       "note": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
     },
     {
+      "path": "primitive.typography.weight.medium",
+      "cssVar": "--primitive-typography-weight-medium",
+      "composite": false,
+      "tailwind": null,
+      "replacement": "primitive.typography.weight.regular",
+      "replacementCssVar": "--primitive-typography-weight-regular",
+      "replacementTailwind": null,
+      "removeIn": "1.0.0",
+      "note": "2026-11 Sora static weights, removed in 1.0.0 — use primitive.typography.weight.regular"
+    },
+    {
       "path": "semantic.space.section.heroMax",
       "cssVar": "--semantic-space-section-heroMax",
       "composite": false,
