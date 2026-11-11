@@ -233,6 +233,7 @@ export const tokenRefs = {
       },
       weight: {
         regular: "var(--primitive-typography-weight-regular)",
+        /** @deprecated 2026-11 Sora static weights, removed in 1.0.0 — use primitive.typography.weight.regular @removeIn 1.0.0 */
         medium: "var(--primitive-typography-weight-medium)",
         semibold: "var(--primitive-typography-weight-semibold)",
         bold: "var(--primitive-typography-weight-bold)",

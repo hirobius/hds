@@ -1,6 +1,6 @@
 /**
  * Contract test: Sora sets every text role (ADR-063, Adrian 2026-11-11): display and
- * title at 700, body at 340 and ui at 430 on the variable axis.
+ * title at 700, body and ui at 400 (Regular), semibold 600 and bold 700: the static weights Figma's Sora ships.
  *
  * This pins the tokens, the root default of the display dial, the self-hosted
  * variable @font-face, and that mono stays on its own family.
@@ -43,11 +43,18 @@ describe('display typeface (ADR-063)', () => {
     expect(read('src/styles/theme.css')).toMatch(/--hds-font-family-display:\s*'Sora', system-ui,/);
   });
 
-  it('sets display, title and title-sm at weight 700 and body at 340', () => {
+  it('sets display, title and title-sm at weight 700 and body at 400', () => {
     const weight = tokens.primitive.typography.weight;
     expect(weight.display.$value).toBe(700);
-    expect(weight.regular.$value).toBe(340);
-    expect(weight.medium.$value).toBe(430);
+    expect(weight.regular.$value).toBe(400);
+    expect(weight.semibold.$value).toBe(600);
+    expect(weight.bold.$value).toBe(700);
+    expect(weight.medium.$value).toBe('{primitive.typography.weight.regular}');
+    expect(weight.medium.$deprecated).toMatch(/weight\.regular/);
+    expect(tokens.primitive.typography.letterSpacing.text.$value).toEqual({
+      value: -0.01,
+      unit: 'em',
+    });
     for (const role of ['display', 'title', 'titleSm']) {
       expect(roles[role].$value.fontWeight, role).toBe('{primitive.typography.weight.display}');
     }

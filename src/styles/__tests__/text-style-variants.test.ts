@@ -23,12 +23,12 @@ const style = (name: string) =>
   model.textStyles.find((s: { name: string }) => s.name === `typography/${name}`);
 
 describe('bodyStrong (ADR-052 addendum)', () => {
-  it('is body with fontWeight bold (600), Compact mode included', () => {
+  it('is body with fontWeight bold (700), Compact mode included', () => {
     expect(typo.bodyStrong.$value).toEqual({
       ...typo.body.$value,
       fontWeight: '{primitive.typography.weight.bold}',
     });
-    expect(tokens.primitive.typography.weight.bold.$value).toBe(600);
+    expect(tokens.primitive.typography.weight.bold.$value).toBe(700);
     expect(typo.bodyStrong.$extensions).toEqual(typo.body.$extensions);
   });
 
@@ -43,8 +43,8 @@ describe('bodyStrong (ADR-052 addendum)', () => {
     const s = style('bodyStrong');
     const body = style('body');
     expect(s).toBeDefined();
-    expect(s.fontWeight).toBe(600);
-    expect(s.fontStyle).toBe('SemiBold');
+    expect(s.fontWeight).toBe(700);
+    expect(s.fontStyle).toBe('Bold');
     expect([s.fontFamily, s.fontSize, s.lineHeight]).toEqual([
       body.fontFamily,
       body.fontSize,
@@ -54,12 +54,12 @@ describe('bodyStrong (ADR-052 addendum)', () => {
 });
 
 describe('uiRegular (ADR-052 addendum, hds#1198)', () => {
-  it('is ui with fontWeight regular (340), Compact mode included', () => {
+  it('is ui with fontWeight regular (400), Compact mode included', () => {
     expect(typo.uiRegular.$value).toEqual({
       ...typo.ui.$value,
       fontWeight: '{primitive.typography.weight.regular}',
     });
-    expect(tokens.primitive.typography.weight.regular.$value).toBe(340);
+    expect(tokens.primitive.typography.weight.regular.$value).toBe(400);
     expect(typo.uiRegular.$extensions).toEqual(typo.ui.$extensions);
   });
 
@@ -79,7 +79,7 @@ describe('uiRegular (ADR-052 addendum, hds#1198)', () => {
     const s = style('uiRegular');
     const ui = style('ui');
     expect(s).toBeDefined();
-    expect(s.fontWeight).toBe(340);
+    expect(s.fontWeight).toBe(400);
     expect(s.fontStyle).toBe('Regular');
     expect([s.fontFamily, s.fontSize, s.lineHeight]).toEqual([
       ui.fontFamily,
@@ -122,5 +122,23 @@ describe('uiItalic (ADR-052 addendum)', () => {
       ui.fontWeight,
       ui.lineHeight,
     ]);
+  });
+});
+
+describe('Sora static weights in the Figma model (Figma has no Sora Medium)', () => {
+  it('maps every Sora text style to Regular or Bold, never Medium', () => {
+    const sora = model.textStyles.filter((x: { fontFamily: string }) => x.fontFamily === 'Sora');
+    expect(sora.length).toBeGreaterThan(0);
+    for (const x of sora) {
+      expect(['Regular', 'SemiBold', 'Bold'], x.name).toContain(x.fontStyle);
+    }
+    expect(style('ui').fontStyle).toBe('Regular');
+    expect(style('caption').fontStyle).toBe('Regular');
+  });
+
+  it('keeps medium a deprecated alias of regular, and semibold and bold on SemiBold and Bold weights', () => {
+    const w = tokens.primitive.typography.weight;
+    expect([w.regular.$value, w.semibold.$value, w.bold.$value]).toEqual([400, 600, 700]);
+    expect(w.medium.$value).toBe('{primitive.typography.weight.regular}');
   });
 });
