@@ -523,6 +523,78 @@ describe('figma:push when a font family variable changes', () => {
   });
 });
 
+describe('figma:push when the new family lacks a bound style’s current style (hds#1453)', () => {
+  // 2026-11-11, run f58a5397: the Plus Jakarta Sans → Sora delta stopped in
+  // the font preload with 'The font "Sora Medium" could not be loaded'. It
+  // preloaded the new family in each bound style's CURRENT style (Medium),
+  // which static Sora does not have, though the same plan moved those styles
+  // to SemiBold. In miniature: Sora → Newsans, which has no Bold, while h1
+  // moves from Bold to SemiBold.
+  const newsans = [
+    { family: 'Newsans', style: 'Regular' },
+    { family: 'Newsans', style: 'SemiBold' },
+  ];
+  const refamilied = (withH1) => {
+    const next = JSON.parse(JSON.stringify(model));
+    const variable = (path) =>
+      next.collections.flatMap((c) => c.variables).find((v) => v.path === path);
+    variable('primitive.typography.family.primary').valuesByMode.Default = { value: 'Newsans' };
+    variable('primitive.typography.weight.bold').valuesByMode.Default = { value: 600 };
+    next.textStyles.forEach((s) => {
+      if (s.fontFamily !== 'Sora') return;
+      s.fontFamily = 'Newsans';
+      if (s.fontStyle === 'Bold') s.fontStyle = 'SemiBold';
+    });
+    if (!withH1) next.textStyles = next.textStyles.filter((s) => s.name !== 'typography/h1');
+    return next;
+  };
+  const loadsOf = (figma) => {
+    const loads = [];
+    const load = figma.loadFontAsync.bind(figma);
+    figma.loadFontAsync = (font) => {
+      loads.push(`${font.family} ${font.style}`);
+      return load(font);
+    };
+    return loads;
+  };
+
+  it('re-fonts the style first, never asks for a font the editor lacks, and converges', async () => {
+    const figma = newFile({ fonts: [...FIXTURE_FONTS, ...newsans] });
+    await push(figma);
+    const loads = loadsOf(figma);
+
+    const report = await push(figma, {}, refamilied(true));
+
+    expect(report.changes).toContain('update text style typography/h1: font');
+    expect(loads).not.toContain('Newsans Bold');
+    const h1 = (await hdsReadState(figma)).textStyles.find((s) => s.name === 'typography/h1');
+    expect([h1.fontFamily, h1.fontStyle]).toEqual(['Newsans', 'SemiBold']);
+    expect(Object.keys(h1.boundVariables)).toEqual([
+      'fontFamily',
+      'fontSize',
+      'fontWeight',
+      'letterSpacing',
+      'lineHeight',
+    ]);
+    expect((await push(figma, {}, refamilied(true))).line).toBe(
+      'updated 0 · created 0 · deleted 0',
+    );
+  });
+
+  it('refuses before any write when a bound style the plan does not re-font would land on a missing font', async () => {
+    const figma = newFile({ fonts: [...FIXTURE_FONTS, ...newsans] });
+    await push(figma);
+    const loads = loadsOf(figma);
+    const before = figma.writes.length;
+
+    await expect(push(figma, {}, refamilied(false))).rejects.toThrow(
+      /Nothing was written\..*typography\/h1.*"Newsans Bold"/,
+    );
+    expect(figma.writes.length).toBe(before);
+    expect(loads).not.toContain('Newsans Bold');
+  });
+});
+
 describe('figma:push when text layers bound to a variable use other fonts', () => {
   // 2026-10-20: delta.js stopped in setValueForMode on a weight variable,
   // because text layers on the canvas bound to it use Satoshi and IBM Plex
