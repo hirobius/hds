@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.41.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: tokenValues no longer lists primitive.typography.weight.medium (a deprecated alias of regular, 400); read tokenValues.primitive.typography.weight.regular or the --primitive-typography-weight-regular variable instead.
+- Looks different: component-badge-fontWeight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- Looks different: component-tag-fontWeight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- Looks different: The font dial default leads with Sora (was Plus Jakarta Sans); if you set it to rebrand, nothing changes for you.
+- And 18 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0410).
+
+### Minor Changes
+
+- e292d2f: Button: a hovered `primary` Button now sits on an edge made from its hover fill (`--hds-edge-primaryHover`, from `semantic.accent.hover`), not from its resting fill. Before, an accent such as cobalt showed a hover edge in a different hue (dark) or an edge that almost disappeared (light). The new edge keeps the same contrast floor as the primary edge. Accents and tenants compute their own hover edge.
+- 5457f82: Sora replaces Plus Jakarta Sans across the whole type ramp. fonts.css now ships one self-hosted Sora variable file (wght 100-800, Latin subset, `font-display: swap`) and IBM Plex Mono 400; the Plus Jakarta Sans file and the static Sora 700 file are gone. The text weights are the static ones Figma's Sora ships, so code and Figma match: regular 400, semibold 600, bold 700, with `weight.medium` kept as a deprecated alias of regular (400); body, ui and caption take a new `primitive.typography.letterSpacing.text` (-0.01em). Both family stacks fall back to system-ui.
+
+### Patch Changes
+
+- 1392ae7: Dock: new bottom action bar for phones (hds#1432). `<Dock>` holds a screen's main actions fixed to the bottom edge below `sm` (640px), with the safe-area insets under its padding. While a text field has focus, or the on-screen keyboard is open (read from `visualViewport`), it slides away on the spatial motion token, and it comes back when focus leaves the field. Under reduced motion it only fades. From `sm` up it sits inline and never hides. `hideOnInput={false}` keeps it in place. Pin is unchanged and stays the sticky-top primitive.
+- 661ae40: Sheet: new `@hirobius/design-system/sheet` subpath, so an app with a tight entry budget can import Sheet without the root barrel. The root still exports Sheet, and both give the same component. The subpath is 2.94 kB gzip with its packages external (it brings the Dialog parts and OverlayClose it is built from). In an app that already ships Dialog, it adds 0.73 kB gzip.
+
 ## 0.40.0
 
 ### Upgrade

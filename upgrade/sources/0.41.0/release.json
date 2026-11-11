@@ -1,0 +1,26 @@
+{
+  "$comment": "Frozen inputs of the 0.41.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.41.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.41.0",
+  "previous": "0.40.0",
+  "date": "2026-11-11",
+  "summary": "1 change to make by hand (1 breaking) and 21 that look different.",
+  "backfilled": false,
+  "notes": {
+    "dock-pattern": {
+      "needle": "1392ae7: Dock: new bottom action bar for",
+      "source": "CHANGELOG.md:24"
+    },
+    "primary-hover-edge": {
+      "needle": "e292d2f: Button: a hovered `primary` Button",
+      "source": "CHANGELOG.md:19"
+    },
+    "sheet-subpath": {
+      "needle": "661ae40: Sheet: new `@hirobius/design-system/sheet`",
+      "source": "CHANGELOG.md:25"
+    },
+    "sora-type-ramp": {
+      "needle": "5457f82: Sora replaces Plus Jakarta Sans",
+      "source": "CHANGELOG.md:20"
+    }
+  }
+}

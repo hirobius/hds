@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.40.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.41.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,38 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.41.0
+
+Released 2026-11-11 (minor). 1 change to make by hand (1 breaking) and 21 that look different.
+
+### Looks different
+
+- component-badge-fontWeight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- component-tag-fontWeight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- The font dial default leads with Sora (was Plus Jakarta Sans); if you set it to rebrand, nothing changes for you.
+- The display dial default is Sora then system-ui (Plus Jakarta Sans left the fallback).
+- The display family is Sora then system-ui; Plus Jakarta Sans left the fallback.
+- The primary family leads with Sora (was Plus Jakarta Sans); text that reads this variable changes face.
+- weight.medium is 400 (was 500) and a deprecated alias of regular, because Figma's Sora has no Medium; text that reads it sets one step lighter, so use weight.regular.
+- The body role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.
+- The bodyStrong role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.
+- semantic-typography-caption-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- The caption role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.
+- semantic-typography-eyebrow-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- The eyebrow role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.
+- semantic-typography-ui-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- The ui role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.
+- semantic-typography-uiItalic-font-weight now reads weight.regular (400) instead of weight.medium (500), so that text sets one step lighter in Sora Regular.
+- The uiItalic role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.
+- The uiRegular role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.
+- fonts.css no longer declares Plus Jakarta Sans; drop any font-family: Plus Jakarta Sans of your own or load your own file.
+- The static Sora 700 face is folded into the Sora variable face (100 to 800) in fonts.css; import fonts.css again, or load the variable file if you host Sora yourself.
+- A hovered primary Button's edge now follows its hover fill, so with an accent or tenant it keeps the same hue and stays visible; nothing to change unless you set --hds-edge on a primary Button yourself.
+
+### Do by hand
+
+- tokenValues no longer lists primitive.typography.weight.medium (a deprecated alias of regular, 400); read tokenValues.primitive.typography.weight.regular or the --primitive-typography-weight-regular variable instead.
 
 ## 0.40.0
 
