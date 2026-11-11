@@ -1648,6 +1648,26 @@
       "default": "default"
     }
   },
+  "Dock": {
+    "aria-label": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Actions"
+    },
+    "children": {
+      "type": "ReactNode",
+      "optional": false,
+      "values": null,
+      "default": null
+    },
+    "hideOnInput": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "true"
+    }
+  },
   "EmptyState": {
     "action": {
       "type": "ReactNode",

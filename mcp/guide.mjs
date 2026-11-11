@@ -256,6 +256,14 @@ export const INTENTS = [
     avoid: ['position: sticky in style'],
     how: '`<Pin top="…">…</Pin>` inside the scrolling region.',
   },
+  {
+    id: 'bottom-dock',
+    need: 'Main actions fixed to the bottom of a phone screen',
+    keywords: ['dock', 'bottom bar', 'action bar', 'sticky footer', 'keyboard'],
+    use: ['Dock', 'Button'],
+    avoid: ['Pin', 'position: fixed in style', 'a hand-built visualViewport listener'],
+    how: '`<Dock><Stack direction="row" gap="tight">…Buttons…</Stack></Dock>`; it steps aside while a text field has focus and sits inline from sm up.',
+  },
 ];
 
 /**

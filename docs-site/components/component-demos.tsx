@@ -48,6 +48,7 @@ import {
   List,
   Pagination,
   Pin,
+  Dock,
   Popover,
   Progress,
   Radio,
@@ -879,6 +880,24 @@ function AlertDialogDemo() {
   );
 }
 
+function DockDemo() {
+  // The frame's transform makes it the Dock's containing block, so on a phone the
+  // fixed Dock sits at the frame's bottom, not the page's. Focus the field: the Dock steps aside.
+  return (
+    <div style={{ position: 'relative', transform: 'translateZ(0)', minBlockSize: 200 }}>
+      <Stack gap="normal">
+        <Input label="Cover note" />
+        <Dock aria-label="Job actions">
+          <Stack direction="row" gap="tight">
+            <Button variant="secondary">Save</Button>
+            <Button variant="primary">Apply</Button>
+          </Stack>
+        </Dock>
+      </Stack>
+    </div>
+  );
+}
+
 function PinDemo() {
   // A short scroll box stands in for the page: scroll it and the heading stays put.
   return (
@@ -1640,6 +1659,7 @@ function RevealDemo() {
 export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
   AlertDialog: AlertDialogDemo,
   Pin: PinDemo,
+  Dock: DockDemo,
   Sidebar: SidebarDemo,
   Switcher: SwitcherDemo,
   AvatarGroup: AvatarGroupDemo,

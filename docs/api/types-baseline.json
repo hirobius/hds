@@ -425,6 +425,15 @@
     "DividerProps": {
       "kind": "type"
     },
+    "Dock": {
+      "kind": "value",
+      "signatures": [
+        "(props: DockProps & RefAttributes<HTMLDivElement>): ReactNode"
+      ]
+    },
+    "DockProps": {
+      "kind": "type"
+    },
     "EmptyState": {
       "kind": "value",
       "signatures": [

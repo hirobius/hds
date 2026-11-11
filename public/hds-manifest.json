@@ -92,6 +92,7 @@
     "DialogTrigger",
     "Disclosure",
     "Divider",
+    "Dock",
     "EmptyState",
     "Field",
     "Form",
@@ -2260,6 +2261,7 @@
         "src/app/components/destructive-section.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/divider.tsx",
+        "src/app/components/dock.tsx",
         "src/app/components/error-pattern.tsx",
         "src/app/components/form-actions.tsx",
         "src/app/components/grid.tsx",
@@ -7905,6 +7907,7 @@
       },
       "consumers": [
         "src/app/components/dialog.tsx",
+        "src/app/components/dock.tsx",
         "src/app/components/form-actions.tsx"
       ],
       "tokenMapping": {},
@@ -9401,7 +9404,9 @@
         "exportName": "FormActions",
         "sizing": "panel"
       },
-      "consumers": [],
+      "consumers": [
+        "src/app/components/dock.tsx"
+      ],
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
@@ -12608,6 +12613,73 @@
           }
         ]
       }
+    },
+    "Dock": {
+      "category": "Layout",
+      "categorySource": "jsdoc",
+      "governedCategory": true,
+      "filePath": "src/app/components/dock.tsx",
+      "description": "Dock — a bottom action bar for phones that steps aside while the user types.",
+      "a11yRules": [
+        {
+          "rule": "Dock is a named region (`aria-label`, default \"Actions\"), so screen-reader users can jump to it.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dock.region"
+        },
+        {
+          "rule": "While a text field (input, textarea, contenteditable) has focus or the on-screen keyboard is open, the Dock slides away; it shows again as soon as focus leaves the field, so Tab from the field reaches a visible action.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dock.hide-on-input"
+        },
+        {
+          "rule": "Under prefers-reduced-motion the Dock only fades; it does not slide.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:dock.reduced-motion"
+        },
+        {
+          "rule": "Give the content under the Dock bottom padding on phones, so the Dock never hides its last lines.",
+          "required": true,
+          "owner": "consumer"
+        }
+      ],
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "pattern",
+      "preview": {
+        "exportName": "Dock",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/useVisualViewport.ts"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {
+        "aria-label": {
+          "type": "string",
+          "default": "Actions"
+        },
+        "children": {
+          "type": "ReactNode"
+        },
+        "hideOnInput": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "docsPage": null,
+      "aiRules": "Put one row of Buttons in it (a Stack direction=\"row\", or a FormActions). One Dock per screen. Leave room under the content on phones: the Dock covers the page bottom. Use Pin to keep something stuck at the top of a scrolling region; Dock is for the bottom action bar only."
     },
     "HdsPhosphor": {
       "category": "Compiler",

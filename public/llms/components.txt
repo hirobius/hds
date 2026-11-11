@@ -396,6 +396,12 @@ Divider — semantic separator between content regions.
   - strong: boolean
   - variant: "strong" | "default" | null
 
+### Dock
+Dock — a bottom action bar for phones that steps aside while the user types.
+  - aria-label: string = Actions
+  - children: ReactNode
+  - hideOnInput: boolean = true
+
 ### EmptyState
 EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - action: ReactNode

@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-11-06",
+  "generatedAt": "2026-11-11",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -22,11 +22,11 @@
     }
   },
   "summary": {
-    "total": 131,
+    "total": 132,
     "byClass": {
       "library": 75,
       "slot": 34,
-      "layout": 10,
+      "layout": 11,
       "internal": 12
     },
     "libraryLinked": 75,
@@ -425,6 +425,14 @@
       "category": "Layout",
       "tier": "primitive",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-26"
+    },
+    {
+      "name": "Dock",
+      "class": "layout",
+      "parent": null,
+      "category": "Layout",
+      "tier": "pattern",
+      "figmaUrl": null
     },
     {
       "name": "EmptyState",
