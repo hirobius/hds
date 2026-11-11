@@ -1,15 +1,15 @@
 {
-  "checksum": "3e9a7524",
+  "checksum": "7c38ff65",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-11T21:25:45.733Z",
+    "takenAt": "2026-11-11T22:11:59.484Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "0eeb3e4f",
-      "pushedAt": "2026-11-11T21:25:45.683Z",
+      "modelHash": "834a15cb",
+      "pushedAt": "2026-11-11T22:11:59.424Z",
       "scope": null
     },
     "collections": [
@@ -14405,7 +14405,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "8e9ec47"
+                "value": "0c10197"
               }
             }
           },
@@ -14602,7 +14602,7 @@
         "id": "S:cbbb9de4dca75e29ab0543f170acf98350d2b3ef,",
         "name": "typography/eyebrow",
         "path": "semantic.typography.eyebrow",
-        "description": "deprecated: use semantic.typography.caption",
+        "description": "Deprecated. Will be removed in 1.0.0 (hds#483). Use typography/caption.",
         "fontFamily": "Sora",
         "fontStyle": "Regular",
         "fontSize": 14,
@@ -14627,7 +14627,7 @@
         "id": "S:c1eba418f3f10899f274da3be5f065b8224ad18e,",
         "name": "typography/h1",
         "path": "semantic.typography.h1",
-        "description": "deprecated: use semantic.typography.title",
+        "description": "Deprecated. Will be removed in 1.0.0 (hds#483). Use typography/title.",
         "fontFamily": "Sora",
         "fontStyle": "Bold",
         "fontSize": 28,
@@ -14652,7 +14652,7 @@
         "id": "S:ce337aa4f18407405bd4eec0df14a8b209453744,",
         "name": "typography/h2",
         "path": "semantic.typography.h2",
-        "description": "deprecated: use semantic.typography.title",
+        "description": "Deprecated. Will be removed in 1.0.0 (hds#483). Use typography/title.",
         "fontFamily": "Sora",
         "fontStyle": "Bold",
         "fontSize": 28,
@@ -14677,7 +14677,7 @@
         "id": "S:9d54f0f52fc7d0e8e9fd7b660f327a9a57c2df3e,",
         "name": "typography/h3",
         "path": "semantic.typography.h3",
-        "description": "deprecated: use semantic.typography.title",
+        "description": "Deprecated. Will be removed in 1.0.0 (hds#483). Use typography/title.",
         "fontFamily": "Sora",
         "fontStyle": "Bold",
         "fontSize": 28,
@@ -15216,6 +15216,6 @@
     "checksum": "99955183"
   },
   "tokensHash": "sha256:337cd18eb15c581dad316f30ad991d7a601eca90c041965964211bd85c016c40",
-  "syncedCommit": "8e9ec47",
-  "syncedHash": "sha256:85ce1a9d974a2c47120edca2b034d0ea682c7d9ed4b2d438d173ce9711574945"
+  "syncedCommit": "0c10197",
+  "syncedHash": "sha256:6f9097199c4e0ec4dfee7b53e491c79c03696623e8dac84d9b97bb3d57014a5d"
 }

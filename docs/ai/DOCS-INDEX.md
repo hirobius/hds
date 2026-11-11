@@ -28,6 +28,8 @@ A script builds it: change its source, never the file. A named check fails when 
 - `UPGRADING.md`: What each release asks of a consumer, compiled from upgrade/releases. Built by `scripts/upgrade/compile.mjs`; fresh when `node scripts/upgrade/compile.mjs --check` passes.
 - `upgrade/index.json`: Every release with its breaking count, the floor and what is deprecated. Built by `scripts/upgrade/compile.mjs`; fresh when `node scripts/upgrade/compile.mjs --check` passes.
 - `figma/snapshot.json`: The Figma library as last recorded by the Sync plugin. Built by `scripts/figma-snapshot.mjs`; fresh when `node scripts/check-figma-drift.mjs` passes.
+- `figma/deprecated-usage.json`: Library layers on a deprecated text style or variable, as last audited (hds#483). Built by `scripts/figma-deprecated-usage.mjs`; fresh when `node scripts/check-figma-deprecated-usage.mjs` passes.
+- `figma/reads/deprecated-usage.js`: The read-only use_figma audit behind figma/deprecated-usage.json. Built by `scripts/figma-deprecated-usage.mjs`; fresh when `node scripts/check-figma-deprecated-usage.mjs` passes.
 - `figma/inventory.json`: Every page, component set and variant count in the Figma library. Built by `scripts/figma-inventory.mjs`; not freshness-checked.
 - `figma/disposition.json`: What becomes of each Figma component. Built by `scripts/figma-disposition.mjs`; fresh when `node scripts/figma-disposition.mjs --check` passes.
 - `figma/code-connect.json`: Code Connect templates registry. Built by `scripts/generate-code-connect.mjs`; fresh when `node scripts/check-code-connect.mjs` passes.
