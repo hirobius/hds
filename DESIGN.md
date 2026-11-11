@@ -32,7 +32,7 @@ HDS ships two typefaces:
 - **Text font**: Sora. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `340` regular, `400` mono, `430` medium, `510` semibold, `600` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `340` regular / `430` medium; mono uses `400` mono. Declared but unused by any semantic role: `510` semibold, `600` bold.
+Weights declared: `400` regular, `400` medium (deprecated), `400` mono, `600` semibold, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular; mono uses `400` mono. Declared but unused by any semantic role: `600` semibold, `700` bold.
 
 ### Type ramp
 
@@ -42,12 +42,12 @@ Weights declared: `340` regular, `400` mono, `430` medium, `510` semibold, `600`
 | `semantic.typography.display` | 56px | same | 700 | One per page, hero only |
 | `semantic.typography.title` | 28px | 24px | 700 | Section and card headings |
 | `semantic.typography.titleSm` | 20px | same | 700 | Small heading inside a card or section band, and the Alert title |
-| `semantic.typography.body` | 18px | 15px | 340 | Prose |
-| `semantic.typography.bodyStrong` | 18px | 15px | 600 | Variant of body: weight bold (600), what Text with weight bold renders |
-| `semantic.typography.ui` | 16px | 14px | 430 | Controls, nav, table text, values |
-| `semantic.typography.uiRegular` | 16px | 14px | 340 | Variant of ui: weight regular (340), for table body cells and other plain UI text |
-| `semantic.typography.uiItalic` | 16px | 14px | 430 | Variant of ui: italic, what the inline EmptyState message renders |
-| `semantic.typography.caption` | 14px | 13px | 430 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.body` | 18px | 15px | 400 | Prose |
+| `semantic.typography.bodyStrong` | 18px | 15px | 700 | Variant of body: weight bold (700), what Text with weight bold renders |
+| `semantic.typography.ui` | 16px | 14px | 400 | Controls, nav, table text, values |
+| `semantic.typography.uiRegular` | 16px | 14px | 400 | Variant of ui: weight regular (400), for table body cells and other plain UI text |
+| `semantic.typography.uiItalic` | 16px | 14px | 400 | Variant of ui: italic, what the inline EmptyState message renders |
+| `semantic.typography.caption` | 14px | 13px | 400 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | same | 400 | Code and ids, 15px / 1.5 / 400 |
 | `semantic.typography.lineHeight.none` |  | same |  | Semantic alias for leading-none (1) |
 

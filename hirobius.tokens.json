@@ -892,19 +892,21 @@
       "weight": {
         "$type": "fontWeight",
         "regular": {
-          "$value": 340,
-          "$description": "Body weight: Sora 340."
+          "$value": 400,
+          "$description": "Body and UI weight: Sora Regular 400 (Figma's Sora ships Regular, SemiBold and Bold only)."
         },
         "medium": {
-          "$value": 430,
-          "$description": "UI, labels and lead-ins: Sora 430."
+          "$value": "{primitive.typography.weight.regular}",
+          "$description": "Alias of regular (400): Figma's Sora has no Medium, so code and Figma share one static weight.",
+          "$deprecated": "2026-11 Sora static weights, removed in 1.0.0 — use primitive.typography.weight.regular"
         },
         "semibold": {
-          "$value": 510,
-          "$description": "Button label weight (hds#760)."
+          "$value": 600,
+          "$description": "Button label weight (hds#760): Sora SemiBold 600."
         },
         "bold": {
-          "$value": 600
+          "$value": 700,
+          "$description": "Bold text: Sora Bold 700."
         },
         "display": {
           "$value": 700,
@@ -962,7 +964,7 @@
         },
         "text": {
           "$value": {
-            "value": -0.02,
+            "value": -0.01,
             "unit": "em"
           }
         }
@@ -2580,7 +2582,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Prose. 18px / 1.6 / 340, 60ch measure. Role 3 of 6.",
+        "$description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2603,7 +2605,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Variant of body: weight bold (600), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "$description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2618,7 +2620,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.base}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
@@ -2626,7 +2628,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Controls, nav, table text, values. 16px / 1.5 / 430. Role 4 of 6.",
+        "$description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2649,7 +2651,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Variant of ui: weight regular (340), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "$description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2664,7 +2666,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.base}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}",
           "maxWidth": {
@@ -2688,11 +2690,11 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.sm}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
-        "$description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 430. Role 5 of 6.",
+        "$description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2781,7 +2783,7 @@
         "$value": {
           "fontFamily": "{primitive.typography.family.primary}",
           "fontSize": "{primitive.typography.size.sm}",
-          "fontWeight": "{primitive.typography.weight.medium}",
+          "fontWeight": "{primitive.typography.weight.regular}",
           "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
@@ -3355,7 +3357,7 @@
       },
       "fontWeight": {
         "$type": "fontWeight",
-        "$value": "{primitive.typography.weight.medium}",
+        "$value": "{primitive.typography.weight.regular}",
         "$description": "Tag label weight."
       },
       "lineHeight": {
@@ -3412,7 +3414,7 @@
       },
       "fontWeight": {
         "$type": "fontWeight",
-        "$value": "{primitive.typography.weight.medium}",
+        "$value": "{primitive.typography.weight.regular}",
         "$description": "Badge label weight."
       },
       "text": {

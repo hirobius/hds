@@ -226,10 +226,9 @@ export const tokenValues = {
         code: "15px"
       },
       weight: {
-        regular: "340",
-        medium: "430",
-        semibold: "510",
-        bold: "600",
+        regular: "400",
+        semibold: "600",
+        bold: "700",
         display: "700",
         mono: "400"
       },
@@ -246,7 +245,7 @@ export const tokenValues = {
       letterSpacing: {
         tight: "-0.01em",
         normal: "0em",
-        text: "-0.02em"
+        text: "-0.01em"
       }
     },
     duration: {

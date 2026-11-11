@@ -99,7 +99,8 @@ const hds = {
 
   fontWeight: {
     regular: 'var(--primitive-typography-weight-regular)',
-    medium: 'var(--primitive-typography-weight-medium)',
+    // weight.medium is a deprecated alias of regular, so it reads regular
+    medium: 'var(--primitive-typography-weight-regular)',
     bold: 'var(--primitive-typography-weight-bold)',
   },
 
@@ -193,7 +194,7 @@ const hds = {
   // CSS vars resolve at paint time — no hardcoded pixel values.
   typeStyles: {
     // ── The 5-role ramp plus titleSm and mono (hds#483) ───────────────────────────────────
-    // display 56 / title 28 / titleSm 20 (Sora 700) / body 18 (Sora 340) / ui 16 / caption 14 / mono 15. body, ui
+    // display 56 / title 28 / titleSm 20 (Sora 700) / body 18 (Sora 400) / ui 16 / caption 14 / mono 15. body, ui
     // and mono carry maxWidth: 60ch. Casing is never changed inline.
     display: tokenRefs.semantic.typography.display as React.CSSProperties,
     title: tokenRefs.semantic.typography.title as React.CSSProperties,

@@ -188,10 +188,11 @@
   --primitive-typography-size-hero: 120px;
   --primitive-typography-size-6xl: 60px;
   --primitive-typography-size-code: 15px;
-  --primitive-typography-weight-regular: 340;
-  --primitive-typography-weight-medium: 430;
-  --primitive-typography-weight-semibold: 510;
-  --primitive-typography-weight-bold: 600;
+  --primitive-typography-weight-regular: 400;
+  /* @deprecated 2026-11 Sora static weights, removed in 1.0.0 — use primitive.typography.weight.regular */
+  --primitive-typography-weight-medium: 400;
+  --primitive-typography-weight-semibold: 600;
+  --primitive-typography-weight-bold: 700;
   --primitive-typography-weight-display: 700;
   --primitive-typography-weight-mono: 400;
   --primitive-typography-lineHeight-compact: 0.95;
@@ -204,7 +205,7 @@
   --primitive-typography-lineHeight-body: 1.6;
   --primitive-typography-letterSpacing-tight: -0.01em;
   --primitive-typography-letterSpacing-normal: 0em;
-  --primitive-typography-letterSpacing-text: -0.02em;
+  --primitive-typography-letterSpacing-text: -0.01em;
   --primitive-duration-instant: 100ms;
   --primitive-duration-short: 150ms;
   --primitive-duration-medium: 250ms;
@@ -433,7 +434,7 @@
   /* semantic.typography.ui */
   --semantic-typography-ui-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-ui-font-size: var(--primitive-typography-size-base);
-  --semantic-typography-ui-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-ui-font-weight: var(--primitive-typography-weight-regular);
   --semantic-typography-ui-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-ui-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-ui-max-width: 60ch;
@@ -447,7 +448,7 @@
   /* semantic.typography.uiItalic */
   --semantic-typography-uiItalic-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-uiItalic-font-size: var(--primitive-typography-size-base);
-  --semantic-typography-uiItalic-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-uiItalic-font-weight: var(--primitive-typography-weight-regular);
   --semantic-typography-uiItalic-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-uiItalic-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-uiItalic-max-width: 60ch;
@@ -455,7 +456,7 @@
   /* semantic.typography.caption */
   --semantic-typography-caption-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-caption-font-size: var(--primitive-typography-size-sm);
-  --semantic-typography-caption-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-caption-font-weight: var(--primitive-typography-weight-regular);
   --semantic-typography-caption-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-caption-line-height: var(--primitive-typography-lineHeight-normal);
   /* semantic.typography.mono */
@@ -490,7 +491,7 @@
   /* semantic.typography.eyebrow */
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-sm);
-  --semantic-typography-eyebrow-font-weight: var(--primitive-typography-weight-medium);
+  --semantic-typography-eyebrow-font-weight: var(--primitive-typography-weight-regular);
   --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-lineHeight-none: var(--primitive-typography-lineHeight-none);
@@ -589,7 +590,7 @@
   --component-tag-focus-gapRadius: var(--primitive-radius-full);
   --component-tag-focus-ringRadius: var(--primitive-radius-full);
   --component-tag-fontSize: var(--primitive-typography-size-sm);
-  --component-tag-fontWeight: var(--primitive-typography-weight-medium);
+  --component-tag-fontWeight: var(--primitive-typography-weight-regular);
   --component-tag-lineHeight: var(--primitive-typography-lineHeight-normal);
   --component-tag-minWidth: var(--primitive-size-48);
   --component-tag-minHeight: var(--primitive-space-6);
@@ -600,7 +601,7 @@
   --component-tag-activeBorder: var(--semantic-accent-rest);
   --component-tag-activeHover: var(--semantic-accent-hover);
   --component-badge-fontSize: var(--primitive-typography-size-sm);
-  --component-badge-fontWeight: var(--primitive-typography-weight-medium);
+  --component-badge-fontWeight: var(--primitive-typography-weight-regular);
   /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.text (one per tone) */
   --component-badge-text: var(--semantic-color-content-primary);
   /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */

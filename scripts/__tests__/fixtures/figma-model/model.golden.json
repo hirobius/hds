@@ -218,7 +218,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 627.3
+              "value": 631.55
             }
           }
         },
@@ -286,7 +286,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 340
+              "value": 400
             }
           }
         },
@@ -1264,7 +1264,7 @@
       "description": "",
       "fontFamily": "Sora",
       "fontStyle": "Regular",
-      "fontWeight": 340,
+      "fontWeight": 400,
       "fontSize": 17,
       "lineHeight": {
         "unit": "PIXELS",

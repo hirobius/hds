@@ -214,10 +214,10 @@ function isRelativeTypography(graph, token) {
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
   family: 'Sora',
-  weight: 340,
-  zeroAdvanceEm: 0.738,
+  weight: 400,
+  zeroAdvanceEm: 0.743,
   measuredFrom:
-    'public/fonts/sora/sora-variable.woff2 instanced at wght 340: hmtx advance of "0" / unitsPerEm = 738/1000, measured 2026-11-11',
+    'public/fonts/sora/sora-variable.woff2 instanced at wght 400: hmtx advance of "0" / unitsPerEm = 743/1000, measured 2026-11-11',
 });
 
 /**
@@ -405,9 +405,6 @@ const FONT_STYLE_BY_WEIGHT = {
   900: 'Black',
 };
 
-/** The named-instance weight a variable-font weight takes in a Figma text style. */
-const FIGMA_STYLE_WEIGHT = { 340: 400, 430: 500, 450: 400, 510: 500, 550: 500, 650: 700 };
-
 /**
  * Families with no italic instances (Sora ships upright only). A text style keeps
  * the upright instance; the CSS font-style italic stays in code, where the browser
@@ -486,11 +483,10 @@ function expandTypography(graph, token) {
     entryFor: () => resolved[key].entry,
   }));
 
-  // Figma text styles name a font instance, so a variable-font weight between
-  // instances takes a named Sora instance (340 Regular, 430 and 510 Medium, so ui
-  // and uiRegular stay apart);
-  // the exact value stays in the variable.
-  const upright = FONT_STYLE_BY_WEIGHT[weight] ?? FONT_STYLE_BY_WEIGHT[FIGMA_STYLE_WEIGHT[weight]];
+  // Figma text styles name a font instance. Sora's static weights are 400 Regular,
+  // 600 SemiBold and 700 Bold (Figma's Sora has no Medium, so weight.medium is a
+  // deprecated alias of regular); a weight with no named instance is refused.
+  const upright = FONT_STYLE_BY_WEIGHT[weight];
   // CSS font-style italic → the font's italic instance: "Italic" for Regular,
   // "<Weight> Italic" otherwise (Google Fonts naming, e.g. "Medium Italic").
   const cssStyle = v.fontStyle ?? 'normal';
