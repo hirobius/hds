@@ -1,6 +1,6 @@
 {
   "impact": "look",
-  "plain": "All text is now Sora: fonts.css ships sora-variable.woff2 in place of the Plus Jakarta Sans and Sora 700 files, and the text weights and tracking are re-tuned, so re-take screenshots and load the Sora variable font if you host fonts yourself.",
+  "plain": "All text is now Sora: fonts.css ships sora-variable.woff2 in place of the Plus Jakarta Sans and Sora 700 files, weight.medium becomes an alias of weight.regular (400) and body text tracks at -0.01em, so re-take screenshots and load the Sora variable font if you host fonts yourself.",
   "steps": [
     {
       "id": "value-changed/--hds-font-family",
@@ -47,21 +47,10 @@
       "facts": ["css-var-changed:--primitive-typography-family-primary::root"]
     },
     {
-      "id": "value-changed/--primitive-typography-weight-bold",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "weight.bold is 600 (was 700), which matches the old visual weight in Sora; text that reads it keeps the same heaviness.",
-      "detect": {
-        "cssVars": ["--primitive-typography-weight-bold"],
-        "cssVarWrites": ["--primitive-typography-weight-bold"]
-      },
-      "facts": ["css-var-changed:--primitive-typography-weight-bold::root"]
-    },
-    {
       "id": "value-changed/--primitive-typography-weight-medium",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "weight.medium is 430 (was 500), which matches the old visual weight in Sora; load Sora as a variable font if you host it.",
+      "plain": "weight.medium is 400 (was 500) and is now a deprecated alias of weight.regular, because Sora has no Medium in Figma; use weight.regular or weight.semibold.",
       "detect": {
         "cssVars": ["--primitive-typography-weight-medium"],
         "cssVarWrites": ["--primitive-typography-weight-medium"]
@@ -69,32 +58,10 @@
       "facts": ["css-var-changed:--primitive-typography-weight-medium::root"]
     },
     {
-      "id": "value-changed/--primitive-typography-weight-regular",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "weight.regular is 340 (was 400), which matches the old visual weight in Sora; load Sora as a variable font if you host it.",
-      "detect": {
-        "cssVars": ["--primitive-typography-weight-regular"],
-        "cssVarWrites": ["--primitive-typography-weight-regular"]
-      },
-      "facts": ["css-var-changed:--primitive-typography-weight-regular::root"]
-    },
-    {
-      "id": "value-changed/--primitive-typography-weight-semibold",
-      "kind": "value-changed",
-      "impact": "look",
-      "plain": "weight.semibold is 510 (was 600), which matches the old visual weight in Sora; button labels keep the same heaviness.",
-      "detect": {
-        "cssVars": ["--primitive-typography-weight-semibold"],
-        "cssVarWrites": ["--primitive-typography-weight-semibold"]
-      },
-      "facts": ["css-var-changed:--primitive-typography-weight-semibold::root"]
-    },
-    {
       "id": "value-changed/--semantic-typography-body-letter-spacing",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The body role tracks at -0.02em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "plain": "The body role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
       "detect": {
         "cssVars": ["--semantic-typography-body-letter-spacing"],
         "cssVarWrites": ["--semantic-typography-body-letter-spacing"]
@@ -105,7 +72,7 @@
       "id": "value-changed/--semantic-typography-bodyStrong-letter-spacing",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The bodyStrong role tracks at -0.02em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "plain": "The bodyStrong role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
       "detect": {
         "cssVars": ["--semantic-typography-bodyStrong-letter-spacing"],
         "cssVarWrites": ["--semantic-typography-bodyStrong-letter-spacing"]
@@ -116,7 +83,7 @@
       "id": "value-changed/--semantic-typography-caption-letter-spacing",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The caption role tracks at -0.02em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "plain": "The caption role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
       "detect": {
         "cssVars": ["--semantic-typography-caption-letter-spacing"],
         "cssVarWrites": ["--semantic-typography-caption-letter-spacing"]
@@ -127,7 +94,7 @@
       "id": "value-changed/--semantic-typography-eyebrow-letter-spacing",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The eyebrow role tracks at -0.02em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "plain": "The eyebrow role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
       "detect": {
         "cssVars": ["--semantic-typography-eyebrow-letter-spacing"],
         "cssVarWrites": ["--semantic-typography-eyebrow-letter-spacing"]
@@ -138,7 +105,7 @@
       "id": "value-changed/--semantic-typography-ui-letter-spacing",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The ui role tracks at -0.02em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "plain": "The ui role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
       "detect": {
         "cssVars": ["--semantic-typography-ui-letter-spacing"],
         "cssVarWrites": ["--semantic-typography-ui-letter-spacing"]
@@ -149,7 +116,7 @@
       "id": "value-changed/--semantic-typography-uiItalic-letter-spacing",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The uiItalic role tracks at -0.02em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "plain": "The uiItalic role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
       "detect": {
         "cssVars": ["--semantic-typography-uiItalic-letter-spacing"],
         "cssVarWrites": ["--semantic-typography-uiItalic-letter-spacing"]
@@ -160,7 +127,7 @@
       "id": "value-changed/--semantic-typography-uiRegular-letter-spacing",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "The uiRegular role tracks at -0.02em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
+      "plain": "The uiRegular role tracks at -0.01em (was 0) to keep Sora's line length close to before; text that reads this variable sets slightly tighter.",
       "detect": {
         "cssVars": ["--semantic-typography-uiRegular-letter-spacing"],
         "cssVarWrites": ["--semantic-typography-uiRegular-letter-spacing"]

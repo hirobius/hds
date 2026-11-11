@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-11T03:45:12.082Z",
+  "generated": "2026-11-11T08:28:42.580Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -14191,28 +14191,29 @@
         "path": "primitive.typography.weight.regular",
         "cssVar": "--primitive-typography-weight-regular",
         "type": "fontWeight",
-        "description": "Body weight: Sora 340.",
-        "value": "340"
+        "description": "Body and UI weight: Sora Regular 400.",
+        "value": "400"
       },
       {
         "path": "primitive.typography.weight.medium",
         "cssVar": "--primitive-typography-weight-medium",
         "type": "fontWeight",
-        "description": "UI, labels and lead-ins: Sora 430.",
-        "value": "430"
+        "description": "Deprecated alias of weight.regular (400), kept for compatibility: Figma's Sora has no Medium. Use regular or semibold.",
+        "value": "400"
       },
       {
         "path": "primitive.typography.weight.semibold",
         "cssVar": "--primitive-typography-weight-semibold",
         "type": "fontWeight",
-        "description": "Button label weight (hds#760).",
-        "value": "510"
+        "description": "Button label weight: Sora SemiBold 600 (hds#760).",
+        "value": "600"
       },
       {
         "path": "primitive.typography.weight.bold",
         "cssVar": "--primitive-typography-weight-bold",
         "type": "fontWeight",
-        "value": "600"
+        "description": "Bold weight: Sora Bold 700.",
+        "value": "700"
       },
       {
         "path": "primitive.typography.weight.display",
@@ -14296,7 +14297,7 @@
         "path": "primitive.typography.letterSpacing.text",
         "cssVar": "--primitive-typography-letterSpacing-text",
         "type": "dimension",
-        "value": "-0.02em"
+        "value": "-0.01em"
       },
       {
         "path": "primitive.duration.instant",
@@ -15851,12 +15852,12 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Prose. 18px / 1.6 / 340, 60ch measure. Role 3 of 6.",
+        "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
-          "fontWeight": "340",
-          "letterSpacing": "-0.02em",
+          "fontWeight": "400",
+          "letterSpacing": "-0.01em",
           "lineHeight": "1.6",
           "maxWidth": "60ch"
         },
@@ -15871,12 +15872,12 @@
         "path": "semantic.typography.bodyStrong",
         "cssVar": "--semantic-typography-bodyStrong",
         "type": "typography",
-        "description": "Variant of body: weight bold (600), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
-          "fontWeight": "600",
-          "letterSpacing": "-0.02em",
+          "fontWeight": "700",
+          "letterSpacing": "-0.01em",
           "lineHeight": "1.6",
           "maxWidth": "60ch"
         },
@@ -15891,12 +15892,12 @@
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
-        "description": "Controls, nav, table text, values. 16px / 1.5 / 430. Role 4 of 6.",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
-          "fontWeight": "430",
-          "letterSpacing": "-0.02em",
+          "fontWeight": "400",
+          "letterSpacing": "-0.01em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
         },
@@ -15911,12 +15912,12 @@
         "path": "semantic.typography.uiRegular",
         "cssVar": "--semantic-typography-uiRegular",
         "type": "typography",
-        "description": "Variant of ui: weight regular (340), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "description": "Variant of ui at weight regular (400), now equal to ui. Matches Figma typography/uiRegular.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
-          "fontWeight": "340",
-          "letterSpacing": "-0.02em",
+          "fontWeight": "400",
+          "letterSpacing": "-0.01em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
         },
@@ -15935,8 +15936,8 @@
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
-          "fontWeight": "430",
-          "letterSpacing": "-0.02em",
+          "fontWeight": "400",
+          "letterSpacing": "-0.01em",
           "lineHeight": "1.5",
           "maxWidth": "60ch",
           "fontStyle": "italic"
@@ -15952,12 +15953,12 @@
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 430. Role 5 of 6.",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "14px",
-          "fontWeight": "430",
-          "letterSpacing": "-0.02em",
+          "fontWeight": "400",
+          "letterSpacing": "-0.01em",
           "lineHeight": "1.5"
         },
         "compact": {
@@ -16046,8 +16047,8 @@
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "14px",
-          "fontWeight": "430",
-          "letterSpacing": "-0.02em",
+          "fontWeight": "400",
+          "letterSpacing": "-0.01em",
           "lineHeight": "1.5"
         },
         "compact": {
@@ -16705,7 +16706,7 @@
         "type": "fontWeight",
         "description": "Tag label weight.",
         "alias": "{primitive.typography.weight.medium}",
-        "resolvedValue": "430"
+        "resolvedValue": "400"
       },
       {
         "path": "component.tag.lineHeight",
@@ -16793,7 +16794,7 @@
         "type": "fontWeight",
         "description": "Badge label weight.",
         "alias": "{primitive.typography.weight.medium}",
-        "resolvedValue": "430"
+        "resolvedValue": "400"
       },
       {
         "path": "component.badge.text",
@@ -17109,7 +17110,7 @@
         "type": "fontWeight",
         "description": "Button label weight.",
         "alias": "{primitive.typography.weight.semibold}",
-        "resolvedValue": "510"
+        "resolvedValue": "600"
       },
       {
         "path": "component.button.size.sm.paddingX",

@@ -6,6 +6,8 @@
 
 **Amended 2026-11-11 (Adrian):** Sora sets every role, not only display and title. One self-hosted Sora variable file (`sora-variable.woff2`, wght 100-800, Latin subset, from `@fontsource-variable/sora` 5.3.0) replaces both `plus-jakarta-sans-variable.woff2` and `sora-700.woff2`, and both family stacks fall back to system-ui. Sora sets about 7% wider and 10% darker than Plus Jakarta Sans at the same size and weight (measured in Chromium), so the text weights move along the variable axis to keep the visual weight (regular 340, medium 430, semibold 510, bold 600) and body, ui and caption take `letterSpacing.text` (-0.02em) to keep line length within 3%. Display, title and title-sm keep Sora 700.
 
+**Amended 2026-11-11, later (Adrian):** the text weights use only the named styles that Figma's Sora ships, so Figma and code match exactly. Figma's Sora has Regular, SemiBold and Bold but no Medium, and a Figma text style cannot name a weight between instances, so the 430 and 510 axis values had no exact Figma match (the 0.41.0 delta stopped on "Sora Medium"). Regular is 400, semibold 600 and bold 700. `weight.medium` stays as a deprecated alias of `weight.regular` (400), so ui, caption and lead-ins render at 400. `letterSpacing.text` is -0.01em. `buildFigmaModel` fails when a text style names a style that is not in Sora's Figma style list (`FAMILY_STYLES` in `scripts/lib/figma-model.mjs`).
+
 ## Context
 
 Since the Satoshi swap (ADR-060, PR #585), one face, Plus Jakarta Sans, set every

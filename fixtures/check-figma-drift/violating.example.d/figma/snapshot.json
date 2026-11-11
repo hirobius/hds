@@ -1,5 +1,5 @@
 {
-  "checksum": "403ef368",
+  "checksum": "0f775691",
   "snapshot": {
     "schemaVersion": 1,
     "takenAt": "2026-10-07T05:17:26.810Z",
@@ -384,7 +384,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 340
+                "value": 400
               }
             }
           }

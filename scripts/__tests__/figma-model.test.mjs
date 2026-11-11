@@ -220,10 +220,10 @@ describe('buildFigmaModel — not in Figma', () => {
 describe('buildFigmaModel — ch widths', () => {
   it('converts ch to px with the measured "0" advance at the body text size', () => {
     const model = buildFigmaModel(fixture);
-    // 50ch × 0.738em (Sora 340 "0" advance) × 17px (body font size) = 627.3px
+    // 50ch × 0.743em (Sora 400 "0" advance) × 17px (body font size) = 631.55px
     expect(variable(model, 'primitive.size.width.50ch')).toMatchObject({
       unit: 'px',
-      valuesByMode: { Default: { value: 627.3 } },
+      valuesByMode: { Default: { value: 631.55 } },
     });
     expect(variable(model, 'semantic.layout.prose.maxWidth')).toMatchObject({
       unit: 'px',
@@ -235,8 +235,27 @@ describe('buildFigmaModel — ch widths', () => {
     const changed = structuredClone(fixture);
     changed.semantic.typography.body.$value.fontFamily = '{primitive.typography.family.mono}';
     expect(() => buildFigmaModel(changed)).toThrow(
-      /ch.*measured for Sora 340.*IBM Plex Mono 340.*re-measure/,
+      /ch.*measured for Sora 400.*IBM Plex Mono 400.*re-measure/,
     );
+  });
+});
+
+describe("buildFigmaModel — Sora's Figma style list (ADR-063, amended 2026-11-11)", () => {
+  it('refuses a text style that names a style Sora does not ship in Figma', () => {
+    const changed = structuredClone(fixture);
+    changed.primitive.typography.weight.medium.$value = 500;
+    changed.semantic.typography.h1.$value.fontWeight = '{primitive.typography.weight.medium}';
+    expect(() => buildFigmaModel(changed)).toThrow(
+      /semantic\.typography\.h1\.fontWeight: Sora has no "Medium" style in Figma/,
+    );
+  });
+
+  it('maps every repository text style to Regular, SemiBold or Bold', () => {
+    const tokens = JSON.parse(readFileSync(join(HERE, '../../hirobius.tokens.json'), 'utf8'));
+    const model = buildFigmaModel(tokens);
+    const sora = model.textStyles.filter((s) => s.fontFamily === 'Sora');
+    expect(sora.length).toBeGreaterThan(0);
+    for (const s of sora) expect(['Regular', 'SemiBold', 'Bold'], s.name).toContain(s.fontStyle);
   });
 });
 

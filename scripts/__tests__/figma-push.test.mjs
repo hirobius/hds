@@ -484,14 +484,14 @@ describe('figma:push when a value a text style binds changes (hds#300)', () => {
     const figma = newFile();
     await push(figma);
     const tokens = JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8'));
-    tokens.semantic.typography.h1.$value.fontWeight = '{primitive.typography.weight.medium}';
+    tokens.semantic.typography.h1.$value.fontWeight = '{primitive.typography.weight.regular}';
     const reweighted = buildFigmaModel(tokens);
 
     const report = await push(figma, {}, reweighted);
 
     expect(report.changes).toContain('update text style typography/h1: font');
     const h1 = (await hdsReadState(figma)).textStyles.find((s) => s.name === 'typography/h1');
-    expect(h1.fontStyle).toBe('Medium');
+    expect(h1.fontStyle).toBe('Regular');
     expect(Object.keys(h1.boundVariables)).toEqual(boundFields);
     expect((await push(figma, {}, reweighted)).line).toBe('updated 0 · created 0 · deleted 0');
   });
@@ -520,6 +520,29 @@ describe('figma:push when a font family variable changes', () => {
     );
     expect(styles.length).toBeGreaterThan(0);
     expect((await push(figma, {}, renamedFamily)).line).toBe('updated 0 · created 0 · deleted 0');
+  });
+
+  // 2026-11-11: the 0.41.0 delta stopped on "Sora Medium": the family change
+  // loaded the new family at each style's old style name, and Sora has no
+  // Medium. A style the plan gives a new font takes that font first.
+  it('gives a style its planned font before the family changes, when the new family lacks the old style', async () => {
+    const tokens = JSON.parse(readFileSync(FIXTURE_TOKENS_PATH, 'utf8'));
+    tokens.primitive.typography.family.mono.$value = ['Geist Mono', 'monospace'];
+    tokens.primitive.typography.weight.medium.$value = 400;
+    const reweighted = buildFigmaModel(tokens);
+    const figma = newFile({
+      fonts: [...FIXTURE_FONTS, { family: 'Geist Mono', style: 'Regular' }],
+    });
+    await push(figma);
+
+    await push(figma, {}, reweighted);
+
+    const styles = (await hdsReadState(figma)).textStyles.filter(
+      (s) => s.fontFamily === 'Geist Mono',
+    );
+    expect(styles.length).toBeGreaterThan(0);
+    for (const s of styles) expect(s.fontStyle).toBe('Regular');
+    expect((await push(figma, {}, reweighted)).line).toBe('updated 0 · created 0 · deleted 0');
   });
 });
 

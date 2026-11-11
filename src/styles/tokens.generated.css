@@ -188,10 +188,10 @@
   --primitive-typography-size-hero: 120px;
   --primitive-typography-size-6xl: 60px;
   --primitive-typography-size-code: 15px;
-  --primitive-typography-weight-regular: 340;
-  --primitive-typography-weight-medium: 430;
-  --primitive-typography-weight-semibold: 510;
-  --primitive-typography-weight-bold: 600;
+  --primitive-typography-weight-regular: 400;
+  --primitive-typography-weight-medium: 400;
+  --primitive-typography-weight-semibold: 600;
+  --primitive-typography-weight-bold: 700;
   --primitive-typography-weight-display: 700;
   --primitive-typography-weight-mono: 400;
   --primitive-typography-lineHeight-compact: 0.95;
@@ -204,7 +204,7 @@
   --primitive-typography-lineHeight-body: 1.6;
   --primitive-typography-letterSpacing-tight: -0.01em;
   --primitive-typography-letterSpacing-normal: 0em;
-  --primitive-typography-letterSpacing-text: -0.02em;
+  --primitive-typography-letterSpacing-text: -0.01em;
   --primitive-duration-instant: 100ms;
   --primitive-duration-short: 150ms;
   --primitive-duration-medium: 250ms;

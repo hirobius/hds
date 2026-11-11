@@ -214,10 +214,10 @@ function isRelativeTypography(graph, token) {
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
   family: 'Sora',
-  weight: 340,
-  zeroAdvanceEm: 0.738,
+  weight: 400,
+  zeroAdvanceEm: 0.743,
   measuredFrom:
-    'public/fonts/sora/sora-variable.woff2 instanced at wght 340: hmtx advance of "0" / unitsPerEm = 738/1000, measured 2026-11-11',
+    'public/fonts/sora/sora-variable.woff2 instanced at wght 400: hmtx advance of "0" / unitsPerEm = 743/1000, measured 2026-11-11',
 });
 
 /**
@@ -405,8 +405,15 @@ const FONT_STYLE_BY_WEIGHT = {
   900: 'Black',
 };
 
-/** The named-instance weight a variable-font weight takes in a Figma text style. */
-const FIGMA_STYLE_WEIGHT = { 340: 400, 430: 500, 450: 400, 510: 500, 550: 500, 650: 700 };
+/**
+ * Named instances each family ships in Figma. A text style may only name one of
+ * these, so the model build fails here, not in a push that asks for a missing font.
+ * Sora (Google Fonts): no Medium, no Black, no italics. HDS uses Regular, SemiBold
+ * and Bold (ADR-063, amended 2026-11-11).
+ */
+export const FAMILY_STYLES = {
+  Sora: ['Thin', 'ExtraLight', 'Light', 'Regular', 'SemiBold', 'Bold', 'ExtraBold'],
+};
 
 /**
  * Families with no italic instances (Sora ships upright only). A text style keeps
@@ -486,11 +493,10 @@ function expandTypography(graph, token) {
     entryFor: () => resolved[key].entry,
   }));
 
-  // Figma text styles name a font instance, so a variable-font weight between
-  // instances takes a named Sora instance (340 Regular, 430 and 510 Medium, so ui
-  // and uiRegular stay apart);
-  // the exact value stays in the variable.
-  const upright = FONT_STYLE_BY_WEIGHT[weight] ?? FONT_STYLE_BY_WEIGHT[FIGMA_STYLE_WEIGHT[weight]];
+  // Figma text styles name a font instance. Every HDS weight is a named Sora
+  // instance (400 Regular, 600 SemiBold, 700 Bold), so code and Figma match.
+  // The check below rejects a style the family does not ship.
+  const upright = FONT_STYLE_BY_WEIGHT[weight];
   // CSS font-style italic → the font's italic instance: "Italic" for Regular,
   // "<Weight> Italic" otherwise (Google Fonts naming, e.g. "Medium Italic").
   const cssStyle = v.fontStyle ?? 'normal';
@@ -505,6 +511,10 @@ function expandTypography(graph, token) {
   const textCase = TEXT_CASE[v.textTransform ?? 'none'];
   if (!fontStyle)
     throw new Error(`No Figma font style for weight ${weight} at ${at('fontWeight')}`);
+  if (FAMILY_STYLES[family] && !FAMILY_STYLES[family].includes(fontStyle))
+    throw new Error(
+      `${at('fontWeight')}: ${family} has no "${fontStyle}" style in Figma (it ships ${FAMILY_STYLES[family].join(', ')}). Use weight 400, 600 or 700.`,
+    );
   if (!textCase)
     throw new Error(
       `No Figma text case for textTransform "${v.textTransform}" at ${path} (uppercase is not allowed: sentence case only)`,

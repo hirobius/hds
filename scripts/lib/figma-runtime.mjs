@@ -947,17 +947,31 @@ export async function hdsApply(figma, plan) {
     }
     return false;
   };
+  //    A style the plan gives a new font takes it before its family changes:
+  //    keeping the old style name can ask for a font the new family lacks
+  //    (0.41.0: Sora has no Medium). Step 6 binds its font fields again.
+  const refont = [];
   valueChanges.forEach(({ pv, change }) => {
     const v = byPath[pv.path];
     if (!v || v.resolvedType !== 'STRING' || typeof change.to.value !== 'string') return;
     textStyles.forEach((style) => {
       const binding = (style.boundVariables || {}).fontFamily;
       if (binding && reaches(binding.id, v.id)) {
-        addFont({ family: change.to.value, style: style.fontName.style });
+        const ps = pendingText.find(
+          (p) => p.id === style.id && p.action !== 'unchanged' && p.changes.indexOf('font') !== -1,
+        );
+        const font = ps
+          ? { family: ps.set.fontFamily, style: ps.set.fontStyle }
+          : { family: change.to.value, style: style.fontName.style };
+        addFont(font);
+        if (ps) refont.push([style, font]);
       }
     });
   });
   for (const key of Object.keys(fonts)) await figma.loadFontAsync(fonts[key]);
+  refont.forEach(([style, font]) => {
+    style.fontName = font;
+  });
   const setValue = async ({ pv, change }) => {
     const v = byPath[pv.path];
     const collection = collectionByKey[pv.collection];
