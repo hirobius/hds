@@ -1,6 +1,6 @@
 /**
  * Taller, bolder buttons (hds#760): one height step up (sm 36, md 44, lg 52)
- * and a 600 label, both carried by `component.button.*` tokens the component
+ * and a semibold (510, Sora) label, both carried by `component.button.*` tokens the component
  * binds by var(), so the tokens and the rendered box cannot drift apart.
  */
 import { describe, it, expect, afterEach } from 'vitest';
@@ -50,8 +50,8 @@ describe('Button height tokens (hds#760)', () => {
 });
 
 describe('Button label weight token (hds#760)', () => {
-  it('resolves to 600', () => {
-    expect(resolveVar('--component-button-fontWeight')).toBe('600');
+  it('resolves to 510', () => {
+    expect(resolveVar('--component-button-fontWeight')).toBe('510');
   });
 
   it.each(['sm', 'md', 'lg'] as const)('%s label binds the weight token', (size) => {

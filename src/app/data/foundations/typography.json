@@ -10,7 +10,7 @@
   "rules": [
     {
       "id": "one-typeface",
-      "rule": "Use Plus Jakarta Sans for body and UI text. Sora Bold (700) is used for the display, title and title-sm roles, which differ by size; body is 400 and ui 500 (ADR-063, hds#847).",
+      "rule": "Use Sora for all text. Display, title and title-sm use Sora 700 and differ by size; body is 340, ui and caption 430, with -0.02em tracking on the text roles (ADR-063).",
       "enforceable": false,
       "valid": "fontFamily: hds.fontFamily",
       "invalid": "fontFamily: 'Georgia, serif'"

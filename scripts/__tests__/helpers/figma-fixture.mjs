@@ -24,9 +24,9 @@ export const fixtureModel = () =>
 /** The fixture's text style fonts, plus Inter Regular: a new text style's default font. */
 export const FIXTURE_FONTS = Object.freeze([
   { family: 'Inter', style: 'Regular' },
-  { family: 'Plus Jakarta Sans', style: 'Regular' },
-  { family: 'Plus Jakarta Sans', style: 'Medium' },
-  { family: 'Plus Jakarta Sans', style: 'Bold' },
+  { family: 'Sora', style: 'Regular' },
+  { family: 'Sora', style: 'Medium' },
+  { family: 'Sora', style: 'Bold' },
   { family: 'Sora', style: 'ExtraBold' },
   { family: 'IBM Plex Mono', style: 'Medium' },
 ]);

@@ -1510,3 +1510,12 @@ Calls logged for 2026-11-09: 18 of 200 (2, 1, 5, 3, 3 and 4).
 | 2   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta.js` | 0.40.0 meta delta         | OK. updated 3 · created 0 · deleted 0; post `7ae20981`, 1-page receipt; re-plan 0 |
 
 Session total: 2 calls (1 read, 1 write). No publish, no delete. `figma:snapshot --from-receipt`; `check:figma-drift` 0, `figma:push --plan` 0, `check:figma-release` OK.
+
+## 2026-11-11 — Sora type ramp delta (branch feat/sora-type-ramp)
+
+| #   | Tool              | Kind  | Target                                            | Why                       | Result                                                                                      |
+| --- | ----------------- | ----- | ------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------- |
+| 1   | `get_figma_skill` | read  | figma-use SKILL.md                                | required before use_figma | OK                                                                                          |
+| 2   | `use_figma`       | write | library 2VgBbVpKiDnu0aftJEVyBQ: `delta-1-of-2.js` | Sora type ramp delta      | Not run: the script did not reach Figma whole (parse error), so nothing was read or written |
+
+Session total: 2 calls (1 read, 1 failed write). No publish, no delete. Figma-sync-pending: run `pnpm figma:push --delta` from the PR head and both parts (or Sync).

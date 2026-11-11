@@ -213,21 +213,21 @@ function isRelativeTypography(graph, token) {
  */
 export const CH_BASIS = Object.freeze({
   style: 'semantic.typography.body',
-  family: 'Plus Jakarta Sans',
-  weight: 400,
-  zeroAdvanceEm: 0.732,
+  family: 'Sora',
+  weight: 340,
+  zeroAdvanceEm: 0.738,
   measuredFrom:
-    'public/fonts/plus-jakarta-sans/plus-jakarta-sans-variable.woff2 instanced at wght 400: hmtx advance of "0" / unitsPerEm = 732/1000, measured 2026-10-20 (hds#847)',
+    'public/fonts/sora/sora-variable.woff2 instanced at wght 340: hmtx advance of "0" / unitsPerEm = 738/1000, measured 2026-11-11',
 });
 
 /**
- * The weight of the Plus Jakarta Sans face a requested weight renders on. One variable
- * file ships (src/styles/fonts.css, wght 200-800), so any weight in range renders as
+ * The weight of the Sora face a requested weight renders on. One variable file
+ * ships (src/styles/fonts.css, wght 100-800), so any weight in range renders as
  * itself and one outside it clamps to the nearest end.
  */
-const BRAND_WEIGHT_RANGE = [200, 800];
+const BRAND_WEIGHT_RANGE = [100, 800];
 function renderedWeight(family, weight) {
-  if (family !== 'Plus Jakarta Sans' || typeof weight !== 'number') return weight;
+  if (family !== 'Sora' || typeof weight !== 'number') return weight;
   return Math.min(BRAND_WEIGHT_RANGE[1], Math.max(BRAND_WEIGHT_RANGE[0], weight));
 }
 
@@ -406,7 +406,14 @@ const FONT_STYLE_BY_WEIGHT = {
 };
 
 /** The named-instance weight a variable-font weight takes in a Figma text style. */
-const FIGMA_STYLE_WEIGHT = { 450: 400, 550: 500, 650: 700 };
+const FIGMA_STYLE_WEIGHT = { 340: 400, 430: 500, 450: 400, 510: 500, 550: 500, 650: 700 };
+
+/**
+ * Families with no italic instances (Sora ships upright only). A text style keeps
+ * the upright instance; the CSS font-style italic stays in code, where the browser
+ * slants the upright face.
+ */
+export const NO_ITALIC_FAMILIES = new Set(['Sora']);
 
 /** px value + variable entry for a length CSS may express relative to font size. */
 function typographicLength(graph, ref, where, fontSize) {
@@ -479,9 +486,10 @@ function expandTypography(graph, token) {
     entryFor: () => resolved[key].entry,
   }));
 
-  // Figma text styles name a font instance, so the variable-font weight 450
-  // take the Regular / Medium / Bold instance the library's Plus Jakarta Sans ships; the
-  // exact value stays in the variable.
+  // Figma text styles name a font instance, so a variable-font weight between
+  // instances takes a named Sora instance (340 Regular, 430 and 510 Medium, so ui
+  // and uiRegular stay apart);
+  // the exact value stays in the variable.
   const upright = FONT_STYLE_BY_WEIGHT[weight] ?? FONT_STYLE_BY_WEIGHT[FIGMA_STYLE_WEIGHT[weight]];
   // CSS font-style italic → the font's italic instance: "Italic" for Regular,
   // "<Weight> Italic" otherwise (Google Fonts naming, e.g. "Medium Italic").
@@ -489,7 +497,7 @@ function expandTypography(graph, token) {
   if (cssStyle !== 'normal' && cssStyle !== 'italic')
     throw new Error(`No Figma font style for fontStyle "${cssStyle}" at ${at('fontStyle')}`);
   const fontStyle =
-    upright && cssStyle === 'italic'
+    upright && cssStyle === 'italic' && !NO_ITALIC_FAMILIES.has(family)
       ? upright === 'Regular'
         ? 'Italic'
         : `${upright} Italic`

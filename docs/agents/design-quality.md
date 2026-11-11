@@ -14,7 +14,7 @@ On-demand detail for the one-line routing in `CLAUDE.md`.
 - **Deterministic no-LLM sweep → `node scripts/check-impeccable-detect.mjs [target…]`**
   (`pnpm check:impeccable`; guardrail `check-impeccable-detect`, `warn`, `on-demand`
   channel: Actions is off and nothing automatic fires it; wraps `npx impeccable detect`,
-  exits 78 offline). Today it flags Plus Jakarta Sans as an overused font: a known,
+  exits 78 offline). If it flags Sora as an overused font, that is a known,
   accepted finding (it is HDS's chosen face).
 - Only the curated reference subset is vendored (see the lock's `paths`); commands
   outside it (e.g. `/impeccable animate`) are not installed. Vendor the missing

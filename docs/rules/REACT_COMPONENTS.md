@@ -28,7 +28,7 @@ Deprecated aliases still resolve, to the role they now point at, and go in 1.0.0
 
 Use `ui` for standard UI text, `caption` for helper text and metadata, and `mono` only for code, token names, keyboard shortcuts, git hashes, hex codes and ids, never for status tags, categories, dates or user names. **Never transform text to uppercase** (`uppercase` class, `text-transform: uppercase`, `textCase: UPPER`, `.toUpperCase()` for display): sentence case for all UI text, eyebrows and table headers included; raw content keeps its own case. `scripts/check-no-uppercase.mjs` fails the commit (exempt a line with `// uppercase-ok: <reason>`).
 
-Plus Jakarta Sans ships 400, 500 and 700 faces (no 600, which is why `title` is 700).
+Sora ships as one variable face (100 to 800); text roles take the `primitive.typography.weight` values and `title` takes 700.
 
 ## Spacing — 24px Component Padding Standard
 

@@ -324,16 +324,17 @@ check('tokens.css ships tokens + [data-hds] scope and NO fonts', () => {
   assert.ok(css.includes('[data-hds]'), 'base styles not scoped to [data-hds] (P0.5 regression)');
 });
 
-// hds#479: fonts are an opt-in export. fonts.css must declare all three faces (ADR-063 added Sora; 700 since hds#847)
+// hds#479: fonts are an opt-in export. fonts.css must declare both faces (Sora variable since the Sora type ramp, IBM Plex Mono)
 // with URLs relative to itself, and every woff2 it names must ship beside it.
-check('fonts.css ships 3 faces with relative URLs and the woff2 files', () => {
+check('fonts.css ships 2 faces with relative URLs and the woff2 files', () => {
   const cssPath = fileURLToPath(import.meta.resolve(PKG + '/fonts.css'));
   const css = readFileSync(cssPath, 'utf8');
-  assert.equal(css.match(/@font-face/g)?.length, 3, 'expected 3 @font-face blocks');
+  assert.equal(css.match(/@font-face/g)?.length, 2, 'expected 2 @font-face blocks');
+  assert.ok(css.includes('./fonts/sora-variable.woff2'), 'sora-variable.woff2 missing');
   assert.ok(css.includes('font-display: swap'), 'font-display: swap missing');
   assert.ok(!css.includes('data:font'), 'fonts.css must reference files, not embed them');
   const urls = [...css.matchAll(/url\\(['"]?([^'")]+)['"]?\\)/g)].map((m) => m[1]);
-  assert.equal(urls.length, 3, 'expected 3 font URLs');
+  assert.equal(urls.length, 2, 'expected 2 font URLs');
   for (const u of urls) {
     assert.ok(u.startsWith('./fonts/'), 'font URL must be relative to fonts.css: ' + u);
     assert.ok(existsSync(pjoin(pdirname(cssPath), u)), 'font file missing from package: ' + u);

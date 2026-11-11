@@ -652,11 +652,7 @@ function ContainerDemo() {
 
 function DisclosureDemo() {
   const rows = [
-    [
-      'Fonts',
-      'What ships in fonts.css',
-      'Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.',
-    ],
+    ['Fonts', 'What ships in fonts.css', 'Sora (variable) and IBM Plex Mono 400.'],
     [
       'Tokens',
       'Where the token files live',
@@ -672,7 +668,7 @@ function DisclosureDemo() {
     <div>
       <div style={{ marginBottom: 16 }}>
         <Disclosure label="What ships in fonts.css?">
-          Plus Jakarta Sans (variable), Sora 700 and IBM Plex Mono 400.
+          Sora (variable) and IBM Plex Mono 400.
         </Disclosure>
       </div>
       {rows.map(([label, preview, body]) => (

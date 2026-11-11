@@ -424,9 +424,7 @@ export function buildManifest(allTokens, raw, systemManifest = {}, packageVersio
   // a non-existent path, which silently fell back to the literal "Atkinson Hyperlegible
   // Next" while real tokens carried Clash Grotesk).
   const fontFamRaw = raw.primitive?.typography?.family?.primary?.$value;
-  const fontName = Array.isArray(fontFamRaw)
-    ? fontFamRaw[0]
-    : String(fontFamRaw ?? 'Plus Jakarta Sans');
+  const fontName = Array.isArray(fontFamRaw) ? fontFamRaw[0] : String(fontFamRaw ?? 'Sora');
   const componentSpecs = seedComponentSpecs(systemManifest.componentSpecs);
   const formatToken = (t) => formatTokenEntry(t, raw, resolveValue);
 
@@ -473,7 +471,7 @@ export function buildManifest(allTokens, raw, systemManifest = {}, packageVersio
       // lib/token-tree.mjs's resolveAlias.
       primaryColor: resolveValue(raw.semantic?.accent?.rest?.$value, 'color') ?? '',
       primaryColorToken: 'semantic.accent.rest',
-      font: fontName + ' variable 100–900, self-hosted',
+      font: fontName + ' variable 100–800, self-hosted',
       spacingBase: resolveValue(raw.primitive?.space?.['1']?.$value, 'dimension') ?? '',
       buttonBorderRadius: resolveValue(raw.primitive?.radius?.[0]?.$value, 'dimension') ?? '',
       cardBorderRadius: resolveValue(raw.primitive?.radius?.[8]?.$value, 'dimension') ?? '',

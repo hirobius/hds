@@ -142,7 +142,9 @@ const config = {
         '6xl': 'var(--primitive-typography-size-6xl)',
         code: 'var(--primitive-typography-size-code)',
       },
-      letterSpacing: {},
+      letterSpacing: {
+        text: 'var(--primitive-typography-letterSpacing-text)',
+      },
     },
   },
 };

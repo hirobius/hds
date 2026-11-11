@@ -218,7 +218,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 622.2
+              "value": 627.3
             }
           }
         },
@@ -252,7 +252,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": "Plus Jakarta Sans"
+              "value": "Sora"
             }
           }
         },
@@ -286,7 +286,7 @@
           },
           "valuesByMode": {
             "Default": {
-              "value": 400
+              "value": 340
             }
           }
         },
@@ -1237,7 +1237,7 @@
       "name": "typography/h1",
       "path": "semantic.typography.h1",
       "description": "Page title.",
-      "fontFamily": "Plus Jakarta Sans",
+      "fontFamily": "Sora",
       "fontStyle": "Bold",
       "fontWeight": 700,
       "fontSize": 48,
@@ -1262,9 +1262,9 @@
       "name": "typography/body",
       "path": "semantic.typography.body",
       "description": "",
-      "fontFamily": "Plus Jakarta Sans",
+      "fontFamily": "Sora",
       "fontStyle": "Regular",
-      "fontWeight": 400,
+      "fontWeight": 340,
       "fontSize": 17,
       "lineHeight": {
         "unit": "PIXELS",

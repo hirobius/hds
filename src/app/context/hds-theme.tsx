@@ -16,7 +16,7 @@
  *   theme    data-theme                "dark" (light = unset)          light
  *   density  data-density              "compact" (comfortable = unset) comfortable
  *   brand    data-brand + data-tenant  overlay slug (e.g. "acme")      base
- *   font     --hds-font-family(-mono)  any CSS font-family value       Plus Jakarta Sans / IBM Plex Mono
+ *   font     --hds-font-family(-mono)  any CSS font-family value       Sora / IBM Plex Mono
  *            --hds-font-family-display any CSS font-family value       Sora
  *
  * This provider is a thin, typed convenience that renders a `data-hds` scope

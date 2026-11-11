@@ -76,7 +76,7 @@ describe('audit-figma-pixels', () => {
   });
 
   it('aborts the code render when the brand font did not load (hds#1295)', () => {
-    expect(() => requireBrandFont(false)).toThrow(/Plus Jakarta Sans.*did not load/);
+    expect(() => requireBrandFont(false)).toThrow(/Sora.*did not load/);
     expect(() => requireBrandFont(true)).not.toThrow();
   });
 

@@ -1,5 +1,5 @@
 {
-  "checksum": "b1ad1b70",
+  "checksum": "896753a0",
   "snapshot": {
     "schemaVersion": 1,
     "takenAt": "2026-10-07T05:17:26.800Z",
@@ -214,7 +214,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 622.200012
+                "value": 627.299988
               }
             }
           },
@@ -282,7 +282,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Plus Jakarta Sans"
+                "value": "Sora"
               }
             }
           },
@@ -384,7 +384,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 400
+                "value": 340
               }
             }
           }
@@ -1306,7 +1306,7 @@
         "name": "typography/body",
         "path": "semantic.typography.body",
         "description": "",
-        "fontFamily": "Plus Jakarta Sans",
+        "fontFamily": "Sora",
         "fontStyle": "Regular",
         "fontSize": 17,
         "lineHeight": {
@@ -1356,7 +1356,7 @@
         "name": "typography/h1",
         "path": "semantic.typography.h1",
         "description": "Page title.",
-        "fontFamily": "Plus Jakarta Sans",
+        "fontFamily": "Sora",
         "fontStyle": "Bold",
         "fontSize": 48,
         "lineHeight": {
