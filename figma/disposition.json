@@ -24,12 +24,12 @@
   "summary": {
     "total": 132,
     "byClass": {
-      "library": 75,
+      "library": 76,
       "slot": 34,
-      "layout": 11,
+      "layout": 10,
       "internal": 12
     },
-    "libraryLinked": 75,
+    "libraryLinked": 76,
     "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
@@ -428,11 +428,11 @@
     },
     {
       "name": "Dock",
-      "class": "layout",
+      "class": "library",
       "parent": null,
       "category": "Layout",
       "tier": "pattern",
-      "figmaUrl": null
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2599-87"
     },
     {
       "name": "EmptyState",

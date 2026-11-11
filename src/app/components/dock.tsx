@@ -2,6 +2,7 @@
  * Dock — a bottom action bar for phones that steps aside while the user types.
  * @category Layout
  * @tier pattern
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2599-87
  * @ai-intent Holds a screen's main actions (Apply, Save, Next) fixed to the
  * bottom edge on phones, above the home indicator, and out of the way while
  * a text field has focus so the on-screen keyboard has the room. From `sm`

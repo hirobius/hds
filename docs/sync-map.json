@@ -6,18 +6,18 @@
     "synced": 132,
     "byGap": {},
     "byClass": {
-      "library": 75,
-      "layout": 11,
+      "library": 76,
+      "layout": 10,
       "slot": 34,
       "internal": 12
     },
     "docsCoverage": {
-      "expected": 78,
-      "covered": 78
+      "expected": 79,
+      "covered": 79
     },
     "figmaCoverage": {
-      "expected": 75,
-      "covered": 75
+      "expected": 76,
+      "covered": 76
     }
   },
   "rows": [
@@ -611,13 +611,13 @@
     },
     {
       "name": "Dock",
-      "class": "layout",
+      "class": "library",
       "filePath": "src/app/components/dock.tsx",
-      "docsPage": null,
-      "figmaUrl": null,
-      "figmaVia": null,
-      "expectFigma": false,
-      "expectDocs": false,
+      "docsPage": "/docs/components/dock",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2599-87",
+      "figmaVia": "manifest",
+      "expectFigma": true,
+      "expectDocs": true,
       "gaps": [],
       "synced": true
     },

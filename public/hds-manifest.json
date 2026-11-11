@@ -12645,9 +12645,9 @@
           "owner": "consumer"
         }
       ],
-      "figmaUrl": null,
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2599-87",
       "figmaId": null,
-      "figmaLink": null,
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2599-87",
       "tier": "pattern",
       "preview": {
         "exportName": "Dock",
@@ -12678,7 +12678,7 @@
       ],
       "propConstraints": {},
       "requiredProps": [],
-      "docsPage": null,
+      "docsPage": "/docs/components/dock",
       "aiRules": "Put one row of Buttons in it (a Stack direction=\"row\", or a FormActions). One Dock per screen. Leave room under the content on phones: the Dock covers the page bottom. Use Pin to keep something stuck at the top of a scrolling region; Dock is for the bottom action bar only."
     },
     "HdsPhosphor": {
