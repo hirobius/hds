@@ -26,6 +26,16 @@ const DOCS = [
 
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&');
 
+/**
+ * The text an agent copies from: everything but the generated "## Upgrading"
+ * section (scripts/lib/upgrade-digest.mjs, from the upgrade ledgers). That
+ * section's job is to name each removed or deprecated name next to its
+ * replacement, so it may name one; nothing else may.
+ */
+function scannable(text) {
+  return text.replace(/^## Upgrading\n[\s\S]*?(?=^#{1,2} |(?![\s\S]))/m, '');
+}
+
 /** Every spelling of a deprecated token found in `text`. */
 function leaks(text) {
   const found = [];
@@ -51,7 +61,19 @@ describe('agent docs name no deprecated token', () => {
     expect(leaks('`semantic.space.section.heroMaxish`')).toEqual([]);
   });
 
+  it('the generated Upgrading section may name a deprecated token, nothing else may', () => {
+    const doc = (upgrading) =>
+      `# Doc\n\n## Tokens\n\nUse caption.\n\n## Upgrading\n\n| \`${upgrading}\` | use semantic.typography.caption |\n\n## Key Files\n\n- x\n`;
+    expect(leaks(scannable(doc('semantic.typography.eyebrow')))).toEqual([]);
+    const outside = doc('x').replace('Use caption.', 'Use semantic.typography.eyebrow.');
+    expect(leaks(scannable(outside))).toEqual(['semantic.typography.eyebrow']);
+    // A slice that ends inside the section (public/llms/upgrade.txt) is covered too.
+    expect(leaks(scannable('# Slice\n\n## Upgrading\n\n`semantic.typography.eyebrow`\n'))).toEqual(
+      [],
+    );
+  });
+
   it.each(DOCS)('%s', (file) => {
-    expect(leaks(readFileSync(join(ROOT, file), 'utf8'))).toEqual([]);
+    expect(leaks(scannable(readFileSync(join(ROOT, file), 'utf8')))).toEqual([]);
   });
 });
