@@ -130,10 +130,18 @@ command that builds the model) refuses a listed slug unless:
 Errors name the field, never its value. A direction the file does not list is
 never read.
 
-| Collection         | Modes                                     | Holds                                                                                                                                                                                                                  |
-| ------------------ | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Hirobius/Brand`   | `Hirobius`, then one per listed direction | One variable per path a listed direction overrides: `<path>/Light` and `<path>/Dark` when the path is themed, `<path>/Comfortable` and `<path>/Compact` when a direction gives it a Compact value, otherwise `<path>`. |
-| `Hirobius/Density` | `Comfortable`, `Compact`                  | One variable per compacted path, aliasing its two Brand variants. Left out when no listed direction has a Compact value.                                                                                               |
+`accents` lists the shipped `data-accent` overlays (`accents/<name>/tokens.json`,
+the files `accents.css` is built from). Each becomes the Brand mode
+`accent-<name>` (today `accent-cobalt`), so a frame set to that mode shows the
+accent exactly as code ships it. An accent is first-party, so it needs no
+direction metadata, but its overlay still passes the overlay validator. The
+primary Button edge is computed from the fill (`raised-edge.mjs`), so each mode
+also gets the edge its CSS ships.
+
+| Collection         | Modes                                                                        | Holds                                                                                                                                                                                                                  |
+| ------------------ | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Hirobius/Brand`   | `Hirobius`, one per listed direction, then `accent-<name>` per listed accent | One variable per path a listed direction overrides: `<path>/Light` and `<path>/Dark` when the path is themed, `<path>/Comfortable` and `<path>/Compact` when a direction gives it a Compact value, otherwise `<path>`. |
+| `Hirobius/Density` | `Comfortable`, `Compact`                                                     | One variable per compacted path, aliasing its two Brand variants. Left out when no listed direction has a Compact value.                                                                                               |
 
 In the `Hirobius` mode a Brand variable holds the base token's value. A direction
 mode holds that direction's override, or the base value where it has none. The

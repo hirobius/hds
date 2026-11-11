@@ -84,7 +84,11 @@ describe(`${BRAND_MODES_FILE}`, () => {
   });
 
   it(`gives Hirobius/Brand the base mode plus one mode per listed tenant, at most ${PRO_MODE_LIMIT}`, () => {
-    expect(brand.modes).toEqual([config.baseMode, ...config.directions]);
+    expect(brand.modes).toEqual([
+      config.baseMode,
+      ...config.directions,
+      ...(config.accents ?? []).map((a) => `accent-${a}`),
+    ]);
     expect(brand.modes.length).toBeLessThanOrEqual(PRO_MODE_LIMIT);
   });
 
@@ -158,7 +162,11 @@ describe(`${BRAND_MODES_FILE}`, () => {
     expect((await run()).line).toBe('updated 0 · created 0 · deleted 0');
   });
 
-  it('native import keeps every alias into Brand and Density; only Brand base-mode aliases import as raw values', () => {
+  // A Brand mode that does not override a path holds the base token's own alias, often into
+  // Semantic (a later collection). With one extra mode only the base mode had any; with an accent
+  // mode too, a path only cobalt overrides leaves that alias in the direction's mode as well.
+  // Every such alias imports as a raw value and figma:push restores it, mode by mode.
+  it('native import keeps every alias into Brand and Density; only Brand aliases import as raw values', () => {
     const files = buildNativeImportFiles(model);
     const order = [...new Set(files.map((f) => f.collection))];
     expect(order.slice(0, 3)).toEqual([
@@ -169,7 +177,6 @@ describe(`${BRAND_MODES_FILE}`, () => {
     for (const file of files) {
       for (const alias of file.forwardAliases) {
         expect(file.collection, `${file.path} ${alias.variable}`).toBe('Hirobius/Brand');
-        expect(file.mode, `${file.path} ${alias.variable}`).toBe(config.baseMode);
       }
     }
   });

@@ -38,6 +38,7 @@ export const SYNCED_INPUTS = Object.freeze([
   'hirobius.tokens.json',
   'figma/brand-modes.json',
   'directions',
+  'accents', // data-accent overlays, Brand modes accent-<name> (figma/brand-modes.json)
   'package.json',
 ]);
 
