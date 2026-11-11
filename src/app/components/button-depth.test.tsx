@@ -344,3 +344,21 @@ describe('one raised treatment for every filled Button (hds#1387)', () => {
     expect(block).not.toMatch(/-?\dpx 0 -?\dpx/);
   });
 });
+
+// Adrian 2026-11-05: a primary Button's hover fill is component.button.bgHover, so its hover
+// edge is that fill's own step (--hds-edge-primaryHover), not the rest edge.
+describe('primary hover edge', () => {
+  it('primary carries its hover edge; secondary does not', () => {
+    render(
+      <>
+        <Button variant="primary">Save</Button>
+        <Button variant="secondary">Cancel</Button>
+      </>,
+    );
+    const [primary, secondary] = screen.getAllByRole('button');
+    expect(primary!.style.getPropertyValue('--hds-edge-hover')).toBe(
+      'var(--hds-edge-primaryHover)',
+    );
+    expect(secondary!.style.getPropertyValue('--hds-edge-hover')).toBe('');
+  });
+});

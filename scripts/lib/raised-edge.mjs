@@ -24,6 +24,9 @@ const DARK_MIN = 0.03; // dark: smallest drop, for fills at or below the card
 /** Where each computed raised item takes its fill, and the CSS hook name suffix it ships under. */
 export const EDGE_FILLS = {
   primary: 'semantic.color.surface.accent', // role.primary (bg-primary)
+  // A hovered primary Button's fill (component.button.bgHover): its edge follows that fill,
+  // so an accent's hover step keeps an edge of the same hue (Adrian, 2026-11-05).
+  primaryHover: 'semantic.accent.hover',
   kbd: 'semantic.color.surface.overlay', // role.muted (bg-muted)
 };
 
@@ -32,7 +35,7 @@ export const EDGE_FILLS = {
  * token Button edges keep EDGE_MIN_CONTRAST by their approved values. Kbd keeps
  * the plain C2 step: its light fill cannot reach the floor either way.
  */
-export const EDGE_FLOORED = ['primary'];
+export const EDGE_FLOORED = ['primary', 'primaryHover'];
 
 /**
  * Computed edges that also ship as tokens, so Figma (button/edge/primary) has a code source.

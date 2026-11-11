@@ -396,6 +396,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       shadow === 'hard' && variant !== 'tertiary' && !isLink
         ? {
             '--hds-edge': BUTTON_EDGE[edgeKey],
+            // The hover fill (component.button.bgHover) has its own edge, so an accent's
+            // hover step keeps an edge of the same hue (theme.css .hds-btn-hard:hover).
+            ...(variant === 'primary' && { '--hds-edge-hover': 'var(--hds-edge-primaryHover)' }),
           }
         : null;
     const wipeProps = wipe

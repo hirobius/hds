@@ -42,7 +42,7 @@ function shipped(mode: Mode): Record<string, string> {
   const vars = THEMES[mode === 'Light' ? 'light' : 'dark'];
   return Object.fromEntries(
     Object.entries(vars).flatMap(([name, value]) => {
-      const m = name.match(/^--hds-edge-([a-z]+)$/);
+      const m = name.match(/^--hds-edge-([a-zA-Z]+)$/);
       const theme = mode === 'Light' ? 'light' : 'dark';
       if (!m || !(m[1] in EDGE_FILLS) || !value) return [];
       const v = resolveVar(name, theme); // token-backed edges ship as oklch()
@@ -86,7 +86,7 @@ function expected(tree: object, key: string, mode: Mode): string {
     mode === 'Dark' ? hexToOklch(resolveHex(tree, 'semantic.color.surface.raised', mode)) : null;
   const dl = card ? Math.max((f.l - card.l) / 3, 0.03) : 0.12;
   const at = (l: number) => oklchToHex({ l, c: f.c * 0.7225, h: f.h });
-  if (!['primary'].includes(key)) return at(f.l - dl);
+  if (!EDGE_FLOORED.includes(key)) return at(f.l - dl);
   // hds#1387 floor: the C2 step if it keeps 1.5:1 (hds#1422), else the nearest darker lightness that
   // does, else (a fill too dark, hds#1399) the darkest step, never a lighter one.
   const fill = oklchToHex(f);
@@ -188,7 +188,7 @@ describe('accent themes re-derive the primary edge', () => {
 describe('wiring', () => {
   it('Button and Kbd default their hooks to the own-colour edge; shadow.hard stays exported', () => {
     expect(theme.replace(/\s+/g, ' ')).toContain(
-      '--tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)));',
+      '--tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var( --hds-btn-edge, var(--hds-edge-now, var(--hds-edge, var(--component-button-edge-secondary))) );',
     );
     expect(theme.replace(/\s+/g, ' ').replace(/\( | \)/g, (m) => m.trim())).toContain(
       'var(--semantic-shadow-key, 0 2px 0 var(--hds-kbd-edge, var(--hds-edge-kbd)))',
@@ -345,5 +345,33 @@ describe('every Button edge, both themes (hds#1422)', () => {
 
   it('no page line: the Button shadow has one edge layer', () => {
     expect(theme).not.toContain('--hds-edge-line');
+  });
+});
+
+// Adrian 2026-11-05: on hover a primary Button's fill steps to accent.hover, but its edge kept
+// the rest fill's step, so in cobalt the edge read a different hue (dark) or vanished (light).
+// The hover edge is the same rule applied to the hover fill.
+describe('primary hover edge follows the hover fill', () => {
+  const accents = read('src/styles/accents.css');
+  const tree = layered(raw, JSON.parse(read('accents/cobalt/tokens.json')));
+
+  it('takes its fill from semantic.accent.hover (component.button.bgHover) and keeps the floor', () => {
+    expect(EDGE_FILLS).toHaveProperty('primaryHover', 'semantic.accent.hover');
+    expect(EDGE_FLOORED).toContain('primaryHover');
+  });
+
+  it.each(MODES)('cobalt (%s) ships the hover edge from the hover fill', (mode) => {
+    const sel =
+      mode === 'Light' ? "[data-accent='cobalt']" : "[data-accent='cobalt'][data-theme='dark']";
+    const re = new RegExp(
+      `${sel.replace(/[[\]]/g, '\\$&')} \\{[^}]*--hds-edge-primaryHover: (#[0-9a-f]{6})`,
+    );
+    expect(accents.match(re)?.[1]).toBe(expected(tree, 'primaryHover', mode));
+  });
+
+  it('a hovered hard Button swaps to its hover edge when it has one', () => {
+    const flat = theme.replace(/\s+/g, ' ');
+    expect(flat).toMatch(/\.hds-btn-hard:hover \{[^}]*--hds-edge-now: var\(--hds-edge-hover\);/);
+    expect(flat).toContain('var( --hds-btn-edge, var(--hds-edge-now, var(--hds-edge,');
   });
 });
