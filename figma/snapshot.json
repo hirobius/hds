@@ -1,15 +1,15 @@
 {
-  "checksum": "7ae20981",
+  "checksum": "9290fe54",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-10T00:25:03.193Z",
+    "takenAt": "2026-11-11T09:11:26.877Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "7f30004d",
-      "pushedAt": "2026-11-10T00:25:03.136Z",
+      "modelHash": "b4d8e3a4",
+      "pushedAt": "2026-11-11T09:11:26.572Z",
       "scope": null
     },
     "collections": [
@@ -3270,7 +3270,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 658.799988
+                "value": 668.700012
               }
             }
           },
@@ -3755,7 +3755,7 @@
             "name": "typography/family/display",
             "path": "primitive.typography.family.display",
             "resolvedType": "STRING",
-            "description": "Display and title face: Sora 700 (OFL, ADR-063, hds#847); falls back to Plus Jakarta Sans.",
+            "description": "Display face: Sora 700 (ADR-063).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3789,7 +3789,7 @@
             "name": "typography/family/primary",
             "path": "primitive.typography.family.primary",
             "resolvedType": "STRING",
-            "description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack.",
+            "description": "Sora variable (OFL).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3797,7 +3797,7 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": "Plus Jakarta Sans"
+                "value": "Sora"
               }
             }
           },
@@ -4095,7 +4095,7 @@
             "name": "typography/weight/bold",
             "path": "primitive.typography.weight.bold",
             "resolvedType": "FLOAT",
-            "description": "",
+            "description": "Bold text: Sora Bold 700.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4112,7 +4112,7 @@
             "name": "typography/weight/display",
             "path": "primitive.typography.weight.display",
             "resolvedType": "FLOAT",
-            "description": "Display, title and title-sm weight, set in Sora 700 (ADR-063, hds#847). Heading levels differ by size, not weight.",
+            "description": "Display, title and title-sm weight, set in Sora 700 (ADR-063). Heading levels differ by size, not weight.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4129,7 +4129,7 @@
             "name": "typography/weight/medium",
             "path": "primitive.typography.weight.medium",
             "resolvedType": "FLOAT",
-            "description": "UI, labels and bold lead-ins (hds#847).",
+            "description": "Alias of regular (400): Figma's Sora has no Medium, so code and Figma share one static weight.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4137,7 +4137,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "value": 500
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -4163,7 +4164,7 @@
             "name": "typography/weight/regular",
             "path": "primitive.typography.weight.regular",
             "resolvedType": "FLOAT",
-            "description": "Body weight (400, hds#847). Plus Jakarta Sans ships as a variable font.",
+            "description": "Body and UI weight: Sora Regular 400 (Figma's Sora ships Regular, SemiBold and Bold only).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4180,7 +4181,7 @@
             "name": "typography/weight/semibold",
             "path": "primitive.typography.weight.semibold",
             "resolvedType": "FLOAT",
-            "description": "Button label weight (hds#760).",
+            "description": "Button label weight (hds#760): Sora SemiBold 600.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4210,7 +4211,7 @@
             "name": "accent/content",
             "path": "semantic.accent.content",
             "resolvedType": "COLOR",
-            "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
+            "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -4222,12 +4223,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2607:53",
+                "to": "Hirobius/Brand: semantic/accent/content/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:5",
-                "to": "Hirobius/Primitives: color/graphite/300"
+                "alias": "VariableID:2607:54",
+                "to": "Hirobius/Brand: semantic/accent/content/Dark"
               }
             }
           },
@@ -4236,7 +4237,7 @@
             "name": "accent/contentHover",
             "path": "semantic.accent.contentHover",
             "resolvedType": "COLOR",
-            "description": "Accent content color on pointer hover.",
+            "description": "Accent content color on pointer hover. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -4248,12 +4249,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:10",
-                "to": "Hirobius/Primitives: color/graphite/800"
+                "alias": "VariableID:2607:55",
+                "to": "Hirobius/Brand: semantic/accent/contentHover/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:4",
-                "to": "Hirobius/Primitives: color/graphite/200"
+                "alias": "VariableID:2607:56",
+                "to": "Hirobius/Brand: semantic/accent/contentHover/Dark"
               }
             }
           },
@@ -4387,7 +4388,7 @@
             "name": "accent/hover",
             "path": "semantic.accent.hover",
             "resolvedType": "COLOR",
-            "description": "Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422).",
+            "description": "Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422). Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4398,12 +4399,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:10",
-                "to": "Hirobius/Primitives: color/graphite/800"
+                "alias": "VariableID:2606:63",
+                "to": "Hirobius/Brand: semantic/accent/hover/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:3",
-                "to": "Hirobius/Primitives: color/graphite/100"
+                "alias": "VariableID:2607:50",
+                "to": "Hirobius/Brand: semantic/accent/hover/Dark"
               }
             }
           },
@@ -4437,7 +4438,7 @@
             "name": "accent/pressed",
             "path": "semantic.accent.pressed",
             "resolvedType": "COLOR",
-            "description": "Accent fill on press (graphite.900 / 200).",
+            "description": "Accent fill on press (graphite.900 / 200). Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4448,12 +4449,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:11",
-                "to": "Hirobius/Primitives: color/graphite/900"
+                "alias": "VariableID:2607:51",
+                "to": "Hirobius/Brand: semantic/accent/pressed/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:4",
-                "to": "Hirobius/Primitives: color/graphite/200"
+                "alias": "VariableID:2607:52",
+                "to": "Hirobius/Brand: semantic/accent/pressed/Dark"
               }
             }
           },
@@ -4462,7 +4463,7 @@
             "name": "accent/rest",
             "path": "semantic.accent.rest",
             "resolvedType": "COLOR",
-            "description": "Accent fill at rest — graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+            "description": "Accent fill at rest — graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4473,12 +4474,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2606:61",
+                "to": "Hirobius/Brand: semantic/accent/rest/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:2",
-                "to": "Hirobius/Primitives: color/graphite/50"
+                "alias": "VariableID:2606:62",
+                "to": "Hirobius/Brand: semantic/accent/rest/Dark"
               }
             }
           },
@@ -4487,7 +4488,7 @@
             "name": "accent/subtle",
             "path": "semantic.accent.subtle",
             "resolvedType": "COLOR",
-            "description": "Low-emphasis accent tint for hover backgrounds and selection highlights.",
+            "description": "Low-emphasis accent tint for hover backgrounds and selection highlights. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4498,12 +4499,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:2",
-                "to": "Hirobius/Primitives: color/graphite/50"
+                "alias": "VariableID:2607:57",
+                "to": "Hirobius/Brand: semantic/accent/subtle/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:10",
-                "to": "Hirobius/Primitives: color/graphite/800"
+                "alias": "VariableID:2607:58",
+                "to": "Hirobius/Brand: semantic/accent/subtle/Dark"
               }
             }
           },
@@ -4705,7 +4706,7 @@
             "name": "color/border/accent",
             "path": "semantic.color.border.accent",
             "resolvedType": "COLOR",
-            "description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces.",
+            "description": "Accent border — graphite, dark enough to read as a boundary on page and card surfaces. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -4715,12 +4716,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2606:57",
+                "to": "Hirobius/Brand: semantic/color/border/accent/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:5",
-                "to": "Hirobius/Primitives: color/graphite/300"
+                "alias": "VariableID:2606:58",
+                "to": "Hirobius/Brand: semantic/color/border/accent/Dark"
               }
             }
           },
@@ -4873,7 +4874,7 @@
             "name": "color/content/accent",
             "path": "semantic.color.content.accent",
             "resolvedType": "COLOR",
-            "description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance.",
+            "description": "Accent-intent text/icon color — graphite, legible on page and card surfaces. Pair with underline/weight for link affordance. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -4885,12 +4886,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2606:53",
+                "to": "Hirobius/Brand: semantic/color/content/accent/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:5",
-                "to": "Hirobius/Primitives: color/graphite/300"
+                "alias": "VariableID:2606:54",
+                "to": "Hirobius/Brand: semantic/color/content/accent/Dark"
               }
             }
           },
@@ -4977,7 +4978,7 @@
             "name": "color/content/onAccent",
             "path": "semantic.color.content.onAccent",
             "resolvedType": "COLOR",
-            "description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode.",
+            "description": "Text and icons on accent fills: near-white in light mode, dark graphite in dark mode. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -4989,12 +4990,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:2",
-                "to": "Hirobius/Primitives: color/neutral/50"
+                "alias": "VariableID:2606:55",
+                "to": "Hirobius/Brand: semantic/color/content/onAccent/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:11",
-                "to": "Hirobius/Primitives: color/graphite/900"
+                "alias": "VariableID:2606:56",
+                "to": "Hirobius/Brand: semantic/color/content/onAccent/Dark"
               }
             }
           },
@@ -5208,7 +5209,7 @@
             "name": "color/edge/primary",
             "path": "semantic.color.edge.primary",
             "resolvedType": "COLOR",
-            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422).",
+            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422). Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5219,20 +5220,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": {
-                  "r": 0.121522,
-                  "g": 0.145092,
-                  "b": 0.19617,
-                  "a": 1
-                }
+                "alias": "VariableID:2606:59",
+                "to": "Hirobius/Brand: semantic/color/edge/primary/Light"
               },
               "Dark": {
-                "value": {
-                  "r": 0.647158,
-                  "g": 0.651038,
-                  "b": 0.662675,
-                  "a": 1
-                }
+                "alias": "VariableID:2606:60",
+                "to": "Hirobius/Brand: semantic/color/edge/primary/Dark"
               }
             }
           },
@@ -5591,7 +5584,7 @@
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
             "resolvedType": "COLOR",
-            "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+            "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -5602,12 +5595,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2605:50",
+                "to": "Hirobius/Brand: semantic/color/surface/accent/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:2",
-                "to": "Hirobius/Primitives: color/graphite/50"
+                "alias": "VariableID:2606:50",
+                "to": "Hirobius/Brand: semantic/color/surface/accent/Dark"
               }
             }
           },
@@ -5616,7 +5609,7 @@
             "name": "color/surface/accentSubtle",
             "path": "semantic.color.surface.accentSubtle",
             "resolvedType": "COLOR",
-            "description": "Faint accent tint for hover states or highlights.",
+            "description": "Faint accent tint for hover states or highlights. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -5627,12 +5620,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:2",
-                "to": "Hirobius/Primitives: color/graphite/50"
+                "alias": "VariableID:2606:51",
+                "to": "Hirobius/Brand: semantic/color/surface/accentSubtle/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:10",
-                "to": "Hirobius/Primitives: color/graphite/800"
+                "alias": "VariableID:2606:52",
+                "to": "Hirobius/Brand: semantic/color/surface/accentSubtle/Dark"
               }
             }
           },
@@ -6302,7 +6295,7 @@
             "name": "focus/ring/color",
             "path": "semantic.focus.ring.color",
             "resolvedType": "COLOR",
-            "description": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight.",
+            "description": "Focus ring colour: border.accent's primitive steps. Overlays re-anchor it to their border.accent; forced-colors uses Highlight. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -6312,12 +6305,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:2146:9",
-                "to": "Hirobius/Primitives: color/graphite/700"
+                "alias": "VariableID:2607:59",
+                "to": "Hirobius/Brand: semantic/focus/ring/color/Light"
               },
               "Dark": {
-                "alias": "VariableID:2146:5",
-                "to": "Hirobius/Primitives: color/graphite/300"
+                "alias": "VariableID:2607:60",
+                "to": "Hirobius/Brand: semantic/focus/ring/color/Dark"
               }
             }
           },
@@ -7796,7 +7789,7 @@
             "name": "typography/body/letter-spacing",
             "path": "semantic.typography.body.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from 0em at 18px.",
+            "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6. Converted from -0.01em at 18px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -7806,10 +7799,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.18
               },
               "Dark": {
-                "value": 0
+                "value": -0.18
               }
             }
           },
@@ -7840,7 +7833,7 @@
             "name": "typography/bodyStrong/font-family",
             "path": "semantic.typography.bodyStrong.font-family",
             "resolvedType": "STRING",
-            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -7864,7 +7857,7 @@
             "name": "typography/bodyStrong/font-size",
             "path": "semantic.typography.bodyStrong.font-size",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong. Varies by density: its value comes from Hirobius/Density.",
+            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7888,7 +7881,7 @@
             "name": "typography/bodyStrong/font-weight",
             "path": "semantic.typography.bodyStrong.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -7912,7 +7905,7 @@
             "name": "typography/bodyStrong/letter-spacing",
             "path": "semantic.typography.bodyStrong.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from 0em at 18px.",
+            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from -0.01em at 18px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -7922,10 +7915,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.18
               },
               "Dark": {
-                "value": 0
+                "value": -0.18
               }
             }
           },
@@ -7934,7 +7927,7 @@
             "name": "typography/bodyStrong/line-height",
             "path": "semantic.typography.bodyStrong.line-height",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from 1.6 × 18px.",
+            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from 1.6 × 18px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -7956,7 +7949,7 @@
             "name": "typography/caption/font-family",
             "path": "semantic.typography.caption.font-family",
             "resolvedType": "STRING",
-            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -7980,7 +7973,7 @@
             "name": "typography/caption/font-size",
             "path": "semantic.typography.caption.font-size",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. Varies by density: its value comes from Hirobius/Density.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -8004,7 +7997,7 @@
             "name": "typography/caption/font-weight",
             "path": "semantic.typography.caption.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -8014,12 +8007,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               },
               "Dark": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -8028,7 +8021,7 @@
             "name": "typography/caption/letter-spacing",
             "path": "semantic.typography.caption.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. Converted from 0em at 14px.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6. Converted from -0.01em at 14px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -8038,10 +8031,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.14
               },
               "Dark": {
-                "value": 0
+                "value": -0.14
               }
             }
           },
@@ -8050,7 +8043,7 @@
             "name": "typography/caption/line-height",
             "path": "semantic.typography.caption.line-height",
             "resolvedType": "FLOAT",
-            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6. Converted from 1.5 × 14px.",
+            "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6. Converted from 1.5 × 14px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -8246,12 +8239,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               },
               "Dark": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -8260,7 +8253,7 @@
             "name": "typography/eyebrow/letter-spacing",
             "path": "semantic.typography.eyebrow.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "deprecated: use semantic.typography.caption Converted from 0em at 14px.",
+            "description": "deprecated: use semantic.typography.caption Converted from -0.01em at 14px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -8270,10 +8263,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.14
               },
               "Dark": {
-                "value": 0
+                "value": -0.14
               }
             }
           },
@@ -9116,7 +9109,7 @@
             "name": "typography/ui/font-family",
             "path": "semantic.typography.ui.font-family",
             "resolvedType": "STRING",
-            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -9140,7 +9133,7 @@
             "name": "typography/ui/font-size",
             "path": "semantic.typography.ui.font-size",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6. Varies by density: its value comes from Hirobius/Density.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -9164,7 +9157,7 @@
             "name": "typography/ui/font-weight",
             "path": "semantic.typography.ui.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -9174,12 +9167,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               },
               "Dark": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -9188,7 +9181,7 @@
             "name": "typography/ui/letter-spacing",
             "path": "semantic.typography.ui.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6. Converted from 0em at 16px.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6. Converted from -0.01em at 16px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -9198,10 +9191,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.16
               },
               "Dark": {
-                "value": 0
+                "value": -0.16
               }
             }
           },
@@ -9210,7 +9203,7 @@
             "name": "typography/ui/line-height",
             "path": "semantic.typography.ui.line-height",
             "resolvedType": "FLOAT",
-            "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6. Converted from 1.5 × 16px.",
+            "description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6. Converted from 1.5 × 16px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -9290,12 +9283,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               },
               "Dark": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -9304,7 +9297,7 @@
             "name": "typography/uiItalic/letter-spacing",
             "path": "semantic.typography.uiItalic.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic. Converted from 0em at 16px.",
+            "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic. Converted from -0.01em at 16px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -9314,10 +9307,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.16
               },
               "Dark": {
-                "value": 0
+                "value": -0.16
               }
             }
           },
@@ -9348,7 +9341,7 @@
             "name": "typography/uiRegular/font-family",
             "path": "semantic.typography.uiRegular.font-family",
             "resolvedType": "STRING",
-            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -9372,7 +9365,7 @@
             "name": "typography/uiRegular/font-size",
             "path": "semantic.typography.uiRegular.font-size",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Varies by density: its value comes from Hirobius/Density.",
+            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -9396,7 +9389,7 @@
             "name": "typography/uiRegular/font-weight",
             "path": "semantic.typography.uiRegular.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -9420,7 +9413,7 @@
             "name": "typography/uiRegular/letter-spacing",
             "path": "semantic.typography.uiRegular.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from 0em at 16px.",
+            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from -0.01em at 16px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -9430,10 +9423,10 @@
             },
             "valuesByMode": {
               "Light": {
-                "value": 0
+                "value": -0.16
               },
               "Dark": {
-                "value": 0
+                "value": -0.16
               }
             }
           },
@@ -9442,7 +9435,7 @@
             "name": "typography/uiRegular/line-height",
             "path": "semantic.typography.uiRegular.line-height",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from 1.5 × 16px.",
+            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from 1.5 × 16px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -9549,8 +9542,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -10328,7 +10321,7 @@
             "name": "button/secondary/bg/hover",
             "path": "component.button.secondary.bg.hover",
             "resolvedType": "COLOR",
-            "description": "Secondary button hover fill (the wipe layer's colour).",
+            "description": "Secondary button hover fill (the wipe layer's colour). Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -10339,8 +10332,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2229:11",
-                "to": "Hirobius/Semantic: color/surface/softHover"
+                "alias": "VariableID:2608:50",
+                "to": "Hirobius/Brand: component/button/secondary/bg/hover"
               }
             }
           },
@@ -11777,8 +11770,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:5:47",
-                "to": "Hirobius/Primitives: typography/weight/medium"
+                "alias": "VariableID:5:46",
+                "to": "Hirobius/Primitives: typography/weight/regular"
               }
             }
           },
@@ -12392,9 +12385,34 @@
         "defaultMode": "Hirobius",
         "modes": [
           "Hirobius",
-          "brutalist-demo"
+          "brutalist-demo",
+          "accent-cobalt"
         ],
         "variables": [
+          {
+            "id": "VariableID:2608:50",
+            "name": "component/button/secondary/bg/hover",
+            "path": "brand.component.button.secondary.bg.hover",
+            "resolvedType": "COLOR",
+            "description": "Brand value of component.button.secondary.bg.hover. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2229:11",
+                "to": "Hirobius/Semantic: color/surface/softHover"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2229:11",
+                "to": "Hirobius/Semantic: color/surface/softHover"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:10:7",
+                "to": "Hirobius/Semantic: color/surface/accentSubtle"
+              }
+            }
+          },
           {
             "id": "VariableID:2018:768",
             "name": "role/radius",
@@ -12411,6 +12429,658 @@
               },
               "brutalist-demo": {
                 "value": 0
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:12:29",
+                "to": "Hirobius/Semantic: radius/action"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:54",
+            "name": "semantic/accent/content/Dark",
+            "path": "brand.semantic.accent.content.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.content in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:5",
+                "to": "Hirobius/Primitives: color/cobalt/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:53",
+            "name": "semantic/accent/content/Light",
+            "path": "brand.semantic.accent.content.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.content in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:8",
+                "to": "Hirobius/Primitives: color/cobalt/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:56",
+            "name": "semantic/accent/contentHover/Dark",
+            "path": "brand.semantic.accent.contentHover.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.contentHover in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:4",
+                "to": "Hirobius/Primitives: color/cobalt/200"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:55",
+            "name": "semantic/accent/contentHover/Light",
+            "path": "brand.semantic.accent.contentHover.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.contentHover in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:9",
+                "to": "Hirobius/Primitives: color/cobalt/700"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:50",
+            "name": "semantic/accent/hover/Dark",
+            "path": "brand.semantic.accent.hover.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.hover in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:3",
+                "to": "Hirobius/Primitives: color/graphite/100"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:3",
+                "to": "Hirobius/Primitives: color/graphite/100"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:6",
+                "to": "Hirobius/Primitives: color/cobalt/400"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:63",
+            "name": "semantic/accent/hover/Light",
+            "path": "brand.semantic.accent.hover.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.hover in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:9",
+                "to": "Hirobius/Primitives: color/cobalt/700"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:52",
+            "name": "semantic/accent/pressed/Dark",
+            "path": "brand.semantic.accent.pressed.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.pressed in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:4",
+                "to": "Hirobius/Primitives: color/graphite/200"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:6",
+                "to": "Hirobius/Primitives: color/cobalt/400"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:51",
+            "name": "semantic/accent/pressed/Light",
+            "path": "brand.semantic.accent.pressed.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.pressed in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:9",
+                "to": "Hirobius/Primitives: color/cobalt/700"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:62",
+            "name": "semantic/accent/rest/Dark",
+            "path": "brand.semantic.accent.rest.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.rest in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:5",
+                "to": "Hirobius/Primitives: color/cobalt/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:61",
+            "name": "semantic/accent/rest/Light",
+            "path": "brand.semantic.accent.rest.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.rest in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:8",
+                "to": "Hirobius/Primitives: color/cobalt/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:58",
+            "name": "semantic/accent/subtle/Dark",
+            "path": "brand.semantic.accent.subtle.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.subtle in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:11",
+                "to": "Hirobius/Primitives: color/cobalt/900"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:57",
+            "name": "semantic/accent/subtle/Light",
+            "path": "brand.semantic.accent.subtle.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.accent.subtle in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:2",
+                "to": "Hirobius/Primitives: color/cobalt/50"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:58",
+            "name": "semantic/color/border/accent/Dark",
+            "path": "brand.semantic.color.border.accent.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.border.accent in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:5",
+                "to": "Hirobius/Primitives: color/cobalt/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:57",
+            "name": "semantic/color/border/accent/Light",
+            "path": "brand.semantic.color.border.accent.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.border.accent in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:8",
+                "to": "Hirobius/Primitives: color/cobalt/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:54",
+            "name": "semantic/color/content/accent/Dark",
+            "path": "brand.semantic.color.content.accent.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.content.accent in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:5",
+                "to": "Hirobius/Primitives: color/cobalt/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:53",
+            "name": "semantic/color/content/accent/Light",
+            "path": "brand.semantic.color.content.accent.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.content.accent in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:8",
+                "to": "Hirobius/Primitives: color/cobalt/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:56",
+            "name": "semantic/color/content/onAccent/Dark",
+            "path": "brand.semantic.color.content.onAccent.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.content.onAccent in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:55",
+            "name": "semantic/color/content/onAccent/Light",
+            "path": "brand.semantic.color.content.onAccent.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.content.onAccent in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:3:2",
+                "to": "Hirobius/Primitives: color/neutral/50"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:3:2",
+                "to": "Hirobius/Primitives: color/neutral/50"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:3:14",
+                "to": "Hirobius/Primitives: color/neutral/white"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:60",
+            "name": "semantic/color/edge/primary/Dark",
+            "path": "brand.semantic.color.edge.primary.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.edge.primary in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "value": {
+                  "r": 0.647158,
+                  "g": 0.651038,
+                  "b": 0.662675,
+                  "a": 1
+                }
+              },
+              "brutalist-demo": {
+                "value": {
+                  "r": 0.647158,
+                  "g": 0.651038,
+                  "b": 0.662675,
+                  "a": 1
+                }
+              },
+              "accent-cobalt": {
+                "value": {
+                  "r": 0.388235,
+                  "g": 0.423529,
+                  "b": 0.682353,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:59",
+            "name": "semantic/color/edge/primary/Light",
+            "path": "brand.semantic.color.edge.primary.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.edge.primary in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "value": {
+                  "r": 0.121522,
+                  "g": 0.145092,
+                  "b": 0.19617,
+                  "a": 1
+                }
+              },
+              "brutalist-demo": {
+                "value": {
+                  "r": 0.121522,
+                  "g": 0.145092,
+                  "b": 0.19617,
+                  "a": 1
+                }
+              },
+              "accent-cobalt": {
+                "value": {
+                  "r": 0.031373,
+                  "g": 0.109804,
+                  "b": 0.596078,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:50",
+            "name": "semantic/color/surface/accent/Dark",
+            "path": "brand.semantic.color.surface.accent.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.surface.accent in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:5",
+                "to": "Hirobius/Primitives: color/cobalt/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2605:50",
+            "name": "semantic/color/surface/accent/Light",
+            "path": "brand.semantic.color.surface.accent.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.surface.accent in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:8",
+                "to": "Hirobius/Primitives: color/cobalt/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:52",
+            "name": "semantic/color/surface/accentSubtle/Dark",
+            "path": "brand.semantic.color.surface.accentSubtle.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.surface.accentSubtle in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:10",
+                "to": "Hirobius/Primitives: color/graphite/800"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:11",
+                "to": "Hirobius/Primitives: color/cobalt/900"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2606:51",
+            "name": "semantic/color/surface/accentSubtle/Light",
+            "path": "brand.semantic.color.surface.accentSubtle.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.surface.accentSubtle in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:2",
+                "to": "Hirobius/Primitives: color/cobalt/50"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:60",
+            "name": "semantic/focus/ring/color/Dark",
+            "path": "brand.semantic.focus.ring.color.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.focus.ring.color in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:5",
+                "to": "Hirobius/Primitives: color/graphite/300"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:10:18",
+                "to": "Hirobius/Semantic: color/border/accent"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2607:59",
+            "name": "semantic/focus/ring/color/Light",
+            "path": "brand.semantic.focus.ring.color.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.focus.ring.color in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:10:18",
+                "to": "Hirobius/Semantic: color/border/accent"
               }
             }
           },
@@ -12431,6 +13101,10 @@
               "brutalist-demo": {
                 "alias": "VariableID:5:9",
                 "to": "Hirobius/Primitives: space/5"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2061:880",
+                "to": "Hirobius/Semantic: space/scale/md"
               }
             }
           },
@@ -12451,6 +13125,10 @@
               "brutalist-demo": {
                 "alias": "VariableID:5:6",
                 "to": "Hirobius/Primitives: space/2"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2061:880",
+                "to": "Hirobius/Semantic: space/scale/md"
               }
             }
           }
@@ -13727,7 +14405,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "7b2330c"
+                "value": "035554d"
               }
             }
           },
@@ -13825,7 +14503,7 @@
         "name": "typography/body",
         "path": "semantic.typography.body",
         "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
-        "fontFamily": "Plus Jakarta Sans",
+        "fontFamily": "Sora",
         "fontStyle": "Regular",
         "fontSize": 18,
         "lineHeight": {
@@ -13834,7 +14512,7 @@
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.18
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -13849,8 +14527,8 @@
         "id": "S:cf3faa60606fd8f7f7843dbd56f40744ba3bb31a,",
         "name": "typography/bodyStrong",
         "path": "semantic.typography.bodyStrong",
-        "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
-        "fontFamily": "Plus Jakarta Sans",
+        "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "fontFamily": "Sora",
         "fontStyle": "Bold",
         "fontSize": 18,
         "lineHeight": {
@@ -13859,7 +14537,7 @@
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.18
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -13874,9 +14552,9 @@
         "id": "S:13cc7b1dc5bb6d2099f8761089de4182291525de,",
         "name": "typography/caption",
         "path": "semantic.typography.caption",
-        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Medium",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 400. Role 5 of 6.",
+        "fontFamily": "Sora",
+        "fontStyle": "Regular",
         "fontSize": 14,
         "lineHeight": {
           "unit": "PIXELS",
@@ -13884,7 +14562,7 @@
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.14
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -13925,8 +14603,8 @@
         "name": "typography/eyebrow",
         "path": "semantic.typography.eyebrow",
         "description": "deprecated: use semantic.typography.caption",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Medium",
+        "fontFamily": "Sora",
+        "fontStyle": "Regular",
         "fontSize": 14,
         "lineHeight": {
           "unit": "PIXELS",
@@ -13934,7 +14612,7 @@
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.14
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -14124,9 +14802,9 @@
         "id": "S:d0d958d10e42931dc895aff494d4223b234b1514,",
         "name": "typography/ui",
         "path": "semantic.typography.ui",
-        "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Medium",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 400. Role 4 of 6.",
+        "fontFamily": "Sora",
+        "fontStyle": "Regular",
         "fontSize": 16,
         "lineHeight": {
           "unit": "PIXELS",
@@ -14134,7 +14812,7 @@
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.16
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -14150,8 +14828,8 @@
         "name": "typography/uiItalic",
         "path": "semantic.typography.uiItalic",
         "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
-        "fontFamily": "Plus Jakarta Sans",
-        "fontStyle": "Medium Italic",
+        "fontFamily": "Sora",
+        "fontStyle": "Regular",
         "fontSize": 16,
         "lineHeight": {
           "unit": "PIXELS",
@@ -14159,7 +14837,7 @@
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.16
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -14174,8 +14852,8 @@
         "id": "S:be7fa533bf6ca9cecde2b81f1fe1261f1382d00f,",
         "name": "typography/uiRegular",
         "path": "semantic.typography.uiRegular",
-        "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
-        "fontFamily": "Plus Jakarta Sans",
+        "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "fontFamily": "Sora",
         "fontStyle": "Regular",
         "fontSize": 16,
         "lineHeight": {
@@ -14184,7 +14862,7 @@
         },
         "letterSpacing": {
           "unit": "PIXELS",
-          "value": 0
+          "value": -0.16
         },
         "textCase": "ORIGINAL",
         "boundVariables": {
@@ -14537,7 +15215,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:c5df652ba40a7f7efd64311efeec8ad2028997369d5f58a38a2b9e310df840e7",
-  "syncedCommit": "7b2330c",
-  "syncedHash": "sha256:c4bf25d760a60e12def3ee9c55e50bf678dbb9ebe78c1c8e47b84b86d84283f8"
+  "tokensHash": "sha256:337cd18eb15c581dad316f30ad991d7a601eca90c041965964211bd85c016c40",
+  "syncedCommit": "035554d",
+  "syncedHash": "sha256:79a28762fbe424620ac5c38e673d6047c3270d1fa9944fe610ca9b95f28c7840"
 }
