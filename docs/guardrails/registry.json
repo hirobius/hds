@@ -108,6 +108,7 @@
       "node scripts/check-figma-fallbacks.mjs",
       "node scripts/check-figma-deprecated-usage.mjs",
       "node scripts/check-figma-components.mjs --check",
+      "node scripts/check-figma-spec-coverage.mjs",
       "node scripts/check-guardrail-drift.mjs",
       "node scripts/check-skills-lock.mjs",
       "node scripts/check-lockfile-integrity.mjs",
@@ -400,6 +401,17 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "supportsJson": false
+    },
+    {
+      "id": "check-figma-spec-coverage",
+      "description": "Spec-sheet coverage: every component figma/disposition.json classes `library` (deprecated ones exempt) has a spec sheet in the HDS Figma library, a frame \"<Name> — spec sheet\" or a sheet on the page that holds its @figma node (a tagless part is found through figma/mapping-overrides.json). Reads the committed read-only audit figma/spec-sheet-audit.json: `node scripts/figma-spec-sheets.mjs --emit-audit` prints the use_figma read, `--ingest <result>` writes it. A missing sheet is drawn from code with `--emit-draw <Name>=<pageId>` (scripts/lib/figma-spec-sheet.mjs: manifest props, variants, states, usage, a11y rules, the tokens the source reads, text fitted by figma-doc-text-fit). Never writes to Figma. Exit 0 covered, 1 a missing sheet, 2 no audit. Runs in pretest; logic in scripts/__tests__/figma-spec-sheet.test.mjs.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-spec-coverage.mjs",
+      "fixturePath": "fixtures/check-figma-spec-coverage",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": true
     },
     {
       "id": "check-figma-drift",

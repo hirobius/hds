@@ -342,6 +342,13 @@
       "freshness": "unchecked"
     },
     {
+      "path": "figma/spec-sheet-audit.json",
+      "describes": "Which Figma library pages hold a spec sheet, and the component nodes on each page",
+      "kind": "generated",
+      "by": "scripts/figma-spec-sheets.mjs",
+      "freshness": "unchecked"
+    },
+    {
       "path": "figma/disposition.json",
       "describes": "What becomes of each Figma component",
       "kind": "generated",

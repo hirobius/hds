@@ -1,0 +1,10 @@
+{
+  "pages": [
+    {
+      "id": "1:1",
+      "name": "Widget",
+      "sheets": [{ "id": "1:9", "name": "Widget — spec sheet" }],
+      "nodes": ["1:2"]
+    }
+  ]
+}
