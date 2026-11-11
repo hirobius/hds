@@ -29,7 +29,8 @@
     "src/scroll/index.ts",
     "src/number/index.ts",
     "src/patterns.ts",
-    "src/icons.ts"
+    "src/icons.ts",
+    "src/sheet.ts"
   ],
   "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*"]
 }

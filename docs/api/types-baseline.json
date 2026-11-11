@@ -2155,6 +2155,34 @@
       ]
     }
   },
+  "./sheet": {
+    "Sheet": {
+      "kind": "value",
+      "signatures": [
+        "(props: SheetProps, deprecatedLegacyContext?: any): ReactNode"
+      ],
+      "members": [
+        "Action",
+        "Actions",
+        "Close",
+        "Content",
+        "Description",
+        "Footer",
+        "Header",
+        "Title",
+        "Trigger"
+      ]
+    },
+    "SheetActionProps": {
+      "kind": "type"
+    },
+    "SheetContentProps": {
+      "kind": "type"
+    },
+    "SheetProps": {
+      "kind": "type"
+    }
+  },
   "./tokens": {
     "ct": {
       "kind": "value",

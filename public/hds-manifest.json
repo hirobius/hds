@@ -3493,7 +3493,8 @@
         "src/app/components/overlay-close.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/sheet.tsx",
-        "src/app/components/toast.tsx"
+        "src/app/components/toast.tsx",
+        "src/sheet.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [
@@ -11184,7 +11185,8 @@
       },
       "consumers": [
         "src/app/components/app-shell.tsx",
-        "src/app/components/overlay-close.tsx"
+        "src/app/components/overlay-close.tsx",
+        "src/sheet.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],

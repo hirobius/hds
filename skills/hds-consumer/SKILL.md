@@ -57,6 +57,7 @@ Subpath exports:
 - `@hirobius/design-system/scroll`
 - `@hirobius/design-system/number`
 - `@hirobius/design-system/patterns`
+- `@hirobius/design-system/sheet`
 - `@hirobius/design-system/icons`
 - `@hirobius/design-system/eslint-plugin`
 - `@hirobius/design-system/stats.json`
