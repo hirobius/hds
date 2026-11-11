@@ -6,7 +6,8 @@ import { resolve } from 'node:path';
 // (.hds-kbd) live in theme.css.
 describe('Kbd shadow follows the Button light source', () => {
   const theme = readFileSync(resolve(__dirname, '../src/styles/theme.css'), 'utf8');
-  const colour = 'var(--hds-edge, var(--component-button-edge-secondary))';
+  // --hds-edge-now: a hovered Button's hover-fill edge, when it has one (primary).
+  const colour = 'var(--hds-edge-now, var(--hds-edge, var(--component-button-edge-secondary)))';
 
   it('shipped Kbd takes a 2px straight-down key shadow in its own-colour edge, through --semantic-shadow-key', () => {
     expect(theme).toMatch(
@@ -18,7 +19,7 @@ describe('Kbd shadow follows the Button light source', () => {
     // One depth token set since hds#1387: the edge height and both offsets are tokens.
     const flat = theme.replace(/\s+/g, ' ');
     expect(flat).toContain(
-      `0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, ${colour})`,
+      `0 var(--hds-hs, var(--component-button-depth-edge)) 0 var( --hds-btn-edge, ${colour} )`,
     );
     expect(flat).toContain(
       '--hds-hs: calc( var(--component-button-depth-edge) - var(--component-button-depth-hoverOffset) );',

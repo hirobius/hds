@@ -722,7 +722,10 @@
 @layer components {
   .hds-btn-hard:not(:disabled, [aria-disabled='true']) {
     --tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0
-      var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)));
+      var(
+        --hds-btn-edge,
+        var(--hds-edge-now, var(--hds-edge, var(--component-button-edge-secondary)))
+      );
     box-shadow:
       var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
       var(--tw-ring-shadow), var(--tw-shadow);
@@ -737,8 +740,11 @@
     position: absolute;
     inset: calc(-1 * var(--component-button-depth-edge)) 0;
   }
+  /* --hds-edge-now: the hover fill's own edge where the Button sets one (primary:
+     --hds-edge-hover, the accent.hover fill stepped darker). Unset, it falls back to --hds-edge. */
   @media (hover: hover) {
     .hds-btn-hard:hover {
+      --hds-edge-now: var(--hds-edge-hover);
       --hds-ty: var(--component-button-depth-hoverOffset);
       --hds-hs: calc(
         var(--component-button-depth-edge) - var(--component-button-depth-hoverOffset)

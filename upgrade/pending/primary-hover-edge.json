@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A hovered primary Button's edge now follows its hover fill, so with an accent or tenant it keeps the same hue and stays visible; nothing to change unless you set --hds-edge on a primary Button yourself."
+}

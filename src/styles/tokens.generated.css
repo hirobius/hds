@@ -913,5 +913,5 @@
   --component-table-cell-paddingX: var(--semantic-space-scale-md);
 }
 /* Raised edges (hds#897): computed fills stepped darker (C2); Button edges alias component.button.edge.*. scripts/lib/raised-edge.mjs */
-:root{--hds-edge-primary:var(--component-button-edge-primary);--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);--hds-edge-kbd:#b7b7b9;}
-[data-theme="dark"]{--hds-edge-kbd:#1b1f26;}
+:root{--hds-edge-primary:var(--component-button-edge-primary);--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);--hds-edge-primaryHover:#050915;--hds-edge-kbd:#b7b7b9;}
+[data-theme="dark"]{--hds-edge-primaryHover:#9d9fa2;--hds-edge-kbd:#1b1f26;}

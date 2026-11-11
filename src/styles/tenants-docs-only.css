@@ -79,6 +79,7 @@
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --hds-edge-primary: #402733; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primaryHover: #2c1621; /* css-ok: raised edge (hds#897) */
 }
 [data-brand='accent-pair-demo'][data-theme='dark'],
 [data-tenant='accent-pair-demo'][data-theme='dark'] {
@@ -113,6 +114,7 @@
     --primitive-color-mauve-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --hds-edge-primary: #87747d; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primaryHover: #9b8c92; /* css-ok: raised edge (hds#897) */
 }
 
 /* ── soft-demo ─────────────────────────────────────────────────────────── */

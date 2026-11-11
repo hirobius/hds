@@ -137,7 +137,7 @@ describe('Button own-colour edge (hds#897)', () => {
     render(<Button style={{ '--hds-edge': 'red' } as React.CSSProperties}>Go</Button>);
     expect(edge(screen.getByRole('button'))).toBe('red');
     expect(theme.replace(/\s+/g, ' ')).toContain(
-      'var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
+      'var( --hds-btn-edge, var(--hds-edge-now, var(--hds-edge, var(--component-button-edge-secondary))) )',
     );
   });
 });
@@ -152,7 +152,7 @@ describe('theme.css hard shadow', () => {
   it('rests on the depth.edge token (3px) straight down in --hds-btn-edge (default: own-colour edge), composing with ring + inset wash', () => {
     const r = rule(".hds-btn-hard:not(:disabled, [aria-disabled='true'])");
     expect(r.replace(/\s+/g, ' ')).toContain(
-      '--tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--hds-btn-edge, var(--hds-edge, var(--component-button-edge-secondary)))',
+      '--tw-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0 var( --hds-btn-edge, var(--hds-edge-now, var(--hds-edge, var(--component-button-edge-secondary))) )',
     );
     expect(r).toMatch(/box-shadow:[^;]*--tw-inset-shadow[^;]*--tw-ring-shadow[^;]*--tw-shadow/);
   });
