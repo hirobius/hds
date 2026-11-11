@@ -749,7 +749,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Self-hosted Sora variable (OFL) text typeface for body, ui and caption; falls back to a system-ui sans-serif stack."
+          "$description": "Sora variable (OFL)."
         },
         "display": {
           "$value": [
@@ -760,7 +760,7 @@
             "Segoe UI",
             "sans-serif"
           ],
-          "$description": "Display and title face: Sora at weight.display (OFL, ADR-063); the same file as primary; falls back to a system-ui sans-serif stack."
+          "$description": "Display face: Sora 700 (ADR-063)."
         },
         "mono": {
           "$value": ["IBM Plex Mono", "Courier New", "monospace"],
@@ -893,19 +893,18 @@
         "$type": "fontWeight",
         "regular": {
           "$value": 340,
-          "$description": "Body weight. 340 on the Sora variable axis matches the ink density of the former 400 text face (measured in Chromium)."
+          "$description": "Body weight: Sora 340."
         },
         "medium": {
           "$value": 430,
-          "$description": "UI, labels and bold lead-ins. 430 on the Sora variable axis matches the ink density of the former 500 text face."
+          "$description": "UI, labels and lead-ins: Sora 430."
         },
         "semibold": {
           "$value": 510,
-          "$description": "Button label weight (hds#760). 510 on the Sora variable axis matches the ink density of the former 600 text face."
+          "$description": "Button label weight (hds#760)."
         },
         "bold": {
-          "$value": 600,
-          "$description": "Strong text weight. 600 on the Sora variable axis matches the ink density of the former 700 text face."
+          "$value": 600
         },
         "display": {
           "$value": 700,
@@ -965,8 +964,7 @@
           "$value": {
             "value": -0.02,
             "unit": "em"
-          },
-          "$description": "Text-role tracking for Sora: body, ui and caption. Brings Sora's wider set to within 3% of the former text face's line length."
+          }
         }
       }
     },
@@ -2582,7 +2580,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Prose. 18px / 1.6 / 340, -0.02em, 60ch measure. Role 3 of 6.",
+        "$description": "Prose. 18px / 1.6 / 340, 60ch measure. Role 3 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2628,7 +2626,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Controls, nav, table text, values. 16px / 1.5 / 430, -0.02em. Role 4 of 6.",
+        "$description": "Controls, nav, table text, values. 16px / 1.5 / 430. Role 4 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2694,7 +2692,7 @@
           "letterSpacing": "{primitive.typography.letterSpacing.text}",
           "lineHeight": "{primitive.typography.lineHeight.normal}"
         },
-        "$description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 430, -0.02em. Role 5 of 6.",
+        "$description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 430. Role 5 of 6.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {

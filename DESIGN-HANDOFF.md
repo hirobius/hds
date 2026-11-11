@@ -300,12 +300,12 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `display`         | 56px       | 700    | 1.05        | -0.01em        | One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.                                                                        |
 | `title`           | 28px       | 700    | 1.25        | -0.01em        | Section and card headings. 28px / 1.25 / 700. Role 2 of 6.                                                                      |
 | `titleSm`         | 20px       | 700    | 1.375       | 0em            | Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.                                           |
-| `body`            | 18px       | 340    | 1.6         | -0.02em        | Prose. 18px / 1.6 / 340, -0.02em, 60ch measure. Role 3 of 6.                                                                    |
+| `body`            | 18px       | 340    | 1.6         | -0.02em        | Prose. 18px / 1.6 / 340, 60ch measure. Role 3 of 6.                                                                             |
 | `bodyStrong`      | 18px       | 600    | 1.6         | -0.02em        | Variant of body: weight bold (600), what Text with weight bold renders. Matches Figma typography/bodyStrong.                    |
-| `ui`              | 16px       | 430    | 1.5         | -0.02em        | Controls, nav, table text, values. 16px / 1.5 / 430, -0.02em. Role 4 of 6.                                                      |
+| `ui`              | 16px       | 430    | 1.5         | -0.02em        | Controls, nav, table text, values. 16px / 1.5 / 430. Role 4 of 6.                                                               |
 | `uiRegular`       | 16px       | 340    | 1.5         | -0.02em        | Variant of ui: weight regular (340), for table body cells and other plain UI text. Matches Figma typography/uiRegular.          |
 | `uiItalic`        | 16px       | 430    | 1.5         | -0.02em        | Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.                           |
-| `caption`         | 14px       | 430    | 1.5         | -0.02em        | Metadata, help text and labels, in sentence case. 14px / 1.5 / 430, -0.02em. Role 5 of 6.                                       |
+| `caption`         | 14px       | 430    | 1.5         | -0.02em        | Metadata, help text and labels, in sentence case. 14px / 1.5 / 430. Role 5 of 6.                                                |
 | `mono`            | 15px       | 400    | 1.5         | 0em            | Code and ids, 15px / 1.5 / 400. Binds weight.mono: IBM Plex Mono ships 400 only. Role 6 of 6.                                   |
 | `h1`              | 28px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                                                       |
 | `h2`              | 28px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                                                       |

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-11T03:32:58.829Z",
+  "generated": "2026-11-11T03:45:12.082Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -14051,14 +14051,14 @@
         "path": "primitive.typography.family.primary",
         "cssVar": "--primitive-typography-family-primary",
         "type": "fontFamily",
-        "description": "Self-hosted Sora variable (OFL) text typeface for body, ui and caption; falls back to a system-ui sans-serif stack.",
+        "description": "Sora variable (OFL).",
         "value": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
         "path": "primitive.typography.family.display",
         "cssVar": "--primitive-typography-family-display",
         "type": "fontFamily",
-        "description": "Display and title face: Sora at weight.display (OFL, ADR-063); the same file as primary; falls back to a system-ui sans-serif stack.",
+        "description": "Display face: Sora 700 (ADR-063).",
         "value": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
@@ -14191,28 +14191,27 @@
         "path": "primitive.typography.weight.regular",
         "cssVar": "--primitive-typography-weight-regular",
         "type": "fontWeight",
-        "description": "Body weight. 340 on the Sora variable axis matches the ink density of the former 400 text face (measured in Chromium).",
+        "description": "Body weight: Sora 340.",
         "value": "340"
       },
       {
         "path": "primitive.typography.weight.medium",
         "cssVar": "--primitive-typography-weight-medium",
         "type": "fontWeight",
-        "description": "UI, labels and bold lead-ins. 430 on the Sora variable axis matches the ink density of the former 500 text face.",
+        "description": "UI, labels and lead-ins: Sora 430.",
         "value": "430"
       },
       {
         "path": "primitive.typography.weight.semibold",
         "cssVar": "--primitive-typography-weight-semibold",
         "type": "fontWeight",
-        "description": "Button label weight (hds#760). 510 on the Sora variable axis matches the ink density of the former 600 text face.",
+        "description": "Button label weight (hds#760).",
         "value": "510"
       },
       {
         "path": "primitive.typography.weight.bold",
         "cssVar": "--primitive-typography-weight-bold",
         "type": "fontWeight",
-        "description": "Strong text weight. 600 on the Sora variable axis matches the ink density of the former 700 text face.",
         "value": "600"
       },
       {
@@ -14297,7 +14296,6 @@
         "path": "primitive.typography.letterSpacing.text",
         "cssVar": "--primitive-typography-letterSpacing-text",
         "type": "dimension",
-        "description": "Text-role tracking for Sora: body, ui and caption. Brings Sora's wider set to within 3% of the former text face's line length.",
         "value": "-0.02em"
       },
       {
@@ -15853,7 +15851,7 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Prose. 18px / 1.6 / 340, -0.02em, 60ch measure. Role 3 of 6.",
+        "description": "Prose. 18px / 1.6 / 340, 60ch measure. Role 3 of 6.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
@@ -15893,7 +15891,7 @@
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
-        "description": "Controls, nav, table text, values. 16px / 1.5 / 430, -0.02em. Role 4 of 6.",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 430. Role 4 of 6.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
@@ -15954,7 +15952,7 @@
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 430, -0.02em. Role 5 of 6.",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 430. Role 5 of 6.",
         "composite": {
           "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "14px",
