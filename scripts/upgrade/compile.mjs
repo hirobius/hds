@@ -362,7 +362,9 @@ function removalTail(step, removals) {
     removed.size === 0 ||
     (removed.size === uses.length && versions.length === 1 && versions[0] === step.removeIn);
   if (asPlanned && says(step.plain, `removed in ${step.removeIn}`)) return '';
-  if (removed.size === 0) return ` Removed in ${step.removeIn}.`;
+  // Not shipped yet: say so, so the line never reads as if the release is out (hds#1462).
+  if (removed.size === 0)
+    return ` Deprecated. Will be removed in ${step.removeIn}${step.removeIn === '1.0.0' ? ' (hds#483)' : ''}.`;
   const where = versions.map(sectionLink).join(' and ');
   if (removed.size === uses.length) {
     if (asPlanned) return ` Removed in ${where}.`;

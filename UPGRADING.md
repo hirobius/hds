@@ -272,7 +272,7 @@ The upgrade command runs these codemods for you.
 
 ### Coming next
 
-- hds.density is deprecated; the upgrade command rewrites hds.density.sm to hds.semantic.space.scale.xs (md to sm, lg to md, xl to lg, xl2 to xl), the same pixels. density.xs, xl3 and xl4 have no scale step: use hds.space.px4, px64 or px80, which do not shrink under compact density. Removed in 1.0.0.
+- hds.density is deprecated; the upgrade command rewrites hds.density.sm to hds.semantic.space.scale.xs (md to sm, lg to md, xl to lg, xl2 to xl), the same pixels. density.xs, xl3 and xl4 have no scale step: use hds.space.px4, px64 or px80, which do not shrink under compact density. Deprecated. Will be removed in 1.0.0 (hds#483).
 
 ### Do by hand
 
@@ -369,8 +369,8 @@ Released 2026-10-21 (minor). 37 that look different and 2 deprecations.
 
 ### Coming next
 
-- --primitive-color-lime-\* still resolve; the ramp only feeds the hidden delight accent, so add no new uses. Removed in 1.0.0.
-- --semantic-accent-delight-\* still resolve to the same lime; they are hidden while lime is parked (hds#857) and may come back, so keep existing uses and add none. Removed in 1.0.0.
+- --primitive-color-lime-\* still resolve; the ramp only feeds the hidden delight accent, so add no new uses. Deprecated. Will be removed in 1.0.0 (hds#483).
+- --semantic-accent-delight-\* still resolve to the same lime; they are hidden while lime is parked (hds#857) and may come back, so keep existing uses and add none. Deprecated. Will be removed in 1.0.0 (hds#483).
 
 ## 0.29.0
 
@@ -543,10 +543,10 @@ Released 2026-10-13 (minor). 1 change to make by hand (1 breaking), 10 that look
 
 ### Coming next
 
-- Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed. Removed in 1.0.0.
-- Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value). Removed in 1.0.0.
-- Each of these is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value): `MetricTile`, `MetricTiles` and `Stat`. Removed in 1.0.0.
-- StatusTile still works until 1.0.0; replace it with \<Card padding="item" className="border-0">\<Card.Row trailing={trailing}>\<Card.RowTitle>{title}\</Card.RowTitle> plus one \<Card.RowNote> per note, and drop tone, which StatusTile never painted. Removed in 1.0.0.
+- Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed. Deprecated. Will be removed in 1.0.0 (hds#483).
+- Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value). Deprecated. Will be removed in 1.0.0 (hds#483).
+- Each of these is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value): `MetricTile`, `MetricTiles` and `Stat`. Deprecated. Will be removed in 1.0.0 (hds#483).
+- StatusTile still works until 1.0.0; replace it with \<Card padding="item" className="border-0">\<Card.Row trailing={trailing}>\<Card.RowTitle>{title}\</Card.RowTitle> plus one \<Card.RowNote> per note, and drop tone, which StatusTile never painted. Deprecated. Will be removed in 1.0.0 (hds#483).
 
 ### Do by hand
 
@@ -673,8 +673,8 @@ Released 2026-10-08 (minor). 3 changes to make by hand (1 breaking), 1 that look
 
 ### Coming next
 
-- Divider's strong prop, deprecated since before 0.16.0, still works; use variant="strong" instead. Removed in 1.0.0.
-- InlineCode's compact prop, deprecated since before 0.16.0, still works; use density="compact" instead. Removed in 1.0.0.
+- Divider's strong prop, deprecated since before 0.16.0, still works; use variant="strong" instead. Deprecated. Will be removed in 1.0.0 (hds#483).
+- InlineCode's compact prop, deprecated since before 0.16.0, still works; use density="compact" instead. Deprecated. Will be removed in 1.0.0 (hds#483).
 
 ### Do by hand
 
@@ -713,8 +713,8 @@ Released 2026-10-07 (minor). StatusDot is removed, fonts move to an opt-in fonts
 
 ### Coming next
 
-- The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead. Removed in 1.0.0.
-- The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead. Removed in 1.0.0.
+- The Text variants heading1, heading2, heading3, technical, eyebrow, badge, docLede, docBody, docSmall and docCode still work but are deprecated; use title, mono, caption, body or ui instead. Deprecated. Will be removed in 1.0.0 (hds#483).
+- The hds.typeStyles keys from before the ramp (h1 to h3, heading1 to heading3, eyebrow, badge, micro, technical, small, label and the rest) and hds.semantic.typography label, labelDescriptive and labelTechnical still work but are deprecated; use display, title, body, ui, caption or mono instead. Deprecated. Will be removed in 1.0.0 (hds#483).
 
 ### Do by hand
 
@@ -761,11 +761,11 @@ The upgrade command runs these codemods for you.
 
 ### Coming next
 
-- Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead. Removed in 1.0.0.
+- Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead. Deprecated. Will be removed in 1.0.0 (hds#483).
 - Stack gap names 'tight', 'normal', 'inset' and 'spacious' still work and do not warn yet, but are removed in 1.0.0, and Stack names no replacement until then.
 - StatusDot still works but is removed in 0.21.0; use Badge dot with the same tone, size and label, and move any style prop to a wrapper or a className first.
 - StatusDotProps is removed in 0.21.0; use BadgeProps instead.
-- hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs. Removed in 1.0.0.
+- hds.density still works but is deprecated; use hds.semantic.space.scale one step down, so density.sm becomes scale.xs. Deprecated. Will be removed in 1.0.0 (hds#483).
 - Sixteen Tailwind utilities that only HDS's deleted internal files used, such as pt-1 and max-w-2xl, still ship in styles.css and tokens.css until 1.0.0, so a page that relies on HDS's compiled CSS for them should generate them with its own Tailwind. `pb-8`, `p-16`, `h-3.5`, `w-3.5`, `inline-block`, `opacity-100`, `text-muted-foreground/70`, `transition-[transform,opacity]`, `text-foreground`, `text-foreground`, `var(--semantic-color-feedback-bg-warning)]`, `var(--semantic-color-feedback-warning)]/40` and `var(--semantic-color-feedback-warning)]` were removed in [0.33.0](#0330); the rest is removed in 1.0.0.
 
 ### Do by hand
