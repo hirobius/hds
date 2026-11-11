@@ -269,6 +269,14 @@ module.exports = [
     gzip: true,
   },
   {
+    // hds#1433: the ./sheet subpath graph (packages external), 2.94 kB gzip on
+    // 2026-11-11. On top of an app that already ships Dialog it adds 0.73 kB.
+    name: 'sheet graph (dist/probe/sheet.graph.js)',
+    path: 'dist/probe/sheet.graph.js',
+    limit: '3.5 kB',
+    gzip: true,
+  },
+  {
     name: 'Button-only root import (dist/probe/button-only.js)',
     path: 'dist/probe/button-only.js',
     limit: '78 kB',

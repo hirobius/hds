@@ -213,6 +213,7 @@ const importChecks = [
     const opts = m.hdsMuiThemeOptions();
     assert.ok(opts.palette && opts.palette.error && String(opts.palette.error.main).startsWith('var(--'), 'mui palette not token-wired');
   }],
+  [PKG + '/sheet', (m) => assert.equal(typeof m.Sheet, 'function', 'Sheet missing')],
   [PKG + '/patterns', (m) => assert.equal(typeof m.Page, 'function', 'Page missing')],
   [PKG + '/form', (m) => assert.ok(Object.keys(m).length > 0, 'form exports nothing')],
   [PKG + '/scroll', (m) => assert.ok(Object.keys(m).length > 0, 'scroll exports nothing')],

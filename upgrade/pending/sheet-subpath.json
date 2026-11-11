@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "Nothing to change; to keep Sheet out of the root barrel, import it from @hirobius/design-system/sheet instead."
+}

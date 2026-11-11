@@ -147,6 +147,8 @@ export default defineConfig({
         // Subpath: curated Lucide icon re-export for Icon and icon-only Button (hds#342).
         // lucide-react stays external below; consumers tree-shake the bare import.
         icons: path.resolve(__dirname, 'src/icons.ts'),
+        // Subpath: Sheet without the root barrel (hds#1433), for apps with a tight entry budget.
+        sheet: path.resolve(__dirname, 'src/sheet.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],

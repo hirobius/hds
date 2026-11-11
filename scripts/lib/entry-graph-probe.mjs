@@ -56,6 +56,14 @@ export const ENTRY_GRAPHS = [
     reexports: ['export { tokens }'],
     probe: 'dist/probe/tokens-json.graph.js',
   },
+  {
+    // hds#1433: Sheet on its own subpath, for an app with a tight entry budget.
+    // It must not drag the token JSON in through a Dialog part.
+    entry: 'dist/sheet.js',
+    reexports: ['export *'],
+    forbidInputs: ['hirobius.tokens.json.js'],
+    probe: 'dist/probe/sheet.graph.js',
+  },
 ];
 
 /**
