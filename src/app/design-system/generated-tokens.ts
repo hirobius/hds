@@ -243,7 +243,8 @@ export const tokens = {
       },
       letterSpacing: {
         tight: "var(--primitive-typography-letterSpacing-tight)",
-        normal: "var(--primitive-typography-letterSpacing-normal)"
+        normal: "var(--primitive-typography-letterSpacing-normal)",
+        text: "var(--primitive-typography-letterSpacing-text)"
       }
     },
     duration: {

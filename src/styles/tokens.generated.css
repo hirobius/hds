@@ -168,8 +168,8 @@
   --primitive-radius-16: 16px;
   --primitive-radius-24: 24px;
   --primitive-radius-full: 9999px;
-  --primitive-typography-family-primary: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --primitive-typography-family-display: Sora, "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --primitive-typography-family-primary: Sora, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --primitive-typography-family-display: Sora, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --primitive-typography-family-mono: "IBM Plex Mono", "Courier New", monospace;
   --primitive-typography-size-xs: 12px;
   --primitive-typography-size-compactCaption: 13px;
@@ -188,10 +188,10 @@
   --primitive-typography-size-hero: 120px;
   --primitive-typography-size-6xl: 60px;
   --primitive-typography-size-code: 15px;
-  --primitive-typography-weight-regular: 400;
-  --primitive-typography-weight-medium: 500;
-  --primitive-typography-weight-semibold: 600;
-  --primitive-typography-weight-bold: 700;
+  --primitive-typography-weight-regular: 340;
+  --primitive-typography-weight-medium: 430;
+  --primitive-typography-weight-semibold: 510;
+  --primitive-typography-weight-bold: 600;
   --primitive-typography-weight-display: 700;
   --primitive-typography-weight-mono: 400;
   --primitive-typography-lineHeight-compact: 0.95;
@@ -204,6 +204,7 @@
   --primitive-typography-lineHeight-body: 1.6;
   --primitive-typography-letterSpacing-tight: -0.01em;
   --primitive-typography-letterSpacing-normal: 0em;
+  --primitive-typography-letterSpacing-text: -0.02em;
   --primitive-duration-instant: 100ms;
   --primitive-duration-short: 150ms;
   --primitive-duration-medium: 250ms;
@@ -419,35 +420,35 @@
   --semantic-typography-body-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-body-font-size: var(--primitive-typography-size-lg);
   --semantic-typography-body-font-weight: var(--primitive-typography-weight-regular);
-  --semantic-typography-body-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-body-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-body-line-height: var(--primitive-typography-lineHeight-body);
   --semantic-typography-body-max-width: 60ch;
   /* semantic.typography.bodyStrong */
   --semantic-typography-bodyStrong-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-bodyStrong-font-size: var(--primitive-typography-size-lg);
   --semantic-typography-bodyStrong-font-weight: var(--primitive-typography-weight-bold);
-  --semantic-typography-bodyStrong-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-bodyStrong-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-bodyStrong-line-height: var(--primitive-typography-lineHeight-body);
   --semantic-typography-bodyStrong-max-width: 60ch;
   /* semantic.typography.ui */
   --semantic-typography-ui-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-ui-font-size: var(--primitive-typography-size-base);
   --semantic-typography-ui-font-weight: var(--primitive-typography-weight-medium);
-  --semantic-typography-ui-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-ui-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-ui-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-ui-max-width: 60ch;
   /* semantic.typography.uiRegular */
   --semantic-typography-uiRegular-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-uiRegular-font-size: var(--primitive-typography-size-base);
   --semantic-typography-uiRegular-font-weight: var(--primitive-typography-weight-regular);
-  --semantic-typography-uiRegular-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-uiRegular-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-uiRegular-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-uiRegular-max-width: 60ch;
   /* semantic.typography.uiItalic */
   --semantic-typography-uiItalic-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-uiItalic-font-size: var(--primitive-typography-size-base);
   --semantic-typography-uiItalic-font-weight: var(--primitive-typography-weight-medium);
-  --semantic-typography-uiItalic-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-uiItalic-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-uiItalic-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-uiItalic-max-width: 60ch;
   --semantic-typography-uiItalic-font-style: italic;
@@ -455,7 +456,7 @@
   --semantic-typography-caption-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-caption-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-caption-font-weight: var(--primitive-typography-weight-medium);
-  --semantic-typography-caption-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-caption-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-caption-line-height: var(--primitive-typography-lineHeight-normal);
   /* semantic.typography.mono */
   --semantic-typography-mono-font-family: var(--primitive-typography-family-mono);
@@ -490,7 +491,7 @@
   --semantic-typography-eyebrow-font-family: var(--primitive-typography-family-primary);
   --semantic-typography-eyebrow-font-size: var(--primitive-typography-size-sm);
   --semantic-typography-eyebrow-font-weight: var(--primitive-typography-weight-medium);
-  --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-normal);
+  --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-lineHeight-none: var(--primitive-typography-lineHeight-none);
   --semantic-docs-space-section: var(--semantic-space-scale-xl);

@@ -25,11 +25,11 @@
   /* next/font faces (app/layout.tsx) lead the sans and display stacks; the token family stays as
      the fallback. Mono is not overridden: --primitive-typography-family-mono comes from the package. */
   --primitive-typography-family-primary:
-    var(--hds-docs-font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
+    var(--hds-docs-font-sans), 'Sora', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
   --primitive-typography-family-display:
-    var(--hds-docs-font-display), 'Sora', 'Plus Jakarta Sans', system-ui, -apple-system,
-    BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    var(--hds-docs-font-sans), 'Sora', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
   /* The font dial (ADR-023) re-points the type roles inside any HDS subtree (HdsThemeProvider)
      at --hds-font-family, which would skip the next/font faces and swap late (CLS). */
   --hds-font-family: var(--primitive-typography-family-primary);
@@ -63,7 +63,7 @@ html {
   font-family: var(--primitive-typography-family-primary);
 }
 
-/* Headings take the HDS display face (Sora 700, ADR-063, hds#847), as the
+/* Headings take the HDS display face (Sora 700, ADR-063), as the
    display and title roles do; the body face stays on everything else. */
 h1,
 h2,

@@ -12,7 +12,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { buildFigmaModel, NOT_IN_FIGMA } from '../lib/figma-model.mjs';
+import { buildFigmaModel, NOT_IN_FIGMA, NO_ITALIC_FAMILIES } from '../lib/figma-model.mjs';
 import { validateFigmaModel } from '../lib/figma-model-invariants.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -155,10 +155,11 @@ describe('not-in-Figma accounting', () => {
         const home =
           key in style.boundVariables ||
           (key === 'textTransform' && style.textCase !== 'ORIGINAL') ||
-          // Italic is carried by the style's font instance ("Medium Italic").
+          // Italic is carried by the style's font instance ("Medium Italic"), or
+          // stays code-only for a family with no italic instances (Sora).
           (key === 'fontStyle' &&
             leaf.value.fontStyle === 'italic' &&
-            /Italic$/.test(style.fontStyle))
+            (/Italic$/.test(style.fontStyle) || NO_ITALIC_FAMILIES.has(style.fontFamily)))
             ? 'style'
             : declared.get(`${leaf.path}.${key}`);
         expect(home, `${leaf.path}.${key}`).toBeTruthy();

@@ -23,12 +23,12 @@ const style = (name: string) =>
   model.textStyles.find((s: { name: string }) => s.name === `typography/${name}`);
 
 describe('bodyStrong (ADR-052 addendum)', () => {
-  it('is body with fontWeight bold (700), Compact mode included', () => {
+  it('is body with fontWeight bold (600), Compact mode included', () => {
     expect(typo.bodyStrong.$value).toEqual({
       ...typo.body.$value,
       fontWeight: '{primitive.typography.weight.bold}',
     });
-    expect(tokens.primitive.typography.weight.bold.$value).toBe(700);
+    expect(tokens.primitive.typography.weight.bold.$value).toBe(600);
     expect(typo.bodyStrong.$extensions).toEqual(typo.body.$extensions);
   });
 
@@ -43,8 +43,8 @@ describe('bodyStrong (ADR-052 addendum)', () => {
     const s = style('bodyStrong');
     const body = style('body');
     expect(s).toBeDefined();
-    expect(s.fontWeight).toBe(700);
-    expect(s.fontStyle).toBe('Bold');
+    expect(s.fontWeight).toBe(600);
+    expect(s.fontStyle).toBe('SemiBold');
     expect([s.fontFamily, s.fontSize, s.lineHeight]).toEqual([
       body.fontFamily,
       body.fontSize,
@@ -54,12 +54,12 @@ describe('bodyStrong (ADR-052 addendum)', () => {
 });
 
 describe('uiRegular (ADR-052 addendum, hds#1198)', () => {
-  it('is ui with fontWeight regular (400), Compact mode included', () => {
+  it('is ui with fontWeight regular (340), Compact mode included', () => {
     expect(typo.uiRegular.$value).toEqual({
       ...typo.ui.$value,
       fontWeight: '{primitive.typography.weight.regular}',
     });
-    expect(tokens.primitive.typography.weight.regular.$value).toBe(400);
+    expect(tokens.primitive.typography.weight.regular.$value).toBe(340);
     expect(typo.uiRegular.$extensions).toEqual(typo.ui.$extensions);
   });
 
@@ -79,7 +79,7 @@ describe('uiRegular (ADR-052 addendum, hds#1198)', () => {
     const s = style('uiRegular');
     const ui = style('ui');
     expect(s).toBeDefined();
-    expect(s.fontWeight).toBe(400);
+    expect(s.fontWeight).toBe(340);
     expect(s.fontStyle).toBe('Regular');
     expect([s.fontFamily, s.fontSize, s.lineHeight]).toEqual([
       ui.fontFamily,
@@ -110,11 +110,12 @@ describe('uiItalic (ADR-052 addendum)', () => {
     );
   });
 
-  it('emits typography/uiItalic as the ui style in the italic face', () => {
+  it('emits typography/uiItalic as the ui style, upright: Sora has no italic face', () => {
     const s = style('uiItalic');
     const ui = style('ui');
     expect(s).toBeDefined();
-    expect(s.fontStyle).toBe(`${ui.fontStyle} Italic`);
+    expect(s.fontFamily).toBe('Sora');
+    expect(s.fontStyle).toBe(ui.fontStyle);
     expect([s.fontFamily, s.fontSize, s.fontWeight, s.lineHeight]).toEqual([
       ui.fontFamily,
       ui.fontSize,

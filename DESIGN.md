@@ -27,13 +27,12 @@ Feedback hues are never decorative; do not use them as accents. Light and dark m
 ## Typography
 
 <!-- auto:start:typography -->
-HDS ships three typefaces — each with a distinct role:
+HDS ships two typefaces:
 
-- **Display / Heading font**: Sora. Bound to the `display` and `title` styles.
-- **Body / UI font**: Plus Jakarta Sans. All prose, labels, small text, captions, and UI copy.
+- **Text font**: Sora. Headings, prose, labels, captions, and UI copy; the type roles set size and weight.
 - **Mono font**: IBM Plex Mono. Reserved for tokens, code, technical callouts, and metric readouts.
 
-Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `400` regular / `500` medium; mono uses `400` mono. Declared but unused by any semantic role: `600` semibold, `700` bold.
+Weights declared: `340` regular, `400` mono, `430` medium, `510` semibold, `600` bold, `700` display. Heading styles (display · title) use `700` display; body, UI, and caption use `340` regular / `430` medium; mono uses `400` mono. Declared but unused by any semantic role: `510` semibold, `600` bold.
 
 ### Type ramp
 
@@ -43,12 +42,12 @@ Weights declared: `400` regular, `400` mono, `500` medium, `600` semibold, `700`
 | `semantic.typography.display` | 56px | same | 700 | One per page, hero only |
 | `semantic.typography.title` | 28px | 24px | 700 | Section and card headings |
 | `semantic.typography.titleSm` | 20px | same | 700 | Small heading inside a card or section band, and the Alert title |
-| `semantic.typography.body` | 18px | 15px | 400 | Prose |
-| `semantic.typography.bodyStrong` | 18px | 15px | 700 | Variant of body: weight 700, what Text with weight bold renders |
-| `semantic.typography.ui` | 16px | 14px | 500 | Controls, nav, table text, values |
-| `semantic.typography.uiRegular` | 16px | 14px | 400 | Variant of ui: weight 400, for table body cells and other plain UI text |
-| `semantic.typography.uiItalic` | 16px | 14px | 500 | Variant of ui: italic, what the inline EmptyState message renders |
-| `semantic.typography.caption` | 14px | 13px | 500 | Metadata, help text and labels, in sentence case |
+| `semantic.typography.body` | 18px | 15px | 340 | Prose |
+| `semantic.typography.bodyStrong` | 18px | 15px | 600 | Variant of body: weight bold (600), what Text with weight bold renders |
+| `semantic.typography.ui` | 16px | 14px | 430 | Controls, nav, table text, values |
+| `semantic.typography.uiRegular` | 16px | 14px | 340 | Variant of ui: weight regular (340), for table body cells and other plain UI text |
+| `semantic.typography.uiItalic` | 16px | 14px | 430 | Variant of ui: italic, what the inline EmptyState message renders |
+| `semantic.typography.caption` | 14px | 13px | 430 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | same | 400 | Code and ids, 15px / 1.5 / 400 |
 | `semantic.typography.lineHeight.none` |  | same |  | Semantic alias for leading-none (1) |
 
@@ -297,6 +296,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (580 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (581 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->

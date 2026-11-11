@@ -434,7 +434,7 @@ export function buildAgentConstraints(raw) {
   // nowhere in the token file. No fallback now; brandAccent throws.
   const accent = brandAccent(raw).toUpperCase();
   const fontRaw = raw.primitive?.typography?.family?.primary?.$value;
-  const font = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? 'Plus Jakarta Sans';
+  const font = (Array.isArray(fontRaw) ? fontRaw[0] : fontRaw) ?? 'Sora';
   const displayRaw = raw.primitive?.typography?.family?.display?.$value;
   const display = (Array.isArray(displayRaw) ? displayRaw[0] : displayRaw) ?? font;
   return [

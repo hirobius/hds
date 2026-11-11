@@ -202,6 +202,7 @@ declare module 'react' {
     '--primitive-typography-lineHeight-body'?: string | undefined;
     '--primitive-typography-letterSpacing-tight'?: string | undefined;
     '--primitive-typography-letterSpacing-normal'?: string | undefined;
+    '--primitive-typography-letterSpacing-text'?: string | undefined;
     '--primitive-duration-instant'?: string | undefined;
     '--primitive-duration-short'?: string | undefined;
     '--primitive-duration-medium'?: string | undefined;

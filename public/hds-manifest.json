@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-10T00:21:32.368Z",
+  "generated": "2026-11-11T03:32:58.829Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -35,7 +35,7 @@
   "brand": {
     "primaryColor": "#3a4457",
     "primaryColorToken": "semantic.accent.rest",
-    "font": "Plus Jakarta Sans variable 100–900, self-hosted",
+    "font": "Sora variable 100–800, self-hosted",
     "spacingBase": "4px",
     "buttonBorderRadius": "0px",
     "cardBorderRadius": "8px",
@@ -14051,15 +14051,15 @@
         "path": "primitive.typography.family.primary",
         "cssVar": "--primitive-typography-family-primary",
         "type": "fontFamily",
-        "description": "Self-hosted Plus Jakarta Sans (OFL) body typeface; falls back to system-ui sans-serif stack.",
-        "value": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+        "description": "Self-hosted Sora variable (OFL) text typeface for body, ui and caption; falls back to a system-ui sans-serif stack.",
+        "value": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
         "path": "primitive.typography.family.display",
         "cssVar": "--primitive-typography-family-display",
         "type": "fontFamily",
-        "description": "Display and title face: Sora 700 (OFL, ADR-063, hds#847); falls back to Plus Jakarta Sans.",
-        "value": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+        "description": "Display and title face: Sora at weight.display (OFL, ADR-063); the same file as primary; falls back to a system-ui sans-serif stack.",
+        "value": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
       },
       {
         "path": "primitive.typography.family.mono",
@@ -14191,34 +14191,35 @@
         "path": "primitive.typography.weight.regular",
         "cssVar": "--primitive-typography-weight-regular",
         "type": "fontWeight",
-        "description": "Body weight (400, hds#847). Plus Jakarta Sans ships as a variable font.",
-        "value": "400"
+        "description": "Body weight. 340 on the Sora variable axis matches the ink density of the former 400 text face (measured in Chromium).",
+        "value": "340"
       },
       {
         "path": "primitive.typography.weight.medium",
         "cssVar": "--primitive-typography-weight-medium",
         "type": "fontWeight",
-        "description": "UI, labels and bold lead-ins (hds#847).",
-        "value": "500"
+        "description": "UI, labels and bold lead-ins. 430 on the Sora variable axis matches the ink density of the former 500 text face.",
+        "value": "430"
       },
       {
         "path": "primitive.typography.weight.semibold",
         "cssVar": "--primitive-typography-weight-semibold",
         "type": "fontWeight",
-        "description": "Button label weight (hds#760).",
-        "value": "600"
+        "description": "Button label weight (hds#760). 510 on the Sora variable axis matches the ink density of the former 600 text face.",
+        "value": "510"
       },
       {
         "path": "primitive.typography.weight.bold",
         "cssVar": "--primitive-typography-weight-bold",
         "type": "fontWeight",
-        "value": "700"
+        "description": "Strong text weight. 600 on the Sora variable axis matches the ink density of the former 700 text face.",
+        "value": "600"
       },
       {
         "path": "primitive.typography.weight.display",
         "cssVar": "--primitive-typography-weight-display",
         "type": "fontWeight",
-        "description": "Display, title and title-sm weight, set in Sora 700 (ADR-063, hds#847). Heading levels differ by size, not weight.",
+        "description": "Display, title and title-sm weight, set in Sora 700 (ADR-063). Heading levels differ by size, not weight.",
         "value": "700"
       },
       {
@@ -14291,6 +14292,13 @@
         "cssVar": "--primitive-typography-letterSpacing-normal",
         "type": "dimension",
         "value": "0em"
+      },
+      {
+        "path": "primitive.typography.letterSpacing.text",
+        "cssVar": "--primitive-typography-letterSpacing-text",
+        "type": "dimension",
+        "description": "Text-role tracking for Sora: body, ui and caption. Brings Sora's wider set to within 3% of the former text face's line length.",
+        "value": "-0.02em"
       },
       {
         "path": "primitive.duration.instant",
@@ -15788,7 +15796,7 @@
         "type": "typography",
         "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
         "composite": {
-          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "120px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -15801,7 +15809,7 @@
         "type": "typography",
         "description": "One per page, hero only. 56px / 1.05 / 700. Role 1 of 6.",
         "composite": {
-          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "56px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -15815,7 +15823,7 @@
         "type": "typography",
         "description": "Section and card headings. 28px / 1.25 / 700. Role 2 of 6.",
         "composite": {
-          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "28px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -15834,7 +15842,7 @@
         "type": "typography",
         "description": "Small heading inside a card or section band, and the Alert title. 20px / 1.375 / 700.",
         "composite": {
-          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "20px",
           "fontWeight": "700",
           "letterSpacing": "0em",
@@ -15845,12 +15853,12 @@
         "path": "semantic.typography.body",
         "cssVar": "--semantic-typography-body",
         "type": "typography",
-        "description": "Prose. 18px / 1.6 / 400, 60ch measure. Role 3 of 6.",
+        "description": "Prose. 18px / 1.6 / 340, -0.02em, 60ch measure. Role 3 of 6.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
-          "fontWeight": "400",
-          "letterSpacing": "0em",
+          "fontWeight": "340",
+          "letterSpacing": "-0.02em",
           "lineHeight": "1.6",
           "maxWidth": "60ch"
         },
@@ -15865,12 +15873,12 @@
         "path": "semantic.typography.bodyStrong",
         "cssVar": "--semantic-typography-bodyStrong",
         "type": "typography",
-        "description": "Variant of body: weight 700, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "description": "Variant of body: weight bold (600), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "18px",
-          "fontWeight": "700",
-          "letterSpacing": "0em",
+          "fontWeight": "600",
+          "letterSpacing": "-0.02em",
           "lineHeight": "1.6",
           "maxWidth": "60ch"
         },
@@ -15885,12 +15893,12 @@
         "path": "semantic.typography.ui",
         "cssVar": "--semantic-typography-ui",
         "type": "typography",
-        "description": "Controls, nav, table text, values. 16px / 1.5 / 500. Role 4 of 6.",
+        "description": "Controls, nav, table text, values. 16px / 1.5 / 430, -0.02em. Role 4 of 6.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
+          "fontWeight": "430",
+          "letterSpacing": "-0.02em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
         },
@@ -15905,12 +15913,12 @@
         "path": "semantic.typography.uiRegular",
         "cssVar": "--semantic-typography-uiRegular",
         "type": "typography",
-        "description": "Variant of ui: weight 400, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "description": "Variant of ui: weight regular (340), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
-          "fontWeight": "400",
-          "letterSpacing": "0em",
+          "fontWeight": "340",
+          "letterSpacing": "-0.02em",
           "lineHeight": "1.5",
           "maxWidth": "60ch"
         },
@@ -15927,10 +15935,10 @@
         "type": "typography",
         "description": "Variant of ui: italic, what the inline EmptyState message renders. Matches Figma typography/uiItalic.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "16px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
+          "fontWeight": "430",
+          "letterSpacing": "-0.02em",
           "lineHeight": "1.5",
           "maxWidth": "60ch",
           "fontStyle": "italic"
@@ -15946,12 +15954,12 @@
         "path": "semantic.typography.caption",
         "cssVar": "--semantic-typography-caption",
         "type": "typography",
-        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 500. Role 5 of 6.",
+        "description": "Metadata, help text and labels, in sentence case. 14px / 1.5 / 430, -0.02em. Role 5 of 6.",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "14px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
+          "fontWeight": "430",
+          "letterSpacing": "-0.02em",
           "lineHeight": "1.5"
         },
         "compact": {
@@ -15981,7 +15989,7 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "28px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -16000,7 +16008,7 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "28px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -16019,7 +16027,7 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.title",
         "composite": {
-          "fontFamily": "Sora, \"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "28px",
           "fontWeight": "700",
           "letterSpacing": "-0.01em",
@@ -16038,10 +16046,10 @@
         "type": "typography",
         "description": "deprecated: use semantic.typography.caption",
         "composite": {
-          "fontFamily": "\"Plus Jakarta Sans\", system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontFamily": "Sora, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
           "fontSize": "14px",
-          "fontWeight": "500",
-          "letterSpacing": "0em",
+          "fontWeight": "430",
+          "letterSpacing": "-0.02em",
           "lineHeight": "1.5"
         },
         "compact": {
@@ -16699,7 +16707,7 @@
         "type": "fontWeight",
         "description": "Tag label weight.",
         "alias": "{primitive.typography.weight.medium}",
-        "resolvedValue": "500"
+        "resolvedValue": "430"
       },
       {
         "path": "component.tag.lineHeight",
@@ -16787,7 +16795,7 @@
         "type": "fontWeight",
         "description": "Badge label weight.",
         "alias": "{primitive.typography.weight.medium}",
-        "resolvedValue": "500"
+        "resolvedValue": "430"
       },
       {
         "path": "component.badge.text",
@@ -17103,7 +17111,7 @@
         "type": "fontWeight",
         "description": "Button label weight.",
         "alias": "{primitive.typography.weight.semibold}",
-        "resolvedValue": "600"
+        "resolvedValue": "510"
       },
       {
         "path": "component.button.size.sm.paddingX",
