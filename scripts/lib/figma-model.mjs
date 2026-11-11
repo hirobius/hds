@@ -16,6 +16,7 @@
 
 import { readModes, modeValue } from './token-modes.mjs';
 import { walkTokens } from './token-tree.mjs';
+import { textStyleDescription } from './figma-deprecated-styles.mjs';
 
 // ── Token graph ──────────────────────────────────────────────────────────────
 
@@ -523,7 +524,8 @@ function expandTypography(graph, token) {
   const textStyle = {
     name: token.path.slice(1).join('/'),
     path,
-    description: token.description ?? '',
+    // hds#483: a deprecated style says so first, so designers see it in the picker.
+    description: textStyleDescription(token),
     fontFamily: family,
     fontStyle,
     fontWeight: weight,

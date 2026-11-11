@@ -394,6 +394,33 @@ than 15,000 characters the script returns `tooLarge` with the sizes and
 (Sync, then the receipt or Download JSON) and `--ingest` it. Version 1 does not
 page. Budget: one `use_figma` read, of the 200 a day on Pro.
 
+### Deprecated styles (hds#483)
+
+A deprecated token's text style stays in the library (Sync and `delta.js` never
+delete), so it stays pickable. Three guards keep it off layers:
+
+- **Designers see it.** The model (`scripts/lib/figma-model.mjs`) starts a
+  deprecated style's description with `Deprecated. Will be removed in <v> (<issue>). Use <style>.`,
+  read from the token's `$deprecated` note; a push carries it.
+- **Agent scripts refuse it.** Apply a text style only through
+  `scripts/lib/figma-deprecated-styles.mjs`: `textStyleScript(assignments, tree)`
+  refuses to build with a deprecated style, and its runtime `hdsApplyTextStyle`
+  refuses again in Figma. `docTextFitScript` carries the same guard.
+- **A gate measures it.** `pnpm check:figma-deprecated-usage` (pretest and
+  `pnpm release`) reads `figma/deprecated-usage.json` and fails on any layer,
+  outside the Archive and Deprecated pages, on a deprecated text style or bound
+  to a deprecated variable.
+
+Refresh the record after a Figma change or a new deprecation (one read):
+
+1. `pnpm figma:deprecated-usage` writes `figma/reads/deprecated-usage.js` (style
+   and variable ids from the committed snapshot).
+2. Log the call in [`MCP-LEDGER.md`](MCP-LEDGER.md), run that file unmodified
+   with `use_figma` on the library, save the result to a file.
+3. `pnpm figma:deprecated-usage --ingest <file>`, then commit
+   `figma/deprecated-usage.json`. Fix any hit with `textStyleScript` (the
+   replacement style the check names) and audit again.
+
 ### Agent sync (zero clicks)
 
 After a PR that changes `hirobius.tokens.json` or the Figma model merges, an

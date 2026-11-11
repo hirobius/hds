@@ -106,6 +106,7 @@
       "node scripts/figma-links.mjs --check",
       "node scripts/check-figma-coverage.mjs",
       "node scripts/check-figma-fallbacks.mjs",
+      "node scripts/check-figma-deprecated-usage.mjs",
       "node scripts/check-figma-components.mjs --check",
       "node scripts/check-guardrail-drift.mjs",
       "node scripts/check-skills-lock.mjs",
@@ -389,6 +390,16 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "supportsJson": true
+    },
+    {
+      "id": "check-figma-deprecated-usage",
+      "description": "Fails when a layer in the HDS Figma library, outside the Archive and Deprecated pages, uses a deprecated text style (whole node or a styled segment) or is bound to a deprecated variable (hds#483; PR #1463 applied typography/eyebrow to four AppShell texts). Deprecated comes from the tokens' $deprecated notes (scripts/lib/figma-deprecated-styles.mjs), never a hand list. CI cannot read Figma, so it reads figma/deprecated-usage.json, written by `pnpm figma:deprecated-usage --ingest` from the read-only audit figma/reads/deprecated-usage.js (generated; the check also fails when that script is stale, or when the record audited other styles than code deprecates now). Each finding names the node and the replacement style. Runs in pretest, and in `pnpm release` right after check:figma-release, so a release refuses it. scripts/__tests__/check-figma-deprecated-usage.test.mjs covers pass and each failure.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-deprecated-usage.mjs",
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta",
+      "supportsJson": false
     },
     {
       "id": "check-figma-drift",
