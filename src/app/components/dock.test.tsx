@@ -139,7 +139,7 @@ describe('Dock (hds#1432)', () => {
       css.indexOf('/* --- Dock (hds#1432)'),
       css.indexOf('/* --- Sheet (hds#690)'),
     );
-    const reduced = block.slice(block.indexOf('@media (prefers-reduced-motion: reduce)'));
+    const reduced = block.slice(block.indexOf('prefers-reduced-motion: reduce'));
     expect(reduced).toMatch(/\.hds-dock\s*\{\s*transition:\s*opacity/);
     expect(reduced).toMatch(/\.hds-dock\[data-hidden\]\s*\{\s*transform:\s*none/);
   });
