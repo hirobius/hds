@@ -44,6 +44,7 @@ export const PREVIEWED_COMPONENTS = [
   'List',
   'Pagination',
   'Pin',
+  'Dock',
   'Popover',
   'Progress',
   'Radio',

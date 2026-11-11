@@ -15,7 +15,7 @@ For agents building UI with `@hirobius/design-system`. Read this first. It settl
 
 These are the recommended components: the ratified core set plus every component the needs below name. The ratified core alone is the `core: true` flag in the manifest.
 
-- `@hirobius/design-system`: `Alert`, `AlertDialog`, `Avatar`, `AvatarGroup`, `Badge`, `Blockquote`, `Box`, `Breadcrumb`, `Button`, `Card`, `Checkbox`, `Combobox`, `CommandPalette`, `Container`, `Dialog`, `Disclosure`, `Divider`, `EmptyState`, `Field`, `Grid`, `HdsRouterProvider`, `HdsThemeProvider`, `Icon`, `InlineLink`, `Input`, `Kbd`, `List`, `Menu`, `MetaLine`, `MetadataList`, `NavList`, `Pagination`, `Pin`, `Popover`, `Progress`, `Radio`, `SegmentedControl`, `Select`, `Sidebar`, `Skeleton`, `Slider`, `Spinner`, `Stack`, `Surface`, `Switcher`, `Table`, `Tabs`, `TabsContent`, `TabsList`, `TabsTrigger`, `Tag`, `Text`, `Textarea`, `Timeline`, `Timestamp`, `ToastProvider`, `Toggle`, `Tooltip`, `VisuallyHidden`, `useToast`.
+- `@hirobius/design-system`: `Alert`, `AlertDialog`, `Avatar`, `AvatarGroup`, `Badge`, `Blockquote`, `Box`, `Breadcrumb`, `Button`, `Card`, `Checkbox`, `Combobox`, `CommandPalette`, `Container`, `Dialog`, `Disclosure`, `Divider`, `Dock`, `EmptyState`, `Field`, `Grid`, `HdsRouterProvider`, `HdsThemeProvider`, `Icon`, `InlineLink`, `Input`, `Kbd`, `List`, `Menu`, `MetaLine`, `MetadataList`, `NavList`, `Pagination`, `Pin`, `Popover`, `Progress`, `Radio`, `SegmentedControl`, `Select`, `Sidebar`, `Skeleton`, `Slider`, `Spinner`, `Stack`, `Surface`, `Switcher`, `Table`, `Tabs`, `TabsContent`, `TabsList`, `TabsTrigger`, `Tag`, `Text`, `Textarea`, `Timeline`, `Timestamp`, `ToastProvider`, `Toggle`, `Tooltip`, `VisuallyHidden`, `useToast`.
 - `@hirobius/design-system/patterns`: `DataTableSection`, `DestructiveSection`, `Form`, `FormActions`, `MetricTile`, `MetricTiles`, `Page`, `PageHeader`. These are not in the root barrel.
 - Load one stylesheet once at the app root and put `data-hds` on the root element (`CONSUMING.md`).
 
@@ -77,6 +77,8 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
   `Sidebar` (`side`, `sideWidth`) for rail + content; `Switcher` (`threshold`) for a row that flips to a column. Neither needs a media query.
 - **Keep an element stuck while its region scrolls** → `Pin`. Not: position: sticky in style.
   `<Pin top="…">…</Pin>` inside the scrolling region.
+- **Main actions fixed to the bottom of a phone screen** → `Dock`, `Button`. Not: `Pin`, position: fixed in style, a hand-built visualViewport listener.
+  `<Dock><Stack direction="row" gap="tight">…Buttons…</Stack></Dock>`; it steps aside while a text field has focus and sits inline from sm up.
 
 ## Rules
 

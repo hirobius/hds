@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Nothing to change; to replace a hand-built bottom action bar, wrap its Buttons in <Dock> and delete your own visualViewport and safe-area code."
+}

@@ -153,6 +153,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Container` — Container — semantic width-constrained layout.
 - `Disclosure` — Disclosure - compact disclosure surface for optional explanatory content.
 - `Divider` — Divider — semantic separator between content regions.
+- `Dock` — Dock — a bottom action bar for phones that steps aside while the user types.
 - `Grid` — Grid — responsive grid composition primitive.
 - `Pin` — Pin — sticky-pin an element within its scroll region.
 - `Sidebar` — Sidebar — fixed-width rail beside fluid content, no media query.

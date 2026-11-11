@@ -78,6 +78,8 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
   `Sidebar` (`side`, `sideWidth`) for rail + content; `Switcher` (`threshold`) for a row that flips to a column. Neither needs a media query.
 - **Keep an element stuck while its region scrolls** → `Pin`. Not: position: sticky in style.
   `<Pin top="…">…</Pin>` inside the scrolling region.
+- **Main actions fixed to the bottom of a phone screen** → `Dock`, `Button`. Not: `Pin`, position: fixed in style, a hand-built visualViewport listener.
+  `<Dock><Stack direction="row" gap="tight">…Buttons…</Stack></Dock>`; it steps aside while a text field has focus and sits inline from sm up.
 
 ## System Architecture
 
@@ -1396,6 +1398,12 @@ Divider — semantic separator between content regions.
   - spacing: string | number
   - strong: boolean
   - variant: "strong" | "default" | null
+
+### Dock
+Dock — a bottom action bar for phones that steps aside while the user types.
+  - aria-label: string = Actions
+  - children: ReactNode
+  - hideOnInput: boolean = true
 
 ### EmptyState
 EmptyState — consistent no-data placeholder for lists, grids, and sections.

@@ -653,6 +653,26 @@
       "separator, orientated horizontally, max value 100, min value 0"
     ]
   },
+  "Dock": {
+    "dom": [
+      "div",
+      "  div data-hds-component=\"Stack\" data-hds-metrics=\"gap:normal\"",
+      "    div",
+      "      label",
+      "      div",
+      "        input data-size=\"md\" data-state=\"default\"",
+      "    div aria-label=\"Job actions\" data-hds-component=\"Dock\" role=\"region\"",
+      "      div data-hds-component=\"Stack\" data-hds-metrics=\"gap:tight\"",
+      "        button data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "        button data-hover-effect=\"wipe\" data-variant=\"primary\""
+    ],
+    "reader": [
+      "textbox, Cover note",
+      "region, Job actions",
+      "button, Save",
+      "button, Apply"
+    ]
+  },
   "EmptyState": {
     "dom": [
       "div",

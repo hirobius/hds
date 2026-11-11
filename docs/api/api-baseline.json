@@ -15,7 +15,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.40.0",
-  "generatedAt": "2026-11-10",
+  "generatedAt": "2026-11-11",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -199,6 +199,7 @@
     "./app/components/sidebar": ["Sidebar", "SidebarProps"],
     "./app/components/switcher": ["Switcher", "SwitcherProps"],
     "./app/components/pin": ["Pin", "PinProps"],
+    "./app/components/dock": ["Dock", "DockProps"],
     "./app/components/timeline": [
       "Timeline",
       "TimelineItem",
