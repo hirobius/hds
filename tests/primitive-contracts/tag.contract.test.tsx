@@ -9,6 +9,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
+import { Star } from 'lucide-react';
 import { Tag } from '@/app/components/tag';
 
 describe('Tag contract', () => {
@@ -70,5 +71,21 @@ describe('Tag contract', () => {
     const { container } = render(<Tag>Label</Tag>);
     const btn = container.querySelector('button');
     expect(btn?.classList.contains('hds-focus')).toBe(true);
+  });
+
+  it('a11y:tag.icon-decorative the leading icon is aria-hidden and the label names the tag', () => {
+    const { container, getByRole } = render(<Tag icon={Star}>Label</Tag>);
+    expect(container.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+    expect(getByRole('button', { name: 'Label' })).toBeTruthy();
+  });
+
+  it('a11y:tag.copied-announced copied swaps the label and a polite status announces it', () => {
+    const { getByRole, rerender } = render(<Tag copied={false}>Label</Tag>);
+    const status = getByRole('status');
+    expect(status.getAttribute('aria-live')).toBe('polite');
+    expect(status.textContent).toBe('');
+    rerender(<Tag copied>Label</Tag>);
+    expect(getByRole('status').textContent).toBe('Copied');
+    expect(getByRole('button', { name: 'Copied' })).toBeTruthy();
   });
 });

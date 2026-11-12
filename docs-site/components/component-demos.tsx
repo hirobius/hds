@@ -69,6 +69,7 @@ import {
   TabsList,
   TabsTrigger,
   Tag,
+  useTransientFlag,
   ThemeToggle,
   Text,
   Textarea,
@@ -1309,6 +1310,7 @@ function TabsDemo() {
 
 function TagDemo() {
   const [active, setActive] = useState('tokens');
+  const [copied, flashCopied] = useTransientFlag();
   const [terms, setTerms] = useState(['design systems', 'tokens', 'contract']);
   return (
     <div style={{ display: 'grid', gap: XS }}>
@@ -1326,6 +1328,23 @@ function TagDemo() {
             {term}
           </Tag>
         ))}
+      </div>
+      {/* Leading icon, and a short "Copied" state (the caller owns the copy and the timer). */}
+      <div style={demoRow}>
+        <Tag icon={Star}>tokens</Tag>
+        <Tag
+          icon={Copy}
+          copied={copied}
+          onClick={() => {
+            void navigator.clipboard?.writeText('#4f46e5');
+            flashCopied();
+          }}
+        >
+          #4f46e5
+        </Tag>
+        <Tag icon={Star} onDismiss={() => {}}>
+          contract
+        </Tag>
       </div>
     </div>
   );

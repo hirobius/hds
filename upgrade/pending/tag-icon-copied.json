@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Tag now takes an optional icon and a copied state with copiedLabel, and the package exports a useTransientFlag hook; nothing changes until you pass them."
+}
