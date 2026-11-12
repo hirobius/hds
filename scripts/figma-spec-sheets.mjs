@@ -5,6 +5,10 @@
  *
  *   --emit-draw <Name>=<pageId> ...  print the use_figma script that draws each
  *                                    component's sheet on its page (scripts/lib/figma-spec-sheet.mjs)
+ *   --emit-update [<Name>=<pageId> ...]
+ *                                    print the use_figma script that sets the Header of
+ *                                    existing sheets (docs lede, "View docs" + "Source");
+ *                                    no names = every sheet in figma/spec-sheet-audit.json
  *   --model <Name>                   print the sheet model (JSON) for one component
  *   --emit-audit                     print the read-only use_figma audit script
  *   --ingest <result.json>           write figma/spec-sheet-audit.json from that script's result
@@ -15,11 +19,34 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { specSheetModel, specSheetScript } from './lib/figma-spec-sheet.mjs';
+import {
+  SHEET_SUFFIX,
+  specSheetModel,
+  specSheetScript,
+  specSheetUpdateScript,
+} from './lib/figma-spec-sheet.mjs';
 import { auditScript, normaliseAudit } from './lib/figma-spec-coverage.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (rel) => JSON.parse(readFileSync(path.join(ROOT, rel), 'utf8'));
+
+function sourceBase() {
+  const links = readJson('figma/links.json');
+  return `${links.repository}/blob/${links.branch}`;
+}
+
+/** Every component sheet the committed audit lists, as Name=pageId pairs the manifest knows. */
+export function auditedSheets() {
+  const audit = readJson('figma/spec-sheet-audit.json');
+  const specs = readJson('public/hds-manifest.json').componentSpecs ?? {};
+  const out = [];
+  for (const p of audit.pages)
+    for (const s of p.sheets) {
+      const name = s.name.endsWith(SHEET_SUFFIX) ? s.name.slice(0, -SHEET_SUFFIX.length) : null;
+      if (name && specs[name]) out.push({ name, pageId: p.id });
+    }
+  return out;
+}
 
 export function modelFor(name) {
   const manifest = readJson('public/hds-manifest.json');
@@ -30,6 +57,7 @@ export function modelFor(name) {
     tokens: readJson('hirobius.tokens.json'),
     source,
     deprecations: readJson('deprecations.json'),
+    sourceBase: sourceBase(),
   });
 }
 
@@ -41,6 +69,16 @@ function main(argv) {
       return { pageId, model: modelFor(name) };
     });
     process.stdout.write(specSheetScript(entries));
+  } else if (cmd === '--emit-update') {
+    const pairs = rest.length
+      ? rest.map((a) => {
+          const [name, pageId] = a.split('=');
+          return { name, pageId };
+        })
+      : auditedSheets();
+    process.stdout.write(
+      specSheetUpdateScript(pairs.map((p) => ({ pageId: p.pageId, model: modelFor(p.name) }))),
+    );
   } else if (cmd === '--model') {
     console.log(JSON.stringify(modelFor(rest[0]), null, 2));
   } else if (cmd === '--emit-audit') {
@@ -57,7 +95,7 @@ function main(argv) {
     );
   } else {
     console.error(
-      'usage: figma-spec-sheets.mjs --emit-draw <Name>=<pageId>... | --model <Name> | --emit-audit | --ingest <file>',
+      'usage: figma-spec-sheets.mjs --emit-draw <Name>=<pageId>... | --emit-update [<Name>=<pageId>...] | --model <Name> | --emit-audit | --ingest <file>',
     );
     process.exit(2);
   }

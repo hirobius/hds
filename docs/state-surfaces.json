@@ -342,6 +342,13 @@
       "freshness": "unchecked"
     },
     {
+      "path": "figma/code-connect-map.json",
+      "describes": "Every library component in the HDS Figma library mapped to its code for Code Connect: node, source file, import and usage",
+      "kind": "generated",
+      "by": "scripts/figma-code-connect-map.mjs",
+      "check": "node scripts/figma-code-connect-map.mjs --check"
+    },
+    {
       "path": "figma/spec-sheet-audit.json",
       "describes": "Which Figma library pages hold a spec sheet, and the component nodes on each page",
       "kind": "generated",
