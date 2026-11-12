@@ -45,7 +45,7 @@ describe('Badge dot (hds#393)', () => {
 
   it('leaves a text badge as it was: no role, no aria-hidden', () => {
     render(<Badge tone="info">Beta</Badge>);
-    const badge = screen.getByText('Beta');
+    const badge = screen.getByText('Beta').closest('[data-tone]') as HTMLElement;
     expect(badge.hasAttribute('role')).toBe(false);
     expect(badge.hasAttribute('aria-hidden')).toBe(false);
     expect(badge.hasAttribute('data-size')).toBe(false);
@@ -120,14 +120,17 @@ describe('Badge shape tokens (hds#757)', () => {
     expect(cls).not.toMatch(/\brounded-md\b/);
   });
 
-  it('moves component.badge.paddingShift from top to bottom padding (optical centring)', () => {
+  it('pads the label evenly top and bottom (hds#1510: the 1px paddingShift lift left it ~2px high)', () => {
     const cls = textBadge();
-    expect(cls).toContain(
-      'pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))]',
-    );
-    expect(cls).toContain(
-      'pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))]',
-    );
+    expect(cls).toContain('py-[var(--component-badge-paddingY)]');
+    expect(cls).not.toContain('paddingShift');
+  });
+
+  it('trims the label to cap height where text-box-trim is supported (hds#1510)', () => {
+    const { container } = render(<Badge>Beta</Badge>);
+    const label = (container.firstElementChild as HTMLElement).querySelector(':scope > span');
+    expect(label?.textContent).toBe('Beta');
+    expect(label?.className).toBe('hds-cap-trim');
   });
 
   it('keeps height and min width on their tokens', () => {
@@ -149,8 +152,8 @@ describe('Badge shape token values (hds#757)', () => {
     expect(badge.radius.$value).toBe('{primitive.radius.6}');
   });
 
-  it('lifts the label 1px', () => {
-    expect(badge.paddingShift.$value).toBe('{primitive.space.px1}');
+  it('has no label lift: padding is even (hds#1510 removed paddingShift)', () => {
+    expect('paddingShift' in badge).toBe(false);
   });
 });
 
@@ -159,7 +162,7 @@ describe('Badge icon (hds#1437)', () => {
 
   it('renders a leading aria-hidden icon before the label', () => {
     render(<Badge icon={CalendarDays}>Due Friday</Badge>);
-    const badge = screen.getByText('Due Friday');
+    const badge = screen.getByText('Due Friday').closest('[data-tone]') as HTMLElement;
     const svg = svgOf(badge);
     expect(svg).not.toBeNull();
     expect(svg!.getAttribute('aria-hidden')).toBe('true');
@@ -169,7 +172,7 @@ describe('Badge icon (hds#1437)', () => {
 
   it('sizes the icon from the small icon token and spaces it with a scale token', () => {
     render(<Badge icon={Bell}>Alerts</Badge>);
-    const badge = screen.getByText('Alerts');
+    const badge = screen.getByText('Alerts').closest('[data-tone]') as HTMLElement;
     expect(svgOf(badge)!.style.width).toBe('var(--primitive-size-16)'); // tier-ok: asserts the Icon's own small-size output, which is primitive
     expect(badge.className).toContain('gap-scale-2xs');
   });
@@ -182,7 +185,7 @@ describe('Badge icon (hds#1437)', () => {
           Tone
         </Badge>,
       );
-      const badge = screen.getByText('Tone');
+      const badge = screen.getByText('Tone').closest('[data-tone]') as HTMLElement;
       expect(badge.getAttribute('data-tone')).toBe(tone);
       expect(badge.className).toContain(`text-[color:var(--component-badge-${tone}-text)]`);
       expect(svgOf(badge)!.getAttribute('stroke')).toBe('currentColor');

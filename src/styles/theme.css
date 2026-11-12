@@ -327,6 +327,18 @@
   }
 }
 
+/* -- Cap-height trim (hds#1510) -----------------------------------------------
+ * Trims a block container's first and last line box to the cap height and the
+ * baseline, so a label's caps sit in the middle of a pill with even padding.
+ * Needs text-box-trim (Chromium 133, Safari 18.2); elsewhere the label keeps its
+ * full line box and is still within ~0.7px of centre. */
+@supports (text-box-trim: trim-both) {
+  .hds-cap-trim {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+}
+
 /* -- Touch size for small controls (hds#522, hds#750) -------------------------
  * sm Button, Tabs and SegmentedControl triggers, Tag, Disclosure trigger, Input
  * clear, Checkbox/Radio/Toggle rows, Pagination and the copy buttons sit under

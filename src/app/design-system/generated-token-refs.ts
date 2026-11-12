@@ -857,7 +857,6 @@ export const tokenRefs = {
       height: "var(--component-badge-height)",
       minWidth: "var(--component-badge-minWidth)",
       paddingY: "var(--component-badge-paddingY)",
-      paddingShift: "var(--component-badge-paddingShift)",
       paddingX: "var(--component-badge-paddingX)"
     },
     button: {
