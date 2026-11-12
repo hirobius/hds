@@ -294,6 +294,7 @@
     "check:docs-axe": "node scripts/check-docs-axe.mjs",
     "check:docs-layout-shift": "node scripts/check-docs-layout-shift.mjs",
     "check:docs-touch-targets": "node scripts/check-docs-touch-targets.mjs",
+    "check:docs-type-ramp": "node scripts/check-docs-type-ramp.mjs",
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:state-surfaces": "node scripts/check-state-surfaces.mjs",
     "check:state-surfaces:strict": "node scripts/check-state-surfaces.mjs --strict-review",
