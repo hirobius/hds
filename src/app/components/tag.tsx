@@ -7,6 +7,10 @@
  * @useInstead Badge a read-only status or count
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11
  *
+ * `icon` adds a leading Lucide icon (decorative, small, spaced by the Button gap). `copied` swaps the
+ * label for `copiedLabel` (default "Copied") with a Check icon and announces it; the caller owns the
+ * clipboard write and the timer, so the tag stays presentational (`useTransientFlag` below, optional).
+ *
  * With `onDismiss` it is a static, removable label instead: only its X acts.
  * @a11y component required a11y:tag.keyboard-activate Enter and Space activate the tag (it is always a native button).
  * @a11y component required a11y:tag.pressed-state The selected state is reported with aria-pressed.
@@ -17,12 +21,14 @@
  * @a11y component required a11y:tag.dismiss-named With onDismiss only the X is a button, named "Remove <label>" or dismissLabel.
  * @a11y component required a11y:tag.dismiss-keyboard The X is tabbable (not when disabled); Enter and Space dismiss.
  * @a11y component required a11y:tag.dismiss-target-size The X's 40px hit area overhangs the pill.
+ * @a11y component required a11y:tag.icon-decorative The leading icon (and the Check in the copied state) is aria-hidden; the label names the tag.
+ * @a11y component required a11y:tag.copied-announced With `copied` the label swaps to copiedLabel and a polite live region (role=status) announces it once; the region is only rendered when `copied` is passed.
  * @a11y consumer required Name the tag by its text, or by an aria-label when the text is not enough; use Badge for a label that does nothing.
  */
 
 import * as React from 'react';
 import { cva } from 'class-variance-authority';
-import { X } from 'lucide-react';
+import { Check, X, type LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
 
@@ -50,7 +56,7 @@ const tagButtonVariants = /* @__PURE__ */ cva(
 const tagPillVariants = /* @__PURE__ */ cva(
   // binding-ok: tag.focus.gapRadius the .hds-focus outline follows the pill radius (radius.full), so the ring stays a pill; the token is the Figma binding
   // binding-ok: tag.focus.ringRadius the .hds-focus outline follows the pill radius (radius.full); the token is the Figma binding
-  'pointer-events-none box-border inline-flex min-h-[var(--component-tag-minHeight)] min-w-[var(--component-tag-minWidth)] max-w-full items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid px-[var(--component-tag-paddingX)] py-[var(--component-tag-paddingY)] hds-type-caption transition-colors group-disabled:text-[var(--semantic-color-content-disabled)]',
+  'pointer-events-none box-border inline-flex gap-scale-xs min-h-[var(--component-tag-minHeight)] min-w-[var(--component-tag-minWidth)] max-w-full items-center justify-center overflow-hidden whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid px-[var(--component-tag-paddingX)] py-[var(--component-tag-paddingY)] hds-type-caption transition-colors group-disabled:text-[var(--semantic-color-content-disabled)]',
   {
     variants: {
       selected: {
@@ -71,7 +77,7 @@ const tagPillVariants = /* @__PURE__ */ cva(
 // area overhangs the pill instead of growing it. On touch, hds-touch-target lifts
 // it to semantic.size.touchTarget (44px, hds#750).
 const dismissPill =
-  'box-border inline-flex min-h-[var(--component-tag-minHeight)] max-w-full items-center whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid border-[var(--component-tag-border)] bg-[var(--component-tag-background)] py-[var(--component-tag-paddingY)] pr-0 pl-[var(--component-tag-paddingX)] text-[var(--component-tag-text)] hds-type-caption';
+  'box-border inline-flex min-h-[var(--component-tag-minHeight)] max-w-full items-center gap-scale-xs whitespace-nowrap rounded-[var(--component-tag-radius)] border border-solid border-[var(--component-tag-border)] bg-[var(--component-tag-background)] py-[var(--component-tag-paddingY)] pr-0 pl-[var(--component-tag-paddingX)] text-[var(--component-tag-text)] hds-type-caption';
 
 const dismissButton =
   // The 40px hit area borrows the compact row size until a touch size role lands (hds#750, hds#919)
@@ -93,6 +99,33 @@ export interface TagProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElem
   onDismiss?: () => void;
   /** The X's accessible name. Defaults to "Remove <children>" when children is text. */
   dismissLabel?: string;
+  /** Leading Lucide icon, small and aria-hidden, spaced from the label by the shared gap. */
+  icon?: LucideIcon;
+  /**
+   * Controlled "just copied" state. While true the label reads `copiedLabel`, the icon becomes a
+   * Check and a polite live region announces it. Omit it to render no live region at all.
+   * The caller does the copy and flips this back after a short time (see `useTransientFlag`).
+   */
+  copied?: boolean;
+  /** Text shown and announced while `copied`. Defaults to "Copied". */
+  copiedLabel?: string;
+}
+
+/**
+ * A boolean that turns true on `trigger()` and falls back to false after `ms` (default 2000).
+ * Pair with `Tag`'s `copied`: `const [copied, flash] = useTransientFlag(); ... onClick={() => { copy(); flash(); }}`.
+ * @public
+ */
+export function useTransientFlag(ms = 2000): [boolean, () => void] {
+  const [on, setOn] = React.useState(false);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  React.useEffect(() => () => clearTimeout(timer.current), []);
+  const trigger = React.useCallback(() => {
+    clearTimeout(timer.current);
+    setOn(true);
+    timer.current = setTimeout(() => setOn(false), ms);
+  }, [ms]);
+  return [on, trigger];
 }
 
 function textOf(node: React.ReactNode): string {
@@ -105,40 +138,78 @@ function textOf(node: React.ReactNode): string {
 
 /** @public */
 export const Tag = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, TagProps>(function Tag(
-  { children, active = false, className, type = 'button', onDismiss, dismissLabel, ...props },
+  {
+    children,
+    active = false,
+    className,
+    type = 'button',
+    onDismiss,
+    dismissLabel,
+    icon,
+    copied,
+    copiedLabel = 'Copied',
+    ...props
+  },
   ref,
 ) {
+  const showCopied = copied === true;
+  const leading = showCopied ? Check : icon;
+  const content = (
+    <>
+      {leading ? <Icon icon={leading} size="small" color="currentColor" aria-hidden /> : null}
+      {onDismiss ? (
+        <span className="min-w-0 truncate">{showCopied ? copiedLabel : children}</span>
+      ) : showCopied ? (
+        copiedLabel
+      ) : (
+        children
+      )}
+    </>
+  );
+  // Always mounted once `copied` is passed, so the text change is announced (a node added already filled is not).
+  const liveRegion =
+    copied === undefined ? null : (
+      <span role="status" aria-live="polite" className="sr-only">
+        {showCopied ? copiedLabel : ''}
+      </span>
+    );
   if (onDismiss) {
     const label = dismissLabel ?? props['aria-label'] ?? `Remove ${textOf(children)}`.trim();
     return (
-      <span data-dismissible="true" className={cn(dismissPill, className)}>
-        <span className="min-w-0 truncate">{children}</span>
-        <button
-          ref={ref}
-          type={type}
-          {...props}
-          aria-label={label}
-          className={dismissButton}
-          onClick={(event) => {
-            props.onClick?.(event);
-            if (!event.defaultPrevented) onDismiss();
-          }}
-        >
-          <Icon icon={X} size="small" color="currentColor" aria-hidden />
-        </button>
-      </span>
+      <>
+        <span data-dismissible="true" className={cn(dismissPill, className)}>
+          {content}
+          <button
+            ref={ref}
+            type={type}
+            {...props}
+            aria-label={label}
+            className={dismissButton}
+            onClick={(event) => {
+              props.onClick?.(event);
+              if (!event.defaultPrevented) onDismiss();
+            }}
+          >
+            <Icon icon={X} size="small" color="currentColor" aria-hidden />
+          </button>
+        </span>
+        {liveRegion}
+      </>
     );
   }
   return (
-    <button
-      ref={ref}
-      type={type}
-      aria-pressed={active}
-      data-active={active ? 'true' : undefined}
-      className={cn('hds-focus', tagButtonVariants(), className)}
-      {...props}
-    >
-      <span className={tagPillVariants({ selected: active })}>{children}</span>
-    </button>
+    <>
+      <button
+        ref={ref}
+        type={type}
+        aria-pressed={active}
+        data-active={active ? 'true' : undefined}
+        className={cn('hds-focus', tagButtonVariants(), className)}
+        {...props}
+      >
+        <span className={tagPillVariants({ selected: active })}>{content}</span>
+      </button>
+      {liveRegion}
+    </>
   );
 });

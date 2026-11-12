@@ -237,6 +237,17 @@ describe('pageDescription: a reader-facing summary, not a code note', () => {
     ).toBe('Layout primitive.');
   });
 
+  it('keeps a backticked tag name and drops a raw tag', () => {
+    expect(
+      pageDescription('MetadataList', {
+        description: 'Renders object metadata as a semantic `<dl>` of term/description pairs.',
+      }),
+    ).toBe('Renders object metadata as a semantic <dl> of term/description pairs.');
+    expect(pageDescription('X', { description: 'Wraps a <b>bold</b> label.' })).toBe(
+      'Wraps a bold label.',
+    );
+  });
+
   it('strips a leading component-name prefix, whatever the separator', () => {
     expect(
       pageDescription('InlineLink', { description: 'InlineLink \u201d inline link primitive.' }),

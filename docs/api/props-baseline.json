@@ -417,6 +417,12 @@
       "values": null,
       "default": "false"
     },
+    "icon": {
+      "type": "LucideIcon",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
     "label": {
       "type": "string",
       "optional": true,
@@ -3764,8 +3770,26 @@
       "values": null,
       "default": null
     },
+    "copied": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "copiedLabel": {
+      "type": "string",
+      "optional": true,
+      "values": null,
+      "default": "Copied"
+    },
     "dismissLabel": {
       "type": "string",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
+    "icon": {
+      "type": "LucideIcon",
       "optional": true,
       "values": null,
       "default": null

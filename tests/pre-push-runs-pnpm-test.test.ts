@@ -4,7 +4,7 @@
  *
  * `pnpm test` is the entry point CI uses and it carries the `pretest` gate
  * chain (manifest, registry, source-canon, ...). A hook that calls vitest
- * directly skips those, so a push can pass locally and fail in CI. README
+ * directly skips those, so a push can pass locally and fail in CI. docs/OVERVIEW.md
  * documents the hook as running `pnpm test`; this pins the two together.
  *
  * The hook hands off to the tiered gate (scripts/pre-push-gate.mjs, ops#1057);
@@ -48,8 +48,8 @@ describe('.husky/pre-push', () => {
     );
   });
 
-  it('is described by README as running pnpm test', () => {
-    const readme = read('README.md');
+  it('is described by docs/OVERVIEW.md (the README long form) as running pnpm test', () => {
+    const readme = read('docs/OVERVIEW.md');
     expect(readme).toMatch(/pnpm test\s+#[^\n]*pre-push hook/);
   });
 });

@@ -3,7 +3,7 @@
 // The docs site is a static export on Vercel, so its security headers live in
 // docs-site/vercel.json. This pins the ones that matter for a static site.
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -68,5 +68,26 @@ describe('docs-site security headers', () => {
     expect(pkg.scripts['docs:publish']).toMatch(
       /pnpm docs:build && node scripts\/hash-docs-csp\.mjs docs-site\/out/,
     );
+  });
+});
+
+describe('docs-site redirects', () => {
+  // The site is a static export, so next.config redirects do not exist; vercel.json is the mechanism.
+  it('sends /docs/tokens to the tokens guide, and the guide page exists', () => {
+    const rule = (config.redirects ?? []).find((r) => r.source === '/docs/tokens');
+    expect(rule?.destination).toBe('/docs/guides/tokens');
+    const page = join(ROOT, 'content/docs', rule.destination.replace(/^\/docs\//, '') + '.mdx');
+    expect(existsSync(page)).toBe(true);
+  });
+
+  it('every redirect lands on a real docs page', () => {
+    for (const r of config.redirects ?? []) {
+      if (!r.destination.startsWith('/docs/')) continue;
+      const rel = r.destination.replace(/^\/docs\//, '');
+      const found = [`${rel}.mdx`, `${rel}/index.mdx`].some((f) =>
+        existsSync(join(ROOT, 'content/docs', f)),
+      );
+      expect(found, `${r.source} -> ${r.destination}`).toBe(true);
+    }
   });
 });

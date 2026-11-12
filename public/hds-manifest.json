@@ -2,10 +2,10 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-12T01:18:51.123Z",
+  "generated": "2026-11-12T06:35:48.911Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
-  "docs": "https://hirobius-hds-components.vercel.app/",
+  "docs": "https://hirobius-design-system.vercel.app/",
   "packageVersion": "0.41.0",
   "upgrade": {
     "command": "npx @hirobius/design-system@latest upgrade"
@@ -1320,6 +1320,7 @@
         "src/app/components/alert.tsx",
         "src/app/components/app-shell.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/badge.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/button.tsx",
         "src/app/components/card.tsx",
@@ -2644,7 +2645,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/tag.tsx",
-      "description": "Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.",
+      "description": "Tag — interactive filter and category chip. `icon` adds a leading Lucide icon (decorative, small, spaced by the Button gap). `copied` swaps the label for `copiedLabel` (default \"Copied\") with a Check icon and announces it; the caller owns the clipboard write and the timer, so the tag stays presentational (`useTransientFlag` below, optional). With `onDismiss` it is a static, removable label instead: only its X acts.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "figmaId": null,
       "preview": {
@@ -2695,8 +2696,20 @@
         "children": {
           "type": "ReactNode"
         },
+        "copied": {
+          "type": "boolean",
+          "optional": true
+        },
+        "copiedLabel": {
+          "type": "string",
+          "default": "Copied"
+        },
         "dismissLabel": {
           "type": "string",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon",
           "optional": true
         },
         "onDismiss": {
@@ -2708,6 +2721,12 @@
       "propConstraints": {
         "active": {
           "type": "boolean"
+        },
+        "copied": {
+          "type": "boolean"
+        },
+        "copiedLabel": {
+          "type": "string"
         },
         "dismissLabel": {
           "type": "string"
@@ -2770,6 +2789,18 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:tag.dismiss-target-size"
+        },
+        {
+          "rule": "The leading icon (and the Check in the copied state) is aria-hidden; the label names the tag.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.icon-decorative"
+        },
+        {
+          "rule": "With `copied` the label swaps to copiedLabel and a polite live region (role=status) announces it once; the region is only rendered when `copied` is passed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.copied-announced"
         },
         {
           "rule": "Name the tag by its text, or by an aria-label when the text is not enough; use Badge for a label that does nothing.",
@@ -3439,6 +3470,7 @@
         "src/app/components/page-header.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/tag.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/tokens.ts",
@@ -3825,6 +3857,7 @@
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
         "src/app/components/sheet.tsx",
+        "src/app/components/tag.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/motion-extras.ts",
@@ -4771,6 +4804,10 @@
           "type": "boolean",
           "default": false
         },
+        "icon": {
+          "type": "LucideIcon",
+          "optional": true
+        },
         "label": {
           "type": "string",
           "optional": true
@@ -4830,7 +4867,13 @@
         }
       },
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "A leading `icon` is aria-hidden decoration: put the meaning in the text (or `label`), never in the icon alone. `dot` wins over `icon`.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "description": "Compact metadata/status chip. Tone is the only styling input.",
       "category": "Feedback",
       "categorySource": "jsdoc",
@@ -4860,7 +4903,7 @@
         "data-tone"
       ],
       "usage": {
-        "when": "Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).",
+        "when": "Label a status or state with a compact neutral or semantic chip, a dot, a leading `icon`, or a capped count beside a heading (`count`, `max`, `label`).",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
         "useInstead": [
           {
@@ -7499,7 +7542,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/metadata-list.tsx",
-      "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
+      "description": "Renders object metadata as a description list of term/description pairs.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",

@@ -1,15 +1,15 @@
 {
-  "checksum": "ec185684",
+  "checksum": "4e409244",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-11T23:22:46.427Z",
+    "takenAt": "2026-11-12T03:47:29.580Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "24826d07",
-      "pushedAt": "2026-11-11T23:22:46.369Z",
+      "modelHash": "10714903",
+      "pushedAt": "2026-11-12T03:47:29.498Z",
       "scope": null
     },
     "collections": [
@@ -45,7 +45,7 @@
             "name": "blur/2",
             "path": "primitive.blur.2",
             "resolvedType": "FLOAT",
-            "description": "Motion blur for in-place swaps of text and icons (hds#751).",
+            "description": "Motion blur for in-place swaps of text and icons.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -62,7 +62,7 @@
             "name": "blur/4",
             "path": "primitive.blur.4",
             "resolvedType": "FLOAT",
-            "description": "Motion blur for content revealing into place (hds#751).",
+            "description": "Motion blur for content revealing into place.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -741,7 +741,7 @@
             "name": "color/graphite/250",
             "path": "primitive.color.graphite.250",
             "resolvedType": "COLOR",
-            "description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522).",
+            "description": "The Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1709,7 +1709,7 @@
             "name": "color/neutral/150",
             "path": "primitive.color.neutral.150",
             "resolvedType": "COLOR",
-            "description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522).",
+            "description": "The Light value of surface.raised, 1.2:1 against the white page like the dark ladder.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1753,7 +1753,7 @@
             "name": "color/neutral/250",
             "path": "primitive.color.neutral.250",
             "resolvedType": "COLOR",
-            "description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522).",
+            "description": "The Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1797,7 +1797,7 @@
             "name": "color/neutral/325",
             "path": "primitive.color.neutral.325",
             "resolvedType": "COLOR",
-            "description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522).",
+            "description": "The Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1819,7 +1819,7 @@
             "name": "color/neutral/350",
             "path": "primitive.color.neutral.350",
             "resolvedType": "COLOR",
-            "description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
+            "description": "The Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1863,7 +1863,7 @@
             "name": "color/neutral/450",
             "path": "primitive.color.neutral.450",
             "resolvedType": "COLOR",
-            "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
+            "description": "The Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1929,7 +1929,7 @@
             "name": "color/neutral/550",
             "path": "primitive.color.neutral.550",
             "resolvedType": "COLOR",
-            "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522).",
+            "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1995,7 +1995,7 @@
             "name": "color/neutral/725",
             "path": "primitive.color.neutral.725",
             "resolvedType": "COLOR",
-            "description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).",
+            "description": "The Dark value of surface.selected, at least 1.15:1 above surface.raised.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2017,7 +2017,7 @@
             "name": "color/neutral/750",
             "path": "primitive.color.neutral.750",
             "resolvedType": "COLOR",
-            "description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).",
+            "description": "The Dark value of surface.muted, at least 1.1:1 above surface.raised.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -2061,7 +2061,7 @@
             "name": "color/neutral/825",
             "path": "primitive.color.neutral.825",
             "resolvedType": "COLOR",
-            "description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).",
+            "description": "The Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black).",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3211,7 +3211,7 @@
             "name": "size/width/1180",
             "path": "primitive.size.width.1180",
             "resolvedType": "FLOAT",
-            "description": "App shell max width: a 1180px column for app pages (hds#863).",
+            "description": "App shell max width: a 1180px column for app pages.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3245,7 +3245,7 @@
             "name": "size/width/280",
             "path": "primitive.size.width.280",
             "resolvedType": "FLOAT",
-            "description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room.",
+            "description": "Docs-shell rail width: our own number, not HeroUI's 268px; fits the longest top-level nav label with room.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3636,7 +3636,7 @@
             "name": "space/px3",
             "path": "primitive.space.px3",
             "resolvedType": "FLOAT",
-            "description": "3px: the raised edge height of a Button (hds#1387).",
+            "description": "3px: the raised edge height of a Button.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3806,7 +3806,7 @@
             "name": "typography/size/2xl",
             "path": "primitive.typography.size.2xl",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-2xl (hds#283 ramp).",
+            "description": "Tailwind 4 default text-2xl.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3823,7 +3823,7 @@
             "name": "typography/size/3xl",
             "path": "primitive.typography.size.3xl",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-3xl (hds#283 ramp).",
+            "description": "Tailwind 4 default text-3xl.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3840,7 +3840,7 @@
             "name": "typography/size/4xl",
             "path": "primitive.typography.size.4xl",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-4xl (hds#283 ramp).",
+            "description": "Tailwind 4 default text-4xl.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3857,7 +3857,7 @@
             "name": "typography/size/5xl",
             "path": "primitive.typography.size.5xl",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-5xl (hds#283 ramp).",
+            "description": "Tailwind 4 default text-5xl.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3874,7 +3874,7 @@
             "name": "typography/size/6xl",
             "path": "primitive.typography.size.6xl",
             "resolvedType": "FLOAT",
-            "description": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl.",
+            "description": "Swiss-canon display size. Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3891,7 +3891,7 @@
             "name": "typography/size/base",
             "path": "primitive.typography.size.base",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-base (hds#283 ramp).",
+            "description": "Tailwind 4 default text-base.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3908,7 +3908,7 @@
             "name": "typography/size/code",
             "path": "primitive.typography.size.code",
             "resolvedType": "FLOAT",
-            "description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text.",
+            "description": "15px code size. The mono role: one px below ui so code sits level with 16px UI text.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3959,7 +3959,7 @@
             "name": "typography/size/display",
             "path": "primitive.typography.size.display",
             "resolvedType": "FLOAT",
-            "description": "Display role size (hds#847): the page's one hero heading, a clear step above title.",
+            "description": "Display role size: the page's one hero heading, a clear step above title.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -3976,7 +3976,7 @@
             "name": "typography/size/displayMin",
             "path": "primitive.typography.size.displayMin",
             "resolvedType": "FLOAT",
-            "description": "Display floor at a 360px viewport (hds#1300): 40px at a 16px root, in rem to follow the user's font size.",
+            "description": "Display floor at a 360px viewport: 40px at a 16px root, in rem to follow the user's font size.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4010,7 +4010,7 @@
             "name": "typography/size/lg",
             "path": "primitive.typography.size.lg",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-lg (hds#283 ramp).",
+            "description": "Tailwind 4 default text-lg.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4027,7 +4027,7 @@
             "name": "typography/size/sm",
             "path": "primitive.typography.size.sm",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-sm (hds#283 ramp).",
+            "description": "Tailwind 4 default text-sm.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4044,7 +4044,7 @@
             "name": "typography/size/title",
             "path": "primitive.typography.size.title",
             "resolvedType": "FLOAT",
-            "description": "Title role size (hds#847): one clear step under display.",
+            "description": "Title role size: one clear step under display.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4061,7 +4061,7 @@
             "name": "typography/size/xl",
             "path": "primitive.typography.size.xl",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-xl (hds#283 ramp).",
+            "description": "Tailwind 4 default text-xl.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4078,7 +4078,7 @@
             "name": "typography/size/xs",
             "path": "primitive.typography.size.xs",
             "resolvedType": "FLOAT",
-            "description": "Tailwind 4 default text-xs (hds#283 ramp).",
+            "description": "Tailwind 4 default text-xs.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4181,7 +4181,7 @@
             "name": "typography/weight/semibold",
             "path": "primitive.typography.weight.semibold",
             "resolvedType": "FLOAT",
-            "description": "Button label weight (hds#760): Sora SemiBold 600.",
+            "description": "Button label weight: Sora SemiBold 600.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4388,7 +4388,7 @@
             "name": "accent/hover",
             "path": "semantic.accent.hover",
             "resolvedType": "COLOR",
-            "description": "Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422). Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Accent fill on hover, one step darker than rest (graphite.800 / 100). Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4463,7 +4463,7 @@
             "name": "accent/rest",
             "path": "semantic.accent.rest",
             "resolvedType": "COLOR",
-            "description": "Accent fill at rest — graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Accent fill at rest — graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5134,7 +5134,7 @@
             "name": "color/edge/danger",
             "path": "semantic.color.edge.danger",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+            "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5159,7 +5159,7 @@
             "name": "color/edge/info",
             "path": "semantic.color.edge.info",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill (hds#1422).",
+            "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5184,7 +5184,7 @@
             "name": "color/edge/neutral",
             "path": "semantic.color.edge.neutral",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+            "description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5209,7 +5209,7 @@
             "name": "color/edge/primary",
             "path": "semantic.color.edge.primary",
             "resolvedType": "COLOR",
-            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422). Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5234,7 +5234,7 @@
             "name": "color/edge/success",
             "path": "semantic.color.edge.success",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+            "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5259,7 +5259,7 @@
             "name": "color/edge/warning",
             "path": "semantic.color.edge.warning",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+            "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5474,8 +5474,8 @@
                 "to": "Hirobius/Primitives: color/blue/500"
               },
               "Dark": {
-                "alias": "VariableID:3:19",
-                "to": "Hirobius/Primitives: color/blue/300"
+                "alias": "VariableID:3:18",
+                "to": "Hirobius/Primitives: color/blue/200"
               }
             }
           },
@@ -5534,7 +5534,7 @@
             "name": "color/shadow/hard",
             "path": "semantic.color.shadow.hard",
             "resolvedType": "COLOR",
-            "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).",
+            "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5584,7 +5584,7 @@
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
             "resolvedType": "COLOR",
-            "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -6655,7 +6655,7 @@
             "name": "radius/control",
             "path": "semantic.radius.control",
             "resolvedType": "FLOAT",
-            "description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242).",
+            "description": "Corner radius for small control glyphs such as the checkbox box; distinct from radius.action.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -6829,7 +6829,7 @@
             "name": "size/avatar",
             "path": "semantic.size.avatar",
             "resolvedType": "FLOAT",
-            "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
+            "description": "Avatar width and height for feeds and identity glyphs. Same pixels as row.compact, a separate role.",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -7069,7 +7069,7 @@
             "name": "size/tile",
             "path": "semantic.size.tile",
             "resolvedType": "FLOAT",
-            "description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403).",
+            "description": "Minimum height of a metric tile, one height for every tile so rows line up.",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -7093,7 +7093,7 @@
             "name": "size/touchTarget",
             "path": "semantic.size.touchTarget",
             "resolvedType": "FLOAT",
-            "description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750).",
+            "description": "Small-control minimum on a coarse pointer or narrow viewport.",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -9951,7 +9951,7 @@
             "name": "button/bgPressed",
             "path": "component.button.bgPressed",
             "resolvedType": "COLOR",
-            "description": "Primary button pressed fill (hds#748).",
+            "description": "Primary button pressed fill.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -10032,7 +10032,7 @@
             "name": "button/edge/danger",
             "path": "component.button.edge.danger",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger (hds#897).",
+            "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -10053,7 +10053,7 @@
             "name": "button/edge/info",
             "path": "component.button.edge.info",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897).",
+            "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -10074,7 +10074,7 @@
             "name": "button/edge/primary",
             "path": "component.button.edge.primary",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
+            "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -10095,7 +10095,7 @@
             "name": "button/edge/secondary",
             "path": "component.button.edge.secondary",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral (hds#897).",
+            "description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -10116,7 +10116,7 @@
             "name": "button/edge/success",
             "path": "component.button.edge.success",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success (hds#897).",
+            "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -10137,7 +10137,7 @@
             "name": "button/edge/warning",
             "path": "component.button.edge.warning",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning (hds#897).",
+            "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -10363,7 +10363,7 @@
             "name": "button/secondary/bg/rest",
             "path": "component.button.secondary.bg.rest",
             "resolvedType": "COLOR",
-            "description": "Secondary button fill: soft tonal, no border (hds#891).",
+            "description": "Secondary button fill: soft tonal, no border.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -10384,7 +10384,7 @@
             "name": "button/secondary/border/disabled",
             "path": "component.button.secondary.border.disabled",
             "resolvedType": "COLOR",
-            "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
+            "description": "Secondary button disabled border. DEPRECATED: secondary is now soft-filled and borderless; kept live, unused by Button.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -10424,7 +10424,7 @@
             "name": "button/secondary/border/rest",
             "path": "component.button.secondary.border.rest",
             "resolvedType": "COLOR",
-            "description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
+            "description": "Secondary button border. DEPRECATED: secondary is soft-filled and borderless; kept live, unused by Button.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -11680,7 +11680,7 @@
             "name": "tag/border",
             "path": "component.tag.border",
             "resolvedType": "COLOR",
-            "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
+            "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -14405,7 +14405,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "cc7af52"
+                "value": "20dfd0e"
               }
             }
           },
@@ -15215,7 +15215,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:337cd18eb15c581dad316f30ad991d7a601eca90c041965964211bd85c016c40",
-  "syncedCommit": "cc7af52",
-  "syncedHash": "sha256:6f9097199c4e0ec4dfee7b53e491c79c03696623e8dac84d9b97bb3d57014a5d"
+  "tokensHash": "sha256:f2598b2d21436b54a3424bf451f5357c98cb2a03eb34137ad70212c450e17d38",
+  "syncedCommit": "20dfd0e",
+  "syncedHash": "sha256:700bd0133d92e0ebd3ef723b8a8d5158c397a4339a3a4ee8da3098974adf0d2b"
 }

@@ -1,6 +1,6 @@
 {
   "component": "Tag",
-  "description": "Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.",
+  "description": "Tag — interactive filter and category chip. `icon` adds a leading Lucide icon (decorative, small, spaced by the Button gap). `copied` swaps the label for `copiedLabel` (default \"Copied\") with a Check icon and announces it; the caller owns the clipboard write and the timer, so the tag stays presentational (`useTransientFlag` below, optional). With `onDismiss` it is a static, removable label instead: only its X acts.",
   "docsPage": "/docs/components/tag",
   "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
   "anatomy": [
@@ -77,8 +77,23 @@
       "type": "ReactNode"
     },
     {
+      "name": "copied",
+      "type": "boolean",
+      "optional": true
+    },
+    {
+      "name": "copiedLabel",
+      "type": "string",
+      "default": "Copied"
+    },
+    {
       "name": "dismissLabel",
       "type": "string",
+      "optional": true
+    },
+    {
+      "name": "icon",
+      "type": "LucideIcon",
       "optional": true
     },
     {
