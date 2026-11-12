@@ -1,0 +1,7 @@
+# Reviewed false positives: Figma file keys (public file ids, not credentials;
+# the same kind already allowlisted in .gitleaks.toml) used as fixture values in
+# tests, flagged by generic-api-key because the key sits next to an
+# "explorations" identifier. Fingerprint = commit:file:rule:line.
+5f5f2ce2ac1d9ad02af4ada624df6fb2b1c4e14e:scripts/__tests__/generator-check-flags.test.mjs:generic-api-key:359
+5f5f2ce2ac1d9ad02af4ada624df6fb2b1c4e14e:scripts/__tests__/figma-links.test.mjs:generic-api-key:51
+5f5f2ce2ac1d9ad02af4ada624df6fb2b1c4e14e:scripts/__tests__/figma-links.test.mjs:generic-api-key:226
