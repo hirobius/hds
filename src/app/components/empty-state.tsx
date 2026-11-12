@@ -51,9 +51,8 @@ export interface EmptyStateProps {
   /** Optional action that fills the space, rendered under the description. */
   action?: React.ReactNode;
   /**
-   * Set the message in italic. Defaults to `true` inline and `false` for
-   * `variant="teaching"`; `false` sets it upright, for products whose type has
-   * no italic anywhere.
+   * Set the message in italic. Defaults to `false` (upright) for both
+   * variants; pass `italic` to opt the message back in to italic.
    */
   italic?: boolean;
   /** Escape hatch for layout adjustments — token-only, no business logic. */
@@ -67,11 +66,19 @@ const TILE_CLASS =
 /** @public */
 export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, EmptyStateProps>(
   function EmptyState(
-    { variant = 'inline', framed = false, icon, title, description, action, italic, className },
+    {
+      variant = 'inline',
+      framed = false,
+      icon,
+      title,
+      description,
+      action,
+      italic = false,
+      className,
+    },
     ref,
   ) {
     const teaching = variant === 'teaching';
-    const isItalic = italic ?? !teaching;
     const isFramed = teaching && framed;
     return (
       <div
@@ -81,7 +88,7 @@ export const EmptyState = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Empty
         data-framed={isFramed ? 'true' : undefined}
         className={cn(
           'flex flex-col gap-fixed-2xs hds-type-ui text-muted-foreground',
-          isItalic ? 'italic' : 'not-italic',
+          italic ? 'italic' : 'not-italic',
           teaching && 'items-center gap-scale-xs text-center',
           isFramed && 'rounded-lg bg-card p-surface-padding',
           className,

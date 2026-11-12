@@ -4327,7 +4327,7 @@
         },
         "italic": {
           "type": "boolean",
-          "optional": true
+          "default": false
         },
         "title": {
           "type": "ReactNode"

@@ -689,6 +689,9 @@
       "  div data-hds-component=\"EmptyState\"",
       "    p",
       "    p",
+      "  div data-hds-component=\"EmptyState\"",
+      "    p",
+      "    p",
       "  div data-framed=\"true\" data-hds-component=\"EmptyState\" data-variant=\"teaching\"",
       "    span aria-hidden=\"true\" data-hds-empty-state-tile",
       "      svg aria-hidden=\"true\" data-hds-icon",
@@ -698,6 +701,8 @@
       "      button data-hover-effect=\"wipe\" data-variant=\"primary\""
     ],
     "reader": [
+      "paragraph",
+      "paragraph",
       "paragraph",
       "paragraph",
       "paragraph",

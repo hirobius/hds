@@ -726,6 +726,11 @@ function EmptyStateDemo() {
         description="Create a project to start tracking tokens and components."
       />
       <EmptyState
+        italic
+        title="No drafts yet"
+        description="Opt in to italic with the italic prop."
+      />
+      <EmptyState
         variant="teaching"
         framed
         icon={FileText}
