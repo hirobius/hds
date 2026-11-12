@@ -5840,6 +5840,7 @@
         "src/app/components/control-label.tsx",
         "src/app/components/menu.tsx",
         "src/app/components/radio.tsx",
+        "src/app/components/toggle-switch-styles.ts",
         "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
@@ -7714,7 +7715,7 @@
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/switcher.tsx",
-        "src/app/components/toggle.tsx",
+        "src/app/components/toggle-switch-styles.ts",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -8943,7 +8944,8 @@
         "src/app/components/page-header.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
-        "src/app/components/sheet.tsx"
+        "src/app/components/sheet.tsx",
+        "src/app/components/toggle-switch-styles.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],

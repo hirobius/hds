@@ -75,7 +75,8 @@ const ITEM = menuItemVariants();
 // A row's optional caption sits under its label and is the row's accessible
 // description (aria-describedby), as List rows do: the name stays the label alone,
 // so the caption is aria-hidden (a hidden node can still describe).
-const DESCRIPTION = 'hds-type-caption text-[var(--semantic-color-content-secondary)]';
+// text-muted-foreground is semantic.color.content.secondary (--role-muted-foreground).
+const DESCRIPTION = 'hds-type-caption text-muted-foreground';
 
 /** Label plus optional caption, stacked. Returns the content and the id to describe the row by. */
 function useRowBody(children: React.ReactNode, description: React.ReactNode) {
