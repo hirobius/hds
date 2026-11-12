@@ -163,15 +163,15 @@ describe('generate-llms-txt --check', () => {
   }, 90_000);
 });
 
-describe('README consumer-usage block', () => {
-  const readme = readFileSync(join(ROOT, 'README.md'), 'utf8');
+describe('docs/OVERVIEW.md consumer-usage block', () => {
+  const readme = readFileSync(join(ROOT, 'docs/OVERVIEW.md'), 'utf8');
   const snapshot = JSON.parse(readFileSync(join(ROOT, 'docs/data/consumer-usage.json'), 'utf8'));
 
   it('is what the committed snapshot renders to', () => {
     expect(readmeWithUsage(readme, snapshot)).toBe(readme);
   });
 
-  it('differs from the README once the snapshot moves', () => {
+  it('differs from the overview once the snapshot moves', () => {
     expect(readmeWithUsage(readme, { ...snapshot, files: snapshot.files + 7 })).not.toBe(readme);
   });
 });

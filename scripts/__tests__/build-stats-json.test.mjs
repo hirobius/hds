@@ -29,15 +29,16 @@ describe('collectStats', () => {
   const stats = collectStats(ROOT);
   const readme = readText('README.md');
 
-  it('states the component, token and core counts the README states', () => {
+  it('states the component, token and core counts the README and its overview state', () => {
     const claims = readClaims(readme);
+    const overview = readFileSync(join(ROOT, 'docs/OVERVIEW.md'), 'utf8');
     expect(stats.components.publicModules).toBe(claims.components);
     expect(stats.tokens.total).toBe(claims.tokens);
     expect(stats.components.core).toBe(
-      Number(readme.match(/\*\*(\d+)\*\* components are the core set/)[1]),
+      Number(overview.match(/\*\*(\d+)\*\* components are the core set/)[1]),
     );
     expect(stats.components.patterns).toBe(
-      Number(readme.match(/\*\*(\d+)\*\* pattern modules ship/)[1]),
+      Number(overview.match(/\*\*(\d+)\*\* pattern modules ship/)[1]),
     );
   });
 

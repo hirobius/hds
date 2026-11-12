@@ -209,7 +209,7 @@ descendant with **zero JavaScript**, equally in React, Astro, or plain HTML. A
 direction ships in the package (`directions/<slug>`); a brand is applied at the
 consumer through `@hirobius/design-system/brand` and never enters the package
 (ADR-035, `GLOSSARY.md`). The React `<HdsThemeProvider>` is a typed convenience
-over the same attribute contract, not a requirement. See [Theming in the README](../README.md#theming-the-four-dials).
+over the same attribute contract, not a requirement. See [Theming in the overview](OVERVIEW.md#theming-the-four-dials).
 
 ## Further reading
 

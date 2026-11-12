@@ -138,6 +138,7 @@ describe('build-readme-counts --check', () => {
   const SCRIPT = join(ROOT, 'scripts/build-readme-counts.mjs');
   const INPUTS = [
     'README.md',
+    'docs/OVERVIEW.md',
     'src/index.ts',
     'src/patterns.ts',
     'hirobius.tokens.json',
