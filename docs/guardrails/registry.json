@@ -110,6 +110,7 @@
       "node scripts/check-figma-components.mjs --check",
       "node scripts/check-figma-spec-coverage.mjs",
       "node scripts/check-code-connect-map.mjs",
+      "node scripts/figma-code-connect-map.mjs --check",
       "node scripts/check-guardrail-drift.mjs",
       "node scripts/check-skills-lock.mjs",
       "node scripts/check-lockfile-integrity.mjs",
@@ -416,7 +417,7 @@
     },
     {
       "id": "check-code-connect-map",
-      "description": "Code Connect map: every component figma/disposition.json classes `library` (deprecated ones exempt) has a Figma node (its @figma tag, or figma/mapping-overrides.json for a tagless part), a source file that exists and an import entry (src/index.ts or src/patterns.ts re-exports it), and the committed figma/code-connect-map.json is what `node scripts/figma-code-connect-map.mjs --write` writes. `--emit-mappings` prints the payload for the Figma MCP tool send_code_connect_mappings, which needs a Figma Organization plan (ADR-019 §3). Never writes to Figma. Exit 0 mapped, 1 an unmapped component or a stale map. Runs in pretest; logic in scripts/__tests__/figma-code-connect-map.test.mjs.",
+      "description": "Code Connect map: every component figma/disposition.json classes `library` (deprecated ones exempt) has a Figma node (its @figma tag, or figma/mapping-overrides.json for a tagless part), a source file that exists and an import entry (src/index.ts or src/patterns.ts re-exports it), and pretest also runs `node scripts/figma-code-connect-map.mjs --check` (runGenerator) so the committed figma/code-connect-map.json stays fresh. `--emit-mappings` prints the payload for the Figma MCP tool send_code_connect_mappings, which needs a Figma Organization plan (ADR-019 §3). Never writes to Figma. Exit 0 mapped, 1 an unmapped component. Runs in pretest; logic in scripts/__tests__/figma-code-connect-map.test.mjs.",
       "severity": "error",
       "gateScript": "scripts/check-code-connect-map.mjs",
       "fixturePath": "fixtures/check-code-connect-map",

@@ -31,6 +31,7 @@ A script builds it: change its source, never the file. A named check fails when 
 - `figma/deprecated-usage.json`: Library layers on a deprecated text style or variable, as last audited (hds#483). Built by `scripts/figma-deprecated-usage.mjs`; fresh when `node scripts/check-figma-deprecated-usage.mjs` passes.
 - `figma/reads/deprecated-usage.js`: The read-only use_figma audit behind figma/deprecated-usage.json. Built by `scripts/figma-deprecated-usage.mjs`; fresh when `node scripts/check-figma-deprecated-usage.mjs` passes.
 - `figma/inventory.json`: Every page, component set and variant count in the Figma library. Built by `scripts/figma-inventory.mjs`; not freshness-checked.
+- `figma/code-connect-map.json`: Every library component in the HDS Figma library mapped to its code for Code Connect: node, source file, import and usage. Built by `scripts/figma-code-connect-map.mjs`; fresh when `node scripts/figma-code-connect-map.mjs --check` passes.
 - `figma/spec-sheet-audit.json`: Which Figma library pages hold a spec sheet, and the component nodes on each page. Built by `scripts/figma-spec-sheets.mjs`; not freshness-checked.
 - `figma/disposition.json`: What becomes of each Figma component. Built by `scripts/figma-disposition.mjs`; fresh when `node scripts/figma-disposition.mjs --check` passes.
 - `figma/code-connect.json`: Code Connect templates registry. Built by `scripts/generate-code-connect.mjs`; fresh when `node scripts/check-code-connect.mjs` passes.

@@ -95,7 +95,7 @@ describe('figma-code-connect-map', () => {
       usageSnippet('Icon', { requiredProps: ['icon'], props: { icon: { type: 'LucideIcon' } } }),
     ).toBe('<Icon icon={…} />');
   });
-  it('the committed map is fresh and every repo library component is mapped', () => {
+  it('every repo library component is mapped', () => {
     const out = execFileSync('node', [path.resolve('scripts/check-code-connect-map.mjs')], {
       encoding: 'utf8',
     });
