@@ -75,7 +75,7 @@ const ITEM = menuItemVariants();
 // A row's optional caption sits under its label and is the row's accessible
 // description (aria-describedby), as List rows do: the name stays the label alone,
 // so the caption is aria-hidden (a hidden node can still describe).
-const DESCRIPTION = 'hds-type-caption block text-[var(--semantic-color-content-secondary)]';
+const DESCRIPTION = 'hds-type-caption text-[var(--semantic-color-content-secondary)]';
 
 /** Label plus optional caption, stacked. Returns the content and the id to describe the row by. */
 function useRowBody(children: React.ReactNode, description: React.ReactNode) {
@@ -100,20 +100,17 @@ function useRowBody(children: React.ReactNode, description: React.ReactNode) {
  * Toggle's tokens; the thumb's travel equals semantic.size.control.md (track is
  * twice that wide, thumb fills the padded rail), so no literal is needed.
  */
-function MenuSwitch({ checked }: { checked: boolean }) {
+function MenuSwitch({ on }: { on: boolean }) {
   return (
     <span
       aria-hidden="true"
       data-slot="menu-switch"
-      data-state={checked ? 'checked' : 'unchecked'}
-      className={cn('ml-auto', toggleTrackVariants({ on: checked, disabled: false }))}
+      data-state={on ? 'checked' : 'unchecked'}
+      className={toggleTrackVariants({ on, className: 'ml-auto' })}
     >
       <span
-        className={cn(
-          toggleThumbVariants({ on: checked, disabled: false }),
-          'transition-transform',
-        )}
-        style={checked ? { transform: 'translateX(var(--semantic-size-control-md))' } : undefined}
+        className={toggleThumbVariants({ on, className: 'transition-transform' })}
+        style={on ? { transform: 'translateX(var(--semantic-size-control-md))' } : undefined}
       />
     </span>
   );
@@ -187,7 +184,6 @@ const MenuCheckboxItem = /* @__PURE__ */ React.forwardRef<
       ref={ref}
       checked={checked}
       aria-describedby={describedBy}
-      data-indicator={indicator}
       // A switch is a setting, not an action: flipping it keeps the menu open so
       // several can be set in one visit. The caller's onSelect can still close it.
       onSelect={(event) => {
@@ -197,21 +193,15 @@ const MenuCheckboxItem = /* @__PURE__ */ React.forwardRef<
       className={cn(ITEM, !isSwitch && 'pl-fixed-md', className)}
       {...props}
     >
-      {isSwitch ? (
-        <>
-          {body}
-          <MenuSwitch checked={checked === true} />
-        </>
-      ) : (
-        <>
-          <span className="absolute left-2 inline-flex items-center justify-center">
-            <MenuPrimitive.ItemIndicator>
-              <Icon icon={Check} size={14} color="currentColor" aria-hidden />
-            </MenuPrimitive.ItemIndicator>
-          </span>
-          {body}
-        </>
+      {!isSwitch && (
+        <span className="absolute left-2 inline-flex items-center justify-center">
+          <MenuPrimitive.ItemIndicator>
+            <Icon icon={Check} size={14} color="currentColor" aria-hidden />
+          </MenuPrimitive.ItemIndicator>
+        </span>
       )}
+      {body}
+      {isSwitch && <MenuSwitch on={checked === true} />}
     </MenuPrimitive.CheckboxItem>
   );
 });

@@ -37,13 +37,6 @@ export const toggleTrackVariants = /* @__PURE__ */ cva(
         className: 'bg-transparent border-[color:var(--semantic-color-content-secondary)]',
       },
       {
-        on: true,
-        disabled: true,
-        className:
-          'bg-[var(--semantic-color-surface-raised)] border-[color:var(--semantic-color-border-default)]',
-      },
-      {
-        on: false,
         disabled: true,
         className:
           'bg-[var(--semantic-color-surface-raised)] border-[color:var(--semantic-color-border-default)]',
