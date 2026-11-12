@@ -23,7 +23,10 @@ Ralph gate) and fails until both are right.
      an export, prop, prop value, CSS variable, class, subpath, bin or runtime
      dependency, narrowing a peer range, raising `engines` (hds#445
      decision 3), or a DOM change a consumer's selectors or tests can see (a
-     `dom-changed` fact, hds#1349);
+     `dom-changed` fact, hds#1349). A `dom-changed` fact that only comes from a
+     new example in the docs demo (existing markup renders as before) stays
+     patch: give its behavior step `impact: "additive"` (with `detect.regex`
+     for the new prop). The reviewer checks that claim (hds#1435);
    - **major** never: it would cut 1.0, which waits for Adrian's call (#396).
      The gate refuses one unless `upgrade/ALLOW_1_0` exists.
 2. `pnpm upgrade:note --name <name>` writes `upgrade/pending/<name>.json`. It
