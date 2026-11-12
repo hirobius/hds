@@ -57,9 +57,13 @@ const segmentedControlWrapperVariants = /* @__PURE__ */ cva(
   },
 );
 
+// Concentric corners (hds#1468): a pill inset by padding + border inside a rail has radius
+// rail radius - (padding + border), else the gap between the two curves is uneven at the corners.
+// --seg-rail-radius is the rounded-lg formula (role radius + up to 4px), --seg-rail-pad the rail padding
+// (set inline from railPadding), the 1px is the rail's border; the segment and indicator read --seg-inner-radius.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- rail border/radius/gap are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlRailVariants = /* @__PURE__ */ cva(
-  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[color:transparent] [scrollbar-width:thin]',
+  'flex max-w-full items-stretch gap-[var(--semantic-space-subgrid-gap)] overflow-x-auto overflow-y-hidden rounded-[var(--seg-rail-radius)] border border-solid border-[color:transparent] [scrollbar-width:thin] [--seg-rail-radius:calc(var(--role-radius)+min(var(--role-radius),4px))] [--seg-inner-radius:max(0px,calc(var(--seg-rail-radius)-var(--seg-rail-pad)-1px))]',
   {
     variants: {
       variant: {
@@ -84,7 +88,7 @@ const segmentedControlRailVariants = /* @__PURE__ */ cva(
 // …` short-circuit.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- segment button color/spacing/motion tokens have no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlItemVariants = /* @__PURE__ */ cva(
-  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-md border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center hds-touch-target transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+  'relative m-0 flex flex-col items-center justify-center gap-[var(--semantic-space-subgrid-hairline)] rounded-[var(--seg-inner-radius)] border-0 bg-transparent py-[var(--semantic-space-subgrid-gap)] text-center hds-touch-target transition-[color,outline-color,transform] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
   {
     variants: {
       size: {
@@ -188,7 +192,7 @@ const SEGMENT_STATE_DEFAULTS = {
 // The absolutely-positioned background/ring indicator behind each segment.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- indicator background/ring colors are semantic tokens with no Tailwind-theme utility; var()-based so still token-driven
 const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
-  'pointer-events-none absolute inset-0 z-0 rounded-md bg-transparent shadow-none',
+  'pointer-events-none absolute inset-0 z-0 rounded-[var(--seg-inner-radius)] bg-transparent shadow-none',
   {
     variants: SEGMENT_STATE_AXES,
     compoundVariants: [
@@ -351,6 +355,13 @@ export interface SegmentedControlProps {
   segmentPaddingX?: React.CSSProperties['paddingLeft'];
 }
 
+/** First length of the rail padding as a CSS length (a bare number is px, like React's padding). */
+function railInset(padding: SegmentedControlProps['railPadding']): string {
+  if (padding === undefined || padding === null) return '4px';
+  if (typeof padding === 'number') return `${padding}px`;
+  return String(padding).trim().split(/\s+/)[0];
+}
+
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** @public */
@@ -424,7 +435,12 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           data-overflow={overflow}
           className={segmentedControlRailVariants({ variant, fullWidth })}
           // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class; the edge-fade mask is runtime too (scroll position)
-          style={{ padding: railPadding ?? '4px', ...scrollEdgeFadeStyle(overflow) }}
+          style={{
+            padding: railPadding ?? '4px',
+            // The first length of the padding shorthand drives the concentric inner radius.
+            ['--seg-rail-pad' as string]: railInset(railPadding),
+            ...scrollEdgeFadeStyle(overflow),
+          }}
         >
           <LazyMotion features={domAnimation}>
             {options.map((option) => {
