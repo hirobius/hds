@@ -1609,6 +1609,19 @@
       "    span data-dismissible=\"true\"",
       "      span",
       "      button aria-label=\"Remove contract\"",
+      "        svg aria-hidden=\"true\" data-hds-icon",
+      "  div",
+      "    button aria-pressed=\"false\"",
+      "      span",
+      "        svg aria-hidden=\"true\" data-hds-icon",
+      "    button aria-pressed=\"false\"",
+      "      span",
+      "        svg aria-hidden=\"true\" data-hds-icon",
+      "    span aria-live=\"polite\" role=\"status\"",
+      "    span data-dismissible=\"true\"",
+      "      svg aria-hidden=\"true\" data-hds-icon",
+      "      span",
+      "      button aria-label=\"Remove contract\"",
       "        svg aria-hidden=\"true\" data-hds-icon"
     ],
     "reader": [
@@ -1617,6 +1630,10 @@
       "button, patterns, not pressed",
       "button, Remove design systems",
       "button, Remove tokens",
+      "button, Remove contract",
+      "button, tokens, not pressed",
+      "button, #4f46e5, not pressed",
+      "status",
       "button, Remove contract"
     ]
   },
