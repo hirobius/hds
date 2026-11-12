@@ -518,7 +518,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                     if (!active && !isDisabled) onChange?.(option.value);
                   },
                   className: cn(
-                    'hds-focus no-underline',
+                    'no-underline',
                     segmentedControlItemVariants({
                       size,
                       fullWidth,
@@ -542,11 +542,19 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                     className={cn('flex', fullWidth ? 'min-w-0 flex-1' : 'flex-none')}
                   >
                     {href !== undefined && isInternalHref(href) ? (
-                      <LinkComponent to={href} {...itemProps}>
+                      <LinkComponent
+                        to={href}
+                        {...itemProps}
+                        className={cn('hds-focus', itemProps.className)}
+                      >
                         {renderBody(option, active, segmentState)}
                       </LinkComponent>
                     ) : (
-                      <a href={href} {...itemProps}>
+                      <a
+                        href={href}
+                        {...itemProps}
+                        className={cn('hds-focus', itemProps.className)}
+                      >
                         {renderBody(option, active, segmentState)}
                       </a>
                     )}

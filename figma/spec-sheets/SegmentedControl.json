@@ -33,7 +33,8 @@
     },
     {
       "name": "onChange",
-      "type": "(value: string) => void"
+      "type": "(value: string) => void",
+      "optional": true
     },
     {
       "name": "options",
@@ -74,7 +75,7 @@
   ],
   "roleTokens": {},
   "usage": {
-    "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
+    "when": "Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup).",
     "whenNot": "A form choice that submits with the form, or more than five options.",
     "useInstead": [
       {
