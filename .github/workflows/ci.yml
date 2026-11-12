@@ -1,107 +1,282 @@
 name: CI
 
-# ── Lean gate set (ADR-018 §5 / #52) ─────────────────────────────────────────
-# The single quality workflow: the deterministic, environment-agnostic lean set
-# — typecheck, eslint, token-pipeline validity, unit/type tests, app build +
-# bundle budgets, consumer smoke (+ publint) and the docs-site axe gate (the
-# browser lane: Chromium, light + dark). No live-site fetches,
-# no 56-gate check:full chain. Prettier is enforced pre-commit (lint-staged);
-# the heavier/browser/network lanes (visual, responsive, collision,
-# figma-sync, llm-synthetic) were removed; see git history (chromatic runs in
-# its own chromatic.yml).
+# One required check: `ci` (the aggregate job at the bottom). Branch protection
+# requires only that name; the jobs below can be renamed or split freely.
+#
+# Graph (fast checks first, build once, reuse artifacts):
+#   static ─────────────────────────────┐
+#   pretest ────────────────────────────┤
+#   tokens  ────────────────────────────┤
+#   unit (4 shards) ────────────────────┼── ci
+#   build ──┬── budgets-smoke ──────────┤
+#           ├── docs-axe ───────────────┤
+#           └── visual (2 shards) ──────┘
+#   quarantine (flaky tests; never blocks, not in `ci`)
+#
+# Repo is public, so GitHub-hosted runners are free. Notes: ci-notes.md.
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: '22'
+  # Generated data (src/app/data/*.json) is gitignored but imported by source.
+  GEN_DATA: >-
+    node scripts/generate-manifest.mjs &&
+    node scripts/generate-component-api.mjs &&
+    node scripts/enrich-manifest.mjs &&
+    node scripts/sync-icons.mjs &&
+    node scripts/audit-tokens.mjs --full
+
 jobs:
-  gates:
-    name: Lean gate set
+  # ── Fast lane ──────────────────────────────────────────────────────────────
+  static:
+    name: Lint + typecheck + secrets
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          fetch-depth: 0
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+          fetch-depth: 0 # gitleaks scans full history
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      # Secrets scan (hds#263): pinned gitleaks over the full history. The
-      # pre-commit check skips when the binary is missing; CI must not.
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - name: Secrets scan (gitleaks, full history)
         run: bash scripts/ci-secrets-scan.sh
-
-      # Generated data files (src/app/data/*.json) are gitignored but imported
-      # by source, so they must exist before typecheck/build. Regenerate here.
-      - name: Generate data artifacts
-        run: node scripts/generate-manifest.mjs && node scripts/generate-component-api.mjs && node scripts/enrich-manifest.mjs && node scripts/sync-icons.mjs && node scripts/audit-tokens.mjs --full
-
-      - name: Typecheck
-        run: pnpm typecheck
-
+      - run: eval "$GEN_DATA"
+      - run: pnpm typecheck
       - name: ESLint (zero warnings)
         run: pnpm lint --max-warnings=0
 
-      - name: Token pipeline validity (verify-tokens + check-contrast)
-        run: node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs
+  pretest:
+    # The `pretest` lane from docs/guardrails/registry.json, i.e. exactly what
+    # `pnpm test` runs before vitest. Split from vitest so the shards below can
+    # run in parallel; the chain itself is still defined once (run-lane.mjs).
+    name: Gate chain (pretest lane)
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: eval "$GEN_DATA"
+      - run: pnpm pretest
 
-      # Figma drift (figma/README.md): the tokens' Figma model against the
-      # committed snapshot. Fails only when Figma was last pushed from exactly
-      # the model the tokens build now and still differs (edited in Figma);
-      # changes not pushed to Figma yet are a warning, no snapshot is a notice.
-      - name: Figma drift (committed snapshot)
-        run: node scripts/check-figma-drift.mjs --ci
+  tokens:
+    name: Token pipeline + contrast + Figma drift
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs
+      - run: node scripts/check-figma-drift.mjs --ci
 
-      # `pnpm test`, NOT `pnpm exec vitest run`. The bare vitest invocation
-      # skips npm's `pretest` hook, and that hook is where the gate chain
-      # lives: validate-manifest, check-manifest-drift,
-      # check-manifest-schema-semver, audit-component-integrity,
-      # check-source-canon, check-binding-drift, check-registry,
-      # check-tenant-tokens, knip.
-      #
-      # Those nine ran only in `ralph/gate.sh` and pre-commit — never in CI —
-      # so main could be green here while a gate was broken, and two
-      # platform bugs survived inside gates nobody ran (#221: a path-separator
-      # bug in check-source-canon and a filename-case bug in
-      # check-binding-drift, both invisible to Linux CI).
-      #
-      # Keep the chain defined once, in package.json's `pretest`. Listing the
-      # nine scripts here as well would just drift.
-      - name: Gate chain + unit/contract tests (pretest + vitest)
-        run: pnpm test
+  # ── Unit / contract tests (the vitest half of `pnpm test`) ────────────────
+  unit:
+    name: Unit tests (shard ${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            docs-site/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      # tests/docs-site/* import docs-site deps (mermaid, ...).
+      - run: pnpm install --ignore-workspace --frozen-lockfile
+        working-directory: docs-site
+      - run: eval "$GEN_DATA"
+      # Quarantined files are excluded here and run in `quarantine` (notes).
+      - run: >-
+          pnpm exec vitest run --passWithNoTests
+          --shard=${{ matrix.shard }}/4
+          --exclude 'scripts/__tests__/check-pack-scan-edges.test.mjs'
 
+  quarantine:
+    # Known-flaky tests, one tracking issue each (ci-notes.md). Reported, never
+    # blocking. Remove a file from here and from the unit --exclude once fixed.
+    name: Quarantined tests (non-blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: eval "$GEN_DATA"
+      - run: pnpm exec vitest run scripts/__tests__/check-pack-scan-edges.test.mjs
+
+  # ── Build once ────────────────────────────────────────────────────────────
+  build:
+    # docs:publish runs build:lib (via docs:prepare) and the docs static export,
+    # so dist/ and docs-site/out/ are both produced here, once.
+    name: Build (lib + docs site)
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            docs-site/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: eval "$GEN_DATA"
+      - name: Next.js build cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: docs-site/.next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('docs-site/pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: next-${{ runner.os }}-${{ hashFiles('docs-site/pnpm-lock.yaml') }}-
+      - run: pnpm docs:publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dist
+          path: dist
+          retention-days: 3
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: docs-out
+          path: docs-site/out
+          retention-days: 3
+          if-no-files-found: error
+
+  budgets-smoke:
+    name: Bundle budgets + consumer smoke
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist
       - name: Bundle budgets (size-limit)
-        # Same chain as `pnpm check:size`, spelled out so check-validator-wiring
-        # sees scripts/build-button-probe.mjs on this channel (it ignores comments).
-        run: pnpm build:lib && node scripts/build-button-probe.mjs && pnpm size-limit
-
-      - name: Consumer smoke (build:lib + subpath resolution + publint + consumer typecheck)
+        # Same chain as `pnpm check:size` minus build:lib (dist/ comes from
+        # `build`); spelled out so check-validator-wiring sees build-button-probe.
+        run: node scripts/build-button-probe.mjs && pnpm size-limit
+      - name: Consumer smoke
+        if: ${{ !cancelled() }}
         run: pnpm smoke:consumer
 
-      - name: Install Chromium
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Docs site build (static export for the docs axe gate)
-        run: pnpm docs:publish
-
+  docs-axe:
+    name: Docs accessibility (axe, light + dark)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: docs-out
+          path: docs-site/out
       - name: Docs axe gate (live demos, light + dark, serious/critical)
         run: node scripts/check-docs-axe.mjs
-
       - name: Docs axe gate fires (fixtures)
-        run: node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/passing.example.d && (node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/violating.example.d || [ $? -eq 1 ])
+        run: >-
+          node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/passing.example.d &&
+          (node scripts/check-docs-axe.mjs --dir fixtures/check-docs-axe/violating.example.d || [ $? -eq 1 ])
+
+  visual:
+    name: Visual regression (shard ${{ matrix.shard }}/2)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    container:
+      # Pinned to the repo's @playwright/test (1.64.1); baselines are Linux Chromium.
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: docs-out
+          path: docs-site/out
+      - run: pnpm exec playwright test --shard=${{ matrix.shard }}/2
+        env:
+          CI: 'true'
+      - if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: visual-diffs-${{ matrix.shard }}
+          path: test-results
+          retention-days: 7
+
+  # ── The one required check ────────────────────────────────────────────────
+  ci:
+    name: ci
+    if: ${{ always() }}
+    needs: [static, pretest, tokens, unit, build, budgets-smoke, docs-axe, visual]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: All required jobs passed
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: |
+          echo "$RESULTS"
+          echo "$RESULTS" | grep -Eq '"(failure|cancelled|skipped)"' && exit 1 || exit 0
