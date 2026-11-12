@@ -576,7 +576,7 @@ The leading icon tile: a sunken rounded square at component.list.leadingSize.
   - icon: LucideIcon
 
 ### Menu
-Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`. A setting that flips on or off is a Menu.CheckboxItem with `indica…
   - children: React.ReactNode
   - defaultOpen: boolean
   - dir: "ltr" | "rtl"

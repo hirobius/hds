@@ -28,6 +28,7 @@ import { Check, ChevronRight, Circle } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
+import { toggleTrackVariants, toggleThumbVariants } from './toggle-switch-styles';
 
 // A wrapper of our own, not the Radix Root itself: the compound below attaches
 // the parts to it. Writing them onto a component at module scope is a side
@@ -70,6 +71,52 @@ const menuItemVariants = /* @__PURE__ */ cva(
 );
 const ITEM = menuItemVariants();
 
+// ── Description + switch (hds#1440) ────────────────────────────────────────────
+// A row's optional caption sits under its label and is the row's accessible
+// description (aria-describedby), as List rows do: the name stays the label alone,
+// so the caption is aria-hidden (a hidden node can still describe).
+// text-muted-foreground is semantic.color.content.secondary (--role-muted-foreground).
+const DESCRIPTION = 'hds-type-caption text-muted-foreground';
+
+/** Label plus optional caption, stacked. Returns the content and the id to describe the row by. */
+function useRowBody(children: React.ReactNode, description: React.ReactNode) {
+  const descId = React.useId();
+  const hasDescription = description != null && description !== false;
+  const body = hasDescription ? (
+    <span className="flex min-w-0 flex-col">
+      <span>{children}</span>
+      <span id={descId} aria-hidden="true" data-slot="menu-description" className={DESCRIPTION}>
+        {description}
+      </span>
+    </span>
+  ) : (
+    children
+  );
+  return { body, describedBy: hasDescription ? descId : undefined };
+}
+
+/**
+ * Switch indicator for a checkbox row. Purely visual (aria-hidden, no focusable
+ * child): the row itself is the menuitemcheckbox. Geometry and colours are the
+ * Toggle's tokens; the thumb's travel equals semantic.size.control.md (track is
+ * twice that wide, thumb fills the padded rail), so no literal is needed.
+ */
+function MenuSwitch({ on }: { on: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      data-slot="menu-switch"
+      data-state={on ? 'checked' : 'unchecked'}
+      className={toggleTrackVariants({ on, className: 'ml-auto' })}
+    >
+      <span
+        className={toggleThumbVariants({ on, className: 'transition-transform' })}
+        style={on ? { transform: 'translateX(var(--semantic-size-control-md))' } : undefined}
+      />
+    </span>
+  );
+}
+
 // ── Content ────────────────────────────────────────────────────────────────────
 
 const MenuContent = /* @__PURE__ */ React.forwardRef<
@@ -99,30 +146,63 @@ const MenuContent = /* @__PURE__ */ React.forwardRef<
 
 const MenuItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item> & VariantProps<typeof menuItemVariants>
->(function MenuItem({ className, tone, ...props }, ref) {
+  React.ComponentPropsWithoutRef<typeof MenuPrimitive.Item> &
+    VariantProps<typeof menuItemVariants> & {
+      /** Optional caption under the label, in the caption type role; the row's accessible description. */
+      description?: React.ReactNode;
+    }
+>(function MenuItem({ className, tone, description, children, ...props }, ref) {
+  const { body, describedBy } = useRowBody(children, description);
   return (
     <MenuPrimitive.Item
       ref={ref}
       data-tone={tone ?? 'neutral'}
+      aria-describedby={describedBy}
       className={cn(menuItemVariants({ tone }), className)}
       {...props}
-    />
+    >
+      {body}
+    </MenuPrimitive.Item>
   );
 });
 
 const MenuCheckboxItem = /* @__PURE__ */ React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.CheckboxItem>,
-  React.ComponentPropsWithoutRef<typeof MenuPrimitive.CheckboxItem>
->(function MenuCheckboxItem({ className, children, ...props }, ref) {
+  React.ComponentPropsWithoutRef<typeof MenuPrimitive.CheckboxItem> & {
+    /** `check` (default) puts a tick in the leading gutter; `switch` draws a trailing switch for settings like "Dark theme". */
+    indicator?: 'check' | 'switch';
+    /** Optional caption under the label, in the caption type role; the row's accessible description. */
+    description?: React.ReactNode;
+  }
+>(function MenuCheckboxItem(
+  { className, children, indicator = 'check', description, checked, onSelect, ...props },
+  ref,
+) {
+  const { body, describedBy } = useRowBody(children, description);
+  const isSwitch = indicator === 'switch';
   return (
-    <MenuPrimitive.CheckboxItem ref={ref} className={cn(ITEM, 'pl-fixed-md', className)} {...props}>
-      <span className="absolute left-2 inline-flex items-center justify-center">
-        <MenuPrimitive.ItemIndicator>
-          <Icon icon={Check} size={14} color="currentColor" aria-hidden />
-        </MenuPrimitive.ItemIndicator>
-      </span>
-      {children}
+    <MenuPrimitive.CheckboxItem
+      ref={ref}
+      checked={checked}
+      aria-describedby={describedBy}
+      // A switch is a setting, not an action: flipping it keeps the menu open so
+      // several can be set in one visit. The caller's onSelect can still close it.
+      onSelect={(event) => {
+        if (isSwitch) event.preventDefault();
+        onSelect?.(event);
+      }}
+      className={cn(ITEM, !isSwitch && 'pl-fixed-md', className)}
+      {...props}
+    >
+      {!isSwitch && (
+        <span className="absolute left-2 inline-flex items-center justify-center">
+          <MenuPrimitive.ItemIndicator>
+            <Icon icon={Check} size={14} color="currentColor" aria-hidden />
+          </MenuPrimitive.ItemIndicator>
+        </span>
+      )}
+      {body}
+      {isSwitch && <MenuSwitch on={checked === true} />}
     </MenuPrimitive.CheckboxItem>
   );
 });
@@ -223,7 +303,10 @@ interface MenuComponent extends React.FC<React.ComponentProps<typeof MenuPrimiti
 
 /**
  * Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with
- * `defaultOpen`.
+ * `defaultOpen`. A setting that flips on or off is a Menu.CheckboxItem with
+ * `indicator="switch"`: it shows a trailing switch and keeps the menu open when
+ * toggled (a tick row still closes it). `description` on an Item or CheckboxItem
+ * adds a caption line under the label.
  * @usage Offer a list of actions from a trigger, closed until opened.
  * @whenNot Choosing one value for a form field, or a set of options that must stay visible.
  * @useInstead Select choosing a value for a form field
@@ -251,6 +334,8 @@ interface MenuComponent extends React.FC<React.ComponentProps<typeof MenuPrimiti
  * @a11y component required a11y:menu.item-position Each item is a menuitem that reports its position and set size.
  * @a11y component required a11y:menu.item-semantics Items render with menuitem semantics once open.
  * @a11y component required a11y:menu.disabled-skipped A disabled item is aria-disabled and arrow keys step over it.
+ * @a11y component required a11y:menu.switch-row A switch row is a menuitemcheckbox with aria-checked; its switch is a decorative aria-hidden indicator, never focusable.
+ * @a11y component required a11y:menu.row-description A row's description is its accessible description (aria-describedby); the name stays the label alone.
  * @a11y consumer required Give an icon-only Menu.Trigger an aria-label.
  * @a11y consumer required Use Menu for actions; use links or Select for navigation and value choice.
  * @public

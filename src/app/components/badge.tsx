@@ -108,7 +108,7 @@ function warnLabelWithoutDot() {
   if (warnedLabelWithoutDot || isProduction()) return;
   warnedLabelWithoutDot = true;
   console.warn(
-    '[HDS] Badge `label` only names a `dot` badge and renders no text. Put the text in children: <Badge>Active</Badge>, or add `dot`.',
+    '[HDS] Badge `label` renders no text without `dot`. Put the text in children, or add `dot`.',
   );
 }
 
@@ -118,9 +118,7 @@ let warnedIconWithDot = false;
 function warnIconWithDot() {
   if (warnedIconWithDot || isProduction()) return;
   warnedIconWithDot = true;
-  console.warn(
-    '[HDS] Badge `icon` and `dot` are exclusive: a dot has no room for an icon, so `icon` is ignored. Drop `dot` to show the icon with text.',
-  );
+  console.warn('[HDS] Badge `icon` is ignored on a `dot` badge. Drop `dot` to show it.');
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────

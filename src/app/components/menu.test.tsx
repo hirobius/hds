@@ -154,3 +154,79 @@ describe('Menu compound assembly (hds#365)', () => {
     expect(profile.getAttribute('data-tone')).toBe('neutral');
   });
 });
+
+describe('Menu rows with a switch and a description (hds#1440)', () => {
+  function Rows({ onCheckedChange }: { onCheckedChange?: (v: boolean) => void }) {
+    return (
+      <Menu defaultOpen>
+        <Menu.Trigger>Settings</Menu.Trigger>
+        <Menu.Content>
+          <Menu.CheckboxItem
+            indicator="switch"
+            checked
+            onCheckedChange={onCheckedChange}
+            description="Use the dark colour scheme"
+          >
+            Dark theme
+          </Menu.CheckboxItem>
+          <Menu.CheckboxItem indicator="switch" checked={false}>
+            Pause animations
+          </Menu.CheckboxItem>
+          <Menu.Item description="Opens your profile">Profile</Menu.Item>
+        </Menu.Content>
+      </Menu>
+    );
+  }
+
+  it('a11y:menu.switch-row - a switch row is a menuitemcheckbox that reports aria-checked', () => {
+    render(<Rows />);
+    const on = screen.getByRole('menuitemcheckbox', { name: 'Dark theme' });
+    const off = screen.getByRole('menuitemcheckbox', { name: 'Pause animations' });
+    expect(on.getAttribute('aria-checked')).toBe('true');
+    expect(off.getAttribute('aria-checked')).toBe('false');
+  });
+
+  it('draws a hidden, non-focusable switch indicator from the Toggle tokens', () => {
+    render(<Rows />);
+    const row = screen.getByRole('menuitemcheckbox', { name: 'Dark theme' });
+    const sw = row.querySelector('[data-slot="menu-switch"]') as HTMLElement;
+    expect(sw.getAttribute('aria-hidden')).toBe('true');
+    expect(sw.querySelector('[tabindex],input,button')).toBeNull();
+    expect(sw.getAttribute('data-state')).toBe('checked');
+    expect(sw.className).toContain('--semantic-size-control-md');
+    expect(sw.className).toContain('--semantic-color-surface-accent');
+    const off = screen.getByRole('menuitemcheckbox', { name: 'Pause animations' });
+    expect(off.querySelector('[data-slot="menu-switch"]')?.getAttribute('data-state')).toBe(
+      'unchecked',
+    );
+  });
+
+  it('toggles without closing the menu', () => {
+    const onCheckedChange = vi.fn();
+    render(<Rows onCheckedChange={onCheckedChange} />);
+    fireEvent.click(screen.getByRole('menuitemcheckbox', { name: 'Dark theme' }));
+    expect(onCheckedChange).toHaveBeenCalledWith(false);
+    expect(screen.queryByRole('menuitemcheckbox', { name: 'Dark theme' })).not.toBeNull();
+  });
+
+  it('a11y:menu.row-description - renders the description in the caption role and wires aria-describedby', () => {
+    render(<Rows />);
+    const row = screen.getByRole('menuitemcheckbox', { name: 'Dark theme' });
+    const desc = row.querySelector('[data-slot="menu-description"]') as HTMLElement;
+    expect(desc.textContent).toBe('Use the dark colour scheme');
+    expect(desc.className).toContain('hds-type-caption');
+    expect(row.getAttribute('aria-describedby')).toBe(desc.id);
+    const item = screen.getByRole('menuitem', { name: 'Profile' });
+    const d2 = item.querySelector('[data-slot="menu-description"]') as HTMLElement;
+    expect(item.getAttribute('aria-describedby')).toBe(d2.id);
+  });
+
+  it('rows lift to the 44px touch row on a phone and keep desktop density otherwise', () => {
+    render(<Rows />);
+    const row = screen.getByRole('menuitemcheckbox', { name: 'Dark theme' });
+    // hds-touch-row sets min-height: semantic.size.touchTarget (44px) under pointer:coarse or <640px.
+    expect(row.className).toContain('hds-touch-row');
+    expect(row.className).toContain('py-1.5');
+    expect(row.className).toContain('hds-type-ui');
+  });
+});
