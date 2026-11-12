@@ -1250,6 +1250,36 @@ function SegmentedControlDemo() {
           { value: 'saved', label: 'Saved', href: '#segmented-saved' },
         ]}
       />
+      {/* Icon-only options (hds#1439): an icon and an aria-label, no visible text, a 44px target; also in link mode. */}
+      <SegmentedControl
+        label="Show"
+        value="docs"
+        onChange={() => {}}
+        options={[
+          { value: 'docs', icon: <Icon icon={FileText} size="small" />, 'aria-label': 'Documents' },
+          { value: 'people', icon: <Icon icon={Users} size="small" />, 'aria-label': 'People' },
+          { value: 'starred', icon: <Icon icon={Star} size="small" />, 'aria-label': 'Starred' },
+        ]}
+      />
+      <SegmentedControl
+        label="Section icons"
+        variant="secondary"
+        value="docs"
+        options={[
+          {
+            value: 'docs',
+            icon: <Icon icon={FileText} size="small" />,
+            'aria-label': 'Documents',
+            href: '#segmented-icon-docs',
+          },
+          {
+            value: 'people',
+            icon: <Icon icon={Users} size="small" />,
+            'aria-label': 'People',
+            href: '#segmented-icon-people',
+          },
+        ]}
+      />
     </div>
   );
 }

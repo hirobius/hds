@@ -2,7 +2,7 @@
  * SegmentedControl " segmented selection input for compact mutually-exclusive choices.
  * @category Inputs
  * @tier primitive
- * @usage Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup).
+ * @usage Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup). Give an option an `icon` and an `aria-label` (no `label`) for an icon-only segment.
  * @whenNot A form choice that submits with the form, or more than five options.
  * @useInstead Radio a form choice that submits with the form
  * @useInstead Tabs switching between panels of content
@@ -29,6 +29,7 @@
  * @a11y component required a11y:segmented-control.target-size Each segment hit area is 24px or taller, including the compact size (WCAG 2.5.8).
  * @a11y component required gate:check-reduced-motion The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.
  * @a11y component required a11y:segmented-control.link-mode When options carry an href the control is a nav (named by label or aria-label) holding a list of links; the current link is aria-current="page", each is a real anchor, and Tab walks them like any links.
+ * @a11y component required a11y:segmented-control.icon-only An icon-only option (`icon` + `aria-label`, no visible text) is named by its aria-label, hides the icon from assistive tech and keeps a 44px target in both radiogroup and link mode.
  * @a11y consumer required Give the control a label or an aria-label so the group has a name.
  */
 // Motion: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
@@ -41,6 +42,8 @@ import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { safeHref } from '../../lib/safe-href';
+import { isDevelopment } from '../../lib/env';
+import { warnOncePlain } from '../../lib/deprecation';
 import { useHdsRouter } from '../context/RouterContext';
 import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
 
@@ -124,12 +127,21 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
         true: 'cursor-not-allowed',
         false: 'cursor-pointer',
       },
+      iconOnly: { true: '', false: '' },
     },
     compoundVariants: [
       // Width for the non-fullWidth case: every segment hugs its content. A
       // `w-full` segment inside the `w-fit` rail is circular (hds#522): one
       // segment took the whole rail and the rest scrolled out of view.
       { fullWidth: false, className: 'w-max min-w-max flex-none' },
+
+      // Icon-only (hds#1439): a 44px target at every size and pointer (semantic.size.touchTarget),
+      // listed after the width compound so cn() lets it win min-w and the sm min-h.
+      {
+        iconOnly: true,
+        className:
+          'min-h-[var(--semantic-size-touchTarget)] min-w-[var(--semantic-size-touchTarget)]',
+      },
 
       // Foreground color — active wins over hover/rest regardless of interaction sub-state.
       {
@@ -173,6 +185,7 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
       active: false,
       interaction: 'rest',
       disabled: false,
+      iconOnly: false,
     },
   },
 );
@@ -326,19 +339,42 @@ const segmentedControlLabelVariants = /* @__PURE__ */ cva(
 
 type SegmentedItemVariantProps = VariantProps<typeof segmentedControlItemVariants>;
 
-interface HdsSegmentedOption {
+interface HdsSegmentedOptionBase {
   /** Value submitted when this option is selected. */
   value: string;
-  /** Visible label for the option. */
-  label: string;
-  /** Optional supporting description shown below the label. */
-  description?: string;
   /**
    * Make the segment a navigation link to this href. When the options carry an `href` the control
    * renders a `nav` holding a list of links (the current one `aria-current="page"`) instead of a
    * radiogroup. Internal paths (one leading "/") go through the router adapter's link component.
    */
   href?: string;
+}
+
+/** A text option: a visible label, with an optional description under it. */
+interface HdsSegmentedTextOption extends HdsSegmentedOptionBase {
+  /** Visible label for the option. */
+  label: string;
+  /** Optional supporting description shown below the label. */
+  description?: string;
+  /** Overrides the visible label as the accessible name. */
+  'aria-label'?: string;
+  icon?: undefined;
+}
+
+/** An icon-only option: an icon and no visible text, so the accessible name is required. */
+interface HdsSegmentedIconOption extends HdsSegmentedOptionBase {
+  /** The icon (an HDS `Icon` or any element drawn in `currentColor`). It is hidden from assistive tech. */
+  icon: React.ReactNode;
+  /** Accessible name of the segment (required: there is no visible text). The segment is a 44px target. */
+  'aria-label': string;
+  label?: undefined;
+  description?: undefined;
+}
+
+type HdsSegmentedOption = HdsSegmentedTextOption | HdsSegmentedIconOption;
+
+function isIconOnly(option: HdsSegmentedOption): option is HdsSegmentedIconOption {
+  return option.icon != null && !option.label;
 }
 
 export interface SegmentedControlProps {
@@ -398,6 +434,12 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
   ) {
     const { LinkComponent } = useHdsRouter();
     const linkMode = options.some((option) => option.href !== undefined);
+    if (isDevelopment() && options.some((o) => o.icon != null && !o.label && !o['aria-label'])) {
+      warnOncePlain(
+        'segmented-control-icon-only-without-name',
+        '[SegmentedControl] an icon-only option shows no text, so it has no accessible name; pass aria-label on the option.',
+      );
+    }
     const [hoveredValue, setHoveredValue] = useState<string | null>(null);
     const [focusedValue, setFocusedValue] = useState<string | null>(null);
     const frozenState = useFrozenState();
@@ -441,14 +483,27 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           // other multi-source className in this file.
           className={cn(segmentedControlIndicatorVariants(segmentState))}
         />
-        <span
-          className={segmentedControlLabelVariants({
-            size,
-            lifted: active && variant === 'primary',
-          })}
-        >
-          {option.label}
-        </span>
+        {isIconOnly(option) ? (
+          // The icon is decoration: the segment's aria-label is its name.
+          <span
+            aria-hidden="true"
+            className={cn(
+              segmentedControlLabelVariants({ size, lifted: active && variant === 'primary' }),
+              'inline-flex items-center justify-center',
+            )}
+          >
+            {option.icon}
+          </span>
+        ) : (
+          <span
+            className={segmentedControlLabelVariants({
+              size,
+              lifted: active && variant === 'primary',
+            })}
+          >
+            {option.label}
+          </span>
+        )}
         {option.description && (
           <span
             // Same cascade hazard as the indicator above (base
@@ -508,6 +563,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                 const href = option.href === undefined ? undefined : safeHref(option.href);
                 const itemProps = {
                   'aria-current': active ? ('page' as const) : undefined,
+                  'aria-label': option['aria-label'],
                   'aria-disabled': isDisabled || undefined,
                   tabIndex: isDisabled ? -1 : undefined,
                   onMouseEnter: () => !demoState && setHoveredValue(option.value),
@@ -526,6 +582,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                       active,
                       interaction,
                       disabled: isDisabled,
+                      iconOnly: isIconOnly(option),
                     }),
                     isDisabled && 'pointer-events-none',
                     Boolean(demoState) && showFocused && 'hds-focus-ring',
@@ -623,6 +680,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                   >
                     <m.button
                       type="button"
+                      aria-label={option['aria-label']}
                       onHoverStart={() => !demoState && setHoveredValue(option.value)}
                       onHoverEnd={() => !demoState && setHoveredValue(null)}
                       onFocus={() => {
@@ -657,6 +715,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
                           active,
                           interaction,
                           disabled: showDisabled,
+                          iconOnly: isIconOnly(option),
                         }),
                         // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
                         // keyboard focus (:focus-visible can't be faked).
