@@ -8,7 +8,6 @@
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { chmodSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -378,9 +377,19 @@ describe('more mutation kills', () => {
     ]);
   });
   it('removes its temp dir', () => {
-    const before = readdirSync(os.tmpdir()).filter((d) => d.startsWith('hds-pack-scan-')).length;
-    scanPackage(makePackage({ 'lib/a.js': '' }), { bin: fakeBin('exit 0') });
-    const after = readdirSync(os.tmpdir()).filter((d) => d.startsWith('hds-pack-scan-')).length;
-    expect(after).toBeLessThanOrEqual(before);
+    // Private TMPDIR: other test files create hds-pack-scan-* dirs in the shared
+    // os.tmpdir() in parallel, so counting there races (hds#1475).
+    const priv = makeTmp();
+    const prev = process.env.TMPDIR;
+    process.env.TMPDIR = priv;
+    try {
+      const pkg = makePackage({ 'lib/a.js': '' });
+      const bin = fakeBin('exit 0');
+      scanPackage(pkg, { bin });
+      expect(readdirSync(priv).filter((d) => d.startsWith('hds-pack-scan-'))).toEqual([]);
+    } finally {
+      if (prev === undefined) delete process.env.TMPDIR;
+      else process.env.TMPDIR = prev;
+    }
   });
 });
