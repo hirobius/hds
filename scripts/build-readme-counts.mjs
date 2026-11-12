@@ -8,7 +8,8 @@
  *   - public component modules: `export * from './app/components/…'` lines in src/index.ts
  *   - DTCG tokens: leaf nodes carrying `$value` in hirobius.tokens.json
  *
- * It also regenerates the "What belongs in the system" block between
+ * It also regenerates the "What belongs in the system" block of docs/OVERVIEW.md
+ * (the README's long form) between
  * <!-- auto:start:core-set --> and <!-- auto:end:core-set --> (hds#374): the
  * core components by category and the /patterns modules, rendered by
  * scripts/lib/core-set.mjs from the manifest (`core` flag, deprecations) and
@@ -20,7 +21,7 @@
  * and a README that claims more than the source has always fails.
  *
  * Run: pnpm readme:counts
- * Check: node scripts/build-readme-counts.mjs --check  (exit 1 when the README would change; writes nothing)
+ * Check: node scripts/build-readme-counts.mjs --check  (exit 1 when README.md or docs/OVERVIEW.md would change; writes nothing)
  *        --root <dir> reads and writes under <dir> (tests).
  */
 
@@ -32,6 +33,9 @@ import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 
 export const COUNTS_BLOCK = 'front-door-counts';
+
+/** The README's long form; it holds the core-set block (the README stays short). */
+export const OVERVIEW_PATH = 'docs/OVERVIEW.md';
 
 /** Claim phrases as the README states them, keyed by count. */
 const PHRASES = {
@@ -89,13 +93,13 @@ export function replaceCountsBlock(readme, section) {
 }
 
 /** Replaces the `<!-- auto:start:<block> -->` … `<!-- auto:end:<block> -->` body; throws without markers. */
-export function replaceAutoBlock(readme, block, section) {
+export function replaceAutoBlock(readme, block, section, file = 'README.md') {
   const start = `<!-- auto:start:${block} -->`;
   const end = `<!-- auto:end:${block} -->`;
   const from = readme.indexOf(start);
   const to = readme.indexOf(end);
   if (from === -1 || to === -1 || to < from) {
-    throw new Error(`README.md is missing the ${start} … ${end} markers.`);
+    throw new Error(`${file} is missing the ${start} … ${end} markers.`);
   }
   return `${readme.slice(0, from)}${start}\n\n${section.trim()}\n\n${readme.slice(to)}`;
 }
@@ -126,23 +130,28 @@ export function findOverclaims(claims, counts) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const ROOT = rootFromArgv(join(dirname(fileURLToPath(import.meta.url)), '..'));
   const readmePath = join(ROOT, 'README.md');
+  const overviewPath = join(ROOT, OVERVIEW_PATH);
   const before = readFileSync(readmePath, 'utf8');
-  const after = replaceAutoBlock(
-    replaceCountsBlock(before, buildCountsSection(collectCounts(ROOT))),
+  const overviewBefore = readFileSync(overviewPath, 'utf8');
+  const after = replaceCountsBlock(before, buildCountsSection(collectCounts(ROOT)));
+  const overviewAfter = replaceAutoBlock(
+    overviewBefore,
     CORE_SET_BLOCK,
     renderCoreSetBlock(collectCoreSet(ROOT)),
+    OVERVIEW_PATH,
   );
   if (process.argv.includes('--check')) {
-    // Writes nothing: exit 1 when the README would change.
+    // Writes nothing: exit 1 when either file would change.
     await runCheck(
       ROOT,
-      { 'README.md': after },
+      { 'README.md': after, [OVERVIEW_PATH]: overviewAfter },
       { label: 'build-readme-counts --check', fix: 'pnpm readme:counts' },
     );
-  } else if (after === before) {
-    console.log('✓ README.md counts and core set already match the source.');
+  } else if (after === before && overviewAfter === overviewBefore) {
+    console.log('✓ README.md counts and the docs/OVERVIEW.md core set already match the source.');
   } else {
     writeFileSync(readmePath, after);
-    console.log('✓ README.md counts and core set regenerated from source.');
+    writeFileSync(overviewPath, overviewAfter);
+    console.log('✓ README.md counts and the docs/OVERVIEW.md core set regenerated from source.');
   }
 }

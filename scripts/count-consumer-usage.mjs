@@ -3,7 +3,7 @@
 /**
  * count-consumer-usage.mjs (hds#316)
  *
- * Generates the numbers in README.md's "In use" section:
+ * Generates the numbers in the "In use" section of docs/OVERVIEW.md (the README's long form):
  *   - files in a consumer app that import from `@hirobius/design-system`
  *     (root or the `/patterns`, `/form`, `/mui`… component subpaths; `/cn`,
  *     `/tokens`, `/manifest`, `/contexts`, `/brand` are not component imports)
@@ -183,7 +183,7 @@ function alignTable(rows) {
 /** Markdown placed between the generated-block markers (starts and ends with a blank line). */
 export function renderInUseBlock(s) {
   const shots = [
-    '[![Audit page of the product app](docs/images/product-app-audit.png)](docs/images/product-app-audit.png)',
+    '[![Audit page of the product app](images/product-app-audit.png)](images/product-app-audit.png)',
     '',
     '',
   ];
@@ -216,7 +216,7 @@ export function renderInUseBlock(s) {
       ],
     ]),
     '',
-    'Month-by-month adoption in each product app, one row per measured commit: [docs/ADOPTION.md](docs/ADOPTION.md).',
+    'Month-by-month adoption in each product app, one row per measured commit: [ADOPTION.md](ADOPTION.md).',
     '',
     ...shots,
   ].join('\n');
@@ -224,7 +224,7 @@ export function renderInUseBlock(s) {
 
 /** The README with its "In use" block rendered from `snapshot`: what `--check` compares. */
 export function readmeWithUsage(readme, snapshot) {
-  return replaceBlock(readme, IN_USE_BLOCK, renderInUseBlock(snapshot), 'README.md');
+  return replaceBlock(readme, IN_USE_BLOCK, renderInUseBlock(snapshot), 'docs/OVERVIEW.md');
 }
 
 /** docs/ADOPTION.md with its ledger block rendered from `snapshot`. */
@@ -345,7 +345,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const snapshotPath = join(REPO, 'docs/data/consumer-usage.json');
   const snapshot = JSON.parse(readFileSync(snapshotPath, 'utf8'));
   const check = process.argv.includes('--check');
-  // `--check` measures nothing and writes nothing: it compares README.md and
+  // `--check` measures nothing and writes nothing: it compares docs/OVERVIEW.md and
   // docs/ADOPTION.md with the committed snapshot rendered today. (The snapshot
   // itself is measured from the consumer repo, which `--root` does; that part
   // cannot be checked here.)
@@ -407,7 +407,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       const branch = git('rev-parse', '--abbrev-ref', 'HEAD');
       if (branch !== 'main')
         console.warn(
-          `consumer:usage: ${root} is on '${branch}', not main; the README says "main", so measure a main checkout before committing.`,
+          `consumer:usage: ${root} is on '${branch}', not main; docs/OVERVIEW.md says "main", so measure a main checkout before committing.`,
         );
     }
     writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2) + '\n');
@@ -421,7 +421,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   await runGenerator({
     root: REPO,
     outputs: {
-      'README.md': readmeWithUsage(read('README.md'), snapshot),
+      'docs/OVERVIEW.md': readmeWithUsage(read('docs/OVERVIEW.md'), snapshot),
       'docs/ADOPTION.md': adoptionWithHistory(read('docs/ADOPTION.md'), snapshot),
     },
     label: 'count-consumer-usage',

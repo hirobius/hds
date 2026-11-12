@@ -106,6 +106,7 @@ Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
   - count: number
   - dot: boolean = false
+  - icon: LucideIcon
   - label: string
   - max: number
   - size: "sm" | "md" | "lg"
@@ -587,7 +588,7 @@ Secondary facts on one line ("Acme Cloud · Remote"). Max two items per line so 
   - items: MetaLineItems
 
 ### MetadataList
-Renders object metadata as a semantic `<dl>` of term/description pairs.
+Renders object metadata as a description list of term/description pairs.
   - footer: ReactNode
   - items: MetadataListItem[]
   - orientation: "horizontal" | "vertical" | null = vertical

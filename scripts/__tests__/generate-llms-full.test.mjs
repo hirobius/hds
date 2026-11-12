@@ -97,7 +97,7 @@ describe('manifest agent URLs', () => {
     expect(m.llmsTxt).toBe(
       `https://cdn.jsdelivr.net/npm/@hirobius/design-system@${m.packageVersion}/llms.txt`,
     );
-    expect(m.docs).toBe('https://hirobius-hds-components.vercel.app/');
+    expect(m.docs).toBe('https://hirobius-design-system.vercel.app/');
     expect(m.agentEntrypoint).toBe('llms.txt');
     expect(Array.isArray(m.componentInventory)).toBe(true);
     expect(m.componentInventory.length).toBeGreaterThan(0);

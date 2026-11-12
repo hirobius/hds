@@ -79,16 +79,16 @@ describe('upgrading (hds#451)', () => {
     expect(s3).not.toMatch(/pnpm update @hirobius\/design-system\s+#\s*latest/);
   });
 
-  it('README links UPGRADING.md at the top', () => {
-    const top = read('README.md').split('\n').slice(0, 15).join('\n');
-    expect(top).toContain('](UPGRADING.md)');
+  it('README links UPGRADING.md from its Install section', () => {
+    const install = read('README.md').split('\n## Install\n')[1]?.split('\n## ')[0] ?? '';
+    expect(install).toContain('](UPGRADING.md)');
   });
 
-  // README and CONSUMING ship in the tarball, so "From 0.22.0, one command does
-  // it" must not ship in a 0.22.0 that lacks the command: the Version PR runs
-  // pnpm test, so this turns it red until hds#452 lands or the text changes.
+  // CONSUMING ships in the tarball, so "From 0.22.0, one command does it" must
+  // not ship in a 0.22.0 that lacks the command: the Version PR runs pnpm test,
+  // so this turns it red until hds#452 lands or the text changes. The README
+  // names no version (front-door.test.mjs) and links UPGRADING.md instead.
   const docs = () => ({
-    'README.md': read('README.md').split('\n').slice(0, 15).join('\n'),
     'CONSUMING.md': section3(),
   });
 
@@ -103,7 +103,7 @@ describe('upgrading (hds#451)', () => {
       brokenPromise({ version, bin }, docs());
     expect(at('0.21.0')).toBeNull();
     expect(at(ONE_COMMAND_FROM)).toContain('hds#452');
-    expect(at(ONE_COMMAND_FROM)).toContain('README.md');
+    expect(at(ONE_COMMAND_FROM)).toContain('CONSUMING.md');
     expect(at('0.23.1')).not.toBeNull();
     expect(at(ONE_COMMAND_FROM, { [ONE_COMMAND_BIN]: 'codemods/upgrade.mjs' })).toBeNull();
   });

@@ -3,7 +3,7 @@
  * The ratified core set (hds#254, hds#374) where consumers read it. The
  * names in scripts/lib/core-components.mjs are the only source (their count
  * and membership are pinned by check-contract-coverage.test.mjs); the manifest
- * `core` flag, component-api.json, the README block, llms.txt and the consumer
+ * `core` flag, component-api.json, the docs/OVERVIEW.md block, llms.txt and the consumer
  * SKILL.md are all generated from them and compared here.
  */
 import { afterAll, describe, expect, it } from 'vitest';
@@ -225,7 +225,7 @@ describe('renderCoreSetBlock', () => {
     expect(out).toContain('**2** pattern modules ship from `@hirobius/design-system/patterns`');
     expect(out).toContain('`Form`, `Page`');
     expect(out).toMatch(/0\.20\.0 removed the root re-exports of the pattern modules/);
-    expect(out).toContain('(MIGRATIONS.md#0200-removals-2026-10-01)');
+    expect(out).toContain('(../MIGRATIONS.md#0200-removals-2026-10-01)');
   });
 
   it('names each deprecated component still exported, and its removal release', () => {
@@ -239,23 +239,23 @@ describe('renderCoreSetBlock', () => {
   });
 
   it('links the architecture doc and the ADR', () => {
-    expect(out).toContain('(docs/hds-architecture-2026-09-18.html)');
-    expect(out).toContain('(docs/adr/031-core-set-and-dispositions.md)');
+    expect(out).toContain('(hds-architecture-2026-09-18.html)');
+    expect(out).toContain('(adr/031-core-set-and-dispositions.md)');
   });
 });
 
-describe('README "What belongs in the system"', () => {
-  const readme = readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+describe('docs/OVERVIEW.md "What belongs in the system"', () => {
+  const readme = readFileSync(path.join(ROOT, 'docs/OVERVIEW.md'), 'utf8');
   const data = collectCoreSet(ROOT);
 
-  it('has exactly one core-set block, under its heading, between "In use" and the package guide', () => {
+  it('has exactly one core-set block, under its heading, between "In use" and the theming dials', () => {
     expect(readme.match(new RegExp(`<!-- auto:start:${CORE_SET_BLOCK} -->`, 'g'))).toHaveLength(1);
     const heading = readme.indexOf('\n## What belongs in the system\n');
     const block = readme.indexOf(`<!-- auto:start:${CORE_SET_BLOCK} -->`);
     expect(heading).toBeGreaterThan(readme.indexOf('\n## In use\n'));
     expect(block).toBeGreaterThan(heading);
     expect(readme.slice(heading + 1, block)).not.toMatch(/\n## /);
-    expect(readme.indexOf('\n## Using the published package\n')).toBeGreaterThan(block);
+    expect(readme.indexOf('\n## Theming: the four dials\n')).toBeGreaterThan(block);
   });
 
   it('is the generated block, byte for byte', () => {
@@ -336,18 +336,21 @@ describe('consumer SKILL.md "Core set"', () => {
 });
 
 describe('CONSUMING rows (hds#374)', () => {
-  const docs = { 'CONSUMING.md': 'README.md', 'docs/CONSUMING.md': '../README.md' };
+  const docs = { 'CONSUMING.md': 'docs/OVERVIEW.md', 'docs/CONSUMING.md': 'OVERVIEW.md' };
   const moduleCount = [
     ...readFileSync(path.join(ROOT, 'src/patterns.ts'), 'utf8').matchAll(/^export \* from /gm),
   ].length;
   const row = (text, subpath) =>
     text.split('\n').find((l) => l.startsWith(`| \`@hirobius/design-system${subpath}\` `)) ?? '';
 
-  it.each(Object.keys(docs))('%s: the root row names the core set and links the README', (doc) => {
-    const text = readFileSync(path.join(ROOT, doc), 'utf8');
-    expect(row(text, '')).toContain(`${CORE.length}-component core set`);
-    expect(row(text, '')).toContain(`(${docs[doc]}#what-belongs-in-the-system)`);
-  });
+  it.each(Object.keys(docs))(
+    '%s: the root row names the core set and links the overview',
+    (doc) => {
+      const text = readFileSync(path.join(ROOT, doc), 'utf8');
+      expect(row(text, '')).toContain(`${CORE.length}-component core set`);
+      expect(row(text, '')).toContain(`(${docs[doc]}#what-belongs-in-the-system)`);
+    },
+  );
 
   it.each(Object.keys(docs))('%s: the /patterns row states the module count', (doc) => {
     const text = readFileSync(path.join(ROOT, doc), 'utf8');
@@ -364,10 +367,10 @@ describe('the ratified disposition table and its ADR', () => {
     expect(doc.match(/Ratified 2026-09-26 \(hds#254\)/g)).toHaveLength(2);
   });
 
-  it('is linked from the README Architecture section', () => {
-    const readme = readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+  it('is linked from the docs/OVERVIEW.md Architecture section', () => {
+    const readme = readFileSync(path.join(ROOT, 'docs/OVERVIEW.md'), 'utf8');
     const section = readme.split('\n## Architecture\n')[1].split(/\n## /)[0];
-    expect(section).toContain('(docs/hds-architecture-2026-09-18.html)');
+    expect(section).toContain('(hds-architecture-2026-09-18.html)');
   });
 
   it('ADR-031 is Accepted and cites hds#254 and ADR-006', () => {

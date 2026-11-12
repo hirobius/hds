@@ -114,7 +114,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `ListGroup` — A group: the heading outside the surface, the rows inside it.
 - `ListItem` — One row: the whole row is the link (or button); an icon button or overflow menu sits beside it.
 - `ListTile` — The leading icon tile: a sunken rounded square at component.list.leadingSize.
-- `MetadataList` — Renders object metadata as a semantic `<dl>` of term/description pairs.
+- `MetadataList` — Renders object metadata as a description list of term/description pairs.
 - `StatusListItem` — Status dot + title row with optional muted notes and trailing slot (e.g. badge).
 - `Table` — Table - structured data table primitive for documentation and compact UI matrices.
 - `Timeline` — The timeline itself.

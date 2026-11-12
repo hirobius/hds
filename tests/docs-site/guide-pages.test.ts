@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = join(__dirname, '..', '..');
-const GUIDES = ['getting-started', 'tokens', 'upgrade', 'deprecation'];
+const GUIDES = ['getting-started', 'agents', 'tokens', 'upgrade', 'deprecation'];
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as {
   name: string;
   exports: Record<string, unknown>;
@@ -91,5 +91,26 @@ describe('guide claims the package backs', () => {
       floor: string;
     };
     expect(page).not.toContain(floor);
+  });
+});
+
+describe('guides/agents names what the package really ships', () => {
+  const text = read('agents');
+
+  it('names the MCP bin, the lint plugin subpath and the agent files', () => {
+    expect(pkg.bin['hds-mcp']).toBe('mcp/hds-mcp.mjs');
+    expect(pkg.exports['./eslint-plugin']).toBeTruthy();
+    expect(existsSync(join(ROOT, 'AGENTS.md'))).toBe(true);
+    expect(existsSync(join(ROOT, 'public/llms.txt'))).toBe(true);
+    expect(text).toContain('hds-mcp');
+    expect(text).toContain("'@hirobius/design-system/eslint-plugin'");
+  });
+
+  it('lists exactly the tools the server registers', async () => {
+    // @ts-expect-error — plain .mjs module, no types
+    const { loadCatalog } = await import('../../mcp/catalog.mjs');
+    const tools: string[] = loadCatalog(ROOT).tools.map((t: { name: string }) => t.name);
+    const named = [...text.matchAll(/^\| `([a-z_]+)`/gm)].map((m) => m[1]!);
+    expect(named.sort()).toEqual([...tools].sort());
   });
 });

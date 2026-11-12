@@ -13,7 +13,10 @@ import { readLaneScripts } from '../scripts/lib/gate-lanes.mjs';
 const ROOT = process.cwd();
 const read = (rel: string) => readFileSync(join(ROOT, rel), 'utf8');
 const readme = read('README.md');
-const accessibility = () => readme.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
+// The README's long form, docs/OVERVIEW.md, holds the accessibility section.
+const overview = read('docs/OVERVIEW.md');
+const accessibility = () =>
+  overview.split(/^## /m).find((s) => s.startsWith('Accessibility')) ?? '';
 const head = readme.split('\n').slice(0, 20).join('\n');
 const links = JSON.parse(read('figma/links.json')) as { docsUrl: string };
 
@@ -35,18 +38,18 @@ describe('README front door (first 20 lines)', () => {
     expect(head).toContain(links.docsUrl);
   });
 
-  // GitHub Actions is off (2026-10-30), so a CI badge would show a stale or
-  // missing run; the README must not carry one until CI runs again.
-  it('shows npm and Docs badges, and no CI badge while Actions is off', () => {
-    expect(head).not.toMatch(/actions\/workflows\/ci\.yml\/badge\.svg/);
+  // GitHub Actions runs `ci` again (2026-11-11), so the README shows its badge.
+  it('shows npm, Docs and CI badges', () => {
+    expect(head).toMatch(/actions\/workflows\/ci\.yml\/badge\.svg/);
     expect(head).toMatch(
       /!\[[^\]]*npm[^\]]*\]\(https:\/\/img\.shields\.io\/npm\/v\/@hirobius\/design-system/,
     );
     expect(head).toMatch(/!\[[^\]]*Docs[^\]]*\]\(https:\/\/img\.shields\.io\/badge\//);
   });
 
-  it('has the install line', () => {
-    expect(head).toContain('pnpm add @hirobius/design-system');
+  it('has the install line in its Install section', () => {
+    const install = readme.split('\n## Install\n')[1]?.split('\n## ')[0] ?? '';
+    expect(install).toContain('pnpm add @hirobius/design-system');
   });
 
   it('embeds a committed screenshot under 400 kB', () => {
@@ -58,11 +61,11 @@ describe('README front door (first 20 lines)', () => {
 
 describe('README honesty', () => {
   it('has no PLACEHOLDER anywhere', () => {
-    expect(readme).not.toMatch(/PLACEHOLDER/i);
+    expect(readme + overview).not.toMatch(/PLACEHOLDER/i);
   });
 
   it('makes no Chromatic visual-review claim', () => {
-    expect(readme).not.toMatch(/chromatic/i);
+    expect(readme + overview).not.toMatch(/chromatic/i);
   });
 
   it('states only the accessibility checks that exist', () => {
@@ -126,9 +129,10 @@ describe('README honesty', () => {
     for (const rel of paths) expect(existsSync(join(ROOT, rel)), rel).toBe(true);
   });
 
-  it('keeps the design-links table out of the README, with a pointer to its home', () => {
+  it('keeps the design-links table out of the README and overview, with a pointer to its home', () => {
     expect(readme).not.toContain('design-links:start');
-    expect(readme).toContain('docs/DESIGN_LINKS.md');
+    expect(overview).not.toContain('design-links:start');
+    expect(overview).toContain('](DESIGN_LINKS.md)');
     const doc = read('docs/DESIGN_LINKS.md');
     expect(doc).toContain('design-links:start');
     expect(doc).toContain('design-links:end');

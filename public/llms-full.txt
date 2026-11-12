@@ -168,7 +168,7 @@ AppShell: The outer frame of a web app: a top bar, a navigation rail or sheet, t
 AssetImg: Show an image that scales to its frame, with a placeholder if it fails to load.
 AsyncState: Wrap content that loads asynchronously, so it shows skeleton rows while loading, an error with Retry when it fails, your own empty state, and then the content. Use instead: Skeleton, Alert, EmptyState
 Avatar: [core] Show a person or entity as an image with an initials fallback, or a neutral person icon when nobody is signed in; add a status dot for a state such as unsynced. As an account button, pass it as the iconLeft of a tertiary iconOnly Button. Use instead: Icon, Badge
-Badge: [core] Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`). Use instead: Tag, Alert
+Badge: [core] Label a status or state with a compact neutral or semantic chip, a dot, a leading `icon`, or a capped count beside a heading (`count`, `max`, `label`). Use instead: Tag, Alert
 Board: Show work grouped by status as side-by-side columns, each with a title, a count, such as leads by pipeline stage. Use instead: Table, Grid
 BoardColumn: Hold the cards for one status inside a Board, with a heading that announces the count. Use instead: Stack
 Box: [core] Build one-off layout that no named layout primitive covers, using token keys through `sx`. Use instead: Stack, Grid, Container
@@ -1110,6 +1110,7 @@ Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
   - count: number
   - dot: boolean = false
+  - icon: LucideIcon
   - label: string
   - max: number
   - size: "sm" | "md" | "lg"
@@ -1591,7 +1592,7 @@ Secondary facts on one line ("Acme Cloud · Remote"). Max two items per line so 
   - items: MetaLineItems
 
 ### MetadataList
-Renders object metadata as a semantic `<dl>` of term/description pairs.
+Renders object metadata as a description list of term/description pairs.
   - footer: ReactNode
   - items: MetadataListItem[]
   - orientation: "horizontal" | "vertical" | null = vertical

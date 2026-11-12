@@ -6,7 +6,7 @@ status: 'experimental'
 
 ## The walkthrough
 
-About 80 seconds, no sound. A script records it from the built docs site, so it is re-made after each change instead of filmed by hand. The terminal panels show command output from the repo on the day it was recorded.
+About 80 seconds, no sound. A script records it from the built docs site, so it can be re-made after a change instead of filmed by hand. The terminal panels show real command output from the repo on the day it was recorded, so the version and counts in the video can be older than the ones on this page.
 
 <WalkthroughVideo />
 
@@ -22,19 +22,19 @@ A component library alone does not fix this. Every design system has a Button. T
 
 - **One owner.** There is no team to review by hand. Quality must come from checks that run without anyone remembering them.
 - **Agents write most of the code.** The owner sets the direction and makes the calls. Agents build, test and review. The system must stay readable to them and catch their mistakes.
-- **Checks run before the push.** Git hooks run the checks on the machine that makes the change. The hosted pipeline runs one job: it publishes a release when a change merges.
+- **Checks run before the push.** Git hooks (scripts Git runs before a commit or a push) run the checks on the machine that makes the change. The hosted build pipeline runs one job: it publishes a release when a change merges.
 - **A small Figma plan.** Design-tool access is rationed by the day, so syncing design and code must be cheap and deliberate.
-- **Before 1.0.** Breaking changes are allowed, but each one ships with an upgrade note and, where it can, a codemod.
+- **Before version 1.0.** Breaking changes are allowed, but each one ships with an upgrade note and, where possible, a script that rewrites the app's code for you.
 
 ## The architecture
 
 ```mermaid
 flowchart LR
-  T["One token file<br/>(source of truth)"] --> G["Generators"]
+  T["One token file<br/>(source of truth)"] --> G["Build scripts"]
   G --> CSS["CSS variables"]
   G --> TS["TypeScript and Tailwind"]
   G --> FM["Figma model"]
-  G --> D["Docs, manifest, agent files"]
+  G --> D["Docs, component list, files for AI agents"]
   CSS --> A["Apps and sites"]
   TS --> A
   FM -. "one-way sync, then a drift check" .-> F["Figma library"]
@@ -44,9 +44,9 @@ flowchart LR
 
 ### Tokens are the source of truth
 
-Every color, size, space, radius, type and motion value lives once, in one token file in the W3C design-token format. Generators turn it into CSS variables, TypeScript constants, a Tailwind config, the Figma model and these docs. Nobody edits a generated file. A value changes in one place and reaches every output in the same build.
+A design token is a named value, such as a color or a spacing step. Every color, size, space, radius, type and motion value lives once, in one token file in the W3C design-token format, an open standard. Build scripts turn it into CSS variables, TypeScript constants, Tailwind settings, the Figma model and these docs. Nobody edits a generated file. A value changes in one place and reaches every output in the same build.
 
-Tokens come in four tiers: primitive values, semantic roles, component settings and named roles. A new brand changes tokens, not components.
+Tokens come in four tiers: raw values, roles such as "page background", settings for single components, and named roles. A new brand changes tokens, not components.
 
 ### Code wins, and Figma follows
 
@@ -56,13 +56,13 @@ This removed the hardest question in design-system work, "which one is correct?"
 
 ### Checks must be seen to fail
 
-Each rule is a small script that checks one thing. Every script is in one registry that names where it fires: on every commit, on every push, or on demand. A check that never fails proves nothing, so most checks ship with a passing and a failing example, and a meta-check confirms each one rejects the failing example.
+Each rule is a small script that checks one thing. Every script is listed in one registry that says when it runs: on every commit, on every push, or on demand. A check that never fails proves nothing, so most checks ship with a passing and a failing example, and a meta-check confirms each one rejects the failing example.
 
 Budgets are fixed. When a size or performance budget fails, the code gets smaller. The budget does not get larger.
 
 ### The docs are generated from the code
 
-This site replaced a hosted component workshop. Component pages, prop tables, token tables and the accessibility contracts are read from the code when the site builds. The site is also checked: accessibility, layout shift and touch-target size run against the built pages.
+This site replaced Storybook, a hosted component workshop. Component pages, prop tables, token tables and the accessibility contracts are read from the code when the site builds. The site is also checked: accessibility, layout shift (content jumping as the page loads) and touch-target size run against the built pages.
 
 ### Agents drive, the owner decides
 
@@ -72,14 +72,15 @@ No change merges on the word of the agent that wrote it. A second, independent r
 
 ## The results
 
-These numbers are read from the repo when this page builds.
+These numbers are read from the repo when this page builds, so they match the latest release.
 
 <CaseStudyFacts />
+
+The repository is public, so anyone can read the code and the history behind these numbers.
 
 One before-and-after: up to version 0.5, the published package was about 49 MB in about 400 files, because the build copied site images, fonts and source maps into it. Version 0.5 cut it to about 0.55 MB.
 
 ## What is next
 
 - **Publish the Figma library**, so designers use the same components the code ships.
-- **Prove design and code match**: a blocking check on any component mismatch between Figma and code, and fewer variants per component, with Button first.
-- **Open the repo to the public**, after a full scan of the history and the package for secrets.
+- **Prove design and code match**: a check that blocks a release when a component differs between Figma and code, and fewer variants per component, starting with Button.

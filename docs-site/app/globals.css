@@ -563,11 +563,17 @@ pre {
   white-space: nowrap;
 }
 
-/* Sidebar header: the short mark and the released-version badge (site-mark.tsx). */
+/* Nav header: the short mark and the released version beside it (site-mark.tsx). The version is
+   caption size in the secondary content tone, so it reads as a quiet label next to the mark. */
 .hds-site-mark {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--semantic-space-scale-xs);
+}
+.hds-site-version {
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: 400;
+  color: var(--semantic-color-content-secondary);
 }
 .hds-docs-display {
   display: inline-flex;
@@ -1151,16 +1157,6 @@ a code[data-density] {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--semantic-space-scale-sm);
   }
-}
-
-/* The site footer: the one line that carries the released version, on every route. */
-.hds-site-footer {
-  padding: var(--semantic-space-scale-md)
-    max(var(--semantic-space-scale-md), env(safe-area-inset-left, 0px));
-  border-top: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
-  font-size: 0.8125rem;
-  color: var(--semantic-color-content-tertiary);
-  text-align: center;
 }
 
 /* Previous / next cards (components/page-pager.tsx, hds#1393): stacked full width on a

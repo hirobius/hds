@@ -25,6 +25,7 @@
  *     instances it has just created.
  */
 import { hdsFitDocText } from './figma-doc-text-fit.mjs';
+import { pageDescription } from './docs-component-pages.mjs';
 
 export const KIT = {
   header: '2290:914',
@@ -151,7 +152,7 @@ export function figmaNodeIdFromUrl(url) {
 
 export function specSheetModel(
   name,
-  { manifest, tokens, source = '', deprecations = { tokens: [] } },
+  { manifest, tokens, source = '', deprecations = { tokens: [] }, sourceBase = '' },
 ) {
   const spec = manifest.componentSpecs?.[name];
   if (!spec)
@@ -239,8 +240,11 @@ export function specSheetModel(
   return {
     name,
     title: name,
-    lead: spec.description || name,
+    // The docs page lede (same function), so sheet and page say the same thing.
+    lead: pageDescription(name, spec),
     docsUrl,
+    sourceUrl:
+      sourceBase && spec.filePath ? `${sourceBase.replace(/\/$/, '')}/${spec.filePath}` : null,
     codePath: spec.filePath,
     dataPath: 'public/hds-manifest.json',
     figmaNodeId: figmaNodeIdFromUrl(spec.figmaUrl ?? spec.figmaLink),
@@ -248,11 +252,145 @@ export function specSheetModel(
   };
 }
 
+/** The Header kit instance's properties for one sheet: the docs page's lede, "View docs" and "Source". */
+export function headerProps(m) {
+  return {
+    Title: m.title,
+    Lead: m.lead,
+    'Show link': true,
+    'Docs link': 'View docs',
+    'Show source': Boolean(m.sourceUrl),
+    'Source link': 'Source',
+  };
+}
+
+/**
+ * In Figma: give the kit Header a "Source" link beside "View docs", once. The
+ * "Docs link" frame moves into a horizontal "Links" row (same node, so every
+ * sheet's overrides stay) and a copy of it becomes "Source link", driven by two
+ * new properties, "Source link" (text) and "Show source" (boolean). Idempotent;
+ * deletes nothing. Returns what it changed.
+ */
+async function hdsEnsureHeaderSource(header) {
+  const defs = header.componentPropertyDefinitions;
+  const has = (label) => Object.keys(defs).some((k) => k.split('#')[0] === label);
+  for (const t of header.findAllWithCriteria({ types: ['TEXT'] })) {
+    if (!t.characters.length) continue;
+    for (const f of t.getRangeAllFontNames(0, t.characters.length)) await figma.loadFontAsync(f);
+  }
+  // The Source label reads like View docs (setting its text drops the underline).
+  const sameStyle = () => {
+    const d = header.findOne((n) => n.name === 'Docs link' && n.type === 'FRAME');
+    const s = header.findOne((n) => n.name === 'Source link' && n.type === 'FRAME');
+    const dl = d && d.findOne((n) => n.type === 'TEXT');
+    const sl = s && s.findOne((n) => n.type === 'TEXT');
+    if (!dl || !sl || sl.textDecoration === dl.textDecoration) return [];
+    sl.textDecoration = dl.textDecoration;
+    return [{ id: sl.id, kind: 'source label decoration', value: dl.textDecoration }];
+  };
+  if (has('Source link') && has('Show source')) return sameStyle();
+  const changes = [];
+  const docs = header.findOne((n) => n.name === 'Docs link' && n.type === 'FRAME');
+  let row = docs.parent;
+  if (row === header) {
+    row = figma.createAutoLayout('HORIZONTAL', { name: 'Links' });
+    row.fills = [];
+    header.insertChild(header.children.indexOf(docs), row);
+    row.itemSpacing = header.itemSpacing;
+    const b = header.boundVariables && header.boundVariables.itemSpacing;
+    if (b) {
+      const v = await figma.variables.getVariableByIdAsync(b.id);
+      if (v) row.setBoundVariable('itemSpacing', v);
+    }
+    row.counterAxisAlignItems = 'CENTER';
+    row.appendChild(docs);
+    changes.push({ id: row.id, kind: 'links row' });
+  }
+  const src = docs.clone();
+  src.name = 'Source link';
+  row.appendChild(src);
+  const label = src.findOne((n) => n.type === 'TEXT');
+  const textKey = header.addComponentProperty('Source link', 'TEXT', 'Source');
+  const showKey = header.addComponentProperty('Show source', 'BOOLEAN', true);
+  label.componentPropertyReferences = { characters: textKey };
+  src.componentPropertyReferences = { visible: showKey };
+  label.characters = 'Source';
+  changes.push({ id: src.id, kind: 'source link', textKey, showKey });
+  return changes.concat(sameStyle());
+}
+
+/** In Figma: set one sheet's Header instance from its model, with links on both labels. */
+async function hdsSetHeader(inst, m) {
+  const values = m.header;
+  const defs = inst.componentProperties;
+  const out = {};
+  for (const [label, v] of Object.entries(values)) {
+    const key = Object.keys(defs).find((k) => k.split('#')[0] === label);
+    if (key) out[key] = v;
+  }
+  for (const t of inst.findAllWithCriteria({ types: ['TEXT'] })) {
+    if (!t.characters.length) continue;
+    for (const f of t.getRangeAllFontNames(0, t.characters.length)) await figma.loadFontAsync(f);
+  }
+  inst.setProperties(out);
+  const label = (frameName) => {
+    const f = inst.findOne((n) => n.name === frameName && n.type === 'FRAME');
+    return f && f.findOne((n) => n.type === 'TEXT');
+  };
+  const link = (t, url) => {
+    if (t && url)
+      t.hyperlink = { type: 'URL', value: /^https?:/.test(url) ? url : 'https://' + url };
+  };
+  const docs = label('Docs link');
+  const source = label('Source link');
+  link(docs, m.docsUrl);
+  link(source, m.sourceUrl);
+  // A hyperlink can pin the label's decoration as an override: keep Source like View docs.
+  if (docs && source && source.textDecoration !== docs.textDecoration)
+    source.textDecoration = docs.textDecoration;
+}
+
+/** In Figma: update the Header of every existing sheet; nothing else on the sheet changes. */
+async function hdsUpdateSpecSheets(entries, KIT, SHEET_SUFFIX) {
+  const header = await figma.getNodeByIdAsync(KIT.header);
+  const kit = await hdsEnsureHeaderSource(header);
+  const results = [];
+  for (const e of entries) {
+    const m = e.model;
+    const page = await figma.getNodeByIdAsync(e.pageId);
+    await page.loadAsync();
+    const sheet = page.children.find((n) => n.name === m.name + SHEET_SUFFIX);
+    if (!sheet) {
+      results.push({ name: m.name, missing: true });
+      continue;
+    }
+    let inst = null;
+    for (const n of sheet.findAllWithCriteria({ types: ['INSTANCE'] })) {
+      const main = await n.getMainComponentAsync();
+      if (main && main.id === KIT.header) {
+        inst = n;
+        break;
+      }
+    }
+    if (!inst) {
+      results.push({ name: m.name, sheet: sheet.id, noHeader: true });
+      continue;
+    }
+    const before = inst.componentProperties;
+    const lead = Object.keys(before).find((k) => k.split('#')[0] === 'Lead');
+    const was = lead ? before[lead].value : null;
+    await hdsSetHeader(inst, m);
+    results.push({ name: m.name, header: inst.id, leadChanged: was !== m.header.Lead });
+  }
+  return { kit, sheets: results };
+}
+
 /** The in-Figma builder. Kept as a plain function so its source can be embedded in the script. */
 async function hdsBuildSpecSheets(entries, KIT, SHEET_SUFFIX, fit) {
   const get = (id) => figma.getNodeByIdAsync(id);
   const kit = {};
   for (const [k, id] of Object.entries(KIT)) kit[k] = await get(id);
+  await hdsEnsureHeaderSource(kit.header);
   const fonts = new Map();
   for (const k of ['header', 'section', 'footer', 'cell', 'bullets']) {
     for (const t of kit[k].findAllWithCriteria({ types: ['TEXT'] })) {
@@ -319,7 +457,7 @@ async function hdsBuildSpecSheets(entries, KIT, SHEET_SUFFIX, fit) {
     const header = kit.header.createInstance();
     sheet.appendChild(header);
     header.layoutSizingHorizontal = 'FILL';
-    setProps(header, { Title: m.title, Lead: m.lead, 'Show link': true, 'Docs link': 'View docs' });
+    await hdsSetHeader(header, m);
     let previewed = null;
     for (const s of m.sections) {
       const sec = kit.section.createInstance();
@@ -410,7 +548,31 @@ async function hdsBuildSpecSheets(entries, KIT, SHEET_SUFFIX, fit) {
 
 export function specSheetScript(entries) {
   return `${hdsFitDocText.toString()}
+${hdsEnsureHeaderSource.toString()}
+${hdsSetHeader.toString()}
 ${hdsBuildSpecSheets.toString()}
-return await hdsBuildSpecSheets(${JSON.stringify(entries)}, ${JSON.stringify(KIT)}, ${JSON.stringify(SHEET_SUFFIX)}, hdsFitDocText);
+return await hdsBuildSpecSheets(${JSON.stringify(entries.map((e) => ({ ...e, model: { ...e.model, header: headerProps(e.model) } })))}, ${JSON.stringify(KIT)}, ${JSON.stringify(SHEET_SUFFIX)}, hdsFitDocText);
+`;
+}
+
+/**
+ * A use_figma script that brings every EXISTING sheet's Header in line with code
+ * (lede, "View docs" and "Source" links) without redrawing the sheet. Only the
+ * header fields travel, so 70 sheets fit one call.
+ */
+export function specSheetUpdateScript(entries) {
+  const slim = entries.map((e) => ({
+    pageId: e.pageId,
+    model: {
+      name: e.model.name,
+      docsUrl: e.model.docsUrl,
+      sourceUrl: e.model.sourceUrl,
+      header: headerProps(e.model),
+    },
+  }));
+  return `${hdsEnsureHeaderSource.toString()}
+${hdsSetHeader.toString()}
+${hdsUpdateSpecSheets.toString()}
+return await hdsUpdateSpecSheets(${JSON.stringify(slim)}, ${JSON.stringify(KIT)}, ${JSON.stringify(SHEET_SUFFIX)});
 `;
 }

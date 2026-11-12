@@ -55,6 +55,21 @@ const pkg = JSON.parse(read('package.json'));
 
 /** README prose with markdown emphasis stripped, so `**108**` reads as `108`. */
 const readmeText = () => read('README.md').replace(/\*\*|__/g, '');
+/** README plus its long form, docs/OVERVIEW.md: the claims a reader takes as current. */
+const frontDoorText = () => `${readmeText()}\n${read('docs/OVERVIEW.md').replace(/\*\*|__/g, '')}`;
+
+/** npm renders the README as the package page, so it stays short (Standard Readme). */
+const README_MAX_LINES = 90;
+/** The Standard Readme sections the README keeps, in order. */
+const README_SECTIONS = [
+  'Background',
+  'Install',
+  'Usage',
+  'Docs',
+  'For AI agents',
+  'Contributing',
+  'License',
+];
 
 const PNPM_BUILTINS = new Set(['install', 'exec', 'add', 'dlx']);
 
@@ -149,7 +164,7 @@ describe('package metadata', () => {
 // ── 2. README claims ──────────────────────────────────────────────────────────
 describe('README claims', () => {
   it('does not describe the project as stalled', () => {
-    expect(readmeText()).not.toMatch(/\bstall(ed|ing)?\b/i);
+    expect(frontDoorText()).not.toMatch(/\bstall(ed|ing)?\b/i);
   });
 
   it('keeps the counts in a generated block', () => {
@@ -167,8 +182,25 @@ describe('README claims', () => {
     expect(overclaims).toEqual([]);
   });
 
+  it(`stays within ${README_MAX_LINES} lines (long material goes to docs/OVERVIEW.md)`, () => {
+    const lines = read('README.md').split('\n').length;
+    expect(lines).toBeLessThanOrEqual(README_MAX_LINES);
+  });
+
+  it('keeps the Standard Readme sections, in order', () => {
+    const headings = [...read('README.md').matchAll(/^## (.+)$/gm)].map((m) => m[1]);
+    expect(headings.filter((h) => README_SECTIONS.includes(h))).toEqual(README_SECTIONS);
+  });
+
+  it('names no package version: the npm badge shows the current one, so a typed one goes stale', () => {
+    const prose = read('README.md').replace(/https?:\/\/\S+/g, '');
+    expect(prose.match(/\bv?\d+\.\d+\.\d+\b/g) ?? []).toEqual([]);
+  });
+
   it('only names pnpm commands that exist and are not retired', () => {
-    const named = [...readmeText().matchAll(/\bpnpm (?:run )?([a-z][\w:.-]*)/g)].map((m) => m[1]);
+    const named = [...frontDoorText().matchAll(/\bpnpm (?:run )?([a-z][\w:.-]*)/g)].map(
+      (m) => m[1],
+    );
     expect(named.length).toBeGreaterThan(0);
     const broken = named.filter((name) => {
       if (PNPM_BUILTINS.has(name)) return false;
@@ -179,17 +211,23 @@ describe('README claims', () => {
   });
 
   it('does not describe the retired Playwright browser suite as live', () => {
-    expect(readmeText()).not.toMatch(/Playwright/);
+    expect(frontDoorText()).not.toMatch(/Playwright/);
   });
 
   it('does not claim live Figma Code Connect mappings', () => {
-    expect(readmeText()).not.toMatch(/\d+\s+(Figma\s+)?Code Connect mappings/i);
+    expect(frontDoorText()).not.toMatch(/\d+\s+(Figma\s+)?Code Connect mappings/i);
   });
 });
 
 // ── 3. Figma claims in the core docs ─────────────────────────────────────────
 /** Docs agents and reviewers read as current truth (ADRs are history, so excluded). */
-const CORE_DOCS = ['README.md', 'CLAUDE.md', 'DESIGN-HANDOFF.md', 'docs/rules/MANIFEST_SYNC.md'];
+const CORE_DOCS = [
+  'README.md',
+  'docs/OVERVIEW.md',
+  'CLAUDE.md',
+  'DESIGN-HANDOFF.md',
+  'docs/rules/MANIFEST_SYNC.md',
+];
 
 /** The `**Status:**` line of an ADR, by number. */
 function adrStatus(number) {
