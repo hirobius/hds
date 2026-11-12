@@ -6,7 +6,7 @@
       "id": "behavior/Badge.label-span",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "A Badge's text is wrapped in an inner span, so a test that reads the Badge with getByText or textContent's parent now gets the span; query the Badge by role, test id or closest('[data-tone]') instead. Components that show a Badge (Board, Card, DataTableSection, List, PageHeader, StatusListItem, StatusTile, Table, Text demos) carry the same extra span.",
+      "plain": "A Badge's text now sits in an inner span (so does every Badge inside Card, Table, List and the other demos), so a test that reads it with getByText gets the span; use closest('[data-tone]') or a role instead.",
       "detect": {
         "regex": ["<Badge[^>]*>"]
       },
