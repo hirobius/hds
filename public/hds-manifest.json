@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-11T19:38:37.064Z",
+  "generated": "2026-11-12T00:36:23.494Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-hds-components.vercel.app/",
@@ -13178,7 +13178,7 @@
         "path": "primitive.color.neutral.150",
         "cssVar": "--primitive-color-neutral-150",
         "type": "color",
-        "description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522).",
+        "description": "The Light value of surface.raised, 1.2:1 against the white page like the dark ladder.",
         "value": "#e9eaec"
       },
       {
@@ -13192,7 +13192,7 @@
         "path": "primitive.color.neutral.250",
         "cssVar": "--primitive-color-neutral-250",
         "type": "color",
-        "description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522).",
+        "description": "The Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised.",
         "value": "#dddee0"
       },
       {
@@ -13206,14 +13206,14 @@
         "path": "primitive.color.neutral.325",
         "cssVar": "--primitive-color-neutral-325",
         "type": "color",
-        "description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522).",
+        "description": "The Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken.",
         "value": "#c7c9cc"
       },
       {
         "path": "primitive.color.neutral.350",
         "cssVar": "--primitive-color-neutral-350",
         "type": "color",
-        "description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
+        "description": "The Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).",
         "value": "#b2b4b8"
       },
       {
@@ -13227,7 +13227,7 @@
         "path": "primitive.color.neutral.450",
         "cssVar": "--primitive-color-neutral-450",
         "type": "color",
-        "description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
+        "description": "The Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).",
         "value": "#8d9096"
       },
       {
@@ -13241,7 +13241,7 @@
         "path": "primitive.color.neutral.550",
         "cssVar": "--primitive-color-neutral-550",
         "type": "color",
-        "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522).",
+        "description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted.",
         "value": "#5e626a"
       },
       {
@@ -13262,14 +13262,14 @@
         "path": "primitive.color.neutral.725",
         "cssVar": "--primitive-color-neutral-725",
         "type": "color",
-        "description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).",
+        "description": "The Dark value of surface.selected, at least 1.15:1 above surface.raised.",
         "value": "#272c36"
       },
       {
         "path": "primitive.color.neutral.750",
         "cssVar": "--primitive-color-neutral-750",
         "type": "color",
-        "description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).",
+        "description": "The Dark value of surface.muted, at least 1.1:1 above surface.raised.",
         "value": "#252a34"
       },
       {
@@ -13283,7 +13283,7 @@
         "path": "primitive.color.neutral.825",
         "cssVar": "--primitive-color-neutral-825",
         "type": "color",
-        "description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).",
+        "description": "The Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black).",
         "value": "#1b202a"
       },
       {
@@ -13479,7 +13479,7 @@
         "path": "primitive.color.graphite.250",
         "cssVar": "--primitive-color-graphite-250",
         "type": "color",
-        "description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522).",
+        "description": "The Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted.",
         "value": "#b3b8c0"
       },
       {
@@ -14008,7 +14008,7 @@
         "path": "primitive.space.px3",
         "cssVar": "--primitive-space-px3",
         "type": "dimension",
-        "description": "3px: the raised edge height of a Button (hds#1387).",
+        "description": "3px: the raised edge height of a Button.",
         "value": "3px"
       },
       {
@@ -14029,14 +14029,14 @@
         "path": "primitive.blur.2",
         "cssVar": "--primitive-blur-2",
         "type": "dimension",
-        "description": "Motion blur for in-place swaps of text and icons (hds#751).",
+        "description": "Motion blur for in-place swaps of text and icons.",
         "value": "2px"
       },
       {
         "path": "primitive.blur.4",
         "cssVar": "--primitive-blur-4",
         "type": "dimension",
-        "description": "Motion blur for content revealing into place (hds#751).",
+        "description": "Motion blur for content revealing into place.",
         "value": "4px"
       },
       {
@@ -14146,7 +14146,7 @@
         "path": "primitive.typography.size.xs",
         "cssVar": "--primitive-typography-size-xs",
         "type": "dimension",
-        "description": "Tailwind 4 default text-xs (hds#283 ramp).",
+        "description": "Tailwind 4 default text-xs.",
         "value": "12px"
       },
       {
@@ -14160,14 +14160,14 @@
         "path": "primitive.typography.size.sm",
         "cssVar": "--primitive-typography-size-sm",
         "type": "dimension",
-        "description": "Tailwind 4 default text-sm (hds#283 ramp).",
+        "description": "Tailwind 4 default text-sm.",
         "value": "14px"
       },
       {
         "path": "primitive.typography.size.base",
         "cssVar": "--primitive-typography-size-base",
         "type": "dimension",
-        "description": "Tailwind 4 default text-base (hds#283 ramp).",
+        "description": "Tailwind 4 default text-base.",
         "value": "16px"
       },
       {
@@ -14181,63 +14181,63 @@
         "path": "primitive.typography.size.lg",
         "cssVar": "--primitive-typography-size-lg",
         "type": "dimension",
-        "description": "Tailwind 4 default text-lg (hds#283 ramp).",
+        "description": "Tailwind 4 default text-lg.",
         "value": "18px"
       },
       {
         "path": "primitive.typography.size.xl",
         "cssVar": "--primitive-typography-size-xl",
         "type": "dimension",
-        "description": "Tailwind 4 default text-xl (hds#283 ramp).",
+        "description": "Tailwind 4 default text-xl.",
         "value": "20px"
       },
       {
         "path": "primitive.typography.size.2xl",
         "cssVar": "--primitive-typography-size-2xl",
         "type": "dimension",
-        "description": "Tailwind 4 default text-2xl (hds#283 ramp).",
+        "description": "Tailwind 4 default text-2xl.",
         "value": "24px"
       },
       {
         "path": "primitive.typography.size.title",
         "cssVar": "--primitive-typography-size-title",
         "type": "dimension",
-        "description": "Title role size (hds#847): one clear step under display.",
+        "description": "Title role size: one clear step under display.",
         "value": "28px"
       },
       {
         "path": "primitive.typography.size.3xl",
         "cssVar": "--primitive-typography-size-3xl",
         "type": "dimension",
-        "description": "Tailwind 4 default text-3xl (hds#283 ramp).",
+        "description": "Tailwind 4 default text-3xl.",
         "value": "30px"
       },
       {
         "path": "primitive.typography.size.4xl",
         "cssVar": "--primitive-typography-size-4xl",
         "type": "dimension",
-        "description": "Tailwind 4 default text-4xl (hds#283 ramp).",
+        "description": "Tailwind 4 default text-4xl.",
         "value": "36px"
       },
       {
         "path": "primitive.typography.size.5xl",
         "cssVar": "--primitive-typography-size-5xl",
         "type": "dimension",
-        "description": "Tailwind 4 default text-5xl (hds#283 ramp).",
+        "description": "Tailwind 4 default text-5xl.",
         "value": "48px"
       },
       {
         "path": "primitive.typography.size.display",
         "cssVar": "--primitive-typography-size-display",
         "type": "dimension",
-        "description": "Display role size (hds#847): the page's one hero heading, a clear step above title.",
+        "description": "Display role size: the page's one hero heading, a clear step above title.",
         "value": "56px"
       },
       {
         "path": "primitive.typography.size.displayMin",
         "cssVar": "--primitive-typography-size-displayMin",
         "type": "dimension",
-        "description": "Display floor at a 360px viewport (hds#1300): 40px at a 16px root, in rem to follow the user's font size.",
+        "description": "Display floor at a 360px viewport: 40px at a 16px root, in rem to follow the user's font size.",
         "value": "2.5rem"
       },
       {
@@ -14251,14 +14251,14 @@
         "path": "primitive.typography.size.6xl",
         "cssVar": "--primitive-typography-size-6xl",
         "type": "dimension",
-        "description": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl.",
+        "description": "Swiss-canon display size. Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl.",
         "value": "60px"
       },
       {
         "path": "primitive.typography.size.code",
         "cssVar": "--primitive-typography-size-code",
         "type": "dimension",
-        "description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text.",
+        "description": "15px code size. The mono role: one px below ui so code sits level with 16px UI text.",
         "value": "15px"
       },
       {
@@ -14280,7 +14280,7 @@
         "path": "primitive.typography.weight.semibold",
         "cssVar": "--primitive-typography-weight-semibold",
         "type": "fontWeight",
-        "description": "Button label weight (hds#760): Sora SemiBold 600.",
+        "description": "Button label weight: Sora SemiBold 600.",
         "value": "600"
       },
       {
@@ -14346,14 +14346,14 @@
         "path": "primitive.typography.lineHeight.display",
         "cssVar": "--primitive-typography-lineHeight-display",
         "type": "number",
-        "description": "Display role leading (hds#485).",
+        "description": "Display role leading.",
         "value": "1.05"
       },
       {
         "path": "primitive.typography.lineHeight.body",
         "cssVar": "--primitive-typography-lineHeight-body",
         "type": "number",
-        "description": "Body role leading (hds#485).",
+        "description": "Body role leading.",
         "value": "1.6"
       },
       {
@@ -14406,14 +14406,14 @@
         "path": "primitive.duration.stagger",
         "cssVar": "--primitive-duration-stagger",
         "type": "duration",
-        "description": "Offset between items that arrive one after another (lists, digits, menu items) (hds#751).",
+        "description": "Offset between items that arrive one after another (lists, digits, menu items).",
         "value": "40ms"
       },
       {
         "path": "primitive.duration.extended",
         "cssVar": "--primitive-duration-extended",
         "type": "duration",
-        "description": "Long reveals: skeleton to content, page-level entrances (hds#751).",
+        "description": "Long reveals: skeleton to content, page-level entrances.",
         "value": "600ms"
       },
       {
@@ -14678,7 +14678,7 @@
         "path": "primitive.size.width.280",
         "cssVar": "--primitive-size-width-280",
         "type": "dimension",
-        "description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room.",
+        "description": "Docs-shell rail width: our own number, not HeroUI's 268px; fits the longest top-level nav label with room.",
         "value": "280px"
       },
       {
@@ -14698,7 +14698,7 @@
         "path": "primitive.size.width.1180",
         "cssVar": "--primitive-size-width-1180",
         "type": "dimension",
-        "description": "App shell max width: a 1180px column for app pages (hds#863).",
+        "description": "App shell max width: a 1180px column for app pages.",
         "value": "1180px"
       },
       {
@@ -14895,7 +14895,7 @@
         "path": "semantic.motion.transitionColor",
         "cssVar": "--hds-motion-transitionColor",
         "type": "motion",
-        "description": "Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399).",
+        "description": "Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it.",
         "composite": {
           "duration": "150ms",
           "easing": "cubic-bezier(0, 0, 0.2, 1)"
@@ -14905,7 +14905,7 @@
         "path": "semantic.motion.transitionShadow",
         "cssVar": "--hds-motion-transitionShadow",
         "type": "motion",
-        "description": "Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399).",
+        "description": "Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it.",
         "composite": {
           "duration": "150ms",
           "easing": "cubic-bezier(0, 0, 0.2, 1)"
@@ -14915,7 +14915,7 @@
         "path": "semantic.motion.distance",
         "cssVar": "--semantic-motion-distance",
         "type": "dimension",
-        "description": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242).",
+        "description": "Scroll-reveal translateY travel. Equals space.scale.md today, but names motion, not a spacing tier.",
         "alias": "{primitive.space.6}",
         "resolvedValue": "24px"
       },
@@ -14923,7 +14923,7 @@
         "path": "semantic.motion.nudge",
         "cssVar": "--semantic-motion-nudge",
         "type": "dimension",
-        "description": "Small travel for text swaps and nudges (hds#751).",
+        "description": "Small travel for text swaps and nudges.",
         "alias": "{primitive.space.1}",
         "resolvedValue": "4px"
       },
@@ -14931,7 +14931,7 @@
         "path": "semantic.motion.slide",
         "cssVar": "--semantic-motion-slide",
         "type": "dimension",
-        "description": "Travel for menus, toasts and items sliding in (hds#751).",
+        "description": "Travel for menus, toasts and items sliding in.",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -14939,7 +14939,7 @@
         "path": "semantic.motion.blurSwap",
         "cssVar": "--semantic-motion-blurSwap",
         "type": "dimension",
-        "description": "Blur while text or an icon swaps in place (hds#751).",
+        "description": "Blur while text or an icon swaps in place.",
         "alias": "{primitive.blur.2}",
         "resolvedValue": "2px"
       },
@@ -14947,7 +14947,7 @@
         "path": "semantic.motion.blurReveal",
         "cssVar": "--semantic-motion-blurReveal",
         "type": "dimension",
-        "description": "Blur while content reveals into place (hds#751).",
+        "description": "Blur while content reveals into place.",
         "alias": "{primitive.blur.4}",
         "resolvedValue": "4px"
       },
@@ -14955,7 +14955,7 @@
         "path": "semantic.motion.scaleDialog",
         "cssVar": "--semantic-motion-scaleDialog",
         "type": "number",
-        "description": "Scale a dialog opens from and closes to (hds#751).",
+        "description": "Scale a dialog opens from and closes to.",
         "alias": "{primitive.scale.96}",
         "resolvedValue": "0.96"
       },
@@ -14963,7 +14963,7 @@
         "path": "semantic.motion.scaleMenu",
         "cssVar": "--semantic-motion-scaleMenu",
         "type": "number",
-        "description": "Scale a menu, popover or select opens from (hds#751).",
+        "description": "Scale a menu, popover or select opens from.",
         "alias": "{primitive.scale.97}",
         "resolvedValue": "0.97"
       },
@@ -14971,7 +14971,7 @@
         "path": "semantic.motion.scaleTooltip",
         "cssVar": "--semantic-motion-scaleTooltip",
         "type": "number",
-        "description": "Scale a tooltip opens from (hds#751).",
+        "description": "Scale a tooltip opens from.",
         "alias": "{primitive.scale.98}",
         "resolvedValue": "0.98"
       },
@@ -15051,7 +15051,7 @@
         "path": "semantic.color.surface.accent",
         "cssVar": "--semantic-color-surface-accent",
         "type": "color",
-        "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+        "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.700}",
         "resolvedValue": "#3a4457",
         "dark": {
@@ -15358,7 +15358,7 @@
         "path": "semantic.color.edge.primary",
         "cssVar": "--semantic-color-edge-primary",
         "type": "color",
-        "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422).",
+        "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light.",
         "value": "oklch(0.2646 0.0260 265.37)",
         "dark": {
           "alias": "oklch(0.7253 0.0044 271.35)",
@@ -15369,7 +15369,7 @@
         "path": "semantic.color.edge.neutral",
         "cssVar": "--semantic-color-edge-neutral",
         "type": "color",
-        "description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+        "description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill.",
         "alias": "{primitive.color.neutral.400}",
         "resolvedValue": "#a0a3a8",
         "dark": {
@@ -15381,7 +15381,7 @@
         "path": "semantic.color.edge.danger",
         "cssVar": "--semantic-color-edge-danger",
         "type": "color",
-        "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+        "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.",
         "alias": "{primitive.color.red.400}",
         "resolvedValue": "#f87171",
         "dark": {
@@ -15393,7 +15393,7 @@
         "path": "semantic.color.edge.success",
         "cssVar": "--semantic-color-edge-success",
         "type": "color",
-        "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+        "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.",
         "alias": "{primitive.color.green.400}",
         "resolvedValue": "#34d399",
         "dark": {
@@ -15405,7 +15405,7 @@
         "path": "semantic.color.edge.warning",
         "cssVar": "--semantic-color-edge-warning",
         "type": "color",
-        "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+        "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.",
         "alias": "{primitive.color.amber.400}",
         "resolvedValue": "#fbbf24",
         "dark": {
@@ -15417,7 +15417,7 @@
         "path": "semantic.color.edge.info",
         "cssVar": "--semantic-color-edge-info",
         "type": "color",
-        "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill (hds#1422).",
+        "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.",
         "alias": "{primitive.color.blue.300}",
         "resolvedValue": "oklch(0.70 0.2903 266.54)",
         "dark": {
@@ -15429,7 +15429,7 @@
         "path": "semantic.color.shadow.hard",
         "cssVar": "--semantic-color-shadow-hard",
         "type": "color",
-        "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).",
+        "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
         "alias": "{primitive.color.shadow.ink}",
         "resolvedValue": "#282c34",
         "dark": {
@@ -16169,7 +16169,7 @@
         "path": "semantic.accent.rest",
         "cssVar": "--semantic-accent-rest",
         "type": "color",
-        "description": "Accent fill at rest — graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+        "description": "Accent fill at rest — graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent.",
         "alias": "{primitive.color.graphite.700}",
         "resolvedValue": "#3a4457",
         "dark": {
@@ -16181,7 +16181,7 @@
         "path": "semantic.accent.hover",
         "cssVar": "--semantic-accent-hover",
         "type": "color",
-        "description": "Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422).",
+        "description": "Accent fill on hover, one step darker than rest (graphite.800 / 100).",
         "alias": "{primitive.color.graphite.800}",
         "resolvedValue": "#263043",
         "dark": {
@@ -16273,7 +16273,7 @@
         "path": "semantic.radius.control",
         "cssVar": "--semantic-radius-control",
         "type": "dimension",
-        "description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242).",
+        "description": "Corner radius for small control glyphs such as the checkbox box; distinct from radius.action.",
         "alias": "{primitive.radius.4}",
         "resolvedValue": "4px"
       },
@@ -16641,7 +16641,7 @@
         "path": "semantic.size.avatar",
         "cssVar": "--semantic-size-avatar",
         "type": "dimension",
-        "description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242).",
+        "description": "Avatar width and height for feeds and identity glyphs. Same pixels as row.compact, a separate role.",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
       },
@@ -16649,7 +16649,7 @@
         "path": "semantic.size.touchTarget",
         "cssVar": "--semantic-size-touchTarget",
         "type": "dimension",
-        "description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750).",
+        "description": "Small-control minimum on a coarse pointer or narrow viewport.",
         "alias": "{primitive.size.interactive.min}",
         "resolvedValue": "44px"
       },
@@ -16657,7 +16657,7 @@
         "path": "semantic.size.tile",
         "cssVar": "--semantic-size-tile",
         "type": "dimension",
-        "description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403).",
+        "description": "Minimum height of a metric tile, one height for every tile so rows line up.",
         "alias": "{primitive.size.120}",
         "resolvedValue": "120px"
       },
@@ -16739,7 +16739,7 @@
         "path": "component.tag.border",
         "cssVar": "--component-tag-border",
         "type": "color",
-        "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891).",
+        "description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge.",
         "alias": "{semantic.color.surface.muted}",
         "resolvedValue": "#dddee0"
       },
@@ -17055,7 +17055,7 @@
         "path": "component.button.bgPressed",
         "cssVar": "--component-button-bgPressed",
         "type": "color",
-        "description": "Primary button pressed fill (hds#748).",
+        "description": "Primary button pressed fill.",
         "alias": "{semantic.accent.pressed}",
         "resolvedValue": "#1c2638"
       },
@@ -17063,7 +17063,7 @@
         "path": "component.button.edge.primary",
         "cssVar": "--component-button-edge-primary",
         "type": "color",
-        "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897).",
+        "description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary.",
         "alias": "{semantic.color.edge.primary}",
         "resolvedValue": "oklch(0.2646 0.0260 265.37)"
       },
@@ -17071,7 +17071,7 @@
         "path": "component.button.edge.secondary",
         "cssVar": "--component-button-edge-secondary",
         "type": "color",
-        "description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral (hds#897).",
+        "description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral.",
         "alias": "{semantic.color.edge.neutral}",
         "resolvedValue": "#a0a3a8"
       },
@@ -17079,7 +17079,7 @@
         "path": "component.button.edge.danger",
         "cssVar": "--component-button-edge-danger",
         "type": "color",
-        "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger (hds#897).",
+        "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger.",
         "alias": "{semantic.color.edge.danger}",
         "resolvedValue": "#f87171"
       },
@@ -17087,7 +17087,7 @@
         "path": "component.button.edge.success",
         "cssVar": "--component-button-edge-success",
         "type": "color",
-        "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success (hds#897).",
+        "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success.",
         "alias": "{semantic.color.edge.success}",
         "resolvedValue": "#34d399"
       },
@@ -17095,7 +17095,7 @@
         "path": "component.button.edge.warning",
         "cssVar": "--component-button-edge-warning",
         "type": "color",
-        "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning (hds#897).",
+        "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning.",
         "alias": "{semantic.color.edge.warning}",
         "resolvedValue": "#fbbf24"
       },
@@ -17103,7 +17103,7 @@
         "path": "component.button.edge.info",
         "cssVar": "--component-button-edge-info",
         "type": "color",
-        "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897).",
+        "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info.",
         "alias": "{semantic.color.edge.info}",
         "resolvedValue": "oklch(0.70 0.2903 266.54)"
       },
@@ -17351,7 +17351,7 @@
         "path": "component.button.secondary.bg.rest",
         "cssVar": "--component-button-secondary-bg-rest",
         "type": "color",
-        "description": "Secondary button fill: soft tonal, no border (hds#891).",
+        "description": "Secondary button fill: soft tonal, no border.",
         "alias": "{semantic.color.surface.soft}",
         "resolvedValue": "#d3d4d6"
       },
@@ -17375,7 +17375,7 @@
         "path": "component.button.secondary.border.rest",
         "cssVar": "--component-button-secondary-border-rest",
         "type": "color",
-        "description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
+        "description": "Secondary button border. DEPRECATED: secondary is soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.interactive}",
         "resolvedValue": "#6f737b"
       },
@@ -17391,7 +17391,7 @@
         "path": "component.button.secondary.border.disabled",
         "cssVar": "--component-button-secondary-border-disabled",
         "type": "color",
-        "description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
+        "description": "Secondary button disabled border. DEPRECATED: secondary is now soft-filled and borderless; kept live, unused by Button.",
         "alias": "{semantic.color.border.default}",
         "resolvedValue": "#b3b8c0"
       },
