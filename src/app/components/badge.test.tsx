@@ -170,7 +170,7 @@ describe('Badge icon (hds#1437)', () => {
   it('sizes the icon from the small icon token and spaces it with a scale token', () => {
     render(<Badge icon={Bell}>Alerts</Badge>);
     const badge = screen.getByText('Alerts');
-    expect(svgOf(badge)!.style.width).toBe('var(--primitive-size-16)');
+    expect(svgOf(badge)!.style.width).toBe('var(--primitive-size-16)'); // tier-ok: asserts the Icon's own small-size output, which is primitive
     expect(badge.className).toContain('gap-scale-2xs');
   });
 

@@ -1,11 +1,11 @@
 {
-  "impact": "additive",
+  "impact": "behavior",
   "plain": "Badge now accepts an optional icon prop, so you can show a Lucide icon before a badge's text.",
   "steps": [
     {
       "id": "behavior/Badge.dom",
       "kind": "behavior",
-      "impact": "additive",
+      "impact": "behavior",
       "plain": "A Badge with the new icon prop renders a decorative aria-hidden svg before its text; Badges without it are unchanged.",
       "detect": { "regex": ["<Badge[^>]*\\bicon="] },
       "facts": ["dom-changed:Badge"]
