@@ -1,5 +1,5 @@
 {
-  "impact": "behavior",
+  "impact": "breaking",
   "plain": "Badge now centres its label in the pill (it sat about 2px high), the label sits in an inner span, and the unused --component-badge-paddingShift token is gone.",
   "steps": [
     {
@@ -7,8 +7,20 @@
       "kind": "behavior",
       "impact": "behavior",
       "plain": "A Badge's text is wrapped in an inner span, so a test that reads the Badge with getByText or textContent's parent now gets the span; query the Badge by role, test id or closest('[data-tone]') instead.",
-      "detect": { "regex": ["<Badge[^>]*>"] },
+      "detect": {
+        "regex": ["<Badge[^>]*>"]
+      },
       "facts": ["dom-changed:Badge"]
+    },
+    {
+      "id": "removed/tokens.component.badge.paddingShift",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The component.badge.paddingShift token (--component-badge-paddingShift, the 1px label lift) is gone because Badge pads evenly now; stop reading it, there is no replacement.",
+      "detect": {
+        "regex": ["\\bcomponent\\.badge\\.paddingShift\\b", "--component-badge-paddingShift\\b"]
+      },
+      "facts": ["key-removed:./tokens:tokens.component.badge.paddingShift"]
     }
   ]
 }
