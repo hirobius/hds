@@ -34,5 +34,14 @@ export async function openThemed(page: Page, route: string, theme: 'light' | 'da
     el.classList.toggle('dark', t === 'dark');
     el.classList.toggle('light', t === 'light');
   }, theme);
-  await page.evaluate(() => document.fonts?.ready);
+  // `fonts.ready` alone can resolve before a face is ever requested, so a shot
+  // could catch the fallback-to-Sora swap (radio labels flipped by 469 px).
+  // Load every declared face, wait for ready, then two frames for layout.
+  await page.evaluate(async () => {
+    const fonts = document.fonts;
+    if (!fonts) return;
+    await Promise.all([...fonts].map((face) => face.load().catch(() => undefined)));
+    await fonts.ready;
+    await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+  });
 }
