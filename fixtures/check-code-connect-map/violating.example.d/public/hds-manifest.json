@@ -1,0 +1,7 @@
+{
+  "componentSpecs": {
+    "Alert": {
+      "filePath": "src/app/components/alert.tsx"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "componentSpecs": {
+    "Alert": {
+      "filePath": "src/app/components/alert.tsx",
+      "figmaUrl": "https://www.figma.com/design/K/HDS?node-id=33-34"
+    }
+  }
+}

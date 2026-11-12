@@ -62,7 +62,7 @@ export interface MetadataListProps
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-/** Renders object metadata as a semantic `<dl>` of term/description pairs. */
+/** Renders object metadata as a description list of term/description pairs. */
 export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, MetadataListProps>(
   function MetadataList(
     { className, items, orientation = 'vertical', variant = 'plain', footer, ...rest },
