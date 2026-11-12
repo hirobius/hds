@@ -1703,7 +1703,7 @@
       "type": "boolean",
       "optional": true,
       "values": null,
-      "default": null
+      "default": "false"
     },
     "title": {
       "type": "ReactNode",

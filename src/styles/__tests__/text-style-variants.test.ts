@@ -4,7 +4,7 @@
  *
  * - bodyStrong: body at weight bold (700), what `<Text variant="body" weight="bold">` renders.
  * - uiRegular: ui at weight regular (400), what Table body cells render (hds#1198).
- * - uiItalic: ui in italic, what EmptyState's inline `hds-type-ui italic` renders.
+ * - uiItalic: ui in italic, what EmptyState renders with the `italic` prop (upright by default, hds#1441).
  *
  * Each is its role with one property changed, and the Figma model emits each as
  * a text style (typography/bodyStrong, typography/uiRegular, typography/uiItalic).
@@ -95,9 +95,9 @@ describe('uiItalic (ADR-052 addendum)', () => {
     expect(typo.uiItalic.$extensions).toEqual(typo.ui.$extensions);
   });
 
-  it('matches what EmptyState renders inline', () => {
+  it('matches what EmptyState renders', () => {
     const src = repoFile('src/app/components/empty-state.tsx');
-    expect(src).toContain("isItalic ? 'italic' : 'not-italic'");
+    expect(src).toContain("italic ? 'italic' : 'not-italic'");
     expect(src).toContain('hds-type-ui');
   });
 

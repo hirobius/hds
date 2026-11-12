@@ -409,7 +409,7 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - description: ReactNode
   - framed: boolean = false
   - icon: LucideIcon
-  - italic: boolean
+  - italic: boolean = false
   - title: ReactNode
   - variant: 'inline' | 'teaching' = inline
 
