@@ -1320,6 +1320,7 @@
         "src/app/components/alert.tsx",
         "src/app/components/app-shell.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/badge.tsx",
         "src/app/components/breadcrumb.tsx",
         "src/app/components/button.tsx",
         "src/app/components/card.tsx",
@@ -4771,6 +4772,10 @@
           "type": "boolean",
           "default": false
         },
+        "icon": {
+          "type": "LucideIcon",
+          "optional": true
+        },
         "label": {
           "type": "string",
           "optional": true
@@ -4830,7 +4835,13 @@
         }
       },
       "requiredProps": [],
-      "a11yRules": [],
+      "a11yRules": [
+        {
+          "rule": "A leading `icon` is aria-hidden decoration: put the meaning in the text (or `label`), never in the icon alone. `dot` wins over `icon`.",
+          "required": false,
+          "owner": "consumer"
+        }
+      ],
       "description": "Compact metadata/status chip. Tone is the only styling input.",
       "category": "Feedback",
       "categorySource": "jsdoc",
@@ -4860,7 +4871,7 @@
         "data-tone"
       ],
       "usage": {
-        "when": "Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).",
+        "when": "Label a status or state with a compact neutral or semantic chip, a dot, a leading `icon`, or a capped count beside a heading (`count`, `max`, `label`).",
         "whenNot": "A chip people can toggle, or a message that needs a sentence.",
         "useInstead": [
           {

@@ -49,6 +49,11 @@
       "default": false
     },
     {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": true
+    },
+    {
       "name": "label",
       "type": "string",
       "optional": true
@@ -84,7 +89,7 @@
   ],
   "roleTokens": {},
   "usage": {
-    "when": "Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).",
+    "when": "Label a status or state with a compact neutral or semantic chip, a dot, a leading `icon`, or a capped count beside a heading (`count`, `max`, `label`).",
     "whenNot": "A chip people can toggle, or a message that needs a sentence.",
     "useInstead": [
       {

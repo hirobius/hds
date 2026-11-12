@@ -3,7 +3,8 @@
  * feedback-colored circle with no text; a `label` makes it a named status,
  * otherwise it is decorative and a sibling carries the meaning.
  */
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { Bell, CalendarDays } from 'lucide-react';
 import { cleanup, render, screen } from '@testing-library/react';
 import tokens from '../../../hirobius.tokens.json';
 import { Badge } from './badge';
@@ -150,5 +151,58 @@ describe('Badge shape token values (hds#757)', () => {
 
   it('lifts the label 1px', () => {
     expect(badge.paddingShift.$value).toBe('{primitive.space.px1}');
+  });
+});
+
+describe('Badge icon (hds#1437)', () => {
+  const svgOf = (el: Element) => el.querySelector('svg[data-hds-icon]') as SVGElement | null;
+
+  it('renders a leading aria-hidden icon before the label', () => {
+    render(<Badge icon={CalendarDays}>Due Friday</Badge>);
+    const badge = screen.getByText('Due Friday');
+    const svg = svgOf(badge);
+    expect(svg).not.toBeNull();
+    expect(svg!.getAttribute('aria-hidden')).toBe('true');
+    expect(badge.firstElementChild).toBe(svg);
+    expect(badge.textContent).toBe('Due Friday');
+  });
+
+  it('sizes the icon from the small icon token and spaces it with a scale token', () => {
+    render(<Badge icon={Bell}>Alerts</Badge>);
+    const badge = screen.getByText('Alerts');
+    expect(svgOf(badge)!.style.width).toBe('var(--primitive-size-16)');
+    expect(badge.className).toContain('gap-scale-2xs');
+  });
+
+  it.each(['neutral', 'warning'] as const)(
+    'works with the %s tone and inherits its text color',
+    (tone) => {
+      render(
+        <Badge icon={Bell} tone={tone}>
+          Tone
+        </Badge>,
+      );
+      const badge = screen.getByText('Tone');
+      expect(badge.getAttribute('data-tone')).toBe(tone);
+      expect(badge.className).toContain(`text-[color:var(--component-badge-${tone}-text)]`);
+      expect(svgOf(badge)!.getAttribute('stroke')).toBe('currentColor');
+    },
+  );
+
+  it('leads a count badge too, and a badge without icon renders no svg', () => {
+    const { container, rerender } = render(<Badge icon={Bell} count={3} />);
+    expect(svgOf(container)).not.toBeNull();
+    expect(container.textContent).toBe('3');
+    rerender(<Badge>Plain</Badge>);
+    expect(svgOf(container)).toBeNull();
+  });
+
+  it('dot wins over icon: renders the dot with no svg, and warns once in dev', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { container } = render(<Badge dot icon={Bell} />);
+    expect(svgOf(container)).toBeNull();
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(String(warn.mock.calls[0][0])).toContain('`icon`');
+    warn.mockRestore();
   });
 });
