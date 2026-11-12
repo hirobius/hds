@@ -15,7 +15,7 @@ const px = (v: string) => parseFloat(v);
 async function measure(rail: Locator) {
   return rail.evaluate((el) => {
     const r = getComputedStyle(el);
-    const checked = el.querySelector('[role="radio"][aria-checked="true"]')!;
+    const checked = el.querySelector('[role="radio"][aria-checked="true"], [aria-current="page"]')!;
     const item = getComputedStyle(checked);
     const indicator = getComputedStyle(checked.querySelector('[aria-hidden="true"]')!);
     return {
@@ -38,13 +38,14 @@ function expectConcentric(m: Awaited<ReturnType<typeof measure>>) {
 for (const theme of ['light', 'dark'] as const) {
   test(`selected pill is concentric with the rail, every demo (${theme})`, async ({ page }) => {
     await openThemed(page, ROUTE, theme);
-    const rails = page.locator('[role="radiogroup"]');
+    const rails = page.locator('[role="radiogroup"], nav > ul'); // link mode: nav > ul is the rail (hds#1438)
     await expect(rails.first()).toBeVisible();
     const count = await rails.count();
     expect(count).toBeGreaterThan(1);
     for (let i = 0; i < count; i++) {
       const rail = rails.nth(i);
-      if ((await rail.locator('[aria-checked="true"]').count()) === 0) continue;
+      if ((await rail.locator('[aria-checked="true"], [aria-current="page"]').count()) === 0)
+        continue;
       expectConcentric(await measure(rail));
     }
   });
