@@ -87,6 +87,7 @@ import {
   Banknote,
   Bell,
   Briefcase,
+  Calendar,
   CircleCheck,
   Copy,
   FileText,
@@ -494,6 +495,12 @@ function BadgeDemo() {
       <Badge tone="success">Active</Badge>
       <Badge tone="warning">At risk</Badge>
       <Badge tone="danger">Blocked</Badge>
+      <Badge icon={Calendar} tone="neutral">
+        Due Friday
+      </Badge>
+      <Badge icon={Bell} tone="warning">
+        2 alerts
+      </Badge>
       <Badge count={3} label="3 roles" />
       <Badge count={42} label="42 roles" />
       <Badge count={120} max={99} label="120 roles" />
