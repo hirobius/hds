@@ -33,10 +33,11 @@ describe('site mark and footer', () => {
     expect(text(renderToStaticMarkup(<SiteMark />))).toBe('HDS');
   });
 
-  it('renders one footer line with the name and the version', () => {
+  it('renders one footer line with the short name and the version', () => {
     const html = renderToStaticMarkup(<SiteFooter />);
     expect(html).toMatch(/^<footer/);
-    expect(text(html)).toBe(`Hirobius Design System v${pkg.version}`);
+    // "HDS", so /docs says the full name once, as its H1 (hds#845, hds#1473).
+    expect(text(html)).toBe(`HDS v${pkg.version}`);
   });
 
   it('mounts the footer once, in the root layout, so every route has it', () => {
