@@ -6,11 +6,22 @@
       "id": "behavior/Badge.label-span",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "A Badge's text is wrapped in an inner span, so a test that reads the Badge with getByText or textContent's parent now gets the span; query the Badge by role, test id or closest('[data-tone]') instead.",
+      "plain": "A Badge's text is wrapped in an inner span, so a test that reads the Badge with getByText or textContent's parent now gets the span; query the Badge by role, test id or closest('[data-tone]') instead. Components that show a Badge (Board, Card, DataTableSection, List, PageHeader, StatusListItem, StatusTile, Table, Text demos) carry the same extra span.",
       "detect": {
         "regex": ["<Badge[^>]*>"]
       },
-      "facts": ["dom-changed:Badge"]
+      "facts": [
+        "dom-changed:Badge",
+        "dom-changed:Board",
+        "dom-changed:Card",
+        "dom-changed:DataTableSection",
+        "dom-changed:List",
+        "dom-changed:PageHeader",
+        "dom-changed:StatusListItem",
+        "dom-changed:StatusTile",
+        "dom-changed:Table",
+        "dom-changed:Text"
+      ]
     },
     {
       "id": "removed/tokens.component.badge.paddingShift",
