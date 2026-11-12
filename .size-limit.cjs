@@ -216,9 +216,12 @@ module.exports = [
     // hds#1205: the root without its deprecated `hds`/`tokens` copies, which
     // leave in 0.35.0. This is what a components-only root import ships, and
     // the probe build fails if the token JSON reaches it. Measured 52.38 kB (size-limit).
+    // 0.42.0 (Roleflame gaps, #1503): 55.69 kB with SegmentedControl link + icon-only
+    // (~410 B) and Menu switch rows + captions (~350 B), after trimming (Menu shares
+    // Toggle's switch styles). Raised by the measured amount; Adrian's call.
     name: 'components-only root graph (hirobius-ui.js minus hds/tokens)',
     path: 'dist/probe/hirobius-ui.components.graph.js',
-    limit: '55 kB',
+    limit: '55.7 kB',
     gzip: true,
   },
   {
@@ -234,9 +237,11 @@ module.exports = [
     gzip: true,
   },
   {
+    // 0.42.0 (Roleflame gaps, #1503): 24.03 kB; main sat 1 B under 24 kB, so any new rule
+    // (Card radius lg, SegmentedControl icon-only) crossed it. Raised by the measured amount.
     name: 'styles.css (scoped-only CSS bundle)',
     path: 'dist/styles.css',
-    limit: '24 kB',
+    limit: '24.05 kB',
     gzip: true,
   },
   {
