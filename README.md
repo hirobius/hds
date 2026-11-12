@@ -1,10 +1,10 @@
 # Hirobius Design System
 
-[![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Docs](https://img.shields.io/badge/Docs-live-000000)](https://hirobius-hds-components.vercel.app/docs) [![License](https://img.shields.io/badge/license-MIT%20%2B%20OFL--1.1-blue)](LICENSE) [![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@hirobius/design-system)](https://www.npmjs.com/package/@hirobius/design-system) [![Docs](https://img.shields.io/badge/Docs-live-000000)](https://hirobius-design-system.vercel.app/docs) [![License](https://img.shields.io/badge/license-MIT%20%2B%20OFL--1.1-blue)](LICENSE) [![CI](https://github.com/hirobius/hds/actions/workflows/ci.yml/badge.svg)](https://github.com/hirobius/hds/actions/workflows/ci.yml)
 
 Token-first React components with checked contrast and focus.
 
-[![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/brand-theme-dials.png)](https://hirobius-hds-components.vercel.app/docs)
+[![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/brand-theme-dials.png)](https://hirobius-design-system.vercel.app/docs)
 
 ## Table of Contents
 
@@ -58,12 +58,12 @@ Theming, scoping and the router seam: [docs/CONSUMING.md](docs/CONSUMING.md).
 
 ## Docs
 
-Components, tokens and live demos: <https://hirobius-hds-components.vercel.app/docs>
+Components, tokens and live demos: <https://hirobius-design-system.vercel.app/docs>
 
 ## For AI agents
 
 - **MCP server:** the package ships `hds-mcp` (stdio, no network). Add it to your MCP client from an app that has the package installed: `{ "mcpServers": { "hds": { "command": "npx", "args": ["hds-mcp"] } } }`
-- **llms.txt:** [llms.txt](llms.txt) ships in the package. It is also online at <https://hirobius-hds-components.vercel.app/llms.txt>.
+- **llms.txt:** [llms.txt](llms.txt) ships in the package. It is also online at <https://hirobius-design-system.vercel.app/llms.txt>.
 - **AGENTS.md:** [AGENTS.md](AGENTS.md) has the rules for agents that build with HDS.
 - **Skill:** `npx skills add hirobius/hds --skill hds-consumer`
 
