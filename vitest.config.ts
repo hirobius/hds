@@ -57,6 +57,8 @@ export default defineConfig({
     testTimeout: 20_000,
     // strip-git-env first: no test may inherit a hook's GIT_DIR (#546).
     // jsdom polyfills (ResizeObserver, pointer capture, scrollIntoView) for Radix overlays.
+    // CI only: puts gitleaks on PATH for the suites that run the secrets gates.
+    globalSetup: ['./tests/setup/ensure-gitleaks.ts'],
     setupFiles: ['./tests/setup/strip-git-env.ts', './tests/setup/jsdom-polyfills.ts'],
     // Keep `pnpm test` focused on repo-owned unit tests. (Playwright specs live
     // under /tests and are run via `pnpm test:*`.)

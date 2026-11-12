@@ -22,6 +22,7 @@ import { figmaDrift, formatDrift } from '../lib/figma-drift.mjs';
 import { runDriftCheck } from '../check-figma-drift.mjs';
 import {
   readFigmaMeta,
+  deepenSyncedHistory,
   browsableRepoUrl,
   changelogDate,
   metaGaps,
@@ -236,6 +237,9 @@ describe('readFigmaMeta: every value from the repo, none from the clock', () => 
 
   it('the repo itself reads all six', () => {
     const root = join(import.meta.dirname, '..', '..');
+    // CI checks out depth 1, where meta/commit is unknowable by design; read it
+    // from the full history, as the release gate does (check-figma-release).
+    expect(deepenSyncedHistory(root)).toBe(true);
     const meta = readFigmaMeta(root);
     expect(Object.keys(meta).sort()).toEqual([
       'commit',
