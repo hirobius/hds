@@ -31,7 +31,10 @@
       "detect": {
         "regex": ["\\bcomponent\\.badge\\.paddingShift\\b", "--component-badge-paddingShift\\b"]
       },
-      "facts": ["key-removed:./tokens:tokens.component.badge.paddingShift"]
+      "facts": [
+        "key-removed:./tokens:tokens.component.badge.paddingShift",
+        "css-var-removed:--component-badge-paddingShift"
+      ]
     }
   ]
 }
