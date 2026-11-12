@@ -69,6 +69,7 @@ import {
   TabsList,
   TabsTrigger,
   Tag,
+  useTransientFlag,
   ThemeToggle,
   Text,
   Textarea,
@@ -86,6 +87,7 @@ import {
   Banknote,
   Bell,
   Briefcase,
+  Calendar,
   CircleCheck,
   Copy,
   FileText,
@@ -493,6 +495,12 @@ function BadgeDemo() {
       <Badge tone="success">Active</Badge>
       <Badge tone="warning">At risk</Badge>
       <Badge tone="danger">Blocked</Badge>
+      <Badge icon={Calendar} tone="neutral">
+        Due Friday
+      </Badge>
+      <Badge icon={Bell} tone="warning">
+        2 alerts
+      </Badge>
       <Badge count={3} label="3 roles" />
       <Badge count={42} label="42 roles" />
       <Badge count={120} max={99} label="120 roles" />
@@ -1316,6 +1324,7 @@ function TabsDemo() {
 
 function TagDemo() {
   const [active, setActive] = useState('tokens');
+  const [copied, flashCopied] = useTransientFlag();
   const [terms, setTerms] = useState(['design systems', 'tokens', 'contract']);
   return (
     <div style={{ display: 'grid', gap: XS }}>
@@ -1333,6 +1342,23 @@ function TagDemo() {
             {term}
           </Tag>
         ))}
+      </div>
+      {/* Leading icon, and a short "Copied" state (the caller owns the copy and the timer). */}
+      <div style={demoRow}>
+        <Tag icon={Star}>tokens</Tag>
+        <Tag
+          icon={Copy}
+          copied={copied}
+          onClick={() => {
+            void navigator.clipboard?.writeText('#4f46e5');
+            flashCopied();
+          }}
+        >
+          #4f46e5
+        </Tag>
+        <Tag icon={Star} onDismiss={() => {}}>
+          contract
+        </Tag>
       </div>
     </div>
   );
