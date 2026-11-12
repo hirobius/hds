@@ -217,7 +217,12 @@ body {
 
 #nd-subnav .hds-top-bar-title {
   display: inline;
-  font-weight: 600;
+  /* ui role (hds#1496): Fumadocs' semibold sits between the ramp's 400 and 700. */
+  font-family: var(--semantic-typography-ui-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  font-weight: var(--semantic-typography-ui-font-weight);
+  letter-spacing: var(--semantic-typography-ui-letter-spacing);
+  line-height: var(--semantic-typography-ui-line-height);
 }
 
 @media (width >= 48rem) {
@@ -227,6 +232,11 @@ body {
 }
 
 @media (width < 48rem) {
+  /* At the ui role's regular weight the title fits more words per line and would run up to the
+     search button; the column keeps a gap beside it (hds#1496). */
+  #nd-subnav > div.flex-1 {
+    padding-inline-end: var(--semantic-space-scale-sm);
+  }
   .hds-top-bar-title {
     margin-inline-start: calc(var(--spacing) * 3);
     color: var(--semantic-color-content-secondary);
@@ -563,16 +573,26 @@ pre {
   white-space: nowrap;
 }
 
-/* Nav header: the short mark and the released version beside it (site-mark.tsx). The version is
-   caption size in the secondary content tone, so it reads as a quiet label next to the mark. */
+/* Nav header: the short mark and the released version beside it (site-mark.tsx). The mark is the
+   bodyStrong role and the version the caption role in the secondary content tone, so it reads as
+   a quiet label next to the mark. Both spell out the whole role: the link around the mark carries
+   Fumadocs' font-semibold and the sidebar header its text-[15px] (hds#1496). */
 .hds-site-mark {
   display: inline-flex;
   align-items: baseline;
   gap: var(--semantic-space-scale-xs);
+  font-family: var(--semantic-typography-bodyStrong-font-family);
+  font-size: var(--semantic-typography-bodyStrong-font-size);
+  font-weight: var(--semantic-typography-bodyStrong-font-weight);
+  letter-spacing: var(--semantic-typography-bodyStrong-letter-spacing);
+  line-height: var(--semantic-typography-bodyStrong-line-height);
 }
 .hds-site-version {
+  font-family: var(--semantic-typography-caption-font-family);
   font-size: var(--semantic-typography-caption-font-size);
-  font-weight: 400;
+  font-weight: var(--semantic-typography-caption-font-weight);
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+  line-height: var(--semantic-typography-caption-line-height);
   color: var(--semantic-color-content-secondary);
 }
 .hds-docs-display {
@@ -1033,13 +1053,16 @@ a code[data-density] {
   margin-block-start: 0;
 }
 
-/* Sidebar nav items (page links and folder toggles) set in the ui role, 16px at 500, so they
-   read at the same size and weight as the theme and display-settings segmented controls
-   (hds#847). Fumadocs gives them text-sm at the inherited weight; the search trigger and the
-   section labels keep theirs. */
+/* Sidebar nav items (page links and folder toggles) set in the ui role, so they read at the same
+   size and weight as the theme and display-settings segmented controls (hds#847). Fumadocs gives
+   them text-sm and its own line height; the whole role is spelled out (hds#1496). The search
+   trigger and the section labels keep theirs. */
 :is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button).wrap-anywhere {
+  font-family: var(--semantic-typography-ui-font-family);
   font-size: var(--semantic-typography-ui-font-size);
   font-weight: var(--semantic-typography-ui-font-weight);
+  letter-spacing: var(--semantic-typography-ui-letter-spacing);
+  line-height: var(--semantic-typography-ui-line-height);
 }
 
 /* /upgrade/?from=X&to=Y (hds#464): one phone-first column. */
@@ -1114,7 +1137,11 @@ a code[data-density] {
 .hds-walkthrough figcaption {
   margin-top: var(--semantic-space-scale-sm);
   color: var(--semantic-color-content-secondary);
+  font-family: var(--semantic-typography-caption-font-family);
   font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+  line-height: var(--semantic-typography-caption-line-height);
 }
 
 /* "… on components" lists (Elevation, Soft surfaces): a token and its swatch on the left,
@@ -1183,4 +1210,75 @@ a code[data-density] {
 }
 .hds-page-pager__dir {
   color: var(--semantic-color-content-secondary);
+}
+
+/*
+ * Type ramp for Fumadocs' own text (hds#1496, scripts/check-docs-type-ramp.mjs). Fumadocs sizes
+ * its prose, contents rail, breadcrumb and tables with Tailwind text-sm / prose-sm / font-medium
+ * and its own line heights, none of which is a ramp role. Each block below sets one whole role
+ * (family, size, weight, spacing, line height) from the semantic tokens. These rules are unlayered,
+ * so they beat Fumadocs' layered utilities; :not(.not-prose *, .hds-demo-frame *) leaves HDS
+ * components and live demos with their own type.
+ */
+
+/* body: the page description and every prose paragraph and list item. */
+#nd-page > p,
+:where(#nd-page .prose) :is(p, li):not(.not-prose *, .hds-demo-frame *) {
+  font-family: var(--semantic-typography-body-font-family);
+  font-size: var(--semantic-typography-body-font-size);
+  font-weight: var(--semantic-typography-body-font-weight);
+  letter-spacing: var(--semantic-typography-body-letter-spacing);
+  line-height: var(--semantic-typography-body-line-height);
+}
+/* bodyStrong: emphasis inside prose. Table cells have no bold role, so they stay plain. */
+:where(#nd-page .prose) strong:not(.not-prose *, .hds-demo-frame *) {
+  font-family: var(--semantic-typography-bodyStrong-font-family);
+  font-size: var(--semantic-typography-bodyStrong-font-size);
+  font-weight: var(--semantic-typography-bodyStrong-font-weight);
+  letter-spacing: var(--semantic-typography-bodyStrong-letter-spacing);
+  line-height: var(--semantic-typography-bodyStrong-line-height);
+}
+:where(#nd-page .prose) :is(td, th) strong {
+  font-weight: inherit;
+}
+
+/* Prose tables: header cells are caption (labels), body cells uiRegular (table text). */
+:where(#nd-page .prose) table:not(.hds-token-table) th {
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+  line-height: var(--semantic-typography-caption-line-height);
+}
+:where(#nd-page .prose) table:not(.hds-token-table) td {
+  font-family: var(--semantic-typography-uiRegular-font-family);
+  font-size: var(--semantic-typography-uiRegular-font-size);
+  font-weight: var(--semantic-typography-uiRegular-font-weight);
+  letter-spacing: var(--semantic-typography-uiRegular-letter-spacing);
+  line-height: var(--semantic-typography-uiRegular-line-height);
+}
+
+/* caption: the contents rail ("On this page" and its links), its phone trigger, the breadcrumb. */
+#nd-toc :is(h3, a),
+[data-toc-popover-trigger],
+[data-toc-popover-trigger] *,
+#nd-page > div.flex.items-center > :is(span, a) {
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  font-weight: var(--semantic-typography-caption-font-weight);
+  letter-spacing: var(--semantic-typography-caption-letter-spacing);
+  line-height: var(--semantic-typography-caption-line-height);
+}
+
+/* The theme switch is a sm SegmentedControl, whose label sits on a 1x line box (hds#1214) so the
+   rail matches Button sm. In the docs chrome the label takes the ui role's own line height. */
+.hds-docs-display [role='radio'] .hds-type-ui {
+  line-height: var(--semantic-typography-ui-line-height);
+}
+
+/* The Overview page's calls to action are Buttons outside a demo frame. Button sets its label at
+   component.button.fontWeight (600), which no ramp role carries; here the label takes the ui
+   weight. Demos keep the shipped Button. */
+.hds-overview-actions {
+  --component-button-fontWeight: var(--semantic-typography-ui-font-weight);
 }

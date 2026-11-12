@@ -223,13 +223,13 @@ describe('sidebar group labels and drawer header (hds#860)', () => {
 
   // Adrian 2026-11-05: in the secondary tone at the nav items' weight, "About HDS" read as one
   // more item. The label now differs in colour and weight, not only 2px of size.
-  it('renders a group label as a bold, primary caption heading, unlike the secondary items', () => {
+  it('renders a group label as a bold, primary bodyStrong heading, unlike the secondary items', () => {
     const { container } = render(
       <SidebarGroupLabel item={{ type: 'separator', name: 'About HDS' }} />,
     );
     const label = container.querySelector('p.hds-docs-nav-label');
     expect(label?.textContent).toBe('About HDS');
-    expect(label?.className).toContain('hds-type-caption');
+    expect(label?.className).toContain('hds-type-body');
     expect(label?.className).toContain('text-[var(--semantic-color-content-primary)]');
     expect(label?.className).toContain('weight-bold');
     expect(label?.className).not.toContain('content-secondary');
