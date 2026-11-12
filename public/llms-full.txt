@@ -217,7 +217,7 @@ Popover: [core] Anchor interactive content, such as a short form, a filter set o
 Progress: [core] Show how far a task has got, as a bar or ring that is determinate or indeterminate. Use instead: Spinner, Skeleton
 Radio: [core] Choose exactly one option from a small set that should stay visible together. Use instead: Checkbox, Select, SegmentedControl
 Reveal: Fade content in as it scrolls into view.
-SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
+SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup). Give an option an `icon` and an `aria-label` (no `label`) for an icon-only segment. Use instead: Radio, Tabs, Select
 Select: [core] Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
 Sheet: Open a short menu or form from the bottom edge on a phone (sort, row actions, status, a quick edit), centred like a Dialog on wider screens. Use instead: Dialog, AlertDialog, Menu
 Skeleton: [core] Reserve the shape of content that is still loading, so the layout does not jump. Use instead: Progress, Spinner

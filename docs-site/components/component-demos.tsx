@@ -1284,6 +1284,46 @@ function SegmentedControlDemo() {
           options={ranges}
         />
       </Card>
+      {/* Link mode (hds#1438): options with an href make a nav of links; the current page is aria-current. */}
+      <SegmentedControl
+        label="Section"
+        value="find"
+        options={[
+          { value: 'find', label: 'Find', href: '#segmented-find' },
+          { value: 'apply', label: 'Apply', href: '#segmented-apply' },
+          { value: 'saved', label: 'Saved', href: '#segmented-saved' },
+        ]}
+      />
+      {/* Icon-only options (hds#1439): an icon and an aria-label, no visible text, a 44px target; also in link mode. */}
+      <SegmentedControl
+        label="Show"
+        value="docs"
+        onChange={() => {}}
+        options={[
+          { value: 'docs', icon: <Icon icon={FileText} size="small" />, 'aria-label': 'Documents' },
+          { value: 'people', icon: <Icon icon={Users} size="small" />, 'aria-label': 'People' },
+          { value: 'starred', icon: <Icon icon={Star} size="small" />, 'aria-label': 'Starred' },
+        ]}
+      />
+      <SegmentedControl
+        label="Section icons"
+        variant="secondary"
+        value="docs"
+        options={[
+          {
+            value: 'docs',
+            icon: <Icon icon={FileText} size="small" />,
+            'aria-label': 'Documents',
+            href: '#segmented-icon-docs',
+          },
+          {
+            value: 'people',
+            icon: <Icon icon={Users} size="small" />,
+            'aria-label': 'People',
+            href: '#segmented-icon-people',
+          },
+        ]}
+      />
     </div>
   );
 }

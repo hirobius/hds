@@ -1,0 +1,13 @@
+{
+  "impact": "behavior",
+  "plain": "SegmentedControl options can be icon-only (an icon and an aria-label, no label); existing text options are unchanged.",
+  "steps": [
+    {
+      "id": "behavior/SegmentedControl.icon-only",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A SegmentedControl option with an icon and an aria-label and no label renders a 44px segment named by its aria-label, so update any test or selector that looks it up by visible text.",
+      "detect": { "regex": ["SegmentedControl[\\s\\S]*?\\bicon:"] }
+    }
+  ]
+}
