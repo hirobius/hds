@@ -80,121 +80,121 @@ Checks all 647 tokens, aliases, and TS refs in one shot.
 
 <!-- auto:start:primitives-color -->
 
-| Token                                               | Value                       | Notes                                                                                                                                            |
-| --------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `primitive.color.neutral.50`                        | `#f9fafc`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.100`                       | `#f4f5f7`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.150`                       | `#e9eaec`                   | Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522).             |
-| `primitive.color.neutral.200`                       | `#e4e5e7`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.250`                       | `#dddee0`                   | Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522).            |
-| `primitive.color.neutral.300`                       | `#d3d4d6`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.325`                       | `#c7c9cc`                   | Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522).            |
-| `primitive.color.neutral.350`                       | `#b2b4b8`                   | Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).                    |
-| `primitive.color.neutral.400`                       | `#a0a3a8`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.450`                       | `#8d9096`                   | Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).                                  |
-| `primitive.color.neutral.500`                       | `#6f737b`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.550`                       | `#5e626a`                   | Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522).                                      |
-| `primitive.color.neutral.600`                       | `#4d525b`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.700`                       | `#3b404a`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.725`                       | `#272c36`                   | Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522).                |
-| `primitive.color.neutral.750`                       | `#252a34`                   | Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755).                             |
-| `primitive.color.neutral.800`                       | `#212630`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.825`                       | `#1b202a`                   | Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755).         |
-| `primitive.color.neutral.850`                       | `#151a24`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.900`                       | `#0c111b`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.950`                       | `#060a13`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.white`                     | `#ffffff`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.neutral.black`                     | `#060a13`                   | Specific value within the neutral range at a defined lightness step.                                                                             |
-| `primitive.color.blue.50`                           | `oklch(0.96 0.03 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.100`                          | `oklch(0.92 0.04 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.200`                          | `oklch(0.88 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.300`                          | `oklch(0.70 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.400`                          | `oklch(0.65 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.450`                          | `oklch(0.56 0.29 266.60)`   | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.500`                          | `#1E2EFD`                   | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.600`                          | `oklch(0.45 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.700`                          | `oklch(0.44 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.800`                          | `oklch(0.30 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.blue.900`                          | `oklch(0.22 0.05 266.54)`   | Specific value within the blue range at a defined lightness step.                                                                                |
-| `primitive.color.red.50`                            | `#fef2f2`                   | Specific value within the red range at a defined lightness step.                                                                                 |
-| `primitive.color.red.400`                           | `#f87171`                   | Specific value within the red range at a defined lightness step.                                                                                 |
-| `primitive.color.red.700`                           | `#b91c1c`                   | Specific value within the red range at a defined lightness step.                                                                                 |
-| `primitive.color.red.950`                           | `#450a0a`                   | Specific value within the red range at a defined lightness step.                                                                                 |
-| `primitive.color.green.50`                          | `#ecfdf5`                   | Specific value within the green range at a defined lightness step.                                                                               |
-| `primitive.color.green.400`                         | `#34d399`                   | Specific value within the green range at a defined lightness step.                                                                               |
-| `primitive.color.green.700`                         | `#047857`                   | Specific value within the green range at a defined lightness step.                                                                               |
-| `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.                                                                               |
-| `primitive.color.graphite.50`                       | `#f2f4f8`                   | Graphite accent tint — faintest step; dark rest fill.                                                                                            |
-| `primitive.color.graphite.100`                      | `#e5e8ed`                   | Graphite accent — very light midnight tint.                                                                                                      |
-| `primitive.color.graphite.200`                      | `#c4c8cf`                   | Graphite accent — light midnight grey.                                                                                                           |
-| `primitive.color.graphite.250`                      | `#b3b8c0`                   | Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522). |
-| `primitive.color.graphite.300`                      | `#a8aeb8`                   | Graphite accent — soft mid-light step; dark-mode hover/link.                                                                                     |
-| `primitive.color.graphite.400`                      | `#7f8794`                   | Graphite accent — mid midnight-grey step.                                                                                                        |
-| `primitive.color.graphite.500`                      | `#586170`                   | Graphite accent — mid step.                                                                                                                      |
-| `primitive.color.graphite.600`                      | `#465061`                   | Graphite accent — mid-dark step.                                                                                                                 |
-| `primitive.color.graphite.700`                      | `#3a4457`                   | Graphite accent — midnight charcoal; light-mode accent text.                                                                                     |
-| `primitive.color.graphite.800`                      | `#263043`                   | Graphite accent — deep step; light-mode hover.                                                                                                   |
-| `primitive.color.graphite.900`                      | `#1c2638`                   | Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.                                                             |
-| `primitive.color.graphite.950`                      | `#0f1726`                   | Graphite accent — near-black; light rest fill.                                                                                                   |
-| `primitive.color.cobalt.50`                         | `#eef0fe`                   | Cobalt accent (opt-in, data-accent="cobalt") — faintest step; selected and subtle accent background.                                             |
-| `primitive.color.cobalt.100`                        | `#dce1fd`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 100.                                                                                    |
-| `primitive.color.cobalt.200`                        | `#b4bbf4`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 200.                                                                                    |
-| `primitive.color.cobalt.300`                        | `#8a97f8`                   | Cobalt accent (opt-in, data-accent="cobalt") — dark-mode accent fill and accent text (7.41:1 on black).                                          |
-| `primitive.color.cobalt.400`                        | `#5b71fa`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 400.                                                                                    |
-| `primitive.color.cobalt.500`                        | `#2a5bf8`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 500.                                                                                    |
-| `primitive.color.cobalt.600`                        | `#112de8`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode accent fill and accent text (white text 8.19:1).                                       |
-| `primitive.color.cobalt.700`                        | `#1f17c4`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode hover and pressed accent fill.                                                         |
-| `primitive.color.cobalt.800`                        | `#191c7d`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 800.                                                                                    |
-| `primitive.color.cobalt.900`                        | `#0b0658`                   | Cobalt accent (opt-in, data-accent="cobalt") — darkest step; dark-mode subtle accent background.                                                 |
-| `primitive.color.lime.50`                           | `#f2fbd6`                   | Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.                                        |
-| `primitive.color.lime.100`                          | `#e3f6a8`                   | Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.                                                        |
-| `primitive.color.lime.200`                          | `#cdee6a`                   | Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.                                                        |
-| `primitive.color.lime.300`                          | `#b8e62e`                   | Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.                                      |
-| `primitive.color.lime.400`                          | `#93ba1c`                   | Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.                                                        |
-| `primitive.color.lime.600`                          | `#6e8f0b`                   | Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus.                      |
-| `primitive.color.lime.800`                          | `#445807`                   | Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.                                                        |
-| `primitive.color.mauve.50`                          | `#fff0f6`                   | Mauve tint, faintest step.                                                                                                                       |
-| `primitive.color.mauve.100`                         | `#f4e2ea`                   | Mauve step 100, lightness-matched to graphite 100.                                                                                               |
-| `primitive.color.mauve.200`                         | `#e1cad4`                   | Mauve step 200, lightness-matched to graphite 200.                                                                                               |
-| `primitive.color.mauve.300`                         | `#c0a4b1`                   | Mauve step 300, lightness-matched to graphite 300.                                                                                               |
-| `primitive.color.mauve.400`                         | `#9d7b8a`                   | Mauve step 400, lightness-matched to graphite 400.                                                                                               |
-| `primitive.color.mauve.500`                         | `#734b5e`                   | Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet.                                                                          |
-| `primitive.color.mauve.600`                         | `#674254`                   | Mauve step 600, lightness-matched to graphite 600.                                                                                               |
-| `primitive.color.mauve.700`                         | `#523141`                   | Mauve step 700, lightness-matched to graphite 700.                                                                                               |
-| `primitive.color.mauve.800`                         | `#432634`                   | Mauve step 800, lightness-matched to graphite 800.                                                                                               |
-| `primitive.color.mauve.900`                         | `#361d29`                   | Mauve step 900, lightness-matched to graphite 900.                                                                                               |
-| `primitive.color.mauve.950`                         | `#240f1a`                   | Mauve, near-black substrate.                                                                                                                     |
-| `primitive.color.violet.50`                         | `#f5f3ff`                   | Specific value within the violet range at a defined lightness step.                                                                              |
-| `primitive.color.violet.400`                        | `#a78bfa`                   | Specific value within the violet range at a defined lightness step.                                                                              |
-| `primitive.color.violet.700`                        | `#6d28d9`                   | Specific value within the violet range at a defined lightness step.                                                                              |
-| `primitive.color.violet.950`                        | `#2e1065`                   | Specific value within the violet range at a defined lightness step.                                                                              |
-| `primitive.color.lilac.50`                          | `#f7f4fe`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.100`                         | `#efe9fd`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.200`                         | `#ddd0fb`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.300`                         | `#c3aef6`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.400`                         | `#a585ee`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.450`                         | `#9a6fe8`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac accent rest — AA for white text on page and card surfaces.                                                                                 |
-| `primitive.color.lilac.600`                         | `#5f33c0`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.700`                         | `#4f2aa3`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.800`                         | `#3a1f78`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.lilac.900`                         | `#2a1659`                   | Specific value within the lilac range at a defined lightness step.                                                                               |
-| `primitive.color.amber.50`                          | `#fffbeb`                   | Specific value within the amber range at a defined lightness step.                                                                               |
-| `primitive.color.amber.400`                         | `#fbbf24`                   | Specific value within the amber range at a defined lightness step.                                                                               |
-| `primitive.color.amber.800`                         | `#92400e`                   | Specific value within the amber range at a defined lightness step.                                                                               |
-| `primitive.color.amber.950`                         | `#451a03`                   | Specific value within the amber range at a defined lightness step.                                                                               |
-| `primitive.color.stone.100`                         | `#F5EFE7`                   | Stone 100 — near-white warm tint; accent-subtle surface.                                                                                         |
-| `primitive.color.stone.400`                         | `#D0B492`                   | Stone 400 — light warm tone; dark-mode pressed accent.                                                                                           |
-| `primitive.color.stone.450`                         | `#BC9D7E`                   | Stone 450 — medium warm tone; dark-mode hover accent.                                                                                            |
-| `primitive.color.stone.500`                         | `#A8896A`                   | Stone 500 — mid warm tone; dark-mode rest accent.                                                                                                |
-| `primitive.color.stone.600`                         | `#8B6F47`                   | Stone 600 — primary warm stone; light-mode rest accent and CTA surface.                                                                          |
-| `primitive.color.stone.700`                         | `#75593A`                   | Stone 700 — darker warm stone; light-mode hover accent.                                                                                          |
-| `primitive.color.stone.800`                         | `#5C432A`                   | Stone 800 — deep warm stone; light-mode pressed accent.                                                                                          |
-| `primitive.color.stone.950`                         | `#3A2E1F`                   | Stone 950 — near-black warm tone; dark-mode subtle accent surface.                                                                               |
-| `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC`                   | Light support tone for the Microsoft Game Dev project brand.                                                                                     |
-| `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb`                   | Primary accent tone for the Microsoft Game Dev project brand.                                                                                    |
-| `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)`      | Dark support tone for the Microsoft Game Dev project brand.                                                                                      |
-| `primitive.color.shadow.ink`                        | `#282c34`                   | Shadow ink: hsl(220 13% 18%) as one solid colour.                                                                                                |
+| Token                                               | Value                       | Notes                                                                                                                       |
+| --------------------------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `primitive.color.neutral.50`                        | `#f9fafc`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.100`                       | `#f4f5f7`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.150`                       | `#e9eaec`                   | The Light value of surface.raised, 1.2:1 against the white page like the dark ladder.                                       |
+| `primitive.color.neutral.200`                       | `#e4e5e7`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.250`                       | `#dddee0`                   | The Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised.                                      |
+| `primitive.color.neutral.300`                       | `#d3d4d6`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.325`                       | `#c7c9cc`                   | The Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken.                                      |
+| `primitive.color.neutral.350`                       | `#b2b4b8`                   | The Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary).                                    |
+| `primitive.color.neutral.400`                       | `#a0a3a8`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.450`                       | `#8d9096`                   | The Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black).                                                  |
+| `primitive.color.neutral.500`                       | `#6f737b`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.550`                       | `#5e626a`                   | Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted.                           |
+| `primitive.color.neutral.600`                       | `#4d525b`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.700`                       | `#3b404a`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.725`                       | `#272c36`                   | The Dark value of surface.selected, at least 1.15:1 above surface.raised.                                                   |
+| `primitive.color.neutral.750`                       | `#252a34`                   | The Dark value of surface.muted, at least 1.1:1 above surface.raised.                                                       |
+| `primitive.color.neutral.800`                       | `#212630`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.825`                       | `#1b202a`                   | The Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black).                                   |
+| `primitive.color.neutral.850`                       | `#151a24`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.900`                       | `#0c111b`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.950`                       | `#060a13`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.white`                     | `#ffffff`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.neutral.black`                     | `#060a13`                   | Specific value within the neutral range at a defined lightness step.                                                        |
+| `primitive.color.blue.50`                           | `oklch(0.96 0.03 266.54)`   | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.100`                          | `oklch(0.92 0.04 266.54)`   | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.200`                          | `oklch(0.88 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.300`                          | `oklch(0.70 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.400`                          | `oklch(0.65 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.450`                          | `oklch(0.56 0.29 266.60)`   | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.500`                          | `#1E2EFD`                   | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.600`                          | `oklch(0.45 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.700`                          | `oklch(0.44 0.2903 266.54)` | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.800`                          | `oklch(0.30 0.07 266.54)`   | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.blue.900`                          | `oklch(0.22 0.05 266.54)`   | Specific value within the blue range at a defined lightness step.                                                           |
+| `primitive.color.red.50`                            | `#fef2f2`                   | Specific value within the red range at a defined lightness step.                                                            |
+| `primitive.color.red.400`                           | `#f87171`                   | Specific value within the red range at a defined lightness step.                                                            |
+| `primitive.color.red.700`                           | `#b91c1c`                   | Specific value within the red range at a defined lightness step.                                                            |
+| `primitive.color.red.950`                           | `#450a0a`                   | Specific value within the red range at a defined lightness step.                                                            |
+| `primitive.color.green.50`                          | `#ecfdf5`                   | Specific value within the green range at a defined lightness step.                                                          |
+| `primitive.color.green.400`                         | `#34d399`                   | Specific value within the green range at a defined lightness step.                                                          |
+| `primitive.color.green.700`                         | `#047857`                   | Specific value within the green range at a defined lightness step.                                                          |
+| `primitive.color.green.950`                         | `#022c22`                   | Specific value within the green range at a defined lightness step.                                                          |
+| `primitive.color.graphite.50`                       | `#f2f4f8`                   | Graphite accent tint — faintest step; dark rest fill.                                                                       |
+| `primitive.color.graphite.100`                      | `#e5e8ed`                   | Graphite accent — very light midnight tint.                                                                                 |
+| `primitive.color.graphite.200`                      | `#c4c8cf`                   | Graphite accent — light midnight grey.                                                                                      |
+| `primitive.color.graphite.250`                      | `#b3b8c0`                   | The Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted.                             |
+| `primitive.color.graphite.300`                      | `#a8aeb8`                   | Graphite accent — soft mid-light step; dark-mode hover/link.                                                                |
+| `primitive.color.graphite.400`                      | `#7f8794`                   | Graphite accent — mid midnight-grey step.                                                                                   |
+| `primitive.color.graphite.500`                      | `#586170`                   | Graphite accent — mid step.                                                                                                 |
+| `primitive.color.graphite.600`                      | `#465061`                   | Graphite accent — mid-dark step.                                                                                            |
+| `primitive.color.graphite.700`                      | `#3a4457`                   | Graphite accent — midnight charcoal; light-mode accent text.                                                                |
+| `primitive.color.graphite.800`                      | `#263043`                   | Graphite accent — deep step; light-mode hover.                                                                              |
+| `primitive.color.graphite.900`                      | `#1c2638`                   | Graphite accent — darkest usable step; light-mode pressed, dark-mode on-accent text.                                        |
+| `primitive.color.graphite.950`                      | `#0f1726`                   | Graphite accent — near-black; light rest fill.                                                                              |
+| `primitive.color.cobalt.50`                         | `#eef0fe`                   | Cobalt accent (opt-in, data-accent="cobalt") — faintest step; selected and subtle accent background.                        |
+| `primitive.color.cobalt.100`                        | `#dce1fd`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 100.                                                               |
+| `primitive.color.cobalt.200`                        | `#b4bbf4`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 200.                                                               |
+| `primitive.color.cobalt.300`                        | `#8a97f8`                   | Cobalt accent (opt-in, data-accent="cobalt") — dark-mode accent fill and accent text (7.41:1 on black).                     |
+| `primitive.color.cobalt.400`                        | `#5b71fa`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 400.                                                               |
+| `primitive.color.cobalt.500`                        | `#2a5bf8`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 500.                                                               |
+| `primitive.color.cobalt.600`                        | `#112de8`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode accent fill and accent text (white text 8.19:1).                  |
+| `primitive.color.cobalt.700`                        | `#1f17c4`                   | Cobalt accent (opt-in, data-accent="cobalt") — light-mode hover and pressed accent fill.                                    |
+| `primitive.color.cobalt.800`                        | `#191c7d`                   | Cobalt accent (opt-in, data-accent="cobalt") — ramp step 800.                                                               |
+| `primitive.color.cobalt.900`                        | `#0b0658`                   | Cobalt accent (opt-in, data-accent="cobalt") — darkest step; dark-mode subtle accent background.                            |
+| `primitive.color.lime.50`                           | `#f2fbd6`                   | Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.                   |
+| `primitive.color.lime.100`                          | `#e3f6a8`                   | Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.                                   |
+| `primitive.color.lime.200`                          | `#cdee6a`                   | Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.                                   |
+| `primitive.color.lime.300`                          | `#b8e62e`                   | Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.                 |
+| `primitive.color.lime.400`                          | `#93ba1c`                   | Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.                                   |
+| `primitive.color.lime.600`                          | `#6e8f0b`                   | Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus. |
+| `primitive.color.lime.800`                          | `#445807`                   | Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.                                   |
+| `primitive.color.mauve.50`                          | `#fff0f6`                   | Mauve tint, faintest step.                                                                                                  |
+| `primitive.color.mauve.100`                         | `#f4e2ea`                   | Mauve step 100, lightness-matched to graphite 100.                                                                          |
+| `primitive.color.mauve.200`                         | `#e1cad4`                   | Mauve step 200, lightness-matched to graphite 200.                                                                          |
+| `primitive.color.mauve.300`                         | `#c0a4b1`                   | Mauve step 300, lightness-matched to graphite 300.                                                                          |
+| `primitive.color.mauve.400`                         | `#9d7b8a`                   | Mauve step 400, lightness-matched to graphite 400.                                                                          |
+| `primitive.color.mauve.500`                         | `#734b5e`                   | Mauve anchor (#734B5E). Reserved; not mapped to any semantic token yet.                                                     |
+| `primitive.color.mauve.600`                         | `#674254`                   | Mauve step 600, lightness-matched to graphite 600.                                                                          |
+| `primitive.color.mauve.700`                         | `#523141`                   | Mauve step 700, lightness-matched to graphite 700.                                                                          |
+| `primitive.color.mauve.800`                         | `#432634`                   | Mauve step 800, lightness-matched to graphite 800.                                                                          |
+| `primitive.color.mauve.900`                         | `#361d29`                   | Mauve step 900, lightness-matched to graphite 900.                                                                          |
+| `primitive.color.mauve.950`                         | `#240f1a`                   | Mauve, near-black substrate.                                                                                                |
+| `primitive.color.violet.50`                         | `#f5f3ff`                   | Specific value within the violet range at a defined lightness step.                                                         |
+| `primitive.color.violet.400`                        | `#a78bfa`                   | Specific value within the violet range at a defined lightness step.                                                         |
+| `primitive.color.violet.700`                        | `#6d28d9`                   | Specific value within the violet range at a defined lightness step.                                                         |
+| `primitive.color.violet.950`                        | `#2e1065`                   | Specific value within the violet range at a defined lightness step.                                                         |
+| `primitive.color.lilac.50`                          | `#f7f4fe`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.100`                         | `#efe9fd`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.200`                         | `#ddd0fb`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.300`                         | `#c3aef6`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.400`                         | `#a585ee`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.450`                         | `#9a6fe8`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.500`                         | `#6f3fd4`                   | Lilac accent rest — AA for white text on page and card surfaces.                                                            |
+| `primitive.color.lilac.600`                         | `#5f33c0`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.700`                         | `#4f2aa3`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.800`                         | `#3a1f78`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.lilac.900`                         | `#2a1659`                   | Specific value within the lilac range at a defined lightness step.                                                          |
+| `primitive.color.amber.50`                          | `#fffbeb`                   | Specific value within the amber range at a defined lightness step.                                                          |
+| `primitive.color.amber.400`                         | `#fbbf24`                   | Specific value within the amber range at a defined lightness step.                                                          |
+| `primitive.color.amber.800`                         | `#92400e`                   | Specific value within the amber range at a defined lightness step.                                                          |
+| `primitive.color.amber.950`                         | `#451a03`                   | Specific value within the amber range at a defined lightness step.                                                          |
+| `primitive.color.stone.100`                         | `#F5EFE7`                   | Stone 100 — near-white warm tint; accent-subtle surface.                                                                    |
+| `primitive.color.stone.400`                         | `#D0B492`                   | Stone 400 — light warm tone; dark-mode pressed accent.                                                                      |
+| `primitive.color.stone.450`                         | `#BC9D7E`                   | Stone 450 — medium warm tone; dark-mode hover accent.                                                                       |
+| `primitive.color.stone.500`                         | `#A8896A`                   | Stone 500 — mid warm tone; dark-mode rest accent.                                                                           |
+| `primitive.color.stone.600`                         | `#8B6F47`                   | Stone 600 — primary warm stone; light-mode rest accent and CTA surface.                                                     |
+| `primitive.color.stone.700`                         | `#75593A`                   | Stone 700 — darker warm stone; light-mode hover accent.                                                                     |
+| `primitive.color.stone.800`                         | `#5C432A`                   | Stone 800 — deep warm stone; light-mode pressed accent.                                                                     |
+| `primitive.color.stone.950`                         | `#3A2E1F`                   | Stone 950 — near-black warm tone; dark-mode subtle accent surface.                                                          |
+| `primitive.color.projectBrand.microsoftGameDev.100` | `#E5E5FC`                   | Light support tone for the Microsoft Game Dev project brand.                                                                |
+| `primitive.color.projectBrand.microsoftGameDev.500` | `#6d31fb`                   | Primary accent tone for the Microsoft Game Dev project brand.                                                               |
+| `primitive.color.projectBrand.microsoftGameDev.900` | `oklch(0.22 0.16 304)`      | Dark support tone for the Microsoft Game Dev project brand.                                                                 |
+| `primitive.color.shadow.ink`                        | `#282c34`                   | Shadow ink: hsl(220 13% 18%) as one solid colour.                                                                           |
 
 <!-- auto:end:primitives-color -->
 
@@ -205,7 +205,7 @@ Checks all 647 tokens, aliases, and TS refs in one shot.
 | Token                               | Light                            | Dark                             | Role                                                                                                                                |
 | ----------------------------------- | -------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `semantic.accent.rest`              | `{primitive.color.graphite.700}` | `{primitive.color.graphite.50}`  | Accent fill at rest                                                                                                                 |
-| `semantic.accent.hover`             | `{primitive.color.graphite.800}` | `{primitive.color.graphite.100}` | Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422).                                                     |
+| `semantic.accent.hover`             | `{primitive.color.graphite.800}` | `{primitive.color.graphite.100}` | Accent fill on hover, one step darker than rest (graphite.800 / 100).                                                               |
 | `semantic.accent.pressed`           | `{primitive.color.graphite.900}` | `{primitive.color.graphite.200}` | Accent fill on press (graphite.900 / 200).                                                                                          |
 | `semantic.accent.inactive`          | `{primitive.color.neutral.400}`  | `{primitive.color.neutral.600}`  | Accent fill for inactive or unselected accent elements.                                                                             |
 | `semantic.accent.disabled`          | `{primitive.color.neutral.300}`  | `{primitive.color.neutral.700}`  | Accent fill for disabled accent elements.                                                                                           |
@@ -382,7 +382,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `primitive.space.32`   | `128px` |                                                                                                 |
 | `primitive.space.px1`  | `1px`   |                                                                                                 |
 | `primitive.space.px2`  | `2px`   |                                                                                                 |
-| `primitive.space.px3`  | `3px`   | 3px: the raised edge height of a Button (hds#1387).                                             |
+| `primitive.space.px3`  | `3px`   | 3px: the raised edge height of a Button.                                                        |
 | `primitive.space.px6`  | `6px`   | 6px, off the 4px grid: a tight gap (pill, chip, title to description) the 4px steps cannot hit. |
 | `primitive.space.px10` | `10px`  | 10px, off the 4px grid: a label or row gap the 4px steps cannot hit.                            |
 
@@ -460,15 +460,15 @@ Use `primitive.size.*` for explicit widths and heights. Keep `primitive.space.*`
 
 ### Primitive width measures
 
-| Token                       | Value    | Notes                                                                                                                |
-| --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
-| `primitive.size.width.96`   | `96px`   | 96px width step.                                                                                                     |
-| `primitive.size.width.280`  | `280px`  | Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room. |
-| `primitive.size.width.512`  | `512px`  | 512px width step: the default (md) Dialog max width, max-w-lg.                                                       |
-| `primitive.size.width.760`  | `760px`  |                                                                                                                      |
-| `primitive.size.width.1180` | `1180px` | App shell max width: a 1180px column for app pages (hds#863).                                                        |
-| `primitive.size.width.1200` | `1200px` |                                                                                                                      |
-| `primitive.size.width.50ch` | `50ch`   |                                                                                                                      |
+| Token                       | Value    | Notes                                                                                                      |
+| --------------------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| `primitive.size.width.96`   | `96px`   | 96px width step.                                                                                           |
+| `primitive.size.width.280`  | `280px`  | Docs-shell rail width: our own number, not HeroUI's 268px; fits the longest top-level nav label with room. |
+| `primitive.size.width.512`  | `512px`  | 512px width step: the default (md) Dialog max width, max-w-lg.                                             |
+| `primitive.size.width.760`  | `760px`  |                                                                                                            |
+| `primitive.size.width.1180` | `1180px` | App shell max width: a 1180px column for app pages.                                                        |
+| `primitive.size.width.1200` | `1200px` |                                                                                                            |
+| `primitive.size.width.50ch` | `50ch`   |                                                                                                            |
 
 <!-- auto:end:size -->
 
@@ -544,27 +544,27 @@ Or via `useTheme().setDensity('compact')`
 
 ### Semantic motion intents
 
-| Token                              | Duration | Easing                          | Purpose                                                                                                             |
-| ---------------------------------- | -------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `semantic.motion.productive`       | `150ms`  | `{primitive.easing.decelerate}` | For micro-interactions and status changes. No deformation.                                                          |
-| `semantic.motion.expressive`       | `250ms`  | `{primitive.easing.elastic}`    | For teaching moments and significant UI entries. Includes physics-based squish.                                     |
-| `semantic.motion.spatial`          | `400ms`  | `{primitive.easing.emphasized}` | For elements traveling long distances across the viewport.                                                          |
-| `semantic.motion.exit`             | `100ms`  | `{primitive.easing.accelerate}` | For elements being removed from the DOM.                                                                            |
-| `semantic.motion.transitionColor`  | `150ms`  | `{primitive.easing.decelerate}` | Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399).    |
-| `semantic.motion.transitionShadow` | `150ms`  | `{primitive.easing.decelerate}` | Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399). |
+| Token                              | Duration | Easing                          | Purpose                                                                                                  |
+| ---------------------------------- | -------- | ------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `semantic.motion.productive`       | `150ms`  | `{primitive.easing.decelerate}` | For micro-interactions and status changes. No deformation.                                               |
+| `semantic.motion.expressive`       | `250ms`  | `{primitive.easing.elastic}`    | For teaching moments and significant UI entries. Includes physics-based squish.                          |
+| `semantic.motion.spatial`          | `400ms`  | `{primitive.easing.emphasized}` | For elements traveling long distances across the viewport.                                               |
+| `semantic.motion.exit`             | `100ms`  | `{primitive.easing.accelerate}` | For elements being removed from the DOM.                                                                 |
+| `semantic.motion.transitionColor`  | `150ms`  | `{primitive.easing.decelerate}` | Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it.    |
+| `semantic.motion.transitionShadow` | `150ms`  | `{primitive.easing.decelerate}` | Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it. |
 
 ### Other semantic motion tokens
 
-| Token                          | Value  | Purpose                                                                                                                                |
-| ------------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `semantic.motion.distance`     | `24px` | Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242). |
-| `semantic.motion.nudge`        | `4px`  | Small travel for text swaps and nudges (hds#751).                                                                                      |
-| `semantic.motion.slide`        | `8px`  | Travel for menus, toasts and items sliding in (hds#751).                                                                               |
-| `semantic.motion.blurSwap`     | `2px`  | Blur while text or an icon swaps in place (hds#751).                                                                                   |
-| `semantic.motion.blurReveal`   | `4px`  | Blur while content reveals into place (hds#751).                                                                                       |
-| `semantic.motion.scaleDialog`  | `0.96` | Scale a dialog opens from and closes to (hds#751).                                                                                     |
-| `semantic.motion.scaleMenu`    | `0.97` | Scale a menu, popover or select opens from (hds#751).                                                                                  |
-| `semantic.motion.scaleTooltip` | `0.98` | Scale a tooltip opens from (hds#751).                                                                                                  |
+| Token                          | Value  | Purpose                                                                                             |
+| ------------------------------ | ------ | --------------------------------------------------------------------------------------------------- |
+| `semantic.motion.distance`     | `24px` | Scroll-reveal translateY travel. Equals space.scale.md today, but names motion, not a spacing tier. |
+| `semantic.motion.nudge`        | `4px`  | Small travel for text swaps and nudges.                                                             |
+| `semantic.motion.slide`        | `8px`  | Travel for menus, toasts and items sliding in.                                                      |
+| `semantic.motion.blurSwap`     | `2px`  | Blur while text or an icon swaps in place.                                                          |
+| `semantic.motion.blurReveal`   | `4px`  | Blur while content reveals into place.                                                              |
+| `semantic.motion.scaleDialog`  | `0.96` | Scale a dialog opens from and closes to.                                                            |
+| `semantic.motion.scaleMenu`    | `0.97` | Scale a menu, popover or select opens from.                                                         |
+| `semantic.motion.scaleTooltip` | `0.98` | Scale a tooltip opens from.                                                                         |
 
 <!-- auto:end:motion -->
 

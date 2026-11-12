@@ -16,7 +16,7 @@
         },
         "150": {
           "$value": "#e9eaec",
-          "$description": "Between neutral.100 and neutral.200; the Light value of surface.raised, 1.2:1 against the white page like the dark ladder (hds#522)."
+          "$description": "The Light value of surface.raised, 1.2:1 against the white page like the dark ladder."
         },
         "200": {
           "$value": "#e4e5e7",
@@ -24,7 +24,7 @@
         },
         "250": {
           "$value": "#dddee0",
-          "$description": "Between neutral.200 and neutral.300; the Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised (hds#522)."
+          "$description": "The Light value of surface.overlay, hover and muted, at least 1.1:1 on surface.raised."
         },
         "300": {
           "$value": "#d3d4d6",
@@ -32,7 +32,7 @@
         },
         "325": {
           "$value": "#c7c9cc",
-          "$description": "Between neutral.300 and neutral.350; the Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken (hds#522)."
+          "$description": "The Light value of surface.selected and softHover, at least 1.1:1 past surface.sunken."
         },
         "400": {
           "$value": "#a0a3a8",
@@ -40,11 +40,11 @@
         },
         "350": {
           "$value": "#b2b4b8",
-          "$description": "Between neutral.300 and neutral.400; the Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
+          "$description": "The Dark value of content.secondary (5.0:1 on neutral.700, 1.9:1 below content.primary)."
         },
         "450": {
           "$value": "#8d9096",
-          "$description": "Between neutral.400 and neutral.500; the Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black)."
+          "$description": "The Dark value of content.tertiary (5.1:1 on neutral.825, 6.2:1 on black)."
         },
         "500": {
           "$value": "#6f737b",
@@ -52,7 +52,7 @@
         },
         "550": {
           "$value": "#5e626a",
-          "$description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted (hds#522)."
+          "$description": "Dark surface.softHover (C2); the Light value of content.tertiary, AA on surface.raised and muted."
         },
         "600": {
           "$value": "#4d525b",
@@ -64,11 +64,11 @@
         },
         "725": {
           "$value": "#272c36",
-          "$description": "Between neutral.700 and neutral.750; the Dark value of surface.selected, at least 1.15:1 above surface.raised (hds#755, hds#522)."
+          "$description": "The Dark value of surface.selected, at least 1.15:1 above surface.raised."
         },
         "750": {
           "$value": "#252a34",
-          "$description": "Between neutral.700 and neutral.800; the Dark value of surface.muted, at least 1.1:1 above surface.raised (hds#755)."
+          "$description": "The Dark value of surface.muted, at least 1.1:1 above surface.raised."
         },
         "800": {
           "$value": "#212630",
@@ -76,7 +76,7 @@
         },
         "825": {
           "$value": "#1b202a",
-          "$description": "Between neutral.800 and neutral.850; the Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black) (hds#755)."
+          "$description": "The Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black)."
         },
         "850": {
           "$value": "#151a24",
@@ -200,7 +200,7 @@
         },
         "250": {
           "$value": "#b3b8c0",
-          "$description": "Between graphite.200 and graphite.300; the Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted (hds#522)."
+          "$description": "The Light value of border.default, a 1.45:1 divider on every light surface up to surface.muted."
         },
         "300": {
           "$value": "#a8aeb8",
@@ -234,7 +234,7 @@
           "$value": "#0f1726",
           "$description": "Graphite accent — near-black; light rest fill."
         },
-        "$description": "Graphite, the midnight-charcoal brand accent scale (hue 262, hds#755). Feedback colors keep their own scales."
+        "$description": "Graphite, the midnight-charcoal brand accent scale (hue 262). Feedback colors keep their own scales."
       },
       "cobalt": {
         "50": {
@@ -617,7 +617,7 @@
           "value": 3,
           "unit": "px"
         },
-        "$description": "3px: the raised edge height of a Button (hds#1387)."
+        "$description": "3px: the raised edge height of a Button."
       },
       "px6": {
         "$value": {
@@ -656,14 +656,14 @@
           "value": 2,
           "unit": "px"
         },
-        "$description": "Motion blur for in-place swaps of text and icons (hds#751)."
+        "$description": "Motion blur for in-place swaps of text and icons."
       },
       "4": {
         "$value": {
           "value": 4,
           "unit": "px"
         },
-        "$description": "Motion blur for content revealing into place (hds#751)."
+        "$description": "Motion blur for content revealing into place."
       }
     },
     "radius": {
@@ -774,7 +774,7 @@
             "value": 12,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-xs (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-xs."
         },
         "compactCaption": {
           "$value": {
@@ -788,14 +788,14 @@
             "value": 14,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-sm (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-sm."
         },
         "base": {
           "$value": {
             "value": 16,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-base (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-base."
         },
         "compactBody": {
           "$value": {
@@ -809,63 +809,63 @@
             "value": 18,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-lg (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-lg."
         },
         "xl": {
           "$value": {
             "value": 20,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-xl (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-xl."
         },
         "2xl": {
           "$value": {
             "value": 24,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-2xl (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-2xl."
         },
         "title": {
           "$value": {
             "value": 28,
             "unit": "px"
           },
-          "$description": "Title role size (hds#847): one clear step under display."
+          "$description": "Title role size: one clear step under display."
         },
         "3xl": {
           "$value": {
             "value": 30,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-3xl (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-3xl."
         },
         "4xl": {
           "$value": {
             "value": 36,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-4xl (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-4xl."
         },
         "5xl": {
           "$value": {
             "value": 48,
             "unit": "px"
           },
-          "$description": "Tailwind 4 default text-5xl (hds#283 ramp)."
+          "$description": "Tailwind 4 default text-5xl."
         },
         "display": {
           "$value": {
             "value": 56,
             "unit": "px"
           },
-          "$description": "Display role size (hds#847): the page's one hero heading, a clear step above title."
+          "$description": "Display role size: the page's one hero heading, a clear step above title."
         },
         "displayMin": {
           "$value": {
             "value": 2.5,
             "unit": "rem"
           },
-          "$description": "Display floor at a 360px viewport (hds#1300): 40px at a 16px root, in rem to follow the user's font size."
+          "$description": "Display floor at a 360px viewport: 40px at a 16px root, in rem to follow the user's font size."
         },
         "hero": {
           "$value": {
@@ -879,14 +879,14 @@
             "value": 60,
             "unit": "px"
           },
-          "$description": "Swiss-canon display size (hds#283 ramp). Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl."
+          "$description": "Swiss-canon display size. Static desktop value; fluid in theme.css. Tailwind 4 default text-6xl."
         },
         "code": {
           "$value": {
             "value": 15,
             "unit": "px"
           },
-          "$description": "15px code size. The mono role (hds#485): one px below ui so code sits level with 16px UI text."
+          "$description": "15px code size. The mono role: one px below ui so code sits level with 16px UI text."
         }
       },
       "weight": {
@@ -902,7 +902,7 @@
         },
         "semibold": {
           "$value": 600,
-          "$description": "Button label weight (hds#760): Sora SemiBold 600."
+          "$description": "Button label weight: Sora SemiBold 600."
         },
         "bold": {
           "$value": 700,
@@ -941,11 +941,11 @@
         },
         "display": {
           "$value": 1.05,
-          "$description": "Display role leading (hds#485)."
+          "$description": "Display role leading."
         },
         "body": {
           "$value": 1.6,
-          "$description": "Body role leading (hds#485)."
+          "$description": "Body role leading."
         }
       },
       "letterSpacing": {
@@ -1005,14 +1005,14 @@
           "value": 40,
           "unit": "ms"
         },
-        "$description": "Offset between items that arrive one after another (lists, digits, menu items) (hds#751)."
+        "$description": "Offset between items that arrive one after another (lists, digits, menu items)."
       },
       "extended": {
         "$value": {
           "value": 600,
           "unit": "ms"
         },
-        "$description": "Long reveals: skeleton to content, page-level entrances (hds#751)."
+        "$description": "Long reveals: skeleton to content, page-level entrances."
       }
     },
     "easing": {
@@ -1375,7 +1375,7 @@
             "value": 280,
             "unit": "px"
           },
-          "$description": "Docs-shell rail width (hds#280): our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
+          "$description": "Docs-shell rail width: our own number, not HeroUI's 268px; fits the longest top-level nav label with room."
         },
         "512": {
           "$type": "dimension",
@@ -1398,7 +1398,7 @@
             "value": 1180,
             "unit": "px"
           },
-          "$description": "App shell max width: a 1180px column for app pages (hds#863)."
+          "$description": "App shell max width: a 1180px column for app pages."
         },
         "1200": {
           "$type": "dimension",
@@ -1540,7 +1540,7 @@
     },
     "scale": {
       "$type": "number",
-      "$description": "Scale factors for motion: what an element grows from as it opens and shrinks to as it closes (hds#751).",
+      "$description": "Scale factors for motion: what an element grows from as it opens and shrinks to as it closes.",
       "96": {
         "$value": 0.96,
         "$description": "96% scale."
@@ -1616,7 +1616,7 @@
           },
           "timingFunction": "{primitive.easing.decelerate}"
         },
-        "$description": "Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399)."
+        "$description": "Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it."
       },
       "transitionShadow": {
         "$value": {
@@ -1627,47 +1627,47 @@
           },
           "timingFunction": "{primitive.easing.decelerate}"
         },
-        "$description": "Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399)."
+        "$description": "Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it."
       },
       "distance": {
         "$type": "dimension",
         "$value": "{primitive.space.6}",
-        "$description": "Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242)."
+        "$description": "Scroll-reveal translateY travel. Equals space.scale.md today, but names motion, not a spacing tier."
       },
       "nudge": {
         "$type": "dimension",
         "$value": "{primitive.space.1}",
-        "$description": "Small travel for text swaps and nudges (hds#751)."
+        "$description": "Small travel for text swaps and nudges."
       },
       "slide": {
         "$type": "dimension",
         "$value": "{primitive.space.2}",
-        "$description": "Travel for menus, toasts and items sliding in (hds#751)."
+        "$description": "Travel for menus, toasts and items sliding in."
       },
       "blurSwap": {
         "$type": "dimension",
         "$value": "{primitive.blur.2}",
-        "$description": "Blur while text or an icon swaps in place (hds#751)."
+        "$description": "Blur while text or an icon swaps in place."
       },
       "blurReveal": {
         "$type": "dimension",
         "$value": "{primitive.blur.4}",
-        "$description": "Blur while content reveals into place (hds#751)."
+        "$description": "Blur while content reveals into place."
       },
       "scaleDialog": {
         "$type": "number",
         "$value": "{primitive.scale.96}",
-        "$description": "Scale a dialog opens from and closes to (hds#751)."
+        "$description": "Scale a dialog opens from and closes to."
       },
       "scaleMenu": {
         "$type": "number",
         "$value": "{primitive.scale.97}",
-        "$description": "Scale a menu, popover or select opens from (hds#751)."
+        "$description": "Scale a menu, popover or select opens from."
       },
       "scaleTooltip": {
         "$type": "number",
         "$value": "{primitive.scale.98}",
-        "$description": "Scale a tooltip opens from (hds#751)."
+        "$description": "Scale a tooltip opens from."
       }
     },
     "color": {
@@ -1747,7 +1747,7 @@
         },
         "accent": {
           "$value": "{primitive.color.graphite.700}",
-          "$description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+          "$description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2060,7 +2060,7 @@
       "edge": {
         "primary": {
           "$value": "oklch(0.2646 0.0260 265.37)",
-          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light (hds#1422).",
+          "$description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2072,7 +2072,7 @@
         },
         "neutral": {
           "$value": "{primitive.color.neutral.400}",
-          "$description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill (hds#897).",
+          "$description": "Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2084,7 +2084,7 @@
         },
         "danger": {
           "$value": "{primitive.color.red.400}",
-          "$description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+          "$description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2096,7 +2096,7 @@
         },
         "success": {
           "$value": "{primitive.color.green.400}",
-          "$description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+          "$description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2108,7 +2108,7 @@
         },
         "warning": {
           "$value": "{primitive.color.amber.400}",
-          "$description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line (hds#1422).",
+          "$description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2120,7 +2120,7 @@
         },
         "info": {
           "$value": "{primitive.color.blue.300}",
-          "$description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill (hds#1422).",
+          "$description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2134,7 +2134,7 @@
       "shadow": {
         "hard": {
           "$value": "{primitive.color.shadow.ink}",
-          "$description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge (hds#891).",
+          "$description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2519,7 +2519,7 @@
     },
     "typography": {
       "$type": "typography",
-      "$description": "Type ramp (hds#483): display, title, titleSm, body, ui, caption, mono; hero is marketing-only; h1-h3, eyebrow deprecated.",
+      "$description": "Type ramp: display, title, titleSm, body, ui, caption, mono; hero is marketing-only; h1-h3, eyebrow deprecated.",
       "hero": {
         "$value": {
           "fontFamily": "{primitive.typography.family.display}",
@@ -2831,7 +2831,7 @@
       "$type": "color",
       "rest": {
         "$value": "{primitive.color.graphite.700}",
-        "$description": "Accent fill at rest — graphite.700 in light (lifted from near-black, hds#1422), near-white in dark (hds#887). Pair with content.onAccent.",
+        "$description": "Accent fill at rest — graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2843,7 +2843,7 @@
       },
       "hover": {
         "$value": "{primitive.color.graphite.800}",
-        "$description": "Accent fill on hover, one step darker than rest (graphite.800 / 100, hds#1422).",
+        "$description": "Accent fill on hover, one step darker than rest (graphite.800 / 100).",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2989,7 +2989,7 @@
       "control": {
         "$type": "dimension",
         "$value": "{primitive.radius.4}",
-        "$description": "Corner radius for small control glyphs such as the checkbox box: not fully round, and distinct from semantic.radius.action (hds#242)."
+        "$description": "Corner radius for small control glyphs such as the checkbox box; distinct from radius.action."
       },
       "scale": {
         "$type": "dimension",
@@ -3229,9 +3229,9 @@
     },
     "size": {
       "$type": "dimension",
-      "$description": "Size roles: an element's own width or height. Gaps and padding are space. Shared-value roles stay separate (hds#242).",
+      "$description": "Size roles: an element's own width or height. Gaps and padding are space. Shared-value roles stay separate.",
       "control": {
-        "$description": "Interactive control glyph/element sizing (checkbox glyph box, radio dot, slider track/fill, code-block copy-button-matched footprint).",
+        "$description": "Control glyph sizing: checkbox box, radio dot, slider track and fill, copy button footprint.",
         "sm": {
           "$value": "{primitive.size.8}",
           "$description": "Small control element — radio dot, slider fill bar height."
@@ -3246,7 +3246,7 @@
         }
       },
       "icon": {
-        "$description": "Reserved icon-size role, parallel to the existing --hds-icon-* bridge (src/styles/theme.css), for future direct semantic.size.icon consumers.",
+        "$description": "Reserved icon-size role, parallel to the --hds-icon-* bridge in theme.css.",
         "sm": {
           "$value": "{primitive.size.16}",
           "$description": "Small icon box — matches --hds-icon-small."
@@ -3262,15 +3262,15 @@
       },
       "avatar": {
         "$value": "{primitive.size.40}",
-        "$description": "Avatar size (width and height) for activity feeds and identity glyphs. Same pixels as row.compact today, a separate role (hds#242)."
+        "$description": "Avatar width and height for feeds and identity glyphs. Same pixels as row.compact, a separate role."
       },
       "touchTarget": {
         "$value": "{primitive.size.interactive.min}",
-        "$description": "Small-control minimum on a coarse pointer or narrow viewport (hds#750)."
+        "$description": "Small-control minimum on a coarse pointer or narrow viewport."
       },
       "tile": {
         "$value": "{primitive.size.120}",
-        "$description": "Minimum height of a metric tile, one height for every tile so rows line up (hds#403)."
+        "$description": "Minimum height of a metric tile, one height for every tile so rows line up."
       },
       "row": {
         "$description": "Table row minimum height by density.",
@@ -3290,7 +3290,7 @@
     },
     "zIndex": {
       "$type": "number",
-      "$description": "Named stacking layers, aliasing the numeric primitive.zIndex scale (hds#242).",
+      "$description": "Named stacking layers, aliasing the numeric primitive.zIndex scale.",
       "control": {
         "$value": "{primitive.zIndex.10}",
         "$description": "Raises an interactive control (e.g. a native range input) above its visual decoration for hit-testing."
@@ -3331,7 +3331,7 @@
       "border": {
         "$type": "color",
         "$value": "{semantic.color.surface.muted}",
-        "$description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge (hds#891)."
+        "$description": "Unselected tag border: matches the pill fill, so only selected and hover states show an edge."
       },
       "radius": {
         "$type": "dimension",
@@ -3554,43 +3554,43 @@
       "bgPressed": {
         "$type": "color",
         "$value": "{semantic.accent.pressed}",
-        "$description": "Primary button pressed fill (hds#748)."
+        "$description": "Primary button pressed fill."
       },
       "edge": {
         "primary": {
           "$type": "color",
           "$value": "{semantic.color.edge.primary}",
-          "$description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary (hds#897)."
+          "$description": "Hard raised edge under a primary Button; aliases semantic.color.edge.primary."
         },
         "secondary": {
           "$type": "color",
           "$value": "{semantic.color.edge.neutral}",
-          "$description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral (hds#897)."
+          "$description": "Hard raised edge under a secondary Button; aliases semantic.color.edge.neutral."
         },
         "danger": {
           "$type": "color",
           "$value": "{semantic.color.edge.danger}",
-          "$description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger (hds#897)."
+          "$description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger."
         },
         "success": {
           "$type": "color",
           "$value": "{semantic.color.edge.success}",
-          "$description": "Hard raised edge under a success Button; aliases semantic.color.edge.success (hds#897)."
+          "$description": "Hard raised edge under a success Button; aliases semantic.color.edge.success."
         },
         "warning": {
           "$type": "color",
           "$value": "{semantic.color.edge.warning}",
-          "$description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning (hds#897)."
+          "$description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning."
         },
         "info": {
           "$type": "color",
           "$value": "{semantic.color.edge.info}",
-          "$description": "Hard raised edge under a info Button; aliases semantic.color.edge.info (hds#897)."
+          "$description": "Hard raised edge under a info Button; aliases semantic.color.edge.info."
         }
       },
       "depth": {
         "$type": "dimension",
-        "$description": "Raised Button depth (hds#1387): one edge height and face travel for every raised Button.",
+        "$description": "Raised Button depth: one edge height and face travel for every raised Button.",
         "edge": {
           "$value": "{primitive.space.px3}",
           "$description": "Raised edge height under a Button at rest (3px); the face sinks onto it."
@@ -3756,7 +3756,7 @@
           "rest": {
             "$type": "color",
             "$value": "{semantic.color.surface.soft}",
-            "$description": "Secondary button fill: soft tonal, no border (hds#891)."
+            "$description": "Secondary button fill: soft tonal, no border."
           },
           "hover": {
             "$type": "color",
@@ -3773,7 +3773,7 @@
           "rest": {
             "$type": "color",
             "$value": "{semantic.color.border.interactive}",
-            "$description": "Secondary button border. DEPRECATED (hds#891): secondary is soft-filled and borderless; kept live, unused by Button.",
+            "$description": "Secondary button border. DEPRECATED: secondary is soft-filled and borderless; kept live, unused by Button.",
             "$deprecated": "hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0"
           },
           "hover": {
@@ -3784,7 +3784,7 @@
           "disabled": {
             "$type": "color",
             "$value": "{semantic.color.border.default}",
-            "$description": "Secondary button disabled border. DEPRECATED (hds#891): secondary is now soft-filled and borderless; kept live, unused by Button.",
+            "$description": "Secondary button disabled border. DEPRECATED: secondary is now soft-filled and borderless; kept live, unused by Button.",
             "$deprecated": "hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0"
           }
         },
