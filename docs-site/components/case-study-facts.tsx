@@ -2,7 +2,7 @@ import { caseStudyFacts } from '../lib/case-study';
 import { loadCaseStudySources } from '../lib/site-data';
 
 /**
- * The results table on the case study page (hds#1148). Every number is read from the
+ * The results table on the case study page Every number is read from the
  * repo when the site builds (lib/case-study.ts), so the page cannot claim more than
  * the code holds.
  */
@@ -29,7 +29,11 @@ export function CaseStudyFacts() {
       `${f.decisions} written decision records`,
       'Each one records the context and the choice',
     ],
-    ['Releases', `${f.releases} versions to ${f.version}`, 'With a changelog entry per version'],
+    [
+      'Releases',
+      `${f.releases} versions, 0.5.0 to ${f.version}`,
+      'Each has a changelog entry',
+    ],
     [
       'Consumers',
       `${f.productApps} product apps on the components; ${f.tokenSites} sites on the tokens only`,

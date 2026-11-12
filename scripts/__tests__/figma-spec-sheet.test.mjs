@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import {
+  headerProps,
   specSheetModel,
   specSheetScript,
+  specSheetUpdateScript,
   tokenPathForCssVar,
   tokensInSource,
   tokenValue,
@@ -82,6 +84,50 @@ describe('figma-spec-sheet model', () => {
       '3 more on docs.example/docs/components/avatar-group.',
     );
     expect(by.Usage.bullets).toEqual(['Overlapping avatars.']);
+  });
+  it('leads with the docs page summary and links the source file, like the docs page', () => {
+    const withUsage = {
+      ...manifest,
+      componentSpecs: {
+        ...manifest.componentSpecs,
+        Progress: {
+          filePath: 'src/app/components/progress.tsx',
+          description: 'Linear bar or circular ring. Determinate when `value` is a number.',
+          usage: { when: 'Show how far a task has got, as a bar or ring. More.' },
+        },
+      },
+    };
+    const m = specSheetModel('Progress', {
+      manifest: withUsage,
+      tokens,
+      sourceBase: 'https://github.com/hirobius/hds/blob/main',
+    });
+    expect(m.lead).toBe('Show how far a task has got, as a bar or ring.');
+    expect(m.sourceUrl).toBe(
+      'https://github.com/hirobius/hds/blob/main/src/app/components/progress.tsx',
+    );
+    expect(headerProps(m)).toEqual({
+      Title: 'Progress',
+      Lead: 'Show how far a task has got, as a bar or ring.',
+      'Show link': true,
+      'Docs link': 'View docs',
+      'Show source': true,
+      'Source link': 'Source',
+    });
+    // No source file: the Source link hides.
+    const bare = specSheetModel('TabsTrigger', { manifest, tokens, sourceBase: 'https://x' });
+    expect(bare.sourceUrl).toBeNull();
+    expect(headerProps(bare)['Show source']).toBe(false);
+  });
+  it('emits an update script for existing sheets that parses, deletes nothing and never publishes', () => {
+    const m = specSheetModel('AvatarGroup', { manifest, tokens, source, sourceBase: 'https://x' });
+    const script = specSheetUpdateScript([{ pageId: '2030:2', model: m }]);
+    const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
+    expect(() => new AsyncFunction('figma', script)).not.toThrow();
+    expect(script).toContain('function hdsEnsureHeaderSource');
+    expect(script).not.toMatch(/publish|loadAllPagesAsync|setPluginData|\.remove\(/);
+    // Only the header fields travel: the sections are not redrawn.
+    expect(script).not.toContain('Tokens used');
   });
   it('marks deprecated tokens instead of printing their value', () => {
     const m = specSheetModel('AvatarGroup', {

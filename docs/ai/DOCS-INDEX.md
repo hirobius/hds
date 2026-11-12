@@ -9,10 +9,10 @@ Built from `docs/state-surfaces.json`, which `scripts/check-state-surfaces.mjs` 
 A script builds it: change its source, never the file. A named check fails when the file is stale; where no check is named, nothing compares the file with a fresh build.
 
 - `README.md` (auto:front-door-counts): Front-door counts. Built by `scripts/build-readme-counts.mjs`; fresh when `node scripts/build-readme-counts.mjs --check` passes.
-- `README.md` (auto:consumer-usage): Who uses HDS (consumer usage). Built by `scripts/count-consumer-usage.mjs`; fresh when `node scripts/count-consumer-usage.mjs --check` passes.
+- `docs/OVERVIEW.md` (auto:consumer-usage): Who uses HDS (consumer usage). Built by `scripts/count-consumer-usage.mjs`; fresh when `node scripts/count-consumer-usage.mjs --check` passes.
 - `docs/ADOPTION.md` (auto:adoption-history): Month-by-month HDS adoption in each product app, one row per commit (adoption ledger). Built by `scripts/count-consumer-usage.mjs`; fresh when `node scripts/count-consumer-usage.mjs --check` passes.
 - `public/hds-stats.json`: The HDS numbers other repos read (component, core, pattern and token counts, contrast pairs, typography styles, the consumer split, the Figma sync count), each computed from the code. Built by `scripts/build-stats-json.mjs`; fresh when `node scripts/build-stats-json.mjs --check` passes.
-- `README.md` (auto:core-set): The core set of components. Built by `scripts/build-readme-counts.mjs`; fresh when `node scripts/build-readme-counts.mjs --check` passes.
+- `docs/OVERVIEW.md` (auto:core-set): The core set of components. Built by `scripts/build-readme-counts.mjs`; fresh when `node scripts/build-readme-counts.mjs --check` passes.
 - `AGENTS.md` (consumer guide): Consumer agent instructions shipped in the package. Built by `scripts/generate-agents-md.mjs`; fresh when `node scripts/generate-agents-md.mjs --check` passes.
 - `docs/ai/FRONT-DOOR.md`: Front door for an agent working in this repo: what it is, read order, where live state is (short, always-on; not shipped in the package). Built by `scripts/generate-agents-md.mjs`; fresh when `node scripts/generate-agents-md.mjs --check` passes.
 - `docs/ai/DOCS-INDEX.md`: Every registered document in this registry by kind, and how each is kept true (on demand; not shipped in the package). Built by `scripts/generate-agents-md.mjs`; fresh when `node scripts/generate-agents-md.mjs --check` passes.
@@ -31,6 +31,7 @@ A script builds it: change its source, never the file. A named check fails when 
 - `figma/deprecated-usage.json`: Library layers on a deprecated text style or variable, as last audited (hds#483). Built by `scripts/figma-deprecated-usage.mjs`; fresh when `node scripts/check-figma-deprecated-usage.mjs` passes.
 - `figma/reads/deprecated-usage.js`: The read-only use_figma audit behind figma/deprecated-usage.json. Built by `scripts/figma-deprecated-usage.mjs`; fresh when `node scripts/check-figma-deprecated-usage.mjs` passes.
 - `figma/inventory.json`: Every page, component set and variant count in the Figma library. Built by `scripts/figma-inventory.mjs`; not freshness-checked.
+- `figma/code-connect-map.json`: Every library component in the HDS Figma library mapped to its code for Code Connect: node, source file, import and usage. Built by `scripts/figma-code-connect-map.mjs`; fresh when `node scripts/figma-code-connect-map.mjs --check` passes.
 - `figma/spec-sheet-audit.json`: Which Figma library pages hold a spec sheet, and the component nodes on each page. Built by `scripts/figma-spec-sheets.mjs`; not freshness-checked.
 - `figma/disposition.json`: What becomes of each Figma component. Built by `scripts/figma-disposition.mjs`; fresh when `node scripts/figma-disposition.mjs --check` passes.
 - `figma/code-connect.json`: Code Connect templates registry. Built by `scripts/generate-code-connect.mjs`; fresh when `node scripts/check-code-connect.mjs` passes.
@@ -44,7 +45,7 @@ Hand-kept, but a gate compares it with the code.
 - `status.json` (updatedAt): updatedAt, which a commit to src/, scripts/ or docs/adr/ must not outpace. Checked by `scripts/check-record-freshness.mjs`.
 - `status.json` (consistency): The agent-consistency figures, compared with the latest ledger entry. Checked by `scripts/check-status-claims.mjs`.
 - `.status`: Legacy per-branch notes standing in for a status.json bump until pnpm status:fold; new branches name their issue instead (ops#1057). Checked by `scripts/check-record-freshness.mjs`.
-- `README.md` (Open explorations): Open explorations, including the agent-consistency line. Checked by `scripts/check-status-claims.mjs`.
+- `docs/OVERVIEW.md` (Open explorations): Open explorations, including the agent-consistency line. Checked by `scripts/check-status-claims.mjs`.
 - `figma/MCP-LEDGER.md`: Append-only log of every Figma MCP call an agent session makes (the budget record); it has no review age. Checked by `scripts/__tests__/figma-one-library-rule.test.mjs`.
 - `docs/guardrails/registry.json`: Every gate, where it fires and its proof-of-firing fixtures. Checked by `scripts/validate-guardrail-registry.mjs`.
 - `eval/consistency/ledger.json`: Append-only record of agent-consistency eval runs. Checked by `scripts/check-status-claims.mjs`.
@@ -54,7 +55,8 @@ Hand-kept, but a gate compares it with the code.
 Written by a person; the registry carries when it was last re-read. `pnpm check:state-surfaces` warns "review due" past the re-read window and fails under `--strict-review`.
 
 - `status.json` (focus, phase, note): Where the repo is heading: focus, phase and note (v2 shape; ops derives release, next and blocked live). Reviewed 2026-10-12, re-read within 45 days.
-- `README.md` (prose): What HDS is, how to install it and use it (prose). Reviewed 2026-11-02, re-read within 90 days.
+- `README.md` (prose): What HDS is, how to install it and use it (prose). Reviewed 2026-11-12, re-read within 90 days.
+- `docs/OVERVIEW.md` (prose): The README's long form: theming dials, Figma sync, development, architecture, accessibility (prose). Reviewed 2026-11-12, re-read within 90 days.
 - `DESIGN.source.md`: Narrative rules of the visual spec (the editable source of DESIGN.md). Reviewed 2026-11-05, re-read within 90 days.
 - `DESIGN-HANDOFF.md` (manual sections): Hand-written sections around the generated token tables. Reviewed 2026-10-12, re-read within 90 days.
 - `MIGRATIONS.md`: How HDS deprecates and removes public API, and the removals shipped so far. Reviewed 2026-10-12, re-read within 90 days.

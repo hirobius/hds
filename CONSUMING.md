@@ -44,7 +44,7 @@ Available subpaths:
 
 | Import                                      | What                                                                                                                                                                                                                                                                                                                            |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@hirobius/design-system`                   | The 48-component core set ([README → What belongs in the system](README.md#what-belongs-in-the-system)), the rest of the allow-list and the templates; the `pattern` tier is only in `/patterns`                                                                                                                                |
+| `@hirobius/design-system`                   | The 48-component core set ([overview → What belongs in the system](docs/OVERVIEW.md#what-belongs-in-the-system)), the rest of the allow-list and the templates; the `pattern` tier is only in `/patterns`                                                                                                                       |
 | `@hirobius/design-system/fonts.css`         | Optional brand fonts (Sora, IBM Plex Mono); woff2 files ship in the package, relative URLs, `font-display: swap`                                                                                                                                                                                                                |
 | `@hirobius/design-system/tokens.css`        | Token CSS variables (import once at app root)                                                                                                                                                                                                                                                                                   |
 | `@hirobius/design-system/tokens`            | Token values as TS constants                                                                                                                                                                                                                                                                                                    |
@@ -137,7 +137,7 @@ them without network access. Under `node_modules/@hirobius/design-system/`:
 - `DESIGN.md` - the lean visual spec
 - `src/app/data/component-api.json` - full prop reference
 
-The same files are served at <https://hirobius-hds-components.vercel.app/llms.txt>
+The same files are served at <https://hirobius-design-system.vercel.app/llms.txt>
 (and `/llms-full.txt`, `/llms/components.txt`, `/DESIGN.md`, `/component-api.json`).
 
 ## 3. Receiving updates

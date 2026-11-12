@@ -48,7 +48,7 @@
       "check": "node scripts/build-readme-counts.mjs --check"
     },
     {
-      "path": "README.md",
+      "path": "docs/OVERVIEW.md",
       "describes": "Who uses HDS (consumer usage)",
       "kind": "generated",
       "by": "scripts/count-consumer-usage.mjs",
@@ -71,7 +71,7 @@
       "check": "node scripts/build-stats-json.mjs --check"
     },
     {
-      "path": "README.md",
+      "path": "docs/OVERVIEW.md",
       "describes": "The core set of components",
       "kind": "generated",
       "by": "scripts/build-readme-counts.mjs",
@@ -79,7 +79,7 @@
       "check": "node scripts/build-readme-counts.mjs --check"
     },
     {
-      "path": "README.md",
+      "path": "docs/OVERVIEW.md",
       "describes": "Open explorations, including the agent-consistency line",
       "kind": "checked",
       "by": "scripts/check-status-claims.mjs",
@@ -90,7 +90,16 @@
       "describes": "What HDS is, how to install it and use it (prose)",
       "kind": "editorial",
       "owner": "Adrian",
-      "reviewedAt": "2026-11-02",
+      "reviewedAt": "2026-11-12",
+      "maxAgeDays": 90,
+      "section": "prose"
+    },
+    {
+      "path": "docs/OVERVIEW.md",
+      "describes": "The README's long form: theming dials, Figma sync, development, architecture, accessibility (prose)",
+      "kind": "editorial",
+      "owner": "Adrian",
+      "reviewedAt": "2026-11-12",
       "maxAgeDays": 90,
       "section": "prose"
     },
@@ -340,6 +349,13 @@
       "kind": "generated",
       "by": "scripts/figma-inventory.mjs",
       "freshness": "unchecked"
+    },
+    {
+      "path": "figma/code-connect-map.json",
+      "describes": "Every library component in the HDS Figma library mapped to its code for Code Connect: node, source file, import and usage",
+      "kind": "generated",
+      "by": "scripts/figma-code-connect-map.mjs",
+      "check": "node scripts/figma-code-connect-map.mjs --check"
     },
     {
       "path": "figma/spec-sheet-audit.json",

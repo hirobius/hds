@@ -1,6 +1,6 @@
 /**
- * Tests for scripts/count-consumer-usage.mjs (hds#316): the README "In use"
- * numbers come from a script, and the README is compared against its snapshot.
+ * Tests for scripts/count-consumer-usage.mjs (hds#316): the docs/OVERVIEW.md "In use"
+ * numbers come from a script, and the overview is compared against its snapshot.
  */
 import { describe, it, expect } from 'vitest';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
@@ -128,8 +128,8 @@ describe('measureConsumer (hds#390)', () => {
   });
 });
 
-describe('README "In use" section', () => {
-  const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
+describe('docs/OVERVIEW.md "In use" section', () => {
+  const readme = readFileSync(join(REPO, 'docs/OVERVIEW.md'), 'utf8');
   const snapshot = JSON.parse(readFileSync(join(REPO, 'docs/data/consumer-usage.json'), 'utf8'));
 
   it('is the snapshot rendered, byte for byte', () => {
@@ -197,7 +197,7 @@ describe('README "In use" names no private repository (hds#545)', () => {
   it('keeps the counts, the consumer table and the screenshot', () => {
     expect(out).toMatch(/\*\*35\*\* of its source files/);
     expect(out).toMatch(/\| Product apps\s+\| 1 /);
-    expect(out).toMatch(/docs\/images\/product-app-audit\.png/);
+    expect(out).toMatch(/\(images\/product-app-audit\.png\)/);
   });
 
   it('shows no page the product app has removed (hds#708: ops dropped Library on 2026-10-12)', () => {
@@ -205,8 +205,8 @@ describe('README "In use" names no private repository (hds#545)', () => {
     expect(out).toMatch(/The screenshot below is a page of that app/);
   });
 
-  it('the committed README follows suit', () => {
-    const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
+  it.each(['README.md', 'docs/OVERVIEW.md'])('the committed %s follows suit', (file) => {
+    const readme = readFileSync(join(REPO, file), 'utf8');
     const { commit } = JSON.parse(
       readFileSync(join(REPO, 'docs', 'data', 'consumer-usage.json'), 'utf8'),
     );
@@ -368,10 +368,10 @@ describe('docs/ADOPTION.md (hds#659)', () => {
     }
   });
 
-  it('the README "In use" block links it', () => {
-    const readme = readFileSync(join(REPO, 'README.md'), 'utf8');
-    expect(renderInUseBlock(snapshot)).toContain('[docs/ADOPTION.md](docs/ADOPTION.md)');
-    expect(readme).toContain('[docs/ADOPTION.md](docs/ADOPTION.md)');
+  it('the docs/OVERVIEW.md "In use" block links it', () => {
+    const readme = readFileSync(join(REPO, 'docs/OVERVIEW.md'), 'utf8');
+    expect(renderInUseBlock(snapshot)).toContain('[ADOPTION.md](ADOPTION.md)');
+    expect(readme).toContain('[ADOPTION.md](ADOPTION.md)');
   });
 
   it('every history entry is a declared app with increasing months and 40-hex commits', () => {
