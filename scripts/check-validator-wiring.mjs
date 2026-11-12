@@ -540,10 +540,14 @@ function runWiringCheck(
       return 'ci-detected';
 
     // Fallback: check legacy per-gate invocations in GH Actions / pnpm.
-    if (
-      ghActionsContent.includes(gateScript) ||
-      ghActionsContent.includes(path.basename(gateScript, '.mjs'))
-    )
+    // The bare basename must stand alone: `check-pack-scan` is a prefix of the
+    // test file `check-pack-scan-edges.test.mjs`, which ci.yml names to run or
+    // exclude it, and that is not the gate running.
+    const baseName = path.basename(gateScript, '.mjs');
+    const bareName = new RegExp(
+      `(?<![\\w-])${baseName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`,
+    );
+    if (ghActionsContent.includes(gateScript) || bareName.test(ghActionsContent))
       return 'ci-detected';
     // #265: a gate named in a package.json script is `pnpm-meta` ONLY if that
     // script actually runs. Named in a script nothing invokes, it is
