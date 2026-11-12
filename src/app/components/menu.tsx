@@ -28,6 +28,7 @@ import { Check, ChevronRight, Circle } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
+import { toggleTrackVariants, toggleThumbVariants } from './toggle-switch-styles';
 
 // A wrapper of our own, not the Radix Root itself: the compound below attaches
 // the parts to it. Writing them onto a component at module scope is a side
@@ -99,22 +100,21 @@ function useRowBody(children: React.ReactNode, description: React.ReactNode) {
  * Toggle's tokens; the thumb's travel equals semantic.size.control.md (track is
  * twice that wide, thumb fills the padded rail), so no literal is needed.
  */
-const SWITCH_TRACK =
-  // tier-ok: primitive.radius.full is the "fully round" constant
-  'ml-auto inline-flex shrink-0 items-center rounded-[var(--primitive-radius-full)] border-solid border-[length:var(--primitive-borderWidth-sm)] p-[var(--semantic-space-subgrid-xs)] h-[var(--semantic-size-control-md)] w-[calc(var(--semantic-size-control-md)*2)] data-[state=checked]:bg-[var(--semantic-color-surface-accent)] data-[state=checked]:border-[color:var(--semantic-color-border-accent)] data-[state=unchecked]:bg-transparent data-[state=unchecked]:border-[color:var(--semantic-color-content-secondary)]';
-const SWITCH_THUMB =
-  // tier-ok: primitive.radius.full is the "fully round" constant
-  'pointer-events-none block h-full aspect-square rounded-[var(--primitive-radius-full)] group-data-[state=checked]:translate-x-[var(--semantic-size-control-md)] group-data-[state=checked]:bg-[var(--semantic-color-surface-page)] group-data-[state=unchecked]:bg-[var(--semantic-color-content-secondary)] motion-safe:transition-transform';
-
 function MenuSwitch({ checked }: { checked: boolean }) {
   return (
     <span
       aria-hidden="true"
       data-slot="menu-switch"
       data-state={checked ? 'checked' : 'unchecked'}
-      className={cn('group', SWITCH_TRACK)}
+      className={cn('ml-auto', toggleTrackVariants({ on: checked, disabled: false }))}
     >
-      <span className={SWITCH_THUMB} />
+      <span
+        className={cn(
+          toggleThumbVariants({ on: checked, disabled: false }),
+          checked && 'translate-x-[var(--semantic-size-control-md)]',
+          'motion-safe:transition-transform',
+        )}
+      />
     </span>
   );
 }
