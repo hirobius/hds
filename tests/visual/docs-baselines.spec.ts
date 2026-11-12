@@ -9,7 +9,11 @@ import { DEMO_SHOT, openThemed } from './theme';
  * tests/visual/docs-baselines.spec.ts-snapshots/. Runs offline with no
  * Chromatic account, so a visual change shows up as a failing test before push.
  *
- * Baselines are Linux Chromium (the remote container), one shared copy. A small
+ * Baselines are rendered by the CI container (mcr.microsoft.com/playwright, the
+ * image pinned in ci.yml's `visual` job), one shared copy: its text antialiasing
+ * differs from the remote Claude sandbox's, so a local run of an unchanged tree
+ * can fail on glyph edges alone. To refresh after an intended change, take the
+ * `*-actual.png` files from the failed run's visual-diffs-N artifact. A small
  * tolerance absorbs edge antialiasing between Chromium revisions; a changed
  * colour, size or layout still fails. button-states.spec.ts stays the strict
  * zero-tolerance check for the primary Button's state fills.
