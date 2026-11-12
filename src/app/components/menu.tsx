@@ -111,9 +111,9 @@ function MenuSwitch({ checked }: { checked: boolean }) {
       <span
         className={cn(
           toggleThumbVariants({ on: checked, disabled: false }),
-          checked && 'translate-x-[var(--semantic-size-control-md)]',
-          'motion-safe:transition-transform',
+          'transition-transform',
         )}
+        style={checked ? { transform: 'translateX(var(--semantic-size-control-md))' } : undefined}
       />
     </span>
   );
