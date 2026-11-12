@@ -1637,3 +1637,12 @@ Calls logged for 2026-11-11: 50 of 200.
 Session total: 8 calls (S1-S8: 1 skill, 1 session, 2 screenshots, 3 reads of which 1 failed on the 48000-byte return limit, 1 write). Nodes changed: the 36 variant rails of 82:334 (radius 8 -> 12, Primitives/radius/12) and the 40 variant mains of SegmentedControl/Segment (radius 8 -> 7, fixed: no radius/7 variable; the code's 7 is 12 - 4 padding - 1 border, Figma rail has no stroke). No publish, no delete.
 
 Calls logged for 2026-11-12 by this session: 8 (the lead counted about 52 of 200 before it).
+
+### 2026-11-12 — SegmentedControl rail border, concentric inset 5 (hds#1468, follow-up)
+
+| #   | Tool             | Kind  | Target                                                                                                    | Purpose                                                                                                                                  | Result                                                                                       |
+| --- | ---------------- | ----- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| S9  | `use_figma`      | write | library 82:334: the 36 variant rails (e.g. 2337:28389): 1px INSIDE transparent stroke, included in layout | match code's 1px transparent rail border so the pill inset is 4 + 1 = 5; fall back to padding 5 if the stroke does not shift the content | OK. Stroke mode: content shifted 4 -> 5, rails 142x40 -> 144x42, no padding fallback needed. |
+| S10 | `get_screenshot` | read  | library 82:334                                                                                            | after                                                                                                                                    | OK. shots/seg-concentric-after.png replaced (now includes the border).                       |
+
+Follow-up total: 2 calls (1 write, 1 screenshot). Session total 10 calls. No publish, no delete. Rails are now 2px larger each way (stroke included in layout), as the code rail is.
