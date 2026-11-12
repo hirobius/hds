@@ -281,22 +281,46 @@ function SheetDemo() {
 }
 
 function MenuDemo() {
+  const [dark, setDark] = useState(true);
+  const [paused, setPaused] = useState(false);
   return (
-    <Menu>
-      <Menu.Trigger asChild>
-        <Button variant="secondary">Actions</Button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Label>Component</Menu.Label>
-        <Menu.Item onSelect={() => {}}>Edit</Menu.Item>
-        <Menu.Item onSelect={() => {}}>Duplicate</Menu.Item>
-        <Menu.Separator />
-        <Menu.Item onSelect={() => {}}>Archive</Menu.Item>
-        <Menu.Item disabled onSelect={() => {}}>
-          Delete
-        </Menu.Item>
-      </Menu.Content>
-    </Menu>
+    <div className="flex flex-wrap items-start gap-scale-xs">
+      <Menu>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Actions</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          <Menu.Label>Component</Menu.Label>
+          <Menu.Item onSelect={() => {}}>Edit</Menu.Item>
+          <Menu.Item onSelect={() => {}}>Duplicate</Menu.Item>
+          <Menu.Separator />
+          <Menu.Item onSelect={() => {}}>Archive</Menu.Item>
+          <Menu.Item disabled onSelect={() => {}}>
+            Delete
+          </Menu.Item>
+        </Menu.Content>
+      </Menu>
+      <Menu>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Settings</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          <Menu.CheckboxItem
+            indicator="switch"
+            checked={dark}
+            onCheckedChange={setDark}
+            description="Use the dark colour scheme"
+          >
+            Dark theme
+          </Menu.CheckboxItem>
+          <Menu.CheckboxItem indicator="switch" checked={paused} onCheckedChange={setPaused}>
+            Pause animations
+          </Menu.CheckboxItem>
+          <Menu.Separator />
+          <Menu.Item description="Opens your profile">Profile</Menu.Item>
+        </Menu.Content>
+      </Menu>
+    </div>
   );
 }
 

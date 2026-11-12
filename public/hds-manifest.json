@@ -5827,6 +5827,7 @@
         "src/app/components/checkbox.tsx",
         "src/app/components/control-color-fade.ts",
         "src/app/components/control-label.tsx",
+        "src/app/components/menu.tsx",
         "src/app/components/radio.tsx",
         "src/app/hooks/useInteractionState.ts"
       ],
@@ -8912,7 +8913,7 @@
       "governedCategory": true,
       "docExempt": true,
       "filePath": "src/app/components/menu.tsx",
-      "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+      "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`. A setting that flips on or off is a Menu.CheckboxItem with `indicator=\"switch\"`: it shows a trailing switch and keeps the menu open when toggled (a tick row still closes it). `description` on an Item or CheckboxItem adds a caption line under the label.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
@@ -9061,6 +9062,18 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:menu.disabled-skipped"
+        },
+        {
+          "rule": "A switch row is a menuitemcheckbox with aria-checked; its switch is a decorative aria-hidden indicator, never focusable.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.switch-row"
+        },
+        {
+          "rule": "A row's description is its accessible description (aria-describedby); the name stays the label alone.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.row-description"
         },
         {
           "rule": "Give an icon-only Menu.Trigger an aria-label.",
@@ -12037,6 +12050,7 @@
       },
       "consumers": [
         "src/app/components/board.tsx",
+        "src/app/components/menu.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/tabs.tsx"
       ],

@@ -968,11 +968,15 @@
   },
   "Menu": {
     "dom": [
-      "button aria-expanded=\"false\" aria-haspopup=\"menu\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
-      "span aria-hidden=\"true\" data-hds-portal-anchor"
+      "div",
+      "  button aria-expanded=\"false\" aria-haspopup=\"menu\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "  span aria-hidden=\"true\" data-hds-portal-anchor",
+      "  button aria-expanded=\"false\" aria-haspopup=\"menu\" data-hover-effect=\"wipe\" data-state=\"closed\" data-variant=\"secondary\"",
+      "  span aria-hidden=\"true\" data-hds-portal-anchor"
     ],
     "reader": [
-      "button, Actions, not expanded, has popup menu"
+      "button, Actions, not expanded, has popup menu",
+      "button, Settings, not expanded, has popup menu"
     ]
   },
   "MetaLine": {
