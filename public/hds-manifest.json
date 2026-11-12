@@ -2645,7 +2645,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/tag.tsx",
-      "description": "Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.",
+      "description": "Tag — interactive filter and category chip. `icon` adds a leading Lucide icon (decorative, small, spaced by the Button gap). `copied` swaps the label for `copiedLabel` (default \"Copied\") with a Check icon and announces it; the caller owns the clipboard write and the timer, so the tag stays presentational (`useTransientFlag` below, optional). With `onDismiss` it is a static, removable label instead: only its X acts.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=32-11",
       "figmaId": null,
       "preview": {
@@ -2696,8 +2696,20 @@
         "children": {
           "type": "ReactNode"
         },
+        "copied": {
+          "type": "boolean",
+          "optional": true
+        },
+        "copiedLabel": {
+          "type": "string",
+          "default": "Copied"
+        },
         "dismissLabel": {
           "type": "string",
+          "optional": true
+        },
+        "icon": {
+          "type": "LucideIcon",
           "optional": true
         },
         "onDismiss": {
@@ -2709,6 +2721,12 @@
       "propConstraints": {
         "active": {
           "type": "boolean"
+        },
+        "copied": {
+          "type": "boolean"
+        },
+        "copiedLabel": {
+          "type": "string"
         },
         "dismissLabel": {
           "type": "string"
@@ -2771,6 +2789,18 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:tag.dismiss-target-size"
+        },
+        {
+          "rule": "The leading icon (and the Check in the copied state) is aria-hidden; the label names the tag.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.icon-decorative"
+        },
+        {
+          "rule": "With `copied` the label swaps to copiedLabel and a polite live region (role=status) announces it once; the region is only rendered when `copied` is passed.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:tag.copied-announced"
         },
         {
           "rule": "Name the tag by its text, or by an aria-label when the text is not enough; use Badge for a label that does nothing.",
@@ -3440,6 +3470,7 @@
         "src/app/components/page-header.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
+        "src/app/components/tag.tsx",
         "src/app/components/timeline.tsx",
         "src/app/components/visually-hidden.tsx",
         "src/app/design-system/tokens.ts",
@@ -3826,6 +3857,7 @@
         "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
         "src/app/components/sheet.tsx",
+        "src/app/components/tag.tsx",
         "src/app/components/toast.tsx",
         "src/app/context/DemoStateContext.tsx",
         "src/app/design-system/motion-extras.ts",
