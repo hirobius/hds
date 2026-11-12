@@ -1,0 +1,87 @@
+---
+title: 'Built for agents'
+description: 'The MCP server, AGENTS.md, llms.txt and the lint plugin: how an AI coding agent looks up HDS, builds with it and checks its work.'
+status: 'stable'
+related:
+  - '/docs/guides/getting-started'
+  - '/docs/guides/tokens'
+---
+
+AI coding agents now build a share of the screens in any app. An agent that guesses which component to use, or invents a colour, produces work a person then has to correct. HDS gives agents the same things it gives people: the answers in one place, rules they can read, and a check that fails when they break a rule.
+
+Four pieces do that. Each one ships inside the `@hirobius/design-system` package and works on its own.
+
+| Piece                       | What it is                                                     | The agent uses it to                      |
+| --------------------------- | -------------------------------------------------------------- | ----------------------------------------- |
+| [MCP server](#mcp-server)   | A small program the agent can ask questions.                   | Look up a component or token on demand.   |
+| [`AGENTS.md`](#agentsmd)    | A plain file of rules, imports and one answer per screen need. | Decide what to build with.                |
+| [`llms.txt`](#llmstxt)      | A short index of the machine-readable files.                   | Find the right file without guessing.     |
+| [Lint plugin](#lint-plugin) | ESLint rules that flag off-system code.                        | Check its work before it says it is done. |
+
+## MCP server
+
+MCP (Model Context Protocol) is the standard way an AI tool calls a program. The HDS server is named `hds`. It reads the component and token data that already ships in the package. It does not use the network and does not touch your files.
+
+Connect it from an app that has the package installed. In an MCP client such as Claude Code or Cursor, add this to the client's server settings:
+
+```json
+{ "mcpServers": { "hds": { "command": "npx", "args": ["hds-mcp"] } } }
+```
+
+To try it without installing the package first, run it from the registry:
+
+```bash
+npx -y -p @hirobius/design-system hds-mcp
+```
+
+The server answers four questions. Each answer stays under 2 KB, so the agent gets a narrow reply instead of the whole manifest.
+
+| Tool                | Ask it                                                                                       |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| `list_core`         | Which components to prefer, and which one fits each screen need. The agent calls this first. |
+| `search_components` | Find a component by name or by a plain need, such as "confirm delete".                       |
+| `get_component`     | One component's import path, props, parts and when to use it. Call before using it.          |
+| `search_tokens`     | Look up a token by path, prefix or words, with its CSS variable and light and dark values.   |
+
+## AGENTS.md
+
+[`AGENTS.md`](https://github.com/hirobius/hds/blob/main/AGENTS.md) is the file most agent tools read first. In HDS it carries:
+
+- How to look things up, including the server config above.
+- Where each component imports from.
+- One answer per screen need. For "a row of headline numbers" it names the component to use and the ones agents reach for by mistake.
+- The rules: tokens only, no raw `<button>` or `<input>`, every control has an accessible name.
+
+It is the same guide the MCP server serves, so the file and the server never disagree. Two agents given the same screen build it the same way.
+
+If your own repo has an `AGENTS.md`, point it at the one in the package. The agent reads yours for your project and ours for HDS.
+
+## llms.txt
+
+[`llms.txt`](/llms.txt) is a short index, written for a language model to read. It lists where to find each piece of machine-readable context:
+
+- `AGENTS.md` and the MCP server, first.
+- `llms-full.txt`, everything in one file.
+- Small topic files for layout, tokens, scroll, components and upgrades.
+- The data behind them: `hds-manifest.json`, `component-api.json` and `hirobius.tokens.json`.
+
+Use it when a tool can fetch a URL but cannot run the server. Give the agent the address of `llms.txt` and it can find the rest.
+
+## Lint plugin
+
+The first three pieces tell the agent what to do. The lint plugin checks that it did. It flags raw hex colours, raw pixel spacing, raw form controls, nested cards and imports of deprecated or removed exports. Most are errors. Using a deprecated import is a warning.
+
+It needs ESLint 9 or newer with a flat config. In `eslint.config.mjs`:
+
+```js
+import hds from '@hirobius/design-system/eslint-plugin';
+
+export default [...hds.configs.recommended];
+```
+
+Then run `pnpm exec eslint .`. Ask the agent to run it before it reports done, and to fix what it flags. `AGENTS.md` already tells it to. The full rule list, with an example of each, is in the [plugin README](https://github.com/hirobius/hds/blob/main/scripts/eslint-plugin-hds/README.md).
+
+## Where to go next
+
+- [Getting started](/docs/guides/getting-started) to install the package.
+- [Tokens](/docs/guides/tokens) for the values the agent looks up.
