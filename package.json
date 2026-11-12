@@ -327,7 +327,7 @@
     "docs:components": "node scripts/generate-docs-components.mjs",
     "docs:dev": "pnpm docs:prepare && pnpm --dir docs-site run dev",
     "docs:llms": "node scripts/generate-llms-txt.mjs",
-    "docs:prepare": "pnpm build:lib && pnpm docs:api && pnpm docs:components && pnpm --dir docs-site install --frozen-lockfile",
+    "docs:prepare": "pnpm build:lib && pnpm docs:api && pnpm docs:components && pnpm --dir docs-site install --ignore-workspace --frozen-lockfile",
     "walkthrough:record": "node scripts/walkthrough/record.mjs",
     "figma-variables": "node scripts/build-figma-variables.mjs",
     "figma:connect:check": "node scripts/check-code-connect.mjs",
