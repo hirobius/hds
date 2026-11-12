@@ -29,9 +29,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'dist', 'tokens.css');
 const OUT = path.join(ROOT, 'dist', 'styles.css');
 
-// One line (hds#897 size budget): the old four-line banner was ~200 B of the gzip budget.
-const banner =
-  '/* @hirobius/design-system/styles.css: tokens.css with no global reset (scoped to [data-hds]) */\n';
+// No banner (hds#1472): at 24 kB the budget has no room for one. Tailwind's own license comment
+// stays as the file's first line; dist/styles.css is named by package.json#exports.
+const banner = '';
 
 /**
  * Return [startIndex, endIndexExclusive) of a top-level `@layer <name>{ ... }`

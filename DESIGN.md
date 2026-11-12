@@ -165,8 +165,8 @@ Motion (lift on hover, parallax) is the interaction-affordance layer; static dep
 | `semantic.motion.expressive` | `250ms` | For teaching moments and significant UI entries. Includes physics-based squish. |
 | `semantic.motion.spatial` | `400ms` | For elements traveling long distances across the viewport. |
 | `semantic.motion.exit` | `100ms` | For elements being removed from the DOM. |
-| `semantic.motion.transitionColor` | `150ms` | Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it (hds#1399). |
-| `semantic.motion.transitionShadow` | `150ms` | Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it (hds#1399). |
+| `semantic.motion.transitionColor` | `150ms` | Colour transitions on hover and state changes: productive, 150ms decelerate. A theme switch skips it. |
+| `semantic.motion.transitionShadow` | `150ms` | Box-shadow transitions on hover, press and focus: productive, 150ms decelerate. A theme switch skips it. |
 
 Default most interactive feedback to `productive` (150ms, decelerate). Use `expressive` (250ms, spring) for entrances and moments where a little bounce adds delight. `spatial` (400ms) is for travel, not decoration.
 
@@ -174,14 +174,14 @@ Default most interactive feedback to `productive` (150ms, decelerate). Use `expr
 
 | Token | Value | Purpose |
 | --- | --- | --- |
-| `semantic.motion.distance` | `24px` | Scroll-reveal translateY travel distance. Equals semantic.space.scale.md today, but names motion travel, not a spacing tier (hds#242). |
-| `semantic.motion.nudge` | `4px` | Small travel for text swaps and nudges (hds#751). |
-| `semantic.motion.slide` | `8px` | Travel for menus, toasts and items sliding in (hds#751). |
-| `semantic.motion.blurSwap` | `2px` | Blur while text or an icon swaps in place (hds#751). |
-| `semantic.motion.blurReveal` | `4px` | Blur while content reveals into place (hds#751). |
-| `semantic.motion.scaleDialog` | `0.96` | Scale a dialog opens from and closes to (hds#751). |
-| `semantic.motion.scaleMenu` | `0.97` | Scale a menu, popover or select opens from (hds#751). |
-| `semantic.motion.scaleTooltip` | `0.98` | Scale a tooltip opens from (hds#751). |
+| `semantic.motion.distance` | `24px` | Scroll-reveal translateY travel. Equals space.scale.md today, but names motion, not a spacing tier. |
+| `semantic.motion.nudge` | `4px` | Small travel for text swaps and nudges. |
+| `semantic.motion.slide` | `8px` | Travel for menus, toasts and items sliding in. |
+| `semantic.motion.blurSwap` | `2px` | Blur while text or an icon swaps in place. |
+| `semantic.motion.blurReveal` | `4px` | Blur while content reveals into place. |
+| `semantic.motion.scaleDialog` | `0.96` | Scale a dialog opens from and closes to. |
+| `semantic.motion.scaleMenu` | `0.97` | Scale a menu, popover or select opens from. |
+| `semantic.motion.scaleTooltip` | `0.98` | Scale a tooltip opens from. |
 <!-- auto:end:motion -->
 
 ## Components

@@ -445,14 +445,12 @@
 
 /* --- Skeleton shimmer animation ---------------------------------------------- */
 @keyframes hds-skeleton-shimmer {
-  0% {
+  0%,
+  100% {
     opacity: 0.5;
   }
   50% {
     opacity: 1;
-  }
-  100% {
-    opacity: 0.5;
   }
 }
 
@@ -515,52 +513,39 @@
  * content puts it and never hides.
  * In @layer components so a consumer's utility className still wins. */
 @layer components {
-  .hds-dock {
-    position: fixed;
-    inset-inline: 0;
-    bottom: 0;
-    z-index: var(--semantic-zIndex-sticky);
-    display: flex;
-    flex-direction: column;
-    background: var(--semantic-color-surface-page);
-    border-top: var(--semantic-borderWidth-default) solid var(--semantic-color-border-subtle);
-    /* css-ok: 0px is the env() fallback inside calc, not spacing */
-    padding: var(--semantic-space-scale-sm)
-      calc(var(--semantic-space-scale-md) + env(safe-area-inset-right, 0px))
-      calc(var(--semantic-space-scale-sm) + env(safe-area-inset-bottom, 0px))
-      calc(var(--semantic-space-scale-md) + env(safe-area-inset-left, 0px));
-    transition:
-      transform var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing),
-      opacity var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing);
-  }
-
-  .hds-dock[data-hidden] {
-    transform: translateY(100%);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
+  @media (width < 640px) {
     .hds-dock {
-      transition: opacity var(--hds-motion-spatial-duration) linear;
+      position: fixed;
+      inset-inline: 0;
+      bottom: 0;
+      z-index: var(--semantic-zIndex-sticky);
+      display: flex;
+      flex-direction: column;
+      background: var(--semantic-color-surface-page);
+      border-top: var(--semantic-borderWidth-default) solid var(--semantic-color-border-subtle);
+      /* css-ok: 0px is the env() fallback inside calc, not spacing */
+      padding: var(--semantic-space-scale-sm)
+        calc(var(--semantic-space-scale-md) + env(safe-area-inset-right, 0px))
+        calc(var(--semantic-space-scale-sm) + env(safe-area-inset-bottom, 0px))
+        calc(var(--semantic-space-scale-md) + env(safe-area-inset-left, 0px));
+      transition:
+        transform var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing),
+        opacity var(--hds-motion-spatial-duration) var(--hds-motion-spatial-easing);
     }
-    .hds-dock[data-hidden] {
-      transform: none;
-    }
-  }
 
-  @media (min-width: 640px) {
-    .hds-dock,
     .hds-dock[data-hidden] {
-      position: static;
-      z-index: auto;
-      background: transparent;
-      border-top: 0;
-      padding: 0;
-      transform: none;
-      opacity: 1;
-      pointer-events: auto;
-      transition: none;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(100%);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hds-dock {
+        transition: opacity var(--hds-motion-spatial-duration) linear;
+      }
+      .hds-dock[data-hidden] {
+        transform: none;
+      }
     }
   }
 }
@@ -579,9 +564,6 @@
 @keyframes hds-sheet-enter {
   from {
     transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
   }
 }
 

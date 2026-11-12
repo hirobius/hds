@@ -422,16 +422,10 @@
     flex-direction: column;
   }
 
-  @keyframes hds-utility-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   /* Only without reduced motion, so a plain .animate-spin never fights motion-reduce:animate-none. */
   @media (prefers-reduced-motion: no-preference) {
     .animate-spin {
-      animation: hds-utility-spin 1s linear infinite;
+      animation: spin 1s linear infinite; /* Tailwind's own @keyframes spin, emitted with .animate-spin */
     }
   }
 }
