@@ -1675,3 +1675,15 @@ Library 2VgBbVpKiDnu0aftJEVyBQ. Generator: `scripts/figma-spec-sheets.mjs --emit
 | R11 | `use_figma` | write | library 2337:13347                                               | `--emit-update Progress=88:86`, unmodified, screenshot                                                                                     | OK. Source underlined like View docs.                                                                                                                                                    |
 
 Session total: 7 calls (4 reads, 3 writes). `check:figma-drift` 0 (no variable or style changed). No publish, no delete.
+
+### 2026-11-12 — Code Connect map (hds#1489, branch claude/figma-sora-drift)
+
+Library 2VgBbVpKiDnu0aftJEVyBQ. No delete, no publish.
+
+| #   | Tool                           | Kind  | Target                                    | Purpose                                         | Result                                                                                                                                                              |
+| --- | ------------------------------ | ----- | ----------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R12 | `get_figma_skill`              | read  | skill://figma/figma-code-connect/SKILL.md | load figma-code-connect                         | OK. The skill says Code Connect needs an Organization or Enterprise plan.                                                                                           |
+| R13 | `get_code_connect_suggestions` | read  | library 2399:11077 (Button set)           | is the set published and unmapped               | OK. 1 unmapped component, main 2399:11077.                                                                                                                          |
+| R14 | `add_code_connect_map`         | write | library 2399:11077 -> button.tsx (React)  | probe: can the Professional plan save a mapping | Refused, nothing saved: "Code connections can only be made in libraries that are in Organization or Enterprise plans" (debug e5b0641f-ac3a-4836-8d14-4bdd8350a44a). |
+
+Session total: 3 calls (2 reads, 1 refused write). The map is code: figma/code-connect-map.json (71 components, 5 deprecated exempt), gated by check-code-connect-map.
