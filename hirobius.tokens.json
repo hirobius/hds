@@ -2189,7 +2189,7 @@
             "com.figma.variables": {
               "modes": {
                 "Light": "{primitive.color.blue.500}",
-                "Dark": "{primitive.color.blue.300}"
+                "Dark": "{primitive.color.blue.200}"
               }
             }
           }

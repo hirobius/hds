@@ -779,7 +779,7 @@
   --semantic-color-feedback-error: var(--primitive-color-red-400);
   --semantic-color-feedback-success: var(--primitive-color-green-400);
   --semantic-color-feedback-warning: var(--primitive-color-amber-400);
-  --semantic-color-feedback-info: var(--primitive-color-blue-300);
+  --semantic-color-feedback-info: var(--primitive-color-blue-200);
   --semantic-color-feedback-inProgress: var(--primitive-color-violet-400);
   --semantic-color-feedback-bg-error: var(--primitive-color-red-950);
   --semantic-color-feedback-bg-success: var(--primitive-color-green-950);

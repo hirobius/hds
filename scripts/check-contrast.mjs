@@ -21,6 +21,7 @@ import { fileURLToPath } from 'url';
 import { readTokenSource } from './lib/token-source.mjs';
 import { resolveAlias } from './lib/token-tree.mjs';
 import { BASE_PAIRS, PAIRS, NONTEXT_PAIRS } from './lib/contrast-pairs.mjs';
+import { oklchToHex, toOklch } from './lib/raised-edge.mjs';
 // WCAG 2.1 §1.4.3 luminance + ratio: one implementation, shared with the validator (hds#1011).
 import { contrastRatio } from '../validators/contrast.mjs';
 
@@ -79,7 +80,9 @@ function resolveSemanticHex(dotPath, mode, overlay = null) {
     rawValue = node.$value;
   }
 
-  const hex = resolveAlias(rawValue, tree, { maxDepth: 10 });
+  let hex = resolveAlias(rawValue, tree, { maxDepth: 10 });
+  // The blue ramp is oklch (hds#1473): read it as the hex it paints, chroma reduced into sRGB.
+  if (typeof hex === 'string' && hex.startsWith('oklch(')) hex = oklchToHex(toOklch(hex));
   if (typeof hex !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(hex)) {
     throw new Error(
       `Could not resolve ${dotPath} (${mode}) to a 6-digit hex. Got: ${JSON.stringify(hex)}`,

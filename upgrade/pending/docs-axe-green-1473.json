@@ -1,0 +1,20 @@
+{
+  "impact": "look",
+  "plain": "Dark-theme info text and icons that read --semantic-color-feedback-info are now a lighter blue (blue.200 instead of blue.300), so they pass AA on dark fills; nothing to change unless you pinned the old shade.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-color-feedback-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark-theme info text and icons that read --semantic-color-feedback-info are now a lighter blue (blue.200 instead of blue.300), so they pass AA on dark fills; nothing to change unless you pinned the old shade.",
+      "detect": {
+        "cssVars": ["--semantic-color-feedback-info"],
+        "cssVarWrites": ["--semantic-color-feedback-info"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-info:[data-theme=dark]"
+      ]
+    }
+  ]
+}

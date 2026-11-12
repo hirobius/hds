@@ -860,7 +860,7 @@ div:has(> .hds-docs-display) {
   padding: 0 0.5rem;
   border-radius: var(--semantic-radius-action);
   background: var(--semantic-color-surface-accent);
-  color: var(--semantic-color-content-inverse);
+  color: var(--semantic-color-content-onAccent);
   font-size: 0.875rem;
   font-weight: 500;
 }

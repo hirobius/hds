@@ -103,10 +103,8 @@ export const BASE_PAIRS = [
   // Semantic feedback text on both the page ("background") and raised ("card")
   // surfaces. Consumers theme status UI (Saved / Applied / Interviewing / …)
   // from these tokens, so each must clear AA for small text on both surfaces in
-  // light and dark. `info` is omitted here because its dark stop (blue.300) is
-  // expressed in oklch, which this hex-only checker can't evaluate; its AA is
-  // held by the token pipeline's own verification. The other four are hex.
-  ...['success', 'warning', 'error', 'inProgress'].flatMap((tone) => [
+  // light and dark. `info` is oklch in dark (blue ramp); the checker reads it as the hex it paints (hds#1473).
+  ...['success', 'warning', 'error', 'info', 'inProgress'].flatMap((tone) => [
     {
       label: `feedback.${tone} / surface.page`,
       text: `semantic.color.feedback.${tone}`,
@@ -118,6 +116,13 @@ export const BASE_PAIRS = [
       bg: 'semantic.color.surface.raised',
     },
   ]),
+  // Badge and tag text sits on its own tone's fill (feedback.bg.<tone>), not on a page surface.
+  // The docs axe gate caught info failing here in dark (hds#1473), so each tone is held to AA.
+  ...['success', 'warning', 'error', 'info', 'inProgress'].map((tone) => ({
+    label: `feedback.${tone} / feedback.bg.${tone}`,
+    text: `semantic.color.feedback.${tone}`,
+    bg: `semantic.color.feedback.bg.${tone}`,
+  })),
   // content.{success,warning,danger} — new status-toned content tokens (ISSUE-03,
   // #127) decoupled from the feedback.* banner tokens. Same AA bar applies since
   // these are used directly as text/icon color.
