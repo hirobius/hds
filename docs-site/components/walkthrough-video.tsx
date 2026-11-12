@@ -33,7 +33,7 @@ export function WalkthroughVideo() {
         <track kind="captions" src={WALKTHROUGH.captions} srcLang="en" label="English" />
       </video>
       <figcaption>
-        Six chapters: the case study, a component page, the token to Figma sync, a gate catching a
+        Six chapters: the case study, a component page, tokens syncing to Figma, a check catching a
         mistake, the release path, and the results.
       </figcaption>
     </figure>
