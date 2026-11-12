@@ -7499,7 +7499,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/metadata-list.tsx",
-      "description": "Renders object metadata as a semantic `<dl>` of term/description pairs.",
+      "description": "Renders object metadata as a description list of term/description pairs.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2041-47",

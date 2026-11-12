@@ -31,6 +31,18 @@ export function readerText(text) {
     .trim();
 }
 
+/**
+ * Drops raw HTML tags from JSDoc prose but keeps an inline-code span whole, so
+ * "a semantic `<dl>` of pairs" survives while a stray "<b>" does not.
+ * @param {string} text
+ */
+export function withoutTags(text) {
+  return String(text ?? '')
+    .split(/(`[^`]*`)/)
+    .map((part, i) => (i % 2 === 1 ? part : part.replace(/<\/?[A-Za-z][^>]*>/g, '')))
+    .join('');
+}
+
 /** One line, MDX-safe. Inline-code spans pass through; braces/angles outside them are escaped. */
 function prose(text) {
   const oneLine = readerText(text)
@@ -171,8 +183,7 @@ export function pageDescription(name, spec) {
   // usage.when is written for readers; the JSDoc description is a code note.
   let text = clean(spec?.usage?.when);
   if (!text) {
-    text = clean(readerText(spec?.description))
-      .replace(/<\/?[A-Za-z][^>]*>/g, '')
+    text = clean(withoutTags(readerText(spec?.description)))
       .replace(/\s*\([^()]*\b(?:Tailwind|Radix|cva|sr-only)\b[^()]*\)/g, '')
       .replace(new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+[^\\w\\s]+\\s+`), '');
     if (INTERNAL_NOTE.test(text)) text = '';
