@@ -106,6 +106,7 @@ Compact metadata/status chip. Tone is the only styling input.
   - as: ElementType<any, keyof IntrinsicElements> = span
   - count: number
   - dot: boolean = false
+  - icon: LucideIcon
   - label: string
   - max: number
   - size: "sm" | "md" | "lg"
@@ -826,10 +827,13 @@ Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
   - value: string
 
 ### Tag
-Tag — interactive filter and category chip. With `onDismiss` it is a static, removable label instead: only its X acts.
+Tag — interactive filter and category chip. `icon` adds a leading Lucide icon (decorative, small, spaced by the Button gap). `copied` swaps the label for `copi…
   - active: boolean = false
   - children: ReactNode
+  - copied: boolean
+  - copiedLabel: string = Copied
   - dismissLabel: string
+  - icon: LucideIcon
   - onDismiss: () => void
 
 ### Text

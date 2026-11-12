@@ -1309,6 +1309,12 @@
         "(): ToastContextValue"
       ]
     },
+    "useTransientFlag": {
+      "kind": "value",
+      "signatures": [
+        "(ms?: number): [boolean, () => void]"
+      ]
+    },
     "withViewTransition": {
       "kind": "value",
       "signatures": [

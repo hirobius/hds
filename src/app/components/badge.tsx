@@ -2,7 +2,8 @@
  * Badge - compact feedback badge for neutral and semantic states.
  * @category Feedback
  * @tier primitive
- * @usage Label a status or state with a compact neutral or semantic chip, a dot, or a capped count beside a heading (`count`, `max`, `label`).
+ * @usage Label a status or state with a compact neutral or semantic chip, a dot, a leading `icon`, or a capped count beside a heading (`count`, `max`, `label`).
+ * @a11y consumer recommended A leading `icon` is aria-hidden decoration: put the meaning in the text (or `label`), never in the icon alone. `dot` wins over `icon`.
  * @whenNot A chip people can toggle, or a message that needs a sentence.
  * @useInstead Tag an interactive filter or category chip
  * @useInstead Alert a message that needs a sentence
@@ -11,8 +12,10 @@
 
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { isProduction } from '../../lib/env';
+import { Icon } from './icon';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Tone is the only styling axis. Every tone binds its own pair of tokens,
@@ -26,7 +29,7 @@ const badgeVariants = /* @__PURE__ */ cva(
   // radius that still follows a tenant's role.radius (hds#757, bug bash 24). paddingShift moves
   // paddingY from the top to the bottom so the label sits optically centred, not line-box centred.
   // binding-ok: badge.radius rounded-sm is role.radius - 2px, so a tenant reshapes Badge
-  'inline-flex w-fit max-w-full items-center justify-center overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))] pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))] rounded-sm',
+  'inline-flex w-fit max-w-full items-center justify-center gap-scale-2xs overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))] pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))] rounded-sm',
   {
     variants: {
       tone: {
@@ -85,6 +88,8 @@ export interface BadgeProps
   as?: React.ElementType;
   /** Render a solid status dot with no text (children are ignored). */
   dot?: boolean;
+  /** A Lucide icon component shown before the text (a calendar, a bell). Decorative (aria-hidden), 16px, inherits the tone's text color. Ignored with `dot`, which wins. */
+  icon?: LucideIcon;
   /** Dot diameter; used only with `dot`. */
   size?: 'sm' | 'md' | 'lg';
   /** A number shown in tabular numerals, neutral by default. Exclusive with `children` (children are ignored when `count` is set). Pair it with `max` to cap it. */
@@ -107,11 +112,34 @@ function warnLabelWithoutDot() {
   );
 }
 
+// `dot` renders a bare circle with no room for a glyph, so `icon` beside it is misuse:
+// the dot wins and the icon is dropped. Warn once in dev (same shape as above).
+let warnedIconWithDot = false;
+function warnIconWithDot() {
+  if (warnedIconWithDot || isProduction()) return;
+  warnedIconWithDot = true;
+  console.warn(
+    '[HDS] Badge `icon` and `dot` are exclusive: a dot has no room for an icon, so `icon` is ignored. Drop `dot` to show the icon with text.',
+  );
+}
+
 // ── Component ──────────────────────────────────────────────────────────────────
 
 /** Compact metadata/status chip. Tone is the only styling input. */
 export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { className, tone, as: Tag = 'span', dot = false, size, label, count, max, children, ...props },
+  {
+    className,
+    tone,
+    as: Tag = 'span',
+    dot = false,
+    icon,
+    size,
+    label,
+    count,
+    max,
+    children,
+    ...props
+  },
   ref,
 ) {
   const isCount = count !== undefined && !dot;
@@ -119,6 +147,15 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
   if (label && !dot && !isCount) {
     warnLabelWithoutDot();
   }
+
+  if (dot && icon) {
+    warnIconWithDot();
+  }
+
+  // Decorative leading glyph: Icon is aria-hidden by default and draws in currentColor,
+  // so it takes the tone's text color. 'small' is 16px, the iconSize step that fits the
+  // 14px caption role inside the badge's 22px height.
+  const leading = icon ? <Icon icon={icon} size="small" /> : null;
 
   if (dot) {
     return (
@@ -143,6 +180,7 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
         {...(label ? { role: 'img', 'aria-label': label } : {})}
         {...props}
       >
+        {leading}
         {shown}
       </Tag>
     );
@@ -155,6 +193,7 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
       className={cn(badgeVariants({ tone }), className)}
       {...props}
     >
+      {leading}
       {children}
     </Tag>
   );

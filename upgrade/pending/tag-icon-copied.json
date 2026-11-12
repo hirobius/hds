@@ -1,0 +1,16 @@
+{
+  "impact": "behavior",
+  "plain": "Tag now takes an optional icon and a copied state with copiedLabel, and the package exports a useTransientFlag hook; nothing changes until you pass them.",
+  "steps": [
+    {
+      "id": "behavior/Tag.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The Tag demo gained icon and copied examples; a Tag without icon or copied renders the same markup, so selectors on it keep working.",
+      "detect": {
+        "regex": ["<Tag[^>]*\\b(icon|copied)="]
+      },
+      "facts": ["dom-changed:Tag"]
+    }
+  ]
+}
