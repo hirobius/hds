@@ -2970,7 +2970,7 @@
     },
     "onChange": {
       "type": "(value: string) => void",
-      "optional": false,
+      "optional": true,
       "values": null,
       "default": null
     },

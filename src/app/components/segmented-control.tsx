@@ -2,7 +2,7 @@
  * SegmentedControl " segmented selection input for compact mutually-exclusive choices.
  * @category Inputs
  * @tier primitive
- * @usage Switch between two to five mutually exclusive views or modes in a compact row.
+ * @usage Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup).
  * @whenNot A form choice that submits with the form, or more than five options.
  * @useInstead Radio a form choice that submits with the form
  * @useInstead Tabs switching between panels of content
@@ -28,6 +28,7 @@
  * @a11y component required a11y:segmented-control.focus-ring Every segment carries the shared hds-focus ring.
  * @a11y component required a11y:segmented-control.target-size Each segment hit area is 24px or taller, including the compact size (WCAG 2.5.8).
  * @a11y component required gate:check-reduced-motion The indicator slide goes through useHdsMotion, so it stops under prefers-reduced-motion.
+ * @a11y component required a11y:segmented-control.link-mode When options carry an href the control is a nav (named by label or aria-label) holding a list of links; the current link is aria-current="page", each is a real anchor, and Tab walks them like any links.
  * @a11y consumer required Give the control a label or an aria-label so the group has a name.
  */
 // Motion: motion/react drives the secondary-variant press/hover spring (animate/transition below); CSS transitions reference hds.motion tokens via var(--hds-motion-productive-*)
@@ -39,6 +40,8 @@ import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
+import { safeHref } from '../../lib/safe-href';
+import { useHdsRouter } from '../context/RouterContext';
 import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -330,6 +333,12 @@ interface HdsSegmentedOption {
   label: string;
   /** Optional supporting description shown below the label. */
   description?: string;
+  /**
+   * Make the segment a navigation link to this href. When the options carry an `href` the control
+   * renders a `nav` holding a list of links (the current one `aria-current="page"`) instead of a
+   * radiogroup. Internal paths (one leading "/") go through the router adapter's link component.
+   */
+  href?: string;
 }
 
 export interface SegmentedControlProps {
@@ -339,10 +348,10 @@ export interface SegmentedControlProps {
   'aria-label'?: string;
   /** Option set rendered inside the segmented rail. */
   options: HdsSegmentedOption[];
-  /** Currently selected value. */
+  /** Currently selected value (the current page in link mode). A value no option has marks none selected. */
   value: string;
-  /** Called when the user selects a different option. */
-  onChange: (value: string) => void;
+  /** Called when the user selects a different option. Optional in link mode, where the link itself navigates. */
+  onChange?: (value: string) => void;
   /** Size on the sm/md ramp shared with Button/Input. */
   size?: NonNullable<SegmentedItemVariantProps['size']>;
   /** Visual treatment for the rail and active segment. */
@@ -360,6 +369,12 @@ function railInset(padding: SegmentedControlProps['railPadding']): string {
   if (padding === undefined || padding === null) return '4px';
   if (typeof padding === 'number') return `${padding}px`;
   return String(padding).trim().split(/\s+/)[0];
+}
+
+/** An href the router adapter handles (a single leading "/"); anything else is a plain anchor. */
+function isInternalHref(href: string): boolean {
+  const value = href.trim();
+  return value.startsWith('/') && !value.startsWith('//');
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -381,6 +396,8 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
     },
     ref,
   ) {
+    const { LinkComponent } = useHdsRouter();
+    const linkMode = options.some((option) => option.href !== undefined);
     const [hoveredValue, setHoveredValue] = useState<string | null>(null);
     const [focusedValue, setFocusedValue] = useState<string | null>(null);
     const frozenState = useFrozenState();
@@ -395,7 +412,54 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
     // The rail scrolls when segments outgrow it (a phone): fade the hidden edge like
     // the tab list (hds#723) and keep the selected segment in view (hds#823).
     const { ref: railRef, overflow, update: updateOverflow } = useScrollEdgeFade<HTMLDivElement>();
-    useKeepSelectedInView(railRef, '[role="radio"][aria-checked="true"]');
+    useKeepSelectedInView(
+      railRef,
+      linkMode ? '[aria-current="page"]' : '[role="radio"][aria-checked="true"]',
+    );
+
+    const renderBody = (
+      option: HdsSegmentedOption,
+      active: boolean,
+      segmentState: {
+        variant: typeof variant;
+        active: boolean;
+        interaction: 'rest' | 'hover' | 'pressed';
+        disabled: boolean;
+      },
+    ) => (
+      <>
+        <span
+          aria-hidden="true"
+          // #225: cva only concatenates base + compound class strings — it
+          // does not dedupe conflicting Tailwind utilities. The base here
+          // always carries `bg-transparent`, so without a twMerge pass the
+          // active/hover compounds' accent-background class
+          // could lose the cascade to it (stylesheet order, not DOM class
+          // order, decides ties) and the indicator never visibly paints.
+          // `cn()` (clsx + tailwind-merge) makes the last conflicting
+          // utility in the string win deterministically, same as every
+          // other multi-source className in this file.
+          className={cn(segmentedControlIndicatorVariants(segmentState))}
+        />
+        <span
+          className={segmentedControlLabelVariants({
+            size,
+            lifted: active && variant === 'primary',
+          })}
+        >
+          {option.label}
+        </span>
+        {option.description && (
+          <span
+            // Same cascade hazard as the indicator above (base
+            // `text-[...secondary]` vs. compound `text-[...onAccent]`).
+            className={cn(segmentedControlDescriptionVariants(segmentState))}
+          >
+            {option.description}
+          </span>
+        )}
+      </>
+    );
 
     return (
       <div ref={ref} className={segmentedControlWrapperVariants({ fullWidth })}>
@@ -409,147 +473,202 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
             {label}
           </span>
         )}
-        <ToggleGroup.Root
-          ref={railRef}
-          type="single"
-          // Radix emits role="radio" + aria-checked on items (canonical
-          // mutually-exclusive semantics, upgrading the prior aria-pressed
-          // toggle-buttons); pair the container with role="radiogroup".
-          role="radiogroup"
-          aria-label={resolvedAriaLabel}
-          value={value}
-          // Radix `single` allows deselect (empty value); a segmented control is
-          // always-one-selected, so ignore the empty case. Disabled freeze blocks change.
-          onValueChange={(next) => {
-            if (next && !isDisabled) onChange(next);
-          }}
-          disabled={isDisabled}
-          onKeyDownCapture={(e) => {
-            if (
-              ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)
-            ) {
-              lastNavKeyAt.current = performance.now();
-            }
-          }}
-          onScroll={updateOverflow}
-          data-overflow={overflow}
-          className={segmentedControlRailVariants({ variant, fullWidth })}
-          // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class; the edge-fade mask is runtime too (scroll position)
-          style={{
-            padding: railPadding ?? '4px',
-            // The first length of the padding shorthand drives the concentric inner radius.
-            ['--seg-rail-pad' as string]: railInset(railPadding),
-            ...scrollEdgeFadeStyle(overflow),
-          }}
-        >
-          <LazyMotion features={domAnimation}>
-            {options.map((option) => {
-              const active = option.value === value;
-              const showHover = demoState
-                ? demoState === 'hover' && active
-                : hoveredValue === option.value;
-              const showPressed = demoState === 'pressed' && active;
-              const showFocused = demoState
-                ? demoState === 'focused' && active
-                : focusedValue === option.value;
-              const showDisabled = isDisabled;
-              const interaction: NonNullable<
-                VariantProps<typeof segmentedControlIndicatorVariants>['interaction']
-              > = showPressed ? 'pressed' : showHover ? 'hover' : 'rest';
-              const demoFocusRing = Boolean(demoState) && showFocused;
-              const segmentState = { variant, active, interaction, disabled: showDisabled };
-
-              return (
-                <ToggleGroup.Item
-                  asChild
-                  key={option.value}
-                  value={option.value}
-                  disabled={showDisabled}
-                >
-                  <m.button
-                    type="button"
-                    onHoverStart={() => !demoState && setHoveredValue(option.value)}
-                    onHoverEnd={() => !demoState && setHoveredValue(null)}
-                    onFocus={() => {
-                      if (demoState) return;
-                      setFocusedValue(option.value);
-                      if (performance.now() - lastNavKeyAt.current < 100 && !active)
-                        onChange(option.value);
-                    }}
-                    onBlur={() => !demoState && setFocusedValue(null)}
-                    animate={
-                      isSecondary
-                        ? {
-                            y: active ? 0 : showPressed ? 1 : 0,
-                            scale: active ? 1 : showHover ? 0.995 : 1,
-                          }
-                        : undefined
-                    }
-                    transition={
-                      isSecondary
-                        ? {
-                            duration: productiveMotion.duration,
-                            ease: productiveMotion.easing,
-                          }
-                        : undefined
-                    }
-                    className={cn(
-                      'hds-focus',
-                      segmentedControlItemVariants({
-                        size,
-                        fullWidth,
-                        variant,
-                        active,
-                        interaction,
-                        disabled: showDisabled,
-                      }),
-                      // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
-                      // keyboard focus (:focus-visible can't be faked).
-                      demoFocusRing && 'hds-focus-ring',
-                    )}
-                    // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
-                    style={
-                      segmentPaddingX === undefined
-                        ? undefined
-                        : { paddingLeft: segmentPaddingX, paddingRight: segmentPaddingX }
-                    }
+        {linkMode ? (
+          <nav
+            aria-label={resolvedAriaLabel}
+            className={segmentedControlWrapperVariants({ fullWidth })}
+          >
+            <ul
+              ref={railRef as React.Ref<HTMLUListElement>}
+              onScroll={updateOverflow}
+              data-overflow={overflow}
+              className={cn('m-0 list-none', segmentedControlRailVariants({ variant, fullWidth }))}
+              // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value; the edge-fade mask is runtime too (scroll position)
+              style={{
+                padding: railPadding ?? '4px',
+                ['--seg-rail-pad' as string]: railInset(railPadding),
+                ...scrollEdgeFadeStyle(overflow),
+              }}
+            >
+              {options.map((option) => {
+                const active = option.value === value;
+                const showHover = demoState
+                  ? demoState === 'hover' && active
+                  : hoveredValue === option.value;
+                const showPressed = demoState === 'pressed' && active;
+                const showFocused = demoState
+                  ? demoState === 'focused' && active
+                  : focusedValue === option.value;
+                const interaction: 'rest' | 'hover' | 'pressed' = showPressed
+                  ? 'pressed'
+                  : showHover
+                    ? 'hover'
+                    : 'rest';
+                const segmentState = { variant, active, interaction, disabled: isDisabled };
+                const href = option.href === undefined ? undefined : safeHref(option.href);
+                const itemProps = {
+                  'aria-current': active ? ('page' as const) : undefined,
+                  'aria-disabled': isDisabled || undefined,
+                  tabIndex: isDisabled ? -1 : undefined,
+                  onMouseEnter: () => !demoState && setHoveredValue(option.value),
+                  onMouseLeave: () => !demoState && setHoveredValue(null),
+                  onFocus: () => !demoState && setFocusedValue(option.value),
+                  onBlur: () => !demoState && setFocusedValue(null),
+                  onClick: () => {
+                    if (!active && !isDisabled) onChange?.(option.value);
+                  },
+                  className: cn(
+                    'hds-focus no-underline',
+                    segmentedControlItemVariants({
+                      size,
+                      fullWidth,
+                      variant,
+                      active,
+                      interaction,
+                      disabled: isDisabled,
+                    }),
+                    isDisabled && 'pointer-events-none',
+                    Boolean(demoState) && showFocused && 'hds-focus-ring',
+                  ),
+                  // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value
+                  style:
+                    segmentPaddingX === undefined
+                      ? undefined
+                      : { paddingLeft: segmentPaddingX, paddingRight: segmentPaddingX },
+                };
+                return (
+                  <li
+                    key={option.value}
+                    className={cn('flex', fullWidth ? 'min-w-0 flex-1' : 'flex-none')}
                   >
-                    <span
-                      aria-hidden="true"
-                      // #225: cva only concatenates base + compound class strings — it
-                      // does not dedupe conflicting Tailwind utilities. The base here
-                      // always carries `bg-transparent`, so without a twMerge pass the
-                      // active/hover compounds' accent-background class
-                      // could lose the cascade to it (stylesheet order, not DOM class
-                      // order, decides ties) and the indicator never visibly paints.
-                      // `cn()` (clsx + tailwind-merge) makes the last conflicting
-                      // utility in the string win deterministically, same as every
-                      // other multi-source className in this file.
-                      className={cn(segmentedControlIndicatorVariants(segmentState))}
-                    />
-                    <span
-                      className={segmentedControlLabelVariants({
-                        size,
-                        lifted: active && variant === 'primary',
-                      })}
-                    >
-                      {option.label}
-                    </span>
-                    {option.description && (
-                      <span
-                        // Same cascade hazard as the indicator above (base
-                        // `text-[...secondary]` vs. compound `text-[...onAccent]`).
-                        className={cn(segmentedControlDescriptionVariants(segmentState))}
-                      >
-                        {option.description}
-                      </span>
+                    {href !== undefined && isInternalHref(href) ? (
+                      <LinkComponent to={href} {...itemProps}>
+                        {renderBody(option, active, segmentState)}
+                      </LinkComponent>
+                    ) : (
+                      <a href={href} {...itemProps}>
+                        {renderBody(option, active, segmentState)}
+                      </a>
                     )}
-                  </m.button>
-                </ToggleGroup.Item>
-              );
-            })}
-          </LazyMotion>
-        </ToggleGroup.Root>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        ) : (
+          <ToggleGroup.Root
+            ref={railRef}
+            type="single"
+            // Radix emits role="radio" + aria-checked on items (canonical
+            // mutually-exclusive semantics, upgrading the prior aria-pressed
+            // toggle-buttons); pair the container with role="radiogroup".
+            role="radiogroup"
+            aria-label={resolvedAriaLabel}
+            value={value}
+            // Radix `single` allows deselect (empty value); a segmented control is
+            // always-one-selected, so ignore the empty case. Disabled freeze blocks change.
+            onValueChange={(next) => {
+              if (next && !isDisabled) onChange?.(next);
+            }}
+            disabled={isDisabled}
+            onKeyDownCapture={(e) => {
+              if (
+                ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)
+              ) {
+                lastNavKeyAt.current = performance.now();
+              }
+            }}
+            onScroll={updateOverflow}
+            data-overflow={overflow}
+            className={segmentedControlRailVariants({ variant, fullWidth })}
+            // inline-ok: railPadding is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class; the edge-fade mask is runtime too (scroll position)
+            style={{
+              padding: railPadding ?? '4px',
+              // The first length of the padding shorthand drives the concentric inner radius.
+              ['--seg-rail-pad' as string]: railInset(railPadding),
+              ...scrollEdgeFadeStyle(overflow),
+            }}
+          >
+            <LazyMotion features={domAnimation}>
+              {options.map((option) => {
+                const active = option.value === value;
+                const showHover = demoState
+                  ? demoState === 'hover' && active
+                  : hoveredValue === option.value;
+                const showPressed = demoState === 'pressed' && active;
+                const showFocused = demoState
+                  ? demoState === 'focused' && active
+                  : focusedValue === option.value;
+                const showDisabled = isDisabled;
+                const interaction: NonNullable<
+                  VariantProps<typeof segmentedControlIndicatorVariants>['interaction']
+                > = showPressed ? 'pressed' : showHover ? 'hover' : 'rest';
+                const demoFocusRing = Boolean(demoState) && showFocused;
+                const segmentState = { variant, active, interaction, disabled: showDisabled };
+
+                return (
+                  <ToggleGroup.Item
+                    asChild
+                    key={option.value}
+                    value={option.value}
+                    disabled={showDisabled}
+                  >
+                    <m.button
+                      type="button"
+                      onHoverStart={() => !demoState && setHoveredValue(option.value)}
+                      onHoverEnd={() => !demoState && setHoveredValue(null)}
+                      onFocus={() => {
+                        if (demoState) return;
+                        setFocusedValue(option.value);
+                        if (performance.now() - lastNavKeyAt.current < 100 && !active)
+                          onChange?.(option.value);
+                      }}
+                      onBlur={() => !demoState && setFocusedValue(null)}
+                      animate={
+                        isSecondary
+                          ? {
+                              y: active ? 0 : showPressed ? 1 : 0,
+                              scale: active ? 1 : showHover ? 0.995 : 1,
+                            }
+                          : undefined
+                      }
+                      transition={
+                        isSecondary
+                          ? {
+                              duration: productiveMotion.duration,
+                              ease: productiveMotion.easing,
+                            }
+                          : undefined
+                      }
+                      className={cn(
+                        'hds-focus',
+                        segmentedControlItemVariants({
+                          size,
+                          fullWidth,
+                          variant,
+                          active,
+                          interaction,
+                          disabled: showDisabled,
+                        }),
+                        // Frozen "focused" docs state: .hds-focus-ring draws the .hds-focus ring without real
+                        // keyboard focus (:focus-visible can't be faked).
+                        demoFocusRing && 'hds-focus-ring',
+                      )}
+                      // inline-ok: segmentPaddingX is a consumer-overridable runtime CSSProperties value (not a static token) — can't be expressed as a static Tailwind class
+                      style={
+                        segmentPaddingX === undefined
+                          ? undefined
+                          : { paddingLeft: segmentPaddingX, paddingRight: segmentPaddingX }
+                      }
+                    >
+                      {renderBody(option, active, segmentState)}
+                    </m.button>
+                  </ToggleGroup.Item>
+                );
+              })}
+            </LazyMotion>
+          </ToggleGroup.Root>
+        )}
       </div>
     );
   },

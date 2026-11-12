@@ -1,0 +1,14 @@
+{
+  "impact": "behavior",
+  "plain": "SegmentedControl options can take an href and then render as a nav of links; existing radiogroup controls are unchanged.",
+  "steps": [
+    {
+      "id": "behavior/SegmentedControl.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A SegmentedControl whose options carry an href renders a nav with a list of links (aria-current=\"page\" on the current one) instead of a radiogroup, so update any test or selector that expects radio roles for it.",
+      "detect": { "regex": ["SegmentedControl[\\s\\S]*?\\bhref:"] },
+      "facts": ["dom-changed:SegmentedControl"]
+    }
+  ]
+}

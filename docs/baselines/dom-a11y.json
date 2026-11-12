@@ -1321,7 +1321,23 @@
       "          span",
       "        button aria-checked=\"false\" data-state=\"off\" role=\"radio\"",
       "          span aria-hidden=\"true\"",
-      "          span"
+      "          span",
+      "  div",
+      "    span",
+      "    nav aria-label=\"Section\"",
+      "      ul",
+      "        li",
+      "          a aria-current=\"page\"",
+      "            span aria-hidden=\"true\"",
+      "            span",
+      "        li",
+      "          a",
+      "            span aria-hidden=\"true\"",
+      "            span",
+      "        li",
+      "          a",
+      "            span aria-hidden=\"true\"",
+      "            span"
     ],
     "reader": [
       "radiogroup, View",
@@ -1335,7 +1351,15 @@
       "radiogroup, Range on a card",
       "radio, Day, not checked, position 1, set size 3",
       "radio, Week, checked, position 2, set size 3",
-      "radio, Month, not checked, position 3, set size 3"
+      "radio, Month, not checked, position 3, set size 3",
+      "navigation, Section",
+      "list",
+      "listitem, level 1, position 1, set size 3",
+      "link, Find, current page",
+      "listitem, level 1, position 2, set size 3",
+      "link, Apply",
+      "listitem, level 1, position 3, set size 3",
+      "link, Saved"
     ]
   },
   "Select": {

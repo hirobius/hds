@@ -2101,7 +2101,8 @@
           "optional": true
         },
         "onChange": {
-          "type": "(value: string) => void"
+          "type": "(value: string) => void",
+          "optional": true
         },
         "options": {
           "type": "HdsSegmentedOption[]"
@@ -2204,6 +2205,12 @@
           "testId": "gate:check-reduced-motion"
         },
         {
+          "rule": "When options carry an href the control is a nav (named by label or aria-label) holding a list of links; the current link is aria-current=\"page\", each is a real anchor, and Tab walks them like any links.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.link-mode"
+        },
+        {
           "rule": "Give the control a label or an aria-label so the group has a name.",
           "required": true,
           "owner": "consumer"
@@ -2219,7 +2226,7 @@
         "data-state"
       ],
       "usage": {
-        "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
+        "when": "Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup).",
         "whenNot": "A form choice that submits with the form, or more than five options.",
         "useInstead": [
           {

@@ -1240,6 +1240,16 @@ function SegmentedControlDemo() {
           options={ranges}
         />
       </Card>
+      {/* Link mode (hds#1438): options with an href make a nav of links; the current page is aria-current. */}
+      <SegmentedControl
+        label="Section"
+        value="find"
+        options={[
+          { value: 'find', label: 'Find', href: '#segmented-find' },
+          { value: 'apply', label: 'Apply', href: '#segmented-apply' },
+          { value: 'saved', label: 'Saved', href: '#segmented-saved' },
+        ]}
+      />
     </div>
   );
 }
