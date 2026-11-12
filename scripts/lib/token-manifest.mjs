@@ -436,7 +436,7 @@ export function buildManifest(allTokens, raw, systemManifest = {}, packageVersio
     generated: new Date().toISOString(),
     source: 'hirobius.tokens.json',
     format: 'W3C DTCG 2025.10',
-    docs: 'https://hirobius-hds-components.vercel.app/',
+    docs: 'https://hirobius-design-system.vercel.app/',
     // hds#463: the release this manifest describes, and how to move off it.
     // llmsTxt is pinned to that release, so an installed copy never points at
     // text written for a newer one.

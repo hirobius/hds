@@ -1,7 +1,7 @@
 /** @internal — pure helpers for scripts/check-status-claims.mjs (hds#343). */
 /**
  * Keeps the two hand-visible surfaces of the consistency figures (root
- * status.json `consistency` object and the README "Agent consistency" line)
+ * status.json `consistency` object and the "Agent consistency" line in docs/OVERVIEW.md)
  * from drifting away from the latest eval/consistency/ledger.json entry.
  */
 import { readFileSync } from 'node:fs';
@@ -36,16 +36,16 @@ export function checkSurfaces({ status, readme, ledger }) {
   const line = summaryLine(entry);
   if (!readme.split('\n').some((l) => l.trim() === line)) {
     problems.push(
-      `README.md is missing the current "Agent consistency" line; expected exactly: ${line}`,
+      `docs/OVERVIEW.md is missing the current "Agent consistency" line; expected exactly: ${line}`,
     );
   }
   return { ok: problems.length === 0, problems };
 }
 
-/** Read status.json, README.md and the ledger under `root` and check them. */
+/** Read status.json, docs/OVERVIEW.md and the ledger under `root` and check them. */
 export function checkRepo(root) {
   const status = JSON.parse(readFileSync(path.join(root, 'status.json'), 'utf8')).consistency;
-  const readme = readFileSync(path.join(root, 'README.md'), 'utf8');
+  const readme = readFileSync(path.join(root, 'docs', 'OVERVIEW.md'), 'utf8');
   const ledger = readLedger(path.join(root, 'eval/consistency/ledger.json'));
   return checkSurfaces({ status, readme, ledger });
 }

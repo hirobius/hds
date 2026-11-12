@@ -10,7 +10,7 @@
  * demo page to measure our own:
  *
  *   node scripts/measure-reference.mjs https://linear.app
- *   node scripts/measure-reference.mjs https://hirobius-hds-components.vercel.app/docs/components/button
+ *   node scripts/measure-reference.mjs https://hirobius-design-system.vercel.app/docs/components/button
  *
  * Chromium resolution order: PLAYWRIGHT_CHROMIUM_PATH, then Playwright's own
  * download, then the image-provided build under /opt/pw-browsers. Set

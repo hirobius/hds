@@ -671,7 +671,7 @@ describe('ledger: one-line summary and status projection', () => {
   });
 });
 
-describe('status-sync: status.json and README against the latest ledger entry', () => {
+describe('status-sync: status.json and docs/OVERVIEW.md against the latest ledger entry', () => {
   const ledger = seedLedger();
   const latest = latestEntry(ledger);
   const synced = () => ({ ...consistencyFromEntry(latest) });
@@ -700,19 +700,19 @@ describe('status-sync: status.json and README against the latest ledger entry', 
     expect(r.drift[0].field).toBe('consistency');
   });
 
-  it('checkSurfaces flags a README whose Agent consistency line is stale or missing', () => {
+  it('checkSurfaces flags an overview whose Agent consistency line is stale or missing', () => {
     const line = summaryLine(latest);
     expect(checkSurfaces({ status: synced(), readme: `x\n${line}\ny`, ledger }).ok).toBe(true);
     const stale = checkSurfaces({ status: synced(), readme: line.replace('0.68', '0.71'), ledger });
     expect(stale.ok).toBe(false);
-    expect(stale.problems.join('\n')).toMatch(/README/);
+    expect(stale.problems.join('\n')).toMatch(/OVERVIEW/);
     expect(checkSurfaces({ status: synced(), readme: 'nothing here', ledger }).ok).toBe(false);
   });
 
-  it('holds for the real README.md and status.json on this branch', () => {
+  it('holds for the real docs/OVERVIEW.md and status.json on this branch', () => {
     const r = checkSurfaces({
       status: JSON.parse(readFileSync(path.join(ROOT, 'status.json'), 'utf8')).consistency,
-      readme: readFileSync(path.join(ROOT, 'README.md'), 'utf8'),
+      readme: readFileSync(path.join(ROOT, 'docs/OVERVIEW.md'), 'utf8'),
       ledger: readLedger(path.join(ROOT, 'eval/consistency/ledger.json')),
     });
     expect(r.problems).toEqual([]);
@@ -814,9 +814,9 @@ describe('eval/consistency/runs/', () => {
   });
 });
 
-describe('the README "Agent consistency" block', () => {
+describe('the docs/OVERVIEW.md "Agent consistency" block', () => {
   it('contains exactly the line --summary prints', () => {
-    const readme = readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+    const readme = readFileSync(path.join(ROOT, 'docs/OVERVIEW.md'), 'utf8');
     const printed = spawnSync(
       process.execPath,
       [path.join(ROOT, 'scripts/eval-consistency.mjs'), '--summary'],
@@ -833,7 +833,8 @@ describe('status-sync: checkRepo and check-status-claims --check', () => {
   const fixtureRepo = (mutate) => {
     const dir = makeTmp('status-sync-');
     mkdirSync(path.join(dir, 'eval/consistency'), { recursive: true });
-    for (const f of ['README.md', 'status.json', 'eval/consistency/ledger.json']) {
+    mkdirSync(path.join(dir, 'docs'), { recursive: true });
+    for (const f of ['docs/OVERVIEW.md', 'status.json', 'eval/consistency/ledger.json']) {
       copyFileSync(path.join(ROOT, f), path.join(dir, f));
     }
     mutate?.(dir);
@@ -856,7 +857,7 @@ describe('status-sync: checkRepo and check-status-claims --check', () => {
     expect(r.problems.join('\n')).toMatch(/consistency\.jaccardMin/);
   });
 
-  it('reports drift when the ledger gains an entry the README does not show', () => {
+  it('reports drift when the ledger gains an entry docs/OVERVIEW.md does not show', () => {
     const dir = fixtureRepo((d) => {
       const file = path.join(d, 'eval/consistency/ledger.json');
       const ledger = JSON.parse(readFileSync(file, 'utf8'));
@@ -867,7 +868,7 @@ describe('status-sync: checkRepo and check-status-claims --check', () => {
     const r = checkRepo(dir);
     expect(r.ok).toBe(false);
     expect(r.problems.join('\n')).toMatch(/consistency\.date/);
-    expect(r.problems.join('\n')).toMatch(/README/);
+    expect(r.problems.join('\n')).toMatch(/OVERVIEW/);
   });
 
   it('check-status-claims --check exits 0 on this branch', () => {

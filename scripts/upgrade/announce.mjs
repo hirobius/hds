@@ -56,7 +56,7 @@ import {
 
 const PACKAGE = HDS_PACKAGE;
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-export const SITE = 'https://hirobius-hds-components.vercel.app';
+export const SITE = 'https://hirobius-design-system.vercel.app';
 const UPGRADING_URL = 'https://github.com/hirobius/hds/blob/main/UPGRADING.md';
 /** The repo whose issues Ralph works: its body follows ops's Work template. */
 export const OPS_REPO = 'hirobius/ops';
