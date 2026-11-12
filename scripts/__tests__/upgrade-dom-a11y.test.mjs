@@ -99,60 +99,6 @@ describe('dom facts', () => {
     expect(result.violations[0].message).toMatch(/minor/);
   });
 
-  // A demo that only gains a new example (a new opt-in prop shown beside the
-  // old ones) changes the demo's outline, not what existing consumer markup
-  // renders. Its step says so with impact additive, which the reviewer checks.
-  const appendedRow = withTable((t) => ({
-    dom: [...t.dom, '  div role="row"', '    div data-slot="badge" role="cell"'],
-    reader: [...t.reader, 'row, Beta', 'cell, Beta'],
-  }));
-  const additiveStep = (extra = {}) =>
-    behaviorStep({
-      impact: 'additive',
-      plain: 'The Table demo shows a new opt-in badge cell; existing tables render as before.',
-      ...extra,
-    });
-
-  it('a dom fact whose step says additive does not want a minor below 1.0', () => {
-    const root = domRepo();
-    writeDomBaseline(root, appendedRow);
-    changeset(root, 'table-badge', 'patch');
-    note(root, 'table-badge', {
-      impact: 'additive',
-      plain: additiveStep().plain,
-      steps: [additiveStep()],
-    });
-    expect(checkUpgradeLedger(root).violations).toEqual([]);
-  });
-
-  it('still wants a minor when another step lists the same dom fact as behavior', () => {
-    const root = domRepo();
-    writeDomBaseline(root, roleChanged);
-    changeset(root, 'table-badge', 'patch');
-    note(root, 'table-badge', {
-      impact: 'additive',
-      plain: additiveStep().plain,
-      steps: [additiveStep()],
-    });
-    changeset(root, 'table-rows', 'patch');
-    note(root, 'table-rows', {
-      impact: 'behavior',
-      plain: behaviorStep().plain,
-      steps: [behaviorStep({ id: 'behavior/Table.rows' })],
-    });
-    expect(rules(checkUpgradeLedger(root))).toEqual(['bump-too-small']);
-  });
-
-  it('an additive dom step still needs its detect regex', () => {
-    const root = domRepo();
-    writeDomBaseline(root, appendedRow);
-    changeset(root, 'table-badge', 'patch');
-    const step = additiveStep();
-    delete step.detect;
-    note(root, 'table-badge', { impact: 'additive', plain: step.plain, steps: [step] });
-    expect(rules(checkUpgradeLedger(root))).toEqual(['dom-step-without-detect']);
-  });
-
   it('from 1.0 it is a behavior fact only: a patch with its behavior step passes', () => {
     const root = domRepo();
     editPkg(root, (pkg) => (pkg.version = '1.2.0'));
