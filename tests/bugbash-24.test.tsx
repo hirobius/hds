@@ -442,7 +442,7 @@ describe('Overflow (item 15) and shape (item 16)', () => {
         <Tag>t</Tag>
       </>,
     );
-    expect(screen.getByText('b').className).toMatch(/max-w-full/);
+    expect(screen.getByText('b').closest('[data-tone]')!.className).toMatch(/max-w-full/);
     expect(screen.getByText('t').className).toMatch(/max-w-full/);
   });
   it('Alert and Callout share padding and the action radius (rounded-md follows role.radius)', () => {
