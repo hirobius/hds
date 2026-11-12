@@ -25,8 +25,8 @@
  *      never existed); or a step of package.json's ledger citing
  *      `.changeset/<name>.md`, which its own Version PR deletes (compile.mjs
  *      found no CHANGELOG entry for that changeset);
- *   3. something is breaking (a breaking fact, a dom-changed fact below 1.0
- *      that a step does not call additive, a note that says so, or a step
+ *   3. something is breaking (a breaking fact, a dom-changed fact below 1.0,
+ *      a note that says so, or a step
  *      that removes, moves, renames or folds something public, or renames a
  *      prop or maps away its values) and the
  *      changesets bump @hirobius/design-system by less than minor below 1.0
@@ -395,25 +395,6 @@ function releasedNotes(state, versionPr) {
  */
 const isDomFact = (fact) => fact.kind === 'dom-changed';
 
-/**
- * The dom-changed facts every step that lists them calls additive (hds#1435):
- * the demo gained an opt-in example and existing consumer markup renders as
- * before. The step is still a behavior step with detect.regex (rule 7); the
- * claim is the author's and the reviewer checks it. One step listing the fact
- * with any other impact keeps it breaking.
- */
-function additiveDomFacts(steps) {
-  const additive = new Set();
-  const other = new Set();
-  for (const step of steps) {
-    for (const id of Array.isArray(step.facts) ? step.facts : []) {
-      if (typeof id !== 'string' || !isDomFactId(id)) continue;
-      (step.impact === 'additive' ? additive : other).add(id);
-    }
-  }
-  return new Set([...additive].filter((id) => !other.has(id)));
-}
-
 function breakingEvidence(state, versionPr) {
   const released = new Set(releasedNotes(state, versionPr));
   const releasedFacts = new Set(
@@ -426,15 +407,8 @@ function breakingEvidence(state, versionPr) {
   // below 1.0 it also forces the breaking bump: a consumer that selects on
   // the structure (`a > svg`, getByRole('row')) breaks (#1344).
   const preOne = major(versionPr ? state.previousVersion : state.version) === 0;
-  const additiveDom = additiveDomFacts([
-    ...state.notes.filter((note) => !released.has(note)).flatMap(noteSteps),
-    ...(versionPr ? (state.ledger?.release?.steps ?? []) : []),
-  ]);
   const evidence = facts
-    .filter(
-      (fact) =>
-        factImpact(fact) === 'breaking' || (preOne && isDomFact(fact) && !additiveDom.has(fact.id)),
-    )
+    .filter((fact) => factImpact(fact) === 'breaking' || (preOne && isDomFact(fact)))
     .map((fact) => fact.id);
   for (const note of state.notes) {
     if (released.has(note)) continue;
