@@ -8,7 +8,7 @@
  * @unit 12p-test-contract-tests-primitives
  */
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import { Star } from 'lucide-react';
 import { Tag } from '@/app/components/tag';
 
@@ -74,13 +74,14 @@ describe('Tag contract', () => {
   });
 
   it('a11y:tag.icon-decorative the leading icon is aria-hidden and the label names the tag', () => {
-    const { container, getByRole } = render(<Tag icon={Star}>Label</Tag>);
+    const { container } = render(<Tag icon={Star}>Label</Tag>);
     expect(container.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
-    expect(getByRole('button', { name: 'Label' })).toBeTruthy();
+    expect(within(container).getByRole('button', { name: 'Label' })).toBeTruthy();
   });
 
   it('a11y:tag.copied-announced copied swaps the label and a polite status announces it', () => {
-    const { getByRole, rerender } = render(<Tag copied={false}>Label</Tag>);
+    const { container, rerender } = render(<Tag copied={false}>Label</Tag>);
+    const { getByRole } = within(container);
     const status = getByRole('status');
     expect(status.getAttribute('aria-live')).toBe('polite');
     expect(status.textContent).toBe('');
