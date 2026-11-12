@@ -1687,3 +1687,7 @@ Library 2VgBbVpKiDnu0aftJEVyBQ. No delete, no publish.
 | R14 | `add_code_connect_map`         | write | library 2399:11077 -> button.tsx (React)  | probe: can the Professional plan save a mapping | Refused, nothing saved: "Code connections can only be made in libraries that are in Organization or Enterprise plans" (debug e5b0641f-ac3a-4836-8d14-4bdd8350a44a). |
 
 Session total: 3 calls (2 reads, 1 refused write). The map is code: figma/code-connect-map.json (71 components, 5 deprecated exempt), gated by check-code-connect-map.
+
+### 2026-11-12 — library published by Adrian (0.41.0, Sora)
+
+Adrian published the HDS library 2VgBbVpKiDnu0aftJEVyBQ by hand after the rows above (token delta R4, spec sheet headers R8–R11): 0.41.0 with Sora, Source links on the spec sheets. Reported by the orchestrator session; no agent call, no MCP call counted.
