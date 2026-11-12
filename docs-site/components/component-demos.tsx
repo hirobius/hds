@@ -547,6 +547,13 @@ function CardDemo() {
           </Button>
         </Card.Footer>
       </Card>
+      {/* radius="lg": the fixed 16px scale step, for a larger bordered surface (hds#1436). */}
+      <Card bordered radius="lg">
+        <Card.Header>
+          <Card.Title>Larger radius</Card.Title>
+          <Card.Description>radius="lg" is 16px whatever the tenant radius.</Card.Description>
+        </Card.Header>
+      </Card>
       {/* The row slot: a titled status with notes and a trailing badge (hds#622). */}
       <Card padding="item" className="border-0">
         <Card.Row trailing={<Badge tone="success">Synced</Badge>}>

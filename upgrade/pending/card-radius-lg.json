@@ -1,0 +1,14 @@
+{
+  "impact": "behavior",
+  "plain": "Card has a new opt-in radius prop; the Card docs demo gained a bordered radius=\"lg\" Card, so its rendered markup changed.",
+  "steps": [
+    {
+      "id": "behavior/Card.dom",
+      "plain": "Card renders a data-radius attribute only when radius=\"lg\" is set; Cards without the prop render as before.",
+      "kind": "behavior",
+      "impact": "behavior",
+      "detect": { "regex": ["<Card[^>]*\\bradius="] },
+      "facts": ["dom-changed:Card"]
+    }
+  ]
+}

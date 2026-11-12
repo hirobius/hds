@@ -745,6 +745,15 @@
       ],
       "default": "component"
     },
+    "radius": {
+      "type": "\"default\" | \"lg\"",
+      "optional": true,
+      "values": [
+        "default",
+        "lg"
+      ],
+      "default": "default"
+    },
     "selectable": {
       "type": "boolean",
       "optional": true,

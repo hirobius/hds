@@ -3071,6 +3071,14 @@
           ],
           "default": "component"
         },
+        "radius": {
+          "type": "enum",
+          "values": [
+            "default",
+            "lg"
+          ],
+          "default": "default"
+        },
         "selectable": {
           "type": "boolean",
           "default": false
@@ -3286,6 +3294,13 @@
             "none"
           ]
         },
+        "radius": {
+          "type": "enum",
+          "values": [
+            "default",
+            "lg"
+          ]
+        },
         "selectable": {
           "type": "boolean"
         },
@@ -3316,6 +3331,7 @@
         "data-format",
         "data-interactive",
         "data-padding",
+        "data-radius",
         "data-slot",
         "data-tone",
         "data-variant"

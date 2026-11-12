@@ -1174,6 +1174,7 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - noPadding: boolean = false
   - onSelectedChange: (selected: boolean) => void
   - padding: "component" | "item" | "px16" | "px24" | "none" = component
+  - radius: "default" | "lg" = default
   - selectable: boolean = false
   - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
