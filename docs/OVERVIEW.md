@@ -89,7 +89,7 @@ pnpm docs:dev   # docs site with live demos
 pnpm test       # pretest gates + unit + contract tests, as the pre-push hook runs them
 ```
 
-Hooks: **pre-commit** runs gitleaks (if installed), Prettier, typecheck, ESLint and token/contrast checks; **pre-push** runs the tiered gate (`scripts/pre-push-gate.mjs`): the full tier is `pnpm check:fast`, `pnpm test` and the consumer smoke build; smaller diffs run a lighter tier (`scripts/lib/gate-tier.mjs`). GitHub Actions is off, so run `pnpm check:size` and the docs-site axe gate (`pnpm check:docs-axe`) by hand. Releases use [Changesets](https://github.com/changesets/changesets) ([RELEASING.md](RELEASING.md)).
+Hooks: **pre-commit** runs gitleaks (if installed), Prettier, typecheck, ESLint and token/contrast checks; **pre-push** runs the tiered gate (`scripts/pre-push-gate.mjs`): the full tier is `pnpm check:fast`, `pnpm test` and the consumer smoke build; smaller diffs run a lighter tier (`scripts/lib/gate-tier.mjs`). GitHub Actions runs the `ci` workflow on pull requests again (2026-11-11); `pnpm check:size` and the docs-site axe gate (`pnpm check:docs-axe`) also run by hand. Releases use [Changesets](https://github.com/changesets/changesets) ([RELEASING.md](RELEASING.md)).
 
 ## Architecture
 
