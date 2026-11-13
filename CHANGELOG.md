@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.42.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: A Badge with the new icon prop renders a decorative aria-hidden svg before its text; Badges without it are unchanged.
+- Do by hand: Card renders a data-radius attribute only when radius="lg" is set; Cards without the prop render as before.
+- Do by hand: EmptyState's root now carries `not-italic` instead of `italic` by default, so selectors or tests that match the `italic` class need `italic` passed or an update.
+- Do by hand: If you adopt indicator="switch" or description on a Menu row, its markup gains a trailing switch and an aria-hidden caption; rows that use neither are unchanged.
+- And 5 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0420).
+
+### Minor Changes
+
+- 862cb5d: Badge takes an optional `icon` prop (a Lucide icon component), drawn as a leading, decorative 16px glyph in the tone's text color. `dot` wins over `icon`.
+- b5603dd: Card takes an opt-in `radius` prop: `default` keeps the 12px container radius, `lg` uses the fixed 16px scale step (`semantic.radius.scale.lg`) and emits `data-radius="lg"`. The Card docs demo gains a bordered `radius="lg"` Card.
+- b5603dd: EmptyState: the `italic` prop now defaults to `false` for the inline variant too, so the message is upright by default (it was italic inline, hds#1441). Pass `italic` to keep the old look. The docs demo gains an `italic` example, so its DOM outline changes.
+- b5603dd: Menu: `Menu.CheckboxItem` takes `indicator="switch"` for a setting row with a trailing switch (a `menuitemcheckbox` with `aria-checked`; the switch is decorative and the menu stays open when it flips), and `Menu.Item` and `Menu.CheckboxItem` take an optional `description` caption under the label, wired as the row's `aria-describedby` (hds#1440). The Menu docs demo gains a Settings menu, so its DOM baseline changes.
+- b5603dd: SegmentedControl: an option can be icon-only, with an `icon` and an `aria-label` and no `label`. The segment is a 44px target, hides the icon from assistive tech and works in both the radiogroup and the link mode. The accessible name is required in the types and warned about in development (hds#1439).
+- b5603dd: SegmentedControl: an option can take an `href`, which turns the control into a `nav` holding a list of links. The current segment is `aria-current="page"`, internal paths go through the router adapter, and the selected pill and concentric corners stay. `onChange` is optional in link mode (hds#1438).
+- 5c29f6c: `Tag` takes a leading `icon` (a Lucide icon, small and decorative, spaced by the same gap as Button) and a controlled `copied` state with `copiedLabel` (default "Copied") that swaps the label for a Check icon and announces it through a polite live region. New `useTransientFlag` hook turns a click into a short-lived `copied`.
+
+### Patch Changes
+
+- 68d8b9e: UPGRADING.md and the upgrade command now say "Deprecated. Will be removed in 1.0.0 (hds#483)." for a deprecation that is still in place, instead of "Removed in 1.0.0.", which read as if 1.0.0 had shipped (hds#1462).
+- 20dfd0e: Dark info text now clears AA on its own fill: `semantic.color.feedback.info` moves from blue.300 to blue.200 in dark (3.9:1 to 9.5:1 on the info badge fill), and `check:contrast` reads the oklch blue ramp and holds every feedback tone to AA on its badge fill (hds#1473). The docs site footer says "HDS", so the home page names the system once, and the motion sample uses `content.onAccent` on its accent fill.
+- e8b5091: MetadataList's description now reads "a description list of term/description pairs" in the docs lede, the manifest and the Figma spec sheet, instead of a tag name the docs generator dropped.
+- 78c251a: The README, which npm shows as the package page, now follows the Standard Readme layout: Background, Install, Usage, Docs, For AI agents, Contributing and License, in 76 lines. The long material (core set, adoption, theming dials, Figma sync, accessibility, explorations) moves to `docs/OVERVIEW.md`, and a front-door test fails when the README grows past 90 lines or names a typed package version (hds#1491).
+- 8b1e694: SegmentedControl: the selected pill and each segment now round at the rail's radius minus its padding and border (7px by default, was 8px against a 12px rail), so the curves stay concentric, and stay so when `railPadding` changes (hds#1468). No DOM change.
+- d84b622: Bundle budgets back under their limits (hds#1457, hds#1472): token descriptions drop issue-number asides and the "Between x and y" lead-ins (names and values are unchanged), `styles.css` drops its banner comment and reuses Tailwind's `spin` keyframes for `.animate-spin`, and the Dock rules sit in a phone-only media query with its flex layout on utility classes. No behaviour change.
+
 ## 0.41.0
 
 ### Upgrade
