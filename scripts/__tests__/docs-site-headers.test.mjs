@@ -91,3 +91,14 @@ describe('docs-site redirects', () => {
     }
   });
 });
+
+describe('docs-site old-host redirect', () => {
+  it('sends the old Vercel host to the new one, as the first permanent redirect', () => {
+    expect(config.redirects[0]).toEqual({
+      source: '/:path*',
+      has: [{ type: 'host', value: 'hirobius-hds-components.vercel.app' }],
+      destination: 'https://hirobius-design-system.vercel.app/:path*',
+      permanent: true,
+    });
+  });
+});
