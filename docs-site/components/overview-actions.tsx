@@ -7,7 +7,7 @@ import { Button, Stack } from '@hirobius/design-system';
 export function OverviewActions() {
   // not-prose: the page body's link underline must not reach the buttons' labels.
   return (
-    <div className="not-prose">
+    <div className="not-prose hds-overview-actions">
       <Stack direction="row" gap="tight" wrap="wrap">
         <Button variant="secondary" asChild>
           <a href="/docs/components">Components</a>
