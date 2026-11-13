@@ -810,7 +810,7 @@
         "inline",
         "stacked"
       ],
-      "default": "inline"
+      "default": null
     }
   },
   "CardFooter": {},
