@@ -10,6 +10,7 @@
  *   - src/styles/tokens.generated.css — generated; defines all CSS custom properties
  *   - src/styles/theme.css          — bridges primitives to semantic vars
  *   - src/app/design-system/generated-tokens.ts — generated TS constants
+ *   - src/app/design-system/component-tokens.ts — the token-bridge slice components import (hds#1519)
  *
  * Suppression: add `// tier-ok: <reason>` on the offending line or immediately before.
  * In JSX children (where `//` renders as text), use a JSX block comment on the preceding line:
@@ -34,6 +35,9 @@ const ALLOWLIST = new Set([
   // tokens.ts is the JS token bridge — it intentionally exposes primitive vars
   // as JavaScript constants (same pipeline role as generated-tokens.ts)
   join(ROOT, 'src', 'app', 'design-system', 'tokens.ts'),
+  // component-tokens.ts is the slice of that bridge the components import (hds#1519);
+  // component-tokens.test.ts pins every value against tokens.ts
+  join(ROOT, 'src', 'app', 'design-system', 'component-tokens.ts'),
   // generated-token-descriptions.ts: auto-generated string descriptions that quote primitive var names
   // for documentation purposes; the strings are not live CSS declarations
   join(ROOT, 'src', 'app', 'design-system', 'generated-token-descriptions.ts'),
