@@ -1,15 +1,15 @@
 {
-  "checksum": "ad1c1cfb",
+  "checksum": "c6310b8e",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-13T02:14:28.986Z",
+    "takenAt": "2026-11-13T18:15:07.117Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "0f8430a8",
-      "pushedAt": "2026-11-13T02:14:28.903Z",
+      "modelHash": "8d60327f",
+      "pushedAt": "2026-11-13T18:15:07.033Z",
       "scope": null
     },
     "collections": [
@@ -9717,26 +9717,6 @@
             }
           },
           {
-            "id": "VariableID:2241:4",
-            "name": "badge/paddingShift",
-            "path": "component.badge.paddingShift",
-            "resolvedType": "FLOAT",
-            "description": "Label lift, taken from top padding to bottom.",
-            "scopes": [
-              "GAP"
-            ],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {
-              "WEB": "var(--component-badge-paddingShift)"
-            },
-            "valuesByMode": {
-              "Default": {
-                "alias": "VariableID:5:19",
-                "to": "Hirobius/Primitives: space/px1"
-              }
-            }
-          },
-          {
             "id": "VariableID:14:33",
             "name": "badge/paddingX",
             "path": "component.badge.paddingX",
@@ -14405,7 +14385,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "aaa49cf"
+                "value": "58f85dd"
               }
             }
           },
@@ -14490,7 +14470,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "0.42.0"
+                "value": "0.43.0"
               }
             }
           }
@@ -15215,7 +15195,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:f2598b2d21436b54a3424bf451f5357c98cb2a03eb34137ad70212c450e17d38",
-  "syncedCommit": "aaa49cf",
-  "syncedHash": "sha256:a9933fe2192fa15d50e11ffe1577ed8f9d2daa442a01271453a648e60a9d2b98"
+  "tokensHash": "sha256:9777ffd19b8614692501188cdbe57d8f0075856efbd47469eb560fc636b43d39",
+  "syncedCommit": "58f85dd",
+  "syncedHash": "sha256:38f8f361817fbb5ab0373c14e60d2865b3ff33ae60300e3f4d6ecacef7ba5737"
 }
