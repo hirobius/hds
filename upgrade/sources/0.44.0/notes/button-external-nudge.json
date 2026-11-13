@@ -28,7 +28,7 @@
       "id": "behavior/Button.dom",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "The Button demo gained two external-link buttons (the new external prop), each ending in a visually hidden \"(opens in new tab)\" span (hds#1537); a Button without external renders as before.",
+      "plain": "The Button demo gained two external-link buttons (the new external prop); a Button without external renders as before.",
       "detect": {
         "regex": ["getAllByRole\\(['\"]link['\"]"]
       },
