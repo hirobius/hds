@@ -1,0 +1,22 @@
+{
+  "$comment": "Frozen inputs of the 0.45.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.45.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.45.0",
+  "previous": "0.44.0",
+  "date": "2026-11-13",
+  "summary": "1 change to make by hand and 1 that looks different.",
+  "backfilled": false,
+  "notes": {
+    "button-external-new-tab-hint": {
+      "needle": "7c9b222: Button `external` now ends its accessible",
+      "source": "CHANGELOG.md:17"
+    },
+    "button-graph-byte-pass": {
+      "needle": "ccef907: Smaller Button: the `./button` graph",
+      "source": "CHANGELOG.md:21"
+    },
+    "static-button-focus-external": {
+      "needle": "cf2c4be: static.css `.hds-button` matches",
+      "source": "CHANGELOG.md:22"
+    }
+  }
+}

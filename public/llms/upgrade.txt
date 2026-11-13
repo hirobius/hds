@@ -1,12 +1,12 @@
 # Hirobius Design System - upgrade slice
 
-Version: 0.44.0
+Version: 0.45.0
 
 See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 
 ## Upgrading
 
-This text describes @hirobius/design-system 0.44.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+This text describes @hirobius/design-system 0.45.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
 
 Every name a release removed, moved or renamed, and what to use instead:
 
