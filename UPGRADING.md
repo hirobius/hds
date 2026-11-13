@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.42.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.43.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,22 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.43.0
+
+Released 2026-11-13 (minor). 4 changes to make by hand (1 breaking) and 2 that look different.
+
+### Looks different
+
+- A static.css .hds-button now draws the hard edge and sinks on hover and press like the React Button, so add .hds-button--flat to any you want left flat.
+- Card.Facts stacks one fact per line by default now: add layout="inline" to each \<Card.Facts> you want to keep as the old wrapping row.
+
+### Do by hand
+
+- The component.badge.paddingShift token (--component-badge-paddingShift, the 1px label lift) is gone because Badge pads evenly now; stop reading it, there is no replacement.
+- A Badge's text now sits in an inner span (so does every Badge inside Card, Table, List and the other demos), so a test that reads it with getByText gets the span; use closest('\[data-tone]') or a role instead.
+- Disclosure's panel now stays in the DOM while closed (zero height, visibility hidden) and its wrapper is a plain div, so a test that expects closed content to be absent should check it is not visible instead, and a selector on the Stack data attributes needs updating.
+- Timeline renders a Disclosure, so its closed panels stay in the DOM too; check a test that expects them to be absent, or a selector on the Stack data attributes.
 
 ## 0.42.0
 

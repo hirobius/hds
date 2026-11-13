@@ -1,0 +1,34 @@
+{
+  "$comment": "Frozen inputs of the 0.43.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.43.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.43.0",
+  "previous": "0.42.0",
+  "date": "2026-11-13",
+  "summary": "4 changes to make by hand (1 breaking) and 2 that look different.",
+  "backfilled": false,
+  "notes": {
+    "badge-label-vcenter": {
+      "needle": "9369bfa: Badge (and the count badge) now",
+      "source": "CHANGELOG.md:19"
+    },
+    "button-subpath": {
+      "needle": "3a3420c: Button: new `@hirobius/design-system/button`",
+      "source": "CHANGELOG.md:26"
+    },
+    "card-facts-stacked-1509": {
+      "needle": "036a653: Card.Facts now stacks its facts",
+      "source": "CHANGELOG.md:20"
+    },
+    "disclosure-row-no-jump": {
+      "needle": "4ffe66d: Fix Disclosure: opening or closing",
+      "source": "CHANGELOG.md:21"
+    },
+    "root-graph-bytes-1519": {
+      "needle": "9231d8e: Components read their tokens from",
+      "source": "CHANGELOG.md:27"
+    },
+    "static-button-edge": {
+      "needle": "fff3ab1: static.css: `.hds-button` and `.hds-button--primary`",
+      "source": "CHANGELOG.md:22"
+    }
+  }
+}
