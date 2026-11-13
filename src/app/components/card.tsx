@@ -493,16 +493,16 @@ export interface CardFactsProps extends Omit<React.HTMLAttributes<HTMLUListEleme
   /** The facts, in reading order. An empty list renders nothing. */
   items: CardFact[];
   /**
-   * `inline` (default) wraps the facts in a row. `stacked` puts one fact per
-   * line and aligns each icon to the first text line, so a wrapped fact keeps
-   * its icon at the top.
-   * @default 'inline'
+   * `stacked` (default) puts one fact per line and aligns each icon to the
+   * first text line, so a wrapped fact keeps its icon at the top. `inline`
+   * wraps the facts in a row, as Card.Facts did before 0.43.0.
+   * @default 'stacked'
    */
   layout?: 'inline' | 'stacked';
 }
 
 /**
- * Card.Facts — caption-size icon + label facts, as a list: a wrapping row, or one per line with `layout="stacked"`.
+ * Card.Facts — caption-size icon + label facts, as a list: one per line, or a wrapping row with `layout="inline"`.
  * @usage Show an entity's quick facts (location, salary, type) under its title.
  * @whenNot Term and description pairs (use MetadataList) or text with no icons (use MetaLine).
  */
@@ -516,7 +516,7 @@ const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsPr
         data-slot="card-facts"
         className={cn(
           'm-0 flex list-none flex-wrap items-center gap-x-scale-md gap-y-scale-xs hds-type-caption text-muted-foreground',
-          layout === 'stacked' && 'flex-col items-start',
+          layout !== 'inline' && 'flex-col items-start',
           pad,
           className,
         )}
@@ -527,7 +527,7 @@ const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsPr
             key={label}
             className={cn(
               'inline-flex items-center gap-scale-xs',
-              layout === 'stacked' && 'items-start',
+              layout !== 'inline' && 'items-start',
             )}
           >
             <Icon icon={icon} size="small" />

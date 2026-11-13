@@ -1,6 +1,6 @@
 /**
  * Entity card (hds#872): Card.Source (avatar, name, time) and Card.Facts
- * (a wrapping caption row of icon + label), composed with the Header, Footer
+ * (a caption list of icon + label, one per line), composed with the Header, Footer
  * and actions of a job-style card.
  */
 import * as React from 'react';
@@ -79,28 +79,39 @@ describe('Card.Facts', () => {
     });
   });
 
-  it('wraps on narrow widths', () => {
-    render(<JobCard />);
-    expect(screen.getByRole('list').className).toContain('flex-wrap');
-  });
+  const FACTS = [
+    { icon: MapPin, label: 'Remote' },
+    { icon: Banknote, label: '$120k to $150k' },
+  ];
 
-  it('stacks one fact per line, icons on the first text line, with layout="stacked"', () => {
-    render(
-      <Card.Facts
-        layout="stacked"
-        items={[
-          { icon: MapPin, label: 'Remote' },
-          { icon: Banknote, label: '$120k to $150k' },
-        ]}
-      />,
-    );
+  it('stacks one fact per line by default, icons on the first text line', () => {
+    render(<Card.Facts items={FACTS} />);
     const list = screen.getByRole('list');
     expect(list.className).toContain('flex-col');
-    const items = within(list).getAllByRole('listitem');
-    items.forEach((li) => {
-      expect(li.className).toContain('items-start');
-      expect(li.className).not.toContain('items-center');
-    });
+    within(list)
+      .getAllByRole('listitem')
+      .forEach((li) => {
+        expect(li.className).toContain('items-start');
+        expect(li.className).not.toContain('items-center');
+      });
+  });
+
+  it('stacks with layout="stacked" too', () => {
+    render(<Card.Facts layout="stacked" items={FACTS} />);
+    expect(screen.getByRole('list').className).toContain('flex-col');
+  });
+
+  it('keeps the old wrapping row with layout="inline"', () => {
+    render(<Card.Facts layout="inline" items={FACTS} />);
+    const list = screen.getByRole('list');
+    expect(list.className).toContain('flex-wrap');
+    expect(list.className).not.toContain('flex-col');
+    within(list)
+      .getAllByRole('listitem')
+      .forEach((li) => {
+        expect(li.className).toContain('items-center');
+        expect(li.className).not.toContain('items-start');
+      });
   });
 
   it('renders nothing for an empty list', () => {

@@ -2,4 +2,4 @@
 '@hirobius/design-system': minor
 ---
 
-Card.Facts takes `layout="stacked"`: one fact per line, each icon aligned to its first text line. The default, `inline`, is the current wrapping row. (hds#1509)
+Card.Facts now stacks its facts by default: one fact per line, each icon aligned to its first text line. Pass `layout="inline"` for the old wrapping row. (hds#1509)

@@ -946,7 +946,7 @@ Every HDS card surface must conform to this anatomy exactly. No creative interpr
 | Subtitle / meta          | `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`)                                                                               | Primary content color or body size for secondary text                                       |
 | Hover (interactive only) | `transform: scale(1.02)`                                                                                                                                                                  | Background fill change, border color shift, or opacity fade on hover                        |
 
-An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a wrapping caption row of 16px decorative icons with a text label each, rendered as a list), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
+An entity card (a job, a lead, a listing) fills four zones in this order: `Card.Source` (an `Avatar` size `sm`, the source name, a `Timestamp`), `Card.Header` with the `Card.Title`, `Card.Facts` (a caption list of 16px decorative icons with a text label each, one fact per line; `layout="inline"` wraps them in a row), and the actions in `Card.Footer`. Facts are icon + text only; term and description pairs stay in `MetadataList`, and a text-only line stays in `MetaLine`. Status goes in the header `metadata` slot, never in the facts row.
 
 **No cards within cards, ever (hds#1046).** A `Card` or section surface (`Surface`, `Callout`, or any raised or bordered wrapper) never contains another `Card` or surface. This covers the **section surface wrapping a card list**: a "Review new" section drawn as a card holding a list of job cards is wrong. Declare the group with type hierarchy instead (a section title, a count, surrounding metadata) on a plain region, and separate list items with spacing or dividers. `hds/no-nested-cards` (in `hds/recommended`) fails on it; list your own wrappers that draw a card or a surface in its `cards` / `surfaces` options.
 
@@ -1188,9 +1188,9 @@ Card — surface container with slot anatomy (12d-card-anatomy).
 Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardFacts
-Card.Facts — caption-size icon + label facts, as a list: a wrapping row, or one per line with `layout="stacked"`.
+Card.Facts — caption-size icon + label facts, as a list: one per line, or a wrapping row with `layout="inline"`.
   - items: CardFact[]
-  - layout: "inline" | "stacked" = 'inline'
+  - layout: "inline" | "stacked" = 'stacked'
 
 ### CardFooter
 Card — surface container with slot anatomy (12d-card-anatomy).

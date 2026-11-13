@@ -11080,7 +11080,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card.Facts — caption-size icon + label facts, as a list: a wrapping row, or one per line with `layout=\"stacked\"`.",
+      "description": "Card.Facts — caption-size icon + label facts, as a list: one per line, or a wrapping row with `layout=\"inline\"`.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -11103,7 +11103,7 @@
             "inline",
             "stacked"
           ],
-          "default": "inline"
+          "default": "stacked"
         }
       },
       "allowedChildren": [
