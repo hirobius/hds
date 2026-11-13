@@ -26,10 +26,11 @@ import { Icon } from './icon';
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- component-badge-* sizing and per-tone color tokens have no Tailwind-theme utility; var()-based so still token-driven. the caption role matches component.badge.fontSize (14px).
 const badgeVariants = /* @__PURE__ */ cva(
   // rounded-sm is role.radius - 2px (component.badge.radius, 6px): a step under the action
-  // radius that still follows a tenant's role.radius (hds#757, bug bash 24). paddingShift moves
-  // paddingY from the top to the bottom so the label sits optically centred, not line-box centred.
+  // radius that still follows a tenant's role.radius (hds#757, bug bash 24). Padding is balanced
+  // (the old 1px paddingShift lift put the label ~2px high, hds#1510; token removed); the label itself is
+  // centred by trimming its line box to cap height, see `labelTrim`.
   // binding-ok: badge.radius rounded-sm is role.radius - 2px, so a tenant reshapes Badge
-  'inline-flex w-fit max-w-full items-center justify-center gap-scale-2xs overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))] pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))] rounded-sm',
+  'inline-flex w-fit max-w-full items-center justify-center gap-scale-2xs overflow-hidden whitespace-nowrap box-border hds-type-caption h-[var(--component-badge-height)] min-w-[var(--component-badge-minWidth)] px-[var(--component-badge-paddingX)] py-[var(--component-badge-paddingY)] rounded-sm',
   {
     variants: {
       tone: {
@@ -49,6 +50,13 @@ const badgeVariants = /* @__PURE__ */ cva(
     defaultVariants: { tone: 'neutral' },
   },
 );
+
+// hds#1510: the label is a flex item, and text-box-trim only trims a block container, so the
+// text sits in its own span that is trimmed to cap height (Sora: cap 0.73em, ascent 0.97em,
+// descent 0.29em, so the line box's middle is 0.025em below the cap middle). Trimmed, the cap
+// middle is the item's middle and align-items:center puts it in the pill's middle. Without
+// text-box-trim the balanced padding above leaves the label within ~0.7px of centre.
+const labelTrim = 'hds-cap-trim';
 
 // `dot` (hds#393): a solid feedback fill on the 8px grid.
 // Tone still picks the color, so a dot is not a Tone option; neutral uses the
@@ -179,7 +187,7 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
         {...props}
       >
         {leading}
-        {shown}
+        <span className={labelTrim}>{shown}</span>
       </Tag>
     );
   }
@@ -192,7 +200,7 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
       {...props}
     >
       {leading}
-      {children}
+      <span className={labelTrim}>{children}</span>
     </Tag>
   );
 });

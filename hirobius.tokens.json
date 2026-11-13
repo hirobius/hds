@@ -3529,11 +3529,6 @@
         "$value": "{primitive.space.px2}",
         "$description": "Vertical padding inside the badge."
       },
-      "paddingShift": {
-        "$type": "dimension",
-        "$value": "{primitive.space.px1}",
-        "$description": "Label lift, taken from top padding to bottom."
-      },
       "paddingX": {
         "$type": "dimension",
         "$value": "{primitive.space.2}",

@@ -606,7 +606,6 @@ declare module 'react' {
     '--component-badge-height'?: string | undefined;
     '--component-badge-minWidth'?: string | undefined;
     '--component-badge-paddingY'?: string | undefined;
-    '--component-badge-paddingShift'?: string | undefined;
     '--component-badge-paddingX'?: string | undefined;
     '--component-button-bg'?: string | undefined;
     '--component-button-bgHover'?: string | undefined;

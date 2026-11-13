@@ -10,7 +10,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import hds from '../design-system/tokens';
+import { BORDER_WIDTH_DEFAULT } from '../design-system/component-tokens';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // Orientation is the only styling axis. Vertical stacks each term above its
@@ -88,7 +88,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
                 index === 0
                   ? undefined
                   : {
-                      borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
+                      borderTop: `${BORDER_WIDTH_DEFAULT} solid var(--semantic-color-border-default)`,
                     }
               }
             >
@@ -106,7 +106,7 @@ export const MetadataList = /* @__PURE__ */ React.forwardRef<HTMLDListElement, M
               // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale-sm spacing token has no Tailwind-theme utility; var()-based so still token-driven
               className="py-[var(--semantic-space-scale-sm)] pb-0 hds-type-ui"
               style={{
-                borderTop: `${hds.borderWidth.default} solid var(--semantic-color-border-default)`,
+                borderTop: `${BORDER_WIDTH_DEFAULT} solid var(--semantic-color-border-default)`,
                 color: 'var(--semantic-color-content-secondary)',
               }}
             >

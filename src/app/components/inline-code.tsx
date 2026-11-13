@@ -14,7 +14,7 @@ import { AnimatePresence, LazyMotion, domAnimation, m, useIsPresent } from 'moti
 import type { CSSProperties, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Copy, Check } from 'lucide-react';
-import hds from '../design-system/tokens';
+import { subgrid } from '../design-system/component-tokens';
 import { crossfadeFade, useHdsMotion } from '../hooks/useHdsMotion';
 import { Button } from './button';
 import { Icon } from './icon';
@@ -129,7 +129,7 @@ export function InlineCode({
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: hds.semantic.space.subgrid.gap,
+        gap: subgrid.gap,
         // The 44px touch target overflows this one-line box (centred) instead of stretching the text
         // line around it: a two-line paragraph was 72px tall at 390 (bug bash 24, item 20).
         blockSize: '1lh',

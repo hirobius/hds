@@ -25,7 +25,7 @@ AI agents design and build HDS. Automated checks gate their work: typecheck, lin
 <!-- auto:start:front-door-counts -->
 
 - **64** public component modules, exported from `src/index.ts`
-- **581** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **580** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 

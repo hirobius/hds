@@ -29,7 +29,7 @@
 
 import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
-import hds from '../design-system/tokens';
+import { typeStyles } from '../design-system/component-tokens';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 
@@ -64,7 +64,7 @@ const HdsTooltipContent = /* @__PURE__ */ React.forwardRef<
           className,
         )}
         style={{
-          ...hds.typeStyles.caption,
+          ...typeStyles.caption,
           color: 'var(--semantic-color-content-inverse)',
           margin: 0,
         }}

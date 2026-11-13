@@ -25,7 +25,7 @@ import React, { useId, useRef, useState, type CSSProperties, type ReactNode } fr
 import { ChevronDown } from 'lucide-react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import hds from '../design-system/tokens';
+import { scale, sidebar, subgrid, typeStyles } from '../design-system/component-tokens';
 import { Icon } from './icon';
 import { Surface } from './surface';
 
@@ -62,8 +62,8 @@ const disclosureTriggerVariants = /* @__PURE__ */ cva(
 // a gap that flips 0 -> N in the opening frame moves the rows below before the height tween
 // starts (hds#1508), while padding inside the tweened body grows with it.
 const disclosureBodyInset: Partial<Record<DisclosureVariant, string>> = {
-  panel: hds.semantic.space.sidebar.gap,
-  nav: hds.semantic.space.sidebar.sectionGap,
+  panel: sidebar.gap,
+  nav: sidebar.sectionGap,
 };
 
 // One height tween for the body and the row preview: `grid-template-rows` 0fr -> 1fr on the
@@ -173,7 +173,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       typeof label === 'string' ? (
         <span
           className="m-0 text-current"
-          style={variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption}
+          style={variant === 'nav' ? typeStyles.ui : typeStyles.caption}
         >
           {label}
         </span>
@@ -204,7 +204,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
               // The label-to-preview gap lives on the preview, so it collapses with it.
               <span
                 className="block min-w-0 truncate text-muted-foreground"
-                style={{ ...hds.typeStyles.caption, paddingTop: hds.semantic.space.subgrid.gap }}
+                style={{ ...typeStyles.caption, paddingTop: subgrid.gap }}
               >
                 {preview}
               </span>,
@@ -246,7 +246,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
           resolvedOpen,
           <div
             style={{
-              paddingTop: disclosureBodyInset[variant] ?? hds.semantic.space.scale.xs,
+              paddingTop: disclosureBodyInset[variant] ?? scale.xs,
               ...contentStyle,
             }}
           >

@@ -38,7 +38,7 @@ import { LazyMotion, domAnimation, m } from 'motion/react';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import hds from '../design-system/tokens';
+import { subgrid } from '../design-system/component-tokens';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { safeHref } from '../../lib/safe-href';
@@ -523,7 +523,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           <span
             // eslint-disable-next-line tailwindcss/no-arbitrary-value -- 60ch max-width + content-primary color have no Tailwind-theme utility; var()-based so still token-driven. font-size/line-height now ramp-driven (ui role).
             className="max-w-[60ch] hds-type-ui text-[var(--semantic-color-content-primary)]"
-            style={{ paddingBottom: hds.semantic.space.subgrid.gap }}
+            style={{ paddingBottom: subgrid.gap }}
           >
             {label}
           </span>

@@ -9,7 +9,7 @@
 
 import * as React from 'react';
 import { ChevronDown } from 'lucide-react';
-import hds from '../design-system/tokens';
+import { typeStyles } from '../design-system/component-tokens';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
 import { Icon } from './icon';
@@ -97,7 +97,7 @@ export const PageHeader = /* @__PURE__ */ React.forwardRef<HTMLElement, PageHead
         <Heading
           // inline-ok: the one canonical page-title size, bound to the title role
           style={{
-            ...hds.typeStyles.title,
+            ...typeStyles.title,
             margin: 0,
             color: 'var(--semantic-color-content-primary)',
           }}

@@ -65,7 +65,7 @@ describe('uiRegular (ADR-052 addendum, hds#1198)', () => {
 
   it('is what Table body cells render', () => {
     const src = repoFile('src/app/components/table.tsx');
-    expect(src).toContain('const BODY_TEXT: CSSProperties = hds.typeStyles.uiRegular;');
+    expect(src).toContain('const BODY_TEXT: CSSProperties = typeStyles.uiRegular;');
   });
 
   it('ships --semantic-typography-uiRegular-* in CSS at weight regular', () => {

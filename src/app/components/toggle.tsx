@@ -20,7 +20,8 @@ import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
-import hds, { tokenValues } from '../design-system/tokens';
+import { tokenValues } from '../design-system/generated-token-values';
+import { subgrid } from '../design-system/component-tokens';
 import { cn } from '../../lib/utils';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { forwardFocusHandlers } from '../hooks/useInteractionState';
@@ -126,7 +127,7 @@ export const Toggle = /* @__PURE__ */ forwardRef<HTMLInputElement, ToggleProps>(
       disabled={isDisabled}
       pointer={handlers}
       animate={{
-        y: isPressed ? hds.semantic.space.subgrid.hairline : 0,
+        y: isPressed ? subgrid.hairline : 0,
       }}
       className={toggleRootVariants({ state: visualState })}
     >

@@ -97,6 +97,62 @@ describe('.hds-button in static.css', () => {
     );
     expect(rule).toMatch(/outline-offset: var\(--semantic-focus-gap-width\)/);
   });
+
+  describe('hard edge (hds#1507, folio #338)', () => {
+    const strip = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, '');
+    const sheet = strip(css);
+    /** Every rule whose selector list contains `needle`, as { selector, body }. */
+    const rules = (needle: string) =>
+      [...sheet.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+        .map((m) => ({ selector: m[1].trim(), body: m[2] }))
+        .filter((r) => r.selector.includes(needle));
+
+    it('draws the edge as a zero-blur box-shadow on the depth and edge tokens', () => {
+      const raised = rules('.hds-button').find((r) => /box-shadow:/.test(r.body));
+      expect(raised, 'a raised rule').toBeDefined();
+      expect(raised!.body).toMatch(
+        /box-shadow:\s*0 var\(--hds-hs, var\(--component-button-depth-edge\)\) 0\s+var\(--hds-edge, var\(--component-button-edge-secondary\)\)/,
+      );
+      expect(raised!.body).toMatch(/translate: 0 var\(--hds-ty, 0px\)/);
+      expect(raised!.selector).toMatch(/:not\([^)]*:disabled[^)]*\)/);
+    });
+
+    it('keeps tertiary, link and --flat flat', () => {
+      const raised = rules('.hds-button').find((r) => /box-shadow:/.test(r.body))!;
+      for (const k of ['--tertiary', '--link', '--flat']) expect(raised.selector).toContain(k);
+    });
+
+    it('primary paints the per-accent primary edge, and its hover edge on hover', () => {
+      expect(
+        rules('.hds-button--primary')
+          .map((r) => r.body)
+          .join(),
+      ).toContain('--hds-edge: var(--hds-edge-primary)');
+      expect(sheet).toContain('--hds-edge: var(--hds-edge-primaryHover)');
+    });
+
+    it('sinks by hoverOffset on hover (hover-capable pointers) and pressedOffset on press', () => {
+      const hover = sheet.slice(sheet.indexOf('@media (hover: hover)'));
+      expect(hover).toContain('--hds-ty: var(--component-button-depth-hoverOffset)');
+      const press = rules('.hds-button:active')
+        .map((r) => r.body)
+        .join();
+      expect(press).toContain('--hds-ty: var(--component-button-depth-pressedOffset)');
+    });
+
+    it('moves under no transition when motion is reduced', () => {
+      const base = rules('.hds-button').find((r) => r.selector === '.hds-button')!;
+      expect(base.body).toMatch(/transition:[^;]*translate[^;]*box-shadow/s);
+      expect(sheet).toMatch(
+        /prefers-reduced-motion: reduce\)\s*\{\s*\.hds-button\s*\{\s*transition: none/,
+      );
+    });
+
+    it('wraps the focus ring around face and edge, with a transparent outline that forced colors repaint', () => {
+      expect(sheet).toMatch(/\.hds-button[^{]*:focus-visible\s*\{[^}]*box-shadow:/);
+      expect(sheet).toMatch(/\):focus-visible\s*\{[^}]*outline-color: transparent/);
+    });
+  });
 });
 
 /**

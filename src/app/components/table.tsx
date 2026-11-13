@@ -27,7 +27,7 @@ import {
 import { cva } from 'class-variance-authority';
 import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import hds from '../design-system/tokens';
+import { scale, typeStyles } from '../design-system/component-tokens';
 import { Icon } from './icon';
 import { Surface } from './surface';
 import {
@@ -266,12 +266,12 @@ type TableDensity = 'compact' | 'comfortable';
 // composite semantic.typography.* tokens (fontFamily/size/weight/letterSpacing/
 // lineHeight) aren't yet bridged to Tailwind theme utilities anywhere in HDS
 // (see Text primitive, src/app/components/text.tsx), so this mirrors the
-// established `style={hds.typeStyles.X}` pattern used by already-converted
+// established `style={typeStyles.X}` pattern used by already-converted
 // cva components like Breadcrumb.
 // Body text is uiRegular (ui at weight 400, hds#1198), so the medium-weight header and
 // an emphasised first column read as the stronger voices.
-const BODY_TEXT: CSSProperties = hds.typeStyles.uiRegular;
-const HEADER_TEXT: CSSProperties = hds.typeStyles.ui;
+const BODY_TEXT: CSSProperties = typeStyles.uiRegular;
+const HEADER_TEXT: CSSProperties = typeStyles.ui;
 const EMPHASIS: CSSProperties = { fontWeight: 'var(--semantic-typography-ui-font-weight)' };
 
 // Slots whose content is one literal value: kept on one line (see `wrap` above).
@@ -281,14 +281,14 @@ const SLOT_STYLES: Record<TableCellSlot, CSSProperties> = {
   label: BODY_TEXT,
   value: BODY_TEXT,
   description: {
-    ...hds.typeStyles.caption,
+    ...typeStyles.caption,
     color: 'var(--semantic-color-content-secondary)',
   },
-  token: hds.typeStyles.mono,
-  code: hds.typeStyles.mono,
+  token: typeStyles.mono,
+  code: typeStyles.mono,
   custom: BODY_TEXT,
-  icon: hds.typeStyles.caption,
-  badge: hds.typeStyles.caption,
+  icon: typeStyles.caption,
+  badge: typeStyles.caption,
   action: BODY_TEXT,
 };
 
@@ -399,13 +399,13 @@ export function Table({
       {caption || description ? (
         // inline-ok: token-driven gap so the caption/description block doesn't
         // touch the table's header band below it.
-        <div style={{ marginBottom: hds.semantic.space.scale.sm }}>
+        <div style={{ marginBottom: scale.sm }}>
           {caption ? (
             <div className="flex items-center justify-between">
               <div
                 id={hasCaption ? captionId : undefined}
                 className="m-0 text-foreground"
-                style={hds.typeStyles.ui}
+                style={typeStyles.ui}
               >
                 {caption}
               </div>
@@ -413,7 +413,7 @@ export function Table({
             </div>
           ) : null}
           {description ? (
-            <div className="text-muted-foreground" style={hds.typeStyles.ui}>
+            <div className="text-muted-foreground" style={typeStyles.ui}>
               {description}
             </div>
           ) : null}

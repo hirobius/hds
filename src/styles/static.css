@@ -54,10 +54,8 @@
   font-weight: var(--component-badge-fontWeight);
   height: var(--component-badge-height);
   min-width: var(--component-badge-minWidth);
+  /* hds#1510: balanced padding; the old 1px paddingShift lift left the label ~2px high */
   padding: var(--component-badge-paddingY) var(--component-badge-paddingX);
-  /* hds#757: paddingShift moves from top to bottom so the label sits optically centred */
-  padding-top: calc(var(--component-badge-paddingY) - var(--component-badge-paddingShift));
-  padding-bottom: calc(var(--component-badge-paddingY) + var(--component-badge-paddingShift));
   /* binding-ok: badge.radius rounded-sm twin, role.radius - 2px, so a tenant reshapes it */
   border-radius: calc(
     var(--role-radius) - 2px
@@ -371,8 +369,10 @@
  * `.hds-button` is the secondary variant at size md, as Button's defaults;
  * add `.hds-button--<variant>` and `.hds-button--<size>`. Disable an <a> with
  * role="link" aria-disabled="true" and no href; a <button> with `disabled`.
- * Not mirrored: the hard edge and the hover wipe (theme.css .hds-btn-hard /
- * .hds-btn-wipe) and the status tones, which need the JS component.
+ * Primary and secondary draw the hard edge and sink on hover and press, as
+ * theme.css .hds-btn-hard does; `.hds-button--flat` opts out (tertiary and link
+ * never have one). Not mirrored: the hover wipe (.hds-btn-wipe) and the status
+ * tones, which need the JS component.
  * Every value is a Button token (tests/static-parity.test.ts).
  */
 
@@ -399,7 +399,52 @@
   color: var(--component-button-secondary-text);
   transition:
     color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
-    background-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+    background-color var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
+    translate var(--hds-motion-productive-duration) var(--hds-motion-productive-easing),
+    box-shadow var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+}
+
+/* The hard edge: a zero-blur shadow the face sinks onto (--hds-ty / --hds-hs move with
+ * hover and press). ::after is a hit band so the sink never drops the pointer. */
+.hds-button:not(
+  :disabled,
+  [aria-disabled='true'],
+  .hds-button--flat,
+  .hds-button--tertiary,
+  .hds-button--link
+) {
+  position: relative;
+  translate: 0 var(--hds-ty, 0px);
+  box-shadow: 0 var(--hds-hs, var(--component-button-depth-edge)) 0
+    var(--hds-edge, var(--component-button-edge-secondary));
+}
+
+.hds-button:not(
+    :disabled,
+    [aria-disabled='true'],
+    .hds-button--flat,
+    .hds-button--tertiary,
+    .hds-button--link
+  )::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--component-button-depth-edge)) 0;
+}
+
+@media (hover: hover) {
+  .hds-button:hover {
+    --hds-ty: var(--component-button-depth-hoverOffset);
+    --hds-hs: calc(var(--component-button-depth-edge) - var(--component-button-depth-hoverOffset));
+  }
+
+  .hds-button--primary:hover {
+    --hds-edge: var(--hds-edge-primaryHover);
+  }
+}
+
+.hds-button:active {
+  --hds-ty: var(--component-button-depth-pressedOffset);
+  --hds-hs: calc(var(--component-button-depth-edge) - var(--component-button-depth-pressedOffset));
 }
 
 .hds-button svg {
@@ -420,6 +465,27 @@
   outline-offset: var(--semantic-focus-gap-width);
 }
 
+/* A raised button wraps face AND edge in the ring (box-shadow follows --hds-hs); forced
+ * colors drop box-shadow, so the outline stays, transparent (forced colors repaint it). */
+.hds-button:not(
+    :disabled,
+    [aria-disabled='true'],
+    .hds-button--flat,
+    .hds-button--tertiary,
+    .hds-button--link
+  ):focus-visible {
+  outline-color: transparent;
+  box-shadow:
+    0 0 0 var(--semantic-focus-gap-width) var(--semantic-color-surface-page),
+    0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--semantic-focus-gap-width)
+      var(--semantic-color-surface-page),
+    0 0 0 calc(var(--semantic-focus-gap-width) + var(--semantic-focus-ring-width))
+      var(--semantic-focus-ring-color),
+    0 var(--hds-hs, var(--component-button-depth-edge)) 0
+      calc(var(--semantic-focus-gap-width) + var(--semantic-focus-ring-width))
+      var(--semantic-focus-ring-color);
+}
+
 /* Variants. Secondary is the base rule; its hover and press: */
 .hds-button--secondary {
   background-color: var(--component-button-secondary-bg-rest);
@@ -435,6 +501,7 @@
 }
 
 .hds-button--primary {
+  --hds-edge: var(--hds-edge-primary);
   background-color: var(--component-button-bg);
   color: var(--component-button-text);
 }

@@ -79,7 +79,7 @@ describe('Badge per-tone tokens', () => {
   for (const tone of TONES) {
     it(`${tone} binds component.badge.${tone}.bg and .text`, () => {
       const { getByText } = render(<Badge tone={tone}>x</Badge>);
-      const c = cls(getByText('x'));
+      const c = cls(getByText('x').closest('[data-tone]') as HTMLElement);
       expect(c).toContain(`bg-[color:var(--component-badge-${tone}-bg)]`);
       expect(c).toContain(`text-[color:var(--component-badge-${tone}-text)]`);
       expect(c.some((k) => k.startsWith('dark:'))).toBe(false);

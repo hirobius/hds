@@ -20,7 +20,14 @@
  */
 
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'motion/react';
-import hds from '../design-system/tokens';
+import {
+  CONTENT_ON_ACCENT,
+  RADIUS_FULL,
+  Z_FOCUS,
+  Z_MODAL,
+  scale,
+  typeStyles,
+} from '../design-system/component-tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { hdsDomPortal as CursorPortal } from '../context/hds-portal';
 import { Grid } from './grid';
@@ -43,18 +50,18 @@ interface TooltipProps {
 const PILL_SURFACE_STYLE: React.CSSProperties = {
   background: 'var(--semantic-color-surface-accent)',
   border: 'none',
-  borderRadius: hds.borderRadius.full,
+  borderRadius: RADIUS_FULL,
   // content.onAccent flips with the accent fill: white on the dark light-mode
   // fill, a dark neutral on the light dark-mode fill (fixed white read ~1.1:1).
-  color: hds.color.content.onAccent,
+  color: CONTENT_ON_ACCENT,
   display: 'inline-flex',
   pointerEvents: 'none',
-  paddingBlock: hds.semantic.space.scale.xs,
-  paddingInline: hds.semantic.space.scale.sm,
+  paddingBlock: scale.xs,
+  paddingInline: scale.sm,
 };
 
 const PILL_TEXT_STYLE: React.CSSProperties = {
-  ...hds.typeStyles.ui,
+  ...typeStyles.ui,
   userSelect: 'none',
   whiteSpace: 'nowrap',
 };
@@ -91,7 +98,7 @@ export function ExpandTooltip({ visible, mode, label = 'Expand', x = 0, y = 0 }:
                   position: 'fixed',
                   left: x,
                   top: y,
-                  zIndex: hds.zIndex.modal,
+                  zIndex: Z_MODAL,
                   transform: 'translate(14px, -50%)',
                   pointerEvents: 'none',
                 }}
@@ -118,7 +125,7 @@ export function ExpandTooltip({ visible, mode, label = 'Expand', x = 0, y = 0 }:
               alignItems: 'center',
               justifyItems: 'center',
               pointerEvents: 'none',
-              zIndex: hds.zIndex.focus,
+              zIndex: Z_FOCUS,
             }}
           >
             <Pill label={label} />
