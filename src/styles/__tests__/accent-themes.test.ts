@@ -186,3 +186,37 @@ describe('lime delight accent (semantic.accent.delight.*)', () => {
     expect(steps.length).toBeGreaterThanOrEqual(5);
   });
 });
+
+// Secondary Button hover is the grey surface one step up (surface.softHover, Figma
+// `secondary/bg/hover` #c7c9cc), in every accent: an accent never tints it navy (accentSubtle).
+describe('secondary Button hover stays grey under every accent', () => {
+  const HOVER = 'component.button.secondary.bg.hover';
+  const cobaltHover = (
+    COBALT.component as { button?: { secondary?: { bg?: { hover?: unknown } } } }
+  )?.button?.secondary?.bg?.hover;
+
+  it('is bound to semantic.color.surface.softHover', () => {
+    expect(tokenLeaf(HOVER).$value).toBe('{semantic.color.surface.softHover}');
+  });
+
+  it.each(['Light', 'Dark'] as const)('resolves to a grey step, not accentSubtle (%s)', (mode) => {
+    const fill = hex('semantic.color.surface.softHover', mode);
+    expect(fill).not.toBe(hex('semantic.color.surface.accentSubtle', mode));
+    expect(fill).not.toBe(hex('semantic.color.surface.accentSubtle', mode, COBALT));
+    // grey: the channels stay within a few steps of each other (navy would be blue-heavy)
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(fill.slice(i, i + 2), 16));
+    expect(Math.max(r, g, b) - Math.min(r, g, b)).toBeLessThan(16);
+  });
+
+  it('is the Figma grey #c7c9cc in light', () => {
+    expect(hex('semantic.color.surface.softHover', 'Light')).toBe('#c7c9cc');
+  });
+
+  it('the cobalt overlay does not re-point it (the base softHover binding wins)', () => {
+    expect(cobaltHover).toBeUndefined();
+  });
+
+  it('accents.css declares no secondary hover fill for any accent', () => {
+    expect(ACCENTS_CSS).not.toContain('--component-button-secondary-bg-hover');
+  });
+});

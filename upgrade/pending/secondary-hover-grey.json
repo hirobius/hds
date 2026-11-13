@@ -1,0 +1,20 @@
+{
+  "impact": "look",
+  "plain": "Under data-accent=\"cobalt\", the secondary Button hover is now the grey surface.softHover instead of the navy accentSubtle, in light and dark.",
+  "steps": [
+    {
+      "id": "value-changed/--component-button-secondary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-accent=\"cobalt\", --component-button-secondary-bg-hover no longer sets accentSubtle; it follows the base grey --semantic-color-surface-softHover.",
+      "detect": {
+        "cssVars": ["--component-button-secondary-bg-hover"],
+        "cssVarWrites": ["--component-button-secondary-bg-hover"]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-hover:[data-accent='cobalt']",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-accent=cobalt]"
+      ]
+    }
+  ]
+}
