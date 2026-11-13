@@ -1188,8 +1188,9 @@ Card — surface container with slot anatomy (12d-card-anatomy).
 Card — surface container with slot anatomy (12d-card-anatomy).
 
 ### CardFacts
-Card.Facts — a wrapping caption row of icon + label facts, as a list.
+Card.Facts — caption-size icon + label facts, as a list: a wrapping row, or one per line with `layout="stacked"`.
   - items: CardFact[]
+  - layout: "inline" | "stacked"
 
 ### CardFooter
 Card — surface container with slot anatomy (12d-card-anatomy).
