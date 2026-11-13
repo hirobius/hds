@@ -17995,6 +17995,8 @@
     "hds-divider--horizontal",
     "hds-divider--strong",
     "hds-divider--vertical",
+    "hds-ext",
+    "hds-ext-icon",
     "hds-focus",
     "hds-link",
     "hds-link--lg",

@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "static.css only: a focused raised .hds-button keeps its edge, forced colors show a Highlight focus outline, and .hds-ext with .hds-ext-icon gives an external button the arrow nudge; delete local shims that patched these, and .hds-link__icon stays still under reduced motion."
+}
