@@ -149,6 +149,16 @@ describe('cobalt accent theme (accents/cobalt/tokens.json)', () => {
     expect(ACCENTS_CSS).toContain('--primitive-color-cobalt-600');
   });
 
+  it('keeps the secondary Button hover grey: no accent fill (Figma hover variant)', () => {
+    // The secondary Button is a neutral soft fill; its hover is the next grey
+    // surface step (surface.softHover) under every accent, as the Figma
+    // component's Hover variant draws it. Cobalt once tinted it accentSubtle.
+    expect(ACCENTS_CSS).not.toMatch(/--component-button-secondary-bg-hover:/);
+    expect(tokenLeaf('component.button.secondary.bg.hover').$value).toBe(
+      '{semantic.color.surface.softHover}',
+    );
+  });
+
   it('swaps only accent tokens', () => {
     const vars = [...ACCENTS_CSS.matchAll(/^\s*(--[\w-]+):/gm)].map((m) => m[1]);
     expect(vars.length).toBeGreaterThan(0);
