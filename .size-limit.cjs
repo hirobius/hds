@@ -283,10 +283,12 @@ module.exports = [
   },
   {
     // hds#1502: the ./button subpath graph (packages external), 5.78 kB gzip (size-limit) on
-    // 2026-11-13. The limit is the measured size, no padding.
+    // 2026-11-13. The limit is the measured size, no padding. Byte pass (2026-11-13):
+    // motion-tokens imports only primitiveDuration, not the whole primitive tree,
+    // 5.79 -> 3.8 kB; ratcheted to 4 kB (room for hds#1537's new-tab hint).
     name: 'button graph (dist/probe/button.graph.js)',
     path: 'dist/probe/button.graph.js',
-    limit: '5.8 kB',
+    limit: '4 kB',
     gzip: true,
   },
   {
