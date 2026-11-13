@@ -1,6 +1,6 @@
 # Hirobius Design System
 
-Version: 0.41.0
+Version: 0.42.0
 
 Primary sources: `public/hds-manifest.json`, `src/app/data/component-api.json`, `hirobius.tokens.json`
 
@@ -217,7 +217,7 @@ Popover: [core] Anchor interactive content, such as a short form, a filter set o
 Progress: [core] Show how far a task has got, as a bar or ring that is determinate or indeterminate. Use instead: Spinner, Skeleton
 Radio: [core] Choose exactly one option from a small set that should stay visible together. Use instead: Checkbox, Select, SegmentedControl
 Reveal: Fade content in as it scrolls into view.
-SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Use instead: Radio, Tabs, Select
+SegmentedControl: [core] Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup). Give an option an `icon` and an `aria-label` (no `label`) for an icon-only segment. Use instead: Radio, Tabs, Select
 Select: [core] Choose one value from a short list of options in a form field. Use instead: Menu, Combobox
 Sheet: Open a short menu or form from the bottom edge on a phone (sort, row actions, status, a quick edit), centred like a Dialog on wider screens. Use instead: Dialog, AlertDialog, Menu
 Skeleton: [core] Reserve the shape of content that is still loading, so the layout does not jump. Use instead: Progress, Spinner
@@ -407,7 +407,7 @@ Name collisions: `Menu` shares a name with an HDS component; alias the icon: `im
 
 ## Upgrading
 
-This text describes @hirobius/design-system 0.41.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+This text describes @hirobius/design-system 0.42.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
 
 Every name a release removed, moved or renamed, and what to use instead:
 
@@ -1175,6 +1175,7 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - noPadding: boolean = false
   - onSelectedChange: (selected: boolean) => void
   - padding: "component" | "item" | "px16" | "px24" | "none" = component
+  - radius: "default" | "lg" = default
   - selectable: boolean = false
   - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -1414,7 +1415,7 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - description: ReactNode
   - framed: boolean = false
   - icon: LucideIcon
-  - italic: boolean
+  - italic: boolean = false
   - title: ReactNode
   - variant: 'inline' | 'teaching' = inline
 
@@ -1579,7 +1580,7 @@ The leading icon tile: a sunken rounded square at component.list.leadingSize.
   - icon: LucideIcon
 
 ### Menu
-Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`. A setting that flips on or off is a Menu.CheckboxItem with `indica…
   - children: React.ReactNode
   - defaultOpen: boolean
   - dir: "ltr" | "rtl"

@@ -19,7 +19,7 @@
   "author": "Adrian Milsap",
   "license": "MIT AND OFL-1.1",
   "private": false,
-  "version": "0.41.0",
+  "version": "0.42.0",
   "engines": {
     "node": ">=20",
     "pnpm": ">=8"
@@ -294,6 +294,7 @@
     "check:docs-axe": "node scripts/check-docs-axe.mjs",
     "check:docs-layout-shift": "node scripts/check-docs-layout-shift.mjs",
     "check:docs-touch-targets": "node scripts/check-docs-touch-targets.mjs",
+    "check:docs-type-ramp": "node scripts/check-docs-type-ramp.mjs",
     "check:style-props": "node scripts/check-style-discipline.mjs --style-props-only",
     "check:state-surfaces": "node scripts/check-state-surfaces.mjs",
     "check:state-surfaces:strict": "node scripts/check-state-surfaces.mjs --strict-review",

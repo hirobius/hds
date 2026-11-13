@@ -34,6 +34,14 @@ function themeVariables() {
   return vars;
 }
 
+/** The body role's line height (unitless), so label boxes follow the ramp. */
+function bodyLineHeight() {
+  const v = getComputedStyle(document.documentElement)
+    .getPropertyValue('--semantic-typography-body-line-height')
+    .trim();
+  return v || '1.6';
+}
+
 /** <html data-theme>, which the RootProvider flips with the theme toggle. */
 function useHtmlTheme() {
   const [theme, setTheme] = useState<string | null>(null);
@@ -68,6 +76,9 @@ export function Mermaid({ chart }: { chart: string }) {
           startOnLoad: false,
           theme: 'base',
           themeVariables: themeVariables(),
+          // Mermaid writes line-height: 1.5 inline on every label box; the ramp's body line
+          // height needs !important to beat it, and is applied before Mermaid measures the boxes.
+          themeCSS: `.label, .label *, .nodeLabel, .edgeLabel { line-height: ${bodyLineHeight()} !important; }`,
           securityLevel: 'strict',
         });
         const { svg: out } = await mermaid.render(`mermaid-${id}-${theme}`, chart);

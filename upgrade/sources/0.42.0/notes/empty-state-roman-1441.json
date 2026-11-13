@@ -1,0 +1,26 @@
+{
+  "impact": "behavior",
+  "plain": "EmptyState now sets its message upright by default; add the `italic` prop where you want the old italic look.",
+  "steps": [
+    {
+      "id": "look/EmptyState.italic",
+      "kind": "look",
+      "impact": "look",
+      "plain": "EmptyState's message is now upright by default; add `italic` to keep the old italic look.",
+      "detect": {
+        "jsx": ["EmptyState"]
+      },
+      "facts": ["prop-default-changed:EmptyState.italic"]
+    },
+    {
+      "id": "behavior/EmptyState.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "EmptyState's root now carries `not-italic` instead of `italic` by default, so selectors or tests that match the `italic` class need `italic` passed or an update.",
+      "detect": {
+        "regex": ["<EmptyState\\b[^>]*\\bitalic\\b"]
+      },
+      "facts": ["dom-changed:EmptyState"]
+    }
+  ]
+}

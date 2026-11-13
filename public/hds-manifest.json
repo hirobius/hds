@@ -2,15 +2,15 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-12T22:56:20.590Z",
+  "generated": "2026-11-13T07:20:11.764Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
-  "packageVersion": "0.41.0",
+  "packageVersion": "0.42.0",
   "upgrade": {
     "command": "npx @hirobius/design-system@latest upgrade"
   },
-  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.41.0/llms.txt",
+  "llmsTxt": "https://cdn.jsdelivr.net/npm/@hirobius/design-system@0.42.0/llms.txt",
   "systemSpecs": {
     "engine": "React + TypeScript",
     "icons": "Lucide React",
@@ -1339,6 +1339,7 @@
         "src/app/components/menu.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
+        "src/app/components/segmented-control.tsx",
         "src/app/components/select.tsx",
         "src/app/components/table.tsx",
         "src/app/components/tag.tsx",
@@ -2102,7 +2103,8 @@
           "optional": true
         },
         "onChange": {
-          "type": "(value: string) => void"
+          "type": "(value: string) => void",
+          "optional": true
         },
         "options": {
           "type": "HdsSegmentedOption[]"
@@ -2205,6 +2207,18 @@
           "testId": "gate:check-reduced-motion"
         },
         {
+          "rule": "When options carry an href the control is a nav (named by label or aria-label) holding a list of links; the current link is aria-current=\"page\", each is a real anchor, and Tab walks them like any links.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.link-mode"
+        },
+        {
+          "rule": "An icon-only option (`icon` + `aria-label`, no visible text) is named by its aria-label, hides the icon from assistive tech and keeps a 44px target in both radiogroup and link mode.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:segmented-control.icon-only"
+        },
+        {
           "rule": "Give the control a label or an aria-label so the group has a name.",
           "required": true,
           "owner": "consumer"
@@ -2220,7 +2234,7 @@
         "data-state"
       ],
       "usage": {
-        "when": "Switch between two to five mutually exclusive views or modes in a compact row.",
+        "when": "Switch between two to five mutually exclusive views or modes in a compact row. Give each option an `href` to make the segments navigation links (a nav, not a radiogroup). Give an option an `icon` and an `aria-label` (no `label`) for an icon-only segment.",
         "whenNot": "A form choice that submits with the form, or more than five options.",
         "useInstead": [
           {
@@ -3102,6 +3116,14 @@
           ],
           "default": "component"
         },
+        "radius": {
+          "type": "enum",
+          "values": [
+            "default",
+            "lg"
+          ],
+          "default": "default"
+        },
         "selectable": {
           "type": "boolean",
           "default": false
@@ -3317,6 +3339,13 @@
             "none"
           ]
         },
+        "radius": {
+          "type": "enum",
+          "values": [
+            "default",
+            "lg"
+          ]
+        },
         "selectable": {
           "type": "boolean"
         },
@@ -3347,6 +3376,7 @@
         "data-format",
         "data-interactive",
         "data-padding",
+        "data-radius",
         "data-slot",
         "data-tone",
         "data-variant"
@@ -4311,7 +4341,7 @@
         },
         "italic": {
           "type": "boolean",
-          "optional": true
+          "default": false
         },
         "title": {
           "type": "ReactNode"
@@ -5870,7 +5900,9 @@
         "src/app/components/checkbox.tsx",
         "src/app/components/control-color-fade.ts",
         "src/app/components/control-label.tsx",
+        "src/app/components/menu.tsx",
         "src/app/components/radio.tsx",
+        "src/app/components/toggle-switch-styles.ts",
         "src/app/hooks/useInteractionState.ts"
       ],
       "tokenMapping": {
@@ -7745,7 +7777,7 @@
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/switcher.tsx",
-        "src/app/components/toggle.tsx",
+        "src/app/components/toggle-switch-styles.ts",
         "src/index.ts"
       ],
       "tokenMapping": {},
@@ -8955,7 +8987,7 @@
       "governedCategory": true,
       "docExempt": true,
       "filePath": "src/app/components/menu.tsx",
-      "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+      "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`. A setting that flips on or off is a Menu.CheckboxItem with `indicator=\"switch\"`: it shows a trailing switch and keeps the menu open when toggled (a tick row still closes it). `description` on an Item or CheckboxItem adds a caption line under the label.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
@@ -8974,7 +9006,8 @@
         "src/app/components/page-header.tsx",
         "src/app/components/popover.tsx",
         "src/app/components/select.tsx",
-        "src/app/components/sheet.tsx"
+        "src/app/components/sheet.tsx",
+        "src/app/components/toggle-switch-styles.ts"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -9104,6 +9137,18 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:menu.disabled-skipped"
+        },
+        {
+          "rule": "A switch row is a menuitemcheckbox with aria-checked; its switch is a decorative aria-hidden indicator, never focusable.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.switch-row"
+        },
+        {
+          "rule": "A row's description is its accessible description (aria-describedby); the name stays the label alone.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:menu.row-description"
         },
         {
           "rule": "Give an icon-only Menu.Trigger an aria-label.",
@@ -12080,6 +12125,7 @@
       },
       "consumers": [
         "src/app/components/board.tsx",
+        "src/app/components/menu.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/tabs.tsx"
       ],

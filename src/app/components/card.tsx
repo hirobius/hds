@@ -146,8 +146,13 @@ export type CardTone = 'neutral' | 'danger' | 'success' | 'warning' | 'info';
 // binding-ok: card.focus.gapRadius drawn by the .hds-focus outline, which follows the card radius (radius + semantic.focus.gap.width); the token is the Figma binding
 // binding-ok: card.focus.ringRadius drawn by the .hds-focus outline (radius + gap + semantic.focus.ring.width); the token is the Figma binding
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- border-accent/feedback border colors have no dedicated Tailwind border-color utility name; var()-based so still token-driven
-const cardVariants = /* @__PURE__ */ cva('flex flex-col rounded-lg bg-card text-card-foreground', {
+const cardVariants = /* @__PURE__ */ cva('flex flex-col bg-card text-card-foreground', {
   variants: {
+    // `default` is the 12px container radius (follows role.radius); `lg` is the fixed 16px scale step.
+    radius: {
+      default: 'rounded-lg',
+      lg: 'rounded-scale-lg',
+    },
     variant: {
       default: 'border border-transparent', // 1px transparent preserves the layout box
       accent: 'border-2 border-[var(--semantic-color-border-accent)]',
@@ -172,7 +177,7 @@ const cardVariants = /* @__PURE__ */ cva('flex flex-col rounded-lg bg-card text-
       className: 'border-[var(--semantic-color-border-default)]',
     },
   ],
-  defaultVariants: { variant: 'default', tone: 'neutral', bordered: false },
+  defaultVariants: { variant: 'default', tone: 'neutral', bordered: false, radius: 'default' },
 });
 
 // `selectable` (hds#393): selection is a 2px inset ring, not a fill or border
@@ -225,6 +230,11 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
    *  legibility. Default false — repeated cards in grids should stay
    *  borderless and rely on whitespace, rails, or section dividers. */
   bordered?: boolean;
+  /** Corner radius. `default` is the container radius (`rounded-lg`, 12px, follows the tenant
+   *  `role.radius`). `lg` is the fixed 16px scale step `semantic.radius.scale.lg`, not tied to
+   *  `role.radius`. Card parts have no radius of their own, so nothing nests; the focus outline
+   *  follows either radius. Opt-in: emits `data-radius="lg"` only for `lg`. */
+  radius?: 'default' | 'lg';
   /** Make the card one checkbox-like option (role="checkbox"): click or Space toggles it, Enter does not. A click on a control inside it is left to that control. */
   selectable?: boolean;
   /** Whether a selectable card is selected. Controlled: pair with onSelectedChange. */
@@ -265,6 +275,7 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
     variant = 'default',
     tone = 'neutral',
     bordered = false,
+    radius = 'default',
     selectable = false,
     selected = false,
     onSelectedChange,
@@ -317,9 +328,10 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       data-variant={variant}
       data-tone={tone}
       data-bordered={bordered ? 'true' : 'false'}
+      data-radius={radius === 'lg' ? 'lg' : undefined}
       data-interactive={asChild ? 'true' : undefined}
       className={cn(
-        cardVariants({ variant, tone, bordered }),
+        cardVariants({ variant, tone, bordered, radius }),
         isSelectable && SELECTABLE_CARD,
         asChild && INTERACTIVE_CARD,
         className,

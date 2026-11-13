@@ -249,3 +249,40 @@ describe('Card asChild (a whole card that is one link)', () => {
     expect(root.className).not.toContain('hover:scale-102');
   });
 });
+
+// ── hds#1436: radius ─────────────────────────────────────────────────────────
+
+describe('Card radius (hds#1436)', () => {
+  it('default keeps rounded-lg and emits no data-radius', () => {
+    render(<Card data-testid="c">x</Card>);
+    const el = screen.getByTestId('c');
+    expect(el.className).toContain('rounded-lg');
+    expect(el.className).not.toContain('rounded-scale-lg');
+    expect(el.hasAttribute('data-radius')).toBe(false);
+  });
+
+  it('lg uses the 16px scale step and data-radius="lg"', () => {
+    render(
+      <Card data-testid="c" radius="lg">
+        x
+      </Card>,
+    );
+    const el = screen.getByTestId('c');
+    expect(el.className).toContain('rounded-scale-lg');
+    expect(el.className.split(/\s+/)).not.toContain('rounded-lg');
+    expect(el.getAttribute('data-radius')).toBe('lg');
+  });
+
+  it('works with asChild', () => {
+    render(
+      <Card asChild radius="lg">
+        <a href="/x" data-testid="c">
+          Link
+        </a>
+      </Card>,
+    );
+    const el = screen.getByTestId('c');
+    expect(el.className).toContain('rounded-scale-lg');
+    expect(el.getAttribute('data-radius')).toBe('lg');
+  });
+});

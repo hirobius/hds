@@ -1,5 +1,5 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
-   from docs/api/releases/0.41.0.json: every Tailwind utility that release shipped stays emitted,
+   from docs/api/releases/0.42.0.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
    ./tokens.css by accident. To drop one, list utility-removed:<class> in a step
    (upgrade/pending/<changeset>.json), then run node scripts/build-utility-safelist.mjs. */
@@ -36,6 +36,8 @@
 @source inline("[&_svg]:size-[var(--component-button-size-sm-iconSize)]");
 @source inline("[--hds-focus-color:var(--semantic-color-feedback-error)]");
 @source inline("[--hds-local-list-text-start:var(--component-list-rowPadding)]");
+@source inline("[--seg-inner-radius:max(0px,calc(var(--seg-rail-radius)-var(--seg-rail-pad)-1px))]");
+@source inline("[--seg-rail-radius:calc(var(--role-radius)+min(var(--role-radius),4px))]");
 @source inline("[-ms-overflow-style:none]");
 @source inline("[[data-density=compact]_&]:min-h-[var(--semantic-size-row-compact)]");
 @source inline("[[data-density=compact]_&]:py-[var(--semantic-space-scale-xs)]");
@@ -300,6 +302,7 @@
 @source inline("gap-fixed-md");
 @source inline("gap-fixed-xs");
 @source inline("gap-px6");
+@source inline("gap-scale-2xs");
 @source inline("gap-scale-sm");
 @source inline("gap-scale-xs");
 @source inline("gap-subgrid-gap");
@@ -467,6 +470,7 @@
 @source inline("min-h-[var(--semantic-size-control-lg)]");
 @source inline("min-h-[var(--semantic-size-row-comfortable)]");
 @source inline("min-h-[var(--semantic-size-row-compact)]");
+@source inline("min-h-[var(--semantic-size-touchTarget)]");
 @source inline("min-w-0");
 @source inline("min-w-24");
 @source inline("min-w-32");
@@ -477,6 +481,7 @@
 @source inline("min-w-[var(--component-tag-minWidth)]");
 @source inline("min-w-[var(--primitive-size-interactive-min)]");
 @source inline("min-w-[var(--semantic-size-tile)]");
+@source inline("min-w-[var(--semantic-size-touchTarget)]");
 @source inline("min-w-max");
 @source inline("ml-auto");
 @source inline("motion-reduce:animate-none");
@@ -634,6 +639,8 @@
 @source inline("rounded-[var(--component-tag-radius)]");
 @source inline("rounded-[var(--primitive-radius-4)]");
 @source inline("rounded-[var(--primitive-radius-full)]");
+@source inline("rounded-[var(--seg-inner-radius)]");
+@source inline("rounded-[var(--seg-rail-radius)]");
 @source inline("rounded-[var(--semantic-radius-action)]");
 @source inline("rounded-[var(--semantic-radius-control)]");
 @source inline("rounded-b-md");
@@ -641,6 +648,7 @@
 @source inline("rounded-lg");
 @source inline("rounded-md");
 @source inline("rounded-none");
+@source inline("rounded-scale-lg");
 @source inline("rounded-sm");
 @source inline("rounded-t-lg");
 @source inline("rounded-t-md");

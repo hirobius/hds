@@ -67,7 +67,7 @@ export const ThemeToggle = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, T
           (() => {
             if (!theme.hasProvider && isDevelopment()) {
               console.warn(
-                '[ThemeToggle] clicked with no ThemeProvider above it and no isDark/onToggle props, so it cannot switch the theme. Wrap the app in <ThemeProvider> or pass isDark and onToggle.',
+                '[ThemeToggle] needs a ThemeProvider above it, or isDark and onToggle props, to switch the theme.',
               );
             }
             theme.toggleDark();

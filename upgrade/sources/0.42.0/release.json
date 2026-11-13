@@ -1,0 +1,62 @@
+{
+  "$comment": "Frozen inputs of the 0.42.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.42.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.42.0",
+  "previous": "0.41.0",
+  "date": "2026-11-13",
+  "summary": "7 changes to make by hand and 2 that look different.",
+  "backfilled": false,
+  "notes": {
+    "badge-leading-icon": {
+      "needle": "862cb5d: Badge takes an optional `icon` prop",
+      "source": "CHANGELOG.md:19"
+    },
+    "card-radius-lg": {
+      "needle": "b5603dd: Card takes an opt-in `radius` prop:",
+      "source": "CHANGELOG.md:20"
+    },
+    "deprecation-wording-1462": {
+      "needle": "68d8b9e: UPGRADING.md and the upgrade command",
+      "source": "CHANGELOG.md:29"
+    },
+    "docs-axe-green-1473": {
+      "needle": "20dfd0e: Dark info text now clears AA on",
+      "source": "CHANGELOG.md:30"
+    },
+    "empty-state-roman-1441": {
+      "needle": "b5603dd: EmptyState: the `italic` prop now",
+      "source": "CHANGELOG.md:21"
+    },
+    "menu-switch-rows-1440": {
+      "needle": "b5603dd: Menu: `Menu.CheckboxItem` takes",
+      "source": "CHANGELOG.md:22"
+    },
+    "metadata-list-lede": {
+      "needle": "e8b5091: MetadataList's description now reads",
+      "source": "CHANGELOG.md:31"
+    },
+    "readme-standard-1491": {
+      "needle": "78c251a: The README, which npm shows as the",
+      "source": "CHANGELOG.md:32"
+    },
+    "seg-concentric-1468": {
+      "needle": "8b1e694: SegmentedControl: the selected pill",
+      "source": "CHANGELOG.md:33"
+    },
+    "segmented-control-icon-only": {
+      "needle": "b5603dd: SegmentedControl: an option can be",
+      "source": "CHANGELOG.md:23"
+    },
+    "segmented-control-links": {
+      "needle": "b5603dd: SegmentedControl: an option can take",
+      "source": "CHANGELOG.md:24"
+    },
+    "size-budget-green-1457": {
+      "needle": "d84b622: Bundle budgets back under their",
+      "source": "CHANGELOG.md:34"
+    },
+    "tag-icon-copied": {
+      "needle": "5c29f6c: `Tag` takes a leading `icon` (a",
+      "source": "CHANGELOG.md:25"
+    }
+  }
+}

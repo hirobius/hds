@@ -751,6 +751,15 @@
       ],
       "default": "component"
     },
+    "radius": {
+      "type": "\"default\" | \"lg\"",
+      "optional": true,
+      "values": [
+        "default",
+        "lg"
+      ],
+      "default": "default"
+    },
     "selectable": {
       "type": "boolean",
       "optional": true,
@@ -1709,7 +1718,7 @@
       "type": "boolean",
       "optional": true,
       "values": null,
-      "default": null
+      "default": "false"
     },
     "title": {
       "type": "ReactNode",
@@ -2976,7 +2985,7 @@
     },
     "onChange": {
       "type": "(value: string) => void",
-      "optional": false,
+      "optional": true,
       "values": null,
       "default": null
     },

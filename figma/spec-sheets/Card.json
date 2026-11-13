@@ -96,6 +96,15 @@
       "figmaProperty": "Padding"
     },
     {
+      "name": "radius",
+      "type": "enum",
+      "values": [
+        "default",
+        "lg"
+      ],
+      "default": "default"
+    },
+    {
       "name": "selectable",
       "type": "boolean",
       "default": false
