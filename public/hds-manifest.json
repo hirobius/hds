@@ -1577,6 +1577,7 @@
       },
       "consumers": [
         "src/app/components/button.tsx",
+        "src/app/components/new-tab-hint.tsx",
         "src/app/components/text.tsx"
       ],
       "tokenMapping": {
@@ -3880,6 +3881,7 @@
         "src/app/components/inline-link.tsx",
         "src/app/components/list.tsx",
         "src/app/components/menu.tsx",
+        "src/app/components/new-tab-hint.tsx",
         "src/app/components/page-header.tsx",
         "src/app/components/pagination.tsx",
         "src/app/components/popover.tsx",
@@ -4087,6 +4089,12 @@
           "required": true,
           "owner": "component",
           "testId": "a11y:button.aschild-disabled"
+        },
+        {
+          "rule": "With `external`, the accessible name ends in a visually hidden \"(opens in new tab)\", as InlineLink's does, and the arrow is decorative.",
+          "required": true,
+          "owner": "component",
+          "testId": "a11y:button.external-new-tab"
         },
         {
           "rule": "An icon-only button takes its accessible name from label (as aria-label).",
@@ -7545,6 +7553,7 @@
         "src/app/components/app-shell.tsx",
         "src/app/components/avatar-group.tsx",
         "src/app/components/board.tsx",
+        "src/app/components/new-tab-hint.tsx",
         "src/app/components/status-list-item.tsx"
       ],
       "tokenMapping": {},
@@ -12909,6 +12918,48 @@
     }
   },
   "utilities": {
+    "NewTabHint": {
+      "category": "Internal",
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
+      "filePath": "src/app/components/new-tab-hint.tsx",
+      "description": "NewTabHint — the visually hidden \" (opens in new tab)\" an external link ends with.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "utility",
+      "preview": {
+        "exportName": "NewTabHint",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/button.tsx",
+        "src/app/components/inline-link.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Inside an external link that opens a new tab, so a screen reader hears what the decorative arrow shows (hds#1537). InlineLink and Button `external` render it for you.",
+        "whenNot": "A link that opens in the same tab, or any other hidden text (use VisuallyHidden).",
+        "useInstead": [
+          {
+            "component": "VisuallyHidden",
+            "reason": "for other text only assistive technology needs"
+          }
+        ]
+      }
+    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",

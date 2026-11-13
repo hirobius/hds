@@ -111,6 +111,18 @@ describe('Button accessibility contract', () => {
     expect(button.getAttribute('aria-pressed')).toBe('false');
   });
 
+  it('a11y:button.external-new-tab - an external Button says it opens a new tab, and its arrow is decorative', () => {
+    render(
+      <Button asChild external>
+        <a href="https://example.com">Docs</a>
+      </Button>,
+    );
+    // jsdom's name computation drops the hint's leading space; Chromium keeps it.
+    const link = screen.getByRole('link', { name: /^Docs ?\(opens in new tab\)$/ });
+    expect(link.textContent).toBe('Docs (opens in new tab)');
+    expect(link.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+  });
+
   it('a11y:button.aschild-disabled - a disabled slotted link is aria-disabled and leaves the tab order', async () => {
     const user = userEvent.setup();
     render(

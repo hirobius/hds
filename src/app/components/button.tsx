@@ -20,6 +20,7 @@ import { warnOncePlain } from '../../lib/deprecation';
 import { crossfadeFade, useHdsMotion } from '../hooks/useHdsMotion';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { installWipeListeners } from './button-wipe';
+import { NewTabHint } from './new-tab-hint';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -325,6 +326,7 @@ const BUTTON_EDGE = {
  * @a11y component required a11y:button.loading-busy loading sets aria-busy and disables the button, and the spinner is hidden from assistive technology.
  * @a11y component required a11y:button.toggle-pressed A toggle button reports its state with aria-pressed and flips it on activation.
  * @a11y component required a11y:button.aschild-disabled A disabled asChild link is aria-disabled and leaves the tab order, since a link cannot be natively disabled.
+ * @a11y component required a11y:button.external-new-tab With `external`, the accessible name ends in a visually hidden "(opens in new tab)", as InlineLink's does, and the arrow is decorative.
  * @a11y component required a11y:button.icon-only-name An icon-only button takes its accessible name from label (as aria-label).
  * @a11y component required a11y:button.target-size Every size is at least 24px tall, and an icon-only button at least 24px wide (WCAG 2.5.8).
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
@@ -496,6 +498,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         >
           <Slottable>{children as React.ReactElement}</Slottable>
           {external && iconRight}
+          {external && <NewTabHint />}
         </Slot>
       );
     }
@@ -548,6 +551,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
             content
           ))}
         {!loading && !iconOnly && iconRight}
+        {external && <NewTabHint />}
       </button>
     );
   },

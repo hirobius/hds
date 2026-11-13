@@ -1,0 +1,16 @@
+{
+  "impact": "behavior",
+  "plain": "A Button with external now has \" (opens in new tab)\" at the end of its text and accessible name; update tests that match its exact name or textContent, for example use a regex.",
+  "steps": [
+    {
+      "id": "behavior/Button.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The Button demo's external buttons gained a visually hidden \"(opens in new tab)\" span; a Button without external renders as before.",
+      "detect": {
+        "regex": ["<Button[^>]*\\bexternal\\b"]
+      },
+      "facts": ["dom-changed:Button"]
+    }
+  ]
+}
