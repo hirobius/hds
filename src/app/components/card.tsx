@@ -507,7 +507,7 @@ export interface CardFactsProps extends Omit<React.HTMLAttributes<HTMLUListEleme
  * @whenNot Term and description pairs (use MetadataList) or text with no icons (use MetaLine).
  */
 const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsProps>(
-  function CardFacts({ className, items, layout = 'inline', ...props }, ref) {
+  function CardFacts({ className, items, layout, ...props }, ref) {
     const pad = usePartPadding('p-surface-padding pt-0');
     if (items.length === 0) return null;
     const stacked = layout === 'stacked';
@@ -515,12 +515,9 @@ const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsPr
       <ul
         ref={ref}
         data-slot="card-facts"
-        data-layout={layout}
         className={cn(
-          'm-0 flex list-none hds-type-caption text-muted-foreground',
-          stacked
-            ? 'flex-col items-start gap-y-scale-xs'
-            : 'flex-wrap items-center gap-x-scale-md gap-y-scale-xs',
+          'm-0 flex list-none gap-y-scale-xs hds-type-caption text-muted-foreground',
+          stacked ? 'flex-col' : 'flex-wrap items-center gap-x-scale-md',
           pad,
           className,
         )}
@@ -531,7 +528,7 @@ const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsPr
             key={label}
             className={cn('inline-flex gap-scale-xs', stacked ? 'items-start' : 'items-center')}
           >
-            <Icon icon={icon} size="small" className={stacked ? 'shrink-0' : undefined} />
+            <Icon icon={icon} size="small" />
             {label}
           </li>
         ))}

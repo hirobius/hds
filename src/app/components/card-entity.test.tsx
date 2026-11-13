@@ -95,7 +95,6 @@ describe('Card.Facts', () => {
       />,
     );
     const list = screen.getByRole('list');
-    expect(list.getAttribute('data-layout')).toBe('stacked');
     expect(list.className).toContain('flex-col');
     expect(list.className).not.toContain('flex-wrap');
     const items = within(list).getAllByRole('listitem');
@@ -103,11 +102,6 @@ describe('Card.Facts', () => {
       expect(li.className).toContain('items-start');
       expect(li.className).not.toContain('items-center');
     });
-  });
-
-  it('defaults to the inline layout', () => {
-    render(<JobCard />);
-    expect(screen.getByRole('list').getAttribute('data-layout')).toBe('inline');
   });
 
   it('renders nothing for an empty list', () => {
