@@ -372,6 +372,24 @@ ${dtsProps}
   return tokenVarsDts;
 }
 
+/**
+ * The `hds.space` table (hds#1525): one key per primitive space step, named for
+ * its pixel value (`px16`), valued as that step's CSS var. The zero step and the
+ * 3px step were never in the public table.
+ */
+const SPACE_TABLE_OMITTED = new Set(['0', 'px3']);
+
+function buildSpaceTable(allTokens) {
+  const rows = [];
+  for (const { path, value } of allTokens) {
+    if (path.length !== 3 || path[0] !== 'primitive' || path[1] !== 'space') continue;
+    if (SPACE_TABLE_OMITTED.has(path[2])) continue;
+    rows.push([value.value, path[2]]);
+  }
+  rows.sort((a, b) => a[0] - b[0]);
+  return rows.map(([px, step]) => `  px${px}: 'var(--primitive-space-${step})',`).join('\n');
+}
+
 /** src/app/design-system/generated-token-refs.ts */
 export function renderTokenRefsTS(allTokens, deprecationNotes) {
   const refsTree = buildTokenRefsTree(allTokens);
@@ -390,6 +408,11 @@ export function renderTokenRefsTS(allTokens, deprecationNotes) {
  */
 export const tokenRefs = {
 ${serialize(refsTree, 1, deprecationNotes)}
+} as const;
+
+/** \`hds.space\` and component-tokens' \`space\`: the primitive steps by pixel value. */
+export const spaceScale = {
+${buildSpaceTable(allTokens)}
 } as const;
 `;
   return tokenRefsTs;
