@@ -1691,3 +1691,28 @@ Session total: 3 calls (2 reads, 1 refused write). The map is code: figma/code-c
 ### 2026-11-12 — library published by Adrian (0.41.0, Sora)
 
 Adrian published the HDS library 2VgBbVpKiDnu0aftJEVyBQ by hand after the rows above (token delta R4, spec sheet headers R8–R11): 0.41.0 with Sora, Source links on the spec sheets. Reported by the orchestrator session; no agent call, no MCP call counted.
+
+## 2026-11-12 · Daily release check: meta/commit stamp (main 5c29f6c, 0.41.0)
+
+Plan updated 1 · created 0 · deleted 0 (meta/commit 20dfd0e → 5c29f6c); `check:figma-release` failed on the stale cover stamp.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                           | Result                                                  |
+| --- | ---------- | ---------------- | ----- | --------------------------------- | ------------------------------------------------------- |
+| 1   | 16:50      | `create_session` | read  | open file session                 | OK                                                      |
+| 2   | 16:50      | `use_figma`      | write | delta.js unmodified (meta/commit) | OK; meta/commit → 49855f6, 647 variables, post b70acf5c |
+
+Session total: 2 calls
+
+Calls logged for 2026-11-12 by this session: 2 (others logged about 60 before it).
+
+## 2026-11-13 · Release 0.42.0: meta stamp (Version PR #1465, head aaa49cf)
+
+Plan updated 3 · created 0 · deleted 0 (meta/version 0.41.0 → 0.42.0, meta/releasedAt 2026-11-11 → 2026-11-13, meta/commit 49855f6 → aaa49cf); `check:figma-release` refused 0.42.0 on the stale cover. The base is the 0.41.0 snapshot b70acf5c (PR #1505, not yet on main), which the library matched.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                           | Result                                                                               |
+| --- | ---------- | ---------------- | ----- | ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| 1   | 02:13      | `create_session` | read  | open file session                                 | OK                                                                                   |
+| 2   | 02:13      | `use_figma`      | write | delta.js unmodified, built on main's snapshot     | Refused by the pin, nothing written: base 4e409244 was stale (library held b70acf5c) |
+| 3   | 02:14      | `use_figma`      | write | delta.js unmodified, rebuilt on snapshot b70acf5c | OK; 3 meta variables updated, 647 variables, post ad1c1cfb                           |
+
+Session total: 3 calls (1 read, 2 writes, 1 refused). Nothing deleted, nothing published.
