@@ -319,7 +319,11 @@
       "  button data-variant=\"link\"",
       "  button data-hover-effect=\"wipe\" data-tone=\"danger\" data-variant=\"secondary\"",
       "  button data-variant=\"secondary\"",
-      "  button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\""
+      "  button data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "  a data-hover-effect=\"wipe\" data-variant=\"secondary\"",
+      "    svg aria-hidden=\"true\"",
+      "  a data-variant=\"link\"",
+      "    svg aria-hidden=\"true\""
     ],
     "reader": [
       "button, Primary",
@@ -332,7 +336,9 @@
       "button, Link",
       "button, Danger",
       "button, Flat (opt-out)",
-      "button, Small"
+      "button, Small",
+      "link, Source on GitHub",
+      "link, Link, external"
     ]
   },
   "Callout": {

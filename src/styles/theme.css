@@ -660,6 +660,30 @@
   }
 }
 
+/* The external-link arrow's nudge (hds#751, hds#1530), shared by InlineLink and Button.
+   The transition sits on the resting icon, so it eases out as well as in; the shift is a
+   `translate` (no layout shift: it moves paint, not the box), 0.125em up and right on the
+   productive duration and easing. Reduced motion never applies it: the arrow stays put.
+   Hover applies only on hover-capable pointers, so touch never leaves it nudged. The root
+   carries `.hds-ext`. Unlayered on purpose: index.css's unlayered `:where([data-hds]) *`
+   transition (colour only, 0.3s) beats any `@layer` rule, so a layered transition here never
+   ran and the arrow jumped between its two positions. */
+.hds-ext-icon {
+  transition: translate var(--hds-motion-productive);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hds-ext:focus-visible .hds-ext-icon {
+    translate: 0.125em -0.125em;
+  }
+
+  @media (hover: hover) {
+    .hds-ext:hover .hds-ext-icon {
+      translate: 0.125em -0.125em;
+    }
+  }
+}
+
 @layer components {
   /* The follow and snap-back use the `translate` property, not `transform`:
      the motion/react enter (toast.tsx, hds#751) leaves an inline transform,

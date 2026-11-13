@@ -119,6 +119,7 @@ const MOTION_PATTERNS = [
   /["'\s]animate-[a-z]/, // Tailwind animation utilities
   /var\(--(?:primitive|semantic)-duration-/, // duration token as a raw CSS var
   /var\(--hds-motion-[a-z]+-duration\)/, // motion-intent duration (theme.css zeroes it under reduced motion)
+  /["'\s]hds-ext-icon["'\s]/, // external-link arrow: theme.css .hds-ext-icon eases its translate on the productive token (hds#1530)
 ];
 
 // ── Per-file exemption ────────────────────────────────────────────────────────

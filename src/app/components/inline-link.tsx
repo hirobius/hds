@@ -65,13 +65,9 @@ const SIZE_ROLE: Record<InlineLinkSize, 'ui' | 'body' | 'title'> = {
 // To change link styling site-wide: edit .hds-link in theme.css. The hover colour
 // transition lives there (productive motion token).
 //
-// Motion (hds#751): an external link's icon nudges 0.125em up-right on hover and
-// keyboard focus, a CSS translate on the productive motion token. theme.css zeroes
-// that duration under prefers-reduced-motion, so the icon then stays still.
-// group-hover only applies on hover-capable pointers (Tailwind v4), so touch
-// never leaves the icon stuck nudged.
-const EXTERNAL_ICON_NUDGE =
-  'transition-[translate] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)] group-hover:translate-x-[0.125em] group-hover:-translate-y-[0.125em] group-focus-visible:translate-x-[0.125em] group-focus-visible:-translate-y-[0.125em]';
+// Motion (hds#751): an external link's icon nudges up-right on hover and keyboard focus
+// (theme.css `.hds-ext` / `.hds-ext-icon`: a translate that eases in and out, none under
+// reduced motion).
 
 /**
  * A text label splits before its last word, so that word can share a no-wrap
@@ -138,7 +134,7 @@ export function InlineLink({
       href={safe}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group hds-focus hds-link${modifierClass}`}
+      className={`hds-ext hds-focus hds-link${modifierClass}`}
     >
       {externalIcon ? (
         <>
@@ -151,7 +147,7 @@ export function InlineLink({
               size="var(--component-inlineLink-iconSize)"
               color="currentColor"
               aria-hidden
-              className={EXTERNAL_ICON_NUDGE}
+              className="hds-ext-icon"
               style={{
                 display: 'inline',
                 verticalAlign: 'middle',

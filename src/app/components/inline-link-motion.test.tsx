@@ -7,7 +7,7 @@
  * carries no motion-ok exemption.
  */
 import { readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import { InlineLink } from './inline-link';
@@ -15,7 +15,6 @@ import { InlineLink } from './inline-link';
 afterEach(cleanup);
 
 const src = readFileSync(join(__dirname, 'inline-link.tsx'), 'utf8');
-const theme = readFileSync(resolve(__dirname, '../../styles/theme.css'), 'utf8');
 
 const externalIcon = () => {
   const link = screen.getByRole('link');
@@ -27,28 +26,11 @@ describe('InlineLink external icon nudge (hds#751)', () => {
     expect(src).not.toMatch(/^\s*\/\/\s*motion-ok:/m);
   });
 
-  it('nudges the external icon up-right on link hover and focus, scaled in em', () => {
+  it('marks the link as the nudge root and the icon as the nudged element', () => {
     render(<InlineLink href="https://example.com">Docs</InlineLink>);
     const { link, icon } = externalIcon();
-    expect(link.className).toMatch(/(^|\s)group(\s|$)/);
-    const cls = icon.getAttribute('class') ?? '';
-    for (const state of ['group-hover', 'group-focus-visible']) {
-      expect(cls).toContain(`${state}:translate-x-[0.125em]`);
-      expect(cls).toContain(`${state}:-translate-y-[0.125em]`);
-    }
-  });
-
-  it('times the nudge on the productive motion token, never a raw value', () => {
-    render(<InlineLink href="https://example.com">Docs</InlineLink>);
-    const cls = externalIcon().icon.getAttribute('class') ?? '';
-    expect(cls).toContain('transition-[translate]');
-    expect(cls).toContain('duration-[var(--hds-motion-productive-duration)]');
-    expect(cls).toContain('ease-[var(--hds-motion-productive-easing)]');
-  });
-
-  it('stops under prefers-reduced-motion: theme.css zeroes the productive duration', () => {
-    const root = theme.match(/\(prefers-reduced-motion: reduce\) \{\s*:root \{[^}]*\}/);
-    expect(root?.[0]).toContain('--hds-motion-productive-duration: 0s');
+    expect(link.className).toMatch(/(^|\s)hds-ext(\s|$)/);
+    expect(icon.getAttribute('class') ?? '').toContain('hds-ext-icon');
   });
 
   it('leaves internal and plain links without an icon or nudge', () => {

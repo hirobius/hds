@@ -816,7 +816,7 @@
           "testId": "a11y:disclosure.keyboard"
         },
         {
-          "rule": "A collapsed panel is removed from the document, so assistive technology cannot reach it.",
+          "rule": "A collapsed panel stays in the document but is visibility:hidden once its collapse ends, so assistive technology and the tab order cannot reach it.",
           "required": true,
           "owner": "component",
           "testId": "a11y:disclosure.hidden-collapsed"
@@ -846,13 +846,13 @@
           "testId": "a11y:disclosure.chevron-hidden"
         },
         {
-          "rule": "The height and chevron animation take their duration from useHdsMotion, which is zero under prefers-reduced-motion.",
+          "rule": "The height, visibility and chevron transitions take their duration from the --hds-motion-productive token, which is zero under prefers-reduced-motion, so the panel opens instantly.",
           "required": true,
           "owner": "component",
           "testId": "gate:check-reduced-motion"
         },
         {
-          "rule": "The row variant shows a one-line preview while collapsed and removes it once open, so the text is never read twice.",
+          "rule": "The row variant shows a one-line preview while collapsed and hides it (visibility:hidden) once open, so the text is never read twice.",
           "required": true,
           "owner": "component",
           "testId": "a11y:disclosure.row-preview"
@@ -2274,7 +2274,6 @@
         "src/app/components/container.tsx",
         "src/app/components/data-table-section.tsx",
         "src/app/components/destructive-section.tsx",
-        "src/app/components/disclosure.tsx",
         "src/app/components/divider.tsx",
         "src/app/components/dock.tsx",
         "src/app/components/error-pattern.tsx",
@@ -3946,6 +3945,10 @@
           "type": "boolean",
           "optional": true
         },
+        "external": {
+          "type": "boolean",
+          "optional": true
+        },
         "flush": {
           "type": "boolean",
           "default": false
@@ -4146,6 +4149,9 @@
           "type": "boolean"
         },
         "disabled": {
+          "type": "boolean"
+        },
+        "external": {
           "type": "boolean"
         },
         "flush": {

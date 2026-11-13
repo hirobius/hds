@@ -1148,6 +1148,7 @@ Triggers an action when activated.
   - asChild: boolean = false
   - defaultPressed: boolean
   - disabled: boolean
+  - external: boolean
   - flush: boolean = false
   - hoverEffect: "none" | "wipe" = wipe
   - iconLeft: ReactNode

@@ -181,6 +181,11 @@
       "optional": true
     },
     {
+      "name": "external",
+      "type": "boolean",
+      "optional": true
+    },
+    {
       "name": "flush",
       "type": "boolean",
       "default": false
