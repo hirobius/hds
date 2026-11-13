@@ -8,13 +8,15 @@ import { openThemed } from './theme';
  * word ("HEX": flat top and bottom, no descender, no overshoot) or digits for a count, the
  * pill is shot with and without the label colour, and the rows that differ are the glyph
  * ink. The offset is the ink's vertical centre minus the pill's (negative = high), in CSS
- * px, at 1x and 3x so a sub-pixel drift shows. The bound is 0.5px or two device pixels,
- * whichever is larger: the ink box snaps to whole device pixels (1/3px at 3x) and a round digit
- * overshoots a pixel or so, so the digits read 0.667px at 3x where the flat caps read 0.5px.
+ * px, at 1x and 3x so a sub-pixel drift shows. The bound is 0.5px at 1x. At 3x it is two
+ * device pixels (0.667px): the ink box snaps to whole device pixels and a round digit
+ * overshoots, so the count reads 0.667px at 3x on CI where the flat caps read 0.5px.
  * Needs `pnpm docs:publish` first.
  */
 const MAX_OFFSET = 0.5;
-const maxOffset = (scale: number) => Math.max(MAX_OFFSET, 2 / scale);
+// Only a high-DPR run gets the device-pixel allowance; at 1x the bound stays 0.5px so a
+// 1-2px high label (the hds#1510 defect) still fails.
+const maxOffset = (scale: number) => (scale >= 2 ? Math.max(MAX_OFFSET, 2 / scale) : MAX_OFFSET);
 
 function inkOffset(withText: Buffer, withoutText: Buffer, scale: number) {
   const a = PNG.sync.read(withText);
@@ -76,6 +78,12 @@ const CASES = [
     pill: (page: Page) => page.locator('main button[aria-pressed="false"] > span').first(),
   },
 ];
+
+test('the bound at 1x is 0.5px for every case', () => {
+  for (const c of CASES) {
+    expect(maxOffset(1), c.name).toBe(0.5);
+  }
+});
 
 for (const scale of [1, 3]) {
   test.describe(`${scale}x`, () => {
