@@ -9,10 +9,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/",
+      "has": [{ "type": "host", "value": "hirobius-hds-components.vercel.app" }],
+      "destination": "https://hirobius-design-system.vercel.app/",
+      "statusCode": 301
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "hirobius-hds-components.vercel.app" }],
       "destination": "https://hirobius-design-system.vercel.app/:path*",
-      "permanent": true
+      "statusCode": 301
     },
     { "source": "/docs/tokens", "destination": "/docs/guides/tokens", "permanent": true }
   ],

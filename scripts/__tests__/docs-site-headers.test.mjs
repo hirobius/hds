@@ -93,12 +93,29 @@ describe('docs-site redirects', () => {
 });
 
 describe('docs-site old-host redirect', () => {
-  it('sends the old Vercel host to the new one, as the first permanent redirect', () => {
+  const HAS = [{ type: 'host', value: 'hirobius-hds-components.vercel.app' }];
+
+  // Vercel compiles "/:path*" to ^(?:/(seg(?:/seg)*))?$, which matches "" and
+  // "/docs" but not "/". The root therefore needs its own rule (hds#1532).
+  it('redirects the old host root with its own rule, 301, before the catch-all', () => {
     expect(config.redirects[0]).toEqual({
-      source: '/:path*',
-      has: [{ type: 'host', value: 'hirobius-hds-components.vercel.app' }],
-      destination: 'https://hirobius-design-system.vercel.app/:path*',
-      permanent: true,
+      source: '/',
+      has: HAS,
+      destination: 'https://hirobius-design-system.vercel.app/',
+      statusCode: 301,
     });
+  });
+
+  it('redirects every other old-host path with a 301, second', () => {
+    expect(config.redirects[1]).toEqual({
+      source: '/:path*',
+      has: HAS,
+      destination: 'https://hirobius-design-system.vercel.app/:path*',
+      statusCode: 301,
+    });
+  });
+
+  it('uses statusCode, not permanent (permanent sends 308)', () => {
+    for (const r of config.redirects.slice(0, 2)) expect(r).not.toHaveProperty('permanent');
   });
 });
