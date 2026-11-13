@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Card.Facts has a new opt-in layout prop; layout=\"stacked\" puts one fact per line, and the default inline layout renders as before."
+}

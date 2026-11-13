@@ -619,6 +619,20 @@ function CardDemo() {
             </Button>
           </Card.Footer>
         </Card>
+        {/* layout="stacked": one fact per line, icons on the first text line. */}
+        <Card>
+          <Card.Header>
+            <Card.Title>Staff product designer</Card.Title>
+          </Card.Header>
+          <Card.Facts
+            layout="stacked"
+            items={[
+              { icon: MapPin, label: 'Remote within the EU, with a quarterly team week in Lisbon' },
+              { icon: Banknote, label: '$120k to $150k' },
+              { icon: Briefcase, label: 'Full time' },
+            ]}
+          />
+        </Card>
       </Grid>
       {/* asChild: the whole card is one link, with the interactive hover. */}
       <Card asChild padding="item">

@@ -84,6 +84,32 @@ describe('Card.Facts', () => {
     expect(screen.getByRole('list').className).toContain('flex-wrap');
   });
 
+  it('stacks one fact per line, icons on the first text line, with layout="stacked"', () => {
+    render(
+      <Card.Facts
+        layout="stacked"
+        items={[
+          { icon: MapPin, label: 'Remote' },
+          { icon: Banknote, label: '$120k to $150k' },
+        ]}
+      />,
+    );
+    const list = screen.getByRole('list');
+    expect(list.getAttribute('data-layout')).toBe('stacked');
+    expect(list.className).toContain('flex-col');
+    expect(list.className).not.toContain('flex-wrap');
+    const items = within(list).getAllByRole('listitem');
+    items.forEach((li) => {
+      expect(li.className).toContain('items-start');
+      expect(li.className).not.toContain('items-center');
+    });
+  });
+
+  it('defaults to the inline layout', () => {
+    render(<JobCard />);
+    expect(screen.getByRole('list').getAttribute('data-layout')).toBe('inline');
+  });
+
   it('renders nothing for an empty list', () => {
     const { container } = render(<Card.Facts items={[]} />);
     expect(container.querySelector('ul')).toBeNull();

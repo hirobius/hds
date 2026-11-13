@@ -493,31 +493,45 @@ export interface CardFact {
 export interface CardFactsProps extends Omit<React.HTMLAttributes<HTMLUListElement>, 'children'> {
   /** The facts, in reading order. An empty list renders nothing. */
   items: CardFact[];
+  /**
+   * `inline` (default) wraps the facts in a row. `stacked` puts one fact per
+   * line and aligns each icon to the first text line, so a wrapped fact keeps
+   * its icon at the top.
+   */
+  layout?: 'inline' | 'stacked';
 }
 
 /**
- * Card.Facts — a wrapping caption row of icon + label facts, as a list.
+ * Card.Facts — caption-size icon + label facts, as a list: a wrapping row, or one per line with `layout="stacked"`.
  * @usage Show an entity's quick facts (location, salary, type) under its title.
  * @whenNot Term and description pairs (use MetadataList) or text with no icons (use MetaLine).
  */
 const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsProps>(
-  function CardFacts({ className, items, ...props }, ref) {
+  function CardFacts({ className, items, layout = 'inline', ...props }, ref) {
     const pad = usePartPadding('p-surface-padding pt-0');
     if (items.length === 0) return null;
+    const stacked = layout === 'stacked';
     return (
       <ul
         ref={ref}
         data-slot="card-facts"
+        data-layout={layout}
         className={cn(
-          'm-0 flex list-none flex-wrap items-center gap-x-scale-md gap-y-scale-xs hds-type-caption text-muted-foreground',
+          'm-0 flex list-none hds-type-caption text-muted-foreground',
+          stacked
+            ? 'flex-col items-start gap-y-scale-xs'
+            : 'flex-wrap items-center gap-x-scale-md gap-y-scale-xs',
           pad,
           className,
         )}
         {...props}
       >
         {items.map(({ icon, label }) => (
-          <li key={label} className="inline-flex items-center gap-scale-xs">
-            <Icon icon={icon} size="small" />
+          <li
+            key={label}
+            className={cn('inline-flex gap-scale-xs', stacked ? 'items-start' : 'items-center')}
+          >
+            <Icon icon={icon} size="small" className={stacked ? 'shrink-0' : undefined} />
             {label}
           </li>
         ))}
