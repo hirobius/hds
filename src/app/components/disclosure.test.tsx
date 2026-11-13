@@ -121,8 +121,28 @@ describe('Disclosure row variant', () => {
     render(row());
     expect(screen.getByText('First line of the content')).not.toBeNull();
     await user.click(screen.getByRole('button', { name: /Row title/ }));
-    expect(screen.queryByText('First line of the content')).toBeNull();
+    await waitFor(() => expect(screen.queryByText('First line of the content')).toBeNull());
     expect(screen.getByText('Full content')).not.toBeNull();
+  });
+
+  // hds#1508: opening a row used to flip the wrapper gap 0 -> 8px and drop the
+  // preview in the same frame the body tweened from 0, so the rows below jumped twice.
+  it('hds#1508 - the row wrapper gap is constant across open and closed', async () => {
+    const user = userEvent.setup();
+    const { container } = render(row());
+    const wrapper = container.firstElementChild as HTMLElement;
+    const closedGap = wrapper.style.gap;
+    await user.click(screen.getByRole('button', { name: /Row title/ }));
+    expect(wrapper.style.gap).toBe(closedGap);
+  });
+
+  it('hds#1508 - the preview leaves with the body tween, not in the opening frame', async () => {
+    const user = userEvent.setup();
+    render(row());
+    await user.click(screen.getByRole('button', { name: /Row title/ }));
+    // Still mounted right after the click (it collapses on the same tween as the body grows).
+    expect(screen.queryByText('First line of the content')).not.toBeNull();
+    await waitFor(() => expect(screen.queryByText('First line of the content')).toBeNull());
   });
 
   it('a11y:disclosure.row-preview - the preview is clamped to one line', () => {

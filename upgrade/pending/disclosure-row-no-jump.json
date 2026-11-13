@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "Opening a Disclosure row no longer makes the rows below jump, so delete any override of its inline gap or .overflow-hidden you added as a workaround."
+}

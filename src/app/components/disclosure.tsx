@@ -62,7 +62,10 @@ const disclosureTriggerVariants = /* @__PURE__ */ cva(
   },
 );
 
-const disclosureContainerGap: Record<DisclosureVariant, string> = {
+// The space between trigger and body. It is the body's top padding, not the wrapper's gap:
+// a gap that flips 0 -> N in the opening frame moves the rows below before the height tween
+// starts (hds#1508), while padding inside the tweened body grows with it.
+const disclosureBodyInset: Record<DisclosureVariant, string> = {
   panel: hds.semantic.space.sidebar.gap,
   nav: hds.semantic.space.sidebar.sectionGap,
   card: hds.semantic.space.scale.xs,
@@ -147,8 +150,6 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       className,
     );
 
-    const containerGap = resolvedOpen ? disclosureContainerGap[variant] : 0;
-
     const labelContent =
       typeof label === 'string' ? (
         <span
@@ -162,7 +163,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       );
 
     const isRow = variant === 'row';
-    const showPreview = isRow && !resolvedOpen && preview != null && preview !== false;
+    const hasPreview = preview != null && preview !== false;
 
     const triggerButton = (
       <button // audit-ok: hds-focus applied via triggerClassName variable
@@ -175,16 +176,30 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
         className={triggerClassName}
         style={triggerStyle}
       >
-        {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven */}
-        <div className="grid min-w-0 flex-1 items-start gap-[var(--semantic-space-subgrid-gap)]">
+        <div className="grid min-w-0 flex-1 items-start">
           {labelContent}
-          {showPreview && (
-            <span
-              className="block min-w-0 truncate text-muted-foreground"
-              style={hds.typeStyles.caption}
-            >
-              {preview}
-            </span>
+          {isRow && hasPreview && (
+            <AnimatePresence initial={false}>
+              {!resolvedOpen && (
+                // The preview collapses on the same tween the body grows on, so opening a row
+                // never drops its height in one frame and then regrows it (hds#1508).
+                <m.span
+                  key="preview"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{
+                    duration: productiveMotion.duration,
+                    ease: productiveMotion.easing,
+                  }}
+                  className="block min-w-0 truncate text-muted-foreground"
+                  // The label-to-preview gap lives on the preview, so it tweens away with it.
+                  style={{ ...hds.typeStyles.caption, paddingTop: hds.semantic.space.subgrid.gap }}
+                >
+                  {preview}
+                </m.span>
+              )}
+            </AnimatePresence>
           )}
         </div>
         <m.span
@@ -233,6 +248,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
             >
               <div
                 style={{
+                  paddingTop: disclosureBodyInset[variant],
                   ...contentStyle,
                 }}
               >
@@ -246,7 +262,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
 
     if (isRow) {
       return (
-        <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
+        <Stack ref={ref} gap="tight" style={{ gap: 0 }}>
           {disclosureBody}
         </Stack>
       );
@@ -254,7 +270,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
 
     if (variant === 'nav') {
       return (
-        <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
+        <Stack ref={ref} gap="tight" style={{ gap: 0 }}>
           {disclosureBody}
         </Stack>
       );
@@ -266,7 +282,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
         padding="component"
         className={variant === 'card' ? 'overflow-hidden' : undefined}
       >
-        <Stack gap="tight" style={{ gap: containerGap }}>
+        <Stack gap="tight" style={{ gap: 0 }}>
           {disclosureBody}
         </Stack>
       </Surface>
