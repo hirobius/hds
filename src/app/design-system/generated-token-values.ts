@@ -9,9 +9,19 @@
  * Usage:
  *   import { tokenValues } from './generated-token-values';
  *   tokenValues.primitive.color.blue['500']        // '#1e2fff'
+ *   import { primitiveDuration } from './generated-token-values'; // one group only, tree-shakes
  *   tokenValues.primitive.typography.family.primary[0]   // 'Clash Grotesk'
  *   tokenValues.primitive.color.blue['500']        // 'oklch(0.49 0.2903 266.54)'
  */
+export const primitiveDuration = {
+  instant: "100ms",
+  short: "150ms",
+  medium: "250ms",
+  long: "400ms",
+  stagger: "40ms",
+  extended: "600ms"
+} as const;
+
 export const tokenValues = {
   primitive: {
     color: {
@@ -248,14 +258,7 @@ export const tokenValues = {
         text: "-0.01em"
       }
     },
-    duration: {
-      instant: "100ms",
-      short: "150ms",
-      medium: "250ms",
-      long: "400ms",
-      stagger: "40ms",
-      extended: "600ms"
-    },
+    duration: primitiveDuration,
     easing: {
       emphasized: "cubic-bezier(0.4, 0, 0.2, 1)",
       decelerate: "cubic-bezier(0, 0, 0.2, 1)",

@@ -4,28 +4,29 @@
  * component that only needs motion — Button through useHdsMotion — does not
  * pull the full token bridge (tokens.ts + generated-token-refs.ts, ~41 kB
  * minified) into a consumer's bundle (hds#1145). tokens.ts re-exposes these
- * as `hds.motion`, so the public API does not change.
+ * as `hds.motion`, so the public API does not change. It imports only the
+ * duration group: the whole primitive tree cost Button about 2 kB gzip.
  */
-import { tokenValues } from './generated-token-values';
+import { primitiveDuration } from './generated-token-values';
 
 const msToSeconds = (value: string) => parseFloat(value) / 1000;
 
 export const motion = {
   productive: {
-    duration: msToSeconds(tokenValues.primitive.duration.short),
+    duration: msToSeconds(primitiveDuration.short),
     easing: [0, 0, 0.2, 1] as [number, number, number, number],
   },
   expressive: {
-    duration: msToSeconds(tokenValues.primitive.duration.medium),
+    duration: msToSeconds(primitiveDuration.medium),
     // primitive.easing.elastic; motion-springs.test.ts keeps it equal to hds.motion.springs.elastic.
     easing: { type: 'spring', stiffness: 300, damping: 20, mass: 1 } as const,
   },
   spatial: {
-    duration: msToSeconds(tokenValues.primitive.duration.long),
+    duration: msToSeconds(primitiveDuration.long),
     easing: [0.4, 0, 0.2, 1] as [number, number, number, number],
   },
   exit: {
-    duration: msToSeconds(tokenValues.primitive.duration.instant),
+    duration: msToSeconds(primitiveDuration.instant),
     easing: [0.4, 0, 1, 1] as [number, number, number, number],
   },
 } as const;
