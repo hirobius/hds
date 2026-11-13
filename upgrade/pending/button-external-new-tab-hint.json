@@ -1,6 +1,6 @@
 {
   "impact": "behavior",
-  "plain": "A Button with external now has \" (opens in new tab)\" at the end of its text and accessible name; update tests that match its exact name or textContent, for example use a regex.",
+  "plain": "A Button with external now has \" (opens in new tab)\" at the end of its text and accessible name, and appended to any aria-label it carries; update tests that match its exact name, aria-label or textContent, for example use a regex.",
   "steps": [
     {
       "id": "behavior/Button.dom",

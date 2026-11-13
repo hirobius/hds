@@ -97,3 +97,45 @@ describe('Button external new-tab hint (hds#1537)', () => {
     expect(screen.getByRole('link').innerHTML).toContain(shared);
   });
 });
+
+describe('Button external keeps the hint when an aria-label names it (hds#1537 review)', () => {
+  it('appends the hint to label when label replaces the text', () => {
+    render(
+      <Button external label="Release notes for 0.44">
+        Notes
+      </Button>,
+    );
+    expect(screen.getByRole('button').getAttribute('aria-label')).toBe(
+      'Release notes for 0.44 (opens in new tab)',
+    );
+  });
+
+  it('appends the hint to an aria-label prop', () => {
+    render(
+      <Button external aria-label="Figma file">
+        Figma
+      </Button>,
+    );
+    expect(screen.getByRole('button').getAttribute('aria-label')).toBe(
+      'Figma file (opens in new tab)',
+    );
+  });
+
+  it('appends the hint to an aria-label on the slotted link', () => {
+    render(
+      <Button asChild external>
+        <a href="https://example.com" aria-label="Figma file">
+          Figma
+        </a>
+      </Button>,
+    );
+    expect(screen.getByRole('link').getAttribute('aria-label')).toBe(
+      'Figma file (opens in new tab)',
+    );
+  });
+
+  it('leaves aria-label alone without external', () => {
+    render(<Button aria-label="Figma file">Figma</Button>);
+    expect(screen.getByRole('button').getAttribute('aria-label')).toBe('Figma file');
+  });
+});

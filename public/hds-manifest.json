@@ -4091,7 +4091,7 @@
           "testId": "a11y:button.aschild-disabled"
         },
         {
-          "rule": "With `external`, the accessible name ends in a visually hidden \"(opens in new tab)\", as InlineLink's does, and the arrow is decorative.",
+          "rule": "With `external`, the accessible name ends in \"(opens in new tab)\", as InlineLink's does: a visually hidden span, or appended to an aria-label (label, aria-label, or the slotted link's own); the arrow is decorative.",
           "required": true,
           "owner": "component",
           "testId": "a11y:button.external-new-tab"
