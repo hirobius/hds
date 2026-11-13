@@ -1,6 +1,6 @@
 # Hirobius Design System - layout slice
 
-Version: 0.44.0
+Version: 0.45.0
 
 See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 

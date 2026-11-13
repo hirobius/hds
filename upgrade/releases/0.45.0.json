@@ -1,0 +1,31 @@
+{
+  "version": "0.45.0",
+  "date": "2026-11-13",
+  "bump": "minor",
+  "summary": "1 change to make by hand and 1 that looks different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.45.0/look/static-button-focus-external",
+      "kind": "look",
+      "impact": "look",
+      "plain": "static.css only: a focused raised .hds-button keeps its edge, forced colors show a Highlight focus outline, and .hds-ext with .hds-ext-icon gives an external button the arrow nudge; delete local shims that patched these, and .hds-link__icon stays still under reduced motion.",
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.45.0/behavior/Button.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The Button demo's external buttons gained a visually hidden \"(opens in new tab)\" span; a Button without external renders as before.",
+      "detect": {
+        "regex": [
+          "<Button[^>]*\\bexternal\\b"
+        ]
+      },
+      "facts": [
+        "dom-changed:Button"
+      ],
+      "source": "CHANGELOG.md:17"
+    }
+  ]
+}

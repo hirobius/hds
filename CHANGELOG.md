@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.45.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The Button demo's external buttons gained a visually hidden "(opens in new tab)" span; a Button without external renders as before.
+- Looks different: static.css only: a focused raised .hds-button keeps its edge, forced colors show a Highlight focus outline, and .hds-ext with .hds-ext-icon gives an external button the arrow nudge; delete local shims that patched these, and .hds-link\_\_icon stays still under reduced motion.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0450).
+
+### Minor Changes
+
+- 7c9b222: Button `external` now ends its accessible name with "(opens in new tab)", the same hint InlineLink gives (a visually hidden span, or appended to an aria-label), from one shared helper (hds#1537). Screen readers hear "Release notes (opens in new tab)"; nothing changes on screen.
+
+### Patch Changes
+
+- ccef907: Smaller Button: the `./button` graph drops from 5.79 kB to 3.8 kB gzip. Motion timing read the whole primitive token tree to get four durations; it now imports only the duration group, so bundlers drop the rest. No API or visual change.
+- cf2c4be: static.css `.hds-button` matches the React Button for CSS-only consumers (hds#1545): on focus the hard edge stays the first shadow layer (the gap no longer paints over it), forced colors outline focus in `Highlight`, and new `.hds-ext` / `.hds-ext-icon` classes give an external button the arrow nudge (0.125em up-right on the productive motion token, eased in and out, none under reduced motion). `.hds-link__icon` no longer moves under reduced motion.
+
 ## 0.44.0
 
 ### Upgrade

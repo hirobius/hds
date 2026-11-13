@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.44.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.45.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,18 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.45.0
+
+Released 2026-11-13 (minor). 1 change to make by hand and 1 that looks different.
+
+### Looks different
+
+- static.css only: a focused raised .hds-button keeps its edge, forced colors show a Highlight focus outline, and .hds-ext with .hds-ext-icon gives an external button the arrow nudge; delete local shims that patched these, and .hds-link\_\_icon stays still under reduced motion.
+
+### Do by hand
+
+- The Button demo's external buttons gained a visually hidden "(opens in new tab)" span; a Button without external renders as before.
 
 ## 0.44.0
 
