@@ -95,7 +95,7 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `Card` — Card — a raised surface with slot anatomy: header, body, footer, and a row for a titled status.
 - `CardBody` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardDescription` — Card — surface container with slot anatomy (12d-card-anatomy).
-- `CardFacts` — Card.Facts — a wrapping caption row of icon + label facts, as a list.
+- `CardFacts` — Card.Facts — caption-size icon + label facts, as a list: a wrapping row, or one per line with `layout="stacked"`.
 - `CardFooter` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardHeader` — Card — surface container with slot anatomy (12d-card-anatomy).
 - `CardProgress` — Card — surface container with slot anatomy (12d-card-anatomy).
