@@ -1,4 +1,16 @@
 {
-  "impact": "additive",
-  "plain": "Card.Facts has a new opt-in layout prop; layout=\"stacked\" puts one fact per line, and the default inline layout renders as before."
+  "impact": "behavior",
+  "plain": "Card.Facts has a new opt-in layout prop (layout=\"stacked\" puts one fact per line); the Card docs demo gained a stacked example, so its rendered markup changed.",
+  "steps": [
+    {
+      "id": "behavior/Card.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Card.Facts renders as before unless you pass layout=\"stacked\"; only the Card docs demo markup changed.",
+      "detect": {
+        "regex": ["<Card\\.Facts[^>]*\\blayout="]
+      },
+      "facts": ["dom-changed:Card"]
+    }
+  ]
 }
