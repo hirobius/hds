@@ -37,7 +37,7 @@
 import { forwardRef, useId } from 'react';
 import * as RSelect from '@radix-ui/react-select';
 import { ChevronsUpDown, Check } from 'lucide-react';
-import hds from '../design-system/tokens';
+import { scale } from '../design-system/component-tokens';
 import { cn } from '../../lib/utils';
 import { withHdsPortal } from '../context/hds-portal';
 import { Icon } from './icon';
@@ -115,7 +115,7 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           htmlFor={triggerId}
           // Same label as Input, Textarea and FormField: 16px ui, foreground (hds#522).
           className="hds-type-ui text-foreground"
-          style={{ marginBottom: hds.semantic.space.scale.xs }}
+          style={{ marginBottom: scale.xs }}
         >
           {label}
         </label>

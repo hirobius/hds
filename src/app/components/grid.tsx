@@ -33,7 +33,7 @@
 'use client';
 
 import React, { useEffect, useState, type ReactNode, type CSSProperties } from 'react';
-import hds from '../design-system/tokens';
+import { BREAKPOINT_LG, BREAKPOINT_SM } from '../design-system/component-tokens';
 import { LAYOUT_GAP, resolveSpacingValue } from './box-sx';
 
 type SemanticGap = 'medium' | 'tight' | 'normal' | 'inset' | 'spacious';
@@ -108,11 +108,11 @@ const ALIGN_ITEMS = {
 const DEFAULT_MIN_ITEM_WIDTH = '280px';
 
 function getResponsiveColumns(width: number, columns: number) {
-  if (width <= hds.breakpoints.sm) {
+  if (width <= BREAKPOINT_SM) {
     return Math.min(4, columns);
   }
 
-  if (width <= hds.breakpoints.lg) {
+  if (width <= BREAKPOINT_LG) {
     return Math.min(8, columns);
   }
 

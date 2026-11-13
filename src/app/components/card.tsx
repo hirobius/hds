@@ -77,7 +77,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import hds from '../design-system/tokens';
+import { RADIUS_2, space, typeStyles } from '../design-system/component-tokens';
 import { Text } from './text';
 import { Icon } from './icon';
 import { resolvePaddingValue, type PaddingOption } from './surface-padding';
@@ -85,7 +85,7 @@ import { LAYOUT_GAP_NAMES, resolveSpacingValue, type SpacingVocabulary } from '.
 
 // ── Legacy padding/gap helpers (retained for backward compat) ─────────────────
 
-type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof hds.space;
+type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof space;
 
 /**
  * Card's `gap`: the four layout-gap names, plus the `hds.space` keys. Open,
@@ -93,7 +93,7 @@ type GapOption = 'tight' | 'normal' | 'inset' | 'spacious' | keyof typeof hds.sp
  * a number as raw px.
  */
 const CARD_GAP = {
-  names: { ...(hds.space as Record<string, string>), ...LAYOUT_GAP_NAMES },
+  names: { ...(space as Record<string, string>), ...LAYOUT_GAP_NAMES },
   numbers: 'raw',
 } satisfies SpacingVocabulary;
 
@@ -644,7 +644,7 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
           style={{
             height: '4px',
             background: 'var(--semantic-color-border-default)',
-            borderRadius: hds.borderRadius[2],
+            borderRadius: RADIUS_2,
             overflow: 'hidden',
           }}
         >
@@ -658,7 +658,7 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
               transform: `scaleX(${pct / 100})`,
               transformOrigin: 'left',
               background: PROGRESS_TONE_FILL[tone],
-              borderRadius: hds.borderRadius[2],
+              borderRadius: RADIUS_2,
               // CSS vars, not hds.motion's JS number, so reduced motion zeroes it (hds#751).
               transition:
                 'transform var(--hds-motion-productive-duration) var(--hds-motion-productive-easing)',
@@ -669,7 +669,7 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
           <p
             // inline-ok: token-driven caption inside structural slot
             style={{
-              ...hds.typeStyles.caption,
+              ...typeStyles.caption,
               margin: '6px 0 0',
               color: 'var(--semantic-color-content-secondary)',
             }}
@@ -724,7 +724,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
       <div ref={ref} className={cn('flex flex-col', pad, className)} style={style} {...props}>
         <p
           style={{
-            ...hds.typeStyles.caption,
+            ...typeStyles.caption,
             margin: '0 0 6px',
             color: 'var(--semantic-color-content-secondary)',
           }}
@@ -734,7 +734,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
         <p
           // inline-ok: token-driven value, slot-internal
           style={{
-            ...hds.typeStyles.title,
+            ...typeStyles.title,
             margin: 0,
             color: METRIC_TONE_VALUE_COLOR[tone],
           }}
@@ -745,7 +745,7 @@ const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricPr
           <p
             // inline-ok: token-driven sub-line, slot-internal
             style={{
-              ...hds.typeStyles.caption,
+              ...typeStyles.caption,
               margin: '4px 0 0',
               color: 'var(--semantic-color-content-secondary)',
             }}

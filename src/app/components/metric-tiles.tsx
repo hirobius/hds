@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import hds from '../design-system/tokens';
+import { BREAKPOINT_SM } from '../design-system/component-tokens';
 import { Card } from './card';
 import { Grid } from './grid';
 import { Surface } from './surface';
@@ -26,7 +26,7 @@ const PHONE_MAX_COLUMNS = 2;
  * state made hydration keep the server's column count on a phone, and the row overflowed.
  */
 function useIsPhone(): boolean {
-  const read = () => window.innerWidth <= hds.breakpoints.sm;
+  const read = () => window.innerWidth <= BREAKPOINT_SM;
   const [isPhone, setIsPhone] = React.useState(false);
   React.useEffect(() => {
     const update = () => setIsPhone(read());

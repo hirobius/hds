@@ -19,7 +19,7 @@ import * as React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import hds from '../design-system/tokens';
+import { typeStyles } from '../design-system/component-tokens';
 import { useHdsRouter } from '../context/RouterContext';
 import { safeHref } from '../../lib/safe-href';
 import { Icon } from './icon';
@@ -78,7 +78,7 @@ export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, Breadcru
                 {linkable ? (
                   <LinkComponent
                     to={safeHref(item.href as string)}
-                    style={hds.typeStyles.ui}
+                    style={typeStyles.ui}
                     className="hds-focus hds-touch-row inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {item.label}
@@ -86,7 +86,7 @@ export const Breadcrumb = /* @__PURE__ */ React.forwardRef<HTMLElement, Breadcru
                 ) : (
                   <span
                     aria-current={isLast ? 'page' : undefined}
-                    style={hds.typeStyles.ui}
+                    style={typeStyles.ui}
                     className={crumbLabelVariants({ current: isLast })}
                   >
                     {item.label}
