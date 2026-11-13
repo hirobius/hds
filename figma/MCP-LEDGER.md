@@ -1716,3 +1716,15 @@ Plan updated 3 · created 0 · deleted 0 (meta/version 0.41.0 → 0.42.0, meta/r
 | 3   | 02:14      | `use_figma`      | write | delta.js unmodified, rebuilt on snapshot b70acf5c | OK; 3 meta variables updated, 647 variables, post ad1c1cfb                           |
 
 Session total: 3 calls (1 read, 2 writes, 1 refused). Nothing deleted, nothing published.
+
+## 2026-11-13 · Release 0.43.0: meta stamp (Version PR #1522, head 58f85dd)
+
+Adrian had `component.badge.paddingShift` removed from the library (PR #1511 removed it from code), so main's snapshot (ad1c1cfb) no longer matched; call 2 re-based it (1 record removed, 0 changed, live 4d23a7b7). Plan updated 2 · created 0 · deleted 0 (meta/version 0.42.0 → 0.43.0, meta/commit aaa49cf → 58f85dd; meta/releasedAt unchanged). Variables written: VariableID:2419:24 (meta/version), VariableID:2475:51 (meta/commit).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                  | Result                                                      |
+| --- | ---------- | ---------------- | ----- | -------------------------------------------------------- | ----------------------------------------------------------- |
+| 1   | 18:12      | `create_session` | read  | open file session                                        | OK                                                          |
+| 2   | 18:13      | `use_figma`      | read  | snapshot-diff.js unmodified (re-base after paddingShift) | OK; 0 changed, 1 removed (VariableID:2241:4), live 4d23a7b7 |
+| 3   | 18:15      | `use_figma`      | write | delta.js unmodified, built on Version PR head 58f85dd    | OK; 2 meta variables updated, 646 variables, post c6310b8e  |
+
+Session total: 3 calls (1 read, 1 write, 1 session). Nothing deleted, nothing published, no prune.
