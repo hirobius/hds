@@ -13,7 +13,8 @@ describe('component-tokens parity with hds', () => {
   });
 
   it('keeps the scalar tokens equal', () => {
-    expect(lean.space).toBe(hds.space);
+    expect(lean.space).toEqual(hds.space);
+    expect(Object.keys(lean.space)).toEqual(Object.keys(hds.space));
     expect(lean.scale).toEqual(hds.semantic.space.scale);
     expect(lean.subgrid).toEqual(hds.semantic.space.subgrid);
     expect(lean.sidebar).toEqual({
@@ -31,5 +32,27 @@ describe('component-tokens parity with hds', () => {
     expect(lean.Z_MODAL).toBe(hds.zIndex.modal);
     expect(lean.BREAKPOINT_SM).toBe(hds.breakpoints.sm);
     expect(lean.BREAKPOINT_LG).toBe(hds.breakpoints.lg);
+  });
+
+  it('covers every export the module has', () => {
+    const covered = [
+      'typeStyles',
+      'space',
+      'scale',
+      'subgrid',
+      'sidebar',
+      'FIXED_2XS',
+      'iconSize',
+      'FONT_FAMILY',
+      'BORDER_WIDTH_DEFAULT',
+      'RADIUS_FULL',
+      'RADIUS_2',
+      'CONTENT_ON_ACCENT',
+      'Z_FOCUS',
+      'Z_MODAL',
+      'BREAKPOINT_SM',
+      'BREAKPOINT_LG',
+    ];
+    expect(Object.keys(lean).sort()).toEqual([...covered].sort());
   });
 });
