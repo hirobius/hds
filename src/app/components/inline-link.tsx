@@ -18,6 +18,7 @@ import React from 'react';
 import { SquareArrowOutUpRight as ExternalLinkIcon } from 'lucide-react';
 import { useHdsRouter } from '../context/RouterContext';
 import { safeHref } from '../../lib/safe-href';
+import { NewTabHint } from './new-tab-hint';
 import { Icon } from './icon';
 
 export interface InlineLinkProps {
@@ -159,7 +160,7 @@ export function InlineLink({
       ) : (
         children
       )}
-      <span className="sr-only"> (opens in new tab)</span>
+      <NewTabHint />
     </a>
   );
 }

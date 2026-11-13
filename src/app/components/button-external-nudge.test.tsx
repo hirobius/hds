@@ -40,7 +40,7 @@ describe('Button external icon nudge (hds#751)', () => {
     );
     const link = screen.getByRole('link');
     expect(link.className).toMatch(/(^|\s)hds-ext(\s|$)/);
-    expect(link.textContent).toBe('Docs');
+    expect(link.textContent).toBe('Docs (opens in new tab)');
     expect(icon(link)).not.toBeNull();
   });
 
@@ -52,5 +52,48 @@ describe('Button external icon nudge (hds#751)', () => {
     );
     expect(screen.getByTestId('mine')).toBeTruthy();
     expect(icon(screen.getByRole('button'))).toBeNull();
+  });
+});
+
+describe('Button external new-tab hint (hds#1537)', () => {
+  it('says "(opens in new tab)" in visually hidden text, as InlineLink does', () => {
+    render(<Button external>Docs</Button>);
+    const btn = screen.getByRole('button');
+    const hint = btn.querySelector('.sr-only');
+    expect(hint?.textContent).toBe(' (opens in new tab)');
+    expect(btn.textContent).toBe('Docs (opens in new tab)');
+  });
+
+  it('puts the hint inside an asChild link, so the link name includes it', () => {
+    render(
+      <Button asChild external>
+        <a href="https://example.com">Docs</a>
+      </Button>,
+    );
+    expect(screen.getByRole('link').textContent).toBe('Docs (opens in new tab)');
+  });
+
+  it('keeps the hint with an explicit iconRight', () => {
+    render(
+      <Button external iconRight={<i />}>
+        Docs
+      </Button>,
+    );
+    expect(screen.getByRole('button').textContent).toBe('Docs (opens in new tab)');
+  });
+
+  it('adds no hint without external', () => {
+    render(<Button>Docs</Button>);
+    expect(screen.getByRole('button').querySelector('.sr-only')).toBeNull();
+  });
+
+  it('shares one hint with InlineLink', async () => {
+    const { NewTabHint } = await import('./new-tab-hint');
+    const { InlineLink } = await import('./inline-link');
+    render(<NewTabHint />);
+    const shared = document.body.lastElementChild?.innerHTML;
+    cleanup();
+    render(<InlineLink href="https://example.com">Docs</InlineLink>);
+    expect(screen.getByRole('link').innerHTML).toContain(shared);
   });
 });

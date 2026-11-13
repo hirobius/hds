@@ -1,0 +1,4 @@
+{
+  "impact": "behavior",
+  "plain": "A Button with external now has \" (opens in new tab)\" at the end of its text and accessible name; update tests that match its exact name or textContent, for example use a regex."
+}
