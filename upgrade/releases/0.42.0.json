@@ -1,0 +1,145 @@
+{
+  "version": "0.42.0",
+  "date": "2026-11-13",
+  "bump": "minor",
+  "summary": "7 changes to make by hand and 2 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.42.0/value-changed/--semantic-color-feedback-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Dark-theme info text and icons that read --semantic-color-feedback-info are now a lighter blue (blue.200 instead of blue.300), so they pass AA on dark fills; nothing to change unless you pinned the old shade.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:30"
+    },
+    {
+      "id": "0.42.0/look/EmptyState.italic",
+      "kind": "look",
+      "impact": "look",
+      "plain": "EmptyState's message is now upright by default; add `italic` to keep the old italic look.",
+      "detect": {
+        "jsx": [
+          "EmptyState"
+        ]
+      },
+      "facts": [
+        "prop-default-changed:EmptyState.italic"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.42.0/behavior/Badge.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A Badge with the new icon prop renders a decorative aria-hidden svg before its text; Badges without it are unchanged.",
+      "detect": {
+        "regex": [
+          "<Badge[^>]*\\bicon="
+        ]
+      },
+      "facts": [
+        "dom-changed:Badge"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.42.0/behavior/Card.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Card renders a data-radius attribute only when radius=\"lg\" is set; Cards without the prop render as before.",
+      "detect": {
+        "regex": [
+          "<Card[^>]*\\bradius="
+        ]
+      },
+      "facts": [
+        "dom-changed:Card"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.42.0/behavior/EmptyState.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "EmptyState's root now carries `not-italic` instead of `italic` by default, so selectors or tests that match the `italic` class need `italic` passed or an update.",
+      "detect": {
+        "regex": [
+          "<EmptyState\\b[^>]*\\bitalic\\b"
+        ]
+      },
+      "facts": [
+        "dom-changed:EmptyState"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.42.0/behavior/Menu.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "If you adopt indicator=\"switch\" or description on a Menu row, its markup gains a trailing switch and an aria-hidden caption; rows that use neither are unchanged.",
+      "detect": {
+        "regex": [
+          "<Menu\\.(?:CheckboxItem|Item)[^>]*\\b(?:indicator|description)="
+        ]
+      },
+      "facts": [
+        "dom-changed:Menu"
+      ],
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.42.0/behavior/SegmentedControl.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A SegmentedControl whose options carry an href renders a nav with a list of links (aria-current=\"page\" on the current one) instead of a radiogroup, so update any test or selector that expects radio roles for it.",
+      "detect": {
+        "regex": [
+          "SegmentedControl[\\s\\S]*?\\bhref:"
+        ]
+      },
+      "facts": [
+        "dom-changed:SegmentedControl"
+      ],
+      "source": "CHANGELOG.md:24"
+    },
+    {
+      "id": "0.42.0/behavior/SegmentedControl.icon-only",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A SegmentedControl option with an icon and an aria-label and no label renders a 44px segment named by its aria-label, so update any test or selector that looks it up by visible text.",
+      "detect": {
+        "regex": [
+          "SegmentedControl[\\s\\S]*?\\bicon:"
+        ]
+      },
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.42.0/behavior/Tag.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The Tag demo gained icon and copied examples; a Tag without icon or copied renders the same markup, so selectors on it keep working.",
+      "detect": {
+        "regex": [
+          "<Tag[^>]*\\b(icon|copied)="
+        ]
+      },
+      "facts": [
+        "dom-changed:Tag"
+      ],
+      "source": "CHANGELOG.md:25"
+    }
+  ]
+}

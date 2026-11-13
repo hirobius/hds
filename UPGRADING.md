@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.41.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.42.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,25 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.42.0
+
+Released 2026-11-13 (minor). 7 changes to make by hand and 2 that look different.
+
+### Looks different
+
+- Dark-theme info text and icons that read --semantic-color-feedback-info are now a lighter blue (blue.200 instead of blue.300), so they pass AA on dark fills; nothing to change unless you pinned the old shade.
+- EmptyState's message is now upright by default; add `italic` to keep the old italic look.
+
+### Do by hand
+
+- A Badge with the new icon prop renders a decorative aria-hidden svg before its text; Badges without it are unchanged.
+- Card renders a data-radius attribute only when radius="lg" is set; Cards without the prop render as before.
+- EmptyState's root now carries `not-italic` instead of `italic` by default, so selectors or tests that match the `italic` class need `italic` passed or an update.
+- If you adopt indicator="switch" or description on a Menu row, its markup gains a trailing switch and an aria-hidden caption; rows that use neither are unchanged.
+- A SegmentedControl whose options carry an href renders a nav with a list of links (aria-current="page" on the current one) instead of a radiogroup, so update any test or selector that expects radio roles for it.
+- A SegmentedControl option with an icon and an aria-label and no label renders a 44px segment named by its aria-label, so update any test or selector that looks it up by visible text.
+- The Tag demo gained icon and copied examples; a Tag without icon or copied renders the same markup, so selectors on it keep working.
 
 ## 0.41.0
 
