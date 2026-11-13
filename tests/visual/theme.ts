@@ -62,10 +62,18 @@ async function waitForSettled(page: Page) {
     () =>
       new Promise<boolean>((resolve) => {
         const root = document.querySelector('.hds-demo-frame') ?? document.body;
+        // A React fiber appears while hydration renders, before its commit runs any
+        // effect, so a slow CPU can sit fiber-bearing but un-animated for many frames
+        // (CI on #1503: one animation started after the quiet window). A demo frame
+        // flags its own commit (DemoFrame, data-demo-committed); other pages keep the
+        // fiber check.
+        const demo = root.matches('.hds-demo-frame');
         const hydrated = () =>
-          [...root.querySelectorAll('*')].some((e) =>
-            Object.keys(e).some((k) => k.startsWith('__reactFiber$')),
-          );
+          demo
+            ? root.hasAttribute('data-demo-committed')
+            : [...root.querySelectorAll('*')].some((e) =>
+                Object.keys(e).some((k) => k.startsWith('__reactFiber$')),
+              );
         let last = '';
         let still = 0;
         const tick = () => {
