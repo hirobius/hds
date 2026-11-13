@@ -1,6 +1,6 @@
 {
   "component": "Menu",
-  "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
+  "description": "Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`. A setting that flips on or off is a Menu.CheckboxItem with `indicator=\"switch\"`: it shows a trailing switch and keeps the menu open when toggled (a tick row still closes it). `description` on an Item or CheckboxItem adds a caption line under the label.",
   "docsPage": "/docs/components/menu",
   "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-59",
   "anatomy": [

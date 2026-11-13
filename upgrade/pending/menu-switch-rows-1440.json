@@ -1,0 +1,16 @@
+{
+  "impact": "behavior",
+  "plain": "Menu rows gain an optional switch indicator and description caption; rows that use neither render the same markup as before.",
+  "steps": [
+    {
+      "id": "behavior/Menu.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "If you adopt indicator=\"switch\" or description on a Menu row, its markup gains a trailing switch and an aria-hidden caption; rows that use neither are unchanged.",
+      "detect": {
+        "regex": ["<Menu\\.(?:CheckboxItem|Item)[^>]*\\b(?:indicator|description)="]
+      },
+      "facts": ["dom-changed:Menu"]
+    }
+  ]
+}

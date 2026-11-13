@@ -283,22 +283,46 @@ function SheetDemo() {
 }
 
 function MenuDemo() {
+  const [dark, setDark] = useState(true);
+  const [paused, setPaused] = useState(false);
   return (
-    <Menu>
-      <Menu.Trigger asChild>
-        <Button variant="secondary">Actions</Button>
-      </Menu.Trigger>
-      <Menu.Content>
-        <Menu.Label>Component</Menu.Label>
-        <Menu.Item onSelect={() => {}}>Edit</Menu.Item>
-        <Menu.Item onSelect={() => {}}>Duplicate</Menu.Item>
-        <Menu.Separator />
-        <Menu.Item onSelect={() => {}}>Archive</Menu.Item>
-        <Menu.Item disabled onSelect={() => {}}>
-          Delete
-        </Menu.Item>
-      </Menu.Content>
-    </Menu>
+    <div className="flex flex-wrap items-start gap-scale-xs">
+      <Menu>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Actions</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          <Menu.Label>Component</Menu.Label>
+          <Menu.Item onSelect={() => {}}>Edit</Menu.Item>
+          <Menu.Item onSelect={() => {}}>Duplicate</Menu.Item>
+          <Menu.Separator />
+          <Menu.Item onSelect={() => {}}>Archive</Menu.Item>
+          <Menu.Item disabled onSelect={() => {}}>
+            Delete
+          </Menu.Item>
+        </Menu.Content>
+      </Menu>
+      <Menu>
+        <Menu.Trigger asChild>
+          <Button variant="secondary">Settings</Button>
+        </Menu.Trigger>
+        <Menu.Content>
+          <Menu.CheckboxItem
+            indicator="switch"
+            checked={dark}
+            onCheckedChange={setDark}
+            description="Use the dark colour scheme"
+          >
+            Dark theme
+          </Menu.CheckboxItem>
+          <Menu.CheckboxItem indicator="switch" checked={paused} onCheckedChange={setPaused}>
+            Pause animations
+          </Menu.CheckboxItem>
+          <Menu.Separator />
+          <Menu.Item description="Opens your profile">Profile</Menu.Item>
+        </Menu.Content>
+      </Menu>
+    </div>
   );
 }
 
@@ -555,6 +579,13 @@ function CardDemo() {
           </Button>
         </Card.Footer>
       </Card>
+      {/* radius="lg": the fixed 16px scale step, for a larger bordered surface (hds#1436). */}
+      <Card bordered radius="lg">
+        <Card.Header>
+          <Card.Title>Larger radius</Card.Title>
+          <Card.Description>radius="lg" is 16px whatever the tenant radius.</Card.Description>
+        </Card.Header>
+      </Card>
       {/* The row slot: a titled status with notes and a trailing badge (hds#622). */}
       <Card padding="item" className="border-0">
         <Card.Row trailing={<Badge tone="success">Synced</Badge>}>
@@ -717,6 +748,11 @@ function EmptyStateDemo() {
       <EmptyState
         title="No projects yet"
         description="Create a project to start tracking tokens and components."
+      />
+      <EmptyState
+        italic
+        title="No drafts yet"
+        description="Opt in to italic with the italic prop."
       />
       <EmptyState
         variant="teaching"
@@ -1248,6 +1284,46 @@ function SegmentedControlDemo() {
           options={ranges}
         />
       </Card>
+      {/* Link mode (hds#1438): options with an href make a nav of links; the current page is aria-current. */}
+      <SegmentedControl
+        label="Section"
+        value="find"
+        options={[
+          { value: 'find', label: 'Find', href: '#segmented-find' },
+          { value: 'apply', label: 'Apply', href: '#segmented-apply' },
+          { value: 'saved', label: 'Saved', href: '#segmented-saved' },
+        ]}
+      />
+      {/* Icon-only options (hds#1439): an icon and an aria-label, no visible text, a 44px target; also in link mode. */}
+      <SegmentedControl
+        label="Show"
+        value="docs"
+        onChange={() => {}}
+        options={[
+          { value: 'docs', icon: <Icon icon={FileText} size="small" />, 'aria-label': 'Documents' },
+          { value: 'people', icon: <Icon icon={Users} size="small" />, 'aria-label': 'People' },
+          { value: 'starred', icon: <Icon icon={Star} size="small" />, 'aria-label': 'Starred' },
+        ]}
+      />
+      <SegmentedControl
+        label="Section icons"
+        variant="secondary"
+        value="docs"
+        options={[
+          {
+            value: 'docs',
+            icon: <Icon icon={FileText} size="small" />,
+            'aria-label': 'Documents',
+            href: '#segmented-icon-docs',
+          },
+          {
+            value: 'people',
+            icon: <Icon icon={Users} size="small" />,
+            'aria-label': 'People',
+            href: '#segmented-icon-people',
+          },
+        ]}
+      />
     </div>
   );
 }

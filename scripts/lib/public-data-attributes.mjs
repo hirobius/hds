@@ -49,6 +49,7 @@ export const PUBLIC_DATA_ATTRIBUTES = {
     'data-format',
     'data-interactive',
     'data-padding',
+    'data-radius',
     'data-slot',
     'data-tone',
     'data-variant',

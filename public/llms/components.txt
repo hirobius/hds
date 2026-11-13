@@ -171,6 +171,7 @@ Card — a raised surface with slot anatomy: header, body, footer, and a row for
   - noPadding: boolean = false
   - onSelectedChange: (selected: boolean) => void
   - padding: "component" | "item" | "px16" | "px24" | "none" = component
+  - radius: "default" | "lg" = default
   - selectable: boolean = false
   - selected: boolean = false
   - tone: 'neutral' | 'danger' | 'success' | 'warning' | 'info' = neutral
@@ -410,7 +411,7 @@ EmptyState — consistent no-data placeholder for lists, grids, and sections.
   - description: ReactNode
   - framed: boolean = false
   - icon: LucideIcon
-  - italic: boolean
+  - italic: boolean = false
   - title: ReactNode
   - variant: 'inline' | 'teaching' = inline
 
@@ -575,7 +576,7 @@ The leading icon tile: a sunken rounded square at component.list.leadingSize.
   - icon: LucideIcon
 
 ### Menu
-Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.
+Menu root + parts. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`. A setting that flips on or off is a Menu.CheckboxItem with `indica…
   - children: React.ReactNode
   - defaultOpen: boolean
   - dir: "ltr" | "rtl"
