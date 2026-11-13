@@ -53,6 +53,10 @@ describe('check-sync-map --check', () => {
     expect(result.status).toBe(0);
   }, 20000);
 
+  it('carries no manifest timestamp, so a manifest restamp (Version PR) cannot stale it', () => {
+    expect(JSON.parse(original)).not.toHaveProperty('generated');
+  });
+
   it('fails and names the component when a row is hand-edited', () => {
     const parsed = JSON.parse(original);
     const row = parsed.rows.find((r) => r.name === 'Button') ?? parsed.rows[0];
