@@ -14,6 +14,7 @@ import { tokenValues } from './generated-token-values';
 import { tokenRefs } from './generated-token-refs';
 import { motion as motionRoles } from './motion-tokens';
 import { motionExtras } from './motion-extras';
+import { space } from './component-tokens';
 
 const motion = { ...motionRoles, ...motionExtras } as const;
 
@@ -379,26 +380,7 @@ const hds = {
   // Note: avoid interpolating these into template literal shorthand strings,
   // e.g. `margin: \`0 0 ${hds.space.px20}\`` — use individual properties instead.
   // For component spacing that adapts to density, use hds.semantic.space.scale.* instead.
-  space: {
-    px1: 'var(--primitive-space-px1)',
-    px2: 'var(--primitive-space-px2)',
-    px4: 'var(--primitive-space-1)',
-    px6: 'var(--primitive-space-px6)',
-    px8: 'var(--primitive-space-2)',
-    px10: 'var(--primitive-space-px10)',
-    px12: 'var(--primitive-space-3)',
-    px16: 'var(--primitive-space-4)',
-    px20: 'var(--primitive-space-5)',
-    px24: 'var(--primitive-space-6)',
-    px28: 'var(--primitive-space-7)',
-    px32: 'var(--primitive-space-8)',
-    px40: 'var(--primitive-space-10)',
-    px48: 'var(--primitive-space-12)',
-    px64: 'var(--primitive-space-16)',
-    px80: 'var(--primitive-space-20)',
-    px96: 'var(--primitive-space-24)',
-    px128: 'var(--primitive-space-32)',
-  },
+  space,
 
   // ── Border width ─────────────────────────────────────────────────────────────
   borderWidth: {

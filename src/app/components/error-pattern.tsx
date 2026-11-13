@@ -5,7 +5,7 @@
  * @tier template
  */
 import { LazyMotion, domAnimation, m } from 'motion/react';
-import hds from '../design-system/tokens';
+import { FONT_FAMILY } from '../design-system/component-tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Button } from './button';
 import { Stack } from './stack';
@@ -29,7 +29,7 @@ const recoveryWrapStyle = {
   maxWidth: '100%',
   alignItems: 'center' as const,
   justifyContent: 'center' as const,
-  fontFamily: hds.fontFamily,
+  fontFamily: FONT_FAMILY,
 };
 
 /**

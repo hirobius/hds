@@ -10,11 +10,12 @@
  */
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
-import hds, { tokenValues } from '../design-system/tokens';
+import { tokenValues } from '../design-system/generated-token-values';
+import { iconSize } from '../design-system/component-tokens';
 import { isDevelopment } from '../../lib/env';
 
 /** @public */
-export type IconSize = keyof typeof hds.iconSize | number | string;
+export type IconSize = keyof typeof iconSize | number | string;
 
 // Map Phosphor weight names to Lucide strokeWidth values for backward compat.
 // Values come from semantic.borderWidth.icon.* (-> primitive.strokeWidth.*).
@@ -37,10 +38,7 @@ const WEIGHT_TO_STROKE: Record<string, number> = {
  * @public
  */
 export type IconColor =
-  | 'currentColor'
-  | 'inherit'
-  | `var(--semantic-${string})`
-  | `var(--component-${string})`;
+  'currentColor' | 'inherit' | `var(--semantic-${string})` | `var(--component-${string})`;
 
 export interface IconProps {
   /** Lucide icon component to render. */
@@ -80,7 +78,7 @@ export const Icon = /* @__PURE__ */ React.forwardRef<SVGSVGElement, IconProps>(f
   }
 
   // If the size isn't a known hds.iconSize token, use it literally (fallback)
-  const numericSize = hds.iconSize[size as keyof typeof hds.iconSize] || size;
+  const numericSize = iconSize[size as keyof typeof iconSize] || size;
   const strokeWidth = weight ? WEIGHT_TO_STROKE[weight] : undefined;
   const resolvedStyle = {
     width: numericSize,

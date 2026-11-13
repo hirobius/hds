@@ -15,7 +15,7 @@
  */
 import { useState, CSSProperties } from 'react';
 import type React from 'react';
-import hds from '../design-system/tokens';
+import { FIXED_2XS, typeStyles } from '../design-system/component-tokens';
 import { ExpandTooltip } from './tooltip';
 
 const MAX_SIZE = 280; // max default frame size before the placeholder shifts to responsive fill behavior
@@ -287,7 +287,7 @@ export function AssetImg({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        gap: hds.semantic.space.fixed['2xs'],
+        gap: FIXED_2XS,
         overflow: 'hidden',
         cursor: onClick ? (context === 'lightbox' ? 'zoom-in' : 'pointer') : undefined,
       }}
@@ -301,7 +301,7 @@ export function AssetImg({
       {title && (
         <span
           style={{
-            ...hds.typeStyles.caption,
+            ...typeStyles.caption,
             color: 'var(--semantic-color-content-secondary)',
             textAlign: 'center',
             maxWidth: '75%',

@@ -13,7 +13,7 @@
 
 import type { ReactNode } from 'react';
 import { LazyMotion, domAnimation, m, type TargetAndTransition } from 'motion/react';
-import hds from '../design-system/tokens';
+import { subgrid, typeStyles } from '../design-system/component-tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { useFrozenState } from '../context/DemoStateContext';
 import { useInteractionState, type InteractionVisualState } from '../hooks/useInteractionState';
@@ -85,13 +85,13 @@ export function ControlLabelText({
     <LazyMotion features={domAnimation}>
       <m.span
         className={className}
-        animate={{ x: pressed ? hds.semantic.space.subgrid.hairline : 0 }}
+        animate={{ x: pressed ? subgrid.hairline : 0 }}
         transition={{
           duration: productiveMotion.duration,
           ease: productiveMotion.easing,
         }}
         style={{
-          ...hds.typeStyles.ui,
+          ...typeStyles.ui,
           color: disabled
             ? 'var(--semantic-color-content-disabled)'
             : 'var(--semantic-color-content-primary)',

@@ -28,15 +28,15 @@
  */
 
 import type { ReactNode, CSSProperties } from 'react';
-import hds from '../design-system/tokens';
+import { scale } from '../design-system/component-tokens';
 import { Container } from './container';
 
 type MaxWidth = 'content' | 'max';
 type PaddingY = 'default' | 'compact' | 'none';
 
 const PADDING_Y: Record<PaddingY, { top: string; bottom: string }> = {
-  default: { top: hds.semantic.space.scale.xl, bottom: hds.semantic.space.scale.xl },
-  compact: { top: hds.semantic.space.scale.md, bottom: hds.semantic.space.scale.lg },
+  default: { top: scale.xl, bottom: scale.xl },
+  compact: { top: scale.md, bottom: scale.lg },
   none: { top: '0', bottom: '0' },
 };
 

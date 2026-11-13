@@ -26,7 +26,7 @@ import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import hds from '../design-system/tokens';
+import { scale, sidebar, typeStyles } from '../design-system/component-tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Icon } from './icon';
 import { Stack } from './stack';
@@ -63,10 +63,10 @@ const disclosureTriggerVariants = /* @__PURE__ */ cva(
 );
 
 const disclosureContainerGap: Record<DisclosureVariant, string> = {
-  panel: hds.semantic.space.sidebar.gap,
-  nav: hds.semantic.space.sidebar.sectionGap,
-  card: hds.semantic.space.scale.xs,
-  row: hds.semantic.space.scale.xs,
+  panel: sidebar.gap,
+  nav: sidebar.sectionGap,
+  card: scale.xs,
+  row: scale.xs,
 };
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -153,7 +153,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       typeof label === 'string' ? (
         <span
           className="m-0 text-current"
-          style={variant === 'nav' ? hds.typeStyles.ui : hds.typeStyles.caption}
+          style={variant === 'nav' ? typeStyles.ui : typeStyles.caption}
         >
           {label}
         </span>
@@ -181,7 +181,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
           {showPreview && (
             <span
               className="block min-w-0 truncate text-muted-foreground"
-              style={hds.typeStyles.caption}
+              style={typeStyles.caption}
             >
               {preview}
             </span>

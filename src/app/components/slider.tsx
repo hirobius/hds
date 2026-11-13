@@ -18,7 +18,7 @@
 
 import { useId, useState, forwardRef } from 'react';
 import { LazyMotion, domAnimation, m } from 'motion/react';
-import hds from '../design-system/tokens';
+import { subgrid, typeStyles } from '../design-system/component-tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { FORM_CONTROL_WIDTH } from './form-control';
 
@@ -60,7 +60,7 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
         <label
           htmlFor={inputId}
           style={{
-            ...hds.typeStyles.ui,
+            ...typeStyles.ui,
             color: 'var(--semantic-color-content-primary)',
           }}
         >
@@ -70,13 +70,13 @@ export const Slider = /* @__PURE__ */ forwardRef<HTMLInputElement, SliderProps>(
           <m.span
             key={value}
             className="text-muted-foreground shrink-0"
-            initial={{ opacity: 0.72, y: hds.semantic.space.subgrid.xs }}
+            initial={{ opacity: 0.72, y: subgrid.xs }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: productiveMotion.duration,
               ease: productiveMotion.easing,
             }}
-            style={{ ...hds.typeStyles.mono }}
+            style={{ ...typeStyles.mono }}
           >
             {value}
           </m.span>

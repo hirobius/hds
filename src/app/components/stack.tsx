@@ -11,7 +11,7 @@
  */
 
 import React from 'react';
-import hds from '../design-system/tokens';
+import { space } from '../design-system/component-tokens';
 import {
   LAYOUT_GAP_NAMES,
   resolveSpacingValue,
@@ -23,7 +23,7 @@ type SemanticGap = 'tight' | 'normal' | 'inset' | 'spacious';
 type ComponentGap = 'gap' | 'medium';
 type SubgridGap = 'hairline' | 'xs' | 'gap';
 type SectionGap = 'stack';
-type GapOption = SemanticGap | ComponentGap | SubgridGap | SectionGap | keyof typeof hds.space;
+type GapOption = SemanticGap | ComponentGap | SubgridGap | SectionGap | keyof typeof space;
 
 type FlexAlign = 'start' | 'center' | 'end' | 'stretch';
 type FlexJustify = 'start' | 'center' | 'end' | 'space-between';
@@ -80,7 +80,7 @@ export interface StackProps extends React.AriaAttributes {
  */
 const STACK_GAP = {
   names: {
-    ...(hds.space as Record<string, string>),
+    ...(space as Record<string, string>),
     ...LAYOUT_GAP_NAMES,
     gap: SPACE_SCALE.xs,
     medium: 'var(--semantic-space-component-medium)',

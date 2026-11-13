@@ -17,7 +17,7 @@ import React from 'react';
 import { LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { CircleCheck, TriangleAlert, CircleX, Info, type LucideIcon } from 'lucide-react';
-import hds from '../design-system/tokens';
+import { typeStyles } from '../design-system/component-tokens';
 import { cn } from '../../lib/utils';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Icon, type IconColor } from './icon';
@@ -122,7 +122,7 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
             {/* The title is a heading: the titleSm role brings the Sora face and its 700 weight (hds#847). */}
             <span
               style={{
-                ...hds.typeStyles.titleSm,
+                ...typeStyles.titleSm,
                 color: 'var(--semantic-color-content-primary)',
                 margin: 0,
               }}
@@ -131,7 +131,7 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
             </span>
             <span
               style={{
-                ...hds.typeStyles.caption,
+                ...typeStyles.caption,
                 color: 'var(--semantic-color-content-primary)',
                 margin: 0,
               }}
@@ -142,7 +142,7 @@ export const Alert = /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps
         ) : (
           <span
             style={{
-              ...hds.typeStyles.caption,
+              ...typeStyles.caption,
               color: 'var(--semantic-color-content-primary)',
               margin: 0,
             }}
