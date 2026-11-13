@@ -11080,7 +11080,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/card.tsx",
-      "description": "Card.Facts — a wrapping caption row of icon + label facts, as a list.",
+      "description": "Card.Facts — caption-size icon + label facts, as a list: one per line, or a wrapping row with `layout=\"inline\"`.",
       "figmaUrl": null,
       "figmaId": null,
       "figmaLink": null,
@@ -11096,6 +11096,14 @@
       "props": {
         "items": {
           "type": "CardFact[]"
+        },
+        "layout": {
+          "type": "enum",
+          "values": [
+            "inline",
+            "stacked"
+          ],
+          "default": "stacked"
         }
       },
       "allowedChildren": [

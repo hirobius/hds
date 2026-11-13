@@ -802,6 +802,15 @@
       "optional": false,
       "values": null,
       "default": null
+    },
+    "layout": {
+      "type": "\"inline\" | \"stacked\"",
+      "optional": true,
+      "values": [
+        "inline",
+        "stacked"
+      ],
+      "default": "'stacked'"
     }
   },
   "CardFooter": {},

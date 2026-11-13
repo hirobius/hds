@@ -287,14 +287,15 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
 ) {
   const Comp = (asChild ? Slot : (as ?? 'div')) as React.ElementType;
   const resolvedPadding = noPadding ? 'none' : padding;
+  const hasPadding = resolvedPadding !== 'none';
   const paddingValue = resolvePaddingValue(resolvedPadding);
   // The accent variant's 2px border is 1px thicker per side than the default's 1px; take that 1px off the
   // padding so an accent Card is the same height as its siblings and its content does not shift (item 18).
   const accentPadding =
-    variant === 'accent' && tone === 'neutral' && resolvedPadding !== 'none'
+    variant === 'accent' && tone === 'neutral' && hasPadding
       ? `calc(${paddingValue} - 1px)`
       : undefined;
-  const gapValue = resolvedPadding === 'none' ? '0' : resolveSpacingValue(gap, CARD_GAP);
+  const gapValue = !hasPadding ? '0' : resolveSpacingValue(gap, CARD_GAP);
   // Controlled only, like the other selection controls: the card reports the
   // next state and the page decides it.
   // A link or button card is navigation or an action, never a checkbox: `asChild` wins and
@@ -305,7 +306,7 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
         role: 'checkbox',
         'aria-checked': selected,
         tabIndex: 0,
-        'data-selected': selected ? 'true' : 'false',
+        'data-selected': String(selected),
         onClick: (event: React.MouseEvent<HTMLDivElement>) => {
           rest.onClick?.(event);
           if (!event.defaultPrevented && !fromNestedControl(event)) onSelectedChange?.(!selected);
@@ -327,9 +328,9 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
       data-padding={resolvedPadding}
       data-variant={variant}
       data-tone={tone}
-      data-bordered={bordered ? 'true' : 'false'}
+      data-bordered={String(bordered)}
       data-radius={radius === 'lg' ? 'lg' : undefined}
-      data-interactive={asChild ? 'true' : undefined}
+      data-interactive={asChild || undefined}
       className={cn(
         cardVariants({ variant, tone, bordered, radius }),
         isSelectable && SELECTABLE_CARD,
@@ -350,14 +351,12 @@ const CardRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProps>(fun
         React.cloneElement(
           children,
           undefined,
-          <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
+          <CardPaddedContext.Provider value={hasPadding}>
             {children.props.children}
           </CardPaddedContext.Provider>,
         )
       ) : (
-        <CardPaddedContext.Provider value={resolvedPadding !== 'none'}>
-          {children}
-        </CardPaddedContext.Provider>
+        <CardPaddedContext.Provider value={hasPadding}>{children}</CardPaddedContext.Provider>
       )}
     </Comp>
   );
@@ -493,15 +492,22 @@ export interface CardFact {
 export interface CardFactsProps extends Omit<React.HTMLAttributes<HTMLUListElement>, 'children'> {
   /** The facts, in reading order. An empty list renders nothing. */
   items: CardFact[];
+  /**
+   * `stacked` (default) puts one fact per line and aligns each icon to the
+   * first text line, so a wrapped fact keeps its icon at the top. `inline`
+   * wraps the facts in a row, as Card.Facts did before 0.43.0.
+   * @default 'stacked'
+   */
+  layout?: 'inline' | 'stacked';
 }
 
 /**
- * Card.Facts — a wrapping caption row of icon + label facts, as a list.
+ * Card.Facts — caption-size icon + label facts, as a list: one per line, or a wrapping row with `layout="inline"`.
  * @usage Show an entity's quick facts (location, salary, type) under its title.
  * @whenNot Term and description pairs (use MetadataList) or text with no icons (use MetaLine).
  */
 const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsProps>(
-  function CardFacts({ className, items, ...props }, ref) {
+  function CardFacts({ className, items, layout, ...props }, ref) {
     const pad = usePartPadding('p-surface-padding pt-0');
     if (items.length === 0) return null;
     return (
@@ -510,13 +516,20 @@ const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsPr
         data-slot="card-facts"
         className={cn(
           'm-0 flex list-none flex-wrap items-center gap-x-scale-md gap-y-scale-xs hds-type-caption text-muted-foreground',
+          layout !== 'inline' && 'flex-col items-start',
           pad,
           className,
         )}
         {...props}
       >
         {items.map(({ icon, label }) => (
-          <li key={label} className="inline-flex items-center gap-scale-xs">
+          <li
+            key={label}
+            className={cn(
+              'inline-flex items-center gap-scale-xs',
+              layout !== 'inline' && 'items-start',
+            )}
+          >
             <Icon icon={icon} size="small" />
             {label}
           </li>
@@ -617,10 +630,7 @@ export interface CardProgressProps extends Omit<
 }
 
 const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgressProps>(
-  function CardProgress(
-    { className, value, max = 100, label, tone = 'neutral', style, ...props },
-    ref,
-  ) {
+  function CardProgress({ className, value, max = 100, label, tone = 'neutral', ...props }, ref) {
     const pad = usePartPadding('px-surface-padding pb-scale-xs');
     const clamped = Math.max(0, Math.min(value, max));
     const pct = max > 0 ? (clamped / max) * 100 : 0;
@@ -631,7 +641,6 @@ const CardProgress = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardProgre
         // The Progress slot owns its vertical rail. Padding-x matches the
         // Header/Body 24px inset; padding-bottom reserves 8px below the
         // optional label. NO direct collision with adjacent prose.
-        style={style}
         {...props}
       >
         <div
@@ -718,10 +727,10 @@ export interface CardMetricProps extends React.HTMLAttributes<HTMLDivElement> {
  * @whenNot A metric outside a Card, or several figures that share one label.
  */
 const CardMetric = /* @__PURE__ */ React.forwardRef<HTMLDivElement, CardMetricProps>(
-  function CardMetric({ className, label, value, sub, tone = 'neutral', style, ...props }, ref) {
+  function CardMetric({ className, label, value, sub, tone = 'neutral', ...props }, ref) {
     const pad = usePartPadding('px-surface-padding');
     return (
-      <div ref={ref} className={cn('flex flex-col', pad, className)} style={style} {...props}>
+      <div ref={ref} className={cn('flex flex-col', pad, className)} {...props}>
         <p
           style={{
             ...typeStyles.caption,

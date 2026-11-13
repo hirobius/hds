@@ -619,6 +619,20 @@ function CardDemo() {
             </Button>
           </Card.Footer>
         </Card>
+        {/* Facts stack by default (the card above); layout="inline" keeps the wrapping row. */}
+        <Card>
+          <Card.Header>
+            <Card.Title>Staff product designer</Card.Title>
+          </Card.Header>
+          <Card.Facts
+            layout="inline"
+            items={[
+              { icon: MapPin, label: 'Remote within the EU, with a quarterly team week in Lisbon' },
+              { icon: Banknote, label: '$120k to $150k' },
+              { icon: Briefcase, label: 'Full time' },
+            ]}
+          />
+        </Card>
       </Grid>
       {/* asChild: the whole card is one link, with the interactive hover. */}
       <Card asChild padding="item">
