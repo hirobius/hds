@@ -1,15 +1,15 @@
 {
-  "checksum": "c6310b8e",
+  "checksum": "c059f289",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-13T18:15:07.117Z",
+    "takenAt": "2026-11-13T20:51:23.425Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "8d60327f",
-      "pushedAt": "2026-11-13T18:15:07.033Z",
+      "modelHash": "1ae262ae",
+      "pushedAt": "2026-11-13T20:51:23.362Z",
       "scope": null
     },
     "collections": [
@@ -10301,7 +10301,7 @@
             "name": "button/secondary/bg/hover",
             "path": "component.button.secondary.bg.hover",
             "resolvedType": "COLOR",
-            "description": "Secondary button hover fill (the wipe layer's colour). Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Secondary button hover fill (the wipe layer's colour).",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -10312,8 +10312,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2608:50",
-                "to": "Hirobius/Brand: component/button/secondary/bg/hover"
+                "alias": "VariableID:2229:11",
+                "to": "Hirobius/Semantic: color/surface/softHover"
               }
             }
           },
@@ -12370,30 +12370,6 @@
         ],
         "variables": [
           {
-            "id": "VariableID:2608:50",
-            "name": "component/button/secondary/bg/hover",
-            "path": "brand.component.button.secondary.bg.hover",
-            "resolvedType": "COLOR",
-            "description": "Brand value of component.button.secondary.bg.hover. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
-            "scopes": [],
-            "hiddenFromPublishing": false,
-            "codeSyntax": {},
-            "valuesByMode": {
-              "Hirobius": {
-                "alias": "VariableID:2229:11",
-                "to": "Hirobius/Semantic: color/surface/softHover"
-              },
-              "brutalist-demo": {
-                "alias": "VariableID:2229:11",
-                "to": "Hirobius/Semantic: color/surface/softHover"
-              },
-              "accent-cobalt": {
-                "alias": "VariableID:10:7",
-                "to": "Hirobius/Semantic: color/surface/accentSubtle"
-              }
-            }
-          },
-          {
             "id": "VariableID:2018:768",
             "name": "role/radius",
             "path": "brand.role.radius",
@@ -14385,7 +14361,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "58f85dd"
+                "value": "adb5f0f"
               }
             }
           },
@@ -14470,7 +14446,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "0.43.0"
+                "value": "0.44.0"
               }
             }
           }
@@ -15196,6 +15172,6 @@
     "checksum": "99955183"
   },
   "tokensHash": "sha256:9777ffd19b8614692501188cdbe57d8f0075856efbd47469eb560fc636b43d39",
-  "syncedCommit": "58f85dd",
-  "syncedHash": "sha256:38f8f361817fbb5ab0373c14e60d2865b3ff33ae60300e3f4d6ecacef7ba5737"
+  "syncedCommit": "adb5f0f",
+  "syncedHash": "sha256:960aa64d3de730a6cf0c974bbd809072afeb4e9f1a54943c63b90a563a378a9f"
 }

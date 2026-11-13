@@ -1728,3 +1728,15 @@ Adrian had `component.badge.paddingShift` removed from the library (PR #1511 rem
 | 3   | 18:15      | `use_figma`      | write | delta.js unmodified, built on Version PR head 58f85dd    | OK; 2 meta variables updated, 646 variables, post c6310b8e  |
 
 Session total: 3 calls (1 read, 1 write, 1 session). Nothing deleted, nothing published, no prune.
+
+## 2026-11-13 · Release 0.44.0: meta stamp and button secondary hover (Version PR #1539, head adb5f0f)
+
+Adrian had the Brand variable component/button/secondary/bg/hover (VariableID:2608:50) removed from the library (PR #1538 removed it from code), so the Component alias VariableID:15:21 dangled and main's snapshot (c6310b8e) no longer matched; call 2 re-based it (1 changed, 1 removed, live f74e9aef). Plan updated 3 · created 0 · deleted 0 (component.button.secondary.bg.hover: description and alias to semantic.color.surface.softHover; meta/version 0.43.0 → 0.44.0; meta/commit 58f85dd → adb5f0f). Variables written: VariableID:15:21, VariableID:2419:24 (meta/version), VariableID:2475:51 (meta/commit).
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                                   | Result                                                       |
+| --- | ---------- | ---------------- | ----- | --------------------------------------------------------- | ------------------------------------------------------------ |
+| 1   | 20:48      | `create_session` | read  | open file session                                         | OK                                                           |
+| 2   | 20:49      | `use_figma`      | read  | snapshot-diff.js unmodified (re-base after Brand removal) | OK; 1 changed, 1 removed (VariableID:2608:50), live f74e9aef |
+| 3   | 20:51      | `use_figma`      | write | delta.js unmodified, built on Version PR head adb5f0f     | OK; 3 variables updated, 645 variables, post c059f289        |
+
+Session total: 3 calls (1 read, 1 write, 1 session). Nothing deleted, nothing published, no prune.
