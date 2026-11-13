@@ -963,8 +963,11 @@ variant at size md, as the React component's defaults. Add one variant
 state: `disabled` on a `<button>`; on an `<a>`, `role="link"` and
 `aria-disabled="true"` with no `href`, so it cannot be followed and is still
 read as a link. Every value is a `--component-button-*`
-token, and `tests/static-parity.test.ts` holds it to the component. The
-hard edge, the hover wipe and the status tones need the React `Button`:
+token, and `tests/static-parity.test.ts` holds it to the component. Primary
+and secondary draw the hard edge and sink on hover and press, as the React
+`Button` does (primary's edge is `--hds-edge-primary`, per accent); add
+`.hds-button--flat` for none. The hover wipe and the status tones need the
+React `Button`:
 
 ```html
 <a class="hds-button hds-button--primary" href="/contact">Get in touch</a>

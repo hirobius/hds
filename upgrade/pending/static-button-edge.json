@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A static.css .hds-button now draws the hard edge and sinks on hover and press like the React Button, so add .hds-button--flat to any you want left flat."
+}
