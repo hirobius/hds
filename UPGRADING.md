@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.43.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.44.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,19 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.44.0
+
+Released 2026-11-13 (minor). 2 changes to make by hand and 1 that looks different.
+
+### Looks different
+
+- Under data-accent="cobalt", --component-button-secondary-bg-hover no longer sets accentSubtle; it follows the base grey --semantic-color-surface-softHover.
+
+### Do by hand
+
+- The Button demo gained two external-link buttons (the new external prop); a Button without external renders as before.
+- styles.css no longer ships four group-hover and group-focus-visible translate utilities and transition-\[translate], which only InlineLink's external icon used (hds#1530); if your markup writes one, compile it with your own Tailwind.
 
 ## 0.43.0
 

@@ -1,0 +1,66 @@
+{
+  "version": "0.44.0",
+  "date": "2026-11-13",
+  "bump": "minor",
+  "summary": "2 changes to make by hand and 1 that looks different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.44.0/removed/external-icon-utilities",
+      "kind": "removed",
+      "impact": "look",
+      "plain": "styles.css no longer ships four group-hover and group-focus-visible translate utilities and transition-[translate], which only InlineLink's external icon used (hds#1530); if your markup writes one, compile it with your own Tailwind.",
+      "detect": {
+        "classes": [
+          "group-hover:translate-x-[0.125em]",
+          "group-hover:-translate-y-[0.125em]",
+          "group-focus-visible:translate-x-[0.125em]",
+          "group-focus-visible:-translate-y-[0.125em]",
+          "transition-[translate]"
+        ]
+      },
+      "facts": [
+        "utility-removed:group-hover:translate-x-[0.125em]",
+        "utility-removed:group-hover:-translate-y-[0.125em]",
+        "utility-removed:group-focus-visible:translate-x-[0.125em]",
+        "utility-removed:group-focus-visible:-translate-y-[0.125em]",
+        "utility-removed:transition-[translate]"
+      ],
+      "source": "CHANGELOG.md:18"
+    },
+    {
+      "id": "0.44.0/value-changed/--component-button-secondary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Under data-accent=\"cobalt\", --component-button-secondary-bg-hover no longer sets accentSubtle; it follows the base grey --semantic-color-surface-softHover.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-hover:[data-accent='cobalt']",
+        "css-var-changed:--component-button-secondary-bg-hover:[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.44.0/behavior/Button.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The Button demo gained two external-link buttons (the new external prop); a Button without external renders as before.",
+      "detect": {
+        "regex": [
+          "getAllByRole\\(['\"]link['\"]"
+        ]
+      },
+      "facts": [
+        "dom-changed:Button"
+      ],
+      "source": "CHANGELOG.md:18"
+    }
+  ]
+}
