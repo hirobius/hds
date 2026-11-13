@@ -54,10 +54,8 @@
   font-weight: var(--component-badge-fontWeight);
   height: var(--component-badge-height);
   min-width: var(--component-badge-minWidth);
+  /* hds#1510: balanced padding; the old 1px paddingShift lift left the label ~2px high */
   padding: var(--component-badge-paddingY) var(--component-badge-paddingX);
-  /* hds#757: paddingShift moves from top to bottom so the label sits optically centred */
-  padding-top: calc(var(--component-badge-paddingY) - var(--component-badge-paddingShift));
-  padding-bottom: calc(var(--component-badge-paddingY) + var(--component-badge-paddingShift));
   /* binding-ok: badge.radius rounded-sm twin, role.radius - 2px, so a tenant reshapes it */
   border-radius: calc(
     var(--role-radius) - 2px

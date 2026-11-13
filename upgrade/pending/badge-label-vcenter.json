@@ -1,0 +1,40 @@
+{
+  "impact": "breaking",
+  "plain": "Badge now centres its label in the pill (it sat about 2px high), the label sits in an inner span, and the unused --component-badge-paddingShift token is gone.",
+  "steps": [
+    {
+      "id": "behavior/Badge.label-span",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A Badge's text now sits in an inner span (so does every Badge inside Card, Table, List and the other demos), so a test that reads it with getByText gets the span; use closest('[data-tone]') or a role instead.",
+      "detect": {
+        "regex": ["<Badge[^>]*>"]
+      },
+      "facts": [
+        "dom-changed:Badge",
+        "dom-changed:Board",
+        "dom-changed:Card",
+        "dom-changed:DataTableSection",
+        "dom-changed:List",
+        "dom-changed:PageHeader",
+        "dom-changed:StatusListItem",
+        "dom-changed:StatusTile",
+        "dom-changed:Table",
+        "dom-changed:Text"
+      ]
+    },
+    {
+      "id": "removed/tokens.component.badge.paddingShift",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "The component.badge.paddingShift token (--component-badge-paddingShift, the 1px label lift) is gone because Badge pads evenly now; stop reading it, there is no replacement.",
+      "detect": {
+        "regex": ["\\bcomponent\\.badge\\.paddingShift\\b", "--component-badge-paddingShift\\b"]
+      },
+      "facts": [
+        "key-removed:./tokens:tokens.component.badge.paddingShift",
+        "css-var-removed:--component-badge-paddingShift"
+      ]
+    }
+  ]
+}

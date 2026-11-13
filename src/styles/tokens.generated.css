@@ -622,7 +622,6 @@
   --component-badge-height: var(--primitive-size-22);
   --component-badge-minWidth: var(--primitive-size-22);
   --component-badge-paddingY: var(--primitive-space-px2);
-  --component-badge-paddingShift: var(--primitive-space-px1);
   --component-badge-paddingX: var(--primitive-space-2);
   --component-button-bg: var(--semantic-color-surface-accent);
   --component-button-bgHover: var(--semantic-accent-hover);
