@@ -8,6 +8,12 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "hirobius-hds-components.vercel.app" }],
+      "destination": "https://hirobius-design-system.vercel.app/:path*",
+      "permanent": true
+    },
     { "source": "/docs/tokens", "destination": "/docs/guides/tokens", "permanent": true }
   ],
   "headers": [
