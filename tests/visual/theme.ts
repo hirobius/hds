@@ -44,4 +44,41 @@ export async function openThemed(page: Page, route: string, theme: 'light' | 'da
     await fonts.ready;
     await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
   });
+  await waitForSettled(page);
+}
+
+/**
+ * Wait until the page is hydrated and motion is idle. Fonts were never the whole
+ * story of the radio flake (hds#1506): the demo's SSR HTML holds the checked dot at
+ * scale(0.4) / opacity 0, and a screenshot that lands before hydration plus motion's
+ * entrance animation catches that transient (or layers still promoted for it, which
+ * flips label text between LCD and greyscale antialiasing). Settled means: a React
+ * fiber on a node of the demo (or body), no running animation, and the markup of
+ * that subtree unchanged for 6 consecutive frames. A page that never settles fails
+ * here with that name, not later as a pixel diff.
+ */
+async function waitForSettled(page: Page) {
+  await page.waitForFunction(
+    () =>
+      new Promise<boolean>((resolve) => {
+        const root = document.querySelector('.hds-demo-frame') ?? document.body;
+        const hydrated = () =>
+          [...root.querySelectorAll('*')].some((e) =>
+            Object.keys(e).some((k) => k.startsWith('__reactFiber$')),
+          );
+        let last = '';
+        let still = 0;
+        const tick = () => {
+          const html = root.outerHTML;
+          const quiet = hydrated() && document.getAnimations().length === 0 && html === last;
+          still = quiet ? still + 1 : 0;
+          last = html;
+          if (still >= 6) resolve(true);
+          else requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }),
+    undefined,
+    { timeout: 15_000 },
+  );
 }
