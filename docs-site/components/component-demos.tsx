@@ -1834,8 +1834,16 @@ export const DEMOS: Record<PreviewedComponent, () => ReactNode> = {
 };
 
 export function DemoFrame({ children }: { children: ReactNode }) {
+  // Marks the frame once its subtree has committed. A parent's effect runs after its
+  // children's, so by then every demo's motion entrance has started: the visual
+  // tests' openThemed waits for this, then for those animations to end (hds#1512).
+  const frame = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    frame.current?.setAttribute('data-demo-committed', '');
+  }, []);
   return (
     <div
+      ref={frame}
       data-hds
       className="hds-demo-frame not-prose"
       style={{

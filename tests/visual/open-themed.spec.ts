@@ -7,14 +7,14 @@ import { openThemed } from './theme';
  * motion runs a WAAPI entrance animation. A screenshot taken before that finishes
  * catches the demo mid-entrance (dot hidden, or its layers still promoted, which
  * flips the label text between LCD and greyscale antialiasing: the 469-pixel
- * "heavier label" flake). Throttling the CPU widens the race so one run is enough
+ * "heavier label" flake). Throttling the CPU 20x widens the race so one run is enough
  * to see it, and the font checks pin that the faces were never the cause.
  * Tagged @baseline so it runs with the suite it protects, not the Chromatic capture.
  */
 test.describe('openThemed settles the page @baseline', () => {
   test('radio demo is hydrated, motion-idle and on its final styles', async ({ page, context }) => {
     const cdp = await context.newCDPSession(page);
-    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 6 });
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 20 });
     await openThemed(page, '/docs/components/radio', 'light');
 
     const state = await page.evaluate(() => {
@@ -28,7 +28,10 @@ test.describe('openThemed settles the page @baseline', () => {
         hydrated: [...frame.querySelectorAll('*')].some((e) =>
           Object.keys(e).some((k) => k.startsWith('__reactFiber$')),
         ),
-        runningAnimations: document.getAnimations().length,
+        running: document.getAnimations().map((a) => {
+          const t = (a.effect as KeyframeEffect | null)?.target as Element | null;
+          return `${(a as CSSAnimation).animationName ?? a.constructor.name} on ${t ? t.tagName.toLowerCase() + (t.className ? '.' + String(t.className).split(' ').join('.') : '') : '?'} inFrame=${Boolean(t && frame.contains(t))} iterations=${a.effect?.getTiming().iterations} state=${a.playState}`;
+        }),
         hiddenInitialDot: Boolean(dot),
         weight: cs.fontWeight,
         faces: [...document.fonts]
@@ -38,7 +41,7 @@ test.describe('openThemed settles the page @baseline', () => {
     });
 
     expect(state.hydrated).toBe(true);
-    expect(state.runningAnimations).toBe(0);
+    expect(state.running, 'animations still running after openThemed').toEqual([]);
     expect(state.hiddenInitialDot).toBe(false);
     expect(state.weight).toBe('400');
     expect(state.faces.every((f) => f.endsWith(':loaded'))).toBe(true);
