@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "Card.Facts takes truncateFirst to clamp a long first fact to one line with an ellipsis; nothing changes until you set it."
+}

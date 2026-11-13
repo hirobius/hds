@@ -640,6 +640,19 @@ function CardDemo() {
             ]}
           />
         </Card>
+        {/* truncateFirst clamps a long first fact (a place name) to one line; the full text stays in title. */}
+        <Card>
+          <Card.Header>
+            <Card.Title>Truncated first fact</Card.Title>
+          </Card.Header>
+          <Card.Facts
+            truncateFirst
+            items={[
+              { icon: MapPin, label: 'Remote within the EU, with a quarterly team week in Lisbon' },
+              { icon: Banknote, label: '$120k to $150k' },
+            ]}
+          />
+        </Card>
       </Grid>
       {/* asChild: the whole card is one link, with the interactive hover. */}
       <Card asChild padding="item">

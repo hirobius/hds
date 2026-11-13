@@ -114,6 +114,42 @@ describe('Card.Facts', () => {
       });
   });
 
+  describe('truncateFirst', () => {
+    const LONG = 'Remote within the EU, with a quarterly team week in Lisbon';
+    const LONG_FACTS = [
+      { icon: MapPin, label: LONG },
+      { icon: Banknote, label: '$120k to $150k' },
+    ];
+
+    it.each(['stacked', 'inline'] as const)('clamps only the first fact in %s', (layout) => {
+      render(<Card.Facts layout={layout} truncateFirst items={LONG_FACTS} />);
+      const [first, second] = within(screen.getByRole('list')).getAllByRole('listitem');
+      expect(first.className).toContain('min-w-0');
+      expect(first.className).toContain('max-w-full');
+      const label = first.querySelector('[data-slot="card-fact-label"]');
+      expect(label?.className).toContain('truncate');
+      expect(label?.className).toContain('min-w-0');
+      expect(second.querySelector('[data-slot="card-fact-label"]')).toBeNull();
+      expect(second.className).not.toContain('min-w-0');
+    });
+
+    it('keeps the full text in the DOM and on title, and the icon at full size', () => {
+      render(<Card.Facts truncateFirst items={LONG_FACTS} />);
+      const first = within(screen.getByRole('list')).getAllByRole('listitem')[0];
+      expect(first.textContent).toBe(LONG);
+      expect(first.getAttribute('title')).toBe(LONG);
+      expect(first.querySelector('svg')?.getAttribute('class')).toContain('shrink-0');
+    });
+
+    it('does nothing by default', () => {
+      render(<Card.Facts items={LONG_FACTS} />);
+      const first = within(screen.getByRole('list')).getAllByRole('listitem')[0];
+      expect(first.className).not.toContain('min-w-0');
+      expect(first.getAttribute('title')).toBeNull();
+      expect(first.querySelector('[data-slot="card-fact-label"]')).toBeNull();
+    });
+  });
+
   it('renders nothing for an empty list', () => {
     const { container } = render(<Card.Facts items={[]} />);
     expect(container.querySelector('ul')).toBeNull();

@@ -11120,6 +11120,10 @@
             "stacked"
           ],
           "default": "stacked"
+        },
+        "truncateFirst": {
+          "type": "boolean",
+          "default": false
         }
       },
       "allowedChildren": [
@@ -12918,48 +12922,6 @@
     }
   },
   "utilities": {
-    "NewTabHint": {
-      "category": "Internal",
-      "categorySource": "internal-jsdoc",
-      "governedCategory": true,
-      "hidden": true,
-      "filePath": "src/app/components/new-tab-hint.tsx",
-      "description": "NewTabHint — the visually hidden \" (opens in new tab)\" an external link ends with.",
-      "figmaUrl": null,
-      "figmaId": null,
-      "figmaLink": null,
-      "tier": "utility",
-      "preview": {
-        "exportName": "NewTabHint",
-        "sizing": "panel"
-      },
-      "consumers": [
-        "src/app/components/button.tsx",
-        "src/app/components/inline-link.tsx"
-      ],
-      "tokenMapping": {},
-      "variantAxes": [],
-      "componentProperties": [],
-      "publicDataAttributes": [],
-      "props": {},
-      "allowedChildren": [
-        "*"
-      ],
-      "propConstraints": {},
-      "requiredProps": [],
-      "a11yRules": [],
-      "docsPage": null,
-      "usage": {
-        "when": "Inside an external link that opens a new tab, so a screen reader hears what the decorative arrow shows (hds#1537). InlineLink and Button `external` render it for you.",
-        "whenNot": "A link that opens in the same tab, or any other hidden text (use VisuallyHidden).",
-        "useInstead": [
-          {
-            "component": "VisuallyHidden",
-            "reason": "for other text only assistive technology needs"
-          }
-        ]
-      }
-    },
     "HdsPhosphor": {
       "category": "Compiler",
       "filePath": "scripts/hds-jsx-compiler.mjs",
@@ -13287,6 +13249,48 @@
       "tokenMapping": {},
       "tier": "utility",
       "publicDataAttributes": []
+    },
+    "NewTabHint": {
+      "category": "Internal",
+      "categorySource": "internal-jsdoc",
+      "governedCategory": true,
+      "hidden": true,
+      "filePath": "src/app/components/new-tab-hint.tsx",
+      "description": "NewTabHint — the visually hidden \" (opens in new tab)\" an external link ends with.",
+      "figmaUrl": null,
+      "figmaId": null,
+      "figmaLink": null,
+      "tier": "utility",
+      "preview": {
+        "exportName": "NewTabHint",
+        "sizing": "panel"
+      },
+      "consumers": [
+        "src/app/components/button.tsx",
+        "src/app/components/inline-link.tsx"
+      ],
+      "tokenMapping": {},
+      "variantAxes": [],
+      "componentProperties": [],
+      "publicDataAttributes": [],
+      "props": {},
+      "allowedChildren": [
+        "*"
+      ],
+      "propConstraints": {},
+      "requiredProps": [],
+      "a11yRules": [],
+      "docsPage": null,
+      "usage": {
+        "when": "Inside an external link that opens a new tab, so a screen reader hears what the decorative arrow shows (hds#1537). InlineLink and Button `external` render it for you.",
+        "whenNot": "A link that opens in the same tab, or any other hidden text (use VisuallyHidden).",
+        "useInstead": [
+          {
+            "component": "VisuallyHidden",
+            "reason": "for other text only assistive technology needs"
+          }
+        ]
+      }
     },
     "ExpandTooltip": {
       "category": "Internal",

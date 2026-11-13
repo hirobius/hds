@@ -817,6 +817,12 @@
         "stacked"
       ],
       "default": "'stacked'"
+    },
+    "truncateFirst": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": "false"
     }
   },
   "CardFooter": {},
