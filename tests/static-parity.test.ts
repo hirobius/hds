@@ -148,6 +148,22 @@ describe('.hds-button in static.css', () => {
       );
     });
 
+    it('keeps the edge as the first focus layer, so the gap never paints over it (hds#1545)', () => {
+      const focus = rules('.hds-button').find(
+        (r) => r.selector.endsWith(':focus-visible') && /box-shadow:/.test(r.body),
+      )!;
+      expect(focus.body).toMatch(
+        /box-shadow:\s*0 var\(--hds-hs, var\(--component-button-depth-edge\)\) 0\s+var\(--hds-edge, var\(--component-button-edge-secondary\)\),/,
+      );
+    });
+
+    it('outlines focus in Highlight under forced colors, as .hds-btn-hard does (hds#1545)', () => {
+      const forced = sheet.slice(sheet.indexOf('@media (forced-colors: active)'));
+      expect(forced).toMatch(
+        /^@media \(forced-colors: active\)\s*\{\s*\.hds-button:focus-visible\s*\{[^}]*outline: var\(--semantic-focus-ring-width\) solid Highlight/,
+      );
+    });
+
     it('wraps the focus ring around face and edge, with a transparent outline that forced colors repaint', () => {
       expect(sheet).toMatch(/\.hds-button[^{]*:focus-visible\s*\{[^}]*box-shadow:/);
       expect(sheet).toMatch(/\):focus-visible\s*\{[^}]*outline-color: transparent/);
@@ -219,5 +235,44 @@ describe('.hds-link in static.css', () => {
         'outline-offset: var(--semantic-focus-gap-width)',
       ].sort(),
     );
+  });
+});
+
+/**
+ * The external arrow (hds#1545): Button `external` and InlineLink's arrow in static.css.
+ * Same contract as theme.css's .hds-ext-icon (hds#1530): a translate on the productive
+ * motion token, on the resting icon so it eases out too, applied on focus-visible and on
+ * hover for hover-capable pointers, and never under reduced motion.
+ */
+describe('external arrow motion in static.css (hds#1545)', () => {
+  const sheet = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const noPref = (() => {
+    const i = sheet.indexOf('@media (prefers-reduced-motion: no-preference)');
+    return i < 0 ? '' : sheet.slice(i);
+  })();
+
+  it('times .hds-ext-icon and .hds-link__icon on the productive motion token', () => {
+    for (const sel of ['.hds-ext-icon', '.hds-link__icon']) {
+      const rule = sheet.slice(sheet.indexOf(`${sel} {`));
+      expect(rule.slice(0, rule.indexOf('}')), sel).toMatch(
+        /transition: translate var\(--hds-motion-productive-duration\) var\(--hds-motion-productive-easing\)/,
+      );
+    }
+  });
+
+  it('moves the arrow only inside prefers-reduced-motion: no-preference', () => {
+    const moves = [...sheet.matchAll(/translate: 0\.125em -0\.125em/g)].map((m) => m.index!);
+    expect(moves.length).toBeGreaterThanOrEqual(2);
+    const start = sheet.indexOf('@media (prefers-reduced-motion: no-preference)');
+    expect(start).toBeGreaterThan(-1);
+    for (const i of moves) expect(i).toBeGreaterThan(start);
+  });
+
+  it('nudges on focus-visible and on hover only for hover-capable pointers', () => {
+    expect(noPref).toMatch(/\.hds-ext:focus-visible \.hds-ext-icon/);
+    expect(noPref).toMatch(/\.hds-link:focus-visible \.hds-link__icon/);
+    const hover = noPref.slice(noPref.indexOf('@media (hover: hover)'));
+    expect(hover).toMatch(/\.hds-ext:hover \.hds-ext-icon/);
+    expect(hover).toMatch(/\.hds-link:hover \.hds-link__icon/);
   });
 });

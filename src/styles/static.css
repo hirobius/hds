@@ -465,8 +465,10 @@
   outline-offset: var(--semantic-focus-gap-width);
 }
 
-/* A raised button wraps face AND edge in the ring (box-shadow follows --hds-hs); forced
- * colors drop box-shadow, so the outline stays, transparent (forced colors repaint it). */
+/* A raised button wraps face AND edge in the ring (box-shadow follows --hds-hs). The edge
+ * is the first layer, so the gap layers below never paint over it (as .hds-btn-hard,
+ * hds#1545). Forced colors drop box-shadow, so the outline stays, transparent here and
+ * Highlight in the forced-colors rule below. */
 .hds-button:not(
     :disabled,
     [aria-disabled='true'],
@@ -476,6 +478,8 @@
   ):focus-visible {
   outline-color: transparent;
   box-shadow:
+    0 var(--hds-hs, var(--component-button-depth-edge)) 0
+      var(--hds-edge, var(--component-button-edge-secondary)),
     0 0 0 var(--semantic-focus-gap-width) var(--semantic-color-surface-page),
     0 var(--hds-hs, var(--component-button-depth-edge)) 0 var(--semantic-focus-gap-width)
       var(--semantic-color-surface-page),
@@ -484,6 +488,15 @@
     0 var(--hds-hs, var(--component-button-depth-edge)) 0
       calc(var(--semantic-focus-gap-width) + var(--semantic-focus-ring-width))
       var(--semantic-focus-ring-color);
+}
+
+/* Forced colors drop box-shadow: a system-colour outline keeps focus visible (as
+ * .hds-btn-hard, hds#1545). */
+@media (forced-colors: active) {
+  .hds-button:focus-visible {
+    outline: var(--semantic-focus-ring-width) solid Highlight;
+    outline-offset: var(--semantic-focus-gap-width);
+  }
 }
 
 /* Variants. Secondary is the base rule; its hover and press: */
@@ -681,14 +694,42 @@
   transition: translate var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
 }
 
-.hds-link:hover .hds-link__icon,
-.hds-link:focus-visible .hds-link__icon {
-  translate: 0.125em -0.125em;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .hds-link,
-  .hds-link__icon {
+  .hds-link {
     transition: none;
   }
 }
+
+/* jscpd:ignore-start — a deliberate mirror of theme.css .hds-ext-icon; tests/static-parity.test.ts pins it */
+/* ── External arrow — Button `external` and InlineLink (hds#1530, hds#1545) ──────
+ * The same nudge as theme.css .hds-ext-icon: 0.125em up and right, a `translate` (it moves
+ * paint, not the box: no layout shift), on the productive motion token. The transition sits
+ * on the resting icon, so the arrow eases out as well as in. Focus-visible always moves it;
+ * hover only on hover-capable pointers, so touch never leaves it nudged. Under reduced motion
+ * the arrow never moves. External Button: add `.hds-ext` to the `.hds-button` and
+ * `.hds-ext-icon` to the arrow (an inline SVG, aria-hidden), plus hidden text for screen
+ * readers, as React Button `external` renders:
+ *
+ *   <a class="hds-button hds-ext" href="https://…" target="_blank" rel="noopener noreferrer">
+ *     Figma<svg class="hds-ext-icon" aria-hidden="true">…</svg>
+ *     <span class="your-sr-only-class"> (opens in new tab)</span>
+ *   </a>
+ */
+.hds-ext-icon {
+  transition: translate var(--hds-motion-productive-duration) var(--hds-motion-productive-easing);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hds-ext:focus-visible .hds-ext-icon,
+  .hds-link:focus-visible .hds-link__icon {
+    translate: 0.125em -0.125em;
+  }
+
+  @media (hover: hover) {
+    .hds-ext:hover .hds-ext-icon,
+    .hds-link:hover .hds-link__icon {
+      translate: 0.125em -0.125em;
+    }
+  }
+}
+/* jscpd:ignore-end */
