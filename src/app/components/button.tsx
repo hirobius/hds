@@ -20,7 +20,7 @@ import { warnOncePlain } from '../../lib/deprecation';
 import { crossfadeFade, useHdsMotion } from '../hooks/useHdsMotion';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { installWipeListeners } from './button-wipe';
-import { NewTabHint } from './new-tab-hint';
+import { NewTabHint, newTabName } from './new-tab-hint';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -326,7 +326,7 @@ const BUTTON_EDGE = {
  * @a11y component required a11y:button.loading-busy loading sets aria-busy and disables the button, and the spinner is hidden from assistive technology.
  * @a11y component required a11y:button.toggle-pressed A toggle button reports its state with aria-pressed and flips it on activation.
  * @a11y component required a11y:button.aschild-disabled A disabled asChild link is aria-disabled and leaves the tab order, since a link cannot be natively disabled.
- * @a11y component required a11y:button.external-new-tab With `external`, the accessible name ends in a visually hidden "(opens in new tab)", as InlineLink's does, and the arrow is decorative.
+ * @a11y component required a11y:button.external-new-tab With `external`, the accessible name ends in "(opens in new tab)", as InlineLink's does: a visually hidden span, or appended to an aria-label (label, aria-label, or the slotted link's own); the arrow is decorative.
  * @a11y component required a11y:button.icon-only-name An icon-only button takes its accessible name from label (as aria-label).
  * @a11y component required a11y:button.target-size Every size is at least 24px tall, and an icon-only button at least 24px wide (WCAG 2.5.8).
  * @a11y component required a11y:button.reduced-motion The loading spinner stops under prefers-reduced-motion.
@@ -495,8 +495,14 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           {...wipeProps}
           {...(toggleProps as React.HTMLAttributes<HTMLElement>)}
           {...(props as React.HTMLAttributes<HTMLElement>)}
+          {...(external && newTabName(props['aria-label']))}
         >
-          <Slottable>{children as React.ReactElement}</Slottable>
+          <Slottable>
+            {(external &&
+              React.isValidElement<{ 'aria-label'?: string }>(children) &&
+              React.cloneElement(children, newTabName(children.props['aria-label']) ?? {})) ||
+              (children as React.ReactElement)}
+          </Slottable>
           {external && iconRight}
           {external && <NewTabHint />}
         </Slot>
@@ -516,6 +522,10 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     // overrides them). Spread only when set, so an aria-label from props keeps its old position.
     // When label is the only content it already is the name, so no redundant aria-label.
     const nameProps = label && (iconOnly || children != null) ? { 'aria-label': label } : {};
+    // An aria-label replaces the text, hidden hint included, so it carries the hint (hds#1537).
+    const extName =
+      external &&
+      newTabName(props['aria-label'] ?? (nameProps as { 'aria-label'?: unknown })['aria-label']);
 
     return (
       <button
@@ -532,6 +542,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         className={classes}
         {...toggleProps}
         {...props}
+        {...extName}
       >
         {loading ? (
           <Loader2 className="animate-spin motion-reduce:animate-none" aria-hidden="true" />

@@ -8,6 +8,15 @@
  *
  * @internal Not exported from the package root.
  */
+export const NEW_TAB_TEXT = ' (opens in new tab)';
+
 export function NewTabHint() {
-  return <span className="sr-only"> (opens in new tab)</span>;
+  return <span className="sr-only">{NEW_TAB_TEXT}</span>;
 }
+
+/**
+ * An aria-label replaces the text, hidden hint included, so an external link's
+ * aria-label must carry the hint itself: `{ 'aria-label': name + hint }`, or nothing.
+ */
+export const newTabName = (name: unknown) =>
+  typeof name === 'string' && name ? { 'aria-label': name + NEW_TAB_TEXT } : null;
