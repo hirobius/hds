@@ -7,13 +7,13 @@
  * @useInstead Tabs switching between panels of content
  * @a11y component required a11y:disclosure.expanded-state The trigger is a button whose aria-expanded follows the panel and whose aria-controls names it.
  * @a11y component required a11y:disclosure.keyboard Enter and Space toggle it.
- * @a11y component required a11y:disclosure.hidden-collapsed A collapsed panel is removed from the document, so assistive technology cannot reach it.
+ * @a11y component required a11y:disclosure.hidden-collapsed A collapsed panel stays in the document but is visibility:hidden once its collapse ends, so assistive technology and the tab order cannot reach it.
  * @a11y component required a11y:disclosure.focus-return Collapsing while focus is inside the panel returns focus to the trigger.
  * @a11y component required a11y:disclosure.focus-ring The trigger carries the shared focus ring.
  * @a11y component required a11y:disclosure.target-size The trigger is at least 24px tall in every variant (WCAG 2.5.8).
  * @a11y component required a11y:disclosure.chevron-hidden The chevron is decorative and hidden from assistive technology.
- * @a11y component required gate:check-reduced-motion The height and chevron animation take their duration from useHdsMotion, which is zero under prefers-reduced-motion.
- * @a11y component required a11y:disclosure.row-preview The row variant shows a one-line preview while collapsed and removes it once open, so the text is never read twice.
+ * @a11y component required gate:check-reduced-motion The height, visibility and chevron transitions take their duration from the --hds-motion-productive token, which is zero under prefers-reduced-motion, so the panel opens instantly.
+ * @a11y component required a11y:disclosure.row-preview The row variant shows a one-line preview while collapsed and hides it (visibility:hidden) once open, so the text is never read twice.
  * @a11y component required a11y:disclosure.row-actions The row variant's actions sit beside the trigger, never inside it, so no interactive control is nested in the button.
  * @a11y component required a11y:disclosure.row-expanded-state The row trigger keeps aria-expanded and aria-controls like every variant.
  * @a11y component required a11y:disclosure.row-target-size The row trigger is at least 24px tall (WCAG 2.5.8).
@@ -23,13 +23,10 @@
  */
 import React, { useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'motion/react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
-import { scale, sidebar, typeStyles } from '../design-system/component-tokens';
-import { useHdsMotion } from '../hooks/useHdsMotion';
+import { scale, sidebar, subgrid, typeStyles } from '../design-system/component-tokens';
 import { Icon } from './icon';
-import { Stack } from './stack';
 import { Surface } from './surface';
 
 type DisclosureVariant = 'panel' | 'nav' | 'card' | 'row';
@@ -39,9 +36,8 @@ type DisclosureVariant = 'panel' | 'nav' | 'card' | 'row';
 // expressed the Radix way — a `data-state="open"|"closed"` attribute on the
 // trigger driving `data-[state=open]:` selectors — instead of the previous JS
 // `hovered` boolean re-rendering an inline style object on every mousemove.
-// Height/opacity/chevron-rotation stay motion/react-driven (JS spring/tween
-// timing an accordion needs, not a CSS transition), so that animation is
-// untouched by this migration — only the static layout/color styling moved.
+// Height and chevron rotation are CSS transitions on the productive motion token
+// (see `collapse` and `tween` below), not motion/react (hds#1508).
 // min-h: the caption-size label is 18px tall, under the 24px WCAG 2.5.8 floor (hds#520).
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- sidebar/component-disclosure/surface/radius tokens have no Tailwind-theme utility; var()-based so still token-driven
 const disclosureTriggerVariants = /* @__PURE__ */ cva(
@@ -62,12 +58,40 @@ const disclosureTriggerVariants = /* @__PURE__ */ cva(
   },
 );
 
-const disclosureContainerGap: Record<DisclosureVariant, string> = {
+// The space between trigger and body. It is the body's top padding, not the wrapper's gap:
+// a gap that flips 0 -> N in the opening frame moves the rows below before the height tween
+// starts (hds#1508), while padding inside the tweened body grows with it.
+const disclosureBodyInset: Partial<Record<DisclosureVariant, string>> = {
   panel: sidebar.gap,
   nav: sidebar.sectionGap,
-  card: scale.xs,
-  row: scale.xs,
 };
+
+// One height tween for the body and the row preview: `grid-template-rows` 0fr -> 1fr on the
+// productive motion token, so the two move in the same frame and the rows below travel one way
+// (hds#1508). The token var is zero under prefers-reduced-motion, so the change is instant there.
+// `visibility` rides the same duration: a closed panel stays visible while it collapses, then
+// leaves the accessibility tree and the tab order.
+const tween = 'all var(--hds-motion-productive)';
+
+function collapse(
+  show: boolean,
+  content: ReactNode,
+  panel?: { ref: React.Ref<HTMLDivElement>; id: string },
+) {
+  return (
+    <div
+      {...panel}
+      className="grid"
+      style={{
+        gridTemplateRows: show ? '1fr' : '0fr',
+        visibility: show ? 'visible' : 'hidden',
+        transition: tween,
+      }}
+    >
+      <div className="min-h-0 overflow-hidden">{content}</div>
+    </div>
+  );
+}
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -124,8 +148,6 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
     const triggerRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
     const resolvedOpen = open ?? internalOpen;
-    const state = resolvedOpen ? 'open' : 'closed';
-    const productiveMotion = useHdsMotion('productive');
 
     function handleToggle() {
       const nextOpen = !resolvedOpen;
@@ -147,8 +169,6 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       className,
     );
 
-    const containerGap = resolvedOpen ? disclosureContainerGap[variant] : 0;
-
     const labelContent =
       typeof label === 'string' ? (
         <span
@@ -162,7 +182,6 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       );
 
     const isRow = variant === 'row';
-    const showPreview = isRow && !resolvedOpen && preview != null && preview !== false;
 
     const triggerButton = (
       <button // audit-ok: hds-focus applied via triggerClassName variable
@@ -171,28 +190,31 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
         onClick={handleToggle}
         aria-expanded={resolvedOpen}
         aria-controls={panelId}
-        data-state={state}
+        data-state={resolvedOpen ? 'open' : 'closed'}
         className={triggerClassName}
         style={triggerStyle}
       >
-        {/* eslint-disable-next-line tailwindcss/no-arbitrary-value -- subgrid gap token has no Tailwind-theme utility; var()-based so still token-driven */}
-        <div className="grid min-w-0 flex-1 items-start gap-[var(--semantic-space-subgrid-gap)]">
+        <div className="grid min-w-0 flex-1 items-start">
           {labelContent}
-          {showPreview && (
-            <span
-              className="block min-w-0 truncate text-muted-foreground"
-              style={typeStyles.caption}
-            >
-              {preview}
-            </span>
-          )}
+          {isRow &&
+            preview != null &&
+            preview !== false &&
+            collapse(
+              !resolvedOpen,
+              // The label-to-preview gap lives on the preview, so it collapses with it.
+              <span
+                className="block min-w-0 truncate text-muted-foreground"
+                style={{ ...typeStyles.caption, paddingTop: subgrid.gap }}
+              >
+                {preview}
+              </span>,
+            )}
         </div>
-        <m.span
+        <span
           aria-hidden="true"
-          animate={{ rotate: resolvedOpen ? 0 : -90 }}
-          transition={{
-            duration: productiveMotion.duration,
-            ease: productiveMotion.easing,
+          style={{
+            transform: resolvedOpen ? 'none' : 'rotate(-90deg)',
+            transition: tween,
           }}
           // Was --primitive-typography-size-base: a chevron BOX sized off the body
           // type rung, so a ramp change would have resized it. Now the icon token.
@@ -201,63 +223,42 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
           className="inline-grid size-[var(--hds-icon-small)] shrink-0 origin-center place-items-center self-center overflow-hidden leading-none"
         >
           <Icon icon={ChevronDown} size="small" color="currentColor" />
-        </m.span>
+        </span>
       </button>
     );
 
     const disclosureBody = (
-      <LazyMotion features={domAnimation}>
+      <>
         {isRow ? (
+          // The trigger keeps its top when the preview collapses; the actions stay centred on the row.
           // eslint-disable-next-line tailwindcss/no-arbitrary-value -- scale token has no Tailwind-theme utility; var()-based so still token-driven
-          <div className="flex min-w-0 items-center gap-[var(--semantic-space-scale-xs)]">
+          <div className="flex min-w-0 items-start gap-[var(--semantic-space-scale-xs)]">
             {triggerButton}
-            {actions != null && <div className="flex shrink-0 items-center">{actions}</div>}
+            {actions != null && (
+              <div className="flex shrink-0 items-center self-center">{actions}</div>
+            )}
           </div>
         ) : (
           triggerButton
         )}
 
-        <AnimatePresence initial={false}>
-          {resolvedOpen && (
-            <m.div
-              ref={panelRef}
-              id={panelId}
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{
-                duration: productiveMotion.duration,
-                ease: productiveMotion.easing,
-              }}
-              className="overflow-hidden"
-            >
-              <div
-                style={{
-                  ...contentStyle,
-                }}
-              >
-                {children}
-              </div>
-            </m.div>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+        {collapse(
+          resolvedOpen,
+          <div
+            style={{
+              paddingTop: disclosureBodyInset[variant] ?? scale.xs,
+              ...contentStyle,
+            }}
+          >
+            {children}
+          </div>,
+          { ref: panelRef, id: panelId },
+        )}
+      </>
     );
 
-    if (isRow) {
-      return (
-        <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
-          {disclosureBody}
-        </Stack>
-      );
-    }
-
-    if (variant === 'nav') {
-      return (
-        <Stack ref={ref} gap="tight" style={{ gap: containerGap }}>
-          {disclosureBody}
-        </Stack>
-      );
+    if (isRow || variant === 'nav') {
+      return <div ref={ref}>{disclosureBody}</div>;
     }
 
     return (
@@ -266,9 +267,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
         padding="component"
         className={variant === 'card' ? 'overflow-hidden' : undefined}
       >
-        <Stack gap="tight" style={{ gap: containerGap }}>
-          {disclosureBody}
-        </Stack>
+        {disclosureBody}
       </Surface>
     );
   },

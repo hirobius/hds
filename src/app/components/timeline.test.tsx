@@ -103,12 +103,15 @@ describe('Timeline', () => {
     expect(screen.getAllByRole('button')).toHaveLength(1);
     const toggle = screen.getByRole('button', { name: /Has details/ });
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    expect(screen.queryByText('Deploy log text')).toBeNull();
+    // A closed Disclosure keeps its panel mounted but visibility:hidden (hds#1508).
+    const hidden = () =>
+      screen.getByText('Deploy log text').closest('[style*="visibility: hidden"]');
+    expect(hidden()).not.toBeNull();
     await user.tab();
     expect(document.activeElement).toBe(toggle);
     await user.keyboard('{Enter}');
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
-    expect(screen.getByText('Deploy log text')).not.toBeNull();
+    expect(hidden()).toBeNull();
     await user.keyboard(' ');
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
   });

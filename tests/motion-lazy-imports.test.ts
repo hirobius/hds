@@ -62,7 +62,9 @@ describe('motion imports (hds#1386)', () => {
 
   it('every module that renders m.* wraps it in LazyMotion with domAnimation', () => {
     const users = files.filter(({ source }) => /<m\.[a-z]+/.test(source));
-    expect(users.length).toBeGreaterThanOrEqual(15);
+    // Ratchet against accidental loss of a wrapped m.* module. Lowered 15 -> 14
+    // when Disclosure moved to a CSS grid-rows collapse and stopped rendering m.* (hds#1508).
+    expect(users.length).toBeGreaterThanOrEqual(14);
     const offenders = users
       .filter(({ source }) => {
         const names = motionImports(source);
