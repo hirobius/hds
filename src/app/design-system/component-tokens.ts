@@ -5,9 +5,10 @@
  * tables, about 3 kB gzipped, and a bundler cannot drop it once a component
  * reads one key. Components import these constants instead, so a
  * components-only import of the root ships none of the bridge. Every value is
- * the CSS var string `hds` holds for the same path; tokens.ts keeps its
- * own copy (importing this module there would pull it into the tokens entry
- * graphs), and component-tokens.test.ts pins every export against `hds` so the
+ * the CSS var string `hds` holds for the same path; tokens.ts keeps its own
+ * copy, built from a step helper so it is not a clone of this table (importing
+ * this module there would pull it into the tokens entry graphs), and
+ * component-tokens.test.ts pins every export against `hds` so the
  * two cannot drift. Add a key here only when a component reads it.
  */
 import type { CSSProperties } from 'react';

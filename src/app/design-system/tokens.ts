@@ -15,6 +15,9 @@ import { tokenRefs } from './generated-token-refs';
 import { motion as motionRoles } from './motion-tokens';
 import { motionExtras } from './motion-extras';
 
+/** A primitive space step as its CSS var (the table below is read by `hds.space`). */
+const sp = (step: string) => `var(--primitive-space-${step})`;
+
 const motion = { ...motionRoles, ...motionExtras } as const;
 
 const FONT_FAMILY_PRIMARY = 'var(--primitive-typography-family-primary)';
@@ -380,24 +383,24 @@ const hds = {
   // e.g. `margin: \`0 0 ${hds.space.px20}\`` — use individual properties instead.
   // For component spacing that adapts to density, use hds.semantic.space.scale.* instead.
   space: {
-    px1: 'var(--primitive-space-px1)',
-    px2: 'var(--primitive-space-px2)',
-    px4: 'var(--primitive-space-1)',
-    px6: 'var(--primitive-space-px6)',
-    px8: 'var(--primitive-space-2)',
-    px10: 'var(--primitive-space-px10)',
-    px12: 'var(--primitive-space-3)',
-    px16: 'var(--primitive-space-4)',
-    px20: 'var(--primitive-space-5)',
-    px24: 'var(--primitive-space-6)',
-    px28: 'var(--primitive-space-7)',
-    px32: 'var(--primitive-space-8)',
-    px40: 'var(--primitive-space-10)',
-    px48: 'var(--primitive-space-12)',
-    px64: 'var(--primitive-space-16)',
-    px80: 'var(--primitive-space-20)',
-    px96: 'var(--primitive-space-24)',
-    px128: 'var(--primitive-space-32)',
+    px1: sp('px1'),
+    px2: sp('px2'),
+    px4: sp('1'),
+    px6: sp('px6'),
+    px8: sp('2'),
+    px10: sp('px10'),
+    px12: sp('3'),
+    px16: sp('4'),
+    px20: sp('5'),
+    px24: sp('6'),
+    px28: sp('7'),
+    px32: sp('8'),
+    px40: sp('10'),
+    px48: sp('12'),
+    px64: sp('16'),
+    px80: sp('20'),
+    px96: sp('24'),
+    px128: sp('32'),
   },
 
   // ── Border width ─────────────────────────────────────────────────────────────
