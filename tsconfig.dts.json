@@ -30,7 +30,8 @@
     "src/number/index.ts",
     "src/patterns.ts",
     "src/icons.ts",
-    "src/sheet.ts"
+    "src/sheet.ts",
+    "src/button.ts"
   ],
   "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*"]
 }
