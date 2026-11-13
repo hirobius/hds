@@ -558,6 +558,12 @@
       "values": null,
       "default": null
     },
+    "external": {
+      "type": "boolean",
+      "optional": true,
+      "values": null,
+      "default": null
+    },
     "flush": {
       "type": "boolean",
       "optional": true,

@@ -8,9 +8,9 @@
  */
 
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
+import { Slot, Slottable } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Loader2 } from 'lucide-react';
+import { Loader2, SquareArrowOutUpRight } from 'lucide-react';
 // m + LazyMotion(domAnimation): the crossfade needs only opacity, and the full `motion`
 // component costs Button's import about 14 kB gzip more on Motion 14 (hds#751).
 import { AnimatePresence, LazyMotion, domAnimation, m, useIsPresent } from 'motion/react';
@@ -22,6 +22,10 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
 import { installWipeListeners } from './button-wipe';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
+
+// The classes every status tone shares; each tone adds its own fill and text colour (kept as literals so Tailwind sees them).
+const TONE_COMMON =
+  'border-transparent hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:inset-shadow-pressed-overlay/5 disabled:border-transparent';
 
 /**
  * Pressed state (hds#322): an inset box-shadow wash bound to
@@ -125,13 +129,10 @@ const buttonVariants = /* @__PURE__ */ cva(
         // fill: content.secondary on surface.soft is under 4.5:1 in dark. The classes live in
         // the compoundVariants, so a filled variant ignores it.
         quiet: '',
-        danger:
-          'border-transparent bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-danger active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
-        success:
-          'border-transparent bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-success active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
-        warning:
-          'border-transparent bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-warning active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
-        info: 'border-transparent bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:bg-feedback-bg-info active:inset-shadow-pressed-overlay/5 disabled:border-transparent',
+        danger: `bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger active:bg-feedback-bg-danger ${TONE_COMMON}`,
+        success: `bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success active:bg-feedback-bg-success ${TONE_COMMON}`,
+        warning: `bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning active:bg-feedback-bg-warning ${TONE_COMMON}`,
+        info: `bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info active:bg-feedback-bg-info ${TONE_COMMON}`,
       },
       size: {
         sm: 'h-[var(--component-button-size-sm-height)] px-fixed-xs hds-type-caption hds-touch-row [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
@@ -257,6 +258,8 @@ export interface ButtonProps
   iconLeft?: React.ReactNode;
   /** Trailing icon rendered after the label. */
   iconRight?: React.ReactNode;
+  /** Show the external-link arrow after the label (when `iconRight` is not set). On hover and keyboard focus the arrow nudges up and right; reduced motion keeps it still. With `asChild` it is added inside the slotted link. */
+  external?: boolean;
   /** Render a square icon-only control; `label` becomes its aria-label. */
   iconOnly?: boolean;
   /** Disable interaction. Mirrors the native HTML attribute. */
@@ -348,7 +351,8 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       label,
       loading = false,
       iconLeft,
-      iconRight,
+      iconRight: iconRightProp,
+      external,
       disabled,
       children,
       type = 'button',
@@ -362,6 +366,9 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
     ref,
   ) {
     const isDisabled = disabled || loading;
+    const iconRight =
+      iconRightProp ??
+      (external && <SquareArrowOutUpRight aria-hidden="true" className="hds-ext-icon" />);
     // A link-styled Button has no fill to wipe in and no edge (hds#863).
     const isLink = variant === 'link';
     const wipe = hoverEffect === 'wipe' && !isLink;
@@ -460,6 +467,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       }),
       isToggle && !hasTone && toggleOnClasses,
       flush && 'px-0',
+      external && 'hds-ext',
       className,
     );
 
@@ -486,30 +494,19 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           {...(toggleProps as React.HTMLAttributes<HTMLElement>)}
           {...(props as React.HTMLAttributes<HTMLElement>)}
         >
-          {children as React.ReactElement}
+          <Slottable>{children as React.ReactElement}</Slottable>
+          {external && iconRight}
         </Slot>
       );
     }
 
-    if (iconOnly && !iconLeft && !loading && isDevelopment()) {
-      warnOncePlain(
-        'button-iconOnly-without-icon',
-        '[Button] iconOnly renders only iconLeft; pass iconLeft (iconRight is hidden in iconOnly mode).',
-      );
-    }
-
-    if (
-      iconOnly &&
-      !label &&
-      !props['aria-label'] &&
-      !props['aria-labelledby'] &&
-      !props.title &&
-      isDevelopment()
-    ) {
-      warnOncePlain(
-        'button-iconOnly-without-name',
-        '[Button] iconOnly hides the label text, so the button has no accessible name; pass label (or aria-label / aria-labelledby).',
-      );
+    if (iconOnly && isDevelopment()) {
+      if (!iconLeft && !loading) {
+        warnOncePlain('button-iconOnly-without-icon', '[Button] iconOnly needs iconLeft');
+      }
+      if (!label && !props['aria-label'] && !props['aria-labelledby'] && !props.title) {
+        warnOncePlain('button-iconOnly-without-name', '[Button] iconOnly needs a label');
+      }
     }
 
     // `label` is the accessible name whenever it is given (iconOnly hides the text; with children it

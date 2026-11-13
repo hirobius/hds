@@ -158,6 +158,13 @@ function ButtonDemo() {
       <Button variant="secondary" size="sm">
         Small
       </Button>
+      {['secondary', 'link'].map((v) => (
+        <Button key={v} variant={v as 'secondary' | 'link'} asChild external>
+          <a href="https://github.com/hirobius/hds" target="_blank" rel="noopener noreferrer">
+            {v === 'link' ? 'Link, external' : 'Source on GitHub'}
+          </a>
+        </Button>
+      ))}
     </div>
   );
 }

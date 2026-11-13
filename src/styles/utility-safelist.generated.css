@@ -321,9 +321,6 @@
 @source inline("group");
 @source inline("group-active:border-[var(--semantic-color-border-accent)]");
 @source inline("group-disabled:text-[var(--semantic-color-content-disabled)]");
-@source inline("group-focus-visible:-translate-y-[0.125em]");
-@source inline("group-focus-visible:translate-x-[0.125em]");
-@source inline("group-hover:-translate-y-[0.125em]");
 @source inline("group-hover:-translate-y-full");
 @source inline("group-hover:bg-[var(--component-tag-activeHover)]");
 @source inline("group-hover:bg-[var(--semantic-color-surface-accentSubtle)]");
@@ -331,7 +328,6 @@
 @source inline("group-hover:origin-left");
 @source inline("group-hover:scale-x-100");
 @source inline("group-hover:text-[var(--semantic-color-content-primary)]");
-@source inline("group-hover:translate-x-[0.125em]");
 @source inline("group-last/item:hidden");
 @source inline("group/card");
 @source inline("group/item");
@@ -777,7 +773,6 @@
 @source inline("transition-[color,outline-color,transform]");
 @source inline("transition-[colors,filter]");
 @source inline("transition-[scale,box-shadow]");
-@source inline("transition-[translate]");
 @source inline("transition-[width]");
 @source inline("transition-all");
 @source inline("transition-colors");

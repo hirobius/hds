@@ -1,0 +1,38 @@
+{
+  "impact": "behavior",
+  "plain": "Pass external to a Button to show the external-link arrow; the external-link arrow on Button and InlineLink now eases up and right on hover and focus, and stays still under reduced motion.",
+  "steps": [
+    {
+      "id": "removed/external-icon-utilities",
+      "impact": "look",
+      "plain": "styles.css no longer ships four group-hover and group-focus-visible translate utilities and transition-[translate], which only InlineLink's external icon used (hds#1530); if your markup writes one, compile it with your own Tailwind.",
+      "facts": [
+        "utility-removed:group-hover:translate-x-[0.125em]",
+        "utility-removed:group-hover:-translate-y-[0.125em]",
+        "utility-removed:group-focus-visible:translate-x-[0.125em]",
+        "utility-removed:group-focus-visible:-translate-y-[0.125em]",
+        "utility-removed:transition-[translate]"
+      ],
+      "kind": "removed",
+      "detect": {
+        "classes": [
+          "group-hover:translate-x-[0.125em]",
+          "group-hover:-translate-y-[0.125em]",
+          "group-focus-visible:translate-x-[0.125em]",
+          "group-focus-visible:-translate-y-[0.125em]",
+          "transition-[translate]"
+        ]
+      }
+    },
+    {
+      "id": "behavior/Button.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The Button demo gained two external-link buttons (the new external prop); a Button without external renders as before.",
+      "detect": {
+        "regex": ["getAllByRole\\(['\"]link['\"]"]
+      },
+      "facts": ["dom-changed:Button"]
+    }
+  ]
+}

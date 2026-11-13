@@ -10,8 +10,7 @@ import { Search } from 'lucide-react';
 import { stubReducedMotion } from '../../../tests/helpers/reduced-motion';
 import { Icon } from './icon';
 
-const MESSAGE =
-  '[Button] iconOnly renders only iconLeft; pass iconLeft (iconRight is hidden in iconOnly mode).';
+const MESSAGE = '[Button] iconOnly needs iconLeft';
 
 // The once flag is module state, so each test loads a fresh copy of the module.
 async function load() {
@@ -105,8 +104,7 @@ describe('Button iconOnly accessible name (hds#393)', () => {
   });
 });
 
-const NO_NAME =
-  '[Button] iconOnly hides the label text, so the button has no accessible name; pass label (or aria-label / aria-labelledby).';
+const NO_NAME = '[Button] iconOnly needs a label';
 
 describe('Button iconOnly without an accessible name (hds#393)', () => {
   it('warns once when an icon-only button has no name', async () => {
