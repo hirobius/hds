@@ -1345,6 +1345,17 @@
       ]
     }
   },
+  "./button": {
+    "Button": {
+      "kind": "value",
+      "signatures": [
+        "(props: ButtonProps & RefAttributes<HTMLButtonElement>): ReactNode"
+      ]
+    },
+    "ButtonProps": {
+      "kind": "type"
+    }
+  },
   "./cn": {
     "SPACING_KEYS": {
       "kind": "value"

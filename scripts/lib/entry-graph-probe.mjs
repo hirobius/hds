@@ -64,6 +64,14 @@ export const ENTRY_GRAPHS = [
     forbidInputs: ['hirobius.tokens.json.js'],
     probe: 'dist/probe/sheet.graph.js',
   },
+  {
+    // hds#1502: Button on its own subpath, for an app with a tight entry budget.
+    // It must not drag the token JSON in through a dependency.
+    entry: 'dist/button.js',
+    reexports: ['export *'],
+    forbidInputs: ['hirobius.tokens.json.js'],
+    probe: 'dist/probe/button.graph.js',
+  },
 ];
 
 /**

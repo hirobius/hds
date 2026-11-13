@@ -92,6 +92,11 @@
       "import": "./dist/patterns.js",
       "default": "./dist/patterns.js"
     },
+    "./button": {
+      "types": "./dist/types/src/button.d.ts",
+      "import": "./dist/button.js",
+      "default": "./dist/button.js"
+    },
     "./sheet": {
       "types": "./dist/types/src/sheet.d.ts",
       "import": "./dist/sheet.js",

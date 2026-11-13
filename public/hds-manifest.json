@@ -3893,6 +3893,7 @@
         "src/app/design-system/motion-extras.ts",
         "src/app/design-system/motion-tokens.ts",
         "src/app/hooks/useHdsMotion.ts",
+        "src/button.ts",
         "src/form/index.ts",
         "src/index.ts",
         "src/mui/index.ts"
@@ -9761,7 +9762,7 @@
           "default": "Nothing here yet"
         },
         "level": {
-          "type": "3 | 6 | 4 | 2 | 5",
+          "type": "3 | 2 | 4 | 5 | 6",
           "default": 2
         },
         "rows": {
@@ -9833,7 +9834,7 @@
           "type": "ReactNode"
         },
         "level": {
-          "type": "3 | 6 | 4 | 2 | 5",
+          "type": "3 | 2 | 4 | 5 | 6",
           "default": 2
         },
         "onConfirm": {
@@ -12409,7 +12410,7 @@
           "optional": true
         },
         "headingLevel": {
-          "type": "3 | 4 | 2",
+          "type": "3 | 2 | 4",
           "default": 2
         },
         "title": {

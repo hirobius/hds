@@ -149,6 +149,8 @@ export default defineConfig({
         icons: path.resolve(__dirname, 'src/icons.ts'),
         // Subpath: Sheet without the root barrel (hds#1433), for apps with a tight entry budget.
         sheet: path.resolve(__dirname, 'src/sheet.ts'),
+        // Subpath: Button without the root barrel (hds#1502), for apps with a tight entry budget.
+        button: path.resolve(__dirname, 'src/button.ts'),
       },
       // ESM-only — no UMD/CJS dual emit (modern, simpler, matches shadcn).
       formats: ['es'],

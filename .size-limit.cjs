@@ -282,6 +282,14 @@ module.exports = [
     gzip: true,
   },
   {
+    // hds#1502: the ./button subpath graph (packages external), 5.78 kB gzip (size-limit) on
+    // 2026-11-13. The limit is the measured size plus 0.22 kB.
+    name: 'button graph (dist/probe/button.graph.js)',
+    path: 'dist/probe/button.graph.js',
+    limit: '6 kB',
+    gzip: true,
+  },
+  {
     name: 'Button-only root import (dist/probe/button-only.js)',
     path: 'dist/probe/button-only.js',
     limit: '78 kB',
