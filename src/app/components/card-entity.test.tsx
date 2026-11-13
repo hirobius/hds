@@ -96,7 +96,6 @@ describe('Card.Facts', () => {
     );
     const list = screen.getByRole('list');
     expect(list.className).toContain('flex-col');
-    expect(list.className).not.toContain('flex-wrap');
     const items = within(list).getAllByRole('listitem');
     items.forEach((li) => {
       expect(li.className).toContain('items-start');

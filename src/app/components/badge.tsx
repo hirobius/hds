@@ -100,25 +100,15 @@ export interface BadgeProps
   label?: string;
 }
 
-// `label` only names a `dot` badge. On a text badge it renders nothing, so
-// `<Badge label="Active" />` was an empty chip with no hint why (hds#522). Warn once
-// in dev (misuse, not a deprecation, so not lib/deprecation's warnOnce prefix).
-let warnedLabelWithoutDot = false;
-function warnLabelWithoutDot() {
-  if (warnedLabelWithoutDot || isProduction()) return;
-  warnedLabelWithoutDot = true;
-  console.warn(
-    '[HDS] Badge `label` renders no text without `dot`. Put the text in children, or add `dot`.',
-  );
-}
-
-// `dot` renders a bare circle with no room for a glyph, so `icon` beside it is misuse:
-// the dot wins and the icon is dropped. Warn once in dev (same shape as above).
-let warnedIconWithDot = false;
-function warnIconWithDot() {
-  if (warnedIconWithDot || isProduction()) return;
-  warnedIconWithDot = true;
-  console.warn('[HDS] Badge `icon` is ignored on a `dot` badge. Drop `dot` to show it.');
+// Misuse, not a deprecation, so not lib/deprecation's warnOnce prefix. Each message warns
+// once in dev. `label` only names a `dot` badge: on a text badge it renders nothing, so
+// `<Badge label="Active" />` was an empty chip with no hint why (hds#522). `dot` renders a
+// bare circle with no room for a glyph, so `icon` beside it is dropped.
+const warnedBadge = new Set<string>();
+function warnBadge(message: string) {
+  if (warnedBadge.has(message) || isProduction()) return;
+  warnedBadge.add(message);
+  console.warn(`[HDS] Badge ${message}`);
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -143,11 +133,11 @@ export const Badge = /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeProp
   const isCount = count !== undefined && !dot;
 
   if (label && !dot && !isCount) {
-    warnLabelWithoutDot();
+    warnBadge('`label` renders no text without `dot`. Put the text in children, or add `dot`.');
   }
 
   if (dot && icon) {
-    warnIconWithDot();
+    warnBadge('`icon` is ignored on a `dot` badge. Drop `dot` to show it.');
   }
 
   // Decorative leading glyph: Icon is aria-hidden by default and draws in currentColor,
