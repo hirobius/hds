@@ -12,10 +12,11 @@
     "./scroll": "src/scroll/index.ts",
     "./number": "src/number/index.ts",
     "./patterns": "src/patterns.ts",
+    "./button": "src/button.ts",
     "./sheet": "src/sheet.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.42.0",
+  "version": "0.43.0",
   "generatedAt": "2026-11-13",
   "modules": {
     "(barrel)": [
@@ -331,6 +332,7 @@
       "prePanelVariants",
       "useFieldWiring"
     ],
+    "@subpath/button": ["Button", "ButtonProps"],
     "@subpath/sheet": ["Sheet", "SheetActionProps", "SheetContentProps", "SheetProps"],
     "@subpath/icons": [
       "Archive",

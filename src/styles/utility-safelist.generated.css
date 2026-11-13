@@ -1,5 +1,5 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
-   from docs/api/releases/0.42.0.json: every Tailwind utility that release shipped stays emitted,
+   from docs/api/releases/0.43.0.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
    ./tokens.css by accident. To drop one, list utility-removed:<class> in a step
    (upgrade/pending/<changeset>.json), then run node scripts/build-utility-safelist.mjs. */
@@ -608,6 +608,7 @@
 @source inline("py-1.5");
 @source inline("py-2");
 @source inline("py-3");
+@source inline("py-[var(--component-badge-paddingY)]");
 @source inline("py-[var(--component-disclosure-paddingY)]");
 @source inline("py-[var(--component-tag-paddingY)]");
 @source inline("py-[var(--semantic-space-component-medium)]");

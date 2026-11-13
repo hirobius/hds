@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.43.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The component.badge.paddingShift token (--component-badge-paddingShift, the 1px label lift) is gone because Badge pads evenly now; stop reading it, there is no replacement.
+- Do by hand: A Badge's text now sits in an inner span (so does every Badge inside Card, Table, List and the other demos), so a test that reads it with getByText gets the span; use closest('\[data-tone]') or a role instead.
+- Do by hand: Disclosure's panel now stays in the DOM while closed (zero height, visibility hidden) and its wrapper is a plain div, so a test that expects closed content to be absent should check it is not visible instead, and a selector on the Stack data attributes needs updating.
+- Do by hand: Timeline renders a Disclosure, so its closed panels stay in the DOM too; check a test that expects them to be absent, or a selector on the Stack data attributes.
+- And 2 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0430).
+
+### Minor Changes
+
+- 9369bfa: Badge (and the count badge) now centres its label in the pill: it sat about 2px high. Padding is even top and bottom and the label is a span trimmed to cap height (`text-box-trim`, where supported). A Badge's text is now inside an inner `<span>`, so a query like `getByText('Beta')` returns that span, not the Badge root. The `component.badge.paddingShift` token (the 1px lift) is removed, and the CSS-only `.hds-badge` drops the same lift. Tag was within 0.5px and is unchanged.
+- 036a653: Card.Facts now stacks its facts by default: one fact per line, each icon aligned to its first text line. Pass `layout="inline"` for the old wrapping row. (hds#1509)
+- 4ffe66d: Fix Disclosure: opening or closing a row no longer makes the rows below jump (hds#1508). The panel and the row preview are now two `grid-template-rows` 0fr/1fr collapses on the productive motion token, flipped in the same render, so the rows below travel one way with no back-step and the summary row keeps its top. The panel stays in the DOM while closed (zero height, `visibility: hidden`, so assistive technology and the tab order cannot reach it) and the wrapper is a plain div. Reduced motion opens it in one step. A consumer that overrode the inline gap or `.overflow-hidden` with `!important` can drop that override; a test that expects closed content to be absent should check it is not visible.
+- fff3ab1: static.css: `.hds-button` and `.hds-button--primary` now draw the hard edge the React Button draws (the `component.button.depth.*` edge, sinking on hover and press, the per-accent `--hds-edge-primary` / `--hds-edge-primaryHover` for primary), so CSS-only pages no longer look flat beside React pages. Add `.hds-button--flat` to opt out; tertiary and link stay flat. No transition under reduced motion. The focus ring now wraps face and edge. (hds#1507)
+
+### Patch Changes
+
+- 3a3420c: Button: new `@hirobius/design-system/button` subpath, so an app with a tight entry budget can import Button without the root barrel. The root still exports Button, and both give the same component, with no visual change. The subpath is 5.78 kB gzip (size-limit) with its packages external.
+- 9231d8e: Components read their tokens from a small `component-tokens` module instead of the whole `hds` bridge, so a components-only import of the root ships about 1.8 kB less (gzipped). No change to markup, styles or the public API (hds#1519).
+
 ## 0.42.0
 
 ### Upgrade
