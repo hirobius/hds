@@ -42,15 +42,23 @@ describe('Disclosure accessibility contract', () => {
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
 
-  it('a11y:disclosure.hidden-collapsed - a collapsed panel is removed from the document, not only hidden by style', async () => {
+  it('a11y:disclosure.hidden-collapsed - a collapsed panel stays in the document but assistive technology and the tab order cannot reach it', async () => {
     const user = userEvent.setup();
-    render(<Disclosure label="Details">Body text</Disclosure>);
-    expect(screen.queryByText('Body text')).toBeNull();
+    render(
+      <Disclosure label="Details">
+        <button type="button" className="hds-focus">
+          Inside
+        </button>
+      </Disclosure>,
+    );
+    // Collapsed: still mounted (so it can tween), but visibility:hidden keeps it out of the
+    // accessibility tree, so role queries skip it and it cannot take focus.
+    expect(screen.queryByRole('button', { name: 'Inside' })).toBeNull();
     const trigger = screen.getByRole('button', { name: 'Details' });
     await user.click(trigger);
-    expect(screen.queryByText('Body text')).not.toBeNull();
+    expect(screen.queryByRole('button', { name: 'Inside' })).not.toBeNull();
     await user.click(trigger);
-    await waitFor(() => expect(screen.queryByText('Body text')).toBeNull());
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Inside' })).toBeNull());
   });
 
   it('a11y:disclosure.focus-return - collapsing while focus is inside the panel returns focus to the trigger', async () => {
@@ -116,33 +124,37 @@ describe('Disclosure row variant', () => {
     </Disclosure>
   );
 
-  it('a11y:disclosure.row-preview - the preview shows collapsed and is removed when open', async () => {
+  it('a11y:disclosure.row-preview - the preview shows collapsed and is hidden from assistive technology when open', async () => {
     const user = userEvent.setup();
     render(row());
-    expect(screen.getByText('First line of the content')).not.toBeNull();
+    expect(screen.getByRole('button', { name: /First line of the content/ })).not.toBeNull();
     await user.click(screen.getByRole('button', { name: /Row title/ }));
-    await waitFor(() => expect(screen.queryByText('First line of the content')).toBeNull());
+    expect(screen.getByRole('button', { name: 'Row title' })).not.toBeNull();
     expect(screen.getByText('Full content')).not.toBeNull();
   });
 
-  // hds#1508: opening a row used to flip the wrapper gap 0 -> 8px and drop the
-  // preview in the same frame the body tweened from 0, so the rows below jumped twice.
-  it('hds#1508 - the row wrapper gap is constant across open and closed', async () => {
+  // hds#1508: opening a row used to flip the wrapper gap 0 -> 8px and drop the preview in the
+  // same frame the body tweened from 0, so the rows below jumped twice. Now the preview and the
+  // body are two grid-template-rows collapses on one transition, flipped in one render, so the
+  // rows below move one way, in one frame set.
+  it('hds#1508 - the preview and the body flip in one render on the same transition', async () => {
     const user = userEvent.setup();
     const { container } = render(row());
-    const wrapper = container.firstElementChild as HTMLElement;
-    const closedGap = wrapper.style.gap;
+    const rows = (el: Element | null) => (el as HTMLElement).style.gridTemplateRows;
+    const collapseOf = (text: string) => {
+      let el: HTMLElement | null = screen.getByText(text);
+      while (el && !el.style.gridTemplateRows) el = el.parentElement;
+      return el as HTMLElement;
+    };
+    const preview = collapseOf('First line of the content');
+    const body = collapseOf('Full content');
+    expect([rows(preview), rows(body)]).toEqual(['1fr', '0fr']);
+    expect((preview as HTMLElement).style.transition).toBe((body as HTMLElement).style.transition);
+    expect((body as HTMLElement).style.transition).toContain('--hds-motion-productive');
     await user.click(screen.getByRole('button', { name: /Row title/ }));
-    expect(wrapper.style.gap).toBe(closedGap);
-  });
-
-  it('hds#1508 - the preview leaves with the body tween, not in the opening frame', async () => {
-    const user = userEvent.setup();
-    render(row());
-    await user.click(screen.getByRole('button', { name: /Row title/ }));
-    // Still mounted right after the click (it collapses on the same tween as the body grows).
-    expect(screen.queryByText('First line of the content')).not.toBeNull();
-    await waitFor(() => expect(screen.queryByText('First line of the content')).toBeNull());
+    expect([rows(preview), rows(body)]).toEqual(['0fr', '1fr']);
+    // The wrapper holds no gap that could flip, and no spacing is added in the open state only.
+    expect((container.firstElementChild as HTMLElement).style.gap).toBe('');
   });
 
   it('a11y:disclosure.row-preview - the preview is clamped to one line', () => {

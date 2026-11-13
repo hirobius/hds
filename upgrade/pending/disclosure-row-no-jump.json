@@ -1,12 +1,12 @@
 {
   "impact": "behavior",
-  "plain": "Opening a Disclosure row no longer makes the rows below jump, so delete any override of its inline gap or .overflow-hidden you added as a workaround.",
+  "plain": "Opening or closing a Disclosure no longer makes the rows below jump, so delete any override of its inline gap or .overflow-hidden you added as a workaround.",
   "steps": [
     {
       "id": "behavior/Disclosure.dom",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "Disclosure's wrapper is now a plain div without the Stack data attributes, and a row's preview stays mounted, hidden from assistive technology, while the row is open, so update a selector or test that relied on either.",
+      "plain": "Disclosure's panel now stays in the DOM while closed (zero height, visibility hidden) and its wrapper is a plain div, so a test that expects closed content to be absent should check it is not visible instead, and a selector on the Stack data attributes needs updating.",
       "detect": {
         "jsx": ["Disclosure"],
         "regex": ["data-hds-component=.Stack."]
@@ -17,7 +17,7 @@
       "id": "behavior/Timeline.dom",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "Timeline renders a Disclosure, so its wrapper loses the Stack data attributes too; update a selector or test that relied on them.",
+      "plain": "Timeline renders a Disclosure, so its closed panels stay in the DOM too; check a test that expects them to be absent, or a selector on the Stack data attributes.",
       "detect": {
         "jsx": ["Timeline"],
         "regex": ["data-hds-component=.Stack."]
