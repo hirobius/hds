@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.44.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: The Button demo gained two external-link buttons (the new external prop); a Button without external renders as before.
+- Do by hand: styles.css no longer ships four group-hover and group-focus-visible translate utilities and transition-\[translate], which only InlineLink's external icon used (hds#1530); if your markup writes one, compile it with your own Tailwind.
+- Looks different: Under data-accent="cobalt", --component-button-secondary-bg-hover no longer sets accentSubtle; it follows the base grey --semantic-color-surface-softHover.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0440).
+
+### Minor Changes
+
+- 8002982: Button: new `external` prop shows the external-link arrow after the label (inside the slotted link with `asChild`). On hover and keyboard focus the arrow nudges 0.125em up and right on the productive motion token; reduced motion keeps it still. The same nudge InlineLink already has (hds#1530, hds#751). Button's two icon-only dev warnings are shorter.
+- 88f5861: The secondary Button hover stays grey under `data-accent="cobalt"`. It was the navy `surface.accentSubtle`; it is now `surface.softHover` in every accent, as in the Figma library (hds#1531).
+
 ## 0.43.0
 
 ### Upgrade
