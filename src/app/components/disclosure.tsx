@@ -29,7 +29,6 @@ import { cn } from '../../lib/utils';
 import hds from '../design-system/tokens';
 import { useHdsMotion } from '../hooks/useHdsMotion';
 import { Icon } from './icon';
-import { Stack } from './stack';
 import { Surface } from './surface';
 
 type DisclosureVariant = 'panel' | 'nav' | 'card' | 'row';
@@ -260,20 +259,8 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
       </LazyMotion>
     );
 
-    if (isRow) {
-      return (
-        <Stack ref={ref} gap="tight" style={{ gap: 0 }}>
-          {disclosureBody}
-        </Stack>
-      );
-    }
-
-    if (variant === 'nav') {
-      return (
-        <Stack ref={ref} gap="tight" style={{ gap: 0 }}>
-          {disclosureBody}
-        </Stack>
-      );
+    if (isRow || variant === 'nav') {
+      return <div ref={ref}>{disclosureBody}</div>;
     }
 
     return (
@@ -282,9 +269,7 @@ export const Disclosure = /* @__PURE__ */ React.forwardRef<HTMLDivElement, Discl
         padding="component"
         className={variant === 'card' ? 'overflow-hidden' : undefined}
       >
-        <Stack gap="tight" style={{ gap: 0 }}>
-          {disclosureBody}
-        </Stack>
+        <div>{disclosureBody}</div>
       </Surface>
     );
   },
