@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.46.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Only the Card docs demo's markup changed, to show the new truncateFirst example; a Card.Facts without truncateFirst renders as before.
+- Every step is also in [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0460).
+
+### Minor Changes
+
+- baaa08c: Card.Facts gains an opt-in `truncateFirst` prop (hds#1550). When true, the first fact clamps to one line with an ellipsis in both layouts, so a long place name no longer wraps; the full text stays in the DOM and in `title`, and the icon keeps its size. Off by default, so nothing changes until you set it.
+
 ## 0.45.0
 
 ### Upgrade

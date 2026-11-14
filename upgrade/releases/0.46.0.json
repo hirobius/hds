@@ -1,0 +1,24 @@
+{
+  "version": "0.46.0",
+  "date": "2026-11-14",
+  "bump": "minor",
+  "summary": "1 change to make by hand.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.46.0/behavior/Card.dom",
+      "kind": "behavior",
+      "impact": "additive",
+      "plain": "Only the Card docs demo's markup changed, to show the new truncateFirst example; a Card.Facts without truncateFirst renders as before.",
+      "detect": {
+        "regex": [
+          "data-slot=.card-facts."
+        ]
+      },
+      "facts": [
+        "dom-changed:Card"
+      ],
+      "source": "CHANGELOG.md:16"
+    }
+  ]
+}
