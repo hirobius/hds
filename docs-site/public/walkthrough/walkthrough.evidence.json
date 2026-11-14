@@ -1,14 +1,14 @@
 {
-  "recordedAt": "2026-11-06T05:50:11.511Z",
-  "commit": "1276371",
+  "recordedAt": "2026-11-14T08:04:23.569Z",
+  "commit": "a48165e",
   "allowRed": false,
   "gates": {
     "check:figma-drift": 0,
     "check:figma-release": 0
   },
   "files": {
-    "poster.jpg": "24e4d4df86b15a481e83b0e20af0957d4206398178a827ad32cf3ec3ac080433",
-    "walkthrough.mp4": "73aa8d3ae1ded2ed19afe81bd16aeb864814af4d4a28d7f74a93fd387aeb64c3",
-    "walkthrough.vtt": "8736ab84863e8b4d8a9d27dddb479acd224f15a343535f76e25e25e3c9dac97a"
+    "poster.jpg": "19613fffdb81a833c8c5a2077e57e6d2f4317359a42b72a127413ab46faae321",
+    "walkthrough.mp4": "697115766ec2231d6719af257954c49caef9f4095dc754af02cfffc18483d824",
+    "walkthrough.vtt": "f6854173c94734ea215c6367b79ebb5be2e9d46052f4a5a247e423d93f3926d1"
   }
 }
