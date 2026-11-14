@@ -30,6 +30,7 @@ import { createHash } from 'crypto';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { META_FIELDS } from './figma-model.mjs';
+import { parseSnapshotFile } from './figma-snapshot.mjs';
 
 export { META_FIELDS };
 
@@ -217,4 +218,45 @@ export function metaGaps(expected, snapshot) {
     actual: actual[key] ?? null,
     ok: actual[key] === expected[key],
   }));
+}
+
+/** The committed snapshot file, parsed, or null when absent or unreadable. */
+function readSnapshotFile(root) {
+  const path = join(root, 'figma', 'snapshot.json');
+  if (!existsSync(path)) return null;
+  try {
+    return parseSnapshotFile(readFileSync(path, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The meta/commit Figma shows, when Figma was synced from exactly the content
+ * now checked out: Figma's meta/commit is the snapshot's `syncedCommit`, and
+ * its `syncedHash` equals syncedInputsHash(root) (git blob ids, not bytes).
+ * The ops agent pushes and ingests on the Version PR head, before the merge; a
+ * squash merge keeps that tree under a new sha, so meta/commit cannot be HEAD's,
+ * but the content proves the sync (hds#1359). Null otherwise: then meta/commit
+ * must be the last synced-input commit, as before. The release gate and
+ * check:figma-drift both read meta/commit through metaOptionsFor (hds#1553).
+ */
+export function syncedCommitStandIn(root, options = {}) {
+  const file = readSnapshotFile(root);
+  if (!file?.syncedCommit || !file.syncedHash) return null;
+  // Bound at ingest: Figma's meta/commit must be the commit the hash was taken at.
+  if (snapshotMeta(file.snapshot).commit !== file.syncedCommit) return null;
+  if (file.syncedHash !== syncedInputsHash(root, options)) return null;
+  // When the synced commit is in this clone (a laptop, or CI after the
+  // unshallow), its own tree must match HEAD's too, not only the recorded hash.
+  const at = syncedInputsTree(root, file.syncedCommit, options);
+  if (at !== null && at !== syncedInputsTree(root, 'HEAD', options)) return null;
+  return file.syncedCommit;
+}
+
+/** readFigmaMeta options: the caller's, plus the stand-in commit when there is one. */
+export function metaOptionsFor(root, options = {}) {
+  if (!existsSync(join(root, 'package.json'))) return options;
+  const commit = syncedCommitStandIn(root, options);
+  return commit ? { ...options, commit } : options;
 }

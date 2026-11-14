@@ -8,6 +8,10 @@
  * variables from CI). The diff is the push plan (scripts/lib/figma-drift.mjs),
  * so drift and `pnpm figma:push` always agree.
  *
+ * meta/commit alone is judged by content, like the release gate: Figma's stamp is
+ * in sync when it is the snapshot's syncedCommit and the synced inputs' git content
+ * still matches HEAD, so a squash merge after a sync is not drift (hds#1553).
+ *
  * Exit codes: 0 no drift · 1 drift, or a snapshot that fails its checksum ·
  * 2 no snapshot taken yet.
  *
@@ -35,15 +39,18 @@ import { fileURLToPath } from 'url';
 import { loadFigmaInputs } from './lib/figma-inputs.mjs';
 import { parseSnapshotFile } from './lib/figma-snapshot.mjs';
 import { figmaDrift, formatDrift } from './lib/figma-drift.mjs';
+import { metaOptionsFor } from './lib/figma-meta.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /**
  * @param {{ root: string, json?: boolean, ci?: boolean, meta?: object }} options
- *   meta: passed to readFigmaMeta (the release gate's synced-content commit, hds#1359).
+ *   meta: passed to readFigmaMeta; defaults to metaOptionsFor(root), which accepts a stale
+ *   meta/commit only when it is the snapshot's syncedCommit and the synced inputs are unchanged
+ *   (hds#1359, hds#1553).
  * @returns {{ exitCode: 0|1|2, output: string, report?: object }}
  */
-export function runDriftCheck({ root, json = false, ci = false, meta = {} }) {
+export function runDriftCheck({ root, json = false, ci = false, meta }) {
   const snapshotPath = join(root, 'figma', 'snapshot.json');
   if (!existsSync(snapshotPath)) {
     const message =
@@ -53,7 +60,7 @@ export function runDriftCheck({ root, json = false, ci = false, meta = {} }) {
       : { exitCode: 2, output: message };
   }
   try {
-    const { model, renames } = loadFigmaInputs(root, meta);
+    const { model, renames } = loadFigmaInputs(root, meta ?? metaOptionsFor(root));
     const snapshotFile = parseSnapshotFile(readFileSync(snapshotPath, 'utf8'));
     const report = figmaDrift(model, snapshotFile, { renames });
     const output = json ? JSON.stringify(report, null, 2) : formatDrift(report);
