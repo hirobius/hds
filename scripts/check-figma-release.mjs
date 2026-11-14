@@ -48,10 +48,9 @@ import { parseSnapshotFile, tokensFileHash } from './lib/figma-snapshot.mjs';
 import {
   readFigmaMeta,
   metaGaps,
-  snapshotMeta,
+  metaOptionsFor,
+  syncedCommitStandIn,
   syncedInputsCommit,
-  syncedInputsHash,
-  syncedInputsTree,
   deepenSyncedHistory,
 } from './lib/figma-meta.mjs';
 
@@ -65,46 +64,6 @@ const COVERAGE_FIX =
 
 const META_FIX =
   'Reminder: the library cover reads Hirobius/Meta. For a release, push it from the Version PR head before the merge (pnpm figma:push, or figma/push delta.js through use_figma), refresh the snapshot by the snapshot-diff route (figma/push/use-figma/snapshot-diff.js through use_figma, then pnpm figma:snapshot --from-diff <file>), commit figma/snapshot.json, and publish the library.';
-
-/** The committed snapshot file, parsed, or null when absent or unreadable. */
-function readSnapshotFile(root) {
-  const path = join(root, 'figma', 'snapshot.json');
-  if (!existsSync(path)) return null;
-  try {
-    return parseSnapshotFile(readFileSync(path, 'utf8'));
-  } catch {
-    return null;
-  }
-}
-
-/**
- * The meta/commit Figma shows, when Figma was synced from exactly the content
- * now checked out: Figma's meta/commit is the snapshot's `syncedCommit`, and
- * its `syncedHash` equals syncedInputsHash(root) (git blob ids, not bytes).
- * The ops agent pushes and ingests on the Version PR head, before the merge; a
- * squash merge keeps that tree under a new sha, so meta/commit cannot be HEAD's,
- * but the content proves the sync (hds#1359). Null otherwise: then meta/commit
- * must be the last synced-input commit, as before.
- */
-export function syncedCommitStandIn(root, options = {}) {
-  const file = readSnapshotFile(root);
-  if (!file?.syncedCommit || !file.syncedHash) return null;
-  // Bound at ingest: Figma's meta/commit must be the commit the hash was taken at.
-  if (snapshotMeta(file.snapshot).commit !== file.syncedCommit) return null;
-  if (file.syncedHash !== syncedInputsHash(root, options)) return null;
-  // When the synced commit is in this clone (a laptop, or CI after the
-  // unshallow), its own tree must match HEAD's too, not only the recorded hash.
-  const at = syncedInputsTree(root, file.syncedCommit, options);
-  if (at !== null && at !== syncedInputsTree(root, 'HEAD', options)) return null;
-  return file.syncedCommit;
-}
-
-/** readFigmaMeta options: the caller's, plus the stand-in commit when there is one. */
-function metaOptionsFor(root, options) {
-  if (!existsSync(join(root, 'package.json'))) return options;
-  const commit = syncedCommitStandIn(root, options);
-  return commit ? { ...options, commit } : options;
-}
 
 /**
  * Every Hirobius/Meta value code sets (readFigmaMeta) against Figma's, from
