@@ -9,39 +9,20 @@
  * git content is unchanged; any real difference still fails.
  */
 import { describe, it, expect } from 'vitest';
-import { execFileSync } from 'child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, cpSync, readFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { runDriftCheck } from '../check-figma-drift.mjs';
-import { ingestSnapshot } from '../figma-snapshot.mjs';
-import { parseSnapshotFile, serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
+import { serializeSnapshotFile } from '../lib/figma-snapshot.mjs';
 import { syncedInputsHash } from '../lib/figma-meta.mjs';
-import { hdsRunPush, hdsRunSnapshot } from '../lib/figma-runtime.mjs';
-import { buildPushPayload } from '../lib/figma-scripts.mjs';
-import { loadFigmaInputs } from '../lib/figma-inputs.mjs';
-import { newFixtureFile, FIXTURE_TOKENS_PATH } from './helpers/figma-fixture.mjs';
-
-const env = {
-  ...process.env,
-  GIT_AUTHOR_NAME: 't',
-  GIT_AUTHOR_EMAIL: 't@t',
-  GIT_COMMITTER_NAME: 't',
-  GIT_COMMITTER_EMAIL: 't@t',
-};
-const git = (dir, ...args) => execFileSync('git', args, { cwd: dir, env, encoding: 'utf8' }).trim();
-const commitAll = (dir, message) => {
-  git(dir, 'add', '-A', '--', 'hirobius.tokens.json', 'package.json');
-  git(dir, 'commit', '-q', '-m', message);
-  return git(dir, 'rev-parse', 'HEAD');
-};
-/** A parentless commit with HEAD's tree: what a squash merge lands on main. */
-const squash = (dir) => {
-  const sha = git(dir, 'commit-tree', 'HEAD^{tree}', '-m', 'squash');
-  git(dir, 'reset', '-q', '--soft', sha);
-};
-const snapshotFile = (dir) =>
-  parseSnapshotFile(readFileSync(join(dir, 'figma', 'snapshot.json'), 'utf8'));
+import { FIXTURE_TOKENS_PATH } from './helpers/figma-fixture.mjs';
+import {
+  git,
+  commitAll,
+  squash,
+  snapshotFile,
+  pushAndIngest,
+} from './helpers/figma-meta-fixtures.mjs';
 
 /** A git root whose Figma was pushed from, and ingested at, its head commit. */
 async function syncedOnPrHead() {
@@ -51,11 +32,7 @@ async function syncedOnPrHead() {
   writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'a', version: '1.0.0' }));
   git(dir, 'init', '-q');
   commitAll(dir, 'Version Packages');
-  const { model } = loadFigmaInputs(dir);
-  const figma = newFixtureFile();
-  const { payload, checksum } = buildPushPayload(model);
-  await hdsRunPush(figma, payload, checksum);
-  ingestSnapshot({ root: dir, text: serializeSnapshotFile(await hdsRunSnapshot(figma)) });
+  await pushAndIngest(dir);
   return dir;
 }
 
