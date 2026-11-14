@@ -499,6 +499,13 @@ export interface CardFactsProps extends Omit<React.HTMLAttributes<HTMLUListEleme
    * @default 'stacked'
    */
   layout?: 'inline' | 'stacked';
+  /**
+   * Clamp the first fact to one line with an ellipsis, in both layouts, for a
+   * long place name. The full text stays in the DOM and in `title`. Later
+   * facts still wrap.
+   * @default false
+   */
+  truncateFirst?: boolean;
 }
 
 /**
@@ -507,7 +514,7 @@ export interface CardFactsProps extends Omit<React.HTMLAttributes<HTMLUListEleme
  * @whenNot Term and description pairs (use MetadataList) or text with no icons (use MetaLine).
  */
 const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsProps>(
-  function CardFacts({ className, items, layout, ...props }, ref) {
+  function CardFacts({ className, items, layout, truncateFirst = false, ...props }, ref) {
     const pad = usePartPadding('p-surface-padding pt-0');
     if (items.length === 0) return null;
     return (
@@ -517,23 +524,35 @@ const CardFacts = /* @__PURE__ */ React.forwardRef<HTMLUListElement, CardFactsPr
         className={cn(
           'm-0 flex list-none flex-wrap items-center gap-x-scale-md gap-y-scale-xs hds-type-caption text-muted-foreground',
           layout !== 'inline' && 'flex-col items-start',
+          truncateFirst && 'min-w-0',
           pad,
           className,
         )}
         {...props}
       >
-        {items.map(({ icon, label }) => (
-          <li
-            key={label}
-            className={cn(
-              'inline-flex items-center gap-scale-xs',
-              layout !== 'inline' && 'items-start',
-            )}
-          >
-            <Icon icon={icon} size="small" />
-            {label}
-          </li>
-        ))}
+        {items.map(({ icon, label }, i) => {
+          const clamp = truncateFirst && i === 0;
+          return (
+            <li
+              key={label}
+              title={clamp ? label : undefined}
+              className={cn(
+                'inline-flex items-center gap-scale-xs',
+                layout !== 'inline' && 'items-start',
+                clamp && 'min-w-0 max-w-full',
+              )}
+            >
+              <Icon icon={icon} size="small" className={clamp ? 'shrink-0' : undefined} />
+              {clamp ? (
+                <span data-slot="card-fact-label" className="min-w-0 truncate">
+                  {label}
+                </span>
+              ) : (
+                label
+              )}
+            </li>
+          );
+        })}
       </ul>
     );
   },

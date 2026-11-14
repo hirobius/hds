@@ -1,0 +1,16 @@
+{
+  "impact": "additive",
+  "plain": "Card.Facts takes truncateFirst to clamp a long first fact to one line with an ellipsis; nothing changes until you set it.",
+  "steps": [
+    {
+      "id": "behavior/Card.dom",
+      "kind": "behavior",
+      "impact": "additive",
+      "plain": "Only the Card docs demo's markup changed, to show the new truncateFirst example; a Card.Facts without truncateFirst renders as before.",
+      "detect": {
+        "regex": ["data-slot=.card-facts."]
+      },
+      "facts": ["dom-changed:Card"]
+    }
+  ]
+}
