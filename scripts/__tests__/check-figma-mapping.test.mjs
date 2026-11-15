@@ -293,14 +293,49 @@ describe('checkFigmaMapping — Code Connect registry agrees with manifest axes'
     );
   });
 
-  it('flags a contract axis the manifest declares but the template does not map', () => {
+  it('warns, without failing, on a contract axis code has and the Figma component does not', () => {
     const result = checkFigmaMapping({
       manifest: { componentSpecs: { Button: buttonSpec() } },
       codeModel: fakeModel({ 'src/app/components/button.tsx#Button': BUTTON_CODE }),
       registry,
     });
-    expect(rules(result)).toContain('Button:registry-axis-drift');
-    expect(result.errors.find((v) => v.rule === 'registry-axis-drift').message).toMatch(/tone/);
+    expect(rules(result)).not.toContain('Button:registry-axis-drift');
+    const warning = result.warnings.find((v) => v.rule === 'axis-not-in-figma');
+    expect(warning.component).toBe('Button');
+    expect(warning.message).toMatch(/tone/);
+  });
+
+  it('counts an axis the template sets per option (set), not only one mapped with prop', () => {
+    const result = checkFigmaMapping({
+      manifest: {
+        componentSpecs: {
+          Avatar: { filePath: 'src/app/components/avatar.tsx', variantAxes: ['size'] },
+        },
+      },
+      codeModel: fakeModel({
+        'src/app/components/avatar.tsx#Avatar': {
+          props: props('size', 'alt'),
+          members: {},
+          cva: { axes: { size: ['sm', 'md', 'lg'] }, defaults: { size: 'md' } },
+        },
+      }),
+      registry: {
+        templates: {
+          Avatar: {
+            source: 'src/app/components/avatar.tsx',
+            properties: {
+              Size: {
+                type: 'VARIANT',
+                options: ['md', 'lg'],
+                set: { md: {}, lg: { size: 'lg' } },
+              },
+            },
+          },
+        },
+      },
+    });
+    expect(result.errors).toEqual([]);
+    expect(result.warnings.filter((v) => v.rule === 'axis-not-in-figma')).toEqual([]);
   });
 });
 

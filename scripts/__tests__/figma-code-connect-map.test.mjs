@@ -5,6 +5,7 @@ import {
   codeConnectMap,
   mapFile,
   mappingsPayload,
+  propertyReadScript,
   usageSnippet,
 } from '../lib/figma-code-connect-map.mjs';
 
@@ -100,5 +101,24 @@ describe('figma-code-connect-map', () => {
       encoding: 'utf8',
     });
     expect(out).toMatch(/library components mapped to code/);
+  });
+});
+
+describe('propertyReadScript', () => {
+  const script = propertyReadScript({
+    fileKey: 'K',
+    entries: [{ nodeId: '33:34' }, { nodeId: '86:194' }],
+  });
+
+  it('refuses any file but the library and reads the mapped nodes', () => {
+    expect(script).toContain("if (figma.fileKey !== 'K') throw new Error('Not the HDS library');");
+    expect(script).toContain('const IDS = ["33:34","86:194"];');
+  });
+
+  it('only reads: no node is created, changed or removed', () => {
+    expect(script).not.toMatch(
+      /\.(remove|appendChild|setPluginData|resize)\(|figma\.create|\.name\s*=[^=]/,
+    );
+    expect(() => new Function(`return (async (figma) => {${script}})`)).not.toThrow();
   });
 });

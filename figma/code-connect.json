@@ -1,21 +1,37 @@
 {
   "$comment": [
-    "Figma Code Connect registry. scripts/generate-code-connect.mjs reads it and writes src/app/components/<module>.figma.ts (v2 parserless templates). scripts/check-code-connect.mjs gates the result (pnpm figma:connect:check, and pnpm test).",
-    "templates.<Export>.properties records the Figma component property definitions: name, type, options, default. It also records how each property maps onto the code prop. The code side (props, cva keys, defaultVariants) is always read from source, never copied here.",
-    "Node URLs are not stored here. They come from the component JSDoc tag `@figma <node-url>` through public/hds-manifest.json figmaUrl: run pnpm manifest:generate && pnpm figma:connect:generate after changing a tag. A template without a URL is generated with a placeholder and reported as unmapped.",
-    "TEXT and INSTANCE_SWAP `default` values are preview text for the local renderer only. They are not Figma data.",
+    "Figma Code Connect registry. scripts/generate-code-connect.mjs reads it and writes src/app/components/<module>.figma.ts (v2 parserless templates; a second template of the same module is named after its export). scripts/check-code-connect.mjs gates the result (pnpm figma:connect:check, and pnpm test).",
+    "templates.<Export>.properties records the Figma component property definitions: name, type, options, default. They are the ones in figma/reads/component-properties.json (the live read): the gate fails on any difference. It also records how each property maps onto the code prop. The code side (props, cva keys, defaultVariants) is always read from source, never copied here.",
+    "Node URLs are not stored here. They come from the component JSDoc tag `@figma <node-url>` through public/hds-manifest.json figmaUrl, or, for a compound part with no tag (TabsTrigger, NavListItem, TimelineItem), from figma/mapping-overrides.json: run pnpm manifest:generate && pnpm figma:connect:generate after changing one. A template without a URL is generated with a placeholder and reported as unmapped.",
+    "TEXT defaults are the Figma defaults and are preview text for the local renderer. INSTANCE_SWAP has no default here: the renderer shows <IconInstance />.",
     "codeOnly on a VARIANT mapped with prop lists cva keys that have no Figma option yet, each with a reason. Any other unmapped cva key fails pnpm figma:connect:check.",
-    "exempt lists every public cva module (a src/index.ts barrel export whose file calls cva()) that has no template, with the reason. queued = the component exists in Figma but has no template yet. no-figma-component = nothing to map."
+    "children is raw JSX for the element's children; {{Figma name}} inserts a TEXT property, or the mapped value of a VARIANT that has no prop / set. A BOOLEAN with set maps true and false onto props. importFrom names the component's module when it is not the top-level importFrom; imports lists the extra names a snippet uses, by module. figmaOnly records a property that has no prop, with the reason.",
+    "exempt lists every public cva module (a src/index.ts barrel export whose file calls cva()) that has no template, with the reason."
   ],
   "importFrom": "@hirobius/design-system",
   "evidence": {
-    "hds#73": "Figma component property inventory from the Figma AI audit of the library as it was on 2026-07-02, in the file retired on 2026-10-07 (figma/links.json retiredFiles); the current library is its duplicate, under the same node ids. UNVERIFIED against the live file. Refresh it with an authenticated property read before publishing."
+    "read-2026-11-15": "Component property definitions read from the live library (2VgBbVpKiDnu0aftJEVyBQ) on 2026-11-15 with the Figma MCP tool use_figma, recorded in figma/reads/component-properties.json (ledger 2026-11-15, C4 and C5). pnpm figma:connect:check fails when an entry differs from that read."
   },
   "templates": {
     "Alert": {
       "source": "src/app/components/alert.tsx",
-      "evidence": "hds#73",
+      "evidence": "read-2026-11-15",
       "properties": {
+        "Title": {
+          "type": "TEXT",
+          "default": "Heads up",
+          "prop": "title",
+          "visibleWhen": "Show title"
+        },
+        "Body": {
+          "type": "TEXT",
+          "default": "Main alert message content goes here.",
+          "prop": "children"
+        },
+        "Show title": {
+          "type": "BOOLEAN",
+          "default": true
+        },
         "Tone": {
           "type": "VARIANT",
           "options": ["info", "success", "warning", "danger"],
@@ -24,43 +40,41 @@
         },
         "Size": {
           "type": "VARIANT",
-          "options": ["md"],
+          "options": ["md", "sm"],
           "default": "md",
-          "prop": "size",
-          "codeOnly": {
-            "sm": "Compact Alert size (hds#863): not drawn in the Figma Alert master yet (Figma lane)."
-          }
-        },
-        "Show title": {
-          "type": "BOOLEAN",
-          "default": true
-        },
-        "Title": {
-          "type": "TEXT",
-          "default": "Alert title",
-          "prop": "title",
-          "visibleWhen": "Show title"
-        },
-        "Body": {
-          "type": "TEXT",
-          "default": "Alert message",
-          "prop": "children"
+          "prop": "size"
         }
       }
     },
     "Avatar": {
       "source": "src/app/components/avatar.tsx",
-      "evidence": "hds#73",
+      "evidence": "read-2026-11-15",
       "properties": {
+        "Initials": {
+          "type": "TEXT",
+          "default": "AH",
+          "prop": "initials"
+        },
+        "Show status": {
+          "type": "BOOLEAN",
+          "default": false,
+          "set": {
+            "true": {
+              "status": "success",
+              "statusLabel": "Online"
+            },
+            "false": {}
+          }
+        },
         "Size": {
           "type": "VARIANT",
           "options": ["sm", "md", "lg"],
-          "default": "md",
+          "default": "sm",
           "prop": "size"
         },
         "Type": {
           "type": "VARIANT",
-          "options": ["Initials", "Image"],
+          "options": ["Initials", "Image", "Icon"],
           "default": "Initials",
           "set": {
             "Initials": {},
@@ -68,13 +82,11 @@
               "src": {
                 "$expr": "user.avatarUrl"
               }
+            },
+            "Icon": {
+              "fallback": "icon"
             }
           }
-        },
-        "Initials": {
-          "type": "TEXT",
-          "default": "AM",
-          "prop": "initials"
         }
       },
       "staticProps": {
@@ -83,49 +95,95 @@
     },
     "Badge": {
       "source": "src/app/components/badge.tsx",
-      "evidence": "hds#73",
-      "note": "Code adds a count mode (count, max, label; hds#865) that the Figma Badge master (31:15) does not draw yet: Figma-lane follow-up, so Code Connect maps the text badge only.",
+      "evidence": "read-2026-11-15",
+      "note": "With Type=count or Type=dot the code ignores children; the snippet keeps the label so the three types read alike.",
       "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Badge",
+          "prop": "children"
+        },
         "Tone": {
           "type": "VARIANT",
           "options": ["neutral", "info", "success", "danger", "warning", "inProgress"],
           "default": "neutral",
           "prop": "tone"
         },
-        "Label": {
-          "type": "TEXT",
-          "default": "Badge",
-          "prop": "children"
+        "Type": {
+          "type": "VARIANT",
+          "options": ["text", "count", "dot"],
+          "default": "text",
+          "set": {
+            "text": {},
+            "count": {
+              "count": {
+                "$expr": "3"
+              }
+            },
+            "dot": {
+              "dot": true
+            }
+          }
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["md", "sm", "lg"],
+          "default": "md",
+          "set": {
+            "md": {},
+            "sm": {
+              "size": "sm"
+            },
+            "lg": {
+              "size": "lg"
+            }
+          }
         }
       }
     },
     "Button": {
       "source": "src/app/components/button.tsx",
-      "evidence": "hds#73",
-      "note": "Figma defaults Variant to Primary; code defaults to secondary (open decision, docs/architecture/variant-contract.md). The template emits variant whenever it differs from the code default, so either ruling renders correctly. Code also adds an opt-in hoverEffect=\"wipe\" (a CSS fill layer sliding in from the pointer's edge) that the Figma Button master does not draw: Figma-lane follow-up, so Code Connect maps the default (none) button only.",
+      "evidence": "read-2026-11-15",
+      "note": "Figma draws the neutral tone only: the code tone axis (quiet, danger, success, warning, info), hoverEffect and shadow have no Figma property.",
       "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Button",
+          "prop": "children"
+        },
+        "Loading": {
+          "type": "BOOLEAN",
+          "default": false,
+          "prop": "loading"
+        },
+        "Focus": {
+          "type": "BOOLEAN",
+          "default": false,
+          "figmaOnly": "Focus ring preview. Focus is a runtime state, not a prop."
+        },
+        "Show icon": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "Show trail icon": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "Icon": {
+          "type": "INSTANCE_SWAP",
+          "prop": "iconLeft",
+          "visibleWhen": "Show icon"
+        },
+        "Trail Icon": {
+          "type": "INSTANCE_SWAP",
+          "prop": "iconRight",
+          "visibleWhen": "Show trail icon"
+        },
         "Variant": {
           "type": "VARIANT",
-          "options": ["Primary", "Secondary", "Tertiary"],
-          "default": "Primary",
-          "prop": "variant",
-          "values": {
-            "Primary": "primary",
-            "Secondary": "secondary",
-            "Tertiary": "tertiary"
-          },
-          "codeOnly": {
-            "link": "Link-styled Button (hds#863): not drawn in the Figma Button master yet (Figma lane)."
-          }
-        },
-        "Tone": {
-          "type": "VARIANT",
-          "options": ["neutral", "danger", "success", "warning", "info"],
-          "default": "neutral",
-          "prop": "tone",
-          "codeOnly": {
-            "quiet": "Quiet ghost tone (hds#863): not drawn in the Figma Button master yet (Figma lane)."
-          }
+          "options": ["primary", "secondary", "tertiary", "link"],
+          "default": "secondary",
+          "prop": "variant"
         },
         "Size": {
           "type": "VARIANT",
@@ -135,62 +193,37 @@
         },
         "State": {
           "type": "VARIANT",
-          "options": ["Default", "Hover", "Disabled", "Loading"],
-          "default": "Default",
+          "options": ["rest", "hover", "pressed", "disabled"],
+          "default": "rest",
           "set": {
-            "Default": {},
-            "Hover": {},
-            "Disabled": {
+            "rest": {},
+            "hover": {},
+            "pressed": {},
+            "disabled": {
               "disabled": true
-            },
-            "Loading": {
-              "loading": true
             }
           }
-        },
-        "Label": {
-          "type": "TEXT",
-          "default": "Button",
-          "prop": "children"
-        },
-        "Show icon": {
-          "type": "BOOLEAN",
-          "default": false
-        },
-        "Icon": {
-          "type": "INSTANCE_SWAP",
-          "prop": "iconLeft",
-          "visibleWhen": "Show icon"
-        },
-        "Show trail icon": {
-          "type": "BOOLEAN",
-          "default": false
-        },
-        "Trail Icon": {
-          "type": "INSTANCE_SWAP",
-          "prop": "iconRight",
-          "visibleWhen": "Show trail icon"
         }
       }
     },
     "Checkbox": {
       "source": "src/app/components/checkbox.tsx",
-      "evidence": "hds#73",
+      "evidence": "read-2026-11-15",
       "properties": {
         "Label": {
           "type": "TEXT",
-          "default": "Label",
+          "default": "Checkbox label",
           "prop": "label"
         },
-        "State": {
+        "Checked": {
           "type": "VARIANT",
-          "options": ["unchecked", "checked", "indeterminate"],
-          "default": "unchecked",
+          "options": ["false", "true", "indeterminate"],
+          "default": "false",
           "set": {
-            "unchecked": {
+            "false": {
               "checked": false
             },
-            "checked": {
+            "true": {
               "checked": true
             },
             "indeterminate": {
@@ -199,15 +232,18 @@
             }
           }
         },
-        "Disabled": {
+        "State": {
           "type": "VARIANT",
-          "options": ["false", "true"],
-          "default": "false",
+          "options": ["rest", "disabled", "hover", "focused", "pressed"],
+          "default": "rest",
           "set": {
-            "false": {},
-            "true": {
+            "rest": {},
+            "disabled": {
               "disabled": true
-            }
+            },
+            "hover": {},
+            "focused": {},
+            "pressed": {}
           }
         }
       },
@@ -217,11 +253,11 @@
     },
     "Radio": {
       "source": "src/app/components/radio.tsx",
-      "evidence": "hds#73",
+      "evidence": "read-2026-11-15",
       "properties": {
         "Label": {
           "type": "TEXT",
-          "default": "Label",
+          "default": "Radio label",
           "prop": "label"
         },
         "Checked": {
@@ -247,6 +283,17 @@
               "disabled": true
             }
           }
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Rest", "Hover", "Focused", "Pressed"],
+          "default": "Rest",
+          "set": {
+            "Rest": {},
+            "Hover": {},
+            "Focused": {},
+            "Pressed": {}
+          }
         }
       },
       "staticProps": {
@@ -255,8 +302,228 @@
     },
     "Input": {
       "source": "src/app/components/input.tsx",
-      "evidence": "hds#73",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "lucide-react": ["Search", "X"]
+      },
       "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Label",
+          "prop": "label",
+          "visibleWhen": "Show label"
+        },
+        "Value": {
+          "type": "TEXT",
+          "default": "Placeholder",
+          "prop": "placeholder"
+        },
+        "Show label": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Show leading icon": {
+          "type": "BOOLEAN",
+          "default": false,
+          "set": {
+            "true": {
+              "leadingVisual": {
+                "$expr": "<Search />"
+              }
+            },
+            "false": {}
+          }
+        },
+        "Show trailing icon": {
+          "type": "BOOLEAN",
+          "default": false,
+          "set": {
+            "true": {
+              "trailingVisual": {
+                "$expr": "<X />"
+              }
+            },
+            "false": {}
+          }
+        },
+        "Show helper": {
+          "type": "BOOLEAN",
+          "default": false
+        },
+        "Helper text": {
+          "type": "TEXT",
+          "default": "Helper text",
+          "prop": "helperText",
+          "visibleWhen": "Show helper"
+        },
+        "Error message": {
+          "type": "TEXT",
+          "default": "This field is required",
+          "figmaOnly": "Shown only when State=Error. The grammar gates text on a BOOLEAN, so the Error option sets error alone; pass errorMessage with it."
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Focus", "Error", "Disabled", "Filled", "Loading"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Focus": {},
+            "Error": {
+              "error": true
+            },
+            "Disabled": {
+              "disabled": true
+            },
+            "Filled": {},
+            "Loading": {
+              "loading": true
+            }
+          }
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["lg", "sm", "md"],
+          "default": "sm",
+          "prop": "size"
+        },
+        "Text style": {
+          "type": "VARIANT",
+          "options": ["mono", "body"],
+          "default": "body",
+          "prop": "textStyle"
+        }
+      }
+    },
+    "Tag": {
+      "source": "src/app/components/tag.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Filter",
+          "prop": "children"
+        },
+        "Active": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "active": true
+            }
+          }
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Focus"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Focus": {}
+          }
+        },
+        "Dismissible": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "onDismiss": {
+                "$expr": "handleDismiss"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Toggle": {
+      "source": "src/app/components/toggle.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Toggle label",
+          "prop": "label"
+        },
+        "Checked": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {
+              "checked": false
+            },
+            "true": {
+              "checked": true
+            }
+          }
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focused", "disabled", "pressed"],
+          "default": "rest",
+          "set": {
+            "rest": {},
+            "hover": {},
+            "focused": {},
+            "disabled": {
+              "disabled": true
+            },
+            "pressed": {}
+          }
+        }
+      },
+      "staticProps": {
+        "onChange": "{setEnabled}"
+      }
+    },
+    "Textarea": {
+      "source": "src/app/components/textarea.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Value": {
+          "type": "TEXT",
+          "default": "Enter your message here...",
+          "figmaOnly": "Sample content. The value is application state."
+        },
+        "Label": {
+          "type": "TEXT",
+          "default": "Message",
+          "prop": "label",
+          "visibleWhen": "Show label"
+        },
+        "Helper": {
+          "type": "TEXT",
+          "default": "Up to 500 characters.",
+          "prop": "helperText",
+          "visibleWhen": "Show helper"
+        },
+        "Error message": {
+          "type": "TEXT",
+          "default": "Enter a message.",
+          "figmaOnly": "Shown only when State=Error; pass errorMessage with error."
+        },
+        "Show label": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Show helper": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Resize handle": {
+          "type": "BOOLEAN",
+          "default": true,
+          "set": {
+            "true": {},
+            "false": {
+              "resize": "none"
+            }
+          }
+        },
         "State": {
           "type": "VARIANT",
           "options": ["Default", "Focus", "Error", "Disabled"],
@@ -271,182 +538,1445 @@
               "disabled": true
             }
           }
-        },
-        "Size": {
-          "type": "VARIANT",
-          "options": ["lg", "sm", "md"],
-          "default": "md",
-          "prop": "size"
-        },
-        "Show label": {
-          "type": "BOOLEAN",
-          "default": true
-        },
-        "Label": {
-          "type": "TEXT",
-          "default": "Label",
-          "prop": "label",
-          "visibleWhen": "Show label"
-        },
-        "Value": {
-          "type": "TEXT",
-          "default": "Value",
-          "prop": "defaultValue"
         }
       }
     },
-    "Tag": {
-      "source": "src/app/components/tag.tsx",
-      "evidence": "hds#73",
+    "Callout": {
+      "source": "src/app/components/callout.tsx",
+      "evidence": "read-2026-11-15",
       "properties": {
-        "Active": {
+        "Show Action": {
+          "type": "BOOLEAN",
+          "default": true,
+          "figmaOnly": "The action is a child the application supplies."
+        },
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["info", "success", "warning", "danger", "accent"],
+          "default": "info",
+          "prop": "tone"
+        }
+      },
+      "children": "Callout message"
+    },
+    "Card": {
+      "source": "src/app/components/card.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Title": {
+          "type": "TEXT",
+          "default": "Card title"
+        },
+        "Description": {
+          "type": "TEXT",
+          "default": "Supporting description copy for the card body."
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["default", "accent"],
+          "default": "default",
+          "prop": "variant"
+        },
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["neutral", "success", "warning", "danger", "info"],
+          "default": "neutral",
+          "prop": "tone"
+        },
+        "Padding": {
+          "type": "VARIANT",
+          "options": ["component", "item", "px16", "px24", "none"],
+          "default": "component",
+          "set": {
+            "component": {},
+            "item": {
+              "padding": "item"
+            },
+            "px16": {
+              "padding": "px16"
+            },
+            "px24": {
+              "padding": "px24"
+            },
+            "none": {
+              "padding": "none"
+            }
+          }
+        },
+        "Bordered": {
           "type": "VARIANT",
           "options": ["false", "true"],
           "default": "false",
           "set": {
             "false": {},
             "true": {
-              "active": true
+              "bordered": true
             }
           }
         },
         "State": {
           "type": "VARIANT",
-          "options": ["Default", "Hover"],
+          "options": ["Default", "Hover", "Focus", "Selected"],
           "default": "Default",
           "set": {
             "Default": {},
-            "Hover": {}
+            "Hover": {},
+            "Focus": {},
+            "Selected": {
+              "selectable": true,
+              "selected": true
+            }
+          }
+        }
+      },
+      "children": "<Card.Header><Card.Title>{{Title}}</Card.Title><Card.Description>{{Description}}</Card.Description></Card.Header>"
+    },
+    "CodeBlock": {
+      "source": "src/app/components/code-block.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "properties": {
+        "Code": {
+          "type": "TEXT",
+          "default": "const x = 1;",
+          "prop": "code"
+        },
+        "Filename": {
+          "type": "TEXT",
+          "default": "index.ts",
+          "figmaOnly": "Gated by the Show filename VARIANT; that option sets a sample filename."
+        },
+        "Show filename": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "filename": "index.ts"
+            }
+          }
+        }
+      }
+    },
+    "Combobox": {
+      "source": "src/app/components/combobox.tsx",
+      "evidence": "read-2026-11-15",
+      "note": "Selection=Creatable adds creatable and onCreate in code. They are one branch of a props union the code model does not read, so the snippet shows the single-select form.",
+      "properties": {
+        "Show label": {
+          "type": "BOOLEAN",
+          "default": true,
+          "figmaOnly": "Combobox draws no label: wrap it in a FormField."
+        },
+        "Label": {
+          "type": "TEXT",
+          "default": "Label",
+          "figmaOnly": "Combobox draws no label: wrap it in a FormField."
+        },
+        "Value": {
+          "type": "TEXT",
+          "default": "Select an option",
+          "prop": "placeholder"
+        },
+        "Selection": {
+          "type": "VARIANT",
+          "options": ["Single", "Multiple", "Creatable"],
+          "default": "Single",
+          "set": {
+            "Single": {},
+            "Multiple": {
+              "multiple": true
+            },
+            "Creatable": {}
+          }
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Focus", "Disabled", "Open", "Invalid"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Focus": {},
+            "Disabled": {
+              "disabled": true
+            },
+            "Open": {},
+            "Invalid": {
+              "aria-invalid": true
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "options": "{options}",
+        "value": "{value}",
+        "onChange": "{setValue}"
+      }
+    },
+    "CommandPalette": {
+      "source": "src/app/components/command-palette.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "State": {
+          "type": "VARIANT",
+          "options": ["Results", "Empty", "Argument"],
+          "default": "Results",
+          "set": {
+            "Results": {},
+            "Empty": {},
+            "Argument": {}
+          }
+        }
+      },
+      "staticProps": {
+        "open": "{isOpen}",
+        "onOpenChange": "{setIsOpen}",
+        "items": "{commands}",
+        "onSelect": "{runCommand}"
+      }
+    },
+    "Composer": {
+      "source": "src/app/components/composer.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "State": {
+          "type": "VARIANT",
+          "options": ["Empty", "Typing", "Attachments", "Pending", "Disabled"],
+          "default": "Empty",
+          "set": {
+            "Empty": {},
+            "Typing": {},
+            "Attachments": {},
+            "Pending": {
+              "pending": true
+            },
+            "Disabled": {
+              "disabled": true
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "onSubmit": "{handleSubmit}"
+      }
+    },
+    "DataTableSection": {
+      "source": "src/app/components/data-table-section.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {
+        "Toolbar": {
+          "type": "VARIANT",
+          "options": ["true", "false"],
+          "default": "true",
+          "set": {
+            "true": {
+              "toolbar": {
+                "$expr": "<Button>New</Button>"
+              }
+            },
+            "false": {}
+          }
+        },
+        "Empty": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {
+              "rows": {
+                "$expr": "rows"
+              }
+            },
+            "true": {
+              "rows": {
+                "$expr": "[]"
+              }
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "title": "\"Members\"",
+        "columns": "{columns}"
+      }
+    },
+    "DestructiveSection": {
+      "source": "src/app/components/destructive-section.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "properties": {},
+      "staticProps": {
+        "title": "\"Delete project\"",
+        "description": "\"This cannot be undone.\"",
+        "confirmLabel": "\"Delete\"",
+        "confirmBody": "\"The project and its data are removed.\"",
+        "onConfirm": "{handleDelete}"
+      }
+    },
+    "Dialog": {
+      "source": "src/app/components/dialog.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {
+        "Title": {
+          "type": "TEXT",
+          "default": "Dialog title"
+        },
+        "Description": {
+          "type": "TEXT",
+          "default": "Are you sure you want to continue? This action cannot be undone."
+        },
+        "Show close": {
+          "type": "BOOLEAN",
+          "default": true,
+          "figmaOnly": "Dialog.Content draws the close button; pass hideClose to Dialog.Content to remove it."
+        }
+      },
+      "children": "<Dialog.Trigger asChild><Button>Open</Button></Dialog.Trigger><Dialog.Content><Dialog.Header><Dialog.Title>{{Title}}</Dialog.Title><Dialog.Description>{{Description}}</Dialog.Description></Dialog.Header></Dialog.Content>"
+    },
+    "AlertDialog": {
+      "source": "src/app/components/alert-dialog.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {},
+      "children": "<AlertDialog.Trigger asChild><Button>Delete</Button></AlertDialog.Trigger><AlertDialog.Content><AlertDialog.Header><AlertDialog.Title>Delete project?</AlertDialog.Title><AlertDialog.Description>This cannot be undone.</AlertDialog.Description></AlertDialog.Header><AlertDialog.Footer><AlertDialog.Cancel>Cancel</AlertDialog.Cancel><AlertDialog.Action>Delete</AlertDialog.Action></AlertDialog.Footer></AlertDialog.Content>"
+    },
+    "Disclosure": {
+      "source": "src/app/components/disclosure.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["panel", "nav", "card", "row"],
+          "default": "panel",
+          "prop": "variant"
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Collapsed", "Expanded"],
+          "default": "Collapsed",
+          "set": {
+            "Collapsed": {},
+            "Expanded": {
+              "defaultOpen": true
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "label": "\"Details\""
+      },
+      "children": "Disclosure content"
+    },
+    "Divider": {
+      "source": "src/app/components/divider.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Orientation": {
+          "type": "VARIANT",
+          "options": ["Horizontal", "Vertical"],
+          "default": "Horizontal",
+          "prop": "orientation",
+          "values": {
+            "Horizontal": "horizontal",
+            "Vertical": "vertical"
+          }
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["strong", "default"],
+          "default": "default",
+          "prop": "variant"
+        }
+      }
+    },
+    "Dock": {
+      "source": "src/app/components/dock.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {},
+      "children": "<Button variant=\"primary\">Save</Button>"
+    },
+    "EmptyState": {
+      "source": "src/app/components/empty-state.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"],
+        "lucide-react": ["Inbox"]
+      },
+      "properties": {
+        "Show icon": {
+          "type": "BOOLEAN",
+          "default": true,
+          "set": {
+            "true": {
+              "icon": {
+                "$expr": "Inbox"
+              }
+            },
+            "false": {}
+          }
+        },
+        "Show description": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Show action": {
+          "type": "BOOLEAN",
+          "default": true,
+          "set": {
+            "true": {
+              "action": {
+                "$expr": "<Button>Add item</Button>"
+              }
+            },
+            "false": {}
+          }
+        },
+        "Title": {
+          "type": "TEXT",
+          "default": "Nothing here yet",
+          "prop": "title"
+        },
+        "Description2": {
+          "type": "TEXT",
+          "default": "Items you add will show up here.",
+          "prop": "description",
+          "visibleWhen": "Show description"
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["inline", "teaching"],
+          "default": "inline",
+          "set": {
+            "inline": {},
+            "teaching": {
+              "variant": "teaching"
+            }
+          }
+        },
+        "Framed": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "framed": true
+            }
+          }
+        }
+      }
+    },
+    "ErrorPattern": {
+      "source": "src/app/components/error-pattern.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "properties": {
+        "Display text": {
+          "type": "TEXT",
+          "default": "404",
+          "prop": "displayText"
+        },
+        "Message": {
+          "type": "TEXT",
+          "default": "Page not found",
+          "prop": "message"
+        }
+      }
+    },
+    "FormActions": {
+      "source": "src/app/components/form-actions.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "properties": {
+        "Destructive": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Secondary": {
+          "type": "BOOLEAN",
+          "default": true
+        },
+        "Destructive button": {
+          "type": "INSTANCE_SWAP",
+          "prop": "destructive",
+          "visibleWhen": "Destructive"
+        },
+        "Secondary button": {
+          "type": "INSTANCE_SWAP",
+          "prop": "secondary",
+          "visibleWhen": "Secondary"
+        },
+        "Primary button": {
+          "type": "INSTANCE_SWAP",
+          "prop": "primary"
+        },
+        "Layout": {
+          "type": "VARIANT",
+          "options": ["inline", "bar"],
+          "default": "inline",
+          "set": {
+            "inline": {},
+            "bar": {
+              "sticky": true
+            }
+          }
+        }
+      }
+    },
+    "InlineCode": {
+      "source": "src/app/components/inline-code.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Code": {
+          "type": "TEXT",
+          "default": "token",
+          "prop": "children"
+        }
+      }
+    },
+    "InlineLink": {
+      "source": "src/app/components/inline-link.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Link text",
+          "prop": "children"
+        },
+        "External": {
+          "type": "BOOLEAN",
+          "default": false,
+          "figmaOnly": "The link is external when href leaves the site; no prop turns it on."
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Focus"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Focus": {}
+          }
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["md", "sm", "lg"],
+          "default": "md",
+          "set": {
+            "md": {},
+            "sm": {
+              "size": "sm"
+            },
+            "lg": {
+              "size": "lg"
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "href": "\"/docs\""
+      }
+    },
+    "Kbd": {
+      "source": "src/app/components/kbd.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Key": {
+          "type": "TEXT",
+          "default": "Esc",
+          "prop": "children"
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["md", "sm", "lg"],
+          "default": "sm",
+          "prop": "size"
+        }
+      }
+    },
+    "List": {
+      "source": "src/app/components/list.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {},
+      "children": "<List.Item title=\"Item title\" href=\"/items/1\" trailing=\"chevron\" />"
+    },
+    "Menu": {
+      "source": "src/app/components/menu.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {},
+      "children": "<Menu.Trigger asChild><Button>Options</Button></Menu.Trigger><Menu.Content><Menu.Item>Edit</Menu.Item><Menu.Item tone=\"danger\">Delete</Menu.Item></Menu.Content>"
+    },
+    "MetadataList": {
+      "source": "src/app/components/metadata-list.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Orientation": {
+          "type": "VARIANT",
+          "options": ["vertical", "horizontal"],
+          "default": "vertical",
+          "prop": "orientation"
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["plain", "divided"],
+          "default": "plain",
+          "set": {
+            "plain": {},
+            "divided": {
+              "variant": "divided"
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "items": "{items}"
+      }
+    },
+    "MetaLine": {
+      "source": "src/app/components/meta-line.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "First": {
+          "type": "TEXT",
+          "default": "Acme Cloud",
+          "figmaOnly": "items is an array the application supplies."
+        },
+        "Second": {
+          "type": "TEXT",
+          "default": "Remote",
+          "figmaOnly": "items is an array the application supplies."
+        },
+        "Items": {
+          "type": "VARIANT",
+          "options": ["2", "1"],
+          "default": "1",
+          "set": {
+            "2": {},
+            "1": {}
+          }
+        }
+      },
+      "staticProps": {
+        "items": "{items}"
+      }
+    },
+    "NavList": {
+      "source": "src/app/components/nav-list.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {},
+      "children": "<NavList.Item href=\"/roles/1\" current>Senior product designer</NavList.Item>"
+    },
+    "NavListItem": {
+      "source": "src/app/components/nav-list.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Title": {
+          "type": "TEXT",
+          "default": "Senior product designer",
+          "prop": "children"
+        },
+        "Meta": {
+          "type": "TEXT",
+          "default": "Acme Cloud · Remote",
+          "figmaOnly": "The meta line is part of the children the application composes."
+        },
+        "Current": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "current": true
+            }
+          }
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Focus"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Focus": {}
+          }
+        }
+      },
+      "staticProps": {
+        "href": "\"/roles/1\""
+      }
+    },
+    "PageHeader": {
+      "source": "src/app/components/page-header.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "imports": {
+        "@hirobius/design-system": ["Badge", "Breadcrumb", "Button"]
+      },
+      "properties": {
+        "Title": {
+          "type": "TEXT",
+          "default": "Acme Co",
+          "prop": "title"
+        },
+        "Breadcrumb": {
+          "type": "BOOLEAN",
+          "default": true,
+          "set": {
+            "true": {
+              "breadcrumb": {
+                "$expr": "<Breadcrumb items={crumbs} />"
+              }
+            },
+            "false": {}
+          }
+        },
+        "Status": {
+          "type": "BOOLEAN",
+          "default": false,
+          "set": {
+            "true": {
+              "status": {
+                "$expr": "<Badge tone=\"success\">Active</Badge>"
+              }
+            },
+            "false": {}
+          }
+        },
+        "Actions": {
+          "type": "BOOLEAN",
+          "default": true,
+          "set": {
+            "true": {
+              "actions": {
+                "$expr": "<Button variant=\"primary\">New</Button>"
+              }
+            },
+            "false": {}
+          }
+        }
+      }
+    },
+    "Pagination": {
+      "source": "src/app/components/pagination.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["default", "compact"],
+          "default": "default",
+          "prop": "variant"
+        }
+      },
+      "staticProps": {
+        "page": "{page}",
+        "count": "{pageCount}",
+        "onPageChange": "{setPage}"
+      }
+    },
+    "Popover": {
+      "source": "src/app/components/popover.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {
+        "Title": {
+          "type": "TEXT",
+          "default": "Popover title",
+          "figmaOnly": "Popover has no title part: a heading goes in Popover.Content."
+        },
+        "Content": {
+          "type": "TEXT",
+          "default": "Popover content goes here. Replace with any layout in instances."
+        },
+        "Show title": {
+          "type": "BOOLEAN",
+          "default": true,
+          "figmaOnly": "Popover has no title part: a heading goes in Popover.Content."
+        }
+      },
+      "children": "<Popover.Trigger asChild><Button>Open</Button></Popover.Trigger><Popover.Content>{{Content}}</Popover.Content>"
+    },
+    "Progress": {
+      "source": "src/app/components/progress.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Type": {
+          "type": "VARIANT",
+          "options": ["Determinate", "Indeterminate"],
+          "default": "Determinate",
+          "set": {
+            "Determinate": {
+              "value": {
+                "$expr": "progress"
+              }
+            },
+            "Indeterminate": {}
+          }
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["md", "sm", "lg"],
+          "default": "sm",
+          "prop": "size"
+        }
+      }
+    },
+    "SegmentedControl": {
+      "source": "src/app/components/segmented-control.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Segments": {
+          "type": "VARIANT",
+          "options": ["2", "3", "4"],
+          "default": "2",
+          "set": {
+            "2": {},
+            "3": {},
+            "4": {}
+          }
+        },
+        "Selected": {
+          "type": "VARIANT",
+          "options": ["1", "2", "3", "4"],
+          "default": "1",
+          "set": {
+            "1": {},
+            "2": {},
+            "3": {},
+            "4": {}
+          }
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["md", "sm"],
+          "default": "md",
+          "prop": "size"
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["primary", "secondary"],
+          "default": "primary",
+          "prop": "variant"
+        }
+      },
+      "staticProps": {
+        "options": "{options}",
+        "value": "{value}",
+        "onChange": "{setValue}"
+      }
+    },
+    "Select": {
+      "source": "src/app/components/select.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Show label": {
+          "type": "BOOLEAN",
+          "default": true,
+          "set": {
+            "true": {},
+            "false": {
+              "showLabel": {
+                "$expr": "false"
+              }
+            }
           }
         },
         "Label": {
           "type": "TEXT",
-          "default": "Tag",
-          "prop": "children"
+          "default": "Label",
+          "prop": "label"
+        },
+        "Value": {
+          "type": "TEXT",
+          "default": "Select option",
+          "prop": "placeholder"
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Focus", "Open", "Invalid"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Focus": {},
+            "Open": {},
+            "Invalid": {
+              "aria-invalid": true
+            }
+          }
         }
+      },
+      "staticProps": {
+        "options": "{options}",
+        "value": "{value}",
+        "onChange": "{setValue}"
+      }
+    },
+    "Sheet": {
+      "source": "src/app/components/sheet.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {
+        "Layout": {
+          "type": "VARIANT",
+          "options": ["Phone", "Desktop"],
+          "default": "Phone",
+          "set": {
+            "Phone": {},
+            "Desktop": {}
+          }
+        },
+        "Content": {
+          "type": "VARIANT",
+          "options": ["Actions", "Footer"],
+          "default": "Actions",
+          "set": {
+            "Actions": {},
+            "Footer": {}
+          }
+        }
+      },
+      "children": "<Sheet.Trigger asChild><Button>Sort</Button></Sheet.Trigger><Sheet.Content><Sheet.Header><Sheet.Title>Sort by</Sheet.Title><Sheet.Description>Choose how the list is ordered.</Sheet.Description></Sheet.Header><Sheet.Actions aria-label=\"Sort order\"><Sheet.Action current>Newest</Sheet.Action><Sheet.Action>Company</Sheet.Action></Sheet.Actions></Sheet.Content>"
+    },
+    "Skeleton": {
+      "source": "src/app/components/skeleton.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["text", "rectangular", "circular"],
+          "default": "text",
+          "prop": "variant"
+        }
+      }
+    },
+    "Slider": {
+      "source": "src/app/components/slider.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Focus", "Pressed"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Focus": {},
+            "Pressed": {}
+          }
+        }
+      },
+      "staticProps": {
+        "label": "\"Volume\"",
+        "min": "{0}",
+        "max": "{100}",
+        "value": "{value}",
+        "onChange": "{setValue}"
+      }
+    },
+    "Spinner": {
+      "source": "src/app/components/spinner.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Size": {
+          "type": "VARIANT",
+          "options": ["sm", "md", "lg"],
+          "default": "md",
+          "prop": "size"
+        }
+      }
+    },
+    "StatusListItem": {
+      "source": "src/app/components/status-list-item.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["info", "success", "warning", "danger", "neutral"],
+          "default": "neutral",
+          "prop": "tone"
+        }
+      },
+      "staticProps": {
+        "title": "\"Deploy\""
+      }
+    },
+    "Surface": {
+      "source": "src/app/components/surface.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Padding": {
+          "type": "VARIANT",
+          "options": ["component", "item", "px16", "px24", "none"],
+          "default": "component",
+          "prop": "padding"
+        },
+        "Shadow": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "set": {
+            "false": {},
+            "true": {
+              "shadow": true
+            }
+          }
+        }
+      },
+      "children": "Surface content"
+    },
+    "Tabs": {
+      "source": "src/app/components/tabs.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["TabsContent", "TabsList", "TabsTrigger"]
+      },
+      "properties": {
+        "Tabs": {
+          "type": "VARIANT",
+          "options": ["2", "3", "4"],
+          "default": "2",
+          "set": {
+            "2": {},
+            "3": {},
+            "4": {}
+          }
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["panel", "bare"],
+          "default": "panel"
+        }
+      },
+      "staticProps": {
+        "defaultValue": "\"overview\""
+      },
+      "children": "<TabsList><TabsTrigger value=\"overview\">Overview</TabsTrigger><TabsTrigger value=\"activity\">Activity</TabsTrigger></TabsList><TabsContent value=\"overview\" variant=\"{{Variant}}\">Overview panel</TabsContent>"
+    },
+    "TabsTrigger": {
+      "source": "src/app/components/tabs.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Tab",
+          "prop": "children"
+        },
+        "Selected": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "figmaOnly": "The selected tab is the value of Tabs."
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Focus", "Disabled"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Focus": {},
+            "Disabled": {
+              "disabled": true
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "value": "\"overview\""
+      }
+    },
+    "Text": {
+      "source": "src/app/components/text.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Text",
+          "prop": "children"
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["body", "display", "ui", "caption", "title", "mono", "titleSm"],
+          "default": "body",
+          "prop": "variant",
+          "codeOnly": {
+            "heading1": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "heading2": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "heading3": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "technical": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "eyebrow": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "badge": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "docLede": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "docBody": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "docSmall": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only.",
+            "docCode": "Pre-cut role name kept as an alias in code (text.tsx); the Figma Text set draws the seven current roles only."
+          }
+        },
+        "Tone": {
+          "type": "VARIANT",
+          "options": [
+            "none",
+            "primary",
+            "secondary",
+            "disabled",
+            "accent",
+            "success",
+            "warning",
+            "danger",
+            "info"
+          ],
+          "default": "none",
+          "set": {
+            "none": {},
+            "primary": {
+              "tone": "primary"
+            },
+            "secondary": {
+              "tone": "secondary"
+            },
+            "disabled": {
+              "tone": "disabled"
+            },
+            "accent": {
+              "tone": "accent"
+            },
+            "success": {
+              "tone": "success"
+            },
+            "warning": {
+              "tone": "warning"
+            },
+            "danger": {
+              "tone": "danger"
+            },
+            "info": {
+              "tone": "info"
+            }
+          }
+        }
+      }
+    },
+    "ThemeToggle": {
+      "source": "src/app/components/theme-toggle.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Theme": {
+          "type": "VARIANT",
+          "options": ["light", "dark"],
+          "default": "light",
+          "set": {
+            "light": {},
+            "dark": {
+              "isDark": true
+            }
+          }
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Hover", "Pressed", "Focus"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Hover": {},
+            "Pressed": {},
+            "Focus": {}
+          }
+        }
+      },
+      "staticProps": {
+        "onToggle": "{toggleTheme}"
+      }
+    },
+    "Timeline": {
+      "source": "src/app/components/timeline.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["TimelineItem"]
+      },
+      "properties": {},
+      "children": "<TimelineItem date={entry.date} title={entry.title} />"
+    },
+    "TimelineItem": {
+      "source": "src/app/components/timeline.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "lucide-react": ["Rocket"]
+      },
+      "properties": {
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["neutral", "success", "danger", "warning", "info"],
+          "default": "neutral",
+          "set": {
+            "neutral": {},
+            "success": {
+              "tone": "success"
+            },
+            "danger": {
+              "tone": "danger"
+            },
+            "warning": {
+              "tone": "warning"
+            },
+            "info": {
+              "tone": "info"
+            }
+          }
+        },
+        "Detail": {
+          "type": "VARIANT",
+          "options": ["false", "true"],
+          "default": "false",
+          "figmaOnly": "The detail is the children the application supplies."
+        },
+        "Marker": {
+          "type": "VARIANT",
+          "options": ["dot", "icon"],
+          "default": "dot",
+          "set": {
+            "dot": {},
+            "icon": {
+              "icon": {
+                "$expr": "Rocket"
+              }
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "date": "{entry.date}",
+        "title": "{entry.title}"
+      }
+    },
+    "Timestamp": {
+      "source": "src/app/components/timestamp.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Format": {
+          "type": "VARIANT",
+          "options": ["datetime", "relative", "date", "time"],
+          "default": "datetime",
+          "set": {
+            "datetime": {},
+            "relative": {
+              "format": "relative"
+            },
+            "date": {
+              "format": "date"
+            },
+            "time": {
+              "format": "time"
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "date": "{date}"
+      }
+    },
+    "TokenField": {
+      "source": "src/app/components/token-field.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Message",
+          "prop": "label"
+        },
+        "State": {
+          "type": "VARIANT",
+          "options": ["Default", "Focus", "Error", "Disabled"],
+          "default": "Default",
+          "set": {
+            "Default": {},
+            "Focus": {},
+            "Error": {
+              "error": true
+            },
+            "Disabled": {
+              "disabled": true
+            }
+          }
+        }
+      },
+      "staticProps": {
+        "value": "{value}",
+        "onChange": "{setValue}"
+      }
+    },
+    "Tooltip": {
+      "source": "src/app/components/hds-tooltip.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Button"]
+      },
+      "properties": {
+        "Label": {
+          "type": "TEXT",
+          "default": "Tooltip label"
+        },
+        "Side": {
+          "type": "VARIANT",
+          "options": ["top", "bottom", "left", "right"],
+          "default": "top"
+        }
+      },
+      "children": "<Tooltip.Trigger asChild><Button>Hover</Button></Tooltip.Trigger><Tooltip.Content side=\"{{Side}}\">{{Label}}</Tooltip.Content>"
+    },
+    "AssetImg": {
+      "source": "src/app/components/asset-img.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "properties": {
+        "State": {
+          "type": "VARIANT",
+          "options": ["placeholder", "loaded"],
+          "default": "placeholder",
+          "set": {
+            "placeholder": {},
+            "loaded": {}
+          }
+        }
+      },
+      "staticProps": {
+        "src": "{asset.src}",
+        "alt": "{asset.alt}"
+      }
+    },
+    "AsyncState": {
+      "source": "src/app/components/async-state.tsx",
+      "evidence": "read-2026-11-15",
+      "importFrom": "@hirobius/design-system/patterns",
+      "properties": {
+        "Status": {
+          "type": "VARIANT",
+          "options": ["Loading", "Slow", "Error", "Empty", "Ready"],
+          "default": "Loading",
+          "prop": "status",
+          "values": {
+            "Loading": "loading",
+            "Slow": "loading",
+            "Error": "error",
+            "Empty": "empty",
+            "Ready": "ready"
+          }
+        }
+      },
+      "children": "Loaded content"
+    },
+    "AvatarGroup": {
+      "source": "src/app/components/avatar-group.tsx",
+      "evidence": "read-2026-11-15",
+      "imports": {
+        "@hirobius/design-system": ["Avatar"]
+      },
+      "properties": {
+        "Size": {
+          "type": "VARIANT",
+          "options": ["md", "sm", "lg"],
+          "default": "md",
+          "prop": "size"
+        },
+        "Overflow": {
+          "type": "VARIANT",
+          "options": ["true", "false"],
+          "default": "true",
+          "set": {
+            "true": {
+              "max": {
+                "$expr": "3"
+              }
+            },
+            "false": {}
+          }
+        }
+      },
+      "children": "<Avatar alt={user.name} initials=\"AH\" />"
+    },
+    "Blockquote": {
+      "source": "src/app/components/blockquote.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Attribution": {
+          "type": "BOOLEAN",
+          "default": true,
+          "set": {
+            "true": {
+              "attribution": "Name, role"
+            },
+            "false": {}
+          }
+        },
+        "Size": {
+          "type": "VARIANT",
+          "options": ["md"],
+          "default": "md",
+          "prop": "size",
+          "codeOnly": {
+            "sm": "Not drawn in the Figma Blockquote set, which has md only (read 2026-11-15).",
+            "lg": "Not drawn in the Figma Blockquote set, which has md only (read 2026-11-15)."
+          }
+        }
+      },
+      "children": "Quote text"
+    },
+    "Breadcrumb": {
+      "source": "src/app/components/breadcrumb.tsx",
+      "evidence": "read-2026-11-15",
+      "properties": {
+        "Levels": {
+          "type": "VARIANT",
+          "options": ["2", "3", "4"],
+          "default": "2",
+          "set": {
+            "2": {},
+            "3": {},
+            "4": {}
+          }
+        }
+      },
+      "staticProps": {
+        "items": "{crumbs}"
       }
     }
   },
   "exempt": {
-    "src/app/components/tabs.tsx": {
-      "kind": "queued",
-      "reason": "Tabs exists in the Figma library (node 86-89). TabsContent gained a cva variant (hds#819); its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/menu.tsx": {
-      "kind": "queued",
-      "reason": "Menu is an overlay compound. Its item tone (neutral, danger) has no Figma property yet. The template waits for a verified property read (hds#822)."
-    },
-    "src/app/components/callout.tsx": {
-      "kind": "queued",
-      "reason": "Callout exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
     "src/app/components/field.tsx": {
       "kind": "queued",
-      "reason": "Field exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+      "reason": "figma/code-connect-map.json pairs Field with node 85:81, which Figma names \"FormField (form.tsx)\": its properties (Label, Helper, State, Required) are FormField's, not Field's (read 2026-11-15). The pairing needs a decision before a template (hds#1557)."
     },
     "src/app/components/stat.tsx": {
       "kind": "queued",
-      "reason": "Stat exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/status-list-item.tsx": {
-      "kind": "queued",
-      "reason": "StatusListItem exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/card.tsx": {
-      "kind": "queued",
-      "reason": "Card exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/code-block.tsx": {
-      "kind": "queued",
-      "reason": "CodeBlock exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/divider.tsx": {
-      "kind": "queued",
-      "reason": "Divider exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/inline-code.tsx": {
-      "kind": "queued",
-      "reason": "InlineCode (with CodeBlock) exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/textarea.tsx": {
-      "kind": "queued",
-      "reason": "Textarea exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/toggle.tsx": {
-      "kind": "queued",
-      "reason": "Toggle exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/progress.tsx": {
-      "kind": "queued",
-      "reason": "Progress exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/skeleton.tsx": {
-      "kind": "queued",
-      "reason": "Skeleton exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/spinner.tsx": {
-      "kind": "queued",
-      "reason": "Spinner exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/segmented-control.tsx": {
-      "kind": "queued",
-      "reason": "SegmentedControl exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/surface.tsx": {
-      "kind": "queued",
-      "reason": "Surface exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/table.tsx": {
-      "kind": "queued",
-      "reason": "Table exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/list.tsx": {
-      "kind": "queued",
-      "reason": "List exists in the Figma library (List 2353-315, ListGroup 2353-314, ListItem 2352-301, hds#1134). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/text.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/kbd.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/blockquote.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/avatar-group.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/metadata-list.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/breadcrumb.tsx": {
-      "kind": "queued",
-      "reason": "Breadcrumb exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
-    },
-    "src/app/components/nav-list.tsx": {
-      "kind": "no-figma-component",
-      "reason": "No Figma component set exists for it (code-only in the hds#73 audit, or added after it)."
-    },
-    "src/app/components/disclosure.tsx": {
-      "kind": "queued",
-      "reason": "Disclosure exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set. Code adds variant row (hds#873); the Figma Variant=Row is a Figma-lane follow-up."
+      "reason": "Stat is deprecated in code (no replacement planned) and its Figma component (88:247) is excluded from the Code Connect map as deprecated. No template: a snippet would recommend a deprecated component."
     },
     "src/app/components/toast.tsx": {
       "kind": "queued",
-      "reason": "Toast exists in the Figma library (hds#73 inventory). Its template waits for a verified property read. It is not in the flagship set."
+      "reason": "The Figma Toast (93:367) is one toast. Code has no Toast element: a toast is raised with useToast() under ToastProvider, so a JSX template of ToastProvider would be wrong for it. Needs a non-JSX example (hds#1557)."
     },
-    "src/app/components/pagination.tsx": {
+    "src/app/components/table.tsx": {
       "kind": "queued",
-      "reason": "Pagination exists in the Figma library (node 86-194). Its compact variant (hds#867) has no Figma Variant=Compact yet (Figma-lane follow-up, hds#540); the template waits for that property read."
-    },
-    "src/app/components/sheet.tsx": {
-      "kind": "no-figma-component",
-      "reason": "Sheet (hds#690) has no Figma component yet. Its action tone (neutral, danger) gets a template once one is drawn."
+      "reason": "The Figma Table (89:300) was read on 2026-11-15 (Density, Sortable, StickyHeader). A template opts Table into check-figma-mapping, which then fails: the cva density axis has an internal key, follow, that the density prop does not accept. Resolve the axis first (hds#1557)."
     }
   }
 }

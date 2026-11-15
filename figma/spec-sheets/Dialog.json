@@ -51,8 +51,7 @@
     {
       "name": "modal",
       "type": "boolean",
-      "optional": true,
-      "figmaProperty": "Modal"
+      "optional": true
     },
     {
       "name": "onOpenChange",

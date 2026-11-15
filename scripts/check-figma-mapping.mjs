@@ -16,13 +16,14 @@
  *   mapping-name-conflict     one prop mapped to two different Figma property names
  *   inverted-boolean-name     `invert: true` on a property not named "Show …"
  *   invert-non-boolean        `invert: true` on a non-BOOLEAN property
- *   registry-axis-drift       figma/code-connect.json template maps different contract axes than the manifest
+ *   registry-axis-drift       figma/code-connect.json template maps a contract axis the manifest does not declare
  *   registry-property-unknown a templated component's manifest names a Figma property the registry does not define
  *   registry-property-type    manifest and registry record different types for one Figma property
  *   registry-property-binding manifest maps a prop to a different Figma property than the registry does
  *
  * Warnings (advisory, exit 0):
  *   property-name-case        Figma property name is not Title Case
+ *   axis-not-in-figma         a declared contract axis has no property on the Figma component (code ahead of Figma)
  *
  * Run: node scripts/check-figma-mapping.mjs [--json]
  * Or:  pnpm check:figma-mapping
@@ -217,15 +218,33 @@ export function checkFigmaMapping({ manifest, codeModel, registry }) {
     const template = registry?.templates?.[name];
     if (template) {
       const manifestContract = axes.filter((axis) => CONTRACT_AXES.includes(axis)).sort();
-      const templateContract = Object.values(template.properties ?? {})
-        .map((property) => property.prop)
+      const templateContract = [
+        ...new Set(
+          Object.values(template.properties ?? {}).flatMap((property) => [
+            property.prop,
+            ...Object.values(property.set ?? {}).flatMap((props) => Object.keys(props ?? {})),
+          ]),
+        ),
+      ]
         .filter((prop) => CONTRACT_AXES.includes(prop))
         .sort();
-      if (!sameSet(manifestContract, templateContract)) {
+      const undeclared = templateContract.filter((axis) => !manifestContract.includes(axis));
+      if (undeclared.length) {
         error(
           name,
           'registry-axis-drift',
-          `manifest contract axes [${manifestContract.join(', ')}] ≠ Code Connect template axes [${templateContract.join(', ')}] (figma/code-connect.json)`,
+          `Code Connect template maps contract axes [${undeclared.join(', ')}] that the manifest variantAxes [${manifestContract.join(', ')}] do not declare (figma/code-connect.json)`,
+        );
+      }
+      // Code ahead of Figma: the registry records what the live Figma component
+      // has (check-code-connect holds it to the property read), so an axis with
+      // no Figma property cannot be mapped. Report it; do not fail.
+      const unmapped = manifestContract.filter((axis) => !templateContract.includes(axis));
+      if (unmapped.length) {
+        warn(
+          name,
+          'axis-not-in-figma',
+          `contract axes [${unmapped.join(', ')}] have no property on the Figma component (figma/code-connect.json)`,
         );
       }
       checkRegistryPropertyNames({ name, spec, template, error });

@@ -14,11 +14,20 @@
  *                                                        → getEnum → props per option
  *   TEXT           { default?, prop, visibleWhen? }       → getString → `prop="…"` / children
  *   BOOLEAN        { default?, prop?, invert? }           → getBoolean → bare boolean prop
- *                  (no prop: must be some property's `visibleWhen`)
+ *                  { default?, set: { true: { prop: value }, false: { … } } }
+ *                                                        → getBoolean → props per state
+ *                  (no prop / set: must be some property's `visibleWhen`)
  *   INSTANCE_SWAP  { default?, prop, visibleWhen? }       → getInstanceSwap → executeTemplate()
  *   any            { figmaOnly: "<reason>" }              → accounted for, never emitted
  *
  *   staticProps    { prop: "<raw JSX attribute value>" }  → required props Figma has no property for
+ *   children       "<raw JSX>"                            → element children; `{{Figma name}}` is
+ *                                                           replaced by that TEXT property's value,
+ *                                                           or by a VARIANT's mapped value
+ *                                                           ({ options, values? } with no prop / set)
+ *   importFrom     "<module>"                             → the component's import module, when it
+ *                                                           is not the registry's `importFrom`
+ *   imports        { "<module>": ["Name"] }               → extra names the snippet uses
  *
  * The code side (props, required-ness, cva axes + defaultVariants) comes from
  * scripts/lib/component-code-model.mjs. VARIANT values that land on a cva axis
@@ -45,7 +54,42 @@ const PROPERTY_KEYS = new Set([
   'figmaOnly',
   'codeOnly',
 ]);
-const ENTRY_KEYS = new Set(['source', 'export', 'evidence', 'note', 'properties', 'staticProps']);
+const ENTRY_KEYS = new Set([
+  'source',
+  'export',
+  'evidence',
+  'note',
+  'properties',
+  'staticProps',
+  'children',
+  'importFrom',
+  'imports',
+]);
+const BOOLEAN_STATES = ['true', 'false'];
+const CHILD_REFERENCE = /\{\{([^{}]+)\}\}/g;
+
+/**
+ * The snippet's import lines: the component first (merged with extra names from
+ * the same module), then one line per other module in `entry.imports`.
+ */
+export function importLinesFor(entry, component, defaultImportFrom) {
+  const main = entry.importFrom ?? defaultImportFrom;
+  const extra = isObject(entry.imports) ? entry.imports : {};
+  const line = (names, module) => `import { ${names.join(', ')} } from '${module}'`;
+  return [
+    line([component, ...(extra[main] ?? [])], main),
+    ...Object.entries(extra)
+      .filter(([module]) => module !== main)
+      .map(([module, names]) => line(names, module)),
+  ];
+}
+
+/** Figma property names an entry's `children` interpolates. */
+export function childReferences(entry) {
+  return typeof entry?.children === 'string'
+    ? [...entry.children.matchAll(CHILD_REFERENCE)].map((match) => match[1].trim())
+    : [];
+}
 const RESERVED = new Set([
   'figma',
   'instance',
@@ -94,10 +138,16 @@ export function classifyFigmaUrl(url) {
     : 'invalid';
 }
 
-/** `src/app/components/checkbox.tsx` → `src/app/components/checkbox.figma.ts`. */
-export function templatePathFor(entry) {
+/**
+ * `src/app/components/checkbox.tsx` → `src/app/components/checkbox.figma.ts`.
+ * With `exportName` (a second template of the same module), the file is named
+ * after the export: `tabs.tsx` + `TabsTrigger` → `tabs-trigger.figma.ts`.
+ */
+export function templatePathFor(entry, exportName) {
   const dir = path.posix.dirname(entry.source);
-  const base = path.posix.basename(entry.source).replace(/\.(tsx|ts)$/, '');
+  const base = exportName
+    ? kebabCase(exportName)
+    : path.posix.basename(entry.source).replace(/\.(tsx|ts)$/, '');
   return `${dir}/${base}.figma.ts`;
 }
 
@@ -184,9 +234,29 @@ export function validateTemplateEntry(name, entry, code) {
     if (!ENTRY_KEYS.has(key)) fail(`unknown registry key "${key}"`);
   }
   const properties = entry.properties;
-  if (!isObject(properties) || Object.keys(properties).length === 0) {
-    fail('has no Figma properties');
+  if (!isObject(properties)) {
+    fail('has no Figma properties object');
     return errors;
+  }
+  if (
+    entry.importFrom !== undefined &&
+    (typeof entry.importFrom !== 'string' || !entry.importFrom)
+  ) {
+    fail('importFrom must be a module name');
+  }
+  if (
+    entry.imports !== undefined &&
+    !(
+      isObject(entry.imports) &&
+      Object.values(entry.imports).every(
+        (names) =>
+          Array.isArray(names) &&
+          names.length > 0 &&
+          names.every((n) => /^[A-Za-z_$][\w$]*$/.test(n)),
+      )
+    )
+  ) {
+    fail('imports must map a module to a list of names');
   }
 
   const isProp = (prop) => Boolean(code.props?.[prop]);
@@ -196,6 +266,42 @@ export function validateTemplateEntry(name, entry, code) {
       .map((def) => def?.visibleWhen)
       .filter(Boolean),
   );
+
+  const validateSet = (figmaName, def, states, kind) => {
+    if (!isObject(def.set) || !sameKeys(def.set, states)) {
+      fail(
+        kind === 'VARIANT'
+          ? `VARIANT "${figmaName}" set must map every option exactly [${states.join(', ')}]`
+          : `BOOLEAN "${figmaName}" set must map exactly [${states.join(', ')}]`,
+      );
+      return;
+    }
+    for (const [option, props] of Object.entries(def.set)) {
+      for (const [prop, value] of Object.entries(props ?? {})) {
+        if (!isProp(prop)) {
+          fail(
+            `${kind} "${figmaName}" option "${option}": "${prop}" is not a prop of ${entry.export ?? name}`,
+          );
+          continue;
+        }
+        covered.add(prop);
+        const cvaKeys = code.cva?.axes?.[prop];
+        if (typeof value === 'string' && cvaKeys && !cvaKeys.includes(value)) {
+          fail(
+            `${kind} "${figmaName}" option "${option}": "${value}" is not a cva value of ${prop}`,
+          );
+        }
+        const validValue =
+          typeof value === 'boolean' ||
+          typeof value === 'string' ||
+          (isObject(value) && typeof value.$expr === 'string');
+        if (!validValue)
+          fail(`${kind} "${figmaName}" option "${option}": unsupported value for "${prop}"`);
+      }
+    }
+  };
+
+  const childRefs = new Set(childReferences(entry));
 
   for (const [figmaName, def] of Object.entries(properties)) {
     if (!isObject(def) || !PROPERTY_TYPES.has(def.type)) {
@@ -230,6 +336,12 @@ export function validateTemplateEntry(name, entry, code) {
         if (def.default !== undefined && !def.options.includes(def.default)) {
           fail(`VARIANT "${figmaName}" default "${def.default}" is not an option`);
         }
+        if (def.prop === undefined && def.set === undefined && childRefs.has(figmaName)) {
+          if (!sameKeys(mappedValues(def), def.options)) {
+            fail(`VARIANT "${figmaName}" values must map every option exactly`);
+          }
+          break;
+        }
         if ((def.prop === undefined) === (def.set === undefined)) {
           fail(`VARIANT "${figmaName}" needs exactly one of prop / set`);
           break;
@@ -252,44 +364,22 @@ export function validateTemplateEntry(name, entry, code) {
             }
           }
         } else {
-          if (!isObject(def.set) || !sameKeys(def.set, def.options)) {
-            fail(
-              `VARIANT "${figmaName}" set must map every option exactly [${def.options.join(', ')}]`,
-            );
-            break;
-          }
-          for (const [option, props] of Object.entries(def.set)) {
-            for (const [prop, value] of Object.entries(props ?? {})) {
-              if (!isProp(prop)) {
-                fail(
-                  `VARIANT "${figmaName}" option "${option}": "${prop}" is not a prop of ${entry.export ?? name}`,
-                );
-                continue;
-              }
-              covered.add(prop);
-              const cvaKeys = code.cva?.axes?.[prop];
-              if (typeof value === 'string' && cvaKeys && !cvaKeys.includes(value)) {
-                fail(
-                  `VARIANT "${figmaName}" option "${option}": "${value}" is not a cva value of ${prop}`,
-                );
-              }
-              const validValue =
-                typeof value === 'boolean' ||
-                typeof value === 'string' ||
-                (isObject(value) && typeof value.$expr === 'string');
-              if (!validValue)
-                fail(`VARIANT "${figmaName}" option "${option}": unsupported value for "${prop}"`);
-            }
-          }
+          validateSet(figmaName, def, def.options, 'VARIANT');
         }
         break;
       }
       case 'TEXT':
       case 'INSTANCE_SWAP':
-        if (def.prop === undefined) fail(`${def.type} "${figmaName}" needs a prop (or figmaOnly)`);
+        if (def.prop === undefined && !(def.type === 'TEXT' && childRefs.has(figmaName))) {
+          fail(`${def.type} "${figmaName}" needs a prop (or figmaOnly)`);
+        }
         break;
       case 'BOOLEAN':
-        if (def.prop === undefined && !referenced.has(figmaName)) {
+        if (def.set !== undefined) {
+          if (def.prop !== undefined)
+            fail(`BOOLEAN "${figmaName}" needs at most one of prop / set`);
+          validateSet(figmaName, def, BOOLEAN_STATES, 'BOOLEAN');
+        } else if (def.prop === undefined && !referenced.has(figmaName)) {
           fail(
             `BOOLEAN "${figmaName}" is not mapped: give it a prop, reference it from visibleWhen, or mark it figmaOnly`,
           );
@@ -306,6 +396,27 @@ export function validateTemplateEntry(name, entry, code) {
     if (typeof raw !== 'string' || !/^(\{.*\}|".*")$/.test(raw)) {
       fail(`staticProps "${prop}" must be a raw JSX attribute value ("…" or {…})`);
     }
+  }
+
+  if (entry.children !== undefined) {
+    if (typeof entry.children !== 'string' || !entry.children.trim()) {
+      fail('children must be a non-empty raw JSX string');
+    }
+    if (Object.values(properties).some((def) => def?.prop === 'children' && !def.figmaOnly)) {
+      fail('children is set twice: by the entry and by a property mapped to "children"');
+    }
+    for (const reference of childRefs) {
+      const target = properties[reference];
+      const usable =
+        target?.type === 'TEXT' ||
+        (target?.type === 'VARIANT' && target.prop === undefined && target.set === undefined);
+      if (!usable || target.figmaOnly) {
+        fail(
+          `children names "${reference}", which is not a TEXT property or a VARIANT without prop / set`,
+        );
+      }
+    }
+    covered.add('children');
   }
 
   for (const [prop, info] of Object.entries(code.props ?? {})) {
@@ -364,7 +475,8 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
     '// Do not edit by hand: change the registry or the component, then regenerate.',
   );
 
-  const body = ["import figma from 'figma';", '', 'const instance = figma.selectedInstance;', ''];
+  const body = ["import figma from 'figma';", ''];
+  const instanceLine = body.length;
   const taken = new Set(['figma', 'instance']);
   const vars = {};
   const properties = entry.properties;
@@ -382,7 +494,7 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
     switch (def.type) {
       case 'VARIANT': {
         const mapping =
-          def.prop !== undefined
+          def.set === undefined
             ? mappedValues(def)
             : Object.fromEntries(def.options.map((o) => [o, o]));
         body.push(`const ${id} = instance.getEnum(${quote(figmaName)}, ${enumMap(mapping)});`);
@@ -410,6 +522,12 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
     );
   }
 
+  // Read the selected instance only when a property is read (an inert or
+  // property-less entry would leave the constant unused).
+  if (body.length > instanceLine) {
+    body.splice(instanceLine, 0, 'const instance = figma.selectedInstance;', '');
+  }
+
   // Attribute fragments, in registry order.
   const attributes = [];
   let children = null;
@@ -422,6 +540,7 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
     switch (def.type) {
       case 'VARIANT': {
         if (!id) break;
+        if (def.prop === undefined && def.set === undefined) break;
         if (def.prop !== undefined) {
           const fallback = cvaDefault(def.prop);
           attributes.push(
@@ -450,6 +569,7 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
         break;
       }
       case 'TEXT': {
+        if (def.prop === undefined) break;
         if (def.prop === 'children') {
           children = def.visibleWhen ? `\${${vars[def.visibleWhen]} ? ${id} : ''}` : `\${${id}}`;
         } else {
@@ -459,6 +579,18 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
         break;
       }
       case 'BOOLEAN': {
+        if (def.set !== undefined) {
+          const props = [...new Set(Object.values(def.set).flatMap((p) => Object.keys(p ?? {})))];
+          for (const prop of props) {
+            const fragment = (state) =>
+              prop in (def.set[state] ?? {})
+                ? setValueAttribute(prop, def.set[state][prop], required(prop))
+                : '';
+            const [on, off] = [fragment('true'), fragment('false')];
+            if (on || off) attributes.push(`\${${id} ? ${quote(on)} : ${quote(off)}}`);
+          }
+          break;
+        }
         if (def.prop === undefined) break;
         const on = def.invert ? `!${id}` : id;
         const offFragment = required(def.prop) ? quote(` ${def.prop}={false}`) : "''";
@@ -476,6 +608,13 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
     attributes.push(` ${prop}=${literal(raw)}`);
   }
 
+  if (entry.children !== undefined) {
+    children = literal(entry.children).replace(
+      CHILD_REFERENCE,
+      (_, reference) => `\${${vars[reference.trim()]}}`,
+    );
+  }
+
   const open = `<${component}${attributes.join('')}`;
   const example = children === null ? `${open} />` : `${open}>${children}</${component}>`;
 
@@ -483,7 +622,7 @@ export function buildTemplateSource({ name, exportName, entry, code, figmaUrl, i
     '',
     'export default {',
     `  example: figma.code\`${example}\`,`,
-    `  imports: [${JSON.stringify(`import { ${component} } from '${importFrom}'`)}],`,
+    `  imports: ${JSON.stringify(importLinesFor(entry, component, importFrom))},`,
     `  id: ${quote(kebabCase(component))},`,
     '  metadata: { nestable: true },',
     '};',

@@ -1,0 +1,1582 @@
+{
+  "$comment": "Component property definitions read from the HDS library with the Figma MCP tool use_figma (the script `node scripts/figma-code-connect-map.mjs --emit-property-read` prints; ledger 2026-11-15, C4 and C5). Read only. Recorded by hand from the tool results: do not edit except from a new read. scripts/check-code-connect.mjs fails when a template in figma/code-connect.json does not match the node it maps. Property names are without their #id suffix. INSTANCE_SWAP defaults are node ids.",
+  "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
+  "readOn": "2026-11-15",
+  "nodes": {
+    "33:34": {
+      "name": "Alert",
+      "type": "COMPONENT_SET",
+      "page": "Alert",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Heads up"
+        },
+        {
+          "name": "Body",
+          "type": "TEXT",
+          "default": "Main alert message content goes here."
+        },
+        {
+          "name": "Show title",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "info",
+          "options": ["info", "success", "warning", "danger"]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["md", "sm"]
+        }
+      ],
+      "variants": 8
+    },
+    "2035:24": {
+      "name": "AlertDialog",
+      "type": "COMPONENT",
+      "page": "AlertDialog",
+      "props": []
+    },
+    "2041:67": {
+      "name": "AssetImg",
+      "type": "COMPONENT_SET",
+      "page": "AssetImg",
+      "props": [
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "placeholder",
+          "options": ["placeholder", "loaded"]
+        }
+      ],
+      "variants": 2
+    },
+    "2209:96": {
+      "name": "AsyncState",
+      "type": "COMPONENT_SET",
+      "page": "AsyncState",
+      "props": [
+        {
+          "name": "Status",
+          "type": "VARIANT",
+          "default": "Loading",
+          "options": ["Loading", "Slow", "Error", "Empty", "Ready"]
+        }
+      ],
+      "variants": 5
+    },
+    "34:18": {
+      "name": "Avatar",
+      "type": "COMPONENT_SET",
+      "page": "Avatar",
+      "props": [
+        {
+          "name": "Initials",
+          "type": "TEXT",
+          "default": "AH"
+        },
+        {
+          "name": "Show status",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "sm",
+          "options": ["sm", "md", "lg"]
+        },
+        {
+          "name": "Type",
+          "type": "VARIANT",
+          "default": "Initials",
+          "options": ["Initials", "Image", "Icon"]
+        }
+      ],
+      "variants": 9
+    },
+    "2030:63": {
+      "name": "AvatarGroup",
+      "type": "COMPONENT_SET",
+      "page": "AvatarGroup",
+      "props": [
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["md", "sm", "lg"]
+        },
+        {
+          "name": "Overflow",
+          "type": "VARIANT",
+          "default": "true",
+          "options": ["true", "false"]
+        }
+      ],
+      "variants": 6
+    },
+    "31:15": {
+      "name": "Badge",
+      "type": "COMPONENT_SET",
+      "page": "Badge",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Badge"
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["neutral", "info", "success", "danger", "warning", "inProgress"]
+        },
+        {
+          "name": "Type",
+          "type": "VARIANT",
+          "default": "text",
+          "options": ["text", "count", "dot"]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["md", "sm", "lg"]
+        }
+      ],
+      "variants": 30
+    },
+    "2024:18": {
+      "name": "Blockquote",
+      "type": "COMPONENT_SET",
+      "page": "Blockquote",
+      "props": [
+        {
+          "name": "Attribution",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["md"]
+        }
+      ],
+      "variants": 1
+    },
+    "86:159": {
+      "name": "Breadcrumb",
+      "type": "COMPONENT_SET",
+      "page": "Breadcrumb",
+      "props": [
+        {
+          "name": "Levels",
+          "type": "VARIANT",
+          "default": "2",
+          "options": ["2", "3", "4"]
+        }
+      ],
+      "variants": 3
+    },
+    "2399:11077": {
+      "name": "Button",
+      "type": "COMPONENT_SET",
+      "page": "Button",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Button"
+        },
+        {
+          "name": "Loading",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Focus",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Show icon",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Show trail icon",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Icon",
+          "type": "INSTANCE_SWAP",
+          "default": "27:41"
+        },
+        {
+          "name": "Trail Icon",
+          "type": "INSTANCE_SWAP",
+          "default": "27:15"
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "secondary",
+          "options": ["primary", "secondary", "tertiary", "link"]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["sm", "md", "lg"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "rest",
+          "options": ["rest", "hover", "pressed", "disabled"]
+        }
+      ],
+      "variants": 48
+    },
+    "88:85": {
+      "name": "Callout",
+      "type": "COMPONENT_SET",
+      "page": "Callout",
+      "props": [
+        {
+          "name": "Show Action",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "info",
+          "options": ["info", "success", "warning", "danger", "accent"]
+        }
+      ],
+      "variants": 5
+    },
+    "39:11": {
+      "name": "Card",
+      "type": "COMPONENT_SET",
+      "page": "Card",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Card title"
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "default": "Supporting description copy for the card body."
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "default",
+          "options": ["default", "accent"]
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["neutral", "success", "warning", "danger", "info"]
+        },
+        {
+          "name": "Padding",
+          "type": "VARIANT",
+          "default": "component",
+          "options": ["component", "item", "px16", "px24", "none"]
+        },
+        {
+          "name": "Bordered",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Focus", "Selected"]
+        }
+      ],
+      "variants": 14
+    },
+    "128:14": {
+      "name": "CardProgress",
+      "type": "COMPONENT",
+      "page": "Card",
+      "props": []
+    },
+    "35:29": {
+      "name": "Checkbox",
+      "type": "COMPONENT_SET",
+      "page": "Checkbox",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Checkbox label"
+        },
+        {
+          "name": "Checked",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true", "indeterminate"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "rest",
+          "options": ["rest", "disabled", "hover", "focused", "pressed"]
+        }
+      ],
+      "variants": 15
+    },
+    "89:154": {
+      "name": "CodeBlock",
+      "type": "COMPONENT_SET",
+      "page": "CodeBlock",
+      "props": [
+        {
+          "name": "Code",
+          "type": "TEXT",
+          "default": "const x = 1;"
+        },
+        {
+          "name": "Filename",
+          "type": "TEXT",
+          "default": "index.ts"
+        },
+        {
+          "name": "Show filename",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "variants": 2
+    },
+    "82:237": {
+      "name": "Combobox",
+      "type": "COMPONENT_SET",
+      "page": "Combobox",
+      "props": [
+        {
+          "name": "Show label",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Label"
+        },
+        {
+          "name": "Value",
+          "type": "TEXT",
+          "default": "Select an option"
+        },
+        {
+          "name": "Selection",
+          "type": "VARIANT",
+          "default": "Single",
+          "options": ["Single", "Multiple", "Creatable"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Focus", "Disabled", "Open", "Invalid"]
+        }
+      ],
+      "variants": 18
+    },
+    "2264:67": {
+      "name": "CommandPalette",
+      "type": "COMPONENT_SET",
+      "page": "CommandPalette",
+      "props": [
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Results",
+          "options": ["Results", "Empty", "Argument"]
+        }
+      ],
+      "variants": 3
+    },
+    "2201:277": {
+      "name": "Composer",
+      "type": "COMPONENT_SET",
+      "page": "Composer",
+      "props": [
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Empty",
+          "options": ["Empty", "Typing", "Attachments", "Pending", "Disabled"]
+        }
+      ],
+      "variants": 5
+    },
+    "2075:268": {
+      "name": "DataTableSection",
+      "type": "COMPONENT_SET",
+      "page": "DataTableSection",
+      "props": [
+        {
+          "name": "Toolbar",
+          "type": "VARIANT",
+          "default": "true",
+          "options": ["true", "false"]
+        },
+        {
+          "name": "Empty",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "variants": 4
+    },
+    "2076:3": {
+      "name": "DestructiveSection",
+      "type": "COMPONENT",
+      "page": "DestructiveSection",
+      "props": []
+    },
+    "93:27": {
+      "name": "Dialog",
+      "type": "COMPONENT",
+      "page": "Dialog",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Dialog title"
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "default": "Are you sure you want to continue? This action cannot be undone."
+        },
+        {
+          "name": "Show close",
+          "type": "BOOLEAN",
+          "default": true
+        }
+      ]
+    },
+    "88:453": {
+      "name": "Disclosure",
+      "type": "COMPONENT_SET",
+      "page": "Disclosure",
+      "props": [
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "panel",
+          "options": ["panel", "nav", "card", "row"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Collapsed",
+          "options": ["Collapsed", "Expanded"]
+        }
+      ],
+      "variants": 8
+    },
+    "89:26": {
+      "name": "Divider",
+      "type": "COMPONENT_SET",
+      "page": "Divider",
+      "props": [
+        {
+          "name": "Orientation",
+          "type": "VARIANT",
+          "default": "Horizontal",
+          "options": ["Horizontal", "Vertical"]
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "default",
+          "options": ["strong", "default"]
+        }
+      ],
+      "variants": 4
+    },
+    "2599:87": {
+      "name": "Dock",
+      "type": "COMPONENT",
+      "page": "Dock",
+      "props": []
+    },
+    "88:352": {
+      "name": "Variant=inline, Framed=false",
+      "type": "COMPONENT",
+      "page": "EmptyState",
+      "variantOf": "2337:14631"
+    },
+    "2121:839": {
+      "name": "ErrorPattern",
+      "type": "COMPONENT",
+      "page": "ErrorPattern",
+      "props": [
+        {
+          "name": "Display text",
+          "type": "TEXT",
+          "default": "404"
+        },
+        {
+          "name": "Message",
+          "type": "TEXT",
+          "default": "Page not found"
+        }
+      ]
+    },
+    "85:81": {
+      "name": "FormField (form.tsx)",
+      "type": "COMPONENT_SET",
+      "page": "Form",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Label"
+        },
+        {
+          "name": "Helper",
+          "type": "TEXT",
+          "default": "Helper text goes here"
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Error", "Disabled"]
+        },
+        {
+          "name": "Required",
+          "type": "VARIANT",
+          "default": "true",
+          "options": ["true", "false"]
+        }
+      ],
+      "variants": 6
+    },
+    "85:94": {
+      "name": "_Form (now an example frame)",
+      "type": "COMPONENT",
+      "page": "Deprecated",
+      "props": []
+    },
+    "2075:87": {
+      "name": "FormActions",
+      "type": "COMPONENT_SET",
+      "page": "FormActions",
+      "props": [
+        {
+          "name": "Destructive",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Secondary",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Destructive button",
+          "type": "INSTANCE_SWAP",
+          "default": "2399:10593"
+        },
+        {
+          "name": "Secondary button",
+          "type": "INSTANCE_SWAP",
+          "default": "2399:10725"
+        },
+        {
+          "name": "Primary button",
+          "type": "INSTANCE_SWAP",
+          "default": "2399:10593"
+        },
+        {
+          "name": "Layout",
+          "type": "VARIANT",
+          "default": "inline",
+          "options": ["inline", "bar"]
+        }
+      ],
+      "variants": 2
+    },
+    "27:2": {
+      "name": "Icon",
+      "type": "PAGE",
+      "page": "Icon"
+    },
+    "89:155": {
+      "name": "InlineCode",
+      "type": "COMPONENT",
+      "page": "CodeBlock",
+      "props": [
+        {
+          "name": "Code",
+          "type": "TEXT",
+          "default": "token"
+        }
+      ]
+    },
+    "89:161": {
+      "name": "InlineLink",
+      "type": "COMPONENT_SET",
+      "page": "InlineLink",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Link text"
+        },
+        {
+          "name": "External",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Focus"]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["md", "sm", "lg"]
+        }
+      ],
+      "variants": 9
+    },
+    "38:20": {
+      "name": "Input",
+      "type": "COMPONENT_SET",
+      "page": "Input",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Label"
+        },
+        {
+          "name": "Value",
+          "type": "TEXT",
+          "default": "Placeholder"
+        },
+        {
+          "name": "Show label",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show leading icon",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Show trailing icon",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Show helper",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Helper text",
+          "type": "TEXT",
+          "default": "Helper text"
+        },
+        {
+          "name": "Error message",
+          "type": "TEXT",
+          "default": "This field is required"
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Focus", "Error", "Disabled", "Filled", "Loading"]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "sm",
+          "options": ["lg", "sm", "md"]
+        },
+        {
+          "name": "Text style",
+          "type": "VARIANT",
+          "default": "body",
+          "options": ["mono", "body"]
+        }
+      ],
+      "variants": 36
+    },
+    "2026:9": {
+      "name": "Kbd",
+      "type": "COMPONENT_SET",
+      "page": "Kbd",
+      "props": [
+        {
+          "name": "Key",
+          "type": "TEXT",
+          "default": "Esc"
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "sm",
+          "options": ["md", "sm", "lg"]
+        }
+      ],
+      "variants": 3
+    },
+    "2353:315": {
+      "name": "List",
+      "type": "COMPONENT",
+      "page": "List",
+      "props": []
+    },
+    "93:59": {
+      "name": "Menu",
+      "type": "COMPONENT",
+      "page": "Menu",
+      "props": []
+    },
+    "2041:47": {
+      "name": "MetadataList",
+      "type": "COMPONENT_SET",
+      "page": "MetadataList",
+      "props": [
+        {
+          "name": "Orientation",
+          "type": "VARIANT",
+          "default": "vertical",
+          "options": ["vertical", "horizontal"]
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "plain",
+          "options": ["plain", "divided"]
+        }
+      ],
+      "variants": 4
+    },
+    "2201:12": {
+      "name": "MetaLine",
+      "type": "COMPONENT_SET",
+      "page": "MetaLine",
+      "props": [
+        {
+          "name": "First",
+          "type": "TEXT",
+          "default": "Acme Cloud"
+        },
+        {
+          "name": "Second",
+          "type": "TEXT",
+          "default": "Remote"
+        },
+        {
+          "name": "Items",
+          "type": "VARIANT",
+          "default": "1",
+          "options": ["2", "1"]
+        }
+      ],
+      "variants": 2
+    },
+    "2209:26": {
+      "name": "NavList",
+      "type": "COMPONENT",
+      "page": "NavList",
+      "props": []
+    },
+    "2209:25": {
+      "name": "NavListItem",
+      "type": "COMPONENT_SET",
+      "page": "NavList",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Senior product designer"
+        },
+        {
+          "name": "Meta",
+          "type": "TEXT",
+          "default": "Acme Cloud · Remote"
+        },
+        {
+          "name": "Current",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Focus"]
+        }
+      ],
+      "variants": 6
+    },
+    "2121:3": {
+      "name": "PageHeader",
+      "type": "COMPONENT",
+      "page": "PageHeader",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Acme Co"
+        },
+        {
+          "name": "Breadcrumb",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Status",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Actions",
+          "type": "BOOLEAN",
+          "default": true
+        }
+      ]
+    },
+    "86:194": {
+      "name": "Variant=default",
+      "type": "COMPONENT",
+      "page": "Pagination",
+      "variantOf": "2335:4217"
+    },
+    "93:32": {
+      "name": "Popover",
+      "type": "COMPONENT",
+      "page": "Popover",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Popover title"
+        },
+        {
+          "name": "Content",
+          "type": "TEXT",
+          "default": "Popover content goes here. Replace with any layout in instances."
+        },
+        {
+          "name": "Show title",
+          "type": "BOOLEAN",
+          "default": true
+        }
+      ]
+    },
+    "88:91": {
+      "name": "Progress",
+      "type": "COMPONENT_SET",
+      "page": "Progress",
+      "props": [
+        {
+          "name": "Type",
+          "type": "VARIANT",
+          "default": "Determinate",
+          "options": ["Determinate", "Indeterminate"]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "sm",
+          "options": ["md", "sm", "lg"]
+        }
+      ],
+      "variants": 6
+    },
+    "36:17": {
+      "name": "Radio",
+      "type": "COMPONENT_SET",
+      "page": "Radio",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Radio label"
+        },
+        {
+          "name": "Checked",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "Disabled",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Rest",
+          "options": ["Rest", "Hover", "Focused", "Pressed"]
+        }
+      ],
+      "variants": 10
+    },
+    "82:334": {
+      "name": "SegmentedControl",
+      "type": "COMPONENT_SET",
+      "page": "SegmentedControl",
+      "props": [
+        {
+          "name": "Segments",
+          "type": "VARIANT",
+          "default": "2",
+          "options": ["2", "3", "4"]
+        },
+        {
+          "name": "Selected",
+          "type": "VARIANT",
+          "default": "1",
+          "options": ["1", "2", "3", "4"]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["md", "sm"]
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "primary",
+          "options": ["primary", "secondary"]
+        }
+      ],
+      "variants": 36
+    },
+    "82:49": {
+      "name": "Select",
+      "type": "COMPONENT_SET",
+      "page": "Select",
+      "props": [
+        {
+          "name": "Show label",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Label"
+        },
+        {
+          "name": "Value",
+          "type": "TEXT",
+          "default": "Select option"
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Focus", "Open", "Invalid"]
+        }
+      ],
+      "variants": 5
+    },
+    "2265:119": {
+      "name": "Sheet",
+      "type": "COMPONENT_SET",
+      "page": "Sheet",
+      "props": [
+        {
+          "name": "Layout",
+          "type": "VARIANT",
+          "default": "Phone",
+          "options": ["Phone", "Desktop"]
+        },
+        {
+          "name": "Content",
+          "type": "VARIANT",
+          "default": "Actions",
+          "options": ["Actions", "Footer"]
+        }
+      ],
+      "variants": 4
+    },
+    "2265:18": {
+      "name": "SheetClose",
+      "type": "COMPONENT",
+      "page": "Sheet",
+      "props": []
+    },
+    "2265:16": {
+      "name": "SheetDescription",
+      "type": "COMPONENT",
+      "page": "Sheet",
+      "props": [
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "default": "Choose how the list is ordered."
+        }
+      ]
+    },
+    "2265:14": {
+      "name": "SheetTitle",
+      "type": "COMPONENT",
+      "page": "Sheet",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Sort by"
+        }
+      ]
+    },
+    "2265:3": {
+      "name": "SheetTrigger",
+      "type": "COMPONENT",
+      "page": "Sheet",
+      "props": []
+    },
+    "88:95": {
+      "name": "Skeleton",
+      "type": "COMPONENT_SET",
+      "page": "Skeleton",
+      "props": [
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "text",
+          "options": ["text", "rectangular", "circular"]
+        }
+      ],
+      "variants": 3
+    },
+    "82:265": {
+      "name": "Slider",
+      "type": "COMPONENT_SET",
+      "page": "Slider",
+      "props": [
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Focus", "Pressed"]
+        }
+      ],
+      "variants": 4
+    },
+    "88:106": {
+      "name": "Spinner",
+      "type": "COMPONENT_SET",
+      "page": "Spinner",
+      "props": [
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "default": "md",
+          "options": ["sm", "md", "lg"]
+        }
+      ],
+      "variants": 3
+    },
+    "88:350": {
+      "name": "StatusListItem",
+      "type": "COMPONENT_SET",
+      "page": "StatusListItem",
+      "props": [
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["info", "success", "warning", "danger", "neutral"]
+        }
+      ],
+      "variants": 5
+    },
+    "89:27": {
+      "name": "Padding=component, Shadow=false",
+      "type": "COMPONENT",
+      "page": "Surface",
+      "variantOf": "2336:21"
+    },
+    "89:300": {
+      "name": "Table",
+      "type": "COMPONENT_SET",
+      "page": "Table",
+      "props": [
+        {
+          "name": "Density",
+          "type": "VARIANT",
+          "default": "comfortable",
+          "options": ["comfortable", "compact"]
+        },
+        {
+          "name": "Sortable",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "StickyHeader",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "variants": 8
+    },
+    "86:89": {
+      "name": "Tabs",
+      "type": "COMPONENT_SET",
+      "page": "Tabs",
+      "props": [
+        {
+          "name": "Tabs",
+          "type": "VARIANT",
+          "default": "2",
+          "options": ["2", "3", "4"]
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "panel",
+          "options": ["panel", "bare"]
+        }
+      ],
+      "variants": 6
+    },
+    "86:52": {
+      "name": "TabTrigger",
+      "type": "COMPONENT_SET",
+      "page": "Tabs",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Tab"
+        },
+        {
+          "name": "Selected",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Focus", "Disabled"]
+        }
+      ],
+      "variants": 6
+    },
+    "32:11": {
+      "name": "Tag",
+      "type": "COMPONENT_SET",
+      "page": "Tag",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Filter"
+        },
+        {
+          "name": "Active",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Focus"]
+        },
+        {
+          "name": "Dismissible",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "variants": 7
+    },
+    "2022:31": {
+      "name": "Text",
+      "type": "COMPONENT_SET",
+      "page": "Text",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Text"
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "body",
+          "options": ["body", "display", "ui", "caption", "title", "mono", "titleSm"]
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "none",
+          "options": [
+            "none",
+            "primary",
+            "secondary",
+            "disabled",
+            "accent",
+            "success",
+            "warning",
+            "danger",
+            "info"
+          ]
+        }
+      ],
+      "variants": 63
+    },
+    "85:14": {
+      "name": "Textarea",
+      "type": "COMPONENT_SET",
+      "page": "Textarea",
+      "props": [
+        {
+          "name": "Value",
+          "type": "TEXT",
+          "default": "Enter your message here...\n\n\n"
+        },
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Message"
+        },
+        {
+          "name": "Helper",
+          "type": "TEXT",
+          "default": "Up to 500 characters."
+        },
+        {
+          "name": "Error message",
+          "type": "TEXT",
+          "default": "Enter a message."
+        },
+        {
+          "name": "Show label",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show helper",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Resize handle",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Focus", "Error", "Disabled"]
+        }
+      ],
+      "variants": 4
+    },
+    "2201:51": {
+      "name": "ThemeToggle",
+      "type": "COMPONENT_SET",
+      "page": "ThemeToggle",
+      "props": [
+        {
+          "name": "Theme",
+          "type": "VARIANT",
+          "default": "light",
+          "options": ["light", "dark"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Pressed", "Focus"]
+        }
+      ],
+      "variants": 8
+    },
+    "2201:133": {
+      "name": "Timeline",
+      "type": "COMPONENT",
+      "page": "Timeline",
+      "props": []
+    },
+    "2252:127": {
+      "name": "TimelineItem",
+      "type": "COMPONENT_SET",
+      "page": "Timeline",
+      "props": [
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["neutral", "success", "danger", "warning", "info"]
+        },
+        {
+          "name": "Detail",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "Marker",
+          "type": "VARIANT",
+          "default": "dot",
+          "options": ["dot", "icon"]
+        }
+      ],
+      "variants": 20
+    },
+    "2031:11": {
+      "name": "Timestamp",
+      "type": "COMPONENT_SET",
+      "page": "Timestamp",
+      "props": [
+        {
+          "name": "Format",
+          "type": "VARIANT",
+          "default": "datetime",
+          "options": ["datetime", "relative", "date", "time"]
+        }
+      ],
+      "variants": 4
+    },
+    "93:367": {
+      "name": "Toast",
+      "type": "COMPONENT_SET",
+      "page": "Toast",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Notification"
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "default": "Toast notification message goes here."
+        },
+        {
+          "name": "Show description",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show actions",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Show second action",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["info", "success", "warning", "danger", "neutral"]
+        },
+        {
+          "name": "Dismiss",
+          "type": "VARIANT",
+          "default": "Rest",
+          "options": ["Rest", "Hover", "Focus"]
+        }
+      ],
+      "variants": 15
+    },
+    "37:19": {
+      "name": "Toggle",
+      "type": "COMPONENT_SET",
+      "page": "Toggle",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Toggle label"
+        },
+        {
+          "name": "Checked",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "rest",
+          "options": ["rest", "hover", "focused", "disabled", "pressed"]
+        }
+      ],
+      "variants": 10
+    },
+    "2209:141": {
+      "name": "TokenField",
+      "type": "COMPONENT_SET",
+      "page": "TokenField",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Message"
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Focus", "Error", "Disabled"]
+        }
+      ],
+      "variants": 4
+    },
+    "93:15": {
+      "name": "Side=top",
+      "type": "COMPONENT",
+      "page": "Tooltip",
+      "variantOf": "2337:13345"
+    },
+    "2337:14631": {
+      "name": "EmptyState",
+      "type": "COMPONENT_SET",
+      "variants": 3,
+      "props": [
+        {
+          "name": "Show icon",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show description",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show action",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Nothing here yet"
+        },
+        {
+          "name": "Description2",
+          "type": "TEXT",
+          "default": "Items you add will show up here."
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "inline",
+          "options": ["inline", "teaching"]
+        },
+        {
+          "name": "Framed",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "page": "EmptyState"
+    },
+    "2335:4217": {
+      "name": "Pagination",
+      "type": "COMPONENT_SET",
+      "variants": 2,
+      "props": [
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "default",
+          "options": ["default", "compact"]
+        }
+      ],
+      "page": "Pagination"
+    },
+    "2336:21": {
+      "name": "Surface",
+      "type": "COMPONENT_SET",
+      "variants": 10,
+      "props": [
+        {
+          "name": "Padding",
+          "type": "VARIANT",
+          "default": "component",
+          "options": ["component", "item", "px16", "px24", "none"]
+        },
+        {
+          "name": "Shadow",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "page": "Surface"
+    },
+    "2337:13345": {
+      "name": "Tooltip",
+      "type": "COMPONENT_SET",
+      "variants": 4,
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Tooltip label"
+        },
+        {
+          "name": "Side",
+          "type": "VARIANT",
+          "default": "top",
+          "options": ["top", "bottom", "left", "right"]
+        }
+      ],
+      "page": "Tooltip"
+    }
+  }
+}

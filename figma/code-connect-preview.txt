@@ -4,63 +4,344 @@ Snippets are rendered locally from the parsed templates against the Figma proper
 They come from a local emulator of the template runtime, not from Figma, and nothing is published: Dev Mode does not show them.
 <IconInstance /> stands in for a swapped icon instance. Text values are preview defaults, not Figma data.
 
-templates: 8 · property combinations rendered: 778
+templates: 61 · property combinations rendered: 2311
 
-## Alert (8 combinations, 8 distinct snippets)
-default                  <Alert title="Alert title">Alert message</Alert>
-Tone=success             <Alert tone="success" title="Alert title">Alert message</Alert>
-Tone=warning             <Alert tone="warning" title="Alert title">Alert message</Alert>
-Tone=danger              <Alert tone="danger" title="Alert title">Alert message</Alert>
-Show title=false         <Alert>Alert message</Alert>
+## Alert (16 combinations, 16 distinct snippets)
+default                  <Alert title="Heads up">Main alert message content goes here.</Alert>
+Show title=false         <Alert>Main alert message content goes here.</Alert>
+Tone=success             <Alert title="Heads up" tone="success">Main alert message content goes here.</Alert>
+Tone=warning             <Alert title="Heads up" tone="warning">Main alert message content goes here.</Alert>
+Tone=danger              <Alert title="Heads up" tone="danger">Main alert message content goes here.</Alert>
+Size=sm                  <Alert title="Heads up" size="sm">Main alert message content goes here.</Alert>
 
-## Avatar (6 combinations, 6 distinct snippets)
-default                  <Avatar initials="AM" alt={user.name} />
-Size=sm                  <Avatar size="sm" initials="AM" alt={user.name} />
-Size=lg                  <Avatar size="lg" initials="AM" alt={user.name} />
-Type=Image               <Avatar src={user.avatarUrl} initials="AM" alt={user.name} />
+## AlertDialog (1 combinations, 1 distinct snippets)
+default                  <AlertDialog><AlertDialog.Trigger asChild><Button>Delete</Button></AlertDialog.Trigger><AlertDialog.Content><AlertDialog.Header><AlertDialog.Title>Delete project?</AlertDialog.Title><AlertDialog.Description>This cannot be undone.</AlertDialog.Description></AlertDialog.Header><AlertDialog.Footer><AlertDialog.Cancel>Cancel</AlertDialog.Cancel><AlertDialog.Action>Delete</AlertDialog.Action></AlertDialog.Footer></AlertDialog.Content></AlertDialog>
 
-## Badge (6 combinations, 6 distinct snippets)
+## AssetImg (2 combinations, 1 distinct snippets)
+default                  <AssetImg src={asset.src} alt={asset.alt} />
+
+## AsyncState (5 combinations, 4 distinct snippets)
+default                  <AsyncState status="loading">Loaded content</AsyncState>
+Status=Error             <AsyncState status="error">Loaded content</AsyncState>
+Status=Empty             <AsyncState status="empty">Loaded content</AsyncState>
+Status=Ready             <AsyncState status="ready">Loaded content</AsyncState>
+
+## Avatar (18 combinations, 18 distinct snippets)
+default                  <Avatar initials="AH" size="sm" alt={user.name} />
+Show status=true         <Avatar initials="AH" status="success" statusLabel="Online" size="sm" alt={user.name} />
+Size=md                  <Avatar initials="AH" alt={user.name} />
+Size=lg                  <Avatar initials="AH" size="lg" alt={user.name} />
+Type=Image               <Avatar initials="AH" size="sm" src={user.avatarUrl} alt={user.name} />
+Type=Icon                <Avatar initials="AH" size="sm" fallback="icon" alt={user.name} />
+
+## AvatarGroup (6 combinations, 6 distinct snippets)
+default                  <AvatarGroup max={3}><Avatar alt={user.name} initials="AH" /></AvatarGroup>
+Size=sm                  <AvatarGroup size="sm" max={3}><Avatar alt={user.name} initials="AH" /></AvatarGroup>
+Size=lg                  <AvatarGroup size="lg" max={3}><Avatar alt={user.name} initials="AH" /></AvatarGroup>
+Overflow=false           <AvatarGroup><Avatar alt={user.name} initials="AH" /></AvatarGroup>
+
+## Badge (54 combinations, 54 distinct snippets)
 default                  <Badge>Badge</Badge>
 Tone=info                <Badge tone="info">Badge</Badge>
 Tone=success             <Badge tone="success">Badge</Badge>
 Tone=danger              <Badge tone="danger">Badge</Badge>
 Tone=warning             <Badge tone="warning">Badge</Badge>
 Tone=inProgress          <Badge tone="inProgress">Badge</Badge>
+Type=count               <Badge count={3}>Badge</Badge>
+Type=dot                 <Badge dot>Badge</Badge>
+Size=sm                  <Badge size="sm">Badge</Badge>
+Size=lg                  <Badge size="lg">Badge</Badge>
 
-## Button (720 combinations, 540 distinct snippets)
-default                  <Button variant="primary">Button</Button>
-Variant=Secondary        <Button>Button</Button>
-Variant=Tertiary         <Button variant="tertiary">Button</Button>
-Tone=danger              <Button variant="primary" tone="danger">Button</Button>
-Tone=success             <Button variant="primary" tone="success">Button</Button>
-Tone=warning             <Button variant="primary" tone="warning">Button</Button>
-Tone=info                <Button variant="primary" tone="info">Button</Button>
-Size=sm                  <Button variant="primary" size="sm">Button</Button>
-Size=lg                  <Button variant="primary" size="lg">Button</Button>
-State=Disabled           <Button variant="primary" disabled>Button</Button>
-State=Loading            <Button variant="primary" loading>Button</Button>
-Show icon=true           <Button variant="primary" iconLeft={<IconInstance />}>Button</Button>
-Show trail icon=true     <Button variant="primary" iconRight={<IconInstance />}>Button</Button>
+## Blockquote (2 combinations, 2 distinct snippets)
+default                  <Blockquote attribution="Name, role">Quote text</Blockquote>
+Attribution=false        <Blockquote>Quote text</Blockquote>
 
-## Checkbox (6 combinations, 6 distinct snippets)
-default                  <Checkbox label="Label" checked={false} onChange={setChecked} />
-State=checked            <Checkbox label="Label" checked onChange={setChecked} />
-State=indeterminate      <Checkbox label="Label" checked={false} indeterminate onChange={setChecked} />
-Disabled=true            <Checkbox label="Label" checked={false} disabled onChange={setChecked} />
+## Breadcrumb (3 combinations, 1 distinct snippets)
+default                  <Breadcrumb items={crumbs} />
 
-## Input (24 combinations, 18 distinct snippets)
-default                  <Input label="Label" defaultValue="Value" />
-State=Error              <Input error label="Label" defaultValue="Value" />
-State=Disabled           <Input disabled label="Label" defaultValue="Value" />
-Size=lg                  <Input size="lg" label="Label" defaultValue="Value" />
-Size=sm                  <Input size="sm" label="Label" defaultValue="Value" />
-Show label=false         <Input defaultValue="Value" />
+## Button (768 combinations, 192 distinct snippets)
+default                  <Button>Button</Button>
+Loading=true             <Button loading>Button</Button>
+Show icon=true           <Button iconLeft={<IconInstance />}>Button</Button>
+Show trail icon=true     <Button iconRight={<IconInstance />}>Button</Button>
+Variant=primary          <Button variant="primary">Button</Button>
+Variant=tertiary         <Button variant="tertiary">Button</Button>
+Variant=link             <Button variant="link">Button</Button>
+Size=sm                  <Button size="sm">Button</Button>
+Size=lg                  <Button size="lg">Button</Button>
+State=disabled           <Button disabled>Button</Button>
 
-## Radio (4 combinations, 4 distinct snippets)
-default                  <Radio label="Label" checked={false} onChange={setChecked} />
-Checked=true             <Radio label="Label" checked onChange={setChecked} />
-Disabled=true            <Radio label="Label" checked={false} disabled onChange={setChecked} />
+## Callout (10 combinations, 5 distinct snippets)
+default                  <Callout>Callout message</Callout>
+Tone=success             <Callout tone="success">Callout message</Callout>
+Tone=warning             <Callout tone="warning">Callout message</Callout>
+Tone=danger              <Callout tone="danger">Callout message</Callout>
+Tone=accent              <Callout tone="accent">Callout message</Callout>
 
-## Tag (4 combinations, 2 distinct snippets)
-default                  <Tag>Tag</Tag>
-Active=true              <Tag active>Tag</Tag>
+## Card (400 combinations, 200 distinct snippets)
+default                  <Card><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Variant=accent           <Card variant="accent"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Tone=success             <Card tone="success"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Tone=warning             <Card tone="warning"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Tone=danger              <Card tone="danger"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Tone=info                <Card tone="info"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Padding=item             <Card padding="item"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Padding=px16             <Card padding="px16"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Padding=px24             <Card padding="px24"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Padding=none             <Card padding="none"><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+Bordered=true            <Card bordered><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+State=Selected           <Card selectable selected><Card.Header><Card.Title>Card title</Card.Title><Card.Description>Supporting description copy for the card body.</Card.Description></Card.Header></Card>
+
+## Checkbox (15 combinations, 6 distinct snippets)
+default                  <Checkbox label="Checkbox label" checked={false} onChange={setChecked} />
+Checked=true             <Checkbox label="Checkbox label" checked onChange={setChecked} />
+Checked=indeterminate    <Checkbox label="Checkbox label" checked={false} indeterminate onChange={setChecked} />
+State=disabled           <Checkbox label="Checkbox label" checked={false} disabled onChange={setChecked} />
+
+## CodeBlock (2 combinations, 2 distinct snippets)
+default                  <CodeBlock code="const x = 1;" />
+Show filename=true       <CodeBlock code="const x = 1;" filename="index.ts" />
+
+## Combobox (36 combinations, 6 distinct snippets)
+default                  <Combobox placeholder="Select an option" options={options} value={value} onChange={setValue} />
+Selection=Multiple       <Combobox placeholder="Select an option" multiple options={options} value={value} onChange={setValue} />
+State=Disabled           <Combobox placeholder="Select an option" disabled options={options} value={value} onChange={setValue} />
+State=Invalid            <Combobox placeholder="Select an option" aria-invalid options={options} value={value} onChange={setValue} />
+
+## CommandPalette (3 combinations, 1 distinct snippets)
+default                  <CommandPalette open={isOpen} onOpenChange={setIsOpen} items={commands} onSelect={runCommand} />
+
+## Composer (5 combinations, 3 distinct snippets)
+default                  <Composer onSubmit={handleSubmit} />
+State=Pending            <Composer pending onSubmit={handleSubmit} />
+State=Disabled           <Composer disabled onSubmit={handleSubmit} />
+
+## DataTableSection (4 combinations, 4 distinct snippets)
+default                  <DataTableSection toolbar={<Button>New</Button>} rows={rows} title="Members" columns={columns} />
+Toolbar=false            <DataTableSection rows={rows} title="Members" columns={columns} />
+Empty=true               <DataTableSection toolbar={<Button>New</Button>} rows={[]} title="Members" columns={columns} />
+
+## DestructiveSection (1 combinations, 1 distinct snippets)
+default                  <DestructiveSection title="Delete project" description="This cannot be undone." confirmLabel="Delete" confirmBody="The project and its data are removed." onConfirm={handleDelete} />
+
+## Dialog (2 combinations, 1 distinct snippets)
+default                  <Dialog><Dialog.Trigger asChild><Button>Open</Button></Dialog.Trigger><Dialog.Content><Dialog.Header><Dialog.Title>Dialog title</Dialog.Title><Dialog.Description>Are you sure you want to continue? This action cannot be undone.</Dialog.Description></Dialog.Header></Dialog.Content></Dialog>
+
+## Disclosure (8 combinations, 8 distinct snippets)
+default                  <Disclosure label="Details">Disclosure content</Disclosure>
+Variant=nav              <Disclosure variant="nav" label="Details">Disclosure content</Disclosure>
+Variant=card             <Disclosure variant="card" label="Details">Disclosure content</Disclosure>
+Variant=row              <Disclosure variant="row" label="Details">Disclosure content</Disclosure>
+State=Expanded           <Disclosure defaultOpen label="Details">Disclosure content</Disclosure>
+
+## Divider (4 combinations, 4 distinct snippets)
+default                  <Divider />
+Orientation=Vertical     <Divider orientation="vertical" />
+Variant=strong           <Divider variant="strong" />
+
+## Dock (1 combinations, 1 distinct snippets)
+default                  <Dock><Button variant="primary">Save</Button></Dock>
+
+## EmptyState (32 combinations, 32 distinct snippets)
+default                  <EmptyState icon={Inbox} action={<Button>Add item</Button>} title="Nothing here yet" description="Items you add will show up here." />
+Show icon=false          <EmptyState action={<Button>Add item</Button>} title="Nothing here yet" description="Items you add will show up here." />
+Show description=false   <EmptyState icon={Inbox} action={<Button>Add item</Button>} title="Nothing here yet" />
+Show action=false        <EmptyState icon={Inbox} title="Nothing here yet" description="Items you add will show up here." />
+Variant=teaching         <EmptyState icon={Inbox} action={<Button>Add item</Button>} title="Nothing here yet" description="Items you add will show up here." variant="teaching" />
+Framed=true              <EmptyState icon={Inbox} action={<Button>Add item</Button>} title="Nothing here yet" description="Items you add will show up here." framed />
+
+## ErrorPattern (1 combinations, 1 distinct snippets)
+default                  <ErrorPattern displayText="404" message="Page not found" />
+
+## FormActions (8 combinations, 8 distinct snippets)
+default                  <FormActions destructive={<IconInstance />} secondary={<IconInstance />} primary={<IconInstance />} />
+Destructive=false        <FormActions secondary={<IconInstance />} primary={<IconInstance />} />
+Secondary=false          <FormActions destructive={<IconInstance />} primary={<IconInstance />} />
+Layout=bar               <FormActions destructive={<IconInstance />} secondary={<IconInstance />} primary={<IconInstance />} sticky />
+
+## InlineCode (1 combinations, 1 distinct snippets)
+default                  <InlineCode>token</InlineCode>
+
+## InlineLink (18 combinations, 3 distinct snippets)
+default                  <InlineLink href="/docs">Link text</InlineLink>
+Size=sm                  <InlineLink size="sm" href="/docs">Link text</InlineLink>
+Size=lg                  <InlineLink size="lg" href="/docs">Link text</InlineLink>
+
+## Input (576 combinations, 384 distinct snippets)
+default                  <Input label="Label" placeholder="Placeholder" size="sm" />
+Show label=false         <Input placeholder="Placeholder" size="sm" />
+Show leading icon=true   <Input label="Label" placeholder="Placeholder" leadingVisual={<Search />} size="sm" />
+Show trailing icon=true  <Input label="Label" placeholder="Placeholder" trailingVisual={<X />} size="sm" />
+Show helper=true         <Input label="Label" placeholder="Placeholder" helperText="Helper text" size="sm" />
+State=Error              <Input label="Label" placeholder="Placeholder" error size="sm" />
+State=Disabled           <Input label="Label" placeholder="Placeholder" disabled size="sm" />
+State=Loading            <Input label="Label" placeholder="Placeholder" loading size="sm" />
+Size=lg                  <Input label="Label" placeholder="Placeholder" size="lg" />
+Size=md                  <Input label="Label" placeholder="Placeholder" />
+Text style=mono          <Input label="Label" placeholder="Placeholder" size="sm" textStyle="mono" />
+
+## Kbd (3 combinations, 3 distinct snippets)
+default                  <Kbd size="sm">Esc</Kbd>
+Size=md                  <Kbd>Esc</Kbd>
+Size=lg                  <Kbd size="lg">Esc</Kbd>
+
+## List (1 combinations, 1 distinct snippets)
+default                  <List><List.Item title="Item title" href="/items/1" trailing="chevron" /></List>
+
+## Menu (1 combinations, 1 distinct snippets)
+default                  <Menu><Menu.Trigger asChild><Button>Options</Button></Menu.Trigger><Menu.Content><Menu.Item>Edit</Menu.Item><Menu.Item tone="danger">Delete</Menu.Item></Menu.Content></Menu>
+
+## MetadataList (4 combinations, 4 distinct snippets)
+default                  <MetadataList items={items} />
+Orientation=horizontal   <MetadataList orientation="horizontal" items={items} />
+Variant=divided          <MetadataList variant="divided" items={items} />
+
+## MetaLine (2 combinations, 1 distinct snippets)
+default                  <MetaLine items={items} />
+
+## NavList (1 combinations, 1 distinct snippets)
+default                  <NavList><NavList.Item href="/roles/1" current>Senior product designer</NavList.Item></NavList>
+
+## NavListItem (6 combinations, 2 distinct snippets)
+default                  <NavListItem href="/roles/1">Senior product designer</NavListItem>
+Current=true             <NavListItem current href="/roles/1">Senior product designer</NavListItem>
+
+## PageHeader (8 combinations, 8 distinct snippets)
+default                  <PageHeader title="Acme Co" breadcrumb={<Breadcrumb items={crumbs} />} actions={<Button variant="primary">New</Button>} />
+Breadcrumb=false         <PageHeader title="Acme Co" actions={<Button variant="primary">New</Button>} />
+Status=true              <PageHeader title="Acme Co" breadcrumb={<Breadcrumb items={crumbs} />} status={<Badge tone="success">Active</Badge>} actions={<Button variant="primary">New</Button>} />
+Actions=false            <PageHeader title="Acme Co" breadcrumb={<Breadcrumb items={crumbs} />} />
+
+## Pagination (2 combinations, 2 distinct snippets)
+default                  <Pagination page={page} count={pageCount} onPageChange={setPage} />
+Variant=compact          <Pagination variant="compact" page={page} count={pageCount} onPageChange={setPage} />
+
+## Popover (2 combinations, 1 distinct snippets)
+default                  <Popover><Popover.Trigger asChild><Button>Open</Button></Popover.Trigger><Popover.Content>Popover content goes here. Replace with any layout in instances.</Popover.Content></Popover>
+
+## Progress (6 combinations, 6 distinct snippets)
+default                  <Progress value={progress} size="sm" />
+Type=Indeterminate       <Progress size="sm" />
+Size=md                  <Progress value={progress} />
+Size=lg                  <Progress value={progress} size="lg" />
+
+## Radio (16 combinations, 4 distinct snippets)
+default                  <Radio label="Radio label" checked={false} onChange={setChecked} />
+Checked=true             <Radio label="Radio label" checked onChange={setChecked} />
+Disabled=true            <Radio label="Radio label" checked={false} disabled onChange={setChecked} />
+
+## SegmentedControl (48 combinations, 4 distinct snippets)
+default                  <SegmentedControl options={options} value={value} onChange={setValue} />
+Size=sm                  <SegmentedControl size="sm" options={options} value={value} onChange={setValue} />
+Variant=secondary        <SegmentedControl variant="secondary" options={options} value={value} onChange={setValue} />
+
+## Select (10 combinations, 4 distinct snippets)
+default                  <Select label="Label" placeholder="Select option" options={options} value={value} onChange={setValue} />
+Show label=false         <Select showLabel={false} label="Label" placeholder="Select option" options={options} value={value} onChange={setValue} />
+State=Invalid            <Select label="Label" placeholder="Select option" aria-invalid options={options} value={value} onChange={setValue} />
+
+## Sheet (4 combinations, 1 distinct snippets)
+default                  <Sheet><Sheet.Trigger asChild><Button>Sort</Button></Sheet.Trigger><Sheet.Content><Sheet.Header><Sheet.Title>Sort by</Sheet.Title><Sheet.Description>Choose how the list is ordered.</Sheet.Description></Sheet.Header><Sheet.Actions aria-label="Sort order"><Sheet.Action current>Newest</Sheet.Action><Sheet.Action>Company</Sheet.Action></Sheet.Actions></Sheet.Content></Sheet>
+
+## Skeleton (3 combinations, 3 distinct snippets)
+default                  <Skeleton variant="text" />
+Variant=rectangular      <Skeleton />
+Variant=circular         <Skeleton variant="circular" />
+
+## Slider (4 combinations, 1 distinct snippets)
+default                  <Slider label="Volume" min={0} max={100} value={value} onChange={setValue} />
+
+## Spinner (3 combinations, 3 distinct snippets)
+default                  <Spinner />
+Size=sm                  <Spinner size="sm" />
+Size=lg                  <Spinner size="lg" />
+
+## StatusListItem (5 combinations, 5 distinct snippets)
+default                  <StatusListItem title="Deploy" />
+Tone=info                <StatusListItem tone="info" title="Deploy" />
+Tone=success             <StatusListItem tone="success" title="Deploy" />
+Tone=warning             <StatusListItem tone="warning" title="Deploy" />
+Tone=danger              <StatusListItem tone="danger" title="Deploy" />
+
+## Surface (10 combinations, 10 distinct snippets)
+default                  <Surface>Surface content</Surface>
+Padding=item             <Surface padding="item">Surface content</Surface>
+Padding=px16             <Surface padding="px16">Surface content</Surface>
+Padding=px24             <Surface padding="px24">Surface content</Surface>
+Padding=none             <Surface padding="none">Surface content</Surface>
+Shadow=true              <Surface shadow>Surface content</Surface>
+
+## Tabs (6 combinations, 2 distinct snippets)
+default                  <Tabs defaultValue="overview"><TabsList><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="activity">Activity</TabsTrigger></TabsList><TabsContent value="overview" variant="panel">Overview panel</TabsContent></Tabs>
+Variant=bare             <Tabs defaultValue="overview"><TabsList><TabsTrigger value="overview">Overview</TabsTrigger><TabsTrigger value="activity">Activity</TabsTrigger></TabsList><TabsContent value="overview" variant="bare">Overview panel</TabsContent></Tabs>
+
+## TabsTrigger (6 combinations, 2 distinct snippets)
+default                  <TabsTrigger value="overview">Tab</TabsTrigger>
+State=Disabled           <TabsTrigger disabled value="overview">Tab</TabsTrigger>
+
+## Tag (12 combinations, 4 distinct snippets)
+default                  <Tag>Filter</Tag>
+Active=true              <Tag active>Filter</Tag>
+Dismissible=true         <Tag onDismiss={handleDismiss}>Filter</Tag>
+
+## Text (63 combinations, 63 distinct snippets)
+default                  <Text variant="body">Text</Text>
+Variant=display          <Text variant="display">Text</Text>
+Variant=ui               <Text variant="ui">Text</Text>
+Variant=caption          <Text variant="caption">Text</Text>
+Variant=title            <Text variant="title">Text</Text>
+Variant=mono             <Text variant="mono">Text</Text>
+Variant=titleSm          <Text variant="titleSm">Text</Text>
+Tone=primary             <Text variant="body" tone="primary">Text</Text>
+Tone=secondary           <Text variant="body" tone="secondary">Text</Text>
+Tone=disabled            <Text variant="body" tone="disabled">Text</Text>
+Tone=accent              <Text variant="body" tone="accent">Text</Text>
+Tone=success             <Text variant="body" tone="success">Text</Text>
+Tone=warning             <Text variant="body" tone="warning">Text</Text>
+Tone=danger              <Text variant="body" tone="danger">Text</Text>
+Tone=info                <Text variant="body" tone="info">Text</Text>
+
+## Textarea (32 combinations, 24 distinct snippets)
+default                  <Textarea label="Message" helperText="Up to 500 characters." />
+Show label=false         <Textarea helperText="Up to 500 characters." />
+Show helper=false        <Textarea label="Message" />
+Resize handle=false      <Textarea label="Message" helperText="Up to 500 characters." resize="none" />
+State=Error              <Textarea label="Message" helperText="Up to 500 characters." error />
+State=Disabled           <Textarea label="Message" helperText="Up to 500 characters." disabled />
+
+## ThemeToggle (8 combinations, 2 distinct snippets)
+default                  <ThemeToggle onToggle={toggleTheme} />
+Theme=dark               <ThemeToggle isDark onToggle={toggleTheme} />
+
+## Timeline (1 combinations, 1 distinct snippets)
+default                  <Timeline><TimelineItem date={entry.date} title={entry.title} /></Timeline>
+
+## TimelineItem (20 combinations, 10 distinct snippets)
+default                  <TimelineItem date={entry.date} title={entry.title} />
+Tone=success             <TimelineItem tone="success" date={entry.date} title={entry.title} />
+Tone=danger              <TimelineItem tone="danger" date={entry.date} title={entry.title} />
+Tone=warning             <TimelineItem tone="warning" date={entry.date} title={entry.title} />
+Tone=info                <TimelineItem tone="info" date={entry.date} title={entry.title} />
+Marker=icon              <TimelineItem icon={Rocket} date={entry.date} title={entry.title} />
+
+## Timestamp (4 combinations, 4 distinct snippets)
+default                  <Timestamp date={date} />
+Format=relative          <Timestamp format="relative" date={date} />
+Format=date              <Timestamp format="date" date={date} />
+Format=time              <Timestamp format="time" date={date} />
+
+## Toggle (10 combinations, 4 distinct snippets)
+default                  <Toggle label="Toggle label" checked={false} onChange={setEnabled} />
+Checked=true             <Toggle label="Toggle label" checked onChange={setEnabled} />
+State=disabled           <Toggle label="Toggle label" checked={false} disabled onChange={setEnabled} />
+
+## TokenField (4 combinations, 3 distinct snippets)
+default                  <TokenField label="Message" value={value} onChange={setValue} />
+State=Error              <TokenField label="Message" error value={value} onChange={setValue} />
+State=Disabled           <TokenField label="Message" disabled value={value} onChange={setValue} />
+
+## Tooltip (4 combinations, 4 distinct snippets)
+default                  <Tooltip><Tooltip.Trigger asChild><Button>Hover</Button></Tooltip.Trigger><Tooltip.Content side="top">Tooltip label</Tooltip.Content></Tooltip>
+Side=bottom              <Tooltip><Tooltip.Trigger asChild><Button>Hover</Button></Tooltip.Trigger><Tooltip.Content side="bottom">Tooltip label</Tooltip.Content></Tooltip>
+Side=left                <Tooltip><Tooltip.Trigger asChild><Button>Hover</Button></Tooltip.Trigger><Tooltip.Content side="left">Tooltip label</Tooltip.Content></Tooltip>
+Side=right               <Tooltip><Tooltip.Trigger asChild><Button>Hover</Button></Tooltip.Trigger><Tooltip.Content side="right">Tooltip label</Tooltip.Content></Tooltip>

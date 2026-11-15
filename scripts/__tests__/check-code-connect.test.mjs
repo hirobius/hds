@@ -97,6 +97,7 @@ function gate(overrides = {}) {
     generatorDrift: overrides.generatorDrift ?? [],
     cvaModules: overrides.cvaModules ?? ['src/app/components/badge.tsx'],
     exists: overrides.exists ?? (() => true),
+    figmaRead: overrides.figmaRead,
   });
 }
 
@@ -272,6 +273,77 @@ describe('checkCodeConnect', () => {
     );
   });
 
+  describe('against the recorded Figma property read', () => {
+    const mapped = () => ({
+      status: 0,
+      docs: [docFor('Badge', badgeEntry(), BADGE_CODE, { figmaNode: NODE_URL })],
+      output: '',
+    });
+    const codeModel = () => modelWith({ ...BADGE_CODE, figmaUrl: NODE_URL });
+    const badgeNode = (props) => ({ name: 'Badge', type: 'COMPONENT_SET', props });
+    const READ_PROPS = [
+      { name: 'Tone', type: 'VARIANT', default: 'neutral', options: ['info', 'neutral', 'danger'] },
+      { name: 'Label', type: 'TEXT', default: 'Badge' },
+    ];
+    const run = (nodes) => gate({ parsed: mapped(), codeModel: codeModel(), figmaRead: { nodes } });
+
+    it('passes when the registry lists the properties the node has', () => {
+      expect(run({ '9:9': badgeNode(READ_PROPS) }).errors).toEqual([]);
+    });
+
+    it('reads a variant node through its component set', () => {
+      const result = run({
+        '9:9': { name: 'Tone=neutral', type: 'COMPONENT', variantOf: '9:1' },
+        '9:1': badgeNode(READ_PROPS),
+      });
+      expect(result.errors).toEqual([]);
+      expect(result.warnings.map((w) => w.rule)).toContain('figma-node-is-variant');
+    });
+
+    it('fails on a property Figma has and the registry does not, and the reverse', () => {
+      const result = run({
+        '9:9': badgeNode([READ_PROPS[0], { name: 'Size', type: 'VARIANT', options: ['md'] }]),
+      });
+      expect(result.errors.map((e) => e.message)).toEqual([
+        expect.stringContaining('Figma has "Size"'),
+        expect.stringContaining('"Label" is not a property of the Figma node'),
+      ]);
+      expect(rules(result)).toEqual(['figma-read-drift', 'figma-read-drift']);
+    });
+
+    it('fails when the options, the type or the default differ', () => {
+      const result = run({
+        '9:9': badgeNode([
+          { name: 'Tone', type: 'VARIANT', default: 'neutral', options: ['neutral', 'info'] },
+          { name: 'Label', type: 'BOOLEAN', default: true },
+        ]),
+      });
+      expect(result.errors.map((e) => e.message)).toEqual([
+        expect.stringContaining('"Tone" options are [neutral, info] in Figma'),
+        expect.stringContaining('"Label" is BOOLEAN in Figma'),
+      ]);
+      const stale = badgeEntry();
+      stale.properties.Tone.default = 'info';
+      const drift = gate({
+        registry: registryWith({ templates: { Badge: stale } }),
+        parsed: {
+          status: 0,
+          docs: [docFor('Badge', stale, BADGE_CODE, { figmaNode: NODE_URL })],
+          output: '',
+        },
+        codeModel: codeModel(),
+        figmaRead: { nodes: { '9:9': badgeNode(READ_PROPS) } },
+      });
+      expect(drift.errors.map((e) => e.message)).toEqual([
+        expect.stringContaining('"Tone" default is "neutral" in Figma'),
+      ]);
+    });
+
+    it('fails when the mapped node was never read', () => {
+      expect(rules(run({}))).toEqual(['figma-read-missing']);
+    });
+  });
+
   it('rejects a url that is neither a node URL nor the unmapped placeholder', () => {
     const doc = docFor('Badge', badgeEntry(), BADGE_CODE, { figmaNode: 'FIGMA_NODE_URL' });
     expect(rules(gate({ parsed: { status: 0, docs: [doc], output: '' } }))).toContain(
@@ -429,23 +501,26 @@ describe('check-code-connect — repository', () => {
   // These assertions derive what they expect from figma/code-connect.json and
   // the component source, never from a pinned count or name list, so adding a
   // node URL or exempting a new cva module does not require editing this file.
-  it('finds the public cva modules the parity rule covers, including every templated source', () => {
+  it('finds the public cva modules the parity rule covers: each is templated or exempt, never both', () => {
     const { registry } = loadCodeConnectInputs(ROOT);
     const modules = publicCvaModules(ROOT);
-    const templated = Object.values(registry.templates).map((entry) => entry.source);
-    expect(modules).toEqual(expect.arrayContaining(templated));
-    expect(modules.length).toBe(templated.length + Object.keys(registry.exempt).length);
+    const templated = new Set(Object.values(registry.templates).map((entry) => entry.source));
+    const exempt = Object.keys(registry.exempt);
+    expect(modules.filter((module) => !templated.has(module)).sort()).toEqual([...exempt].sort());
   });
 
   it('passes: parse, generator drift, parity, and every rendered combination', () => {
     expect(result.errors.map((e) => `${e.rule} ${e.component ?? ''}: ${e.message}`)).toEqual([]);
   });
 
-  it('reports mapped templates exactly where the source has an @figma node URL', () => {
-    const { registry } = loadCodeConnectInputs(ROOT);
+  it('reports mapped templates exactly where the source has an @figma node URL or a part override', () => {
+    const { registry, partUrls } = loadCodeConnectInputs(ROOT);
     const model = createCodeModel({ root: ROOT, files: registrySourceFiles(registry) });
     const withUrl = Object.entries(registry.templates)
-      .filter(([name, entry]) => model.component(entry.source, entry.export ?? name)?.figmaUrl)
+      .filter(
+        ([name, entry]) =>
+          model.component(entry.source, entry.export ?? name)?.figmaUrl ?? partUrls[name],
+      )
       .map(([name]) => name)
       .sort();
     const templates = Object.keys(registry.templates).sort();
