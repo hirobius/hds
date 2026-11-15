@@ -8,7 +8,7 @@
 import figma from 'figma';
 
 export default {
-  example: figma.code`<NavList><NavList.Item href="/roles/1" current>Senior product designer</NavList.Item></NavList>`,
+  example: figma.code`<NavList><NavList.Item href={role.href} current>Senior product designer</NavList.Item></NavList>`,
   imports: ["import { NavList } from '@hirobius/design-system'"],
   id: 'nav-list',
   metadata: { nestable: true },

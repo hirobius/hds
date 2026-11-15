@@ -8,7 +8,7 @@
 import figma from 'figma';
 
 export default {
-  example: figma.code`<List><List.Item title="Item title" href="/items/1" trailing="chevron" /></List>`,
+  example: figma.code`<List><List.Item title="Item title" href={item.href} trailing="chevron" /></List>`,
   imports: ["import { List } from '@hirobius/design-system'"],
   id: 'list',
   metadata: { nestable: true },

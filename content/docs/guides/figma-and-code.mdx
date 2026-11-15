@@ -20,15 +20,15 @@ A designer picks `Button`, sets `Variant` to `primary` and `Size` to `lg`. A dev
 
 ## Same names and props
 
-The Figma library has one component for each React component, under the same name. Its properties follow one contract:
+The Figma library draws the React components under the same names. Its properties follow one contract:
 
-| In code                                    | In Figma                                                           |
-| ------------------------------------------ | ------------------------------------------------------------------ |
-| A variant prop (`variant`, `tone`, `size`) | A variant property in Title Case. Its options are the code values. |
-| A string prop or `children`                | A text property (`Label`, `Title`)                                 |
-| A boolean prop                             | A boolean property. A visibility toggle is named `Show …`.         |
-| An icon slot (`iconLeft`)                  | An instance swap that holds an Icon, with a `Show …` toggle        |
-| Hover, focus and pressed                   | A `State` variant. It has no prop: these are states, not settings. |
+| In code                                    | In Figma                                                                    |
+| ------------------------------------------ | --------------------------------------------------------------------------- |
+| A variant prop (`variant`, `tone`, `size`) | A variant property in Title Case. Its options are the code values.          |
+| A string prop or `children`                | A text property (`Label`, `Title`)                                          |
+| A boolean prop                             | A boolean property. A visibility toggle is named `Show …`.                  |
+| An icon slot (`iconLeft`)                  | An instance swap that holds an Icon, with a `Show …` toggle                 |
+| Hover, focus and pressed                   | A `State` variant. These have no prop; a `disabled` option sets `disabled`. |
 
 So `Size=lg` in Figma is `size="lg"` in code. Tokens follow the same rule: a Figma variable has the path of the token it comes from, and tokens reach Figma only from code.
 
@@ -59,7 +59,7 @@ The templates are generated, not written by hand:
 
 The check renders every combination. The result for each component is in [`figma/code-connect-preview.txt`](https://github.com/hirobius/hds/blob/main/figma/code-connect-preview.txt).
 
-**Status.** The templates are complete and checked, but they are not published to Figma yet. Publishing Code Connect needs a Figma Organization or Enterprise plan, and the HDS library is on a Professional plan. The repo holds the mapping for every library component, ready to publish.
+**Status.** The templates are checked, but they are not published to Figma yet. Publishing Code Connect needs a Figma Organization or Enterprise plan, and the HDS library is on a Professional plan. Every library component has a basic mapping in the repo (its import and source file), and the components with a template also have their props and variants.
 
 ## Lint plugin
 

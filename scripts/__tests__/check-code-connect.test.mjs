@@ -18,6 +18,7 @@ import {
   checkCodeConnect,
   childEnv,
   publicCvaModules,
+  readFigmaRead,
   renderPreviewReport,
   runCodeConnectGate,
   runParse,
@@ -377,6 +378,15 @@ describe('checkCodeConnect', () => {
 });
 
 // ── Preview snapshot ─────────────────────────────────────────────────────────
+
+describe('readFigmaRead', () => {
+  it('fails in the repository when the recorded read is missing, and only a fixture may have none', () => {
+    const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'cc-read-'));
+    expect(() => readFigmaRead(empty, { fixture: false })).toThrow(/is missing/);
+    expect(readFigmaRead(empty, { fixture: true })).toBeUndefined();
+    expect(Object.keys(readFigmaRead(ROOT, { fixture: false }).nodes).length).toBeGreaterThan(0);
+  });
+});
 
 describe('renderPreviewReport', () => {
   const previews = [

@@ -145,10 +145,6 @@ export function runParse({ root = DEFAULT_ROOT, cli } = {}) {
 
 // ── The gate ─────────────────────────────────────────────────────────────────
 
-/**
- * Pure gate over already-gathered inputs.
- * @returns {{ errors: object[], warnings: object[], summary: object, previews: object[] }}
- */
 export const FIGMA_READ_PATH = 'figma/reads/component-properties.json';
 
 const nodeIdOf = (url) => /node-id=(\d+)[-:](\d+)/.exec(String(url))?.slice(1, 3).join(':') ?? null;
@@ -193,6 +189,10 @@ export function compareWithFigmaRead(properties, readProps) {
   return messages;
 }
 
+/**
+ * Pure gate over already-gathered inputs.
+ * @returns {{ errors: object[], warnings: object[], summary: object, previews: object[] }}
+ */
 export function checkCodeConnect({
   registry,
   codeModel,
@@ -516,10 +516,17 @@ export function renderPreviewReport({ summary, previews }) {
 
 // ── Repository runner ────────────────────────────────────────────────────────
 
-/** The recorded property read, or undefined in a tree that has none (gate fixtures). */
-function readFigmaRead(root) {
+/**
+ * The recorded property read. Only a gate fixture (FIXTURE_DIR) may have none:
+ * in the repository a missing file must fail, not switch the comparison off.
+ */
+export function readFigmaRead(root, { fixture = Boolean(process.env.FIXTURE_DIR) } = {}) {
   const file = path.join(root, FIGMA_READ_PATH);
-  return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : undefined;
+  if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (fixture) return undefined;
+  throw new Error(
+    `${FIGMA_READ_PATH} is missing: the Code Connect registry has nothing to be checked against. Restore it, or record a new read (node scripts/figma-code-connect-map.mjs --emit-property-read).`,
+  );
 }
 
 export async function runCodeConnectGate({ root = DEFAULT_ROOT } = {}) {

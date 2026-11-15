@@ -163,9 +163,9 @@ Layout=bar               <FormActions destructive={<IconInstance />} secondary={
 default                  <InlineCode>token</InlineCode>
 
 ## InlineLink (18 combinations, 3 distinct snippets)
-default                  <InlineLink href="/docs">Link text</InlineLink>
-Size=sm                  <InlineLink size="sm" href="/docs">Link text</InlineLink>
-Size=lg                  <InlineLink size="lg" href="/docs">Link text</InlineLink>
+default                  <InlineLink href={href}>Link text</InlineLink>
+Size=sm                  <InlineLink size="sm" href={href}>Link text</InlineLink>
+Size=lg                  <InlineLink size="lg" href={href}>Link text</InlineLink>
 
 ## Input (576 combinations, 384 distinct snippets)
 default                  <Input label="Label" placeholder="Placeholder" size="sm" />
@@ -186,7 +186,7 @@ Size=md                  <Kbd>Esc</Kbd>
 Size=lg                  <Kbd size="lg">Esc</Kbd>
 
 ## List (1 combinations, 1 distinct snippets)
-default                  <List><List.Item title="Item title" href="/items/1" trailing="chevron" /></List>
+default                  <List><List.Item title="Item title" href={item.href} trailing="chevron" /></List>
 
 ## Menu (1 combinations, 1 distinct snippets)
 default                  <Menu><Menu.Trigger asChild><Button>Options</Button></Menu.Trigger><Menu.Content><Menu.Item>Edit</Menu.Item><Menu.Item tone="danger">Delete</Menu.Item></Menu.Content></Menu>
@@ -200,11 +200,11 @@ Variant=divided          <MetadataList variant="divided" items={items} />
 default                  <MetaLine items={items} />
 
 ## NavList (1 combinations, 1 distinct snippets)
-default                  <NavList><NavList.Item href="/roles/1" current>Senior product designer</NavList.Item></NavList>
+default                  <NavList><NavList.Item href={role.href} current>Senior product designer</NavList.Item></NavList>
 
 ## NavListItem (6 combinations, 2 distinct snippets)
-default                  <NavListItem href="/roles/1">Senior product designer</NavListItem>
-Current=true             <NavListItem current href="/roles/1">Senior product designer</NavListItem>
+default                  <NavListItem href={role.href}>Senior product designer</NavListItem>
+Current=true             <NavListItem current href={role.href}>Senior product designer</NavListItem>
 
 ## PageHeader (8 combinations, 8 distinct snippets)
 default                  <PageHeader title="Acme Co" breadcrumb={<Breadcrumb items={crumbs} />} actions={<Button variant="primary">New</Button>} />

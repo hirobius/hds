@@ -17,7 +17,7 @@ const size = instance.getEnum('Size', {
 });
 
 export default {
-  example: figma.code`<InlineLink${size === 'sm' ? ' size="sm"' : size === 'lg' ? ' size="lg"' : ''} href="/docs">${label}</InlineLink>`,
+  example: figma.code`<InlineLink${size === 'sm' ? ' size="sm"' : size === 'lg' ? ' size="lg"' : ''} href={href}>${label}</InlineLink>`,
   imports: ["import { InlineLink } from '@hirobius/design-system'"],
   id: 'inline-link',
   metadata: { nestable: true },

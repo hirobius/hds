@@ -16,7 +16,7 @@ const current = instance.getEnum('Current', {
 });
 
 export default {
-  example: figma.code`<NavListItem${current === 'true' ? ' current' : ''} href="/roles/1">${title}</NavListItem>`,
+  example: figma.code`<NavListItem${current === 'true' ? ' current' : ''} href={role.href}>${title}</NavListItem>`,
   imports: ["import { NavListItem } from '@hirobius/design-system'"],
   id: 'nav-list-item',
   metadata: { nestable: true },

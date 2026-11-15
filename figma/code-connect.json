@@ -1088,7 +1088,7 @@
         }
       },
       "staticProps": {
-        "href": "\"/docs\""
+        "href": "{href}"
       }
     },
     "Kbd": {
@@ -1112,7 +1112,7 @@
       "source": "src/app/components/list.tsx",
       "evidence": "read-2026-11-15",
       "properties": {},
-      "children": "<List.Item title=\"Item title\" href=\"/items/1\" trailing=\"chevron\" />"
+      "children": "<List.Item title=\"Item title\" href={item.href} trailing=\"chevron\" />"
     },
     "Menu": {
       "source": "src/app/components/menu.tsx",
@@ -1181,7 +1181,7 @@
       "source": "src/app/components/nav-list.tsx",
       "evidence": "read-2026-11-15",
       "properties": {},
-      "children": "<NavList.Item href=\"/roles/1\" current>Senior product designer</NavList.Item>"
+      "children": "<NavList.Item href={role.href} current>Senior product designer</NavList.Item>"
     },
     "NavListItem": {
       "source": "src/app/components/nav-list.tsx",
@@ -1220,7 +1220,7 @@
         }
       },
       "staticProps": {
-        "href": "\"/roles/1\""
+        "href": "{role.href}"
       }
     },
     "PageHeader": {
