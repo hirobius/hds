@@ -1751,3 +1751,14 @@ Plan updated 2 · created 0 · deleted 0 (meta/version 0.44.0 → 0.45.0, meta/c
 | 2   | 22:48      | `use_figma` | write | delta.js unmodified, built on Version PR head 0aa711f | OK; 2 meta variables updated, 645 variables, post 5b606c06 |
 
 Session total: 2 calls (1 read, 1 write; the file session was reused from 0.44.0). Nothing deleted, nothing published, no prune.
+
+## 2026-11-15 · Daily release check: meta/commit stamp (main 9b2ad02, 0.45.0)
+
+Plan updated 1 · created 0 · deleted 0 (meta/commit 0aa711f → 9b2ad02); `check:figma-release` failed on the stale cover stamp.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                           | Result                                                  |
+| --- | ---------- | ---------------- | ----- | --------------------------------- | ------------------------------------------------------- |
+| 1   | 16:50      | `create_session` | read  | open file session                 | OK                                                      |
+| 2   | 16:50      | `use_figma`      | write | delta.js unmodified (meta/commit) | OK; meta/commit → 9b2ad02, 645 variables, post ae5ce28a |
+
+Session total: 2 calls
