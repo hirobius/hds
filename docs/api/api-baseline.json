@@ -17,7 +17,7 @@
     "./icons": "src/icons.ts"
   },
   "version": "0.45.0",
-  "generatedAt": "2026-11-13",
+  "generatedAt": "2026-11-15",
   "modules": {
     "(barrel)": [
       "HdsDensity",

@@ -47,7 +47,7 @@ describe('Kbd shadow follows the Button light source', () => {
 
     const css = readFileSync(resolve(__dirname, '../src/styles/tokens.generated.css'), 'utf8');
     const dark = css.match(/--semantic-color-shadow-hard:\s*([^;]+);/g) ?? [];
-    expect(dark).toContain('--semantic-color-shadow-hard: var(--primitive-color-neutral-500);');
+    expect(dark).toContain('--semantic-color-shadow-hard: var(--primitive-color-neutral-450);');
     expect(dark.join(' ')).not.toMatch(/#000|neutral-black|0 0% 0%/);
   });
 });

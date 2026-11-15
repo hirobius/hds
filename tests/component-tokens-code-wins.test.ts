@@ -33,7 +33,7 @@ const COLOR: Array<[string, string, string]> = [
   // Secondary binds its own bg tokens in code (hds#891); the border tokens are no longer drawn.
   [
     '--component-button-secondary-bg-hover',
-    '--semantic-color-surface-softHover',
+    '--semantic-color-surface-soft',
     'hover:bg-[color:var(--component-button-secondary-bg-hover)]',
   ],
   ['--component-input-bg', '--semantic-color-surface-page', 'bg-background'],

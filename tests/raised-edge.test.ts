@@ -165,8 +165,8 @@ describe('C2 reference edges (graphite defaults)', () => {
   it('light: primary ≈ #1f2532, one step under the graphite.700 fill', () => {
     near(shipped('Light').primary, '#1f2532', 0);
   });
-  it('dark: primary ≈ #a5a6a9', () => {
-    near(shipped('Dark').primary, '#a5a6a9');
+  it('dark: primary ≈ #a7a9ab', () => {
+    near(shipped('Dark').primary, '#a7a9ab');
   });
 });
 
@@ -270,7 +270,7 @@ describe('computed edges that ship as tokens', () => {
     const hex = (mode: Mode) => resolveHex(raw, EDGE_COMPUTED_TOKENS.primary, mode);
     expect({ Light: hex('Light'), Dark: hex('Dark') }).toEqual({
       Light: '#1f2532',
-      Dark: '#a5a6a9',
+      Dark: '#a7a9ab',
     });
     for (const mode of MODES) expect(hex(mode)).toBe(expected(raw, 'primary', mode));
   });
@@ -294,7 +294,7 @@ describe('computed edges that ship as tokens', () => {
       'oklch(0.75 0.0044 271.35)';
     const [drift] = edgeTokenDrift(tree);
     expect(drift).toMatch(
-      /^semantic\.color\.edge\.primary \(Dark\) is #[0-9a-f]{6}; raised-edge computes #a5a6a9$/,
+      /^semantic\.color\.edge\.primary \(Dark\) is #[0-9a-f]{6}; raised-edge computes #a7a9ab$/,
     );
     expect(edgeTokenDrift(tree)).toHaveLength(1);
     expect(() => buildEdgeCSS(tree)).toThrow(/semantic\.color\.edge\.primary \(Dark\)/);

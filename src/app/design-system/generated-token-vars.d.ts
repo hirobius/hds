@@ -26,6 +26,7 @@ declare module 'react' {
     '--primitive-color-neutral-600'?: string | undefined;
     '--primitive-color-neutral-700'?: string | undefined;
     '--primitive-color-neutral-725'?: string | undefined;
+    '--primitive-color-neutral-740'?: string | undefined;
     '--primitive-color-neutral-750'?: string | undefined;
     '--primitive-color-neutral-800'?: string | undefined;
     '--primitive-color-neutral-825'?: string | undefined;

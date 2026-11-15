@@ -207,7 +207,7 @@ describe('hds-mcp over stdio', () => {
       path: 'semantic.color.surface.page',
       cssVar: '--semantic-color-surface-page',
       value: '#ffffff',
-      dark: '#060a13',
+      dark: '#0c111b',
       type: 'color',
     });
   });

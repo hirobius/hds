@@ -180,6 +180,6 @@ describe('colorGalleries swatch fills (hds#846)', () => {
     expect(find('primitive.color.blue.500').fill).toBe('var(--primitive-color-blue-500)');
     const page = find('semantic.color.surface.page');
     expect(page.fill).toBe('var(--primitive-color-neutral-white)');
-    expect(page.darkFill).toBe('var(--primitive-color-neutral-black)');
+    expect(page.darkFill).toBe('var(--primitive-color-neutral-900)');
   });
 });

@@ -130,10 +130,10 @@ const buttonVariants = /* @__PURE__ */ cva(
         // fill: content.secondary on surface.soft is under 4.5:1 in dark. The classes live in
         // the compoundVariants, so a filled variant ignores it.
         quiet: '',
-        danger: `bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger active:bg-feedback-bg-danger ${TONE_COMMON}`,
-        success: `bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success active:bg-feedback-bg-success ${TONE_COMMON}`,
-        warning: `bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning active:bg-feedback-bg-warning ${TONE_COMMON}`,
-        info: `bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info active:bg-feedback-bg-info ${TONE_COMMON}`,
+        danger: `bg-feedback-bg-danger text-foreground hover:bg-feedback-bg-danger active:bg-feedback-bg-danger ${TONE_COMMON}`,
+        success: `bg-feedback-bg-success text-foreground hover:bg-feedback-bg-success active:bg-feedback-bg-success ${TONE_COMMON}`,
+        warning: `bg-feedback-bg-warning text-foreground hover:bg-feedback-bg-warning active:bg-feedback-bg-warning ${TONE_COMMON}`,
+        info: `bg-feedback-bg-info text-foreground hover:bg-feedback-bg-info active:bg-feedback-bg-info ${TONE_COMMON}`,
       },
       size: {
         sm: 'h-[var(--component-button-size-sm-height)] px-fixed-xs hds-type-caption hds-touch-row [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
@@ -196,6 +196,13 @@ const buttonVariants = /* @__PURE__ */ cva(
         className:
           'px-0 bg-transparent hover:bg-transparent active:bg-transparent disabled:bg-transparent hover:brightness-100 dark:hover:brightness-100 active:inset-shadow-transparent',
       },
+      // A filled tone shows its tone in the fill, so its label is the plain content colour
+      // (Adrian 2026-11-15). A link has no fill: its text is the only place the tone can
+      // show, so a toned link keeps the feedback colour.
+      { variant: 'link', tone: 'danger', className: 'text-feedback-danger' },
+      { variant: 'link', tone: 'success', className: 'text-feedback-success' },
+      { variant: 'link', tone: 'warning', className: 'text-feedback-warning' },
+      { variant: 'link', tone: 'info', className: 'text-feedback-info' },
       // Link focus (hds#1167, matches the Figma Focus drawing): with px-0 a ring on the button
       // would sit right on the glyphs and the underline. A link instead paints the shared ring
       // (.hds-focus-after: semantic.focus.ring.width, gap.width and ring.color) on an ::after

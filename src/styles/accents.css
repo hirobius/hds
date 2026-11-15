@@ -113,6 +113,6 @@
   --semantic-color-content-onAccent: var(
     --primitive-color-neutral-black
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --hds-edge-primary: #636cae; /* css-ok: raised edge (hds#897) */
-  --hds-edge-primaryHover: #4455b1; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primary: #656fb0; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primaryHover: #4657b4; /* css-ok: raised edge (hds#897) */
 }

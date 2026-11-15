@@ -26,6 +26,7 @@ export const tokenDescriptions: Record<string, string> = {
   "primitive.color.neutral.600": "Neutral ramp step for surfaces and text.",
   "primitive.color.neutral.700": "Neutral ramp step for surfaces and text.",
   "primitive.color.neutral.725": "The Dark value of surface.selected, at least 1.15:1 above surface.raised.",
+  "primitive.color.neutral.740": "Neutral ramp step for surfaces and text.",
   "primitive.color.neutral.750": "The Dark value of surface.muted, at least 1.1:1 above surface.raised.",
   "primitive.color.neutral.800": "Neutral ramp step for surfaces and text.",
   "primitive.color.neutral.825": "The Dark value of surface.raised, at least 1.2:1 above the midnight page (neutral.black).",

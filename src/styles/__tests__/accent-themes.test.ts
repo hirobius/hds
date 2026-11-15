@@ -41,9 +41,10 @@ describe('graphite (default accent)', () => {
     }
   });
 
-  // Light is graphite.700 since hds#1422 (9.8:1 on the page), so its floors are lower.
+  // Light is graphite.700 since hds#1422 (9.8:1 on the page), so its floors are lower. Dark muted
+  // is 11: the 2026-11-15 ramp lifts dark muted to neutral.740 (11.5:1), still far past AA.
   it('stands well clear of the page and the disabled primary fill (hds#887)', () => {
-    const FLOOR = { Light: { page: 9, muted: 7 }, Dark: { page: 15, muted: 13 } } as const;
+    const FLOOR = { Light: { page: 9, muted: 7 }, Dark: { page: 15, muted: 11 } } as const;
     for (const mode of ['Light', 'Dark'] as const) {
       const fill = hex('semantic.color.surface.accent', mode);
       expect(contrastRatio(fill, hex('semantic.color.surface.page', mode))).toBeGreaterThanOrEqual(
@@ -195,12 +196,12 @@ describe('secondary Button hover stays grey under every accent', () => {
     COBALT.component as { button?: { secondary?: { bg?: { hover?: unknown } } } }
   )?.button?.secondary?.bg?.hover;
 
-  it('is bound to semantic.color.surface.softHover', () => {
-    expect(tokenLeaf(HOVER).$value).toBe('{semantic.color.surface.softHover}');
+  it('is bound to semantic.color.surface.soft (one step back from the softHover rest, 2026-11-15)', () => {
+    expect(tokenLeaf(HOVER).$value).toBe('{semantic.color.surface.soft}');
   });
 
   it.each(['Light', 'Dark'] as const)('resolves to a grey step, not accentSubtle (%s)', (mode) => {
-    const fill = hex('semantic.color.surface.softHover', mode);
+    const fill = hex('semantic.color.surface.soft', mode);
     expect(fill).not.toBe(hex('semantic.color.surface.accentSubtle', mode));
     expect(fill).not.toBe(hex('semantic.color.surface.accentSubtle', mode, COBALT));
     // grey: the channels stay within a few steps of each other (navy would be blue-heavy)
@@ -208,8 +209,8 @@ describe('secondary Button hover stays grey under every accent', () => {
     expect(Math.max(r, g, b) - Math.min(r, g, b)).toBeLessThan(16);
   });
 
-  it('is the Figma grey #c7c9cc in light', () => {
-    expect(hex('semantic.color.surface.softHover', 'Light')).toBe('#c7c9cc');
+  it('is the grey #d3d4d6 in light', () => {
+    expect(hex('semantic.color.surface.soft', 'Light')).toBe('#d3d4d6');
   });
 
   it('the cobalt overlay does not re-point it (the base softHover binding wins)', () => {
