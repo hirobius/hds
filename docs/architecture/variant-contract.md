@@ -112,24 +112,28 @@ Rules the gate enforces (errors fail the check):
 - `invert: true` only appears on a BOOLEAN named `Show …`. A `Hide …` property
   combined with `invert` contradicts itself.
 - A component that has a Code Connect template (`figma/code-connect.json`) maps
-  the same contract axes as its manifest entry.
+  no contract axis its manifest entry does not declare. A declared axis the
+  template does not map is one the Figma component has no property for (Button
+  `tone`): the gate warns (`axis-not-in-figma`) and does not fail, because the
+  registry can only record what Figma has.
 - For a templated component, the manifest and the registry do not contradict
   each other: every Figma property name the manifest records
   (`componentProperties`, `figmaPropertyMapping`) is a registry property of the
   same type, and a prop the registry binds maps to the same property or to the
   `Show …` toggle that gates it. The registry is the record with evidence (the
-  hds#73 inventory), so a manifest name it does not define fails.
+  live property read in `figma/reads/component-properties.json`, which
+  `pnpm figma:connect:check` holds it to), so a manifest name it does not define
+  fails.
 
-**Title Case is the target, not yet the rule.** Some Figma names in the hds#73
-inventory predate this contract (`Show icon`, `Show trail icon`, `Show close`),
-so the gate warns instead of failing on them. That inventory comes from an AI
-audit and is not yet verified against the live file. To fix one, rename it in
+**Title Case is the target, not yet the rule.** Some Figma names predate this
+contract (`Show icon`, `Show trail icon`, `Show close`), so the gate warns
+instead of failing on them. To fix one, rename it in
 Figma first and then mirror the new name in the registry and the manifest.
 Figma property lookups are case-sensitive, so renaming only one side breaks
 the mapping.
 
-**Legacy option names** (options that are not the cva keys, e.g. Button
-`Variant: Primary / Secondary / Tertiary`) are mapped explicitly in the Code
+**Option names that are not the cva keys** (e.g. Divider
+`Orientation: Horizontal / Vertical`) are mapped explicitly in the Code
 Connect registry (`figma/code-connect.json`, `values`). Renaming the Figma
 options to the cva keys removes that mapping.
 
@@ -161,7 +165,13 @@ three inputs.
    Figma has no property for (`onChange`); `figmaOnly` marks a property that
    has no code equivalent; `codeOnly` (`{ "ghost": "<reason>" }`, on a
    VARIANT mapped with `prop`) acknowledges a cva key that has no Figma option
-   yet.
+   yet. `children` is raw JSX for the element's children, with `{{Figma name}}`
+   replaced by a TEXT property (or a VARIANT's mapped value), so a compound
+   component prints its parts (`<Dialog.Title>`); a BOOLEAN takes `set` too;
+   `imports` adds the names such a snippet uses. Every property recorded here
+   must be the one the live Figma component has: the gate compares the entry
+   with `figma/reads/component-properties.json` (names, types, options,
+   defaults).
 2. **The component source** supplies the props, which props are required,
    the cva keys and `defaultVariants`, all read through the TypeScript
    checker. A snippet leaves out any prop that equals its cva default.
@@ -169,8 +179,10 @@ three inputs.
    (file-level block or the block above the export), which flows through
    `public/hds-manifest.json` `figmaUrl`. After adding, changing or removing a
    tag, run `pnpm manifest:generate && pnpm figma:connect:generate`; the tag is
-   the only source, so removing it unmaps the component. A template without a
-   URL gets a placeholder `// url=` with an `UNMAPPED` comment.
+   the only source, so removing it unmaps the component. A compound part with
+   no tag (`TabsTrigger`) takes its node from `figma/mapping-overrides.json`. A
+   template without a URL gets a placeholder `// url=` with an `UNMAPPED`
+   comment.
 
 `pnpm figma:connect:check` (`scripts/check-code-connect.mjs`, also run by
 `pnpm test`) needs no token or network and works on any Figma plan. It runs

@@ -26,7 +26,7 @@ import {
   renderTemplate,
   transpileLikeCli,
 } from '../lib/code-connect-runtime.mjs';
-import { generateTemplates } from '../generate-code-connect.mjs';
+import { generateTemplates, partNodeUrls } from '../generate-code-connect.mjs';
 
 // ── Fixtures ─────────────────────────────────────────────────────────────────
 
@@ -260,6 +260,12 @@ describe('Figma node URLs', () => {
       'src/app/components/checkbox.figma.ts',
     );
   });
+
+  it('names a second template of the same module after its export', () => {
+    expect(templatePathFor({ source: 'src/app/components/tabs.tsx' }, 'TabsTrigger')).toBe(
+      'src/app/components/tabs-trigger.figma.ts',
+    );
+  });
 });
 
 // ── buildTemplateSource ──────────────────────────────────────────────────────
@@ -380,6 +386,146 @@ describe('generated template renders the HDS snippet', () => {
     );
   });
 
+  it('maps a BOOLEAN onto props per state with set', () => {
+    const code = { props: { label: req, showLabel: opt, status: opt }, members: {}, cva: null };
+    const entry = {
+      source: 'src/app/components/select.tsx',
+      properties: {
+        Label: { type: 'TEXT', default: 'Label', prop: 'label' },
+        'Show label': {
+          type: 'BOOLEAN',
+          default: true,
+          set: { true: {}, false: { showLabel: { $expr: 'false' } } },
+        },
+        'Show status': {
+          type: 'BOOLEAN',
+          default: false,
+          set: { true: { status: 'success' }, false: {} },
+        },
+      },
+    };
+    expect(validateTemplateEntry('Select', entry, code)).toEqual([]);
+    const values = { Label: 'Role', 'Show label': true, 'Show status': false };
+    expect(render('Select', entry, code, values).snippet).toBe('<Select label="Role" />');
+    expect(
+      render('Select', entry, code, { ...values, 'Show label': false, 'Show status': true })
+        .snippet,
+    ).toBe('<Select label="Role" showLabel={false} status="success" />');
+  });
+
+  it('rejects a BOOLEAN set that names an unknown prop or misses a state', () => {
+    const code = { props: { label: req }, members: {}, cva: null };
+    const entry = (set) => ({
+      source: 'src/app/components/select.tsx',
+      properties: {
+        Label: { type: 'TEXT', prop: 'label' },
+        'Show label': { type: 'BOOLEAN', set },
+      },
+    });
+    expect(
+      validateTemplateEntry('Select', entry({ true: {}, false: { nope: false } }), code),
+    ).toEqual([expect.stringContaining('"nope" is not a prop of Select')]);
+    expect(validateTemplateEntry('Select', entry({ true: {} }), code)).toEqual([
+      expect.stringContaining('set must map exactly [true, false]'),
+    ]);
+  });
+
+  it('renders entry children, with TEXT properties interpolated', () => {
+    const code = { props: { tone: opt, children: req }, members: {}, cva: null };
+    const entry = {
+      source: 'src/app/components/card.tsx',
+      properties: {
+        Title: { type: 'TEXT', default: 'Card title' },
+        Tone: {
+          type: 'VARIANT',
+          options: ['neutral', 'danger'],
+          set: { neutral: {}, danger: { tone: 'danger' } },
+        },
+      },
+      children: '<Card.Title>{{Title}}</Card.Title>',
+    };
+    expect(validateTemplateEntry('Card', entry, code)).toEqual([]);
+    expect(render('Card', entry, code, { Title: 'Plan', Tone: 'danger' }).snippet).toBe(
+      '<Card tone="danger"><Card.Title>Plan</Card.Title></Card>',
+    );
+  });
+
+  it('rejects children that name a missing property or compete with a TEXT child', () => {
+    const code = { props: { children: req }, members: {}, cva: null };
+    const base = { source: 'src/app/components/card.tsx' };
+    expect(
+      validateTemplateEntry(
+        'Card',
+        { ...base, properties: { Title: { type: 'TEXT' } }, children: '{{Heading}}' },
+        code,
+      ),
+    ).toEqual(expect.arrayContaining([expect.stringContaining('children names "Heading"')]));
+    expect(
+      validateTemplateEntry(
+        'Card',
+        { ...base, properties: { Title: { type: 'TEXT', prop: 'children' } }, children: 'x' },
+        code,
+      ),
+    ).toEqual([expect.stringContaining('children is set twice')]);
+  });
+
+  it('interpolates a VARIANT into children through its values map', () => {
+    const code = { props: { children: opt }, members: {}, cva: null };
+    const entry = {
+      source: 'src/app/components/hds-tooltip.tsx',
+      properties: {
+        Label: { type: 'TEXT', default: 'Tip' },
+        Side: { type: 'VARIANT', options: ['Top', 'Left'], values: { Top: 'top', Left: 'left' } },
+      },
+      children: '<Tooltip.Content side="{{Side}}">{{Label}}</Tooltip.Content>',
+    };
+    expect(validateTemplateEntry('Tooltip', entry, code)).toEqual([]);
+    expect(render('Tooltip', entry, code, { Label: 'Copy', Side: 'Left' }).snippet).toBe(
+      '<Tooltip><Tooltip.Content side="left">Copy</Tooltip.Content></Tooltip>',
+    );
+  });
+
+  it('accepts a component whose Figma node has no properties', () => {
+    const code = { props: { children: req }, members: {}, cva: null };
+    const entry = { source: 'src/app/components/dock.tsx', properties: {}, children: 'Actions' };
+    expect(validateTemplateEntry('Dock', entry, code)).toEqual([]);
+    expect(render('Dock', entry, code, {}).snippet).toBe('<Dock>Actions</Dock>');
+    const source = buildTemplateSource({
+      name: 'Dock',
+      exportName: 'Dock',
+      entry,
+      code,
+      figmaUrl: null,
+      importFrom: '@hirobius/design-system',
+    });
+    expect(source).not.toContain('selectedInstance');
+  });
+
+  it('imports from the entry module and adds the extra names children use', () => {
+    const code = { props: { children: req }, members: {}, cva: null };
+    const entry = {
+      source: 'src/app/components/page-header.tsx',
+      importFrom: '@hirobius/design-system/patterns',
+      imports: { '@hirobius/design-system': ['Button'], 'lucide-react': ['Plus'] },
+      properties: {},
+      children: '<Button iconLeft={<Plus />}>New</Button>',
+    };
+    expect(validateTemplateEntry('PageHeader', entry, code)).toEqual([]);
+    expect(render('PageHeader', entry, code, {}).imports).toEqual([
+      "import { PageHeader } from '@hirobius/design-system/patterns'",
+      "import { Button } from '@hirobius/design-system'",
+      "import { Plus } from 'lucide-react'",
+    ]);
+    const same = {
+      ...entry,
+      importFrom: undefined,
+      imports: { '@hirobius/design-system': ['Button'] },
+    };
+    expect(render('PageHeader', same, code, {}).imports).toEqual([
+      "import { PageHeader, Button } from '@hirobius/design-system'",
+    ]);
+  });
+
   it('records every getEnum mapping it used', () => {
     const { enumCalls } = render('Button', buttonEntry(), BUTTON_CODE, base);
     expect(enumCalls.map((call) => call.property)).toEqual(['Variant', 'Tone', 'Size', 'State']);
@@ -413,6 +559,48 @@ describe('generateTemplates', () => {
     expect(files[0].status).toBe('mapped');
     expect(files[0].content.startsWith(`// url=${url}\n`)).toBe(true);
     expect(files[0].content).toMatch(/;\n$/); // prettier-formatted (semi: true)
+  });
+
+  it('writes one template per export when two entries share a module', async () => {
+    const entry = { ...checkboxEntry() };
+    const { files, errors } = await generateTemplates({
+      registry: {
+        importFrom: '@hirobius/design-system',
+        templates: { Checkbox: entry, CheckboxCard: { ...entry, export: 'CheckboxCard' } },
+      },
+      manifest: {},
+      codeModel: { component: () => CHECKBOX_CODE },
+    });
+    expect(errors).toEqual([]);
+    expect(files.map((file) => file.path)).toEqual([
+      'src/app/components/checkbox.figma.ts',
+      'src/app/components/checkbox-card.figma.ts',
+    ]);
+  });
+
+  it('takes the node of a compound part from the mapping overrides', () => {
+    const urls = partNodeUrls({
+      registry: {
+        templates: {
+          Tabs: { source: 'src/app/components/tabs.tsx' },
+          TabsTrigger: { source: 'src/app/components/tabs.tsx' },
+        },
+      },
+      overrides: {
+        overrides: [
+          {
+            nodeId: '86:52',
+            name: 'TabTrigger',
+            mapsTo: 'TabsTrigger',
+            source: 'src/app/components/tabs.tsx',
+          },
+        ],
+      },
+      links: { libraryFileKey: 'LIB' },
+    });
+    expect(urls).toEqual({
+      TabsTrigger: 'https://www.figma.com/design/LIB/HDS-Tokens-Components?node-id=86-52',
+    });
   });
 
   it('reports invalid entries instead of writing a broken template', async () => {

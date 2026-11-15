@@ -254,7 +254,7 @@
     },
     {
       "id": "check-code-connect",
-      "description": "CI-safe Figma Code Connect gate (no token, no network, any Figma plan). Runs figma connect parse --exit-on-unreadable-files, fails if the committed src/app/components/*.figma.ts templates drift from scripts/generate-code-connect.mjs output, requires every public cva module to have a template or an exemption in figma/code-connect.json, and renders every VARIANT x BOOLEAN combination locally (getEnum maps are exhaustive and land on cva keys, snippets are valid JSX that only pass real props). Templates without a Figma node URL are reported as unmapped (--strict fails on them). Also runs in pnpm test through scripts/__tests__/check-code-connect.test.mjs.",
+      "description": "CI-safe Figma Code Connect gate (no token, no network, any Figma plan). Runs figma connect parse --exit-on-unreadable-files, fails if the committed src/app/components/*.figma.ts templates drift from scripts/generate-code-connect.mjs output, requires every public cva module to have a template or an exemption in figma/code-connect.json, and renders every VARIANT x BOOLEAN combination locally (getEnum maps are exhaustive and land on cva keys, snippets are valid JSX that only pass real props and type-check). Fails when an entry's Figma properties (name, type, options, default) differ from the live read recorded in figma/reads/component-properties.json (hds#1557). Templates without a Figma node URL are reported as unmapped, and an @figma node that is one variant of a set as figma-node-is-variant (--strict fails on both). Also runs in pnpm test through scripts/__tests__/check-code-connect.test.mjs.",
       "severity": "error",
       "gateScript": "scripts/check-code-connect.mjs",
       "fixturePath": null,
@@ -490,6 +490,17 @@
       "fixturePath": null,
       "owner": "Adrian",
       "source": "human",
+      "firingChannel": "on-demand",
+      "supportsJson": true
+    },
+    {
+      "id": "check-figma-parity",
+      "description": "Figma <-> code parity gate (hds#1565). Compares the committed full read of the library (figma/parity/read.json: every component, its property definitions and variant options, what it nests, the icons, and one hash per variable collection) with code: the manifest props and enum values, the @figma links, figma/mapping-overrides.json, the Code Connect registry, and the token drift check against figma/snapshot.json. Fails on a difference that is not in figma/parity/baseline.json, and on a baseline entry whose difference is gone, so the known list only shrinks. Prints a parity score per area. --emit-read writes the read-only use_figma scripts, --ingest verifies their results and writes the read; --max-age <days> (pnpm check:figma-parity:fresh) also fails on an old read. Also runs in pnpm test through scripts/__tests__/check-figma-parity.test.mjs.",
+      "severity": "error",
+      "gateScript": "scripts/check-figma-parity.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
       "firingChannel": "on-demand",
       "supportsJson": true
     },

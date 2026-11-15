@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-11-11",
+  "generatedAt": "2026-11-15",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -24,12 +24,12 @@
   "summary": {
     "total": 132,
     "byClass": {
-      "library": 76,
-      "slot": 34,
-      "layout": 10,
+      "library": 80,
+      "slot": 31,
+      "layout": 9,
       "internal": 12
     },
-    "libraryLinked": 76,
+    "libraryLinked": 80,
     "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
@@ -440,7 +440,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-14631"
     },
     {
       "name": "ErrorPattern",
@@ -458,7 +458,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-23270"
     },
     {
       "name": "Form",
@@ -478,7 +478,7 @@
     },
     {
       "name": "FormField",
-      "class": "slot",
+      "class": "library",
       "parent": "Form",
       "category": "Inputs",
       "tier": "pattern",
@@ -638,7 +638,7 @@
     },
     {
       "name": "ListGroup",
-      "class": "slot",
+      "class": "library",
       "parent": "List",
       "category": "Display",
       "tier": "pattern",
@@ -646,7 +646,7 @@
     },
     {
       "name": "ListItem",
-      "class": "slot",
+      "class": "library",
       "parent": "List",
       "category": "Display",
       "tier": "pattern",
@@ -742,7 +742,7 @@
       "parent": null,
       "category": "Navigation",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2335-4217"
     },
     {
       "name": "Pin",
@@ -914,7 +914,7 @@
     },
     {
       "name": "Stack",
-      "class": "layout",
+      "class": "library",
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
@@ -950,7 +950,7 @@
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2336-21"
     },
     {
       "name": "Switcher",
@@ -1086,7 +1086,7 @@
       "parent": null,
       "category": "Overlays",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-13345"
     },
     {
       "name": "VisuallyHidden",

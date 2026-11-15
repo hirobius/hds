@@ -268,8 +268,7 @@
         "neutral",
         "quiet"
       ],
-      "optional": true,
-      "figmaProperty": "Tone"
+      "optional": true
     },
     {
       "name": "variant",

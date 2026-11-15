@@ -5,7 +5,7 @@ import { readLaneScripts } from '../lib/gate-lanes.mjs';
 import { readFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { ROOT, registryEntry, runGate } from './helpers/gate-runner.mjs';
-import { findViolationsInText, defaultFiles } from '../check-no-status-clutter.mjs';
+import { findViolationsInText, defaultFiles, isExempt } from '../check-no-status-clutter.mjs';
 
 const GATE = 'scripts/check-no-status-clutter.mjs';
 const find = (text, file = 'fake.tsx') => findViolationsInText(text, file);
@@ -93,5 +93,12 @@ describe('the hds#759 exemption stays limited to the Avatar dot', () => {
     expect(
       find(`// status-clutter-ok: attention dot\n${dot}`, 'src/app/components/avatar.tsx'),
     ).toHaveLength(0);
+  });
+});
+
+describe('Code Connect templates', () => {
+  it('are not scanned: a template prints the code for what a Figma instance draws', () => {
+    expect(isExempt('src/app/components/badge.figma.ts')).toBe(true);
+    expect(isExempt('src/app/components/badge.tsx')).toBe(false);
   });
 });

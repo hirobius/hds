@@ -1751,3 +1751,46 @@ Plan updated 2 · created 0 · deleted 0 (meta/version 0.44.0 → 0.45.0, meta/c
 | 2   | 22:48      | `use_figma` | write | delta.js unmodified, built on Version PR head 0aa711f | OK; 2 meta variables updated, 645 variables, post 5b606c06 |
 
 Session total: 2 calls (1 read, 1 write; the file session was reused from 0.44.0). Nothing deleted, nothing published, no prune.
+
+## 2026-11-15 · Code Connect coverage: verified property read (branch claude/code-connect-coverage)
+
+Library 2VgBbVpKiDnu0aftJEVyBQ. Reads only. No write, no delete, no publish. Rows are logged before each call.
+
+| #   | Tool              | Kind | Target                                                                   | Purpose                                                                                                                                                                       | Result                                                                                                                                                                         |
+| --- | ----------------- | ---- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| C1  | `get_figma_skill` | read | skill://figma/figma-use/SKILL.md                                         | load figma-use before use_figma                                                                                                                                               | OK                                                                                                                                                                             |
+| C2  | `whoami`          | read | account                                                                  | which plan owns the library (Code Connect publish needs Organization)                                                                                                         | OK. Team Hirobius is tier `pro`, Full seat, admin. Publish stays blocked (R14).                                                                                                |
+| C3  | `create_session`  | read | library                                                                  | session                                                                                                                                                                       | OK. Session `96ff4b8a`                                                                                                                                                         |
+| C4  | `use_figma`       | read | library: the 71 nodes of figma/code-connect-map.json                     | the read script (now printed by `node scripts/figma-code-connect-map.mjs --emit-property-read`), unmodified: componentPropertyDefinitions of each set or standalone component | OK. 71 rows. 4 nodes are one variant of a set (EmptyState 88:352, Pagination 86:194, Surface 89:27, Tooltip 93:15), Icon 27:2 is a page, Form 85:94 is on the Deprecated page. |
+| C5  | `use_figma`       | read | library: parent sets of the 4 variant nodes; components on the Form page | property definitions of the 4 sets                                                                                                                                            | OK. Sets 2337:14631, 2335:4217, 2336:21, 2337:13345. The Form page holds only FormField 85:81.                                                                                 |
+
+Session total: 5 calls (1 skill, 1 account, 1 session, 2 reads). Nothing written, deleted or published. Both results are recorded in `figma/reads/component-properties.json`; `pnpm figma:connect:check` gates `figma/code-connect.json` against it (hds#1557).
+
+## 2026-11-15 · Daily release check: meta/commit stamp (main 9b2ad02, 0.45.0)
+
+Plan updated 1 · created 0 · deleted 0 (meta/commit 0aa711f → 9b2ad02); `check:figma-release` failed on the stale cover stamp.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                           | Result                                                  |
+| --- | ---------- | ---------------- | ----- | --------------------------------- | ------------------------------------------------------- |
+| 1   | 16:50      | `create_session` | read  | open file session                 | OK                                                      |
+| 2   | 16:50      | `use_figma`      | write | delta.js unmodified (meta/commit) | OK; meta/commit → 9b2ad02, 645 variables, post ae5ce28a |
+
+Session total: 2 calls
+
+## 2026-11-15 · Parity audit and gate (read only)
+
+The first full parity read: every component and component set of the library, and one hash per variable collection. Scripts from `pnpm figma:parity --emit-read`, unmodified. No write, no publish, no delete.
+
+| #   | Tool              | Kind | Purpose                                                | Result                                                                                                                                        |
+| --- | ----------------- | ---- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1  | `whoami`          | read | plan and seat                                          | OK; tier `pro`                                                                                                                                |
+| P2  | `create_session`  | read | open file session                                      | OK                                                                                                                                            |
+| P3  | `get_figma_skill` | read | load figma-use                                         | OK                                                                                                                                            |
+| P4  | `use_figma`       | read | parity read, variables (collection hashes)             | OK; 8 collections, 15 text styles, 8 effect styles. Equal to the snapshot in PR #1564; on main only Hirobius/Meta differs (meta/commit stamp) |
+| P5  | `use_figma`       | read | parity read, components parts 1 to 4 of 4, in parallel | not run: the session worker restarted before the calls were sent                                                                              |
+| P6  | `use_figma`       | read | parity read, components part 1 of 4                    | OK; 22 pages                                                                                                                                  |
+| P7  | `use_figma`       | read | parity read, components part 2 of 4                    | OK; 22 pages                                                                                                                                  |
+| P8  | `use_figma`       | read | parity read, components part 3 of 4                    | OK; 21 pages                                                                                                                                  |
+| P9  | `use_figma`       | read | parity read, components part 4 of 4                    | OK; 21 pages                                                                                                                                  |
+
+Session total: 8 calls that reached Figma (5 `use_figma` reads, 1 session, 1 skill read, 1 `whoami`). The results are `figma/parity/read.json` (86 pages, 248 components: 80 live, 75 icons, 62 retired, 31 spec sheet kit). Nothing written, nothing deleted, nothing published.

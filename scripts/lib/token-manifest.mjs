@@ -43,13 +43,12 @@ const COMPONENT_SPEC_SEEDS = {
       radius: 'role.radius',
     },
     // Figma property names follow the Code Connect registry
-    // (figma/code-connect.json, hds#73 inventory); check-figma-mapping fails
-    // if the two disagree. Disabled / Loading are options of the Figma State
-    // VARIANT, not properties, and Figma has no icon-only property, so
-    // disabled, loading and iconOnly have no entry here.
+    // (figma/code-connect.json, held to the live property read of 2026-11-15);
+    // check-figma-mapping fails if the two disagree. The Figma Button has no
+    // Tone and no icon-only property, and disabled is an option of its State
+    // VARIANT, so tone, iconOnly and disabled have no entry here.
     figmaPropertyMapping: {
       variant: 'Variant',
-      tone: 'Tone',
       size: 'Size',
       label: 'Label',
       iconLeft: 'Show icon',
@@ -97,7 +96,6 @@ const COMPONENT_SPEC_SEEDS = {
     },
     figmaPropertyMapping: {
       padding: 'Padding',
-      gap: 'Gap',
       variant: 'Variant',
       tone: 'Tone',
     },
@@ -167,7 +165,6 @@ const COMPONENT_SPEC_SEEDS = {
       'Title.children': 'Title',
       'Description.children': 'Description',
       'Content.hideClose': 'Show close',
-      modal: 'Modal',
     },
     variantAxes: ['state'],
     componentProperties: [
@@ -239,7 +236,7 @@ const COMPONENT_SPEC_SEEDS = {
     states: ['default'],
   },
   Badge: {
-    variantAxes: ['tone'],
+    variantAxes: ['tone', 'size'],
     componentProperties: [
       {
         name: 'Label',
@@ -304,6 +301,26 @@ const COMPONENT_SPEC_SEEDS = {
     componentProperties: [],
     states: ['default'],
   },
+  // Components with a Code Connect template (figma/code-connect.json, hds#1557):
+  // check-figma-mapping asks each to declare its cva-backed contract axes.
+  AvatarGroup: { variantAxes: ['size'] },
+  Blockquote: { variantAxes: ['size'] },
+  Callout: { variantAxes: ['tone'] },
+  CodeBlock: { variantAxes: ['variant'] },
+  Disclosure: { variantAxes: ['variant'] },
+  EmptyState: { variantAxes: ['variant'] },
+  InlineCode: { variantAxes: ['density'] },
+  Kbd: { variantAxes: ['size'] },
+  List: { variantAxes: ['variant'] },
+  MetadataList: { variantAxes: ['variant'] },
+  Pagination: { variantAxes: ['variant'] },
+  Progress: { variantAxes: ['size'] },
+  SegmentedControl: { variantAxes: ['variant', 'size'] },
+  Skeleton: { variantAxes: ['variant'] },
+  Spinner: { variantAxes: ['size'] },
+  StatusListItem: { variantAxes: ['tone'] },
+  Text: { variantAxes: ['variant', 'tone'] },
+  TimelineItem: { variantAxes: ['tone'] },
 };
 
 /**
