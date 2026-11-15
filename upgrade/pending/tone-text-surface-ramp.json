@@ -567,6 +567,17 @@
         "regex": ["focus-visible:ring-ring"]
       },
       "facts": ["utility-removed:focus-visible:ring-ring"]
+    },
+    {
+      "id": "value-changed/--semantic-color-feedback-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light info is now a calm blue (#2b58b1) instead of the electric blue.500; info text, icons and the info Button fill look calmer, still 4.5:1 or higher.",
+      "detect": {
+        "cssVars": ["--semantic-color-feedback-info"],
+        "cssVarWrites": ["--semantic-color-feedback-info"]
+      },
+      "facts": ["css-var-changed:--semantic-color-feedback-info::root"]
     }
   ]
 }
