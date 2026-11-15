@@ -1765,3 +1765,21 @@ Library 2VgBbVpKiDnu0aftJEVyBQ. Reads only. No write, no delete, no publish. Row
 | C5  | `use_figma`       | read | library: parent sets of the 4 variant nodes; components on the Form page | property definitions of the 4 sets                                                                                                                                            | OK. Sets 2337:14631, 2335:4217, 2336:21, 2337:13345. The Form page holds only FormField 85:81.                                                                                 |
 
 Session total: 5 calls (1 skill, 1 account, 1 session, 2 reads). Nothing written, deleted or published. Both results are recorded in `figma/reads/component-properties.json`; `pnpm figma:connect:check` gates `figma/code-connect.json` against it (hds#1557).
+
+## 2026-11-15 · Parity audit and gate (read only)
+
+The first full parity read: every component and component set of the library, and one hash per variable collection. Scripts from `pnpm figma:parity --emit-read`, unmodified. No write, no publish, no delete.
+
+| #   | Tool              | Kind | Purpose                                                | Result                                                                                                                                        |
+| --- | ----------------- | ---- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1  | `whoami`          | read | plan and seat                                          | OK; tier `pro`                                                                                                                                |
+| P2  | `create_session`  | read | open file session                                      | OK                                                                                                                                            |
+| P3  | `get_figma_skill` | read | load figma-use                                         | OK                                                                                                                                            |
+| P4  | `use_figma`       | read | parity read, variables (collection hashes)             | OK; 8 collections, 15 text styles, 8 effect styles. Equal to the snapshot in PR #1564; on main only Hirobius/Meta differs (meta/commit stamp) |
+| P5  | `use_figma`       | read | parity read, components parts 1 to 4 of 4, in parallel | not run: the session worker restarted before the calls were sent                                                                              |
+| P6  | `use_figma`       | read | parity read, components part 1 of 4                    | OK; 22 pages                                                                                                                                  |
+| P7  | `use_figma`       | read | parity read, components part 2 of 4                    | OK; 22 pages                                                                                                                                  |
+| P8  | `use_figma`       | read | parity read, components part 3 of 4                    | OK; 21 pages                                                                                                                                  |
+| P9  | `use_figma`       | read | parity read, components part 4 of 4                    | OK; 21 pages                                                                                                                                  |
+
+Session total: 8 calls that reached Figma (5 `use_figma` reads, 1 session, 1 skill read, 1 `whoami`). The results are `figma/parity/read.json` (86 pages, 248 components: 80 live, 75 icons, 62 retired, 31 spec sheet kit). Nothing written, nothing deleted, nothing published.

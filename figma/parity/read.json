@@ -1,0 +1,2396 @@
+{
+  "$comment": "The parity read: every component of the HDS library (properties, variant options, what its default variant nests) and one hash per variable collection. Written by `pnpm figma:parity --ingest` from the results of the read-only use_figma scripts `pnpm figma:parity --emit-read` prints. Do not edit: read the library again. `pnpm check:figma-parity` compares it with code.",
+  "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
+  "readOn": "2026-11-15",
+  "takenAt": "2026-11-15T20:17:51.257Z",
+  "variables": {
+    "top": "9200a1bf",
+    "collections": [
+      {
+        "id": "VariableCollectionId:1:2",
+        "name": "Hirobius/Primitives",
+        "modes": 1,
+        "variables": 212,
+        "hash": "3d437149"
+      },
+      {
+        "id": "VariableCollectionId:1:3",
+        "name": "Hirobius/Semantic",
+        "modes": 2,
+        "variables": 218,
+        "hash": "86cbbf90"
+      },
+      {
+        "id": "VariableCollectionId:1:4",
+        "name": "Hirobius/Component",
+        "modes": 1,
+        "variables": 118,
+        "hash": "e7f45ee7"
+      },
+      {
+        "id": "VariableCollectionId:2018:712",
+        "name": "Hirobius/Role",
+        "modes": 1,
+        "variables": 22,
+        "hash": "e4965709"
+      },
+      {
+        "id": "VariableCollectionId:2018:713",
+        "name": "Hirobius/Brand",
+        "modes": 3,
+        "variables": 29,
+        "hash": "7852f694"
+      },
+      {
+        "id": "VariableCollectionId:2018:714",
+        "name": "Hirobius/Density",
+        "modes": 2,
+        "variables": 18,
+        "hash": "57aeb75a"
+      },
+      {
+        "id": "VariableCollectionId:2399:10128",
+        "name": "Button tone",
+        "modes": 6,
+        "variables": 22,
+        "hash": "56a8319c"
+      },
+      {
+        "id": "VariableCollectionId:2419:23",
+        "name": "Hirobius/Meta",
+        "modes": 1,
+        "variables": 6,
+        "hash": "682fa4b8"
+      }
+    ],
+    "textStyles": {
+      "count": 15,
+      "hash": "0bab5b07"
+    },
+    "effectStyles": {
+      "count": 8,
+      "hash": "1a6b4e1e"
+    }
+  },
+  "pages": [
+    {
+      "id": "0:1",
+      "name": "Cover",
+      "components": []
+    },
+    {
+      "id": "20:2",
+      "name": "Getting Started",
+      "components": []
+    },
+    {
+      "id": "20:3",
+      "name": "Foundations: Color",
+      "components": []
+    },
+    {
+      "id": "2555:4288",
+      "name": "Foundations: Motion",
+      "components": []
+    },
+    {
+      "id": "20:5",
+      "name": "Foundations: Spacing",
+      "components": []
+    },
+    {
+      "id": "2555:50",
+      "name": "Foundations: Surface",
+      "components": []
+    },
+    {
+      "id": "20:4",
+      "name": "Foundations: Typography",
+      "components": []
+    },
+    {
+      "id": "20:6",
+      "name": "———",
+      "components": []
+    },
+    {
+      "id": "33:2",
+      "name": "Alert",
+      "components": [
+        {
+          "id": "33:34",
+          "name": "Alert",
+          "type": "SET",
+          "variants": 8,
+          "props": [
+            ["Title", "TEXT", "Heads up"],
+            ["Body", "TEXT", "Main alert message content goes here."],
+            ["Show title", "BOOLEAN", true],
+            ["Tone", "VARIANT", "info", ["info", "success", "warning", "danger"]],
+            ["Size", "VARIANT", "md", ["md", "sm"]]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "2035:23",
+      "name": "AlertDialog",
+      "components": [
+        {
+          "id": "2035:24",
+          "name": "AlertDialog",
+          "type": "ONE",
+          "props": [],
+          "nests": ["Button"]
+        }
+      ]
+    },
+    {
+      "id": "2246:2",
+      "name": "AppShell",
+      "components": []
+    },
+    {
+      "id": "2041:62",
+      "name": "AssetImg",
+      "components": [
+        {
+          "id": "2041:67",
+          "name": "AssetImg",
+          "type": "SET",
+          "variants": 2,
+          "props": [["State", "VARIANT", "placeholder", ["placeholder", "loaded"]]],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2209:3",
+      "name": "AsyncState",
+      "components": [
+        {
+          "id": "2209:96",
+          "name": "AsyncState",
+          "type": "SET",
+          "variants": 5,
+          "props": [
+            ["Status", "VARIANT", "Loading", ["Loading", "Slow", "Error", "Empty", "Ready"]]
+          ],
+          "nests": ["Skeleton"]
+        }
+      ]
+    },
+    {
+      "id": "34:2",
+      "name": "Avatar",
+      "components": [
+        {
+          "id": "34:18",
+          "name": "Avatar",
+          "type": "SET",
+          "variants": 9,
+          "props": [
+            ["Initials", "TEXT", "AH"],
+            ["Show status", "BOOLEAN", false],
+            ["Size", "VARIANT", "sm", ["sm", "md", "lg"]],
+            ["Type", "VARIANT", "Initials", ["Initials", "Image", "Icon"]]
+          ],
+          "nests": ["Badge"]
+        }
+      ]
+    },
+    {
+      "id": "2030:2",
+      "name": "AvatarGroup",
+      "components": [
+        {
+          "id": "2030:63",
+          "name": "AvatarGroup",
+          "type": "SET",
+          "variants": 6,
+          "props": [
+            ["Size", "VARIANT", "md", ["md", "sm", "lg"]],
+            ["Overflow", "VARIANT", "true", ["true", "false"]]
+          ],
+          "nests": ["Avatar"]
+        }
+      ]
+    },
+    {
+      "id": "31:2",
+      "name": "Badge",
+      "components": [
+        {
+          "id": "31:15",
+          "name": "Badge",
+          "type": "SET",
+          "variants": 30,
+          "props": [
+            ["Label", "TEXT", "Badge"],
+            [
+              "Tone",
+              "VARIANT",
+              "neutral",
+              ["neutral", "info", "success", "danger", "warning", "inProgress"]
+            ],
+            ["Type", "VARIANT", "text", ["text", "count", "dot"]],
+            ["Size", "VARIANT", "md", ["md", "sm", "lg"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2024:2",
+      "name": "Blockquote",
+      "components": [
+        {
+          "id": "2024:18",
+          "name": "Blockquote",
+          "type": "SET",
+          "variants": 1,
+          "props": [
+            ["Attribution", "BOOLEAN", true],
+            ["Size", "VARIANT", "md", ["md"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2337:9332",
+      "name": "Box",
+      "components": []
+    },
+    {
+      "id": "86:36",
+      "name": "Breadcrumb",
+      "components": [
+        {
+          "id": "86:121",
+          "name": "BreadcrumbItem",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Label", "TEXT", "Page"],
+            ["Current", "VARIANT", "false", ["false", "true"]],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Focus"]]
+          ],
+          "nests": []
+        },
+        {
+          "id": "86:159",
+          "name": "Breadcrumb",
+          "type": "SET",
+          "variants": 3,
+          "props": [["Levels", "VARIANT", "2", ["2", "3", "4"]]],
+          "nests": ["BreadcrumbItem", "Icon"]
+        }
+      ]
+    },
+    {
+      "id": "28:2",
+      "name": "Button",
+      "components": [
+        {
+          "id": "2399:11077",
+          "name": "Button",
+          "type": "SET",
+          "variants": 48,
+          "props": [
+            ["Label", "TEXT", "Button"],
+            ["Loading", "BOOLEAN", false],
+            ["Focus", "BOOLEAN", false],
+            ["Show icon", "BOOLEAN", false],
+            ["Show trail icon", "BOOLEAN", false],
+            ["Icon", "INSTANCE_SWAP", "27:41"],
+            ["Trail Icon", "INSTANCE_SWAP", "27:15"],
+            ["Variant", "VARIANT", "secondary", ["primary", "secondary", "tertiary", "link"]],
+            ["Size", "VARIANT", "md", ["sm", "md", "lg"]],
+            ["State", "VARIANT", "rest", ["rest", "hover", "pressed", "disabled"]]
+          ],
+          "nests": ["Icon"]
+        },
+        {
+          "id": "2399:26744",
+          "name": "IconButton",
+          "type": "SET",
+          "variants": 36,
+          "props": [
+            ["Loading", "BOOLEAN", false],
+            ["Focus", "BOOLEAN", false],
+            ["Icon", "INSTANCE_SWAP", "27:41"],
+            ["Variant", "VARIANT", "secondary", ["primary", "secondary", "tertiary"]],
+            ["Size", "VARIANT", "md", ["sm", "md", "lg"]],
+            ["State", "VARIANT", "rest", ["rest", "hover", "pressed", "disabled"]]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "88:49",
+      "name": "Callout",
+      "components": [
+        {
+          "id": "88:85",
+          "name": "Callout",
+          "type": "SET",
+          "variants": 5,
+          "props": [
+            ["Show Action", "BOOLEAN", true],
+            ["Tone", "VARIANT", "info", ["info", "success", "warning", "danger", "accent"]]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "39:2",
+      "name": "Card",
+      "components": [
+        {
+          "id": "39:11",
+          "name": "Card",
+          "type": "SET",
+          "variants": 14,
+          "props": [
+            ["Title", "TEXT", "Card title"],
+            ["Description", "TEXT", "Supporting description copy for the card body."],
+            ["Variant", "VARIANT", "default", ["default", "accent"]],
+            ["Tone", "VARIANT", "neutral", ["neutral", "success", "warning", "danger", "info"]],
+            ["Padding", "VARIANT", "component", ["component", "item", "px16", "px24", "none"]],
+            ["Bordered", "VARIANT", "false", ["false", "true"]],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Focus", "Selected"]]
+          ],
+          "nests": []
+        },
+        {
+          "id": "128:14",
+          "name": "CardProgress",
+          "type": "ONE",
+          "props": [],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "35:2",
+      "name": "Checkbox",
+      "components": [
+        {
+          "id": "35:29",
+          "name": "Checkbox",
+          "type": "SET",
+          "variants": 15,
+          "props": [
+            ["Label", "TEXT", "Checkbox label"],
+            ["Checked", "VARIANT", "false", ["false", "true", "indeterminate"]],
+            ["State", "VARIANT", "rest", ["rest", "disabled", "hover", "focused", "pressed"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "111:4",
+      "name": "CodeBlock",
+      "components": [
+        {
+          "id": "89:154",
+          "name": "CodeBlock",
+          "type": "SET",
+          "variants": 2,
+          "props": [
+            ["Code", "TEXT", "const x = 1;"],
+            ["Filename", "TEXT", "index.ts"],
+            ["Show filename", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": []
+        },
+        {
+          "id": "89:155",
+          "name": "InlineCode",
+          "type": "ONE",
+          "props": [["Code", "TEXT", "token"]],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "82:182",
+      "name": "Combobox",
+      "components": [
+        {
+          "id": "82:237",
+          "name": "Combobox",
+          "type": "SET",
+          "variants": 18,
+          "props": [
+            ["Show label", "BOOLEAN", true],
+            ["Label", "TEXT", "Label"],
+            ["Value", "TEXT", "Select an option"],
+            ["Selection", "VARIANT", "Single", ["Single", "Multiple", "Creatable"]],
+            [
+              "State",
+              "VARIANT",
+              "Default",
+              ["Default", "Hover", "Focus", "Disabled", "Open", "Invalid"]
+            ]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "2264:2",
+      "name": "CommandPalette",
+      "components": [
+        {
+          "id": "2264:67",
+          "name": "CommandPalette",
+          "type": "SET",
+          "variants": 3,
+          "props": [["State", "VARIANT", "Results", ["Results", "Empty", "Argument"]]],
+          "nests": ["Icon", "Kbd"]
+        }
+      ]
+    },
+    {
+      "id": "2201:4",
+      "name": "Composer",
+      "components": [
+        {
+          "id": "2201:277",
+          "name": "Composer",
+          "type": "SET",
+          "variants": 5,
+          "props": [
+            ["State", "VARIANT", "Empty", ["Empty", "Typing", "Attachments", "Pending", "Disabled"]]
+          ],
+          "nests": ["Button", "Kbd", "Textarea"]
+        }
+      ]
+    },
+    {
+      "id": "2337:30256",
+      "name": "Container",
+      "components": []
+    },
+    {
+      "id": "2075:115",
+      "name": "DataTableSection",
+      "components": [
+        {
+          "id": "2075:268",
+          "name": "DataTableSection",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Toolbar", "VARIANT", "true", ["true", "false"]],
+            ["Empty", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": ["Button", "Table"]
+        }
+      ]
+    },
+    {
+      "id": "2076:2",
+      "name": "DestructiveSection",
+      "components": [
+        {
+          "id": "2076:3",
+          "name": "DestructiveSection",
+          "type": "ONE",
+          "props": [],
+          "nests": ["Button"]
+        }
+      ]
+    },
+    {
+      "id": "87:4",
+      "name": "Dialog",
+      "components": [
+        {
+          "id": "93:27",
+          "name": "Dialog",
+          "type": "ONE",
+          "props": [
+            ["Title", "TEXT", "Dialog title"],
+            [
+              "Description",
+              "TEXT",
+              "Are you sure you want to continue? This action cannot be undone."
+            ],
+            ["Show close", "BOOLEAN", true]
+          ],
+          "nests": ["Button", "Icon"]
+        }
+      ]
+    },
+    {
+      "id": "88:391",
+      "name": "Disclosure",
+      "components": [
+        {
+          "id": "88:453",
+          "name": "Disclosure",
+          "type": "SET",
+          "variants": 8,
+          "props": [
+            ["Variant", "VARIANT", "panel", ["panel", "nav", "card", "row"]],
+            ["State", "VARIANT", "Collapsed", ["Collapsed", "Expanded"]]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "111:2",
+      "name": "Divider",
+      "components": [
+        {
+          "id": "89:26",
+          "name": "Divider",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Orientation", "VARIANT", "Horizontal", ["Horizontal", "Vertical"]],
+            ["Variant", "VARIANT", "default", ["strong", "default"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "88:351",
+      "name": "EmptyState",
+      "components": [
+        {
+          "id": "2337:14631",
+          "name": "EmptyState",
+          "type": "SET",
+          "variants": 3,
+          "props": [
+            ["Show icon", "BOOLEAN", true],
+            ["Show description", "BOOLEAN", true],
+            ["Show action", "BOOLEAN", true],
+            ["Title", "TEXT", "Nothing here yet"],
+            ["Description2", "TEXT", "Items you add will show up here."],
+            ["Variant", "VARIANT", "inline", ["inline", "teaching"]],
+            ["Framed", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": ["Button", "Icon"]
+        }
+      ]
+    },
+    {
+      "id": "2121:838",
+      "name": "ErrorPattern",
+      "components": [
+        {
+          "id": "2121:839",
+          "name": "ErrorPattern",
+          "type": "ONE",
+          "props": [
+            ["Display text", "TEXT", "404"],
+            ["Message", "TEXT", "Page not found"]
+          ],
+          "nests": ["Button"]
+        }
+      ]
+    },
+    {
+      "id": "85:15",
+      "name": "Field",
+      "components": [
+        {
+          "id": "2337:23270",
+          "name": "Field",
+          "type": "SET",
+          "variants": 10,
+          "props": [
+            ["Label", "TEXT", "Status"],
+            ["Value", "TEXT", "Operational"],
+            ["Show value", "BOOLEAN", true],
+            ["Tone", "VARIANT", "neutral", ["neutral", "success", "warning", "danger", "info"]],
+            ["Mono", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "85:93",
+      "name": "Form",
+      "components": [
+        {
+          "id": "85:81",
+          "name": "FormField (form.tsx)",
+          "type": "SET",
+          "variants": 6,
+          "props": [
+            ["Label", "TEXT", "Label"],
+            ["Helper", "TEXT", "Helper text goes here"],
+            ["State", "VARIANT", "Default", ["Default", "Error", "Disabled"]],
+            ["Required", "VARIANT", "true", ["true", "false"]]
+          ],
+          "nests": ["Input"]
+        }
+      ]
+    },
+    {
+      "id": "2075:2",
+      "name": "FormActions",
+      "components": [
+        {
+          "id": "2075:87",
+          "name": "FormActions",
+          "type": "SET",
+          "variants": 2,
+          "props": [
+            ["Destructive", "BOOLEAN", true],
+            ["Secondary", "BOOLEAN", true],
+            ["Destructive button", "INSTANCE_SWAP", "2399:10593"],
+            ["Secondary button", "INSTANCE_SWAP", "2399:10725"],
+            ["Primary button", "INSTANCE_SWAP", "2399:10593"],
+            ["Layout", "VARIANT", "inline", ["inline", "bar"]]
+          ],
+          "nests": ["Button"]
+        }
+      ]
+    },
+    {
+      "id": "2599:86",
+      "name": "Dock",
+      "components": [
+        {
+          "id": "2599:87",
+          "name": "Dock",
+          "type": "ONE",
+          "props": [],
+          "nests": ["Button"]
+        }
+      ]
+    },
+    {
+      "id": "2337:35111",
+      "name": "Grid",
+      "components": []
+    },
+    {
+      "id": "2337:18159",
+      "name": "HdsRouterProvider",
+      "components": []
+    },
+    {
+      "id": "2337:18160",
+      "name": "HdsThemeProvider",
+      "components": []
+    },
+    {
+      "id": "27:2",
+      "name": "Icon",
+      "components": [
+        {
+          "id": "27:5",
+          "name": "Icon/check",
+          "type": "ONE"
+        },
+        {
+          "id": "27:9",
+          "name": "Icon/x",
+          "type": "ONE"
+        },
+        {
+          "id": "27:12",
+          "name": "Icon/chevron-down",
+          "type": "ONE"
+        },
+        {
+          "id": "27:15",
+          "name": "Icon/chevron-right",
+          "type": "ONE"
+        },
+        {
+          "id": "27:20",
+          "name": "Icon/info",
+          "type": "ONE"
+        },
+        {
+          "id": "27:25",
+          "name": "Icon/triangle-alert",
+          "type": "ONE"
+        },
+        {
+          "id": "27:29",
+          "name": "Icon/circle-check",
+          "type": "ONE"
+        },
+        {
+          "id": "27:34",
+          "name": "Icon/circle-alert",
+          "type": "ONE"
+        },
+        {
+          "id": "27:37",
+          "name": "Icon/minus",
+          "type": "ONE"
+        },
+        {
+          "id": "27:41",
+          "name": "Icon/plus",
+          "type": "ONE"
+        },
+        {
+          "id": "92:8",
+          "name": "Icon/chevron-up",
+          "type": "ONE"
+        },
+        {
+          "id": "92:15",
+          "name": "Icon/arrow-right",
+          "type": "ONE"
+        },
+        {
+          "id": "92:19",
+          "name": "Icon/arrow-left",
+          "type": "ONE"
+        },
+        {
+          "id": "92:23",
+          "name": "Icon/arrow-up-right",
+          "type": "ONE"
+        },
+        {
+          "id": "92:29",
+          "name": "Icon/calendar",
+          "type": "ONE"
+        },
+        {
+          "id": "92:33",
+          "name": "Icon/clock",
+          "type": "ONE"
+        },
+        {
+          "id": "92:37",
+          "name": "Icon/user",
+          "type": "ONE"
+        },
+        {
+          "id": "92:43",
+          "name": "Icon/users",
+          "type": "ONE"
+        },
+        {
+          "id": "92:47",
+          "name": "Icon/settings",
+          "type": "ONE"
+        },
+        {
+          "id": "92:58",
+          "name": "Icon/sliders",
+          "type": "ONE"
+        },
+        {
+          "id": "92:66",
+          "name": "Icon/trash",
+          "type": "ONE"
+        },
+        {
+          "id": "92:71",
+          "name": "Icon/download",
+          "type": "ONE"
+        },
+        {
+          "id": "92:76",
+          "name": "Icon/upload",
+          "type": "ONE"
+        },
+        {
+          "id": "92:81",
+          "name": "Icon/external-link",
+          "type": "ONE"
+        },
+        {
+          "id": "92:85",
+          "name": "Icon/eye",
+          "type": "ONE"
+        },
+        {
+          "id": "92:91",
+          "name": "Icon/eye-off",
+          "type": "ONE"
+        },
+        {
+          "id": "92:96",
+          "name": "Icon/more-horizontal",
+          "type": "ONE"
+        },
+        {
+          "id": "92:101",
+          "name": "Icon/more-vertical",
+          "type": "ONE"
+        },
+        {
+          "id": "92:106",
+          "name": "Icon/menu",
+          "type": "ONE"
+        },
+        {
+          "id": "92:114",
+          "name": "Icon/mail",
+          "type": "ONE"
+        },
+        {
+          "id": "92:118",
+          "name": "Icon/lock",
+          "type": "ONE"
+        },
+        {
+          "id": "92:124",
+          "name": "Icon/heart",
+          "type": "ONE"
+        },
+        {
+          "id": "92:128",
+          "name": "Icon/copy",
+          "type": "ONE"
+        },
+        {
+          "id": "92:132",
+          "name": "Icon/pencil",
+          "type": "ONE"
+        },
+        {
+          "id": "92:138",
+          "name": "Icon/circle",
+          "type": "ONE"
+        },
+        {
+          "id": "92:141",
+          "name": "Icon/dot",
+          "type": "ONE"
+        },
+        {
+          "id": "106:5",
+          "name": "Icon/search",
+          "type": "ONE"
+        },
+        {
+          "id": "109:5",
+          "name": "Icon/bell",
+          "type": "ONE"
+        },
+        {
+          "id": "109:8",
+          "name": "Icon/star",
+          "type": "ONE"
+        },
+        {
+          "id": "109:11",
+          "name": "Icon/filter",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1224",
+          "name": "Icon/chevron-left",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1227",
+          "name": "Icon/loader-circle",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1231",
+          "name": "Icon/home",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1236",
+          "name": "Icon/log-out",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1241",
+          "name": "Icon/log-in",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1247",
+          "name": "Icon/refresh-cw",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1251",
+          "name": "Icon/file",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1258",
+          "name": "Icon/file-text",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1261",
+          "name": "Icon/folder",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1266",
+          "name": "Icon/image",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1270",
+          "name": "Icon/link",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1273",
+          "name": "Icon/message-square",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1276",
+          "name": "Icon/phone",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1280",
+          "name": "Icon/send",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1285",
+          "name": "Icon/share",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1288",
+          "name": "Icon/bookmark",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1293",
+          "name": "Icon/globe",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1296",
+          "name": "Icon/cloud",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1299",
+          "name": "Icon/zap",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1304",
+          "name": "Icon/circle-help",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1312",
+          "name": "Icon/grip-vertical",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1317",
+          "name": "Icon/layers",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1323",
+          "name": "Icon/layout-dashboard",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1326",
+          "name": "Icon/shield",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1332",
+          "name": "Icon/chart-bar",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1336",
+          "name": "Icon/trending-up",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1343",
+          "name": "Icon/sparkles",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1348",
+          "name": "Icon/archive",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1352",
+          "name": "Icon/map-pin",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1358",
+          "name": "Icon/hash",
+          "type": "ONE"
+        },
+        {
+          "id": "2295:2541",
+          "name": "Icon/square-arrow-out-up-right",
+          "type": "ONE"
+        },
+        {
+          "id": "2304:2218",
+          "name": "Icon/arrow-up",
+          "type": "ONE"
+        },
+        {
+          "id": "2304:2222",
+          "name": "Icon/arrow-down",
+          "type": "ONE"
+        },
+        {
+          "id": "2304:2228",
+          "name": "Icon/arrow-up-down",
+          "type": "ONE"
+        },
+        {
+          "id": "2304:2229",
+          "name": "Icon/circle-x",
+          "type": "ONE"
+        }
+      ]
+    },
+    {
+      "id": "111:5",
+      "name": "InlineLink",
+      "components": [
+        {
+          "id": "89:161",
+          "name": "InlineLink",
+          "type": "SET",
+          "variants": 9,
+          "props": [
+            ["Label", "TEXT", "Link text"],
+            ["External", "BOOLEAN", false],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Focus"]],
+            ["Size", "VARIANT", "md", ["md", "sm", "lg"]]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "38:2",
+      "name": "Input",
+      "components": [
+        {
+          "id": "38:20",
+          "name": "Input",
+          "type": "SET",
+          "variants": 36,
+          "props": [
+            ["Label", "TEXT", "Label"],
+            ["Value", "TEXT", "Placeholder"],
+            ["Show label", "BOOLEAN", true],
+            ["Show leading icon", "BOOLEAN", false],
+            ["Show trailing icon", "BOOLEAN", false],
+            ["Show helper", "BOOLEAN", false],
+            ["Helper text", "TEXT", "Helper text"],
+            ["Error message", "TEXT", "This field is required"],
+            [
+              "State",
+              "VARIANT",
+              "Default",
+              ["Default", "Focus", "Error", "Disabled", "Filled", "Loading"]
+            ],
+            ["Size", "VARIANT", "sm", ["lg", "sm", "md"]],
+            ["Text style", "VARIANT", "body", ["mono", "body"]]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "2026:2",
+      "name": "Kbd",
+      "components": [
+        {
+          "id": "2026:9",
+          "name": "Kbd",
+          "type": "SET",
+          "variants": 3,
+          "props": [
+            ["Key", "TEXT", "Esc"],
+            ["Size", "VARIANT", "sm", ["md", "sm", "lg"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "111:7",
+      "name": "Layout Primitives",
+      "components": []
+    },
+    {
+      "id": "2352:2",
+      "name": "List",
+      "components": [
+        {
+          "id": "2352:301",
+          "name": "ListItem",
+          "type": "SET",
+          "variants": 16,
+          "props": [
+            ["Title", "TEXT", "Product designer"],
+            ["Description", "TEXT", "Remote, full time, design systems team"],
+            ["Meta", "TEXT", "Applied 2 days ago"],
+            ["Show leading", "BOOLEAN", true],
+            ["Show description", "BOOLEAN", true],
+            ["Show meta", "BOOLEAN", true],
+            ["Show divider", "BOOLEAN", false],
+            ["Leading icon", "INSTANCE_SWAP", "109:1258"],
+            ["Trailing", "VARIANT", "chevron", ["chevron", "count", "actions", "none"]],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Pressed", "Focus"]]
+          ],
+          "nests": ["Icon"]
+        },
+        {
+          "id": "2353:314",
+          "name": "ListGroup",
+          "type": "SET",
+          "variants": 3,
+          "props": [
+            ["Title", "TEXT", "Applications"],
+            ["Show count", "BOOLEAN", true],
+            ["Show action", "BOOLEAN", true],
+            ["Variant", "VARIANT", "inset", ["inset", "plain"]],
+            ["Divider", "VARIANT", "inset", ["inset", "none"]]
+          ],
+          "nests": ["Badge", "Button", "ListItem"]
+        },
+        {
+          "id": "2353:315",
+          "name": "List",
+          "type": "ONE",
+          "props": [],
+          "nests": ["ListGroup"]
+        }
+      ]
+    },
+    {
+      "id": "87:7",
+      "name": "Menu",
+      "components": [
+        {
+          "id": "93:58",
+          "name": "MenuItem",
+          "type": "SET",
+          "variants": 6,
+          "props": [
+            ["Label", "TEXT", "Menu item"],
+            ["Show leading icon", "BOOLEAN", false],
+            ["Show trailing icon", "BOOLEAN", false],
+            ["Leading icon", "INSTANCE_SWAP", "27:5"],
+            ["State", "VARIANT", "Default", ["Default", "Highlighted", "Disabled"]],
+            ["Tone", "VARIANT", "neutral", ["neutral", "danger"]]
+          ],
+          "nests": ["Icon"]
+        },
+        {
+          "id": "93:59",
+          "name": "Menu",
+          "type": "ONE",
+          "props": [],
+          "nests": ["MenuItem"]
+        }
+      ]
+    },
+    {
+      "id": "2041:2",
+      "name": "MetadataList",
+      "components": [
+        {
+          "id": "2041:47",
+          "name": "MetadataList",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Orientation", "VARIANT", "vertical", ["vertical", "horizontal"]],
+            ["Variant", "VARIANT", "plain", ["plain", "divided"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2201:5",
+      "name": "MetaLine",
+      "components": [
+        {
+          "id": "2201:12",
+          "name": "MetaLine",
+          "type": "SET",
+          "variants": 2,
+          "props": [
+            ["First", "TEXT", "Acme Cloud"],
+            ["Second", "TEXT", "Remote"],
+            ["Items", "VARIANT", "1", ["2", "1"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2209:2",
+      "name": "NavList",
+      "components": [
+        {
+          "id": "2209:25",
+          "name": "NavListItem",
+          "type": "SET",
+          "variants": 6,
+          "props": [
+            ["Title", "TEXT", "Senior product designer"],
+            ["Meta", "TEXT", "Acme Cloud · Remote"],
+            ["Current", "VARIANT", "false", ["false", "true"]],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Focus"]]
+          ],
+          "nests": []
+        },
+        {
+          "id": "2209:26",
+          "name": "NavList",
+          "type": "ONE",
+          "props": [],
+          "nests": ["NavListItem"]
+        }
+      ]
+    },
+    {
+      "id": "2121:2",
+      "name": "PageHeader",
+      "components": [
+        {
+          "id": "2121:3",
+          "name": "PageHeader",
+          "type": "ONE",
+          "props": [
+            ["Title", "TEXT", "Acme Co"],
+            ["Breadcrumb", "BOOLEAN", true],
+            ["Status", "BOOLEAN", false],
+            ["Actions", "BOOLEAN", true]
+          ],
+          "nests": ["Badge", "Breadcrumb", "Button"]
+        }
+      ]
+    },
+    {
+      "id": "86:37",
+      "name": "Pagination",
+      "components": [
+        {
+          "id": "86:193",
+          "name": "PageButton",
+          "type": "SET",
+          "variants": 2,
+          "props": [
+            ["Label", "TEXT", "1"],
+            ["Current", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": []
+        },
+        {
+          "id": "2335:4217",
+          "name": "Pagination",
+          "type": "SET",
+          "variants": 2,
+          "props": [["Variant", "VARIANT", "default", ["default", "compact"]]],
+          "nests": ["IconButton", "PageButton"]
+        }
+      ]
+    },
+    {
+      "id": "87:5",
+      "name": "Popover",
+      "components": [
+        {
+          "id": "93:32",
+          "name": "Popover",
+          "type": "ONE",
+          "props": [
+            ["Title", "TEXT", "Popover title"],
+            ["Content", "TEXT", "Popover content goes here. Replace with any layout in instances."],
+            ["Show title", "BOOLEAN", true]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "88:86",
+      "name": "Progress",
+      "components": [
+        {
+          "id": "88:91",
+          "name": "Progress",
+          "type": "SET",
+          "variants": 6,
+          "props": [
+            ["Type", "VARIANT", "Determinate", ["Determinate", "Indeterminate"]],
+            ["Size", "VARIANT", "sm", ["md", "sm", "lg"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "36:2",
+      "name": "Radio",
+      "components": [
+        {
+          "id": "36:17",
+          "name": "Radio",
+          "type": "SET",
+          "variants": 10,
+          "props": [
+            ["Label", "TEXT", "Radio label"],
+            ["Checked", "VARIANT", "false", ["false", "true"]],
+            ["Disabled", "VARIANT", "false", ["false", "true"]],
+            ["State", "VARIANT", "Rest", ["Rest", "Hover", "Focused", "Pressed"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2190:2",
+      "name": "References",
+      "components": []
+    },
+    {
+      "id": "82:266",
+      "name": "SegmentedControl",
+      "components": [
+        {
+          "id": "82:334",
+          "name": "SegmentedControl",
+          "type": "SET",
+          "variants": 36,
+          "props": [
+            ["Segments", "VARIANT", "2", ["2", "3", "4"]],
+            ["Selected", "VARIANT", "1", ["1", "2", "3", "4"]],
+            ["Size", "VARIANT", "md", ["md", "sm"]],
+            ["Variant", "VARIANT", "primary", ["primary", "secondary"]]
+          ],
+          "nests": ["SegmentedControl/Segment"]
+        },
+        {
+          "id": "2337:27807",
+          "name": "SegmentedControl/Segment",
+          "type": "SET",
+          "variants": 40,
+          "props": [
+            ["Label", "TEXT", "Option"],
+            ["Variant", "VARIANT", "primary", ["primary", "secondary"]],
+            ["Active", "VARIANT", "true", ["true", "false"]],
+            ["State", "VARIANT", "Rest", ["Rest", "Hover", "Pressed", "Focused", "Disabled"]],
+            ["Size", "VARIANT", "md", ["md", "sm"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "82:7",
+      "name": "Select",
+      "components": [
+        {
+          "id": "82:49",
+          "name": "Select",
+          "type": "SET",
+          "variants": 5,
+          "props": [
+            ["Show label", "BOOLEAN", true],
+            ["Label", "TEXT", "Label"],
+            ["Value", "TEXT", "Select option"],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Focus", "Open", "Invalid"]]
+          ],
+          "nests": ["Icon"]
+        }
+      ]
+    },
+    {
+      "id": "2265:2",
+      "name": "Sheet",
+      "components": [
+        {
+          "id": "2265:3",
+          "name": "SheetTrigger",
+          "type": "ONE",
+          "props": [],
+          "nests": ["Button"]
+        },
+        {
+          "id": "2265:14",
+          "name": "SheetTitle",
+          "type": "ONE",
+          "props": [["Title", "TEXT", "Sort by"]],
+          "nests": []
+        },
+        {
+          "id": "2265:16",
+          "name": "SheetDescription",
+          "type": "ONE",
+          "props": [["Description", "TEXT", "Choose how the list is ordered."]],
+          "nests": []
+        },
+        {
+          "id": "2265:18",
+          "name": "SheetClose",
+          "type": "ONE",
+          "props": [],
+          "nests": ["Icon"]
+        },
+        {
+          "id": "2265:119",
+          "name": "Sheet",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Layout", "VARIANT", "Phone", ["Phone", "Desktop"]],
+            ["Content", "VARIANT", "Actions", ["Actions", "Footer"]]
+          ],
+          "nests": ["Icon", "SheetClose", "SheetDescription", "SheetTitle"]
+        }
+      ]
+    },
+    {
+      "id": "88:92",
+      "name": "Skeleton",
+      "components": [
+        {
+          "id": "88:95",
+          "name": "Skeleton",
+          "type": "SET",
+          "variants": 3,
+          "props": [["Variant", "VARIANT", "text", ["text", "rectangular", "circular"]]],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "82:238",
+      "name": "Slider",
+      "components": [
+        {
+          "id": "82:265",
+          "name": "Slider",
+          "type": "SET",
+          "variants": 4,
+          "props": [["State", "VARIANT", "Default", ["Default", "Hover", "Focus", "Pressed"]]],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "88:96",
+      "name": "Spinner",
+      "components": [
+        {
+          "id": "88:106",
+          "name": "Spinner",
+          "type": "SET",
+          "variants": 3,
+          "props": [["Size", "VARIANT", "md", ["sm", "md", "lg"]]],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2335:14759",
+      "name": "Stack",
+      "components": [
+        {
+          "id": "2335:14832",
+          "name": "Stack",
+          "type": "SET",
+          "variants": 18,
+          "props": [
+            ["Direction", "VARIANT", "column", ["column", "row"]],
+            [
+              "Gap",
+              "VARIANT",
+              "tight",
+              ["tight", "normal", "inset", "spacious", "gap", "medium", "hairline", "xs", "stack"]
+            ]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "88:333",
+      "name": "StatusListItem",
+      "components": [
+        {
+          "id": "88:350",
+          "name": "StatusListItem",
+          "type": "SET",
+          "variants": 5,
+          "props": [
+            ["Tone", "VARIANT", "neutral", ["info", "success", "warning", "danger", "neutral"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "88:252",
+      "name": "StatusTile",
+      "components": []
+    },
+    {
+      "id": "111:3",
+      "name": "Surface",
+      "components": [
+        {
+          "id": "2336:21",
+          "name": "Surface",
+          "type": "SET",
+          "variants": 10,
+          "props": [
+            ["Padding", "VARIANT", "component", ["component", "item", "px16", "px24", "none"]],
+            ["Shadow", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "111:6",
+      "name": "Table",
+      "components": [
+        {
+          "id": "89:300",
+          "name": "Table",
+          "type": "SET",
+          "variants": 8,
+          "props": [
+            ["Density", "VARIANT", "comfortable", ["comfortable", "compact"]],
+            ["Sortable", "VARIANT", "false", ["false", "true"]],
+            ["StickyHeader", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": ["Table/Cell", "Table/HeaderCell"]
+        },
+        {
+          "id": "2304:2480",
+          "name": "Table/HeaderCell",
+          "type": "SET",
+          "variants": 48,
+          "props": [
+            ["Label", "TEXT", "Column"],
+            ["Density", "VARIANT", "comfortable", ["comfortable", "compact"]],
+            ["Align", "VARIANT", "left", ["left", "center", "right"]],
+            ["Sort", "VARIANT", "off", ["off", "none", "ascending", "descending"]],
+            ["ColumnDivider", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": []
+        },
+        {
+          "id": "2304:2769",
+          "name": "Table/Cell",
+          "type": "SET",
+          "variants": 144,
+          "props": [
+            ["Label", "TEXT", "Cell"],
+            ["Density", "VARIANT", "comfortable", ["comfortable", "compact"]],
+            [
+              "Slot",
+              "VARIANT",
+              "label",
+              ["label", "value", "description", "token", "code", "action"]
+            ],
+            ["Align", "VARIANT", "left", ["left", "center", "right"]],
+            ["Divider", "VARIANT", "true", ["true", "false"]],
+            ["ColumnDivider", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "86:35",
+      "name": "Tabs",
+      "components": [
+        {
+          "id": "86:52",
+          "name": "TabTrigger",
+          "type": "SET",
+          "variants": 6,
+          "props": [
+            ["Label", "TEXT", "Tab"],
+            ["Selected", "VARIANT", "false", ["false", "true"]],
+            ["State", "VARIANT", "Default", ["Default", "Focus", "Disabled"]]
+          ],
+          "nests": []
+        },
+        {
+          "id": "86:89",
+          "name": "Tabs",
+          "type": "SET",
+          "variants": 6,
+          "props": [
+            ["Tabs", "VARIANT", "2", ["2", "3", "4"]],
+            ["Variant", "VARIANT", "panel", ["panel", "bare"]]
+          ],
+          "nests": ["TabTrigger"]
+        }
+      ]
+    },
+    {
+      "id": "32:2",
+      "name": "Tag",
+      "components": [
+        {
+          "id": "32:11",
+          "name": "Tag",
+          "type": "SET",
+          "variants": 7,
+          "props": [
+            ["Label", "TEXT", "Filter"],
+            ["Active", "VARIANT", "false", ["false", "true"]],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Focus"]],
+            ["Dismissible", "VARIANT", "false", ["false", "true"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2022:2",
+      "name": "Text",
+      "components": [
+        {
+          "id": "2022:31",
+          "name": "Text",
+          "type": "SET",
+          "variants": 63,
+          "props": [
+            ["Label", "TEXT", "Text"],
+            [
+              "Variant",
+              "VARIANT",
+              "body",
+              ["body", "display", "ui", "caption", "title", "mono", "titleSm"]
+            ],
+            [
+              "Tone",
+              "VARIANT",
+              "none",
+              [
+                "none",
+                "primary",
+                "secondary",
+                "disabled",
+                "accent",
+                "success",
+                "warning",
+                "danger",
+                "info"
+              ]
+            ]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "85:5",
+      "name": "Textarea",
+      "components": [
+        {
+          "id": "85:14",
+          "name": "Textarea",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Value", "TEXT", "Enter your message here...\n\n\n"],
+            ["Label", "TEXT", "Message"],
+            ["Helper", "TEXT", "Up to 500 characters."],
+            ["Error message", "TEXT", "Enter a message."],
+            ["Show label", "BOOLEAN", true],
+            ["Show helper", "BOOLEAN", true],
+            ["Resize handle", "BOOLEAN", true],
+            ["State", "VARIANT", "Default", ["Default", "Focus", "Error", "Disabled"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2201:2",
+      "name": "ThemeToggle",
+      "components": [
+        {
+          "id": "2201:51",
+          "name": "ThemeToggle",
+          "type": "SET",
+          "variants": 8,
+          "props": [
+            ["Theme", "VARIANT", "light", ["light", "dark"]],
+            ["State", "VARIANT", "Default", ["Default", "Hover", "Pressed", "Focus"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2201:3",
+      "name": "Timeline",
+      "components": [
+        {
+          "id": "2201:133",
+          "name": "Timeline",
+          "type": "ONE",
+          "props": [],
+          "nests": ["TimelineItem"]
+        },
+        {
+          "id": "2252:127",
+          "name": "TimelineItem",
+          "type": "SET",
+          "variants": 20,
+          "props": [
+            ["Tone", "VARIANT", "neutral", ["neutral", "success", "danger", "warning", "info"]],
+            ["Detail", "VARIANT", "false", ["false", "true"]],
+            ["Marker", "VARIANT", "dot", ["dot", "icon"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2031:2",
+      "name": "Timestamp",
+      "components": [
+        {
+          "id": "2031:11",
+          "name": "Timestamp",
+          "type": "SET",
+          "variants": 4,
+          "props": [["Format", "VARIANT", "datetime", ["datetime", "relative", "date", "time"]]],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "87:8",
+      "name": "Toast",
+      "components": [
+        {
+          "id": "93:367",
+          "name": "Toast",
+          "type": "SET",
+          "variants": 15,
+          "props": [
+            ["Title", "TEXT", "Notification"],
+            ["Description", "TEXT", "Toast notification message goes here."],
+            ["Show description", "BOOLEAN", true],
+            ["Show actions", "BOOLEAN", false],
+            ["Show second action", "BOOLEAN", true],
+            ["Tone", "VARIANT", "neutral", ["info", "success", "warning", "danger", "neutral"]],
+            ["Dismiss", "VARIANT", "Rest", ["Rest", "Hover", "Focus"]]
+          ],
+          "nests": ["Button", "Icon"]
+        }
+      ]
+    },
+    {
+      "id": "37:2",
+      "name": "Toggle",
+      "components": [
+        {
+          "id": "37:19",
+          "name": "Toggle",
+          "type": "SET",
+          "variants": 10,
+          "props": [
+            ["Label", "TEXT", "Toggle label"],
+            ["Checked", "VARIANT", "false", ["false", "true"]],
+            ["State", "VARIANT", "rest", ["rest", "hover", "focused", "disabled", "pressed"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2209:4",
+      "name": "TokenField",
+      "components": [
+        {
+          "id": "2209:141",
+          "name": "TokenField",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Label", "TEXT", "Message"],
+            ["State", "VARIANT", "Default", ["Default", "Focus", "Error", "Disabled"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "87:6",
+      "name": "Tooltip",
+      "components": [
+        {
+          "id": "2337:13345",
+          "name": "Tooltip",
+          "type": "SET",
+          "variants": 4,
+          "props": [
+            ["Label", "TEXT", "Tooltip label"],
+            ["Side", "VARIANT", "top", ["top", "bottom", "left", "right"]]
+          ],
+          "nests": []
+        }
+      ]
+    },
+    {
+      "id": "2337:18158",
+      "name": "VisuallyHidden",
+      "components": []
+    },
+    {
+      "id": "2614:5747",
+      "name": "---",
+      "components": []
+    },
+    {
+      "id": "2399:10548",
+      "name": "_Button v2 (moved)",
+      "components": []
+    },
+    {
+      "id": "2083:2",
+      "name": "Archive",
+      "components": [
+        {
+          "id": "40:39",
+          "name": "_IconButton (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 45
+        },
+        {
+          "id": "2003:21",
+          "name": "_StatusDot (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 18
+        },
+        {
+          "id": "82:425",
+          "name": "_StepperField (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 3
+        },
+        {
+          "id": "2025:21",
+          "name": "_HeadingStack (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 6
+        },
+        {
+          "id": "2028:27",
+          "name": "_ToggleButton (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 12
+        },
+        {
+          "id": "2028:118",
+          "name": "_ButtonGroup (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 2
+        },
+        {
+          "id": "2029:48",
+          "name": "_CircularProgress (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 15
+        },
+        {
+          "id": "2032:9",
+          "name": "_SelectableCard (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 2
+        },
+        {
+          "id": "2033:50",
+          "name": "_Stepper (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 2
+        },
+        {
+          "id": "2034:3",
+          "name": "_HoverCard (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2034:7",
+          "name": "_ContextMenu (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2036:15",
+          "name": "_InputGroup (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 3
+        },
+        {
+          "id": "2036:29",
+          "name": "_FileInput (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 4
+        },
+        {
+          "id": "2038:3",
+          "name": "_Toolbar (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2038:16",
+          "name": "_OverflowList (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2038:36",
+          "name": "_Frame (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 4
+        },
+        {
+          "id": "2039:3",
+          "name": "_DateInput (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2039:21",
+          "name": "_TimeInput (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 3
+        },
+        {
+          "id": "2039:23",
+          "name": "_DateTimeInput (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2039:37",
+          "name": "_DateRangeInput (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2040:3",
+          "name": "_TreeList (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2040:34",
+          "name": "_CinematicLink (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 2
+        },
+        {
+          "id": "2041:61",
+          "name": "_Token (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 4
+        },
+        {
+          "id": "2042:3",
+          "name": "_TopNav (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2042:52",
+          "name": "_Tokenizer (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 2
+        },
+        {
+          "id": "2042:54",
+          "name": "_MultiSelector (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2042:71",
+          "name": "_Carousel (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2043:3",
+          "name": "_Calendar (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2043:99",
+          "name": "_CommandPalette (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2043:125",
+          "name": "_Lightbox (archived 2026-10-07)",
+          "type": "ONE"
+        },
+        {
+          "id": "2043:184",
+          "name": "_ActivityFeed (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 4
+        },
+        {
+          "id": "2044:39",
+          "name": "_TextLockup (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 12
+        },
+        {
+          "id": "2044:51",
+          "name": "_DocLinkCard (archived 2026-10-07)",
+          "type": "SET",
+          "variants": 2
+        },
+        {
+          "id": "2044:53",
+          "name": "_StackedCardRail (archived 2026-10-07)",
+          "type": "ONE"
+        }
+      ]
+    },
+    {
+      "id": "2157:826",
+      "name": "Deprecated",
+      "components": [
+        {
+          "id": "128:18",
+          "name": "CardMetric",
+          "type": "ONE"
+        },
+        {
+          "id": "82:259",
+          "name": "Slider/Default/true",
+          "type": "ONE"
+        },
+        {
+          "id": "88:247",
+          "name": "Stat",
+          "type": "ONE"
+        },
+        {
+          "id": "2075:114",
+          "name": "MetricTile",
+          "type": "SET",
+          "variants": 5
+        },
+        {
+          "id": "2121:89",
+          "name": "MetricTiles",
+          "type": "SET",
+          "variants": 3
+        },
+        {
+          "id": "2159:77",
+          "name": "_EmptyState rich (idea, not in code)",
+          "type": "ONE"
+        },
+        {
+          "id": "2024:3",
+          "name": "Blockquote/sm/false",
+          "type": "ONE"
+        },
+        {
+          "id": "2024:5",
+          "name": "Blockquote/sm/true",
+          "type": "ONE"
+        },
+        {
+          "id": "2024:8",
+          "name": "Blockquote/md/false",
+          "type": "ONE"
+        },
+        {
+          "id": "2024:13",
+          "name": "Blockquote/lg/false",
+          "type": "ONE"
+        },
+        {
+          "id": "2024:15",
+          "name": "Blockquote/lg/true",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:9",
+          "name": "Text/heading2",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:11",
+          "name": "Text/heading3",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:15",
+          "name": "Text/eyebrow",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:21",
+          "name": "Text/badge",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:23",
+          "name": "Text/docLede",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:25",
+          "name": "Text/docBody",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:27",
+          "name": "Text/docSmall",
+          "type": "ONE"
+        },
+        {
+          "id": "2022:29",
+          "name": "Text/docCode",
+          "type": "ONE"
+        },
+        {
+          "id": "2075:3",
+          "name": "FormActions/true/false/false",
+          "type": "ONE"
+        },
+        {
+          "id": "2075:13",
+          "name": "FormActions/true/false/true",
+          "type": "ONE"
+        },
+        {
+          "id": "2075:53",
+          "name": "FormActions/false/false/false",
+          "type": "ONE"
+        },
+        {
+          "id": "2075:59",
+          "name": "FormActions/false/false/true",
+          "type": "ONE"
+        },
+        {
+          "id": "2075:65",
+          "name": "FormActions/false/true/false",
+          "type": "ONE"
+        },
+        {
+          "id": "2075:76",
+          "name": "FormActions/false/true/true",
+          "type": "ONE"
+        },
+        {
+          "id": "85:94",
+          "name": "_Form (now an example frame)",
+          "type": "ONE"
+        },
+        {
+          "id": "88:292",
+          "name": "_StatusTile (now Card.Row)",
+          "type": "SET",
+          "variants": 5
+        },
+        {
+          "id": "28:138",
+          "name": "Button",
+          "type": "SET",
+          "variants": 576
+        }
+      ]
+    },
+    {
+      "id": "2290:804",
+      "name": "Spec sheet kit",
+      "components": [
+        {
+          "id": "2290:825",
+          "name": "_SpecSheet/Cell",
+          "type": "SET",
+          "variants": 6
+        },
+        {
+          "id": "2290:831",
+          "name": "_SpecSheet/TableHeaderRow",
+          "type": "ONE"
+        },
+        {
+          "id": "2290:842",
+          "name": "_SpecSheet/TableRow",
+          "type": "ONE"
+        },
+        {
+          "id": "2290:853",
+          "name": "_SpecSheet/PreviewCell",
+          "type": "ONE"
+        },
+        {
+          "id": "2290:859",
+          "name": "_SpecSheet/SwatchCell",
+          "type": "ONE"
+        },
+        {
+          "id": "2290:908",
+          "name": "_SpecSheet/Section",
+          "type": "ONE"
+        },
+        {
+          "id": "2290:914",
+          "name": "_SpecSheet/Header",
+          "type": "ONE"
+        },
+        {
+          "id": "2290:922",
+          "name": "_SpecSheet/Bullets",
+          "type": "ONE"
+        },
+        {
+          "id": "2290:937",
+          "name": "_SpecSheet/SourceFooter",
+          "type": "ONE"
+        },
+        {
+          "id": "2302:1994",
+          "name": "_SpecSheet/Marker",
+          "type": "ONE"
+        },
+        {
+          "id": "2302:1999",
+          "name": "_SpecSheet/TokenCell",
+          "type": "ONE"
+        },
+        {
+          "id": "2302:2017",
+          "name": "_SpecSheet/RoleStack",
+          "type": "ONE"
+        },
+        {
+          "id": "2337:27999",
+          "name": "_SpecSheet/Swatch",
+          "type": "ONE"
+        },
+        {
+          "id": "2364:2761",
+          "name": "_SpecSheet/RoleRow",
+          "type": "ONE"
+        },
+        {
+          "id": "2302:2025",
+          "name": "_SpecSheet/SubHeading",
+          "type": "ONE"
+        },
+        {
+          "id": "2339:2745",
+          "name": "_SpecSheet/AnatomyStage",
+          "type": "SET",
+          "variants": 2
+        },
+        {
+          "id": "2315:22",
+          "name": "_SpecSheet/KeyMap",
+          "type": "ONE"
+        },
+        {
+          "id": "2315:17",
+          "name": "_SpecSheet/KeyMapRow",
+          "type": "ONE"
+        },
+        {
+          "id": "2316:25",
+          "name": "_SpecSheet/PartLink",
+          "type": "ONE"
+        },
+        {
+          "id": "2316:79",
+          "name": "_SpecSheet/PartTree",
+          "type": "ONE"
+        },
+        {
+          "id": "2316:78",
+          "name": "_SpecSheet/PartTreeNode",
+          "type": "SET",
+          "variants": 5
+        },
+        {
+          "id": "2317:47",
+          "name": "_SpecSheet/CompositionStage",
+          "type": "ONE"
+        },
+        {
+          "id": "2317:43",
+          "name": "_SpecSheet/StageCallout",
+          "type": "ONE"
+        },
+        {
+          "id": "2317:70",
+          "name": "_SpecSheet/BreakpointStrip",
+          "type": "ONE"
+        },
+        {
+          "id": "2317:64",
+          "name": "_SpecSheet/BreakpointFrame",
+          "type": "ONE"
+        },
+        {
+          "id": "2318:65",
+          "name": "_SpecSheet/ModeDial",
+          "type": "ONE"
+        },
+        {
+          "id": "2318:60",
+          "name": "_SpecSheet/ModeColumn",
+          "type": "ONE"
+        },
+        {
+          "id": "2318:88",
+          "name": "_SpecSheet/FocusOrder",
+          "type": "ONE"
+        },
+        {
+          "id": "2318:82",
+          "name": "_SpecSheet/FocusStep",
+          "type": "ONE"
+        },
+        {
+          "id": "2337:30158",
+          "name": "_SpecSheet/MotionNote",
+          "type": "ONE"
+        },
+        {
+          "id": "2337:30167",
+          "name": "_SpecSheet/OffsetCallout",
+          "type": "ONE"
+        }
+      ]
+    }
+  ]
+}
