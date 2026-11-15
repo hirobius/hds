@@ -8,13 +8,21 @@
  *   --check           exit 1 when the committed file differs from the generator
  *   --emit-mappings   print the `mappings` JSON for the Figma MCP tool
  *                     send_code_connect_mappings (Organization plan, ADR-019 §3)
+ *   --emit-property-read
+ *                     print the read-only use_figma script whose result is
+ *                     recorded in figma/reads/component-properties.json
  *
  * FIXTURE_DIR=<root> reads (and --write writes) under a fixture root instead.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { codeConnectMap, mapFile, mappingsPayload } from './lib/figma-code-connect-map.mjs';
+import {
+  codeConnectMap,
+  mapFile,
+  mappingsPayload,
+  propertyReadScript,
+} from './lib/figma-code-connect-map.mjs';
 import { runGenerator } from './lib/generated-check.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -47,6 +55,10 @@ async function main(argv) {
   const { map, file } = buildMap();
   if (argv.includes('--emit-mappings')) {
     process.stdout.write(JSON.stringify(mappingsPayload(file), null, 2) + '\n');
+    return;
+  }
+  if (argv.includes('--emit-property-read')) {
+    process.stdout.write(propertyReadScript(file));
     return;
   }
   await runGenerator({

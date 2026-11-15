@@ -386,6 +386,12 @@
       "check": "node scripts/figma-disposition.mjs --check"
     },
     {
+      "path": "figma/reads/component-properties.json",
+      "describes": "Component property definitions read from the live Figma library, which the Code Connect registry must match",
+      "kind": "checked",
+      "by": "scripts/check-code-connect.mjs"
+    },
+    {
       "path": "figma/code-connect.json",
       "describes": "Code Connect templates registry",
       "kind": "generated",

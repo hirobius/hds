@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-13T22:59:04.432Z",
+  "generated": "2026-11-15T04:23:06.148Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -623,7 +623,9 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/CodeBlock.tsx",
@@ -887,7 +889,9 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "tier": "pattern",
       "slots": [
@@ -1552,7 +1556,9 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "density"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineCode.tsx",
@@ -2225,7 +2231,10 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "variant",
+        "size"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/SegmentedControl.tsx",
@@ -3161,7 +3170,6 @@
       },
       "figmaPropertyMapping": {
         "padding": "Padding",
-        "gap": "Gap",
         "variant": "Variant",
         "tone": "Tone"
       },
@@ -3509,7 +3517,10 @@
         "src/styles/__tests__/glyph-outlines.ts"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant",
+        "tone"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": true,
@@ -3628,8 +3639,7 @@
       "figmaPropertyMapping": {
         "Title.children": "Title",
         "Description.children": "Description",
-        "Content.hideClose": "Show close",
-        "modal": "Modal"
+        "Content.hideClose": "Show close"
       },
       "states": [
         "closed",
@@ -4043,7 +4053,6 @@
       },
       "figmaPropertyMapping": {
         "variant": "Variant",
-        "tone": "Tone",
         "size": "Size",
         "label": "Label",
         "iconLeft": "Show icon",
@@ -4261,7 +4270,9 @@
         "src/app/components/destructive-section.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "tone"
+      ],
       "componentProperties": [],
       "props": {
         "italic": {
@@ -4331,7 +4342,9 @@
         "src/app/design-system/tokens.ts"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "action": {
@@ -4678,7 +4691,9 @@
         "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "tone"
+      ],
       "componentProperties": [],
       "props": {
         "notes": {
@@ -4820,7 +4835,8 @@
     },
     "Badge": {
       "variantAxes": [
-        "tone"
+        "tone",
+        "size"
       ],
       "componentProperties": [
         {
@@ -6147,7 +6163,9 @@
         "src/index.ts"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "label": {
@@ -6240,7 +6258,9 @@
         "src/app/components/spinner.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "height": {
@@ -6306,7 +6326,9 @@
         "src/app/components/skeleton.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "label": {
@@ -6459,7 +6481,9 @@
         "src/app/components/breadcrumb.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "count": {
@@ -7350,7 +7374,9 @@
       },
       "consumers": [],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "children": {
@@ -7397,7 +7423,9 @@
       },
       "consumers": [],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "attribution": {
@@ -7445,7 +7473,9 @@
         "src/app/components/text.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "size": {
@@ -7606,7 +7636,9 @@
         "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "footer": {
@@ -10370,7 +10402,9 @@
       },
       "consumers": [],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "tone"
+      ],
       "componentProperties": [],
       "props": {
         "children": {
@@ -12158,7 +12192,9 @@
         "src/app/components/tabs.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "publicDataAttributes": [
         "data-leading",

@@ -48,6 +48,7 @@ Hand-kept, but a gate compares it with the code.
 - `docs/OVERVIEW.md` (Open explorations): Open explorations, including the agent-consistency line. Checked by `scripts/check-status-claims.mjs`.
 - `docs/CONTRIBUTING-DETAIL.md`: The long form of CONTRIBUTING.md: the gate table, pre-push tiers, visual baselines, merging main. Checked by `scripts/__tests__/contributing-gates.test.mjs`.
 - `figma/MCP-LEDGER.md`: Append-only log of every Figma MCP call an agent session makes (the budget record); it has no review age. Checked by `scripts/__tests__/figma-one-library-rule.test.mjs`.
+- `figma/reads/component-properties.json`: Component property definitions read from the live Figma library, which the Code Connect registry must match. Checked by `scripts/check-code-connect.mjs`.
 - `docs/guardrails/registry.json`: Every gate, where it fires and its proof-of-firing fixtures. Checked by `scripts/validate-guardrail-registry.mjs`.
 - `eval/consistency/ledger.json`: Append-only record of agent-consistency eval runs. Checked by `scripts/check-status-claims.mjs`.
 

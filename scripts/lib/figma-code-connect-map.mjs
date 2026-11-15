@@ -17,6 +17,10 @@
  *     code name, GitHub source). The import and usage snippet live in the
  *     committed map; the rich variant templates stay in figma/code-connect.json.
  *     Saving a mapping needs a Figma Organization or Enterprise plan (ADR-019 §3).
+ *   propertyReadScript(file) -> a read-only use_figma script that returns the
+ *     component property definitions of every mapped node. Its result is recorded
+ *     by hand in figma/reads/component-properties.json, which gates
+ *     figma/code-connect.json (scripts/check-code-connect.mjs).
  */
 import { figmaNodeIdFromUrl } from './figma-spec-sheet.mjs';
 
@@ -118,4 +122,51 @@ export function mappingsPayload(file) {
     source: e.sourceUrl,
     label: file.label,
   }));
+}
+
+/**
+ * The read-only use_figma script behind figma/reads/component-properties.json:
+ * the property definitions of every mapped node. A node that is one variant of
+ * a set is reported with `variantOf`, and the set is read in its place.
+ */
+export function propertyReadScript(file) {
+  return `// Read only. Printed by: node scripts/figma-code-connect-map.mjs --emit-property-read
+if (figma.fileKey !== '${file.fileKey}') throw new Error('Not the HDS library');
+const IDS = ${JSON.stringify(file.entries.map((e) => e.nodeId))};
+const nodes = {};
+const pageOf = (node) => {
+  let page = node;
+  while (page && page.type !== 'PAGE') page = page.parent;
+  return page ? page.name : null;
+};
+const describe = (node) => {
+  const row = { name: node.name, type: node.type, page: pageOf(node) };
+  const inSet = node.parent && node.parent.type === 'COMPONENT_SET';
+  if (node.type === 'COMPONENT_SET' || (node.type === 'COMPONENT' && !inSet)) {
+    const defs = node.componentPropertyDefinitions;
+    row.props = Object.keys(defs).map((key) => {
+      const def = defs[key];
+      const prop = { name: key.replace(/#\\d+:\\d+$/, ''), type: def.type, default: def.defaultValue };
+      if (def.variantOptions) prop.options = def.variantOptions;
+      return prop;
+    });
+    if (node.type === 'COMPONENT_SET') row.variants = node.children.length;
+  } else if (inSet) {
+    row.variantOf = node.parent.id;
+  }
+  return row;
+};
+for (const id of IDS) {
+  const node = await figma.getNodeByIdAsync(id);
+  if (!node) {
+    nodes[id] = { missing: true };
+    continue;
+  }
+  nodes[id] = describe(node);
+  if (nodes[id].variantOf && !nodes[nodes[id].variantOf]) {
+    nodes[nodes[id].variantOf] = describe(node.parent);
+  }
+}
+return JSON.stringify({ fileKey: figma.fileKey, nodes });
+`;
 }
