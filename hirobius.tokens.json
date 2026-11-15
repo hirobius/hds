@@ -251,7 +251,7 @@
         },
         "300": {
           "$value": "#8a97f8",
-          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.41:1 on black)."
+          "$description": "Cobalt accent — dark-mode accent fill and accent text."
         },
         "400": {
           "$value": "#5b71fa",
@@ -263,7 +263,7 @@
         },
         "600": {
           "$value": "#112de8",
-          "$description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode accent fill and accent text (white text 8.19:1)."
+          "$description": "Cobalt accent — light-mode accent fill and accent text."
         },
         "700": {
           "$value": "#1f17c4",
@@ -296,7 +296,7 @@
         },
         "300": {
           "$value": "#b8e62e",
-          "$description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.",
+          "$description": "Lime delight accent — delight base. Delight moments only; never buttons, links or focus.",
           "$deprecated": "hidden for now (hds#857): the lime ramp only feeds the hidden delight accent; do not use it in new code; removed in 1.0.0"
         },
         "400": {
@@ -910,7 +910,7 @@
         },
         "display": {
           "$value": 700,
-          "$description": "Display, title and title-sm weight, set in Sora 700 (ADR-063). Heading levels differ by size, not weight."
+          "$description": "Display, title and title-sm weight, set in Sora 700. Heading levels differ by size, not weight."
         },
         "mono": {
           "$value": 400,
@@ -1357,7 +1357,7 @@
             "value": 24,
             "unit": "px"
           },
-          "$description": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA (2.5.8), not the 44px AAA floor (2.5.5)."
+          "$description": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA, not the 44px AAA floor."
         }
       },
       "width": {
@@ -1711,7 +1711,7 @@
         },
         "floating": {
           "$value": "{primitive.color.neutral.white}",
-          "$description": "Overlay fill (menus, popovers, listboxes, toasts, dialogs). Pair with a border.default hairline to separate from surface.muted.",
+          "$description": "Overlay fill. Pair with a border.default hairline to separate from surface.muted.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1747,7 +1747,7 @@
         },
         "accent": {
           "$value": "{primitive.color.graphite.700}",
-          "$description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent.",
+          "$description": "Accent fill, midnight graphite: graphite.700 in light, near-white in dark. Pair with content.onAccent.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1831,7 +1831,7 @@
         },
         "soft": {
           "$value": "{primitive.color.neutral.300}",
-          "$description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
+          "$description": "Soft control fill, secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1975,7 +1975,7 @@
       "border": {
         "default": {
           "$value": "{primitive.color.graphite.250}",
-          "$description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+          "$description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -1987,7 +1987,7 @@
         },
         "interactive": {
           "$value": "{primitive.color.neutral.500}",
-          "$description": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
+          "$description": "Border for interactive control boundaries; meets the WCAG 1.4.11 3:1 non-text contrast floor.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2134,7 +2134,7 @@
       "shadow": {
         "hard": {
           "$value": "{primitive.color.shadow.ink}",
-          "$description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
+          "$description": "Hard shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2273,7 +2273,7 @@
         "pressed": {
           "overlay": {
             "$value": "{primitive.color.neutral.black}",
-            "$description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
+            "$description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class.",
             "$extensions": {
               "com.figma.variables": {
                 "modes": {
@@ -2288,9 +2288,9 @@
     },
     "space": {
       "$type": "dimension",
-      "$description": "Space: gaps and padding between and inside elements (subgrid, component, layout, section, scale). An element's own width/height is size.",
+      "$description": "Space: gaps and padding between and inside elements. An element's own width/height is size.",
       "scale": {
-        "$description": "hds#206 t-shirt scale (2xs–xl) for padding, margin and gap. Compact density (data-density=\"compact\") remaps sm–xl to 12/16/24/32px for dense apps.",
+        "$description": "T-shirt scale for padding, margin and gap. Compact density remaps sm–xl to 12/16/24/32px for dense apps.",
         "2xs": {
           "$value": "{primitive.space.1}",
           "$description": "4px in both densities: hairline gaps inside a control (icon to its badge, stacked meta lines)."
@@ -2312,7 +2312,7 @@
         },
         "md": {
           "$value": "{primitive.space.7}",
-          "$description": "28px (16px compact). Default of surface.padding: card, dialog and panel insets. layout.normal (deprecated) aliases it.",
+          "$description": "28px. Default of surface.padding: card, dialog and panel insets. layout.normal aliases it.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2334,7 +2334,7 @@
         },
         "xl": {
           "$value": "{primitive.space.16}",
-          "$description": "64px (32px compact). The gap between sections inside a page. layout.spacious (deprecated) aliases it.",
+          "$description": "64px. The gap between sections inside a page. layout.spacious aliases it.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2375,14 +2375,14 @@
         "$description": "hds#206 surface inset role. Tenants override it per brand and density, always with a scale step.",
         "padding": {
           "$value": "{semantic.space.scale.md}",
-          "$description": "Card, dialog and panel inset: scale.md (28px, 16px compact). Tenants override it. Replaces component.padding."
+          "$description": "Card, dialog and panel inset: scale.md. Tenants override it. Replaces component.padding."
         }
       },
       "region": {
         "$description": "hds#206 region gutter role. theme.css retunes it per viewport, always with a scale step.",
         "gutter": {
           "$value": "{semantic.space.scale.lg}",
-          "$description": "Page and region gutter: scale.lg (40px comfortable, 24px compact); theme.css sets scale.sm below 640px. Replaces layout.gutter."
+          "$description": "Page and region gutter: scale.lg; theme.css sets scale.sm below 640px. Replaces layout.gutter."
         }
       },
       "subgrid": {
@@ -2408,7 +2408,7 @@
       "section": {
         "stack": {
           "$value": "{primitive.space.24}",
-          "$description": "96px vertical rhythm between page sections and major editorial blocks (80px before 2026-10; 48px compact); theme.css sets 64px below 640px.",
+          "$description": "96px vertical rhythm between page sections and major editorial blocks; theme.css sets 64px below 640px.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2528,7 +2528,7 @@
           "letterSpacing": "{primitive.typography.letterSpacing.tight}",
           "lineHeight": "{primitive.typography.lineHeight.display}"
         },
-        "$description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700."
+        "$description": "Marketing-only extension above the ramp: covers and marketing headers, never product UI. 120px / 1.05 / 700."
       },
       "display": {
         "$value": {
@@ -2605,7 +2605,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "$description": "Variant of body: weight bold, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2651,7 +2651,7 @@
             "unit": "ch"
           }
         },
-        "$description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "$description": "Variant of ui: weight regular, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2831,7 +2831,7 @@
       "$type": "color",
       "rest": {
         "$value": "{primitive.color.graphite.700}",
-        "$description": "Accent fill at rest — graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent.",
+        "$description": "Accent fill at rest — graphite.700 in light, near-white in dark. Pair with content.onAccent.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2891,7 +2891,7 @@
       },
       "content": {
         "$value": "{primitive.color.graphite.700}",
-        "$description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance.",
+        "$description": "Accent-intent text/icon color on neutral surfaces — pair with underline/weight for link affordance.",
         "$extensions": {
           "com.figma.variables": {
             "modes": {
@@ -2928,7 +2928,7 @@
       "delight": {
         "base": {
           "$value": "{primitive.color.lime.300}",
-          "$description": "Lime fill for delight moments only (win badge, \"new\" tag, confetti). Never buttons, links or focus. Text: accent.delight.onDelight.",
+          "$description": "Lime fill for delight moments only. Never buttons, links or focus. Text: accent.delight.onDelight.",
           "$deprecated": "hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0",
           "$extensions": {
             "com.figma.variables": {
@@ -2984,7 +2984,7 @@
       "action": {
         "$type": "dimension",
         "$value": "{primitive.radius.8}",
-        "$description": "Corner radius for action elements (buttons, inputs, badges); Tailwind rounded-md resolves here. Override role.radius to reshape the system."
+        "$description": "Corner radius for action elements; Tailwind rounded-md resolves here. Override role.radius to reshape the system."
       },
       "control": {
         "$type": "dimension",
@@ -3089,11 +3089,11 @@
           "$description": "Focus ring corners around a 4px control element: radius plus gap, plus ring width.",
           "gapRadius": {
             "$value": "{primitive.radius.6}",
-            "$description": "Inner edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + semantic.focus.gap.width."
+            "$description": "Inner edge of the focus ring: a 4px control glyph radius + semantic.focus.gap.width."
           },
           "ringRadius": {
             "$value": "{primitive.radius.8}",
-            "$description": "Outer edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + gap width + semantic.focus.ring.width."
+            "$description": "Outer edge of the focus ring: a 4px control glyph radius + gap width + semantic.focus.ring.width."
           }
         },
         "sm": {
@@ -3105,7 +3105,7 @@
           },
           "ringRadius": {
             "$value": "{primitive.radius.10}",
-            "$description": "Outer edge of the focus ring: a rounded-sm (6px) element radius + gap width + semantic.focus.ring.width."
+            "$description": "Outer edge of the focus ring: a rounded-sm element radius + gap width + semantic.focus.ring.width."
           }
         },
         "md": {
@@ -3113,11 +3113,11 @@
           "$description": "Focus ring corners around a 8px element: radius plus gap, plus ring width.",
           "gapRadius": {
             "$value": "{primitive.radius.10}",
-            "$description": "Inner edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + semantic.focus.gap.width."
+            "$description": "Inner edge of the focus ring: a rounded-md element radius + semantic.focus.gap.width."
           },
           "ringRadius": {
             "$value": "{primitive.radius.12}",
-            "$description": "Outer edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + gap width + semantic.focus.ring.width."
+            "$description": "Outer edge of the focus ring: a rounded-md element radius + gap width + semantic.focus.ring.width."
           }
         },
         "lg": {
@@ -3129,7 +3129,7 @@
           },
           "ringRadius": {
             "$value": "{primitive.radius.16}",
-            "$description": "Outer edge of the focus ring: a rounded-lg (12px) element radius + gap width + semantic.focus.ring.width."
+            "$description": "Outer edge of the focus ring: a rounded-lg element radius + gap width + semantic.focus.ring.width."
           }
         },
         "pill": {
@@ -3150,7 +3150,7 @@
       "$type": "dimension",
       "underlineThickness": {
         "$value": "{primitive.borderWidth.sm}",
-        "$description": "Text-link underline weight at body size (2px). Text links cap it at 0.125em, so small text keeps a proportionate line."
+        "$description": "Text-link underline weight at body size. Text links cap it at 0.125em, so small text keeps a proportionate line."
       },
       "underlineOffset": {
         "$value": "{primitive.underline.offset}",
@@ -3293,7 +3293,7 @@
       "$description": "Named stacking layers, aliasing the numeric primitive.zIndex scale.",
       "control": {
         "$value": "{primitive.zIndex.10}",
-        "$description": "Raises an interactive control (e.g. a native range input) above its visual decoration for hit-testing."
+        "$description": "Raises an interactive control above its visual decoration for hit-testing."
       },
       "sticky": {
         "$value": "{primitive.zIndex.100}",
@@ -3774,7 +3774,7 @@
           "hover": {
             "$type": "color",
             "$value": "{semantic.color.border.accent}",
-            "$description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers."
+            "$description": "Secondary button hover border. Unused by Button since; kept for consumers."
           },
           "disabled": {
             "$type": "color",
@@ -3885,7 +3885,7 @@
         },
         "ringRadius": {
           "$value": "{primitive.radius.16}",
-          "$description": "Outer edge of the focus ring: an interactive Card (12px) radius + gap width + semantic.focus.ring.width."
+          "$description": "Outer edge of the focus ring: an interactive Card radius + gap width + semantic.focus.ring.width."
         }
       },
       "padding": {
@@ -3994,7 +3994,7 @@
         "paddingX": {
           "$type": "dimension",
           "$value": "{semantic.space.scale.md}",
-          "$description": "Table cell inline padding: scale.md (28px, 16px compact). Own token, so tenant surface padding never widens cells."
+          "$description": "Table cell inline padding: scale.md. Own token, so tenant surface padding never widens cells."
         }
       }
     }

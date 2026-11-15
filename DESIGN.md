@@ -38,14 +38,14 @@ Weights declared: `400` regular, `400` medium (deprecated), `400` mono, `600` se
 
 | Role | Size (desktop max) | Compact | Weight | Use |
 | --- | --- | --- | --- | --- |
-| `semantic.typography.hero` | 120px | same | 700 | Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI |
+| `semantic.typography.hero` | 120px | same | 700 | Marketing-only extension above the ramp: covers and marketing headers, never product UI |
 | `semantic.typography.display` | 56px | same | 700 | One per page, hero only |
 | `semantic.typography.title` | 28px | 24px | 700 | Section and card headings |
 | `semantic.typography.titleSm` | 20px | same | 700 | Small heading inside a card or section band, and the Alert title |
 | `semantic.typography.body` | 18px | 15px | 400 | Prose |
-| `semantic.typography.bodyStrong` | 18px | 15px | 700 | Variant of body: weight bold (700), what Text with weight bold renders |
+| `semantic.typography.bodyStrong` | 18px | 15px | 700 | Variant of body: weight bold, what Text with weight bold renders |
 | `semantic.typography.ui` | 16px | 14px | 400 | Controls, nav, table text, values |
-| `semantic.typography.uiRegular` | 16px | 14px | 400 | Variant of ui: weight regular (400), for table body cells and other plain UI text |
+| `semantic.typography.uiRegular` | 16px | 14px | 400 | Variant of ui: weight regular, for table body cells and other plain UI text |
 | `semantic.typography.uiItalic` | 16px | 14px | 400 | Variant of ui: italic, what the inline EmptyState message renders |
 | `semantic.typography.caption` | 14px | 13px | 400 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | same | 400 | Code and ids, 15px / 1.5 / 400 |
