@@ -20,7 +20,7 @@ in `package.json`: `check:fast`, `check:full` and `pretest`. `package.json` call
 at the first failure. The `ralph-gate` lane holds the steps `ralph/gate.sh`
 runs (it reads them with `run-lane.mjs ralph-gate --dry-run`). The `pre-push` lane
 holds the stages of `.husky/pre-push`; its steps are `{ "name", "run" }` objects,
-and the name is the stage title `hook-run.mjs` prints and `CONTRIBUTING.md`'s gate
+and the name is the stage title `hook-run.mjs` prints and `docs/CONTRIBUTING-DETAIL.md`'s gate
 table lists. `hook-run.mjs` turns the hook's `node scripts/run-lane.mjs pre-push`
 line back into one stage per step (`expandHookLanes`). `check-validator-wiring`
 expands lane calls in package.json, `ralph/gate.sh` and `.husky/pre-push` back to

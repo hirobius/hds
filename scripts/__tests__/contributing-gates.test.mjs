@@ -1,5 +1,5 @@
 /**
- * CONTRIBUTING.md carries one gate table. This test keeps it honest: the
+ * docs/CONTRIBUTING-DETAIL.md (the long form of CONTRIBUTING.md) carries one gate table. This test keeps it honest: the
  * table rows for each stage must equal the steps parsed from the file that
  * actually runs them (.husky/pre-commit, .husky/commit-msg, .husky/pre-push,
  * ci.yml).
@@ -68,7 +68,7 @@ function parseTable(markdown) {
   return rows;
 }
 
-const table = parseTable(read('CONTRIBUTING.md'));
+const table = parseTable(read('docs/CONTRIBUTING-DETAIL.md'));
 
 describe('parsers', () => {
   it('reads a hook: echo label names a step, following lines are its commands', () => {
@@ -85,7 +85,7 @@ describe('parsers', () => {
   });
 });
 
-describe('CONTRIBUTING.md gate table matches the files that run the gates', () => {
+describe('docs/CONTRIBUTING-DETAIL.md gate table matches the files that run the gates', () => {
   it('pre-commit', () => {
     expect(table['pre-commit']).toEqual(parseHook(readHook('.husky/pre-commit')));
   });
