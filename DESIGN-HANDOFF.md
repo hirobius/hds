@@ -149,7 +149,7 @@ Checks all 646 tokens, aliases, and TS refs in one shot.
 | `primitive.color.lime.50`                           | `#f2fbd6`                   | Lime delight accent — pale; delight tint background. Delight moments only; never buttons, links or focus.                   |
 | `primitive.color.lime.100`                          | `#e3f6a8`                   | Lime delight accent — ramp step 100. Delight moments only; never buttons, links or focus.                                   |
 | `primitive.color.lime.200`                          | `#cdee6a`                   | Lime delight accent — ramp step 200. Delight moments only; never buttons, links or focus.                                   |
-| `primitive.color.lime.300`                          | `#b8e62e`                   | Lime delight accent — delight base. Delight moments only; never buttons, links or focus.                                    |
+| `primitive.color.lime.300`                          | `#b8e62e`                   | Lime delight accent, the delight base. Delight moments only; never buttons, links or focus.                                 |
 | `primitive.color.lime.400`                          | `#93ba1c`                   | Lime delight accent — ramp step 400. Delight moments only; never buttons, links or focus.                                   |
 | `primitive.color.lime.600`                          | `#6e8f0b`                   | Lime delight accent — deep; delight line art and illustration strokes. Delight moments only; never buttons, links or focus. |
 | `primitive.color.lime.800`                          | `#445807`                   | Lime delight accent — ramp step 800. Delight moments only; never buttons, links or focus.                                   |

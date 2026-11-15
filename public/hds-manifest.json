@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-15T10:48:28.762Z",
+  "generated": "2026-11-15T20:18:53.996Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -17534,7 +17534,7 @@
         "path": "component.button.secondary.border.hover",
         "cssVar": "--component-button-secondary-border-hover",
         "type": "color",
-        "description": "Secondary button hover border. Unused by Button since; kept for consumers.",
+        "description": "Secondary button hover border. Button no longer draws it; kept for consumers.",
         "alias": "{semantic.color.border.accent}",
         "resolvedValue": "#3a4457"
       },
