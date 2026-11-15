@@ -35,5 +35,16 @@
     "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",
     "asOfDate": "2026-11-06"
   },
+  "size": {
+    "mainKb": 54.04,
+    "asOf": "8ff65ab31d1de6fe329d02fcc8ec8b783add8d9c"
+  },
+  "tests": {
+    "unit": 9819,
+    "e2e": 290,
+    "visual": 210,
+    "total": 10319,
+    "asOf": "8ff65ab31d1de6fe329d02fcc8ec8b783add8d9c"
+  },
   "generatedFrom": "b8ca4a8b752a2fb48e8804c2c540e039b7c3f49b"
 }

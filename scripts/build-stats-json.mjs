@@ -40,6 +40,19 @@
  *                             commit. Not "releases": git tags and docs/api/releases each
  *                             miss some versions, and a heading is not proof of a publish
  *     .asOf, .asOfDate        that commit and its day (%cs)
+ *   size                      held, like `delivery`; measured only by `--size`:
+ *     .mainKb                 gzip size of the size-limit entry "main entry graph", in kB
+ *                             (bytes / 1000, two decimals), from `size-limit --json` over
+ *                             the dist/ that `pnpm build:lib` wrote (hds#1385)
+ *     .asOf                   the commit on main the measured checkout was at
+ *   tests                     held, like `delivery`; counted only by `--tests` (hds#1385):
+ *     .unit                   tests `vitest list --json` names (the suite `pnpm test` runs)
+ *     .e2e                    Playwright tests not tagged @baseline (`pnpm test:visual-docs`):
+ *                             behaviour checks in a browser
+ *     .visual                 Playwright tests tagged @baseline (`pnpm test:visual-baselines`):
+ *                             comparisons with a committed screenshot
+ *     .total                  unit + e2e + visual
+ *     .asOf                   the commit on main the counted checkout was at
  *   generatedFrom             the commit the numbers were computed on top of
  *
  * The counting rules are build-readme-counts.mjs's and lib/core-set.mjs's, so
@@ -55,14 +68,25 @@
  * commit. A refresh that cannot count (a shallow clone, no origin/main, no git)
  * keeps the committed block or omits the field when there is none; it never
  * writes a guessed number. Release CI (depth-1 checkout, changeset:version runs
- * this script) therefore republishes the committed block as it is. *
+ * this script) therefore republishes the committed block as it is.
+ *
+ * `size` and `tests` are held the same way, because neither can be read from a
+ * committed file: one needs a library build, the other lists every test (minutes).
+ * A refresh measures the working tree, so it only runs where that tree is a commit
+ * on main: HEAD is on origin/main and no tracked file but this one is changed.
+ * Anywhere else, or when a tool fails (no dist/, no docs-site/out for Playwright),
+ * it says why on stderr and keeps the committed block. Refresh both before the
+ * Version PR merges, from a clean checkout of main.
+ *
  * Run: pnpm stats:build  (also part of `pnpm tokens`, after the README counts it shares rules with)
  *      pnpm stats:build --delivery  (also recounts `delivery`; needs a full clone with origin/main)
+ *      pnpm stats:build --size      (also measures `size`; needs `pnpm build:lib` first)
+ *      pnpm stats:build --tests     (also counts `tests`; needs `pnpm docs:publish` first, about 3 minutes)
  * Check: node scripts/build-stats-json.mjs --check  (exit 1 when the file would change; writes nothing)
  *        --root <dir> reads and writes under <dir> (tests).
  */
 
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -71,6 +95,7 @@ import { collectCounts } from './build-readme-counts.mjs';
 import { runGenerator, rootFromArgv } from './lib/generated-check.mjs';
 import { NONTEXT_PAIRS, PAIRS } from './lib/contrast-pairs.mjs';
 import { collectCoreSet, countCore } from './lib/core-set.mjs';
+import { buttonProbe } from './run-size-limit.mjs';
 
 export const STATS_PATH = 'public/hds-stats.json';
 const CONSUMER_SNAPSHOT = 'docs/data/consumer-usage.json';
@@ -173,28 +198,161 @@ export function collectDelivery(root) {
 }
 
 /**
- * Which delivery block the file carries: only an explicit refresh takes a fresh
+ * The held blocks: counted only on their own flag, never by a plain run or
+ * `--check`, so they are provenance to `--check` like `generatedFrom`.
+ */
+export const HELD_BLOCKS = ['delivery', 'size', 'tests'];
+
+/**
+ * Which held block the file carries: only an explicit refresh takes a fresh
  * count; otherwise, or when nothing can be counted, the committed block stays,
  * and the field is left out when there is none.
  */
-export function pickDelivery({ fresh, committed, onMain, refresh }) {
+export function pickHeld({ fresh, committed, onMain, refresh }) {
   const held = committed ?? onMain;
   return refresh ? (fresh ?? held) : held;
 }
+export const pickDelivery = pickHeld;
 
 /**
- * The delivery block committed on origin/main, or undefined. The fallback for a
+ * A held block committed on origin/main, or undefined. The fallback for a
  * working file that has none: the hds-generated merge driver keeps ours where
  * both sides changed nearby lines, so a branch merging main can drop main's
  * block, and a held block is not rebuilt from source (hds#1332 review).
  */
-export function mainDelivery(root) {
+export function mainHeld(root, key) {
   try {
     const text = gitOut(root, ['show', `refs/remotes/origin/main:${STATS_PATH}`]);
-    return JSON.parse(text).delivery ?? undefined;
+    return JSON.parse(text)[key] ?? undefined;
   } catch {
     return undefined;
   }
+}
+export const mainDelivery = (root) => mainHeld(root, 'delivery');
+
+/**
+ * The commit a measurement of the working tree describes, or null when the tree
+ * is not one commit on main: HEAD is off origin/main, or a tracked file other
+ * than the stats file is changed. A number must name the commit it counted.
+ */
+export function measuredCommit(root) {
+  try {
+    const head = gitOut(root, ['rev-parse', 'HEAD']);
+    if (gitOut(root, ['merge-base', 'HEAD', 'refs/remotes/origin/main']) !== head) return null;
+    const dirty = gitOut(root, [
+      'status',
+      '--porcelain',
+      '--untracked-files=no',
+      '--',
+      '.',
+      `:(exclude)${STATS_PATH}`,
+    ]);
+    return dirty ? null : head;
+  } catch {
+    return null;
+  }
+}
+
+const NOT_ON_MAIN =
+  'the working tree is not a clean commit on origin/main; check out main and run again';
+const skipped = (block, why) => {
+  console.error(`build-stats-json: ${block} not refreshed: ${why}. The committed block is kept.`);
+  return null;
+};
+
+/** stdout of one of the repo's own tools, or null when it cannot run or exits non-zero. */
+function toolOut(root, bin, args, { anyStatus = false } = {}) {
+  const res = spawnSync(join(root, 'node_modules', '.bin', bin), args, {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+    maxBuffer: 256 * 1024 * 1024,
+    shell: process.platform === 'win32',
+  });
+  return res.error || (!anyStatus && res.status !== 0) ? null : res.stdout;
+}
+
+/** The size-limit entry `size.mainKb` reports; .size-limit.cjs names it. */
+export const MAIN_ENTRY = 'main entry graph';
+
+/** `size-limit --json` over the built dist/, or null without one. Builds a stale Button probe first. */
+function sizeLimitJson(root) {
+  if (!existsSync(join(root, 'dist', 'hirobius-ui.js'))) return null;
+  if (buttonProbe.needsBuild()) {
+    const built = spawnSync(process.execPath, [join(root, 'scripts', 'build-button-probe.mjs')], {
+      cwd: root,
+      stdio: 'ignore',
+    });
+    if (built.status !== 0) return null;
+  }
+  // An entry over its budget exits 1 and still reports its size; that is check:size's to fail.
+  return toolOut(root, 'size-limit', ['--config', '.size-limit.cjs', '--json'], {
+    anyStatus: true,
+  });
+}
+
+/** `[{ name, size }]` (bytes) -> kB of the main entry, two decimals; null when it is not there. */
+export function mainKbOf(json) {
+  let entries;
+  try {
+    entries = JSON.parse(json);
+  } catch {
+    return null;
+  }
+  const main = Array.isArray(entries)
+    ? entries.find((e) => typeof e?.name === 'string' && e.name.startsWith(MAIN_ENTRY))
+    : null;
+  return Number.isFinite(main?.size) ? Math.round(main.size / 10) / 100 : null;
+}
+
+/** The `size` block, or null when it cannot be measured truthfully. */
+export function collectSize(root, { commit = measuredCommit(root), run = sizeLimitJson } = {}) {
+  if (!commit) return skipped('size', NOT_ON_MAIN);
+  const mainKb = mainKbOf(run(root) ?? '');
+  if (mainKb === null) {
+    return skipped('size', `size-limit reported no "${MAIN_ENTRY}" entry (run pnpm build:lib)`);
+  }
+  return { mainKb, asOf: commit };
+}
+
+/** How many tests `vitest list --json` names: one `{ name, file }` per test. */
+export function countVitestList(json) {
+  try {
+    const tests = JSON.parse(json);
+    return Array.isArray(tests) && tests.length ? tests.length : null;
+  } catch {
+    return null;
+  }
+}
+
+/** The "Total: N tests in M files" line of `playwright test --list`. */
+export function countPlaywrightList(out) {
+  const total = /^Total: (\d+) tests? in \d+ files?$/m.exec(out ?? '');
+  return total ? Number(total[1]) : null;
+}
+
+/** The tag that splits the Playwright lane, as test:visual-baselines and test:visual-docs do. */
+const BASELINE_TAG = '@baseline';
+
+const listTests = {
+  unit: (root) => toolOut(root, 'vitest', ['list', '--json']),
+  // `--list` runs no browser and no web server. A spec that cannot load (several read
+  // docs-site/out) makes it exit 1, so a partial list is never counted.
+  e2e: (root) => toolOut(root, 'playwright', ['test', '--list', '--grep-invert', BASELINE_TAG]),
+  visual: (root) => toolOut(root, 'playwright', ['test', '--list', '--grep', BASELINE_TAG]),
+};
+
+/** The `tests` block, or null when any of the three counts cannot be taken. */
+export function collectTests(root, { commit = measuredCommit(root), list = listTests } = {}) {
+  if (!commit) return skipped('tests', NOT_ON_MAIN);
+  const unit = countVitestList(list.unit(root) ?? '');
+  if (unit === null) return skipped('tests', '`vitest list --json` named no tests');
+  const e2e = countPlaywrightList(list.e2e(root));
+  const visual = countPlaywrightList(list.visual(root));
+  if (e2e === null || visual === null) {
+    return skipped('tests', '`playwright test --list` failed (run pnpm docs:publish)');
+  }
+  return { unit, e2e, visual, total: unit + e2e + visual, asOf: commit };
 }
 
 /** The commit `root` is checked out at, or null outside a git checkout. */
@@ -225,34 +383,48 @@ function committedStats(root) {
  * numbers equal today's, its `generatedFrom` stays; a changed number takes the
  * current HEAD.
  */
-export function renderStats(root, { refreshDelivery = false } = {}) {
+const COLLECT_HELD = { delivery: collectDelivery, size: collectSize, tests: collectTests };
+
+export function renderStats(
+  root,
+  { refreshDelivery = false, refreshSize = false, refreshTests = false } = {},
+) {
   const stats = collectStats(root);
   const committed = committedStats(root);
-  const held = committed && isDeepStrictEqual(withoutProvenance(committed), stats);
-  const generatedFrom = held ? committed.generatedFrom : headSha(root);
-  const delivery = pickDelivery({
-    fresh: refreshDelivery ? collectDelivery(root) : null,
-    committed: committed?.delivery,
-    onMain: committed?.delivery ? undefined : mainDelivery(root),
-    refresh: refreshDelivery,
-  });
-  const out = { ...stats, ...(delivery ? { delivery } : {}), generatedFrom };
+  const unmoved = committed && isDeepStrictEqual(withoutProvenance(committed), stats);
+  const generatedFrom = unmoved ? committed.generatedFrom : headSha(root);
+  const refresh = { delivery: refreshDelivery, size: refreshSize, tests: refreshTests };
+  const held = {};
+  for (const key of HELD_BLOCKS) {
+    const block = pickHeld({
+      fresh: refresh[key] ? COLLECT_HELD[key](root) : null,
+      committed: committed?.[key],
+      onMain: committed?.[key] ? undefined : mainHeld(root, key),
+      refresh: refresh[key],
+    });
+    if (block) held[key] = block;
+  }
+  const out = { ...stats, ...held, generatedFrom };
   return `${JSON.stringify(out, null, 2)}\n`;
 }
 
 function withoutProvenance(stats) {
-  const { generatedFrom: _generatedFrom, delivery: _delivery, ...numbers } = stats;
+  const numbers = { ...stats };
+  for (const key of ['generatedFrom', ...HELD_BLOCKS]) delete numbers[key];
   return numbers;
 }
 
 // ── CLI ───────────────────────────────────────────────────────────────────────
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const ROOT = rootFromArgv(join(dirname(fileURLToPath(import.meta.url)), '..'));
+  const refresh = (flag) => process.argv.includes(flag) && !process.argv.includes('--check');
   await runGenerator({
     root: ROOT,
     outputs: {
       [STATS_PATH]: renderStats(ROOT, {
-        refreshDelivery: process.argv.includes('--delivery') && !process.argv.includes('--check'),
+        refreshDelivery: refresh('--delivery'),
+        refreshSize: refresh('--size'),
+        refreshTests: refresh('--tests'),
       }),
     },
     label: 'build-stats-json',

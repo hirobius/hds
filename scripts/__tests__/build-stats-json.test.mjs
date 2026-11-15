@@ -125,8 +125,14 @@ const run = (root, ...args) =>
   spawnSync(process.execPath, [SCRIPT, '--root', root, ...args], { encoding: 'utf8' });
 
 describe('committed public/hds-stats.json', () => {
-  it('is what collectStats returns today (generatedFrom and delivery are provenance, not values)', () => {
-    const { generatedFrom, delivery: _delivery, ...committed } = readJson(STATS_PATH);
+  it('is what collectStats returns today (generatedFrom and the held blocks are provenance, not values)', () => {
+    const {
+      generatedFrom,
+      delivery: _delivery,
+      size: _size,
+      tests: _tests,
+      ...committed
+    } = readJson(STATS_PATH);
     expect(generatedFrom).toMatch(/^[0-9a-f]{40}$/);
     expect(committed).toEqual(JSON.parse(JSON.stringify(collectStats(ROOT))));
   });
