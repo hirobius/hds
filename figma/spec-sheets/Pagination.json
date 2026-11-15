@@ -2,7 +2,7 @@
   "component": "Pagination",
   "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
   "docsPage": "/docs/components/pagination",
-  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2335-4217",
   "anatomy": [
     {
       "part": "Root"

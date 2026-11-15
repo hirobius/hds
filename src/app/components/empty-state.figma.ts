@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352
+// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-14631
 // source=src/app/components/empty-state.tsx
 // component=EmptyState
 //

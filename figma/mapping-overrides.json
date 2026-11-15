@@ -91,6 +91,55 @@
       "mapsTo": "Button (iconOnly)",
       "source": "src/app/components/button.tsx",
       "reason": "In code IconButton is <Button iconOnly>, one component; Figma draws it as its own set (owner decision 2026-11-05, hds#1147). check-figma-components holds the parity contract for it (figma/contracts/IconButton.json)."
+    },
+    {
+      "nodeId": "85:81",
+      "name": "FormField (form.tsx)",
+      "mapsTo": "FormField",
+      "source": "src/app/components/form.tsx",
+      "reason": "The Figma set on the Form page is FormField of form.tsx (Label, Helper, State, Required). Until 2026-11-15 the Field tag named it by mistake; Field is 2337:23270. form.tsx gives FormField no JSDoc block of its own to carry a tag (its file tag belongs to Form), so the pairing is recorded here. The Figma name should become FormField (hds#1565)."
+    },
+    {
+      "nodeId": "2352:301",
+      "name": "ListItem",
+      "mapsTo": "ListItem",
+      "source": "src/app/components/list.tsx",
+      "reason": "A slot of List (figma/disposition.json), mapped by override as TimelineItem is. The List component 2353:315 is built from ListGroup, which is built from its instances; the item needs its own set for the Trailing and State variants (parity read 2026-11-15)."
+    },
+    {
+      "nodeId": "2353:314",
+      "name": "ListGroup",
+      "mapsTo": "ListGroup",
+      "source": "src/app/components/list.tsx",
+      "reason": "A slot of List (figma/disposition.json), mapped by override as ListItem is. It needs its own set for the Variant and Divider variants (parity read 2026-11-15)."
+    },
+    {
+      "nodeId": "2335:14832",
+      "name": "Stack",
+      "mapsTo": "Stack",
+      "source": "src/app/components/stack.tsx",
+      "reason": "Stack is a layout primitive (figma/disposition.json: in Figma this is auto-layout), so it carries no @figma tag. The library still draws a Stack set to show Direction and Gap (parity read 2026-11-15). Recorded so the parity gate compares its options with the gap prop."
+    },
+    {
+      "nodeId": "2337:27807",
+      "name": "SegmentedControl/Segment",
+      "mapsTo": "SegmentedControl (internal segment)",
+      "source": "src/app/components/segmented-control.tsx",
+      "reason": "Internal to SegmentedControl: code renders each segment inline from the options array. Figma models the segment as a component because it needs the Active, State and Size variants (parity read 2026-11-15)."
+    },
+    {
+      "nodeId": "2304:2480",
+      "name": "Table/HeaderCell",
+      "mapsTo": "Table (internal header cell)",
+      "source": "src/app/components/table.tsx",
+      "reason": "Internal to Table: code renders a header cell for each column of the columns array. Figma models it as a component for the Align, Sort and Density variants (parity read 2026-11-15)."
+    },
+    {
+      "nodeId": "2304:2769",
+      "name": "Table/Cell",
+      "mapsTo": "Table (internal cell)",
+      "source": "src/app/components/table.tsx",
+      "reason": "Internal to Table: code renders a cell for each row and column. Figma models it as a component for the Slot, Align and Density variants (parity read 2026-11-15)."
     }
   ]
 }

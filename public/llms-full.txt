@@ -1433,7 +1433,7 @@ Caption label paired with a value — used in metadata grids and read-only forms
   - value: ReactNode
 
 ### Form
-Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-leve…
+Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module, so a file-level @figma would claim th…
 
 ### FormActions
 Form footer with one fixed order: destructive (far left, if any), then secondary, then primary last and right-most. Gap is the tight layout token.

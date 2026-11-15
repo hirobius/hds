@@ -392,6 +392,18 @@
       "by": "scripts/check-code-connect.mjs"
     },
     {
+      "path": "figma/parity/read.json",
+      "describes": "The parity read: every component, property and variant option of the live Figma library, and one hash per variable collection",
+      "kind": "checked",
+      "by": "scripts/check-figma-parity.mjs"
+    },
+    {
+      "path": "figma/parity/baseline.json",
+      "describes": "The known differences between the Figma library and code, each with a reason; the parity gate fails on any other difference",
+      "kind": "checked",
+      "by": "scripts/check-figma-parity.mjs"
+    },
+    {
       "path": "figma/code-connect.json",
       "describes": "Code Connect templates registry",
       "kind": "generated",

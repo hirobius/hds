@@ -6,7 +6,7 @@ import {
   A11yGuarantees,
 } from './components/a11y-contracts';
 import { CaseStudyFacts } from './components/case-study-facts';
-import { CodeConnectCount } from './components/code-connect-count';
+import { CodeConnectCount, ParityKnownCount } from './components/code-connect-count';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
 import { ComponentTokens } from './components/component-tokens';
@@ -71,6 +71,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     RemovalLedger,
     UpgradeFloor,
     CodeConnectCount,
+    ParityKnownCount,
     ...components,
   };
 }

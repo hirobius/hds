@@ -6,7 +6,7 @@
  * @whenNot Content that is still loading, or a full-page error.
  * @useInstead Skeleton content that is still loading
  * @useInstead Alert a message about something that went wrong
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-14631
  * @a11y component required a11y:empty-state.icon-decorative The icon, and the teaching variant's icon tile, are hidden from assistive technology; the title carries the message.
  * @a11y component required a11y:empty-state.reading-order Title, description and action are read in the order they are shown, in the inline and the teaching layout; the title is a paragraph, not a heading.
  * @a11y consumer required When the empty state is a whole region's content, name the region yourself (a heading or aria-label on the section); the title is not a heading.
