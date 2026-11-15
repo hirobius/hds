@@ -30,10 +30,13 @@
  *   render-unknown-prop       the snippet passes a prop the component does not accept
  *   render-cva-value          the snippet passes a cva prop a value outside its cva keys
  *   render-type               the snippet does not type-check against the component's props (TypeScript)
- *   import-line               imports ≠ `import { X } from '<importFrom>'`
+ *   import-line               imports ≠ the component's import line plus the entry's extra `imports`
+ *   figma-read-drift          an entry's Figma properties differ from figma/reads/component-properties.json (name, type, options, default)
+ *   figma-read-missing        a mapped node has no recorded property read
  *
  * Reported, not failing (use --strict to fail):
  *   unmapped                  template has no Figma node URL yet (publish would fail)
+ *   figma-node-is-variant     the `@figma` node is one variant of a component set; Code Connect maps the set
  *
  * Run: node scripts/check-code-connect.mjs [--strict] [--json]
  * Or:  pnpm figma:connect:check
@@ -45,7 +48,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createCodeModel } from './lib/component-code-model.mjs';
-import { classifyFigmaUrl, sameKeys } from './lib/code-connect-template.mjs';
+import { classifyFigmaUrl, importLinesFor, sameKeys } from './lib/code-connect-template.mjs';
 import {
   analyzeSnippet,
   compileTemplate,
@@ -142,6 +145,50 @@ export function runParse({ root = DEFAULT_ROOT, cli } = {}) {
 
 // ── The gate ─────────────────────────────────────────────────────────────────
 
+export const FIGMA_READ_PATH = 'figma/reads/component-properties.json';
+
+const nodeIdOf = (url) => /node-id=(\d+)[-:](\d+)/.exec(String(url))?.slice(1, 3).join(':') ?? null;
+
+/**
+ * Registry properties against the property definitions read from the Figma
+ * node: same names, same types, same VARIANT options, and the same default
+ * where the registry records one for a VARIANT or BOOLEAN.
+ * @returns {string[]} one message per difference
+ */
+export function compareWithFigmaRead(properties, readProps) {
+  const messages = [];
+  const read = new Map(readProps.map((prop) => [prop.name, prop]));
+  for (const prop of readProps) {
+    if (!properties[prop.name]) {
+      messages.push(`Figma has "${prop.name}" (${prop.type}); the registry does not`);
+    }
+  }
+  for (const [name, def] of Object.entries(properties)) {
+    const live = read.get(name);
+    if (!live) {
+      messages.push(`"${name}" is not a property of the Figma node`);
+    } else if (live.type !== def.type) {
+      messages.push(`"${name}" is ${live.type} in Figma, ${def.type} in the registry`);
+    } else if (
+      def.type === 'VARIANT' &&
+      !sameKeys(Object.fromEntries((def.options ?? []).map((o) => [o, 1])), live.options ?? [])
+    ) {
+      messages.push(
+        `"${name}" options are [${(live.options ?? []).join(', ')}] in Figma, [${(def.options ?? []).join(', ')}] in the registry`,
+      );
+    } else if (
+      (def.type === 'VARIANT' || def.type === 'BOOLEAN') &&
+      def.default !== undefined &&
+      def.default !== live.default
+    ) {
+      messages.push(
+        `"${name}" default is ${JSON.stringify(live.default)} in Figma, ${JSON.stringify(def.default)} in the registry`,
+      );
+    }
+  }
+  return messages;
+}
+
 /**
  * Pure gate over already-gathered inputs.
  * @returns {{ errors: object[], warnings: object[], summary: object, previews: object[] }}
@@ -154,6 +201,8 @@ export function checkCodeConnect({
   generatorDrift = [],
   cvaModules,
   exists,
+  figmaRead,
+  partUrls = {},
 }) {
   const errors = [];
   const warnings = [];
@@ -250,7 +299,7 @@ export function checkCodeConnect({
 
     const urlStatus = classifyFigmaUrl(doc.figmaNode);
     const templateUrl = urlStatus === 'mapped' ? doc.figmaNode : null;
-    const sourceUrl = code.figmaUrl ?? null;
+    const sourceUrl = code.figmaUrl ?? partUrls[name] ?? null;
     if (urlStatus !== 'invalid' && templateUrl !== sourceUrl) {
       error(
         'url-source-drift',
@@ -274,6 +323,31 @@ export function checkCodeConnect({
       });
     }
 
+    // 3a. The registry's Figma properties are the ones the live node has.
+    if (figmaRead && urlStatus === 'mapped') {
+      const nodeId = nodeIdOf(doc.figmaNode);
+      const read = figmaRead.nodes?.[nodeId];
+      const node = read?.variantOf ? figmaRead.nodes?.[read.variantOf] : read;
+      if (!node?.props) {
+        error(
+          'figma-read-missing',
+          `node ${nodeId} has no property read in ${FIGMA_READ_PATH}. Read it (node scripts/figma-code-connect-map.mjs --emit-property-read) and record the result`,
+          name,
+        );
+      } else {
+        for (const message of compareWithFigmaRead(entry.properties, node.props)) {
+          error('figma-read-drift', `${message} (${FIGMA_READ_PATH}, node ${nodeId})`, name);
+        }
+        if (read.variantOf) {
+          warnings.push({
+            rule: 'figma-node-is-variant',
+            component: name,
+            message: `@figma node ${nodeId} is one variant of the component set ${read.variantOf}. Code Connect maps a set: point the @figma tag at ${read.variantOf} before publishing`,
+          });
+        }
+      }
+    }
+
     let compiled;
     try {
       compiled = compileTemplate(doc.template);
@@ -291,7 +365,7 @@ export function checkCodeConnect({
       reported.add(key);
       error(rule, message, name);
     };
-    const expectedImport = `import { ${exportName} } from '${registry.importFrom}'`;
+    const expectedImports = importLinesFor(entry, exportName, registry.importFrom);
 
     const combinations = enumerateCombinations(properties, { cap: COMBINATION_CAP });
     const unique = new Set();
@@ -325,8 +399,11 @@ export function checkCodeConnect({
         once('render-error', `${JSON.stringify(values)} → ${result.error}`);
         continue;
       }
-      if (JSON.stringify(result.imports) !== JSON.stringify([expectedImport])) {
-        once('import-line', `imports ${JSON.stringify(result.imports)} ≠ ["${expectedImport}"]`);
+      if (JSON.stringify(result.imports) !== JSON.stringify(expectedImports)) {
+        once(
+          'import-line',
+          `imports ${JSON.stringify(result.imports)} ≠ ${JSON.stringify(expectedImports)}`,
+        );
       }
       if (unique.has(result.snippet)) continue;
       unique.add(result.snippet);
@@ -439,14 +516,28 @@ export function renderPreviewReport({ summary, previews }) {
 
 // ── Repository runner ────────────────────────────────────────────────────────
 
+/**
+ * The recorded property read. Only a gate fixture (FIXTURE_DIR) may have none:
+ * in the repository a missing file must fail, not switch the comparison off.
+ */
+export function readFigmaRead(root, { fixture = Boolean(process.env.FIXTURE_DIR) } = {}) {
+  const file = path.join(root, FIGMA_READ_PATH);
+  if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (fixture) return undefined;
+  throw new Error(
+    `${FIGMA_READ_PATH} is missing: the Code Connect registry has nothing to be checked against. Restore it, or record a new read (node scripts/figma-code-connect-map.mjs --emit-property-read).`,
+  );
+}
+
 export async function runCodeConnectGate({ root = DEFAULT_ROOT } = {}) {
-  const { registry, manifest } = loadCodeConnectInputs(root);
+  const { registry, manifest, partUrls } = loadCodeConnectInputs(root);
   const codeModel = createCodeModel({ root, files: registrySourceFiles(registry) });
   const { files, errors: generatorErrors } = await generateTemplates({
     root,
     registry,
     manifest,
     codeModel,
+    partUrls,
   });
   const generatorDrift = generatorErrors.length ? [] : diffAgainstDisk(root, files);
   const parsed = runParse({ root });
@@ -458,6 +549,8 @@ export async function runCodeConnectGate({ root = DEFAULT_ROOT } = {}) {
     generatorDrift,
     cvaModules: publicCvaModules(root),
     exists: (file) => fs.existsSync(path.join(root, file)),
+    figmaRead: readFigmaRead(root),
+    partUrls,
   });
 }
 

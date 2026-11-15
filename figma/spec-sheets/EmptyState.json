@@ -2,7 +2,7 @@
   "component": "EmptyState",
   "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections.",
   "docsPage": "/docs/components/empty-state",
-  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-14631",
   "anatomy": [
     {
       "part": "Root"

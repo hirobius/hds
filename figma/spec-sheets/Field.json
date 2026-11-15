@@ -2,7 +2,7 @@
   "component": "Field",
   "description": "Caption label paired with a value — used in metadata grids and read-only forms.",
   "docsPage": "/docs/components/field",
-  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
+  "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-23270",
   "anatomy": [
     {
       "part": "Root"

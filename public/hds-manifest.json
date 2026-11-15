@@ -624,7 +624,9 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/CodeBlock.tsx",
@@ -888,7 +890,9 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "tier": "pattern",
       "slots": [
@@ -1553,7 +1557,9 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "density"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineCode.tsx",
@@ -2226,7 +2232,10 @@
           "owner": "consumer"
         }
       ],
-      "variantAxes": [],
+      "variantAxes": [
+        "variant",
+        "size"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/SegmentedControl.tsx",
@@ -2893,7 +2902,7 @@
       "governedCategory": true,
       "filePath": "src/app/components/surface.tsx",
       "description": "Surface — governed inset surface primitive. Enforces the \"Surface Inset\" rule: backgrounds MUST have internal padding. - Default padding: surface.padding (cards, 28px / 24px compact) | scale.sm (items, 20px / 16px compact) - Default border: none (elevation model — use shadow for lift) - Radius: `rounded-lg` (role radius + 4px), the one container radius shared with Card - shadow prop: applies a two-layer elevation shadow for card lift Usage: <Surface>Card content</Surface> <Surface padding=\"item\">Compact item</Surface> <Surface shadow>Lifted card with elevation shadow.</Surface>",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2336-21",
       "figmaId": null,
       "preview": {
         "exportName": "Surface",
@@ -3001,7 +3010,7 @@
       "tier": "primitive",
       "docExempt": true,
       "sourcePath": "src/app/components/Surface.tsx",
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-27",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2336-21",
       "states": [
         "default"
       ],
@@ -3162,7 +3171,6 @@
       },
       "figmaPropertyMapping": {
         "padding": "Padding",
-        "gap": "Gap",
         "variant": "Variant",
         "tone": "Tone"
       },
@@ -3510,7 +3518,10 @@
         "src/styles/__tests__/glyph-outlines.ts"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant",
+        "tone"
+      ],
       "componentProperties": [],
       "tier": "primitive",
       "docExempt": true,
@@ -3629,8 +3640,7 @@
       "figmaPropertyMapping": {
         "Title.children": "Title",
         "Description.children": "Description",
-        "Content.hideClose": "Show close",
-        "modal": "Modal"
+        "Content.hideClose": "Show close"
       },
       "states": [
         "closed",
@@ -4044,7 +4054,6 @@
       },
       "figmaPropertyMapping": {
         "variant": "Variant",
-        "tone": "Tone",
         "size": "Size",
         "label": "Label",
         "iconLeft": "Show icon",
@@ -4262,7 +4271,9 @@
         "src/app/components/destructive-section.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "tone"
+      ],
       "componentProperties": [],
       "props": {
         "italic": {
@@ -4317,9 +4328,9 @@
       "governedCategory": true,
       "filePath": "src/app/components/empty-state.tsx",
       "description": "EmptyState — consistent no-data placeholder for lists, grids, and sections.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-14631",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=88-352",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-14631",
       "tier": "primitive",
       "preview": {
         "exportName": "EmptyState",
@@ -4332,7 +4343,9 @@
         "src/app/design-system/tokens.ts"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "action": {
@@ -4423,9 +4436,9 @@
       "governedCategory": true,
       "filePath": "src/app/components/field.tsx",
       "description": "Caption label paired with a value — used in metadata grids and read-only forms.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-23270",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-81",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-23270",
       "tier": "primitive",
       "preview": {
         "exportName": "Field",
@@ -4679,7 +4692,9 @@
         "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "tone"
+      ],
       "componentProperties": [],
       "props": {
         "notes": {
@@ -4821,7 +4836,8 @@
     },
     "Badge": {
       "variantAxes": [
-        "tone"
+        "tone",
+        "size"
       ],
       "componentProperties": [
         {
@@ -6149,7 +6165,9 @@
         "src/index.ts"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "label": {
@@ -6242,7 +6260,9 @@
         "src/app/components/spinner.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "height": {
@@ -6308,7 +6328,9 @@
         "src/app/components/skeleton.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "label": {
@@ -6449,9 +6471,9 @@
       "governedCategory": true,
       "filePath": "src/app/components/pagination.tsx",
       "description": "Paged navigation with first/last anchors, sibling pages, and ellipses.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2335-4217",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2335-4217",
       "tier": "pattern",
       "preview": {
         "exportName": "Pagination",
@@ -6461,7 +6483,9 @@
         "src/app/components/breadcrumb.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "count": {
@@ -7023,7 +7047,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/form.tsx",
-      "description": "Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module and have no Figma node, so a file-level @figma would claim this one for all three.",
+      "description": "Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module, so a file-level @figma would claim this one for all three. FormField is the Figma set 85:81 (figma/mapping-overrides.json).",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
@@ -7352,7 +7376,9 @@
       },
       "consumers": [],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "children": {
@@ -7399,7 +7425,9 @@
       },
       "consumers": [],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "attribution": {
@@ -7447,7 +7475,9 @@
         "src/app/components/text.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "size"
+      ],
       "componentProperties": [],
       "props": {
         "size": {
@@ -7608,7 +7638,9 @@
         "src/app/components/timeline.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "props": {
         "footer": {
@@ -8858,7 +8890,7 @@
       "docExempt": true,
       "filePath": "src/app/components/hds-tooltip.tsx",
       "description": "Tooltip root. Bakes in the Radix Provider so a single `<Tooltip>` is self-contained — no app-level provider required. Controlled via `open`/`onOpenChange`, or uncontrolled with `defaultOpen`.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-13345",
       "figmaId": null,
       "tier": "primitive",
       "preview": {
@@ -8873,7 +8905,7 @@
       "tokenMapping": {},
       "variantAxes": [],
       "componentProperties": [],
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-13345",
       "props": {
         "children": {
           "type": "React.ReactNode",
@@ -10372,7 +10404,9 @@
       },
       "consumers": [],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "tone"
+      ],
       "componentProperties": [],
       "props": {
         "children": {
@@ -12160,7 +12194,9 @@
         "src/app/components/tabs.tsx"
       ],
       "tokenMapping": {},
-      "variantAxes": [],
+      "variantAxes": [
+        "variant"
+      ],
       "componentProperties": [],
       "publicDataAttributes": [
         "data-leading",

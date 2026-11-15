@@ -77,6 +77,14 @@ export function loadUpgradeReleases(): LedgerRelease[] {
     .map((f) => readJson(`upgrade/releases/${f}`) as LedgerRelease);
 }
 
+/** How many library components have a Code Connect template (figma/code-connect.json). */
+export const loadCodeConnectTemplateCount = () =>
+  Object.keys((readJson('figma/code-connect.json') as { templates: object }).templates).length;
+
+/** How many known Figma and code differences the parity gate holds (figma/parity/baseline.json). */
+export const loadParityKnownCount = () =>
+  Object.keys((readJson('figma/parity/baseline.json') as { accepted: object }).accepted).length;
+
 /** The repo files behind the case study page's numbers (lib/case-study.ts). */
 export function loadCaseStudySources(): CaseStudySources {
   const root = dirname(findUp('hirobius.tokens.json'));

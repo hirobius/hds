@@ -61,8 +61,12 @@ const TONE_COLOUR =
 
 const STRING_LITERAL = /'([^'\n]*)'|"([^"\n]*)"|`([^`\n]*)`/g;
 
+/**
+ * Spec files, and generated Code Connect templates (`*.figma.ts`): a template
+ * prints the code for what a Figma instance draws, it is not UI in this repo.
+ */
 export function isExempt(rel) {
-  return isSpecFile(rel);
+  return isSpecFile(rel) || rel.endsWith('.figma.ts');
 }
 
 /** Violations in one file's text: { file, line, col, rule, message, sample }. */
