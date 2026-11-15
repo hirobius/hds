@@ -10,12 +10,6 @@
     "tag-not-on-component:Form": {
       "reason": "Code fix: point the @figma tag at the component set (hds#1565, code fix C2)."
     },
-    "icon-missing-in-figma:Icon": {
-      "reason": "Figma fix: draw the icons the code set added (hds#1565, F1)."
-    },
-    "icon-missing-in-code:Icon": {
-      "reason": "Figma fix: rename or archive the icons the code set no longer has (lucide renames, hds#1565, F1)."
-    },
     "axis-not-in-figma:CodeBlock:variant": {
       "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
     },
@@ -88,14 +82,20 @@
     "property-not-in-code:ListGroup:Divider": {
       "reason": "Figma fix: remove or rename the property so it maps to a prop; or record the reason in figma/code-connect.json (hds#1565, F6)."
     },
-    "option-not-in-figma:Stack:Gap": {
-      "reason": "Figma fix: draw the missing options, or record them as codeOnly in figma/code-connect.json (hds#1565, F5)."
-    },
     "collection-not-in-code:Button tone": {
       "reason": "Hand-built in Figma for the condensed Button (hds#1147). No token builds it, so check:figma-drift ignores it. Move its values to tokens or accept it as Figma-only: hds#1565, Figma fix F2."
     },
     "name-mismatch:FormField": {
       "reason": "Figma fix: rename the Figma component to the code name (hds#1565, F3)."
+    },
+    "icon-missing-in-figma:Icon:10-289b8e25": {
+      "reason": "Figma fix: draw the icons the code set added (hds#1565, F1)."
+    },
+    "icon-missing-in-code:Icon:27-a233c236": {
+      "reason": "Figma fix: rename or archive the icons the code set no longer has (lucide renames, hds#1565, F1)."
+    },
+    "option-not-in-figma:Stack:Gap:18-27ce865c": {
+      "reason": "Figma fix: draw the missing options, or record them as codeOnly in figma/code-connect.json (hds#1565, F5)."
     }
   }
 }

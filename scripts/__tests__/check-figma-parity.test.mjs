@@ -162,7 +162,10 @@ describe('parity: components', () => {
       read: read([button()], { pages: [icons] }),
       code: { ...code(), icons: ['Check', 'ArrowUpRight'] },
     });
-    expect(kinds(result)).toEqual(['icon-missing-in-figma:Icon', 'icon-missing-in-code:Icon']);
+    expect(kinds(result).map((id) => id.replace(/:\d+-[0-9a-f]{8}$/, ''))).toEqual([
+      'icon-missing-in-figma:Icon',
+      'icon-missing-in-code:Icon',
+    ]);
     expect(result.findings[0].detail).toContain('arrow-up-right');
     expect(result.findings[1].detail).toContain('home');
   });
@@ -189,7 +192,7 @@ describe('parity: variants and properties', () => {
       { default: 'md', options: ['md'] },
       { values: ['sm', 'md', 'lg'], default: 'md' },
     );
-    expect(kinds(result)).toEqual(['option-not-in-figma:Button:Size']);
+    expect(kinds(result)[0]).toMatch(/^option-not-in-figma:Button:Size:2-[0-9a-f]{8}$/);
     expect(result.findings[0].detail).toContain('sm, lg');
   });
 
@@ -207,7 +210,10 @@ describe('parity: variants and properties', () => {
   });
 
   it('reads the default option of an optional prop as "not set"', () => {
-    const result = withSize({ default: 'none', options: ['none', 'md'] }, { values: ['md'] });
+    const result = withSize(
+      { default: 'none', options: ['none', 'md'] },
+      { values: ['md'], optional: true },
+    );
     expect(kinds(result)).toEqual([]);
   });
 
@@ -304,6 +310,63 @@ describe('parity: variants and properties', () => {
     ]);
     const used = { ...badge, consumers: ['src/button.tsx'] };
     expect(kinds(parity({ read: nested, code: code({}, [used]) }))).toEqual([]);
+  });
+});
+
+describe('parity: review rules', () => {
+  it('a grouped finding gets a new id when its members change, so a baseline entry cannot hide new drift', () => {
+    const page = (names) => ({
+      id: '0:9',
+      name: 'Icon',
+      components: names.map((n, i) => ({ id: `8:${i}`, name: `Icon/${n}`, type: 'ONE' })),
+    });
+    const run = (names) =>
+      kinds(
+        parity({
+          read: read([button()], { pages: [page(names)] }),
+          code: { ...code(), icons: [] },
+        }),
+      )[0];
+    expect(run(['home'])).not.toBe(run(['home', 'trash']));
+    expect(run(['home', 'trash'])).toBe(run(['trash', 'home']));
+  });
+
+  it('a required enum prop gets no "not set" allowance', () => {
+    const figma = read([button({ props: [['Size', 'VARIANT', 'none', ['none', 'md']]] })]);
+    const required = code({ props: { size: { type: 'enum', values: ['md'] } } });
+    expect(kinds(parity({ read: figma, code: required }))).toContain(
+      'option-not-in-code:Button:Size=none',
+    );
+    const optional = code({ props: { size: { type: 'enum', values: ['md'], optional: true } } });
+    expect(kinds(parity({ read: figma, code: optional }))).toEqual([]);
+  });
+
+  it('reports two code components that link one Figma node', () => {
+    const twin = {
+      name: 'Other',
+      class: 'library',
+      nodeId: '1:1',
+      filePath: 'src/other.tsx',
+      props: {},
+      consumers: [],
+    };
+    const result = parity({ read: read([button()]), code: code({}, [twin]) });
+    expect(kinds(result)).toContain('duplicate-link:Other');
+  });
+
+  it('leaves the Hirobius/Meta release stamp to the release gate', () => {
+    const meta = (hash) => ({ id: 'm', name: 'Hirobius/Meta', modes: 1, variables: 6, hash });
+    const styles = { textStyles: { count: 0, hash: 'a' }, effectStyles: { count: 0, hash: 'b' } };
+    const result = parity({
+      read: { ...read([button()]), variables: { top: 't', collections: [meta('new')], ...styles } },
+      code: code(),
+      variables: {
+        snapshotDigest: { top: 't', collections: [meta('old')], ...styles },
+        drift: { total: 0, missing: [], extra: [], changed: [] },
+        unmanaged: [],
+      },
+    });
+    expect(kinds(result)).toEqual([]);
   });
 });
 

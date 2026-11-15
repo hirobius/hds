@@ -48,6 +48,7 @@ const KINDS = {
   'missing-in-figma': { severity: 'high', area: 'components', fix: 'figma' },
   'missing-in-code': { severity: 'high', area: 'components', fix: 'figma' },
   unlinked: { severity: 'medium', area: 'components', fix: 'code' },
+  'duplicate-link': { severity: 'medium', area: 'components', fix: 'code' },
   'part-not-recorded': { severity: 'medium', area: 'components', fix: 'code' },
   'icon-missing-in-figma': { severity: 'low', area: 'components', fix: 'figma' },
   'icon-missing-in-code': { severity: 'medium', area: 'components', fix: 'figma' },
@@ -73,9 +74,17 @@ export const AREAS = ['components', 'variants', 'properties', 'nesting', 'variab
 export const CONTRACT_AXES = ['variant', 'tone', 'size', 'density'];
 
 /** Pages whose components are not the live library. */
+const RELEASE_STAMP = 'Hirobius/Meta';
 const RETIRED_PAGE = /^(Archive|Deprecated)/;
 const TOOLING_PAGE = /^Spec sheet kit$/;
 const ICON_PAGE = /^Icon$/;
+
+/** A short stable hash of a list, so a grouped finding gets a new id when its members change. */
+const setKey = (names) => {
+  let h = 2166136261;
+  for (const ch of [...names].sort().join('|')) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+  return `${names.length}-${h.toString(16).padStart(8, '0')}`;
+};
 
 const camel = (name) =>
   name
@@ -145,6 +154,15 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
   const linked = new Map();
   const linkedNames = new Set();
   const link = (nodeId, component) => {
+    const other = linked.get(nodeId);
+    if (other && other.name !== component.name) {
+      add(
+        'duplicate-link',
+        component.name,
+        `${component.name} and ${other.name} both link Figma node ${nodeId}. Only one is compared.`,
+      );
+      return;
+    }
     linked.set(nodeId, component);
     linkedNames.add(component.name);
   };
@@ -255,7 +273,7 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
     const onlyFigma = [...inFigma].filter((name) => !inCode.has(name));
     const group = (kind, names, detail) => {
       if (names.length === 0) return;
-      add(kind, 'Icon', `${detail}: ${names.join(', ')}.`);
+      add(kind, 'Icon', `${detail}: ${names.join(', ')}.`, { key: setKey(names) });
       checks.components.failed += names.length - 1;
     };
     group(
@@ -310,12 +328,14 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
       if (type !== 'VARIANT' || !prop || prop.type !== 'enum') continue;
 
       const values = entry?.values ?? {};
+      // Only an optional prop with no default can be "not set".
+      const unset = prop.optional === true && prop.default === undefined;
       const codeValues = prop.values ?? [];
       for (const option of options) {
         check('variants');
         if (values[option] !== undefined || codeValues.includes(option)) continue;
         // Figma's default option of an optional prop is "the prop is not set" (Tone=none).
-        if (option === figmaDefault && prop.default === undefined) continue;
+        if (option === figmaDefault && unset) continue;
         const sameLetters = codeValues.find((v) => v.toLowerCase() === option.toLowerCase());
         add(
           sameLetters ? 'option-case' : 'option-not-in-code',
@@ -327,7 +347,7 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
         );
       }
       const drawn = new Set(options.map((o) => values[o] ?? o).map((o) => o.toLowerCase()));
-      if (prop.default === undefined) drawn.add(String(figmaDefault).toLowerCase());
+      if (unset) drawn.add(String(figmaDefault).toLowerCase());
       check('variants');
       const notDrawn = codeValues.filter(
         (v) => !drawn.has(v.toLowerCase()) && !entry?.codeOnly?.[v],
@@ -337,7 +357,7 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
           'option-not-in-figma',
           component.name,
           `Code has ${propName}=${notDrawn.join(', ')}; the Figma property ${name} draws ${options.join(', ')}.`,
-          { key: name },
+          { key: `${name}:${setKey(notDrawn)}` },
         );
       }
       if (prop.default !== undefined && !entry?.codeOnly?.[prop.default]) {
@@ -388,7 +408,10 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
   // ── variables ────────────────────────────────────────────────────────────
   if (variables) {
     const liveCollections = new Map(read.variables.collections.map((c) => [c.id, c]));
+    // Hirobius/Meta is the release stamp: check:figma-release owns it.
+    liveCollections.forEach((c, id) => c.name === RELEASE_STAMP && liveCollections.delete(id));
     for (const committed of variables.snapshotDigest.collections) {
+      if (committed.name === RELEASE_STAMP) continue;
       check('variables');
       const live = liveCollections.get(committed.id);
       if (!live || live.hash !== committed.hash) {

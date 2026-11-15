@@ -178,6 +178,10 @@ async function main(argv) {
   if (argv.includes('--ingest')) return ingest(root, argv.slice(argv.indexOf('--ingest') + 1));
 
   const maxAge = value('--max-age');
+  if (maxAge !== undefined && !(Number(maxAge) >= 0)) {
+    console.error(`--max-age needs a number of days, got "${maxAge}".`);
+    process.exit(1);
+  }
   const { exitCode, output, result } = await runParityCheck({
     root,
     today: new Date().toISOString().slice(0, 10),
