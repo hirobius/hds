@@ -26,6 +26,7 @@
   --primitive-color-neutral-500: #6f737b;
   --primitive-color-neutral-550: #5e626a;
   --primitive-color-neutral-600: #4d525b;
+  --primitive-color-neutral-675: #40454f;
   --primitive-color-neutral-700: #3b404a;
   --primitive-color-neutral-725: #272c36;
   --primitive-color-neutral-740: #2e333d;
@@ -48,14 +49,16 @@
   --primitive-color-blue-700: oklch(0.44 0.2903 266.54);
   --primitive-color-blue-800: oklch(0.30 0.07 266.54);
   --primitive-color-blue-900: oklch(0.22 0.05 266.54);
-  --primitive-color-red-50: #fee2e2;
+  --primitive-color-red-50: #fecccc;
   --primitive-color-red-400: #f87171;
   --primitive-color-red-700: #b91c1c;
-  --primitive-color-red-950: #5c1212;
-  --primitive-color-green-50: #d1fae5;
+  --primitive-color-red-900: #621313;
+  --primitive-color-red-950: #450a0a;
+  --primitive-color-green-50: #bcf7dc;
   --primitive-color-green-400: #34d399;
   --primitive-color-green-700: #047857;
-  --primitive-color-green-950: #043a2c;
+  --primitive-color-green-900: #064e3b;
+  --primitive-color-green-950: #022c22;
   --primitive-color-graphite-50: #f2f4f8;
   --primitive-color-graphite-100: #e5e8ed;
   --primitive-color-graphite-200: #c4c8cf;
@@ -103,10 +106,11 @@
   --primitive-color-mauve-800: #432634;
   --primitive-color-mauve-900: #361d29;
   --primitive-color-mauve-950: #240f1a;
-  --primitive-color-violet-50: #ede9fe;
+  --primitive-color-violet-50: #ddd6fe;
   --primitive-color-violet-400: #a78bfa;
   --primitive-color-violet-700: #6d28d9;
-  --primitive-color-violet-950: #3a1578;
+  --primitive-color-violet-900: #401882;
+  --primitive-color-violet-950: #2e1065;
   --primitive-color-lilac-50: #f7f4fe;
   --primitive-color-lilac-100: #efe9fd;
   --primitive-color-lilac-200: #ddd0fb;
@@ -118,10 +122,11 @@
   --primitive-color-lilac-700: #4f2aa3;
   --primitive-color-lilac-800: #3a1f78;
   --primitive-color-lilac-900: #2a1659;
-  --primitive-color-amber-50: #fef3c7;
+  --primitive-color-amber-50: #fde68a;
   --primitive-color-amber-400: #fbbf24;
   --primitive-color-amber-800: #92400e;
-  --primitive-color-amber-950: #592508;
+  --primitive-color-amber-900: #78350f;
+  --primitive-color-amber-950: #451a03;
   --primitive-color-stone-100: #F5EFE7;
   --primitive-color-stone-400: #D0B492;
   --primitive-color-stone-450: #BC9D7E;
@@ -320,6 +325,7 @@
   --semantic-color-surface-sunken: var(--primitive-color-neutral-300);
   --semantic-color-surface-soft: var(--primitive-color-neutral-300);
   --semantic-color-surface-softHover: var(--primitive-color-neutral-325);
+  --semantic-color-surface-softStrong: var(--primitive-color-neutral-350);
   --semantic-color-content-primary: var(--primitive-color-neutral-900);
   --semantic-color-content-secondary: var(--primitive-color-neutral-600);
   --semantic-color-content-tertiary: var(--primitive-color-neutral-550);
@@ -339,10 +345,10 @@
   --semantic-color-border-warning: var(--primitive-color-amber-400);
   --semantic-color-edge-primary: oklch(0.2646 0.0260 265.37);
   --semantic-color-edge-neutral: var(--primitive-color-neutral-400);
-  --semantic-color-edge-danger: var(--primitive-color-red-400);
-  --semantic-color-edge-success: var(--primitive-color-green-400);
-  --semantic-color-edge-warning: var(--primitive-color-amber-400);
-  --semantic-color-edge-info: var(--primitive-color-blue-300);
+  --semantic-color-edge-danger: var(--primitive-color-red-700);
+  --semantic-color-edge-success: var(--primitive-color-green-700);
+  --semantic-color-edge-warning: var(--primitive-color-amber-800);
+  --semantic-color-edge-info: var(--primitive-color-blue-600);
   --semantic-color-shadow-hard: var(--primitive-color-shadow-ink);
   --semantic-color-feedback-error: var(--primitive-color-red-700);
   --semantic-color-feedback-success: var(--primitive-color-green-700);
@@ -352,7 +358,7 @@
   --semantic-color-feedback-bg-error: var(--primitive-color-red-50);
   --semantic-color-feedback-bg-success: var(--primitive-color-green-50);
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-50);
-  --semantic-color-feedback-bg-info: var(--primitive-color-blue-100);
+  --semantic-color-feedback-bg-info: var(--primitive-color-blue-200);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-black);
   --semantic-space-scale-2xs: var(--primitive-space-1);
@@ -663,17 +669,17 @@
   --component-button-size-lg-itemSpacing: var(--primitive-space-2);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
-  --component-button-secondary-bg-rest: var(--semantic-color-surface-softHover);
-  --component-button-secondary-bg-hover: var(--semantic-color-surface-soft);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-softHover);
+  --component-button-secondary-bg-rest: var(--semantic-color-surface-softStrong);
+  --component-button-secondary-bg-hover: var(--semantic-color-surface-softHover);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-softStrong);
   /* @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 */
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
   /* @deprecated hds#891 soft surfaces: secondary Button has no border; removed in 1.0.0 */
   --component-button-secondary-border-disabled: var(--semantic-color-border-default);
   --component-button-secondary-text: var(--semantic-color-content-primary);
-  --component-button-tertiary-bg-hover: var(--semantic-color-surface-sunken);
-  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-softHover);
+  --component-button-tertiary-bg-hover: var(--semantic-color-surface-softHover);
+  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-softStrong);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
   --component-input-border: var(--semantic-color-border-interactive);
@@ -737,24 +743,25 @@
 /* ── Dark mode overrides ────────────────────────────────────────────────────── */
 [data-theme="dark"] {
   --primitive-shadow-color: 0 0% 0%;
-  --semantic-color-surface-page: var(--primitive-color-neutral-900);
-  --semantic-color-surface-raised: var(--primitive-color-neutral-800);
-  --semantic-color-surface-overlay: var(--primitive-color-neutral-750);
+  --semantic-color-surface-page: var(--primitive-color-neutral-850);
+  --semantic-color-surface-raised: var(--primitive-color-neutral-750);
+  --semantic-color-surface-overlay: var(--primitive-color-neutral-740);
   --semantic-color-surface-floating: var(--primitive-color-neutral-800);
   --semantic-color-surface-scrim: var(--primitive-color-neutral-black);
   --semantic-color-surface-inverse: var(--primitive-color-neutral-white);
   --semantic-color-surface-accent: var(--primitive-color-graphite-50);
   --semantic-color-surface-accentSubtle: var(--primitive-color-graphite-800);
   --semantic-color-surface-hover: var(--primitive-color-neutral-700);
-  --semantic-color-surface-pressed: var(--primitive-color-neutral-900);
+  --semantic-color-surface-pressed: var(--primitive-color-neutral-850);
   --semantic-color-surface-selected: var(--primitive-color-neutral-700);
   --semantic-color-surface-muted: var(--primitive-color-neutral-740);
-  --semantic-color-surface-sunken: var(--primitive-color-neutral-700);
+  --semantic-color-surface-sunken: var(--primitive-color-neutral-675);
   --semantic-color-surface-soft: var(--primitive-color-neutral-600);
   --semantic-color-surface-softHover: var(--primitive-color-neutral-550);
+  --semantic-color-surface-softStrong: var(--primitive-color-neutral-600);
   --semantic-color-content-primary: var(--primitive-color-neutral-100);
   --semantic-color-content-secondary: var(--primitive-color-neutral-350);
-  --semantic-color-content-tertiary: var(--primitive-color-neutral-450);
+  --semantic-color-content-tertiary: var(--primitive-color-neutral-400);
   --semantic-color-content-disabled: var(--primitive-color-neutral-600);
   --semantic-color-content-inverse: var(--primitive-color-neutral-900);
   --semantic-color-content-accent: var(--primitive-color-graphite-300);
@@ -763,29 +770,27 @@
   --semantic-color-content-warning: var(--primitive-color-amber-400);
   --semantic-color-content-danger: var(--primitive-color-red-400);
   --semantic-color-border-default: var(--primitive-color-neutral-550);
-  --semantic-color-border-interactive: var(--primitive-color-neutral-450);
+  --semantic-color-border-interactive: var(--primitive-color-neutral-400);
   --semantic-color-border-subtle: var(--primitive-color-neutral-700);
   --semantic-color-border-strong: var(--primitive-color-neutral-550);
   --semantic-color-border-accent: var(--primitive-color-graphite-300);
-  --semantic-color-border-success: var(--primitive-color-green-400);
-  --semantic-color-border-warning: var(--primitive-color-amber-400);
-  --semantic-color-edge-primary: oklch(0.7338 0.0037 247.87);
+  --semantic-color-edge-primary: oklch(0.7382 0.0037 260.00);
   --semantic-color-edge-neutral: var(--primitive-color-neutral-725);
-  --semantic-color-edge-danger: var(--primitive-color-neutral-black);
-  --semantic-color-edge-success: var(--primitive-color-neutral-black);
-  --semantic-color-edge-warning: var(--primitive-color-neutral-black);
+  --semantic-color-edge-danger: var(--primitive-color-red-950);
+  --semantic-color-edge-success: var(--primitive-color-green-950);
+  --semantic-color-edge-warning: var(--primitive-color-amber-950);
   --semantic-color-edge-info: var(--primitive-color-blue-900);
-  --semantic-color-shadow-hard: var(--primitive-color-neutral-450);
+  --semantic-color-shadow-hard: var(--primitive-color-neutral-400);
   --semantic-color-feedback-error: var(--primitive-color-red-400);
   --semantic-color-feedback-success: var(--primitive-color-green-400);
   --semantic-color-feedback-warning: var(--primitive-color-amber-400);
   --semantic-color-feedback-info: var(--primitive-color-blue-200);
   --semantic-color-feedback-inProgress: var(--primitive-color-violet-400);
-  --semantic-color-feedback-bg-error: var(--primitive-color-red-950);
-  --semantic-color-feedback-bg-success: var(--primitive-color-green-950);
-  --semantic-color-feedback-bg-warning: var(--primitive-color-amber-950);
+  --semantic-color-feedback-bg-error: var(--primitive-color-red-900);
+  --semantic-color-feedback-bg-success: var(--primitive-color-green-900);
+  --semantic-color-feedback-bg-warning: var(--primitive-color-amber-900);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-800);
-  --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-950);
+  --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-900);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
   --semantic-accent-rest: var(--primitive-color-graphite-50);
   --semantic-accent-hover: var(--primitive-color-graphite-100);
@@ -795,16 +800,7 @@
   --semantic-accent-content: var(--primitive-color-graphite-300);
   --semantic-accent-contentHover: var(--primitive-color-graphite-200);
   --semantic-accent-subtle: var(--primitive-color-graphite-800);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
-  --semantic-accent-delight-base: var(--primitive-color-lime-300);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
-  --semantic-accent-delight-deep: var(--primitive-color-lime-600);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
-  --semantic-accent-delight-pale: var(--primitive-color-lime-50);
-  /* @deprecated hidden for now (hds#857): lime delight may come back, so the token stays; do not use it in new code; removed in 1.0.0 */
-  --semantic-accent-delight-onDelight: var(--primitive-color-neutral-900);
   --semantic-focus-ring-color: var(--primitive-color-graphite-300);
-  /* @deprecated hds#595, removed in 1.0.0 — use component.badge.<tone>.bg (one per tone) */
   --component-badge-bg: var(--semantic-color-feedback-bg-info);
   --semantic-elevation-flat-surface: var(--semantic-color-surface-page);
   --semantic-elevation-flat-border: var(--semantic-color-border-subtle);
@@ -844,15 +840,15 @@
   --component-button-text: var(--semantic-color-content-onAccent);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
-  --component-button-secondary-bg-rest: var(--semantic-color-surface-softHover);
-  --component-button-secondary-bg-hover: var(--semantic-color-surface-soft);
-  --component-button-secondary-bg-pressed: var(--semantic-color-surface-softHover);
+  --component-button-secondary-bg-rest: var(--semantic-color-surface-softStrong);
+  --component-button-secondary-bg-hover: var(--semantic-color-surface-softHover);
+  --component-button-secondary-bg-pressed: var(--semantic-color-surface-softStrong);
   --component-button-secondary-border-rest: var(--semantic-color-border-interactive);
   --component-button-secondary-border-hover: var(--semantic-color-border-accent);
   --component-button-secondary-border-disabled: var(--semantic-color-border-default);
   --component-button-secondary-text: var(--semantic-color-content-primary);
-  --component-button-tertiary-bg-hover: var(--semantic-color-surface-sunken);
-  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-softHover);
+  --component-button-tertiary-bg-hover: var(--semantic-color-surface-softHover);
+  --component-button-tertiary-bg-pressed: var(--semantic-color-surface-softStrong);
   --component-input-bg: var(--semantic-color-surface-page);
   --component-input-text: var(--semantic-color-content-primary);
   --component-input-border: var(--semantic-color-border-interactive);
@@ -916,4 +912,4 @@
 }
 /* Raised edges (hds#897): computed fills stepped darker (C2); Button edges alias component.button.edge.*. scripts/lib/raised-edge.mjs */
 :root{--hds-edge-primary:var(--component-button-edge-primary);--hds-edge-secondary:var(--component-button-edge-secondary);--hds-edge-danger:var(--component-button-edge-danger);--hds-edge-success:var(--component-button-edge-success);--hds-edge-warning:var(--component-button-edge-warning);--hds-edge-info:var(--component-button-edge-info);--hds-edge-primaryHover:#050915;--hds-edge-kbd:#b7b7b9;}
-[data-theme="dark"]{--hds-edge-primaryHover:#9fa1a5;--hds-edge-kbd:#1f232a;}
+[data-theme="dark"]{--hds-edge-primaryHover:#a1a3a6;--hds-edge-kbd:#282b33;}

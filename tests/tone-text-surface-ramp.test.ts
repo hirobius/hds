@@ -8,7 +8,9 @@
  *    step lighter, tone fills one step stronger in both themes. Every pair stays AA.
  */
 import { describe, it, expect } from 'vitest';
-import { contrastRatio } from '../src/app/utils/colorUtils';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { contrastRatio, hexToLuminance } from '../src/app/utils/colorUtils';
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import { tokenHex } from './helpers/token-color';
@@ -22,6 +24,12 @@ const hex = (p: string, mode: 'Light' | 'Dark') => {
 };
 
 const MODES = ['Light', 'Dark'] as const;
+const tokensJson = JSON.parse(readFileSync(resolve(process.cwd(), 'hirobius.tokens.json'), 'utf8'));
+const tokenAlias = (p: string, mode: 'Light' | 'Dark') => {
+  const n = p.split('.').reduce((x: any, k) => x?.[k], tokensJson);
+  return n?.$extensions?.['com.figma.variables']?.modes?.[mode] ?? n?.$value;
+};
+const lum = (h: string) => hexToLuminance(h);
 type Mode = (typeof MODES)[number];
 const ratio = (a: string, b: string, mode: Mode) => contrastRatio(hex(a, mode), hex(b, mode));
 const surface = (s: string) => `semantic.color.surface.${s}`;
@@ -75,16 +83,16 @@ describe('toned Button labels', () => {
   );
 });
 
-describe('surface ramp Option A', () => {
+describe('surface ramp (dark from Option B, light from A with deeper Button fills)', () => {
   it('lifts the dark page and raised surface off near-black', () => {
-    expect(hex(surface('page'), 'Dark')).toBe('#0c111b');
-    expect(hex(surface('raised'), 'Dark')).toBe('#212630');
+    expect(hex(surface('page'), 'Dark')).toBe('#151a24');
+    expect(hex(surface('raised'), 'Dark')).toBe('#252a34');
   });
 
   it('deepens the light secondary Button fill (at least 1.6:1 on the page)', () => {
     expect(
       ratio('component.button.secondary.bg.rest', surface('page'), 'Light'),
-    ).toBeGreaterThanOrEqual(1.6);
+    ).toBeGreaterThanOrEqual(2);
   });
 
   it('deepens the light tertiary Button hover (at least 1.4:1 on the page)', () => {
@@ -107,6 +115,57 @@ describe('surface ramp Option A', () => {
       for (const s of ['page', 'raised', 'overlay', 'muted']) {
         expect(ratio('semantic.color.shadow.hard', surface(s), mode)).toBeGreaterThanOrEqual(3);
       }
+    },
+  );
+});
+
+const EDGE_TONES = [
+  ['danger', 'error', 'red'],
+  ['success', 'success', 'green'],
+  ['warning', 'warning', 'amber'],
+  ['info', 'info', 'blue'],
+] as const;
+
+describe.each(MODES)('tone Button edge and stroke (%s)', (mode) => {
+  it.each(EDGE_TONES)(
+    'the %s edge is a darker step of its own tone, not a neutral',
+    (tone, fb, hue) => {
+      expect(tokenHex(`semantic.color.edge.${tone}`, mode)).not.toMatch(/neutral/);
+      const node = JSON.stringify(
+        // the alias names the tone's own primitive ramp
+        tokenAlias(`semantic.color.edge.${tone}`, mode),
+      );
+      expect(node).toContain(`primitive.color.${hue}.`);
+      expect(lum(hex(`semantic.color.edge.${tone}`, mode))).toBeLessThan(
+        lum(hex(`semantic.color.feedback.bg.${fb}`, mode)),
+      );
+    },
+  );
+
+  it.each(EDGE_TONES)(
+    'the %s stroke (feedback colour) reaches 3:1 on page and raised (WCAG 1.4.11)',
+    (_t, fb) => {
+      for (const s of ['page', 'raised']) {
+        expect(ratio(`semantic.color.feedback.${fb}`, surface(s), mode)).toBeGreaterThanOrEqual(3);
+      }
+    },
+  );
+});
+
+describe('toned Button stroke', () => {
+  it.each(['danger', 'success', 'warning', 'info'] as const)(
+    '%s draws a 1px tone stroke',
+    (tone) => {
+      const { getByRole, unmount } = render(
+        React.createElement(Button, { tone }, 'Sign out anyway'),
+      );
+      const cls = getByRole('button').className.split(' ');
+      unmount();
+      expect(cls).toContain('hds-tone-ring');
+      const css = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8');
+      expect(css.replace(/\s+/g, ' ')).toContain(
+        `[data-tone='${tone}'] { --hds-tone-ring: var(--hds-feedback-${tone}); }`,
+      );
     },
   );
 });

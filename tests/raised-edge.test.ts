@@ -165,8 +165,8 @@ describe('C2 reference edges (graphite defaults)', () => {
   it('light: primary ≈ #1f2532, one step under the graphite.700 fill', () => {
     near(shipped('Light').primary, '#1f2532', 0);
   });
-  it('dark: primary ≈ #a7a9ab', () => {
-    near(shipped('Dark').primary, '#a7a9ab');
+  it('dark: primary ≈ #a9aaad', () => {
+    near(shipped('Dark').primary, '#a9aaad');
   });
 });
 
@@ -202,19 +202,20 @@ describe('Button edge tokens', () => {
   const APPROVED: Record<Mode, Record<keyof typeof EDGE_TOKENS, string>> = {
     Light: {
       secondary: 'neutral.400',
-      danger: 'red.400',
-      success: 'green.400',
-      warning: 'amber.400',
-      info: 'blue.300',
+      danger: 'red.700',
+      success: 'green.700',
+      warning: 'amber.800',
+      info: 'blue.600',
     },
+    // 2026-11-15: every tone edge is a darker step of its own tone, never a neutral (Adrian).
     // hds#1399: dark tone fills are near-black, so their edge is the darkest step (always
     // darker than the fill). hds#1422: no page line; the info fill is lifted to blue.800 for
     // page separation, so its edge is blue.900, one step darker.
     Dark: {
       secondary: 'neutral.725',
-      danger: 'neutral.black',
-      success: 'neutral.black',
-      warning: 'neutral.black',
+      danger: 'red.950',
+      success: 'green.950',
+      warning: 'amber.950',
       info: 'blue.900',
     },
   };
@@ -270,7 +271,7 @@ describe('computed edges that ship as tokens', () => {
     const hex = (mode: Mode) => resolveHex(raw, EDGE_COMPUTED_TOKENS.primary, mode);
     expect({ Light: hex('Light'), Dark: hex('Dark') }).toEqual({
       Light: '#1f2532',
-      Dark: '#a7a9ab',
+      Dark: '#a9aaad',
     });
     for (const mode of MODES) expect(hex(mode)).toBe(expected(raw, 'primary', mode));
   });
@@ -294,7 +295,7 @@ describe('computed edges that ship as tokens', () => {
       'oklch(0.75 0.0044 271.35)';
     const [drift] = edgeTokenDrift(tree);
     expect(drift).toMatch(
-      /^semantic\.color\.edge\.primary \(Dark\) is #[0-9a-f]{6}; raised-edge computes #a7a9ab$/,
+      /^semantic\.color\.edge\.primary \(Dark\) is #[0-9a-f]{6}; raised-edge computes #a9aaad$/,
     );
     expect(edgeTokenDrift(tree)).toHaveLength(1);
     expect(() => buildEdgeCSS(tree)).toThrow(/semantic\.color\.edge\.primary \(Dark\)/);

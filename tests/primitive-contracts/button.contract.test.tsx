@@ -145,6 +145,7 @@ const variantClasses = (variant: (typeof VARIANTS)[number]) =>
 const TONE_KEEPS: readonly string[] = ['border'];
 
 const toneClasses = (tone: (typeof STATUS_TONES)[number]) => [
+  'hds-tone-ring',
   'border-transparent',
   `bg-feedback-bg-${tone}`,
   'text-foreground',

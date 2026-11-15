@@ -25,8 +25,11 @@ import { NewTabHint, newTabName } from './new-tab-hint';
 // ── Variants ───────────────────────────────────────────────────────────────────
 
 // The classes every status tone shares; each tone adds its own fill and text colour (kept as literals so Tailwind sees them).
+// A tone fill sits close to the page (1.1 to 1.9:1), so a toned Button draws a 1px inset stroke in
+// its own feedback colour (.hds-tone-ring, theme.css) (3:1+ on the page in both themes, WCAG 1.4.11; inset, so the box does not
+// change). Its edge is a darker step of the same tone. Feedback tones may carry an edge.
 const TONE_COMMON =
-  'border-transparent hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:inset-shadow-pressed-overlay/5 disabled:border-transparent';
+  'hds-tone-ring border-transparent hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:inset-shadow-pressed-overlay/5 disabled:border-transparent';
 
 /**
  * Pressed state (hds#322): an inset box-shadow wash bound to
@@ -199,6 +202,7 @@ const buttonVariants = /* @__PURE__ */ cva(
       // A filled tone shows its tone in the fill, so its label is the plain content colour
       // (Adrian 2026-11-15). A link has no fill: its text is the only place the tone can
       // show, so a toned link keeps the feedback colour.
+      // The tone stroke (see TONE_COMMON) on every filled variant; a link has no fill or stroke.
       { variant: 'link', tone: 'danger', className: 'text-feedback-danger' },
       { variant: 'link', tone: 'success', className: 'text-feedback-success' },
       { variant: 'link', tone: 'warning', className: 'text-feedback-warning' },

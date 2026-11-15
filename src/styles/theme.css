@@ -788,6 +788,30 @@
  * --tw-shadow, so Tailwind's focus ring and the pressed inset wash compose into the same
  * box-shadow list. In the components layer, so a consumer shadow utility still wins; the
  * transition property list is on Button itself (its utility outranks this layer). */
+@layer components {
+  /* Tone stroke (2026-11-15): a toned Button's fill sits close to the page, so a 1px inset ring in
+   * its feedback colour gives it a 3:1 boundary (WCAG 1.4.11) without a darker fill. Buttons only:
+   * the class comes from button.tsx's tone classes, never a Card or surface. A link has no fill. */
+  .hds-tone-ring:not([data-variant='link'], :disabled) {
+    --tw-inset-ring-shadow: inset 0 0 0 1px var(--hds-tone-ring);
+    box-shadow:
+      var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+      var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  [data-tone='danger'] {
+    --hds-tone-ring: var(--hds-feedback-danger);
+  }
+  [data-tone='success'] {
+    --hds-tone-ring: var(--hds-feedback-success);
+  }
+  [data-tone='warning'] {
+    --hds-tone-ring: var(--hds-feedback-warning);
+  }
+  [data-tone='info'] {
+    --hds-tone-ring: var(--hds-feedback-info);
+  }
+}
+
 /* One edge only (hds#1422): no page line under the edge. In dark, #1416 added a 1px
  * border.default line under every raised edge, so filled Buttons showed a double bottom line.
  * The edge is the darker step of its own fill; a fill that needs page separation is lifted a

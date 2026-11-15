@@ -20,6 +20,7 @@ export const tokens = {
         "500": "var(--primitive-color-neutral-500)",
         "550": "var(--primitive-color-neutral-550)",
         "600": "var(--primitive-color-neutral-600)",
+        "675": "var(--primitive-color-neutral-675)",
         "700": "var(--primitive-color-neutral-700)",
         "725": "var(--primitive-color-neutral-725)",
         "740": "var(--primitive-color-neutral-740)",
@@ -49,12 +50,14 @@ export const tokens = {
         "50": "var(--primitive-color-red-50)",
         "400": "var(--primitive-color-red-400)",
         "700": "var(--primitive-color-red-700)",
+        "900": "var(--primitive-color-red-900)",
         "950": "var(--primitive-color-red-950)"
       },
       green: {
         "50": "var(--primitive-color-green-50)",
         "400": "var(--primitive-color-green-400)",
         "700": "var(--primitive-color-green-700)",
+        "900": "var(--primitive-color-green-900)",
         "950": "var(--primitive-color-green-950)"
       },
       graphite: {
@@ -116,6 +119,7 @@ export const tokens = {
         "50": "var(--primitive-color-violet-50)",
         "400": "var(--primitive-color-violet-400)",
         "700": "var(--primitive-color-violet-700)",
+        "900": "var(--primitive-color-violet-900)",
         "950": "var(--primitive-color-violet-950)"
       },
       lilac: {
@@ -135,6 +139,7 @@ export const tokens = {
         "50": "var(--primitive-color-amber-50)",
         "400": "var(--primitive-color-amber-400)",
         "800": "var(--primitive-color-amber-800)",
+        "900": "var(--primitive-color-amber-900)",
         "950": "var(--primitive-color-amber-950)"
       },
       stone: {
@@ -377,7 +382,8 @@ export const tokens = {
         muted: "var(--semantic-color-surface-muted)",
         sunken: "var(--semantic-color-surface-sunken)",
         soft: "var(--semantic-color-surface-soft)",
-        softHover: "var(--semantic-color-surface-softHover)"
+        softHover: "var(--semantic-color-surface-softHover)",
+        softStrong: "var(--semantic-color-surface-softStrong)"
       },
       content: {
         primary: "var(--semantic-color-content-primary)",

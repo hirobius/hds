@@ -6,17 +6,7 @@ Token-first React components with checked contrast and focus.
 
 [![Buttons under the Brand and Theme dials: base and accent-lilac, light and dark](docs/images/brand-theme-dials.png)](https://hirobius-design-system.vercel.app/docs)
 
-## Table of Contents
-
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-- [Docs](#docs)
-- [For AI agents](#for-ai-agents)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Background
+**Live:** <https://hirobius-design-system.vercel.app/docs> (components, tokens and live demos)
 
 HDS (Hirobius Design System) is a React component library on a DTCG token pipeline. The tokens compile to CSS variables and TypeScript constants. Four root attributes re-skin every component, with no JavaScript.
 
@@ -25,7 +15,7 @@ AI agents design and build HDS. Automated checks gate their work: typecheck, lin
 <!-- auto:start:front-door-counts -->
 
 - **64** public component modules, exported from `src/index.ts`
-- **581** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
+- **587** DTCG tokens in `hirobius.tokens.json`, compiled to CSS variables and TypeScript constants
 
 <!-- auto:end:front-door-counts -->
 
@@ -56,9 +46,16 @@ export const App = () => (
 
 Theming, scoping and the router seam: [docs/CONSUMING.md](docs/CONSUMING.md).
 
-## Docs
+## Structure
 
-Components, tokens and live demos: <https://hirobius-design-system.vercel.app/docs>
+- `src/`: the components, the patterns and the token styles.
+- `hirobius.tokens.json`: the DTCG token source. `accents/` and `directions/` hold the brand variants.
+- `content/` and `docs-site/`: the docs pages and the Next.js site that renders them.
+- `figma/`: the one-way sync from code to the Figma library.
+- `mcp/`, `skills/` and `codemods/`: the MCP server, the agent skill and the upgrade codemods that ship in the package.
+- `scripts/`: the token pipeline, the generators and the check scripts.
+- `tests/` and `fixtures/`: the unit, contract and visual tests, and the fixtures that prove each check fires.
+- `docs/`: engineering notes, decision records (`docs/adr/`) and agent rules (`docs/agent/`).
 
 ## For AI agents
 
@@ -69,7 +66,7 @@ Components, tokens and live demos: <https://hirobius-design-system.vercel.app/do
 
 ## Contributing
 
-Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) has the setup and the gates. Agents that work in this repo start at [docs/ai/FRONT-DOOR.md](docs/ai/FRONT-DOOR.md).
+Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) has the setup, the check command and the PR flow. Agents that work in this repo start at [docs/ai/FRONT-DOOR.md](docs/ai/FRONT-DOOR.md).
 
 ## License
 

@@ -111,60 +111,32 @@ export default [...hds.configs.recommended];
 
 <!-- hds:repo-notes — everything below is hand-written, for agents working in the hds repo itself; consumers can stop here. -->
 
-Working in this repo: start at `docs/ai/FRONT-DOOR.md` (read order, where live state is, the docs index).
+Working in this repo: start at `docs/ai/FRONT-DOOR.md` (read order, where live state is, the docs index). The rules are in `CLAUDE.md`. Detail is in `docs/agent/README.md`.
 
 ## Ralph quality bar
 
 REPO_TYPE: library
 QUALITY BAR: Public npm package. Backward compatibility matters. Tests required, and a live demo on the docs site (docs-site/components/component-demos.tsx) for a core component or pattern.
 
-Rules for any autonomous loop in this repo:
+Rules for any autonomous loop in this repo (detail: `docs/agent/ralph.md`, full contract: `ralph/README.md`):
 
 - One issue per PR. Small steps. Never push to main.
 - The gate (ralph/gate.sh) must pass **locally** before any PR. No exceptions.
 - Fight entropy: leave the code better than you found it.
 - No shortcut that creates debt someone else pays for.
-- Merges are HUMAN-approved: `ralph-approved` on the PR, or the issue
-  pre-tagged `ralph-auto` (batch approval), plus an independent PASS review
-  comment for the head commit (format in CLAUDE.md). Never merge yourself.
+- Merges are HUMAN-approved: `ralph-approved` on the PR, or the issue pre-tagged `ralph-auto`, plus an independent PASS review comment for the head commit. Never merge yourself.
+- Agents never touch `ralph-*` labels, claim refs, or `ralph/{.lock,runs.jsonl,logs/}`: the harness has those.
+- The loop and `ralph-gate` only run when someone starts them by hand.
 
-Loop mechanics (see `ralph/README.md` for the full contract):
+## Checks, merge and release
 
-- Labels: `ralph-ready` (queue, human) · `p0`–`p3` (priority, human) ·
-  `ralph-auto`/`ralph-approved` (merge approval, human) · `ralph-wip`
-  (claimed, loop) · `ralph-parked`/`needs-adrian` (parked with reason, loop) ·
-  `ralph-selfheal-attempted` (gate's one bounded repair, spent).
-- Selection is deterministic (`ralph/next.sh`: priority label, then issue #);
-  claims are atomic (`refs/heads/ralph/claim-<n>`); the loop's exit codes are
-  a contract (`ralph/run.sh` header). Agents never touch `ralph-*` labels,
-  claim refs, or `ralph/{.lock,runs.jsonl,logs/}` — the harness owns those.
-- The engine is org-level: workflows are thin callers into
-  `hirobius/ralph/.github/workflows/ralph-{run,gate}-reusable.yml@v1`.
-  **They do not run:** GitHub Actions is disabled here (below), so the loop and
-  `ralph-gate` only run when someone starts them by hand.
+Detail: `docs/agent/checks-and-merge.md`.
 
-## GitHub Actions is off (Adrian, 2026-10-30)
+- Never wait on GitHub Actions checks, and never treat a missing check as pass or fail. Leave `.github/workflows/` alone.
+- Check locally before push: the husky hooks, plus `pnpm typecheck && pnpm test` (and `pnpm smoke:consumer` for anything that ships). Paste the results into the PR.
+- Merge rule: an independent PASS review comment on the PR, from someone other than the author, naming the head commit. A new push voids it.
+- Release: from GitHub Actions on merge of the Version Packages PR. Agents never `npm publish` by hand. See `docs/RELEASING.md`.
 
-Actions is disabled on hirobius/hds to keep it free. CI, Chromatic,
-`ralph-gate`, `claude.yml` and the Actions release (with npm provenance) never
-run, so never wait on them or treat a missing check as pass or fail. Leave
-`.github/workflows/` alone.
+## PR previews
 
-- **Check locally before push:** the husky hooks, plus `pnpm typecheck && pnpm test`
-  (and `pnpm smoke:consumer` for anything that ships). Paste the results into the PR.
-- **Merge rule:** an independent PASS review comment on the PR (format in
-  CLAUDE.md), from someone other than the author, naming the head commit. A new
-  push voids it.
-- **Release:** from GitHub Actions on merge of the Version Packages PR. The
-  orchestrator may cut the release itself: it merges it after the Figma meta
-  sync and an independent PASS on its head, then reports to Adrian. Agents
-  never `npm publish` by hand. See `docs/RELEASING.md` (Adrian, 2026-11-09).
-
-## PR previews: screenshots, not Vercel (Adrian 2026-10-24, all repos)
-
-Vercel preview builds are OFF (production only). Every PR carries its own preview:
-
-1. Run the production build locally (`pnpm build` / `npm run build`) and serve the built app (`pnpm preview` / `npm run preview`, or the repo's screenshot tooling).
-2. Attach screenshots of the affected routes only: 390x844, light AND dark, plus a desktop shot if the route is used on desktop. At most ~6 images, inline in the PR body or a PR comment. Adrian reviews on his phone: no zips, nothing he has to build.
-3. Backend/infra PRs with no visual change: write "no visual change" instead.
-4. Never re-enable Vercel preview builds (or add `[preview]`) to get screenshots.
+Vercel preview builds are off. Every PR carries screenshots of the affected routes, or says "no visual change". Detail: `docs/agent/pr-previews.md`.

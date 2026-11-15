@@ -23,15 +23,15 @@ describe('button state tokens', () => {
   it('bgHover resolves to the accent hover token', () => {
     expect(both('component.button.bgHover')).toEqual(both('semantic.accent.hover'));
   });
-  it('secondary is soft (hds#891, deepened 2026-11-15): rest and pressed resolve to surface.softHover, hover to surface.soft', () => {
+  it('secondary is soft (hds#891, deepened 2026-11-15): rest and pressed resolve to surface.softStrong, hover to surface.softHover', () => {
     expect(both('component.button.secondary.bg.rest')).toEqual(
-      both('semantic.color.surface.softHover'),
+      both('semantic.color.surface.softStrong'),
     );
     expect(both('component.button.secondary.bg.pressed')).toEqual(
-      both('semantic.color.surface.softHover'),
+      both('semantic.color.surface.softStrong'),
     );
     expect(both('component.button.secondary.bg.hover')).toEqual(
-      both('semantic.color.surface.soft'),
+      both('semantic.color.surface.softHover'),
     );
   });
   it('secondary disabled border resolves to border.default (hds#625), lighter than the rest border', () => {

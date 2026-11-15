@@ -1,112 +1,45 @@
 # Contributing to Hirobius Design System (HDS)
 
-## Dev Setup
+Issues and pull requests are welcome. This page is the short form.
+The gate list and the less common tasks are in [docs/CONTRIBUTING-DETAIL.md](docs/CONTRIBUTING-DETAIL.md).
 
-### Prerequisites
+## Setup
 
-- **Node.js** `v25` (see `.nvmrc` if present, or match CI)
-- **pnpm** `10.x` (`npm install -g pnpm@10`)
-
-### Install and run
+You need Node.js `v25` (see `.nvmrc`) and pnpm `10.x` (`npm install -g pnpm@10`).
 
 ```bash
 pnpm install
 pnpm dev          # Vite dev server
 ```
 
-### Key documents
+## Check your change
 
-| File                       | Purpose                                                          |
-| -------------------------- | ---------------------------------------------------------------- |
-| `CLAUDE.md`                | Agent operating instructions (read first)                        |
-| `public/llms.txt`          | AI entry point — generated, do not edit directly                 |
-| `DESIGN.md`                | Lean visual spec — generated from `DESIGN.source.md`             |
-| `public/hds-manifest.json` | Machine-readable component inventory — generated                 |
-| `docs/state-surfaces.json` | Every file that describes state: generated, checked or editorial |
+```bash
+pnpm typecheck && pnpm test
+```
 
-### Merging main into a branch
+- The husky hooks run more gates on commit and on push. Never use `--no-verify`: when a gate fails, fix the cause.
+- Run `pnpm smoke:consumer` for a change that ships in the package.
+- Run `pnpm check:repo-docs` after you edit `README.md`, this file, `CLAUDE.md` or `AGENTS.md`.
+- Do not hand-edit a generated file. `docs/state-surfaces.json` marks them. Edit the generator or its source.
+- For a visual change, check the visual baselines ([detail](docs/CONTRIBUTING-DETAIL.md)).
 
-Generated files (the manifest, sync map, README counts, stats, `DESIGN.md`,
-`DESIGN-HANDOFF.md`, `llms-full.txt`, the types baseline) never stop a merge.
-`.gitattributes` gives them the `hds-generated` driver, which `pnpm install`
-registers. Where both sides changed the same lines it keeps your side, and
-`.husky/post-merge` then runs `pnpm regen` to rebuild them from source. Commit
-what it rebuilt. Run `pnpm regen` yourself after a merge made without the hooks
-(hds#977).
+## Find and record work
 
----
+- Work is tracked as GitHub Issues in this repo, never in a local file.
+- Pick an open issue whose `Blocked by` section lists only closed issues.
+- The label vocabulary is in `docs/agents/triage-labels.md`.
+- Project state (what is next, what is blocked, what shipped) is read from issues, `package.json` and `CHANGELOG.md`.
+- The one hand-written line is `focus` in `status.json`.
 
-## Gates
+## Branch and commit
 
-Three places run gates: `.husky/pre-commit`, `.husky/commit-msg` and `.husky/pre-push` (its stages
-live in the `pre-push` lane of `docs/guardrails/registry.json`). GitHub Actions
-is disabled on this repo (2026-10-30), so `.github/workflows/ci.yml` never runs;
-its `ci` rows below stay for reference and as the list to run by hand before a
-push. Merges need an independent `Reviewed: PASS — <sha>` PR comment. The table below mirrors them step for step;
-`scripts/__tests__/contributing-gates.test.mjs` fails when it drifts, so edit the
-hook or workflow and this table together. CI steps that only check out, set up
-tooling, or restore the cache are omitted because they are not gates.
+- Never push to `main`. Work on a branch. Remote Claude Code sessions push to their `claude/*` branch only.
+- Never `--amend` to hide breakage. Make a fix-up commit and say what went wrong in its message.
+- Never `git reset --hard main` without explicit instruction.
+- The full list of hard rules is in `CLAUDE.md`, "Hard rules".
 
-**Pre-push tiers (ops#1057, `scripts/lib/gate-tier.mjs`):** docs-only diffs (`*.md`/`*.mdx`, `docs/**`, images) run no tests; a small diff runs eslint on its changed files, `pnpm typecheck` and `vitest related`; the full chain (`pnpm check:fast`, `pnpm test`, `pnpm smoke:consumer`) runs when the branch touches `package.json`, the lockfile, build/test/ts/eslint config, tokens, `src/styles|tokens|theme/`, `scripts/` (tests excepted), `.husky/`, published code and token sources (`bin/`, `codemods/`, `upgrade/`, `accents/`, `directions/`), shipped Markdown with drift checks (`DESIGN.md`, `DESIGN.source.md`, `CONSUMING.md`, `UPGRADING.md`, `MIGRATIONS.md`), knip/size-limit/`.npmrc`/`.nvmrc`/`docs-site/package.json`, more than 25 files, when the diff is unknown, or with `HDS_FULL_GATE=1 git push`.
-
-| Stage      | Step                                                                                                          | Command                                                                      |
-| ---------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| pre-commit | Secrets scan (gitleaks; skips gracefully if absent)                                                           | `pnpm check:secrets`                                                         |
-| pre-commit | Prettier (staged files)                                                                                       | `node scripts/run-lint-staged.mjs`                                           |
-| pre-commit | Typecheck                                                                                                     | `pnpm typecheck`                                                             |
-| pre-commit | ESLint (zero warnings)                                                                                        | `pnpm lint --max-warnings=0`                                                 |
-| pre-commit | Token pipeline validity (verify-tokens + check-contrast)                                                      | `node scripts/verify-tokens.mjs && node scripts/check-contrast.mjs`          |
-| pre-commit | Record join (source ↔ manifest ↔ docs page ↔ Figma)                                                           | `node scripts/check-sync-map.mjs && node scripts/check-sync-map.mjs --check` |
-| pre-commit | Contract coverage (every core component says when to use it)                                                  | `node scripts/check-contract-coverage.mjs --enforce`                         |
-| pre-commit | A11y contracts (interactive components state and test their a11y rules)                                       | `node scripts/check-a11y-contracts.mjs --enforce`                            |
-| pre-commit | Pure annotations (top-level factory calls, compound Object.assign and X.Part writes)                          | `node scripts/check-pure-annotations.mjs`                                    |
-| pre-commit | Spacing vocabulary (no raw integers on sx spacing props)                                                      | `node scripts/check-spacing-vocabulary.mjs`                                  |
-| pre-commit | Walkthrough evidence (media recorded with every gate green)                                                   | `node scripts/check-walkthrough-evidence.mjs`                                |
-| pre-commit | Layout-gap vocabulary (one name map, in box-sx.ts)                                                            | `node scripts/check-layout-gap-vocabulary.mjs`                               |
-| pre-commit | Type ramp (src/ uses the seven roles only)                                                                    | `node scripts/check-type-ramp.mjs`                                           |
-| pre-commit | No ALL CAPS (nothing transforms text to uppercase)                                                            | `node scripts/check-no-uppercase.mjs`                                        |
-| pre-commit | No ordinal labels                                                                                             | `node scripts/check-no-ordinal-labels.mjs`                                   |
-| pre-commit | No hand-set letter-spacing                                                                                    | `node scripts/check-no-custom-tracking.mjs`                                  |
-| pre-commit | Ralph kit drift (vendored kit files match ralph/kit.lock.json)                                                | `node scripts/check-ralph-kit-drift.mjs --staged`                            |
-| pre-commit | Lessons copy (vendored .claude/lessons matches its lock)                                                      | `node .claude/lessons/check-drift.mjs`                                       |
-| commit-msg | Learned trailer (fix:/revert: commits carry a Learned: line)                                                  | `node scripts/check-learned-trailer.mjs "$1"`                                |
-| pre-push   | Secret + PII scan (pushed commits; fails closed without gitleaks)                                             | `node scripts/hooks/secret-pii-scan.mjs`                                     |
-| pre-push   | Record freshness (status.json + changeset presence)                                                           | `node scripts/check-record-freshness.mjs`                                    |
-| pre-push   | TDD gate (source changes ship with a test)                                                                    | `node scripts/check-tests-with-code.mjs`                                     |
-| pre-push   | Tiered gate (docs: none · fast: lint + typecheck + related tests · full: check:fast + affected tests + smoke) | `node scripts/pre-push-gate.mjs`                                             |
-| ci         | Secrets scan (gitleaks, full history)                                                                         | `bash scripts/ci-secrets-scan.sh`                                            |
-| ci         | ESLint (zero warnings)                                                                                        | `pnpm lint --max-warnings=0`                                                 |
-| ci         | Bundle budgets (size-limit)                                                                                   | `node scripts/build-button-probe.mjs && pnpm size-limit`                     |
-| ci         | Consumer smoke                                                                                                | `pnpm smoke:consumer`                                                        |
-| ci         | Docs axe gate (live demos, light + dark, serious/critical)                                                    | `node scripts/check-docs-axe.mjs`                                            |
-| ci         | Docs axe gate fires (fixtures)                                                                                | `>-`                                                                         |
-| ci         | All required jobs passed                                                                                      | `\|`                                                                         |
-
-Never use `--no-verify`. When a gate fails, fix the cause.
-
-### Visual baselines (local, before a visual PR)
-
-`pnpm docs:publish && pnpm test:visual-baselines` compares every docs demo,
-light and dark, with the PNGs committed under `tests/visual/*-snapshots/`
-(hirobius/ops#726). After an intended visual change, run
-`pnpm test:visual-baselines:update`, look at the changed PNGs, and commit them
-with the change. Baselines are Linux Chromium (the remote container).
-The same run covers six primitives under each demo tenant × density × theme
-(hds#126); the axes and how to add one are in `tests/visual/tenant-matrix.ts`.
-
----
-
-## Finding and recording work
-
-Work is tracked as **GitHub Issues in this repo**, never in a local file. Pick an
-open issue whose `Blocked by` section lists only closed issues, and see
-`docs/agents/triage-labels.md` for the label vocabulary. Project state (what is
-next, what is blocked, what shipped) is read from issues, `package.json` and
-`CHANGELOG.md`; the one hand-written line is `focus` in `status.json`.
-
----
-
-## Commit Format
+Commit format:
 
 ```
 <type>(<scope>): <one-line summary> (#<issue>)
@@ -116,46 +49,16 @@ next, what is blocked, what shipped) is read from issues, `package.json` and
 Co-Authored-By: <agent name> <noreply@example.com>
 ```
 
-**Examples:**
-
-```
-docs(contributing): drop the retired unit workflow (#612)
-feat(hds): add Button loading state (#123)
-fix(tokens): remove stale elevation.sticky references (#456)
-```
-
 Commits written by an agent end with one plain `Co-Authored-By` trailer, as above.
 
-**Hard rules (the full list is in `CLAUDE.md` section 0):**
+## Pull request
 
-- **Never push to `main`.** Remote Claude Code sessions push to their `claude/*` branch only.
-- **Never use `--no-verify`** to skip pre-commit gates.
-- **Never `--amend` to hide breakage.** If a commit broke something, make a
-  fix-up commit and say what went wrong in its message.
-- **Never `git reset --hard main`** without explicit instruction.
+- `.github/PULL_REQUEST_TEMPLATE.md` fills the body when you open a PR on GitHub.
+- Pasted validator output is mandatory. Run the gates locally and paste the terminal output before you request review.
+- A visual change needs screenshots in the PR body.
+- A merge needs an independent `Reviewed: PASS — <sha>` comment on the head commit.
 
----
+## Questions and reports
 
-## PR Template
-
-`.github/PULL_REQUEST_TEMPLATE.md` auto-populates when you open a PR on
-GitHub. **Pasted validator output is mandatory** — run the pre-commit gates locally,
-copy the terminal output, and paste it into the "Validator output" section
-before requesting review.
-
----
-
-## AI-Augmented Workflows
-
-Sub-agent dispatch rules (model selection, worktree isolation, no bulk
-`lint:fix`) live in `CLAUDE.md`, which is the source of truth. Generated
-outputs that must never be hand-edited are marked `generated` in
-`docs/state-surfaces.json`; edit the generator or its source instead.
-
----
-
-## Contact
-
-- **Email:** adrian@hirobius.com
-- **Issues:** open a GitHub issue on this repository for bugs, feature
-  requests, or questions about the design system.
+- Open a GitHub issue on this repository for a bug, a feature request or a question.
+- For a security report, follow [SECURITY.md](SECURITY.md).

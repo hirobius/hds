@@ -204,15 +204,15 @@ describe('ghost (tertiary)', () => {
     );
   });
 
-  it('binds surface.sunken and a deeper press fill (2026-11-15 ramp)', () => {
+  it('binds surface.softHover and a deeper press fill (2026-11-15 ramp)', () => {
     const tokens = JSON.parse(
       readFileSync(resolve(__dirname, '../../../hirobius.tokens.json'), 'utf8'),
     );
     expect(tokens.component.button.tertiary.bg.hover.$value).toBe(
-      '{semantic.color.surface.sunken}',
+      '{semantic.color.surface.softHover}',
     );
     expect(tokens.component.button.tertiary.bg.pressed.$value).toBe(
-      '{semantic.color.surface.softHover}',
+      '{semantic.color.surface.softStrong}',
     );
   });
 });
