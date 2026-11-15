@@ -11,7 +11,7 @@
  *
  * A lane step is a shell command string, or `{ "name": "<title>", "run": "<command>" }`
  * when a reader shows the step by name: the pre-push lane's names are the stage
- * titles hook-run.mjs prints and CONTRIBUTING.md's gate table lists.
+ * titles hook-run.mjs prints and docs/CONTRIBUTING-DETAIL.md's gate table lists.
  *
  * run-gates.mjs is vendored byte-identical from hirobius/ops, so lanes get
  * their own small runner here until ops grows a lane mode; then run-lane.mjs
@@ -45,7 +45,7 @@ const HOOK_LANE_LINE = /^\s*node scripts\/run-lane\.mjs ([\w:.-]+)\s*$/;
  * Hook `text` (e.g. .husky/pre-push) with each `node scripts/run-lane.mjs <lane>`
  * line replaced by the lane's steps in the hook's own stage shape: an
  * `echo "<title>…"` line, then the command. hook-run.mjs, the wiring check and
- * the CONTRIBUTING.md table test parse the result exactly as they parsed the
+ * the docs/CONTRIBUTING-DETAIL.md table test parse the result exactly as they parsed the
  * hand-written hook. A call to an unknown lane stays as-is (so it parses to no
  * stage, and hook-run fails closed).
  */

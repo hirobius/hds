@@ -241,7 +241,7 @@
       "describes": "Policy and routing for agents working in this repo",
       "kind": "editorial",
       "owner": "Adrian",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-11-15",
       "maxAgeDays": 60
     },
     {
@@ -251,6 +251,20 @@
       "owner": "Adrian",
       "reviewedAt": "2026-10-12",
       "maxAgeDays": 180
+    },
+    {
+      "path": "docs/agent",
+      "describes": "Topic files with the detail behind the one-line rules of CLAUDE.md and AGENTS.md (index: docs/agent/README.md)",
+      "kind": "editorial",
+      "owner": "Adrian",
+      "reviewedAt": "2026-11-15",
+      "maxAgeDays": 90
+    },
+    {
+      "path": "docs/CONTRIBUTING-DETAIL.md",
+      "describes": "The long form of CONTRIBUTING.md: the gate table, pre-push tiers, visual baselines, merging main",
+      "kind": "checked",
+      "by": "scripts/__tests__/contributing-gates.test.mjs"
     },
     {
       "path": "docs/agents",
@@ -273,7 +287,7 @@
       "describes": "Dev setup and contribution rules",
       "kind": "editorial",
       "owner": "Adrian",
-      "reviewedAt": "2026-10-12",
+      "reviewedAt": "2026-11-15",
       "maxAgeDays": 90
     },
     {

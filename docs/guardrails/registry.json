@@ -95,6 +95,7 @@
       "node scripts/check-upgrade-ledger.mjs",
       "node scripts/check-state-surfaces.mjs",
       "node scripts/check-steering-budget.mjs",
+      "node scripts/check-repo-docs.mjs",
       "node scripts/build-readme-counts.mjs --check",
       "node scripts/build-stats-json.mjs --check",
       "node scripts/build-adr-index.mjs --check",
@@ -856,6 +857,16 @@
       "source": "agent",
       "firingChannel": "pnpm-meta",
       "supportsJson": true
+    },
+    {
+      "id": "check-repo-docs",
+      "description": "The fleet repo-docs standard (hirobius/ops docs/standards/REPO-STANDARD.md; the script is a copy of its check): README.md at most 120 lines with the title, a one-line description, a screenshot, a live link and the sections Install, Usage, Structure, Contributing and License (.repo-docs.json sets library: true); CONTRIBUTING.md at most 80 lines; CLAUDE.md and AGENTS.md at most 150 lines each. Fix by moving detail to a topic file (docs/agent/, docs/CONTRIBUTING-DETAIL.md, docs/OVERVIEW.md), not by raising a cap. Runs in pretest.",
+      "severity": "error",
+      "gateScript": "scripts/check-repo-docs.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "agent",
+      "firingChannel": "pnpm-meta"
     },
     {
       "id": "check-record-freshness",

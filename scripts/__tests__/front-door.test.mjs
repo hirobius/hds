@@ -62,10 +62,9 @@ const frontDoorText = () => `${readmeText()}\n${read('docs/OVERVIEW.md').replace
 const README_MAX_LINES = 90;
 /** The Standard Readme sections the README keeps, in order. */
 const README_SECTIONS = [
-  'Background',
   'Install',
   'Usage',
-  'Docs',
+  'Structure',
   'For AI agents',
   'Contributing',
   'License',
