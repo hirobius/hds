@@ -72,7 +72,7 @@ export function openLog(gitDir, hook) {
 
 /**
  * Parse a husky hook into stages: an `echo "<name>…"` line opens a stage and
- * the lines under it are its commands (the shape CONTRIBUTING.md's gate table
+ * the lines under it are its commands (the shape docs/CONTRIBUTING-DETAIL.md's gate table
  * is generated from and tested against). Comments, blanks, `set …` and any
  * line before the first echo (e.g. the quiet-runner guard) are skipped.
  */
