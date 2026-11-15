@@ -96,6 +96,153 @@
     },
     "option-not-in-figma:Stack:Gap:18-27ce865c": {
       "reason": "Figma fix: draw the missing options, or record them as codeOnly in figma/code-connect.json (hds#1565, F5)."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/cobalt/300": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/cobalt/600": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/lime/300": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Primitives: typography/weight/display": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Primitives: size/interactive/minCompact": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/floating": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/accent": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/soft": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/border/default": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/border/interactive": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/shadow/hard": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/state/pressed/overlay": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/scale/md": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/scale/xl": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/surface/padding": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/region/gutter": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/section/stack": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/hero/font-family": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/hero/font-size": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/hero/font-weight": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/hero/letter-spacing": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/hero/line-height": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/font-family": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/font-size": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/font-weight": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/letter-spacing": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/line-height": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/font-family": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/font-size": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/font-weight": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/letter-spacing": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/line-height": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: accent/rest": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: accent/content": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: accent/delight/base": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: radius/action": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: focus/radius/control/gapRadius": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: focus/radius/control/ringRadius": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: focus/radius/sm/ringRadius": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: focus/radius/md/gapRadius": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: focus/radius/md/ringRadius": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: focus/radius/lg/ringRadius": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Semantic: link/underlineThickness": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Component: button/secondary/border/hover": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Component: card/focus/ringRadius": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Hirobius/Component: table/cell/paddingX": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Styles: text style typography/hero": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Styles: text style typography/bodyStrong": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-value-mismatch:Styles: text style typography/uiRegular": {
+      "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
     }
   }
 }
