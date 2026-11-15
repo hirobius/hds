@@ -1,11 +1,11 @@
 /**
  * Tone text and the surface ramp (Adrian, 2026-11-15).
  *
- * 1. No colored text on feedback surfaces: Badge and toned Button labels use the plain
- *    content color (content.primary). The tone shows through the fill, border and icon,
- *    so the icon color (feedback.*) must still reach 3:1 on its own fill.
- * 2. Ramp Option A: light button surfaces one step deeper, dark page and raised one
- *    step lighter, tone fills one step stronger in both themes. Every pair stays AA.
+ * 1. No colored text on soft feedback tints: Badge labels use content.primary, and the
+ *    icon colour (feedback.*) still reaches 3:1 on its tint.
+ * 2. Toned Buttons are solid fills with a page-coloured label (4.5:1+), a face at 3:1+
+ *    against page and raised, and an edge one equal OKLCH step darker than the fill.
+ * 3. The surface ramp: lifted dark surfaces, deeper light Button fills, stronger tints.
  */
 import { describe, it, expect } from 'vitest';
 import { contrastRatio } from '../src/app/utils/colorUtils';
@@ -78,7 +78,7 @@ describe('toned Button labels', () => {
   );
 });
 
-describe('surface ramp (dark from Option B, light from A with deeper Button fills)', () => {
+describe('surface ramp: lifted dark surfaces, deeper light Button fills', () => {
   it('lifts the dark page and raised surface off near-black', () => {
     expect(hex(surface('page'), 'Dark')).toBe('#151a24');
     expect(hex(surface('raised'), 'Dark')).toBe('#252a34');
@@ -114,7 +114,7 @@ describe('surface ramp (dark from Option B, light from A with deeper Button fill
   );
 });
 
-// Option b (Adrian 2026-11-15): solid tone fills. fill = what the Button paints.
+// Solid tone fills (Adrian 2026-11-15). fill = what the Button paints.
 const SOLID: Array<[tone: string, fill: string]> = [
   ['danger', 'semantic.color.feedback.error'],
   ['success', 'semantic.color.feedback.success'],

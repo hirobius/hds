@@ -2159,12 +2159,12 @@
           }
         },
         "info": {
-          "$value": "oklch(.427 .289 266.6)",
+          "$value": "oklch(.425 .15 262)",
           "$description": "info Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "oklch(.427 .289 266.6)",
+                "Light": "oklch(.425 .15 262)",
                 "Dark": "oklch(.735 .059 267)"
               }
             }
@@ -2224,11 +2224,11 @@
         },
         "info": {
           "$type": "color",
-          "$value": "{primitive.color.blue.500}",
+          "$value": "oklch(.48 .15 262)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.500}",
+                "Light": "oklch(.48 .15 262)",
                 "Dark": "{primitive.color.blue.200}"
               }
             }

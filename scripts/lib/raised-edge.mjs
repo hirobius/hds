@@ -65,7 +65,7 @@ export const EDGE_TOKENS = {
 /** The fill each token edge sits under (for the contrast floor). */
 export const EDGE_TOKEN_FILLS = {
   secondary: 'component.button.secondary.bg.rest',
-  // Solid tone Button fills (option b, 2026-11-15).
+  // Solid tone Button fills (2026-11-15).
   danger: 'semantic.color.feedback.error',
   success: 'semantic.color.feedback.success',
   warning: 'semantic.color.feedback.solid.warning',

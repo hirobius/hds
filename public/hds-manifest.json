@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-15T20:58:16.311Z",
+  "generated": "2026-11-15T22:48:28.858Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -15673,7 +15673,7 @@
         "cssVar": "--semantic-color-edge-info",
         "type": "color",
         "description": "info Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
-        "value": "oklch(.427 .289 266.6)",
+        "value": "oklch(.425 .15 262)",
         "dark": {
           "alias": "oklch(.735 .059 267)",
           "resolvedValue": "oklch(.735 .059 267)"
@@ -15728,8 +15728,7 @@
         "path": "semantic.color.feedback.info",
         "cssVar": "--semantic-color-feedback-info",
         "type": "color",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "value": "oklch(.48 .15 262)",
         "dark": {
           "alias": "{primitive.color.blue.200}",
           "resolvedValue": "oklch(0.88 0.07 266.54)"
@@ -17363,7 +17362,7 @@
         "type": "color",
         "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info.",
         "alias": "{semantic.color.edge.info}",
-        "resolvedValue": "oklch(.427 .289 266.6)"
+        "resolvedValue": "oklch(.425 .15 262)"
       },
       {
         "path": "component.button.depth.edge",

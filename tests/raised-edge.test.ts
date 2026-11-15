@@ -199,7 +199,7 @@ describe('wiring', () => {
 
 // Button secondary and tone edges are tokens (component.button.edge.*), approved values.
 describe('Button edge tokens', () => {
-  // Secondary aliases a primitive. Each tone edge (option b, 2026-11-15) is its solid fill one
+  // Secondary aliases a primitive. Each tone edge (2026-11-15) is its solid fill one
   // OKLCH step darker, the same lightness drop as the Secondary edge, stored as a literal.
   const APPROVED: Record<Mode, Record<keyof typeof EDGE_TOKENS, string>> = {
     Light: {
@@ -207,7 +207,7 @@ describe('Button edge tokens', () => {
       danger: 'oklch(.451 .191 27.5)',
       success: 'oklch(.453 .105 165.6)',
       warning: 'oklch(.5 .145 49)',
-      info: 'oklch(.427 .289 266.6)',
+      info: 'oklch(.425 .15 262)',
     },
     Dark: {
       secondary: '{primitive.color.neutral.725}',
