@@ -17588,7 +17588,7 @@
         "path": "component.button.secondary.border.hover",
         "cssVar": "--component-button-secondary-border-hover",
         "type": "color",
-        "description": "Secondary button hover border. Unused by Button since; kept for consumers.",
+        "description": "Secondary button hover border. Button no longer draws it; kept for consumers.",
         "alias": "{semantic.color.border.accent}",
         "resolvedValue": "#3a4457"
       },
