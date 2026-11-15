@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15
+// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-13345
 // source=src/app/components/hds-tooltip.tsx
 // component=Tooltip
 //

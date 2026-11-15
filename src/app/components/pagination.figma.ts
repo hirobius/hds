@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194
+// url=https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2335-4217
 // source=src/app/components/pagination.tsx
 // component=Pagination
 //

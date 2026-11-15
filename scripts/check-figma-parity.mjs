@@ -86,7 +86,10 @@ export async function loadVariables(root) {
   if (!report) throw new Error(`The token drift check did not run: ${output}`);
   const label = (item) =>
     `${item.collection ?? 'Styles'}: ${item.what === 'variable' ? '' : `${item.what} `}${item.name}`;
-  const of = (kind) => report.items.filter((item) => item.kind === kind);
+  // Hirobius/Meta is the release stamp (version, commit). check:figma-release owns it: it
+  // changes on every release, so it is not a difference between a token and a variable.
+  const of = (kind) =>
+    report.items.filter((item) => item.kind === kind && item.collection !== 'Hirobius/Meta');
   return {
     snapshotDigest: hdsParityDigest(snapshotFile.snapshot),
     drift: {

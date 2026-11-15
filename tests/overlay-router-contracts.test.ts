@@ -136,13 +136,13 @@ describe('keyboard contract tags', () => {
 });
 
 describe('Tooltip Figma link', () => {
-  // Node 93:15 is the published Tooltip in the library file named by
+  // Node 2337:13345 is the published Tooltip set in the library file named by
   // figma/links.json libraryFileKey; check-figma-coverage reports it unmapped
   // until the component carries the @figma tag.
-  it('points at node 93:15 in the published library', () => {
+  it('points at the Tooltip set 2337:13345 in the published library', () => {
     expect(specs.Tooltip).toMatchObject({
       figmaUrl:
-        'https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=93-15',
+        'https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2337-13345',
     });
   });
 });

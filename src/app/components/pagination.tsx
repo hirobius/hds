@@ -17,7 +17,7 @@
  * @a11y component required a11y:pagination.compact-control-names The compact Previous and Next icon-only buttons are named Previous page and Next page.
  * @a11y component required a11y:pagination.compact-disabled-ends Compact Previous is disabled on the first page and Next on the last; focus moves to the other button instead of being stranded.
  * @a11y consumer recommended After a page change, keep focus on the control or move it to the start of the results, and tell screen-reader users the results changed.
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=86-194
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2335-4217
  */
 // motion-ok: every interactive control is a Button, which owns its hover/press
 // motion feedback; Pagination adds no bespoke interactive surface of its own.
