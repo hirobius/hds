@@ -29,7 +29,9 @@
  *      target it), and no mention of staging there sends tokens to it or
  *      treats it as the library's duplicate. Session logs in the MCP ledger are
  *      history, so only its preamble is held to this.
- *   4. CLAUDE.md gives each rule one sentence; the README and the recipe give
+ *   4. docs/agent/figma-sync.md (the detail file CLAUDE.md points at) gives each
+ *      rule one sentence, and CLAUDE.md keeps the one-line rule and the pointer;
+ *      the README and the recipe give
  *      the exact draft, ingest and cleanup steps.
  *   5. What agents read in code (a refusal, `pnpm figma:push` output, the
  *      comments of the scripts they run) says "never delete in the library",
@@ -51,9 +53,12 @@ const LIBRARY = '2VgBbVpKiDnu0aftJEVyBQ';
 const RETIRED = 'c8MaVgwxOlxm4wr8wnH0Z4';
 const STAGING = 'C85ZXnwtVc4AteeIOZfXRC';
 
+/** The Figma topic file that CLAUDE.md points at for detail. */
+const AGENT_FIGMA = 'docs/agent/figma-sync.md';
+
 /** Where an agent learns where it may write in Figma, and the part of each that is current rule. */
 const STEERING = {
-  'CLAUDE.md': (text) => text,
+  [AGENT_FIGMA]: (text) => text,
   'figma/README.md': (text) => text,
   'figma/COMPONENT-DRAWING-RECIPE.md': (text) => text,
   'figma/MCP-LEDGER.md': (text) => text.slice(0, text.indexOf('## How to log')),
@@ -245,12 +250,27 @@ describe('steering surfaces agree with the amended rule', () => {
   });
 });
 
-describe('CLAUDE.md gives each rule one sentence', () => {
-  const figma = () => {
+describe('docs/agent/figma-sync.md gives each rule one sentence, and CLAUDE.md points at it', () => {
+  const figma = () => read(AGENT_FIGMA);
+  /** The Figma section of CLAUDE.md, from its heading to the next one. */
+  const claude = () => {
     const text = read('CLAUDE.md');
-    const start = text.indexOf('- **Figma Sync:**');
-    return text.slice(start, text.indexOf('\n## ', start));
+    const start = text.indexOf('\n## Figma');
+    if (start === -1) return '';
+    return text.slice(start, text.indexOf('\n## ', start + 1));
   };
+
+  it('CLAUDE.md keeps the rule in one line each and names the detail file', () => {
+    const section = claude();
+    expect(section).toContain(`\`${AGENT_FIGMA}\``);
+    const lines = section.split('\n');
+    expect(lines.filter((l) => /never delete/i.test(l) && /never publish/i.test(l))).toHaveLength(
+      1,
+    );
+    expect(lines.filter((l) => /HDS Staging/.test(l) && /redraw/i.test(l))).toHaveLength(1);
+    expect(section).toMatch(/--prune/);
+    expect(section).toMatch(/Never retry a rate-limit error/i);
+  });
 
   it('one sentence for the library rule', () => {
     expect(sentences(figma()).filter(statesRule)).toHaveLength(1);
@@ -415,6 +435,7 @@ describe('what Figma gives the Sync plugin matches figma/snapshot.json', () => {
   /** The current-rule part of each surface that explains how Sync tells the files apart. */
   const surfaces = {
     'CLAUDE.md': () => read('CLAUDE.md'),
+    [AGENT_FIGMA]: () => read(AGENT_FIGMA),
     'figma/README.md': () => readme(),
     'ADR-026 amendment': () => amendment(),
     'ADR-032 amendment': () => adr032(),

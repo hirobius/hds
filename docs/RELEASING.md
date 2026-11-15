@@ -56,7 +56,7 @@ down), the owner releases by hand, signed in with `npm login` (npm asks for 2FA)
 
 A laptop release differs from the workflow: it has no npm provenance (do not pass
 `--provenance`), and the `v<version>` tag stays local, because pushing from a
-laptop is forbidden (CLAUDE.md §0).
+laptop is forbidden (`CLAUDE.md`, "Hard rules").
 
 Script: `scripts/release-local.mjs` (ops#771). The rest of this file is what
 to do when a release goes wrong.

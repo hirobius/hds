@@ -46,6 +46,7 @@ Hand-kept, but a gate compares it with the code.
 - `status.json` (consistency): The agent-consistency figures, compared with the latest ledger entry. Checked by `scripts/check-status-claims.mjs`.
 - `.status`: Legacy per-branch notes standing in for a status.json bump until pnpm status:fold; new branches name their issue instead (ops#1057). Checked by `scripts/check-record-freshness.mjs`.
 - `docs/OVERVIEW.md` (Open explorations): Open explorations, including the agent-consistency line. Checked by `scripts/check-status-claims.mjs`.
+- `docs/CONTRIBUTING-DETAIL.md`: The long form of CONTRIBUTING.md: the gate table, pre-push tiers, visual baselines, merging main. Checked by `scripts/__tests__/contributing-gates.test.mjs`.
 - `figma/MCP-LEDGER.md`: Append-only log of every Figma MCP call an agent session makes (the budget record); it has no review age. Checked by `scripts/__tests__/figma-one-library-rule.test.mjs`.
 - `figma/reads/component-properties.json`: Component property definitions read from the live Figma library, which the Code Connect registry must match. Checked by `scripts/check-code-connect.mjs`.
 - `docs/guardrails/registry.json`: Every gate, where it fires and its proof-of-firing fixtures. Checked by `scripts/validate-guardrail-registry.mjs`.
@@ -62,11 +63,12 @@ Written by a person; the registry carries when it was last re-read. `pnpm check:
 - `DESIGN-HANDOFF.md` (manual sections): Hand-written sections around the generated token tables. Reviewed 2026-10-12, re-read within 90 days.
 - `MIGRATIONS.md`: How HDS deprecates and removes public API, and the removals shipped so far. Reviewed 2026-10-12, re-read within 90 days.
 - `docs/ENGINEERING.md`: How HDS is engineered: sources of truth, enforcement, shipping, design and code sync. Reviewed 2026-10-12, re-read within 90 days.
-- `CLAUDE.md`: Policy and routing for agents working in this repo. Reviewed 2026-10-12, re-read within 60 days.
+- `CLAUDE.md`: Policy and routing for agents working in this repo. Reviewed 2026-11-15, re-read within 60 days.
 - `docs/ai/NORTH_STAR.md`: What HDS is for, who it serves and its non-goals. Reviewed 2026-10-12, re-read within 180 days.
+- `docs/agent`: Topic files with the detail behind the one-line rules of CLAUDE.md and AGENTS.md (index: docs/agent/README.md). Reviewed 2026-11-15, re-read within 90 days.
 - `docs/agents`: Issue-tracker, triage-label and domain-doc config the engineering skills read. Reviewed 2026-10-12, re-read within 120 days.
 - `docs/ROADMAP.md`: Backlog and technical debt for the design-system repo. Reviewed 2026-10-12, re-read within 45 days.
-- `CONTRIBUTING.md`: Dev setup and contribution rules. Reviewed 2026-10-12, re-read within 90 days.
+- `CONTRIBUTING.md`: Dev setup and contribution rules. Reviewed 2026-11-15, re-read within 90 days.
 - `CONSUMING.md`: Short consumption guide shipped in the package. Reviewed 2026-10-12, re-read within 90 days.
 - `docs/CONSUMING.md`: The canonical consumption guide. Reviewed 2026-10-12, re-read within 90 days.
 - `.github/ISSUE_TEMPLATE`: Bug and feature request templates. Reviewed 2026-10-12, re-read within 120 days.

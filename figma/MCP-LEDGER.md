@@ -1765,3 +1765,13 @@ Library 2VgBbVpKiDnu0aftJEVyBQ. Reads only. No write, no delete, no publish. Row
 | C5  | `use_figma`       | read | library: parent sets of the 4 variant nodes; components on the Form page | property definitions of the 4 sets                                                                                                                                            | OK. Sets 2337:14631, 2335:4217, 2336:21, 2337:13345. The Form page holds only FormField 85:81.                                                                                 |
 
 Session total: 5 calls (1 skill, 1 account, 1 session, 2 reads). Nothing written, deleted or published. Both results are recorded in `figma/reads/component-properties.json`; `pnpm figma:connect:check` gates `figma/code-connect.json` against it (hds#1557).
+## 2026-11-15 · Daily release check: meta/commit stamp (main 9b2ad02, 0.45.0)
+
+Plan updated 1 · created 0 · deleted 0 (meta/commit 0aa711f → 9b2ad02); `check:figma-release` failed on the stale cover stamp.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                           | Result                                                  |
+| --- | ---------- | ---------------- | ----- | --------------------------------- | ------------------------------------------------------- |
+| 1   | 16:50      | `create_session` | read  | open file session                 | OK                                                      |
+| 2   | 16:50      | `use_figma`      | write | delta.js unmodified (meta/commit) | OK; meta/commit → 9b2ad02, 645 variables, post ae5ce28a |
+
+Session total: 2 calls
