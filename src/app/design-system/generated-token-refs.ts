@@ -146,6 +146,7 @@ export const tokenRefs = {
       amber: {
         "50": "var(--primitive-color-amber-50)",
         "400": "var(--primitive-color-amber-400)",
+        "700": "var(--primitive-color-amber-700)",
         "800": "var(--primitive-color-amber-800)",
         "900": "var(--primitive-color-amber-900)",
         "950": "var(--primitive-color-amber-950)"
@@ -461,6 +462,9 @@ export const tokenRefs = {
           warning: "var(--semantic-color-feedback-bg-warning)",
           info: "var(--semantic-color-feedback-bg-info)",
           inProgress: "var(--semantic-color-feedback-bg-inProgress)"
+        },
+        solid: {
+          warning: "var(--semantic-color-feedback-solid-warning)"
         }
       },
       state: {

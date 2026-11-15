@@ -458,6 +458,10 @@
           "$value": "#fbbf24",
           "$description": "Specific value within the amber range at a defined lightness step."
         },
+        "700": {
+          "$value": "#b45309",
+          "$description": "Specific value within the amber range at a defined lightness step."
+        },
         "800": {
           "$value": "#92400e",
           "$description": "Specific value within the amber range at a defined lightness step."
@@ -2119,49 +2123,49 @@
           }
         },
         "danger": {
-          "$value": "{primitive.color.red.700}",
-          "$description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.",
+          "$value": "oklch(.451 .191 27.5)",
+          "$description": "danger Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.red.700}",
-                "Dark": "{primitive.color.red.950}"
+                "Light": "oklch(.451 .191 27.5)",
+                "Dark": "oklch(.566 .166 22.2)"
               }
             }
           }
         },
         "success": {
-          "$value": "{primitive.color.green.700}",
-          "$description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.",
+          "$value": "oklch(.453 .105 165.6)",
+          "$description": "success Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.green.700}",
-                "Dark": "{primitive.color.green.950}"
+                "Light": "oklch(.453 .105 165.6)",
+                "Dark": "oklch(.628 .153 163.2)"
               }
             }
           }
         },
         "warning": {
-          "$value": "{primitive.color.amber.800}",
-          "$description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.",
+          "$value": "oklch(.5 .145 49)",
+          "$description": "warning Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.amber.800}",
-                "Dark": "{primitive.color.amber.950}"
+                "Light": "oklch(.5 .145 49)",
+                "Dark": "oklch(.692 .164 84.4)"
               }
             }
           }
         },
         "info": {
-          "$value": "{primitive.color.blue.600}",
-          "$description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.",
+          "$value": "oklch(.427 .289 266.6)",
+          "$description": "info Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
-                "Light": "{primitive.color.blue.600}",
-                "Dark": "{primitive.color.blue.900}"
+                "Light": "oklch(.427 .289 266.6)",
+                "Dark": "oklch(.735 .059 267)"
               }
             }
           }
@@ -2299,6 +2303,21 @@
                 "modes": {
                   "Light": "{primitive.color.violet.50}",
                   "Dark": "{primitive.color.violet.900}"
+                }
+              }
+            }
+          }
+        },
+        "solid": {
+          "warning": {
+            "$type": "color",
+            "$value": "{primitive.color.amber.700}",
+            "$description": "Solid warning Button fill. amber.800 reads brown as a fill; the other tones fill with feedback.*.",
+            "$extensions": {
+              "com.figma.variables": {
+                "modes": {
+                  "Light": "{primitive.color.amber.700}",
+                  "Dark": "{primitive.color.amber.400}"
                 }
               }
             }

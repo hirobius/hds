@@ -311,7 +311,11 @@
         "cssVars": ["--semantic-color-edge-info"],
         "cssVarWrites": ["--semantic-color-edge-info"]
       },
-      "facts": ["css-var-changed:--semantic-color-edge-info::root"]
+      "facts": [
+        "css-var-changed:--semantic-color-edge-info::root",
+        "css-var-changed:--semantic-color-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-info:[data-theme=dark]"
+      ]
     },
     {
       "id": "value-changed/--semantic-color-edge-primary",
@@ -535,6 +539,34 @@
         "css-var-changed:--semantic-color-surface-sunken:[data-theme=\"dark\"]",
         "css-var-changed:--semantic-color-surface-sunken:[data-theme=dark]"
       ]
+    },
+    {
+      "id": "behavior/tone-button-tint-utilities",
+      "kind": "behavior",
+      "impact": "none",
+      "plain": "Toned Buttons no longer use the soft-tint hover and active utilities; add them in your own CSS if you used them directly.",
+      "detect": {
+        "regex": ["(hover|active):bg-feedback-bg-"]
+      },
+      "facts": [
+        "utility-removed:active:bg-feedback-bg-danger",
+        "utility-removed:active:bg-feedback-bg-info",
+        "utility-removed:active:bg-feedback-bg-success",
+        "utility-removed:active:bg-feedback-bg-warning",
+        "utility-removed:hover:bg-feedback-bg-info",
+        "utility-removed:hover:bg-feedback-bg-success",
+        "utility-removed:hover:bg-feedback-bg-warning"
+      ]
+    },
+    {
+      "id": "behavior/legacy-focus-ring-utilities",
+      "kind": "behavior",
+      "impact": "none",
+      "plain": "Drops focus-visible:ring-ring, a Tailwind focus-ring utility no HDS component uses (focus draws through .hds-focus); use .hds-focus, or add it in your own CSS.",
+      "detect": {
+        "regex": ["focus-visible:ring-ring"]
+      },
+      "facts": ["utility-removed:focus-visible:ring-ring"]
     }
   ]
 }

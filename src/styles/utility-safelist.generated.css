@@ -69,10 +69,6 @@
 @source inline("active:bg-[color:var(--component-button-tertiary-bg-pressed)]");
 @source inline("active:bg-[color:var(--semantic-accent-pressed)]");
 @source inline("active:bg-[var(--semantic-color-surface-selected)]");
-@source inline("active:bg-feedback-bg-danger");
-@source inline("active:bg-feedback-bg-info");
-@source inline("active:bg-feedback-bg-success");
-@source inline("active:bg-feedback-bg-warning");
 @source inline("active:bg-transparent");
 @source inline("active:inset-shadow-[0_0_0_9999px]");
 @source inline("active:inset-shadow-pressed-overlay/5");
@@ -265,7 +261,6 @@
 @source inline("focus-visible:ring-2");
 @source inline("focus-visible:ring-accent");
 @source inline("focus-visible:ring-offset-2");
-@source inline("focus-visible:ring-ring");
 @source inline("focus:outline-none");
 @source inline("focus:ring-offset-black");
 @source inline("focus:ring-offset-white");
@@ -367,9 +362,6 @@
 @source inline("hover:bg-accent");
 @source inline("hover:bg-background");
 @source inline("hover:bg-feedback-bg-danger");
-@source inline("hover:bg-feedback-bg-info");
-@source inline("hover:bg-feedback-bg-success");
-@source inline("hover:bg-feedback-bg-warning");
 @source inline("hover:bg-primary");
 @source inline("hover:bg-transparent");
 @source inline("hover:border-feedback-danger");

@@ -145,11 +145,10 @@ const variantClasses = (variant: (typeof VARIANTS)[number]) =>
 const TONE_KEEPS: readonly string[] = ['border'];
 
 const toneClasses = (tone: (typeof STATUS_TONES)[number]) => [
-  'hds-tone-ring',
+  'text-background',
   'border-transparent',
-  `bg-feedback-bg-${tone}`,
-  'text-foreground',
-  `hover:bg-feedback-bg-${tone}`,
+  tone === 'warning' ? 'bg-feedback-solid-warning' : `bg-feedback-${tone}`,
+  tone === 'warning' ? 'hover:bg-feedback-solid-warning' : `hover:bg-feedback-${tone}`,
   'hover:border-transparent',
   'hover:brightness-95',
   'dark:hover:brightness-110',

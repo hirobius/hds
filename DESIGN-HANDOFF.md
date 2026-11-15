@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 653 tokens, aliases, and TS refs in one shot.
+Checks all 655 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -186,6 +186,7 @@ Checks all 653 tokens, aliases, and TS refs in one shot.
 | `primitive.color.lilac.900`                         | `#2a1659`                   | Specific value within the lilac range at a defined lightness step.                                                          |
 | `primitive.color.amber.50`                          | `#fde68a`                   | Specific value within the amber range at a defined lightness step.                                                          |
 | `primitive.color.amber.400`                         | `#fbbf24`                   | Specific value within the amber range at a defined lightness step.                                                          |
+| `primitive.color.amber.700`                         | `#b45309`                   | Specific value within the amber range at a defined lightness step.                                                          |
 | `primitive.color.amber.800`                         | `#92400e`                   | Specific value within the amber range at a defined lightness step.                                                          |
 | `primitive.color.amber.900`                         | `#78350f`                   | Specific value within the amber range at a defined lightness step.                                                          |
 | `primitive.color.amber.950`                         | `#451a03`                   | Specific value within the amber range at a defined lightness step.                                                          |
@@ -268,10 +269,10 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.border.warning`         | {primitive.color.amber.400}     | {primitive.color.amber.400}     | Warning-toned border for status outlines and warning-state inputs.                                                           |
 | `semantic.color.edge.primary`           | `oklch(0.2646 0.0260 265.37)`   | `oklch(0.7382 0.0037 260.00)`   | Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light.      |
 | `semantic.color.edge.neutral`           | {primitive.color.neutral.400}   | {primitive.color.neutral.725}   | Hard raised edge under neutral-tone raised controls: a fixed primitive step, at least 1.5:1 against the fill.                |
-| `semantic.color.edge.danger`            | {primitive.color.red.700}       | {primitive.color.red.950}       | Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.            |
-| `semantic.color.edge.success`           | {primitive.color.green.700}     | {primitive.color.green.950}     | Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.           |
-| `semantic.color.edge.warning`           | {primitive.color.amber.800}     | {primitive.color.amber.950}     | Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.           |
-| `semantic.color.edge.info`              | {primitive.color.blue.600}      | {primitive.color.blue.900}      | Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.     |
+| `semantic.color.edge.danger`            | `oklch(.451 .191 27.5)`         | `oklch(.566 .166 22.2)`         | danger Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.                     |
+| `semantic.color.edge.success`           | `oklch(.453 .105 165.6)`        | `oklch(.628 .153 163.2)`        | success Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.                    |
+| `semantic.color.edge.warning`           | `oklch(.5 .145 49)`             | `oklch(.692 .164 84.4)`         | warning Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.                    |
+| `semantic.color.edge.info`              | `oklch(.427 .289 266.6)`        | `oklch(.735 .059 267)`          | info Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.                       |
 | `semantic.color.shadow.hard`            | {primitive.color.shadow.ink}    | {primitive.color.neutral.400}   | Hard shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.                            |
 | `semantic.color.feedback.error`         | {primitive.color.red.700}       | {primitive.color.red.400}       |                                                                                                                              |
 | `semantic.color.feedback.success`       | {primitive.color.green.700}     | {primitive.color.green.400}     |                                                                                                                              |
@@ -283,6 +284,7 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.feedback.bg.warning`    | {primitive.color.amber.50}      | {primitive.color.amber.900}     |                                                                                                                              |
 | `semantic.color.feedback.bg.info`       | {primitive.color.blue.200}      | {primitive.color.blue.800}      |                                                                                                                              |
 | `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.900}    |                                                                                                                              |
+| `semantic.color.feedback.solid.warning` | {primitive.color.amber.700}     | {primitive.color.amber.400}     | Solid warning Button fill. amber.800 reads brown as a fill; the other tones fill with feedback.*.                            |
 | `semantic.color.state.pressed.overlay`  | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class.                            |
 
 <!-- auto:end:semantic-color -->

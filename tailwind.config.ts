@@ -13,6 +13,10 @@ const feedbackColors = {
     warning: 'var(--semantic-color-feedback-warning)',
     inProgress: 'var(--semantic-color-feedback-inProgress)',
   },
+  // The solid warning Button fill (feedback.warning reads brown as a fill).
+  'feedback-solid': {
+    warning: 'var(--semantic-color-feedback-solid-warning)',
+  },
   'feedback-bg': {
     info: 'var(--semantic-color-feedback-bg-info)',
     success: 'var(--semantic-color-feedback-bg-success)',

@@ -157,8 +157,11 @@ describe('colorGalleries swatch fills (hds#846)', () => {
   const swatches = colorGalleries(tokens, { cobalt }).flatMap((g) =>
     g.groups.flatMap((group) => group.swatches),
   );
-  /** Semantic colours computed by scripts/lib/raised-edge.mjs (EDGE_COMPUTED_TOKENS). */
-  const COMPUTED = new Set(['semantic.color.edge.primary']);
+  /** Semantic colours stored as raw oklch: the computed primary edge (EDGE_COMPUTED_TOKENS) and
+   * the tone edges, each its solid fill one equal-delta step darker (2026-11-15). */
+  const COMPUTED = new Set(
+    ['primary', 'danger', 'success', 'warning', 'info'].map((k) => `semantic.color.edge.${k}`),
+  );
   const varName = (fill: string | null) => /^var\((--[\w-]+)\)$/.exec(fill ?? '')?.[1];
 
   it('fills every swatch from a shipped --primitive-color-* variable, not a copied value', () => {

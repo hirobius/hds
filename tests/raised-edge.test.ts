@@ -199,24 +199,22 @@ describe('wiring', () => {
 
 // Button secondary and tone edges are tokens (component.button.edge.*), approved values.
 describe('Button edge tokens', () => {
+  // Secondary aliases a primitive. Each tone edge (option b, 2026-11-15) is its solid fill one
+  // OKLCH step darker, the same lightness drop as the Secondary edge, stored as a literal.
   const APPROVED: Record<Mode, Record<keyof typeof EDGE_TOKENS, string>> = {
     Light: {
-      secondary: 'neutral.400',
-      danger: 'red.700',
-      success: 'green.700',
-      warning: 'amber.800',
-      info: 'blue.600',
+      secondary: '{primitive.color.neutral.400}',
+      danger: 'oklch(.451 .191 27.5)',
+      success: 'oklch(.453 .105 165.6)',
+      warning: 'oklch(.5 .145 49)',
+      info: 'oklch(.427 .289 266.6)',
     },
-    // 2026-11-15: every tone edge is a darker step of its own tone, never a neutral (Adrian).
-    // hds#1399: dark tone fills are near-black, so their edge is the darkest step (always
-    // darker than the fill). hds#1422: no page line; the info fill is lifted to blue.800 for
-    // page separation, so its edge is blue.900, one step darker.
     Dark: {
-      secondary: 'neutral.725',
-      danger: 'red.950',
-      success: 'green.950',
-      warning: 'amber.950',
-      info: 'blue.900',
+      secondary: '{primitive.color.neutral.725}',
+      danger: 'oklch(.566 .166 22.2)',
+      success: 'oklch(.628 .153 163.2)',
+      warning: 'oklch(.692 .164 84.4)',
+      info: 'oklch(.735 .059 267)',
     },
   };
   const lum = (hex: string) => {
@@ -237,12 +235,10 @@ describe('Button edge tokens', () => {
   });
 
   it.each(MODES.flatMap((m) => TOKEN_KEYS.map((k) => [m, k] as const)))(
-    '%s %s: aliases the approved primitive',
+    '%s %s: holds the approved value',
     (mode, key) => {
       const token = EDGE_TOKENS[key].split('.').reduce((n, k) => n[k], raw);
-      expect(token.$extensions['com.figma.variables'].modes[mode]).toBe(
-        `{primitive.color.${APPROVED[mode][key]}}`,
-      );
+      expect(token.$extensions['com.figma.variables'].modes[mode]).toBe(APPROVED[mode][key]);
     },
   );
 

@@ -124,6 +124,7 @@
   --primitive-color-lilac-900: #2a1659;
   --primitive-color-amber-50: #fde68a;
   --primitive-color-amber-400: #fbbf24;
+  --primitive-color-amber-700: #b45309;
   --primitive-color-amber-800: #92400e;
   --primitive-color-amber-900: #78350f;
   --primitive-color-amber-950: #451a03;
@@ -345,10 +346,10 @@
   --semantic-color-border-warning: var(--primitive-color-amber-400);
   --semantic-color-edge-primary: oklch(0.2646 0.0260 265.37);
   --semantic-color-edge-neutral: var(--primitive-color-neutral-400);
-  --semantic-color-edge-danger: var(--primitive-color-red-700);
-  --semantic-color-edge-success: var(--primitive-color-green-700);
-  --semantic-color-edge-warning: var(--primitive-color-amber-800);
-  --semantic-color-edge-info: var(--primitive-color-blue-600);
+  --semantic-color-edge-danger: oklch(.451 .191 27.5);
+  --semantic-color-edge-success: oklch(.453 .105 165.6);
+  --semantic-color-edge-warning: oklch(.5 .145 49);
+  --semantic-color-edge-info: oklch(.427 .289 266.6);
   --semantic-color-shadow-hard: var(--primitive-color-shadow-ink);
   --semantic-color-feedback-error: var(--primitive-color-red-700);
   --semantic-color-feedback-success: var(--primitive-color-green-700);
@@ -360,6 +361,7 @@
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-50);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-200);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
+  --semantic-color-feedback-solid-warning: var(--primitive-color-amber-700);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-black);
   --semantic-space-scale-2xs: var(--primitive-space-1);
   --semantic-space-scale-xs: var(--primitive-space-2);
@@ -776,10 +778,10 @@
   --semantic-color-border-accent: var(--primitive-color-graphite-300);
   --semantic-color-edge-primary: oklch(0.7382 0.0037 260.00);
   --semantic-color-edge-neutral: var(--primitive-color-neutral-725);
-  --semantic-color-edge-danger: var(--primitive-color-red-950);
-  --semantic-color-edge-success: var(--primitive-color-green-950);
-  --semantic-color-edge-warning: var(--primitive-color-amber-950);
-  --semantic-color-edge-info: var(--primitive-color-blue-900);
+  --semantic-color-edge-danger: oklch(.566 .166 22.2);
+  --semantic-color-edge-success: oklch(.628 .153 163.2);
+  --semantic-color-edge-warning: oklch(.692 .164 84.4);
+  --semantic-color-edge-info: oklch(.735 .059 267);
   --semantic-color-shadow-hard: var(--primitive-color-neutral-400);
   --semantic-color-feedback-error: var(--primitive-color-red-400);
   --semantic-color-feedback-success: var(--primitive-color-green-400);
@@ -791,6 +793,7 @@
   --semantic-color-feedback-bg-warning: var(--primitive-color-amber-900);
   --semantic-color-feedback-bg-info: var(--primitive-color-blue-800);
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-900);
+  --semantic-color-feedback-solid-warning: var(--primitive-color-amber-400);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
   --semantic-accent-rest: var(--primitive-color-graphite-50);
   --semantic-accent-hover: var(--primitive-color-graphite-100);

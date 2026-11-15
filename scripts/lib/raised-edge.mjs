@@ -65,10 +65,11 @@ export const EDGE_TOKENS = {
 /** The fill each token edge sits under (for the contrast floor). */
 export const EDGE_TOKEN_FILLS = {
   secondary: 'component.button.secondary.bg.rest',
-  danger: 'semantic.color.feedback.bg.error',
-  success: 'semantic.color.feedback.bg.success',
-  warning: 'semantic.color.feedback.bg.warning',
-  info: 'semantic.color.feedback.bg.info',
+  // Solid tone Button fills (option b, 2026-11-15).
+  danger: 'semantic.color.feedback.error',
+  success: 'semantic.color.feedback.success',
+  warning: 'semantic.color.feedback.solid.warning',
+  info: 'semantic.color.feedback.info',
 };
 
 /** Smallest WCAG contrast a token edge keeps against its fill. */

@@ -8,9 +8,7 @@
  *    step lighter, tone fills one step stronger in both themes. Every pair stays AA.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { contrastRatio, hexToLuminance } from '../src/app/utils/colorUtils';
+import { contrastRatio } from '../src/app/utils/colorUtils';
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import { tokenHex } from './helpers/token-color';
@@ -24,12 +22,6 @@ const hex = (p: string, mode: 'Light' | 'Dark') => {
 };
 
 const MODES = ['Light', 'Dark'] as const;
-const tokensJson = JSON.parse(readFileSync(resolve(process.cwd(), 'hirobius.tokens.json'), 'utf8'));
-const tokenAlias = (p: string, mode: 'Light' | 'Dark') => {
-  const n = p.split('.').reduce((x: any, k) => x?.[k], tokensJson);
-  return n?.$extensions?.['com.figma.variables']?.modes?.[mode] ?? n?.$value;
-};
-const lum = (h: string) => hexToLuminance(h);
 type Mode = (typeof MODES)[number];
 const ratio = (a: string, b: string, mode: Mode) => contrastRatio(hex(a, mode), hex(b, mode));
 const surface = (s: string) => `semantic.color.surface.${s}`;
@@ -68,16 +60,19 @@ describe.each(MODES)('tone text is the content color (%s)', (mode) => {
 
 describe('toned Button labels', () => {
   it.each(['danger', 'success', 'warning', 'info'] as const)(
-    '%s uses text-foreground, not the feedback color',
+    '%s labels in the page colour (text-background) on its solid fill, never the feedback colour',
     (tone) => {
       for (const variant of ['primary', 'secondary', 'tertiary'] as const) {
         const { getByRole, unmount } = render(
           React.createElement(Button, { variant, tone }, 'Sign out anyway'),
         );
-        const cls = getByRole('button').className;
+        const cls = getByRole('button').className.split(' ');
         unmount();
-        expect(cls).toContain('text-foreground');
-        expect(cls).not.toMatch(/text-feedback-/);
+        expect(cls).toContain('text-background');
+        expect(cls.filter((c) => c.startsWith('text-feedback-'))).toEqual([]);
+        expect(cls.filter((c) => c.includes('tone-ring') || c.startsWith('inset-ring'))).toEqual(
+          [],
+        );
       }
     },
   );
@@ -119,53 +114,31 @@ describe('surface ramp (dark from Option B, light from A with deeper Button fill
   );
 });
 
-const EDGE_TONES = [
-  ['danger', 'error', 'red'],
-  ['success', 'success', 'green'],
-  ['warning', 'warning', 'amber'],
-  ['info', 'info', 'blue'],
-] as const;
+// Option b (Adrian 2026-11-15): solid tone fills. fill = what the Button paints.
+const SOLID: Array<[tone: string, fill: string]> = [
+  ['danger', 'semantic.color.feedback.error'],
+  ['success', 'semantic.color.feedback.success'],
+  ['warning', 'semantic.color.feedback.solid.warning'],
+  ['info', 'semantic.color.feedback.info'],
+];
+const L = (h: string) => toOklch(h).l;
 
-describe.each(MODES)('tone Button edge and stroke (%s)', (mode) => {
-  it.each(EDGE_TONES)(
-    'the %s edge is a darker step of its own tone, not a neutral',
-    (tone, fb, hue) => {
-      expect(tokenHex(`semantic.color.edge.${tone}`, mode)).not.toMatch(/neutral/);
-      const node = JSON.stringify(
-        // the alias names the tone's own primitive ramp
-        tokenAlias(`semantic.color.edge.${tone}`, mode),
-      );
-      expect(node).toContain(`primitive.color.${hue}.`);
-      expect(lum(hex(`semantic.color.edge.${tone}`, mode))).toBeLessThan(
-        lum(hex(`semantic.color.feedback.bg.${fb}`, mode)),
-      );
-    },
-  );
+describe.each(MODES)('solid tone Buttons (%s)', (mode) => {
+  it.each(SOLID)('%s label (the page colour) is 4.5:1 or more on its fill', (_t, fill) => {
+    expect(ratio('semantic.color.surface.page', fill, mode)).toBeGreaterThanOrEqual(4.5);
+  });
 
-  it.each(EDGE_TONES)(
-    'the %s stroke (feedback colour) reaches 3:1 on page and raised (WCAG 1.4.11)',
-    (_t, fb) => {
-      for (const s of ['page', 'raised']) {
-        expect(ratio(`semantic.color.feedback.${fb}`, surface(s), mode)).toBeGreaterThanOrEqual(3);
-      }
-    },
-  );
-});
+  it.each(SOLID)('%s face is 3:1 or more against page and raised (WCAG 1.4.11)', (_t, fill) => {
+    for (const s of ['page', 'raised']) {
+      expect(ratio(fill, surface(s), mode)).toBeGreaterThanOrEqual(3);
+    }
+  });
 
-describe('toned Button stroke', () => {
-  it.each(['danger', 'success', 'warning', 'info'] as const)(
-    '%s draws a 1px tone stroke',
-    (tone) => {
-      const { getByRole, unmount } = render(
-        React.createElement(Button, { tone }, 'Sign out anyway'),
-      );
-      const cls = getByRole('button').className.split(' ');
-      unmount();
-      expect(cls).toContain('hds-tone-ring');
-      const css = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8');
-      expect(css.replace(/\s+/g, ' ')).toContain(
-        `[data-tone='${tone}'] { --hds-tone-ring: var(--hds-feedback-${tone}); }`,
-      );
-    },
-  );
+  it.each(SOLID)('%s edge drops the same OKLCH lightness as the Secondary edge', (tone, fill) => {
+    const neutral =
+      L(hex('component.button.secondary.bg.rest', mode)) -
+      L(hex('semantic.color.edge.neutral', mode));
+    const drop = L(hex(fill, mode)) - L(hex(`semantic.color.edge.${tone}`, mode));
+    expect(Math.abs(drop - neutral)).toBeLessThan(0.005);
+  });
 });

@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-15T11:18:37.872Z",
+  "generated": "2026-11-15T20:58:16.311Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -336,6 +336,7 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
+        "src/app/components/button.tsx",
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
@@ -4934,6 +4935,7 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/button.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/list.tsx",
@@ -13999,6 +14001,13 @@
         "value": "#fbbf24"
       },
       {
+        "path": "primitive.color.amber.700",
+        "cssVar": "--primitive-color-amber-700",
+        "type": "color",
+        "description": "Specific value within the amber range at a defined lightness step.",
+        "value": "#b45309"
+      },
+      {
         "path": "primitive.color.amber.800",
         "cssVar": "--primitive-color-amber-800",
         "type": "color",
@@ -15594,48 +15603,44 @@
         "path": "semantic.color.edge.danger",
         "cssVar": "--semantic-color-edge-danger",
         "type": "color",
-        "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.",
-        "alias": "{primitive.color.red.700}",
-        "resolvedValue": "#b91c1c",
+        "description": "danger Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.451 .191 27.5)",
         "dark": {
-          "alias": "{primitive.color.red.950}",
-          "resolvedValue": "#450a0a"
+          "alias": "oklch(.566 .166 22.2)",
+          "resolvedValue": "oklch(.566 .166 22.2)"
         }
       },
       {
         "path": "semantic.color.edge.success",
         "cssVar": "--semantic-color-edge-success",
         "type": "color",
-        "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.",
-        "alias": "{primitive.color.green.700}",
-        "resolvedValue": "#047857",
+        "description": "success Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.453 .105 165.6)",
         "dark": {
-          "alias": "{primitive.color.green.950}",
-          "resolvedValue": "#022c22"
+          "alias": "oklch(.628 .153 163.2)",
+          "resolvedValue": "oklch(.628 .153 163.2)"
         }
       },
       {
         "path": "semantic.color.edge.warning",
         "cssVar": "--semantic-color-edge-warning",
         "type": "color",
-        "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.",
-        "alias": "{primitive.color.amber.800}",
-        "resolvedValue": "#92400e",
+        "description": "warning Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.5 .145 49)",
         "dark": {
-          "alias": "{primitive.color.amber.950}",
-          "resolvedValue": "#451a03"
+          "alias": "oklch(.692 .164 84.4)",
+          "resolvedValue": "oklch(.692 .164 84.4)"
         }
       },
       {
         "path": "semantic.color.edge.info",
         "cssVar": "--semantic-color-edge-info",
         "type": "color",
-        "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.",
-        "alias": "{primitive.color.blue.600}",
-        "resolvedValue": "oklch(0.45 0.2903 266.54)",
+        "description": "info Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.427 .289 266.6)",
         "dark": {
-          "alias": "{primitive.color.blue.900}",
-          "resolvedValue": "oklch(0.22 0.05 266.54)"
+          "alias": "oklch(.735 .059 267)",
+          "resolvedValue": "oklch(.735 .059 267)"
         }
       },
       {
@@ -15758,6 +15763,18 @@
         "dark": {
           "alias": "{primitive.color.violet.900}",
           "resolvedValue": "#401882"
+        }
+      },
+      {
+        "path": "semantic.color.feedback.solid.warning",
+        "cssVar": "--semantic-color-feedback-solid-warning",
+        "type": "color",
+        "description": "Solid warning Button fill. amber.800 reads brown as a fill; the other tones fill with feedback.*.",
+        "alias": "{primitive.color.amber.700}",
+        "resolvedValue": "#b45309",
+        "dark": {
+          "alias": "{primitive.color.amber.400}",
+          "resolvedValue": "#fbbf24"
         }
       },
       {
@@ -17286,7 +17303,7 @@
         "type": "color",
         "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger.",
         "alias": "{semantic.color.edge.danger}",
-        "resolvedValue": "#b91c1c"
+        "resolvedValue": "oklch(.451 .191 27.5)"
       },
       {
         "path": "component.button.edge.success",
@@ -17294,7 +17311,7 @@
         "type": "color",
         "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success.",
         "alias": "{semantic.color.edge.success}",
-        "resolvedValue": "#047857"
+        "resolvedValue": "oklch(.453 .105 165.6)"
       },
       {
         "path": "component.button.edge.warning",
@@ -17302,7 +17319,7 @@
         "type": "color",
         "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning.",
         "alias": "{semantic.color.edge.warning}",
-        "resolvedValue": "#92400e"
+        "resolvedValue": "oklch(.5 .145 49)"
       },
       {
         "path": "component.button.edge.info",
@@ -17310,7 +17327,7 @@
         "type": "color",
         "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info.",
         "alias": "{semantic.color.edge.info}",
-        "resolvedValue": "oklch(0.45 0.2903 266.54)"
+        "resolvedValue": "oklch(.427 .289 266.6)"
       },
       {
         "path": "component.button.depth.edge",

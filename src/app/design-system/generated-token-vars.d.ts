@@ -122,6 +122,7 @@ declare module 'react' {
     '--primitive-color-lilac-900'?: string | undefined;
     '--primitive-color-amber-50'?: string | undefined;
     '--primitive-color-amber-400'?: string | undefined;
+    '--primitive-color-amber-700'?: string | undefined;
     '--primitive-color-amber-800'?: string | undefined;
     '--primitive-color-amber-900'?: string | undefined;
     '--primitive-color-amber-950'?: string | undefined;
@@ -350,6 +351,7 @@ declare module 'react' {
     '--semantic-color-feedback-bg-warning'?: string | undefined;
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
+    '--semantic-color-feedback-solid-warning'?: string | undefined;
     '--semantic-color-state-pressed-overlay'?: string | undefined;
     '--semantic-space-scale-2xs'?: string | undefined;
     '--semantic-space-scale-xs'?: string | undefined;
