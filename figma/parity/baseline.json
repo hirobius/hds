@@ -243,6 +243,168 @@
     },
     "token-value-mismatch:Styles: text style typography/uiRegular": {
       "reason": "Code shortened this token's description to free size headroom (#1563). It reaches the library on the next Sync, which Adrian publishes; not yet published. Removed by hds#1562."
+    },
+    "token-missing-in-figma:Hirobius/Primitives: color/neutral/675": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Primitives: color/neutral/740": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Primitives: color/red/900": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Primitives: color/green/900": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Primitives: color/violet/900": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Primitives: color/amber/700": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Primitives: color/amber/900": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: color/surface/softStrong": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: color/feedback/solid/warning": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/red/50 [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/green/50 [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/violet/50 [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/amber/50 [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/page [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/raised [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/overlay [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/pressed [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/selected [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/muted [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/surface/sunken [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/content/tertiary [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/border/default [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/border/interactive [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/border/strong [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/danger": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/danger [Light]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/danger [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/success": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/success [Light]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/success [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/warning": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/warning [Light]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/warning [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/info": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/info [Light]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/edge/info [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/shadow/hard [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/error [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/success [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/warning [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/info [Light]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/inProgress [Dark]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: badge/info/text [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: badge/success/text [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: badge/danger/text [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: badge/warning/text [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: badge/inProgress/text [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: button/secondary/bg/rest [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: button/secondary/bg/pressed [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: button/tertiary/bg/hover [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Component: button/tertiary/bg/pressed [Default]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Brand: semantic/color/edge/primary/Dark [Hirobius]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Brand: semantic/color/edge/primary/Dark [brutalist-demo]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
+    },
+    "token-value-mismatch:Hirobius/Brand: semantic/color/edge/primary/Dark [accent-cobalt]": {
+      "reason": "Tone and ramp change in code (#1561): solid tone Buttons, equal-delta edges, B dark ramp. Reaches the library on the next Sync, which Adrian publishes; not yet published (PR #1561 lists the variables). Removed by hds#1559."
     }
   }
 }
