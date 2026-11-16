@@ -21,6 +21,7 @@ import { Mermaid } from './components/mermaid';
 import { MotionRecipesDemo } from './components/motion-recipes-demo';
 import { WalkthroughVideo } from './components/walkthrough-video';
 import { PrinciplesAndPractices } from './components/principles-and-practices';
+import { StartHereFlow, StartHereStats } from './components/start-here';
 import { TokenTable } from './components/token-table';
 import {
   DeprecationLedger,
@@ -53,6 +54,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ...hdsElements,
     TokenTable,
     CaseStudyFacts,
+    StartHereFlow,
+    StartHereStats,
     A11yGuarantees,
     A11yConsumerChecklist,
     A11yContractIndex,

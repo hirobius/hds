@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import type { LedgerIndex, LedgerRelease } from './upgrade-ledger';
 import type { A11ySpec } from './a11y-contracts';
 import type { CaseStudySources } from './case-study';
+import type { TokenFlowSources } from './start-here';
 
 /** Walk up from the working directory so this works whether Next runs from docs-site/ or the repo root. */
 export function findUp(relative: string, start = process.cwd()): string {
@@ -103,5 +104,21 @@ export function loadCaseStudySources(): CaseStudySources {
     registry: readJson('docs/guardrails/registry.json') as CaseStudySources['registry'],
     adrFiles: readdirSync(join(root, 'docs', 'adr')),
     changelog: readFileSync(join(root, 'CHANGELOG.md'), 'utf8'),
+  };
+}
+
+/** Everything the Start here page's worked example reads (lib/start-here.ts). */
+export function loadTokenFlowSources(): TokenFlowSources {
+  const root = dirname(findUp('hirobius.tokens.json'));
+  const dir = join(root, 'src', 'app', 'components');
+  const components = readdirSync(dir)
+    .filter((f) => f.endsWith('.tsx') && !/\.(test|figma|stories)\./.test(f))
+    .sort()
+    .map((file) => ({ file, text: readFileSync(join(dir, file), 'utf8') }));
+  return {
+    tokens: loadTokens(),
+    generatedCss: readFileSync(join(root, 'src', 'styles', 'tokens.generated.css'), 'utf8'),
+    snapshot: readJson('figma/snapshot.json'),
+    components,
   };
 }

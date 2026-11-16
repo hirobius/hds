@@ -1,0 +1,37 @@
+---
+title: 'Start here'
+description: 'A two-minute tour of HDS: what it is, how one token travels from source to code and Figma, and the checks that guard it.'
+status: 'experimental'
+---
+
+## What HDS is
+
+The Hirobius Design System is the set of colors, type, spacing and React components behind one person's apps: an operations dashboard, a job tracker and a few sites. Every value lives in one token file, and the components read from it. A new app changes the tokens and keeps the components.
+
+Every design system has a Button. The part worth reading about is the machinery around the components: how one value stays the same in code and in Figma, and the checks that fail when something drifts. The [case study](/docs/case-study) tells the longer story.
+
+HDS is built for its owner's own work first. It is not a public library yet, and only the token layer is meant to travel to other front ends.
+
+## One token, end to end
+
+Take `semantic.accent.rest`, the fill of the main accent. This is the path it takes from the source file to the screen and to the design file.
+
+<StartHereFlow />
+
+If the Figma library and the code disagree, `pnpm check:figma-drift` reports it, and the release gate refuses to publish until Figma is synced. A Figma Professional plan cannot be driven from a build server, so the Figma steps run by hand, on purpose.
+
+## What guards it
+
+Each check is a small script, registered in a file that says where it runs. The pages on [engineering](/docs/engineering) list them all. These are the ones that matter most for a change like the one above.
+
+- The `ci` job is the single required check. It gathers the static checks, the unit tests, the build, the bundle budgets, the docs accessibility scan and the visual tests, and fails if any of them failed. Several of them, such as the token and contrast checks, also run in git hooks before a commit.
+- `check-contrast` blocks a token change that drops a text and background pair below WCAG AA, in light and in dark.
+- The size budgets measure the published package and fail when a component grows past its limit. Raising a limit is a last resort.
+- Visual baselines compare screenshots of selected components with committed images, so a layout shift shows up as a diff.
+- The parity gate holds a committed read of the whole Figma library against the code: every component, property, variant option and icon. It prints a score and fails on any difference not already recorded as known.
+
+## The numbers today
+
+These are read from `public/hds-stats.json` when this site is built, so they cannot be older than the code.
+
+<StartHereStats />
