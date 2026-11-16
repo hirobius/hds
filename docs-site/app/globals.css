@@ -1282,3 +1282,124 @@ a code[data-density] {
 .hds-overview-actions {
   --component-button-fontWeight: var(--semantic-typography-ui-font-weight);
 }
+
+/* Start here (components/start-here.tsx): open bands, not cards. Steps sit on a rail and are
+   separated by hairlines; the stats are rows of a definition list. Every value is a token. */
+.hds-start-flow {
+  list-style: none;
+  margin: var(--semantic-space-scale-lg) 0;
+  padding: 0;
+  border-block-start: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
+}
+.hds-start-step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--semantic-space-scale-xs);
+  margin: 0;
+  padding-block: var(--semantic-space-scale-md);
+  border-block-end: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
+}
+.hds-start-step > p {
+  margin: 0;
+}
+.hds-start-step-title {
+  font-family: var(--semantic-typography-titleSm-font-family);
+  font-size: var(--semantic-typography-titleSm-font-size);
+  font-weight: var(--semantic-typography-titleSm-font-weight);
+  line-height: var(--semantic-typography-titleSm-line-height);
+  color: var(--semantic-color-content-primary);
+}
+.hds-start-step-number {
+  margin-inline-end: var(--semantic-space-scale-xs);
+  color: var(--semantic-color-content-secondary);
+}
+.hds-start-step-where {
+  font-family: var(--semantic-typography-caption-font-family);
+  font-size: var(--semantic-typography-caption-font-size);
+  line-height: var(--semantic-typography-caption-line-height);
+  color: var(--semantic-color-content-secondary);
+  overflow-wrap: anywhere;
+}
+.hds-start-step-code {
+  margin: 0;
+  padding: var(--semantic-space-scale-xs) var(--semantic-space-scale-sm);
+  overflow-x: auto;
+  background: var(--semantic-color-surface-raised);
+  border-radius: var(--semantic-radius-action);
+  font-family: var(--semantic-typography-mono-font-family);
+  font-size: var(--semantic-typography-mono-font-size);
+  line-height: var(--semantic-typography-mono-line-height);
+  color: var(--semantic-color-content-primary);
+}
+.hds-start-step-body {
+  font-family: var(--semantic-typography-body-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  line-height: var(--semantic-typography-body-line-height);
+  color: var(--semantic-color-content-secondary);
+  max-inline-size: 64ch;
+}
+@media (min-width: 48rem) {
+  .hds-start-step {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    column-gap: var(--semantic-space-scale-lg);
+  }
+  .hds-start-step-title,
+  .hds-start-step-where {
+    grid-column: 1;
+  }
+  .hds-start-step-code,
+  .hds-start-step-body {
+    grid-column: 2;
+  }
+  .hds-start-step-title {
+    grid-row: 1;
+  }
+  .hds-start-step-where {
+    grid-row: 2;
+  }
+  .hds-start-step-code {
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+  .hds-start-step-body {
+    grid-row: 3;
+  }
+}
+
+.hds-start-stats {
+  margin: var(--semantic-space-scale-lg) 0;
+  border-block-start: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
+}
+.hds-start-stat {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--semantic-space-scale-2xs);
+  padding-block: var(--semantic-space-scale-xs);
+  border-block-end: var(--semantic-borderWidth-default) solid var(--semantic-color-border-default);
+}
+.hds-start-stat dt,
+.hds-start-stat dd {
+  margin: 0;
+  font-family: var(--semantic-typography-ui-font-family);
+  font-size: var(--semantic-typography-ui-font-size);
+  line-height: var(--semantic-typography-ui-line-height);
+}
+.hds-start-stat dt {
+  color: var(--semantic-color-content-secondary);
+}
+.hds-start-stat dd {
+  display: flex;
+  flex-direction: column;
+  color: var(--semantic-color-content-primary);
+}
+.hds-start-stat-detail {
+  font-size: var(--semantic-typography-caption-font-size);
+  line-height: var(--semantic-typography-caption-line-height);
+  color: var(--semantic-color-content-secondary);
+}
+@media (min-width: 48rem) {
+  .hds-start-stat {
+    grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+    column-gap: var(--semantic-space-scale-lg);
+  }
+}
