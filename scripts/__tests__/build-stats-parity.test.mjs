@@ -10,7 +10,15 @@
  * root whose copy is stale; and --check fails on a hand-typed value.
  */
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -51,13 +59,6 @@ function copyRoot() {
       filter: (src) => !/src\/app\/components\/.+/.test(src) || src.endsWith('.figma.ts'),
     });
   }
-  // The release stamp (Hirobius/Meta) reads the commit from git, and a checkout without one
-  // counts one variable fewer, so the copy is a repository too.
-  const git = (...args) =>
-    spawnSync('git', ['-C', root, '-c', 'user.name=t', '-c', 'user.email=t@t', ...args]);
-  git('init', '-q');
-  git('add', '-A');
-  git('commit', '-q', '-m', 'fixture');
   return root;
 }
 const node = (script, root, ...args) =>
@@ -81,6 +82,14 @@ describe('figmaParity in public/hds-stats.json', () => {
       readOn: readJson(ROOT, 'figma/parity/read.json').readOn,
       source: 'figma/parity/read.json',
     });
+  });
+
+  it('depends on the committed inputs only: a copy with no git history scores the same', async () => {
+    const root = copyRoot();
+    expect(existsSync(join(root, '.git'))).toBe(false);
+    const here = (await runParityCheck({ root: ROOT })).result.score;
+    const copy = (await runParityCheck({ root })).result.score;
+    expect(copy).toEqual(here);
   });
 
   it('is written by a parity run, over a stale value', async () => {

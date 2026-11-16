@@ -54,6 +54,15 @@ export function loadCode(root) {
   };
 }
 
+/**
+ * The release stamp (Hirobius/Meta) is read from git, and a checkout with no history, or a depth-1
+ * one, names fewer of its variables, which moved the score by a check. The parity score must depend
+ * on committed inputs alone, so the run reads the stamp without git and with a fixed commit: every
+ * stamp variable is counted in every checkout. Its values are not compared here (the findings leave
+ * Hirobius/Meta out); check:figma-release owns them.
+ */
+const HERMETIC_META = { git: () => null, commit: '0000000' };
+
 /** The variables side: the snapshot's digest, and tokens against the snapshot. */
 export async function loadVariables(root) {
   const snapshotPath = path.join(root, 'figma/snapshot.json');
@@ -61,7 +70,7 @@ export async function loadVariables(root) {
   const { parseSnapshotFile } = await import('./figma-snapshot.mjs');
   const snapshotFile = parseSnapshotFile(readFileSync(snapshotPath, 'utf8'));
   const { runDriftCheck } = await import('../check-figma-drift.mjs');
-  const { report, output } = runDriftCheck({ root });
+  const { report, output } = runDriftCheck({ root, meta: HERMETIC_META });
   if (!report) throw new Error(`The token drift check did not run: ${output}`);
   const label = (item) =>
     `${item.collection ?? 'Styles'}: ${item.what === 'variable' ? '' : `${item.what} `}${item.name}`;

@@ -136,12 +136,6 @@ function copyRoot() {
       filter: (src) => !/src\/app\/components\/.+/.test(src) || src.endsWith('.figma.ts'),
     });
   }
-  // The release stamp reads the commit from git; the copy is a repository too.
-  const git = (...args) =>
-    spawnSync('git', ['-C', root, '-c', 'user.name=t', '-c', 'user.email=t@t', ...args]);
-  git('init', '-q');
-  git('add', '-A');
-  git('commit', '-q', '-m', 'fixture');
   return root;
 }
 const run = (root, ...args) =>
