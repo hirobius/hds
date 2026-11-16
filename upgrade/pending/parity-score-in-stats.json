@@ -1,0 +1,4 @@
+{
+  "impact": "additive",
+  "plain": "stats.json gains figmaParity and codeConnect fields; nothing changes until you read them."
+}

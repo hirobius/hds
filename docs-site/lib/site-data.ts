@@ -34,7 +34,17 @@ function readJson(relative: string): unknown {
 export const loadTokens = () => readJson('hirobius.tokens.json');
 /** public/hds-stats.json (scripts/build-stats-json.mjs): repo counts, checked fresh by pretest. */
 export const loadStats = () =>
-  readJson('public/hds-stats.json') as { contrast: { textPairs: number; nonTextPairs: number } };
+  readJson('public/hds-stats.json') as {
+    contrast: { textPairs: number; nonTextPairs: number };
+    figmaParity?: {
+      percent: number;
+      passed: number;
+      total: number;
+      readOn: string;
+      source: string;
+    };
+    codeConnect?: { templates: number; source: string };
+  };
 /** Opt-in accent themes (`accents/<name>/tokens.json`), keyed by name. */
 export const loadAccentThemes = (): Record<string, unknown> =>
   Object.fromEntries(

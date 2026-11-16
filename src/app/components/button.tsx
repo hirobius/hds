@@ -25,8 +25,12 @@ import { NewTabHint, newTabName } from './new-tab-hint';
 // ── Variants ───────────────────────────────────────────────────────────────────
 
 // The classes every status tone shares; each tone adds its own fill and text colour (kept as literals so Tailwind sees them).
+// A status tone is a solid mid-tone fill (Adrian 2026-11-15): 3:1+ against the page and a
+// raised surface (WCAG 1.4.11) with a knock-out label in the page colour (text-background: white in
+// light, near-black in dark, 4.5:1+). Its edge (component.button.edge.<tone>) is the fill one OKLCH step darker, the same drop
+// as the Secondary edge. No stroke. Alert and Badge keep the soft feedback.bg tints.
 const TONE_COMMON =
-  'border-transparent hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:inset-shadow-pressed-overlay/5 disabled:border-transparent';
+  'text-background border-transparent hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:inset-shadow-pressed-overlay/5 disabled:border-transparent';
 
 /**
  * Pressed state (hds#322): an inset box-shadow wash bound to
@@ -130,10 +134,10 @@ const buttonVariants = /* @__PURE__ */ cva(
         // fill: content.secondary on surface.soft is under 4.5:1 in dark. The classes live in
         // the compoundVariants, so a filled variant ignores it.
         quiet: '',
-        danger: `bg-feedback-bg-danger text-feedback-danger hover:bg-feedback-bg-danger active:bg-feedback-bg-danger ${TONE_COMMON}`,
-        success: `bg-feedback-bg-success text-feedback-success hover:bg-feedback-bg-success active:bg-feedback-bg-success ${TONE_COMMON}`,
-        warning: `bg-feedback-bg-warning text-feedback-warning hover:bg-feedback-bg-warning active:bg-feedback-bg-warning ${TONE_COMMON}`,
-        info: `bg-feedback-bg-info text-feedback-info hover:bg-feedback-bg-info active:bg-feedback-bg-info ${TONE_COMMON}`,
+        danger: `bg-feedback-danger hover:bg-feedback-danger active:bg-feedback-danger ${TONE_COMMON}`,
+        success: `bg-feedback-success hover:bg-feedback-success active:bg-feedback-success ${TONE_COMMON}`,
+        warning: `bg-feedback-solid-warning hover:bg-feedback-solid-warning active:bg-feedback-solid-warning ${TONE_COMMON}`,
+        info: `bg-feedback-info hover:bg-feedback-info active:bg-feedback-info ${TONE_COMMON}`,
       },
       size: {
         sm: 'h-[var(--component-button-size-sm-height)] px-fixed-xs hds-type-caption hds-touch-row [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
@@ -196,6 +200,12 @@ const buttonVariants = /* @__PURE__ */ cva(
         className:
           'px-0 bg-transparent hover:bg-transparent active:bg-transparent disabled:bg-transparent hover:brightness-100 dark:hover:brightness-100 active:inset-shadow-transparent',
       },
+      // A filled tone shows its tone in its solid fill (see TONE_COMMON). A link has no fill:
+      // its text is the only place the tone can show, so a toned link keeps the feedback colour.
+      { variant: 'link', tone: 'danger', className: 'text-feedback-danger' },
+      { variant: 'link', tone: 'success', className: 'text-feedback-success' },
+      { variant: 'link', tone: 'warning', className: 'text-feedback-warning' },
+      { variant: 'link', tone: 'info', className: 'text-feedback-info' },
       // Link focus (hds#1167, matches the Figma Focus drawing): with px-0 a ring on the button
       // would sit right on the glyphs and the underline. A link instead paints the shared ring
       // (.hds-focus-after: semantic.focus.ring.width, gap.width and ring.color) on an ::after
@@ -416,7 +426,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           style: {
             ...edge,
             '--hds-wipe-fill': hasTone
-              ? `var(--semantic-color-feedback-bg-${tone === 'danger' ? 'error' : tone})`
+              ? `var(--semantic-color-feedback-${tone === 'danger' ? 'error' : tone === 'warning' ? 'solid-warning' : tone})`
               : edgeKey === 'primary'
                 ? 'var(--component-button-bgHover)'
                 : variant === 'tertiary'

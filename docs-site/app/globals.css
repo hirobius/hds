@@ -600,6 +600,27 @@ pre {
   align-items: center;
   gap: var(--semantic-space-scale-xs);
 }
+/* The sidebar's metadata slot (components/parity-badge.tsx): small label and value rows from
+   public/hds-stats.json, in the secondary content tone so they read in light and dark. */
+.hds-docs-parity {
+  margin: 0;
+  padding: var(--semantic-space-scale-xs) 0;
+  display: grid;
+  gap: var(--semantic-space-scale-xs);
+  font-size: var(--semantic-typography-caption-font-size, 0.75rem);
+  color: var(--semantic-color-content-secondary);
+}
+.hds-docs-parity dt {
+  font-weight: 600;
+  color: var(--semantic-color-content-primary);
+}
+.hds-docs-parity dd {
+  margin: 0;
+}
+.hds-docs-parity data {
+  font-variant-numeric: tabular-nums;
+  color: var(--semantic-color-content-primary);
+}
 /* Fumadocs wraps the theme-switch slot in a full-width bordered pill that sits empty beside a
    lone toggle; drop that chrome so the switcher and the settings button sit together, compact. */
 div:has(> .hds-docs-display) {

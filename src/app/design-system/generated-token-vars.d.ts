@@ -24,8 +24,10 @@ declare module 'react' {
     '--primitive-color-neutral-500'?: string | undefined;
     '--primitive-color-neutral-550'?: string | undefined;
     '--primitive-color-neutral-600'?: string | undefined;
+    '--primitive-color-neutral-675'?: string | undefined;
     '--primitive-color-neutral-700'?: string | undefined;
     '--primitive-color-neutral-725'?: string | undefined;
+    '--primitive-color-neutral-740'?: string | undefined;
     '--primitive-color-neutral-750'?: string | undefined;
     '--primitive-color-neutral-800'?: string | undefined;
     '--primitive-color-neutral-825'?: string | undefined;
@@ -48,10 +50,12 @@ declare module 'react' {
     '--primitive-color-red-50'?: string | undefined;
     '--primitive-color-red-400'?: string | undefined;
     '--primitive-color-red-700'?: string | undefined;
+    '--primitive-color-red-900'?: string | undefined;
     '--primitive-color-red-950'?: string | undefined;
     '--primitive-color-green-50'?: string | undefined;
     '--primitive-color-green-400'?: string | undefined;
     '--primitive-color-green-700'?: string | undefined;
+    '--primitive-color-green-900'?: string | undefined;
     '--primitive-color-green-950'?: string | undefined;
     '--primitive-color-graphite-50'?: string | undefined;
     '--primitive-color-graphite-100'?: string | undefined;
@@ -103,6 +107,7 @@ declare module 'react' {
     '--primitive-color-violet-50'?: string | undefined;
     '--primitive-color-violet-400'?: string | undefined;
     '--primitive-color-violet-700'?: string | undefined;
+    '--primitive-color-violet-900'?: string | undefined;
     '--primitive-color-violet-950'?: string | undefined;
     '--primitive-color-lilac-50'?: string | undefined;
     '--primitive-color-lilac-100'?: string | undefined;
@@ -117,7 +122,9 @@ declare module 'react' {
     '--primitive-color-lilac-900'?: string | undefined;
     '--primitive-color-amber-50'?: string | undefined;
     '--primitive-color-amber-400'?: string | undefined;
+    '--primitive-color-amber-700'?: string | undefined;
     '--primitive-color-amber-800'?: string | undefined;
+    '--primitive-color-amber-900'?: string | undefined;
     '--primitive-color-amber-950'?: string | undefined;
     '--primitive-color-stone-100'?: string | undefined;
     '--primitive-color-stone-400'?: string | undefined;
@@ -309,6 +316,7 @@ declare module 'react' {
     '--semantic-color-surface-sunken'?: string | undefined;
     '--semantic-color-surface-soft'?: string | undefined;
     '--semantic-color-surface-softHover'?: string | undefined;
+    '--semantic-color-surface-softStrong'?: string | undefined;
     '--semantic-color-content-primary'?: string | undefined;
     '--semantic-color-content-secondary'?: string | undefined;
     '--semantic-color-content-tertiary'?: string | undefined;
@@ -343,6 +351,7 @@ declare module 'react' {
     '--semantic-color-feedback-bg-warning'?: string | undefined;
     '--semantic-color-feedback-bg-info'?: string | undefined;
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
+    '--semantic-color-feedback-solid-warning'?: string | undefined;
     '--semantic-color-state-pressed-overlay'?: string | undefined;
     '--semantic-space-scale-2xs'?: string | undefined;
     '--semantic-space-scale-xs'?: string | undefined;
