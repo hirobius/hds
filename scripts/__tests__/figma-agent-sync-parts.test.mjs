@@ -234,8 +234,8 @@ describe('a type-ramp change too big for one delta.js (about 60,700 characters w
     // canvas-font retry and weight.mono (2026-10-20) grew the runtime and the ramp; 3 until
     // uiRegular (hds#1198) pushed the scenario past 3 x 45,000 packing; 4 until text styles
     // started sharing a part with the font variables they bind (hds#1453), which packs less
-    // tightly; 5 now.
-    expect(parts.length).toBe(5);
+    // tightly; 5 until the token descriptions were trimmed for size headroom (2026-11-15); 4 now.
+    expect(parts.length).toBe(4);
     expect(parts.map((p) => p.file)).toEqual(
       parts.map((_, i) => `delta-${i + 1}-of-${parts.length}.js`),
     );
