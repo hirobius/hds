@@ -149,6 +149,9 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
 
   const figma = indexRead(read);
   const templates = code.templates ?? {};
+  // figma/mapping-overrides.json `api`: the node draws the result of a call, so its
+  // properties are compared with the call's options, not with the tagged component's props.
+  const apis = code.apis ?? {};
   const byName = new Map(code.components.map((c) => [c.name, c]));
   const overrides = new Map((code.overrides ?? []).map((o) => [o.nodeId, o]));
   const linked = new Map();
@@ -184,7 +187,9 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
     const node = figma.byId.get(component.nodeId);
     if (node) {
       link(node.id, component);
-      if (node.name !== component.name) {
+      // A node paired with an imperative API (the Figma Toast is one toast() call) is named
+      // after what it draws: the override records that name, and only an exact match passes.
+      if (node.name !== component.name && node.name !== apis[node.id]?.name) {
         add(
           'name-mismatch',
           component.name,
@@ -292,7 +297,8 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
   for (const [nodeId, component] of linked) {
     const node = figma.byId.get(nodeId);
     const template = templates[component.name]?.properties ?? null;
-    const props = component.props ?? {};
+    const api = apis[nodeId];
+    const props = api?.props ?? component.props ?? {};
     const mappedProps = new Set();
     // "A string prop or children is a text property": one TEXT property may be the children.
     // A Radix text part (SheetTitle, DialogDescription) lists only asChild, yet its text is
@@ -311,7 +317,8 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
           key: name,
         });
       }
-      const entry = template?.[name];
+      const entry =
+        template?.[name] ?? (api?.figmaOnly[name] ? { figmaOnly: api.figmaOnly[name] } : undefined);
       const propName = entry?.prop ?? (props[camel(name)] ? camel(name) : null);
       if (propName) mappedProps.add(propName.split('.').pop());
       const prop = propName ? props[propName] : null;

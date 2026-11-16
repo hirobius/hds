@@ -1972,7 +1972,7 @@
     },
     "src/app/components/toast.tsx": {
       "kind": "queued",
-      "reason": "The Figma Toast (93:367) is one toast. Code has no Toast element: a toast is raised with useToast() under ToastProvider, so a JSX template of ToastProvider would be wrong for it. Needs a non-JSX example (hds#1557)."
+      "reason": "The Figma Toast (93:367) is one toast. Code has no Toast element: a toast is raised with useToast() under ToastProvider, so a JSX template of ToastProvider would be wrong for it. Needs a non-JSX example (hds#1557). The parity gate pairs the Toast with toast() and its ToastOptions (figma/mapping-overrides.json, api)."
     },
     "src/app/components/table.tsx": {
       "kind": "queued",
