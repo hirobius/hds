@@ -156,7 +156,7 @@ export function tokenFlow(sources: TokenFlowSources, path: string): TokenFlow {
   const entry = obj(node) ?? fail('is not in hirobius.tokens.json');
   const modes = obj(obj(obj(entry.$extensions)?.['com.figma.variables'])?.modes);
   const light = str(modes?.Light) ?? str(entry.$value) ?? fail('has no light value');
-  const dark = str(modes?.Dark) ?? light;
+  const dark = str(modes?.Dark) ?? fail('has no dark value');
 
   const cssVar = `--${path.replace(/\./g, '-')}`;
   const lines = sources.generatedCss

@@ -123,6 +123,25 @@ describe('tokenFlow', () => {
     expect(() => tokenFlow(sources, 'semantic.accent.nope')).toThrow(/semantic\.accent\.nope/);
   });
 
+  it('throws when any later hop breaks, instead of showing a made-up value', () => {
+    const rest = sources.tokens.semantic.accent.rest;
+    const noDark = structuredClone(sources);
+    noDark.tokens.semantic.accent.rest = {
+      ...rest,
+      $extensions: { 'com.figma.variables': { modes: { Light: rest.$value } } },
+    } as typeof rest;
+    expect(() => tokenFlow(noDark, 'semantic.accent.rest')).toThrow(/dark value/);
+    expect(() =>
+      tokenFlow({ ...sources, generatedCss: ':root {}' }, 'semantic.accent.rest'),
+    ).toThrow(/semantic\.accent\.rest/);
+    expect(() =>
+      tokenFlow({ ...sources, components: [sources.components[0]!] }, 'semantic.accent.rest'),
+    ).toThrow(/semantic\.accent\.rest/);
+    expect(() =>
+      tokenFlow({ ...sources, snapshot: { collections: [] } }, 'semantic.accent.rest'),
+    ).toThrow(/semantic\.accent\.rest/);
+  });
+
   it('holds for the real repo files: the example token is where the page says it is', () => {
     const read = (p: string) => readFileSync(join(ROOT, p), 'utf8');
     const flow = tokenFlow(

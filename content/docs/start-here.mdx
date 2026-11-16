@@ -18,17 +18,17 @@ Take `semantic.accent.rest`, the fill of the main accent. This is the path it ta
 
 <StartHereFlow />
 
-If the Figma library and the code disagree, `pnpm check:figma-drift` fails. A Figma Professional plan cannot be driven from a build server, so the Figma steps run by hand, on purpose.
+If the Figma library and the code disagree, `pnpm check:figma-drift` reports it, and the release gate refuses to publish until Figma is synced. A Figma Professional plan cannot be driven from a build server, so the Figma steps run by hand, on purpose.
 
 ## What guards it
 
 Each check is a small script, registered in a file that says where it runs. The pages on [engineering](/docs/engineering) list them all. These are the ones that matter most for a change like the one above.
 
-- The `ci` job is the single required check. It gathers the static checks, the unit tests, the build, the bundle budgets, the docs accessibility scan and the visual tests, and fails if any of them failed. The same checks also run in git hooks and by hand before a push.
+- The `ci` job is the single required check. It gathers the static checks, the unit tests, the build, the bundle budgets, the docs accessibility scan and the visual tests, and fails if any of them failed. Several of them, such as the token and contrast checks, also run in git hooks before a commit.
 - `check-contrast` blocks a token change that drops a text and background pair below WCAG AA, in light and in dark.
 - The size budgets measure the published package and fail when a component grows past its limit. Raising a limit is a last resort.
 - Visual baselines compare screenshots of selected components with committed images, so a layout shift shows up as a diff.
-- The parity gate reads the whole Figma library and holds it against the code: every component, property, variant option and icon. It prints a score and fails on any difference not already recorded as known.
+- The parity gate holds a committed read of the whole Figma library against the code: every component, property, variant option and icon. It prints a score and fails on any difference not already recorded as known.
 
 ## The numbers today
 
