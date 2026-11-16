@@ -1,5 +1,5 @@
 {
-  "$comment": "Figma assets whose code counterpart is NOT a top-level component, so no @figma JSDoc tag can point at them and scripts/check-figma-coverage.mjs would report them forever. Each entry is a deliberate statement that the asset IS mapped, just not the usual way. Keep this small: an entry is an admission that Figma and code model the same thing differently, and the better fix is usually to make them agree. Every entry needs a reason a reviewer can check.",
+  "$comment": "Figma assets whose code counterpart is NOT a top-level component, so no @figma JSDoc tag can point at them and scripts/check-figma-coverage.mjs would report them forever. Each entry is a deliberate statement that the asset IS mapped, just not the usual way. Keep this small: an entry is an admission that Figma and code model the same thing differently, and the better fix is usually to make them agree. Every entry needs a reason a reviewer can check. An entry may also carry codeOnly: { \"<Figma property>\": { \"values\": [code values Figma does not draw], \"reason\": \"...\" } }. The parity gate (scripts/lib/figma-parity.mjs) honours it only for a component with no Code Connect template; a template records codeOnly on its own property in figma/code-connect.json.",
   "overrides": [
     {
       "nodeId": "128:14",
@@ -100,6 +100,13 @@
       "reason": "The Figma set on the Form page is FormField of form.tsx (Label, Helper, State, Required). Until 2026-11-15 the Field tag named it by mistake; Field is 2337:23270. form.tsx gives FormField no JSDoc block of its own to carry a tag (its file tag belongs to Form), so the pairing is recorded here. The Figma name should become FormField (hds#1565)."
     },
     {
+      "nodeId": "85:94",
+      "name": "Form",
+      "mapsTo": "Form",
+      "source": "src/app/components/form.tsx",
+      "reason": "figma/inventory.json still lists 85:94 as the Form component. The parity read of 2026-11-15 shows it is now an example frame (\"_Form (now an example frame)\"), and Form is a layout primitive (figma/disposition.json), so it carries no @figma tag. Remove this entry when the inventory is re-read and no longer lists 85:94 (hds#1573)."
+    },
+    {
       "nodeId": "2352:301",
       "name": "ListItem",
       "mapsTo": "ListItem",
@@ -118,7 +125,32 @@
       "name": "Stack",
       "mapsTo": "Stack",
       "source": "src/app/components/stack.tsx",
-      "reason": "Stack is a layout primitive (figma/disposition.json: in Figma this is auto-layout), so it carries no @figma tag. The library still draws a Stack set to show Direction and Gap (parity read 2026-11-15). Recorded so the parity gate compares its options with the gap prop."
+      "reason": "Stack is a layout primitive (figma/disposition.json: in Figma this is auto-layout), so it carries no @figma tag. The library still draws a Stack set to show Direction and Gap (parity read 2026-11-15). Recorded so the parity gate compares its options with the gap prop.",
+      "codeOnly": {
+        "Gap": {
+          "values": [
+            "px1",
+            "px2",
+            "px4",
+            "px6",
+            "px8",
+            "px10",
+            "px12",
+            "px16",
+            "px20",
+            "px24",
+            "px28",
+            "px32",
+            "px40",
+            "px48",
+            "px64",
+            "px80",
+            "px96",
+            "px128"
+          ],
+          "reason": "The primitive space steps (gap='px8') are a code escape hatch for one-off spacing. Figma spacing is auto-layout, so the Gap property draws only the named gaps; a px step in Figma is a number on the frame, not an option."
+        }
+      }
     },
     {
       "nodeId": "2337:27807",

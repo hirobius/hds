@@ -7047,10 +7047,10 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/form.tsx",
-      "description": "Styled `<form>` with consistent vertical field rhythm. Tagged per-export: FormField and FormFieldShell share this module, so a file-level @figma would claim this one for all three. FormField is the Figma set 85:81 (figma/mapping-overrides.json).",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
+      "description": "Styled `<form>` with consistent vertical field rhythm. No @figma tag: Form draws no pixels of its own, so Figma models it as auto-layout (figma/disposition.json, class layout). FormField is the Figma set 85:81 (figma/mapping-overrides.json).",
+      "figmaUrl": null,
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94",
+      "figmaLink": null,
       "tier": "pattern",
       "preview": {
         "exportName": "Form",

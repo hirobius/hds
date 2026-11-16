@@ -55,6 +55,10 @@ describe('findCoverageGaps', () => {
     const shared = () => ({ path: '/docs/components/utilities', shared: true });
     expect(findCoverageGaps({ ...base, pageFor: shared, figmaFor: () => null })).toEqual([]);
   });
+  it('asks no Figma link of a component the disposition says has no Figma component', () => {
+    const layout = { ...base, figmaFor: () => null, figmaExpected: () => false };
+    expect(findCoverageGaps(layout)).toEqual([]);
+  });
 });
 
 describe('coverageUnits', () => {

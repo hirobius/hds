@@ -43,10 +43,9 @@ export type FormProps = React.FormHTMLAttributes<HTMLFormElement>;
  * Styled `<form>` with consistent vertical field rhythm.
  * @usage Wrap form fields so they stack with even spacing.
  *
- * Tagged per-export: FormField and FormFieldShell share this module, so a
- * file-level @figma would claim this one for all three. FormField is the Figma
+ * No @figma tag: Form draws no pixels of its own, so Figma models it as
+ * auto-layout (figma/disposition.json, class layout). FormField is the Figma
  * set 85:81 (figma/mapping-overrides.json).
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94
  * @a11y component required a11y:form.native-form It renders a native form element, so Enter submits and the browser's validation and autofill work.
  * @a11y consumer required Name the form with aria-label or aria-labelledby when a page has more than one.
  * @a11y consumer required Submit with a real button, and on a failed submit name each error and move focus to the first invalid field (WCAG 3.3.1, 3.3.3).

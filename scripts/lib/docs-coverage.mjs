@@ -43,21 +43,24 @@ export function coverageUnits(specs, hasPage) {
  * @param {{ units: string[],
  *           pageFor: (n: string) => { path: string, shared: boolean } | null,
  *           demos: Set<string>,
- *           figmaFor: (n: string) => string | null | undefined }} input
+ *           figmaFor: (n: string) => string | null | undefined,
+ *           figmaExpected?: (n: string) => boolean }} input
  *   pageFor: the component's docs page; `shared` when several components share
  *   it (the utilities page, the providers guide). A shared page's header has no
  *   Figma slot for one of them, so no Figma link is asked of it (a gap there
  *   could never be filled, and the baseline must be able to reach zero).
  *   figmaFor: the component's Figma URL, or null when it has none (or no valid one).
+ *   figmaExpected: false for a component figma/disposition.json says has no Figma
+ *   component of its own (class layout, slot or internal). Default: always expected.
  * @returns {{ name: string, gap: GapKind }[]}
  */
-export function findCoverageGaps({ units, pageFor, demos, figmaFor }) {
+export function findCoverageGaps({ units, pageFor, demos, figmaFor, figmaExpected = () => true }) {
   const gaps = [];
   for (const name of units) {
     const page = pageFor(name);
     if (!page) gaps.push({ name, gap: 'no-page' });
     if (!demos.has(name)) gaps.push({ name, gap: 'no-demo' });
-    if (page?.shared) continue;
+    if (page?.shared || !figmaExpected(name)) continue;
     if (!figmaFor(name)) gaps.push({ name, gap: 'no-figma-link' });
   }
   return gaps;

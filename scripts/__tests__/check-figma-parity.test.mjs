@@ -311,6 +311,74 @@ describe('parity: variants and properties', () => {
     const used = { ...badge, consumers: ['src/button.tsx'] };
     expect(kinds(parity({ read: nested, code: code({}, [used]) }))).toEqual([]);
   });
+
+  it('accepts a nested component the Code Connect template passes in as slot content', () => {
+    const badge = {
+      name: 'Badge',
+      class: 'library',
+      nodeId: '2:2',
+      filePath: 'src/badge.tsx',
+      props: {},
+      consumers: [],
+    };
+    const figmaBadge = { id: '2:2', name: 'Badge', type: 'ONE', props: [], nests: [] };
+    const nested = read([button({ nests: ['Badge'] }), figmaBadge]);
+    const template = (over) => ({
+      ...code({}, [badge]),
+      templates: {
+        Button: {
+          imports: { '@hirobius/design-system': ['Badge'] },
+          properties: { Label: { prop: 'children' } },
+          ...over,
+        },
+      },
+    });
+    expect(
+      kinds(parity({ read: nested, code: template({ children: '<Badge>New</Badge>' }) })),
+    ).toEqual([]);
+    // An import alone does not show the parent takes it in.
+    expect(kinds(parity({ read: nested, code: template({}) }))).toEqual([
+      'nesting-mismatch:Button:Badge',
+    ]);
+  });
+
+  it('reads a TEXT property as the children of a Radix part that only lists asChild', () => {
+    const title = button({ props: [['Title', 'TEXT', 'Edit profile']] });
+    const radixPart = code({ props: { asChild: { type: 'boolean' } } });
+    expect(kinds(parity({ read: read([title]), code: radixPart }))).toEqual([]);
+    // A component with more props than asChild is not a bare text part.
+    const richer = code({ props: { asChild: { type: 'boolean' }, open: { type: 'boolean' } } });
+    expect(kinds(parity({ read: read([title]), code: richer }))).toEqual([
+      'property-not-in-code:Button:Title',
+    ]);
+    const noChildren = code({ props: { open: { type: 'boolean' } } });
+    expect(kinds(parity({ read: read([title]), code: noChildren }))).toEqual([
+      'property-not-in-code:Button:Title',
+    ]);
+  });
+
+  it('honours code-only values a mapping override records for a component with no template', () => {
+    const gap = button({ props: [['Gap', 'VARIANT', 'tight', ['tight', 'normal']]] });
+    const stack = code({
+      props: { gap: { type: 'enum', values: ['tight', 'normal', 'px4', 'px8'], default: 'tight' } },
+    });
+    expect(kinds(parity({ read: read([gap]), code: stack }))[0]).toMatch(
+      /^option-not-in-figma:Button:Gap:2-/,
+    );
+    const recorded = {
+      ...stack,
+      overrides: [{ nodeId: '1:1', codeOnly: { Gap: { values: ['px4', 'px8'], reason: 'why' } } }],
+    };
+    expect(kinds(parity({ read: read([gap]), code: recorded }))).toEqual([]);
+    // A component with a template records code-only values there, not in an override.
+    const withTemplate = {
+      ...recorded,
+      templates: { Button: { properties: { Gap: { prop: 'gap' } } } },
+    };
+    expect(kinds(parity({ read: read([gap]), code: withTemplate }))[0]).toMatch(
+      /^option-not-in-figma:Button:Gap:2-/,
+    );
+  });
 });
 
 describe('parity: review rules', () => {

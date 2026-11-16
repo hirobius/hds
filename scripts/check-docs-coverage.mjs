@@ -55,6 +55,10 @@ const demos = documentedFromSources({
 });
 
 const pageFor = pageLookup(routing, docsPagePath);
+// Only a `library` component is expected to have a Figma node (figma/disposition.json):
+// a layout primitive is auto-layout in Figma, a slot is drawn inside its parent.
+const disposition = JSON.parse(read('figma/disposition.json') || '{"components":{}}');
+const classOf = new Map(Object.values(disposition.components ?? {}).map((c) => [c.name, c.class]));
 
 const { units, parts } = coverageUnits(specs, (n) => Boolean(docsPagePath(n, routing)));
 const gaps = findCoverageGaps({
@@ -62,6 +66,7 @@ const gaps = findCoverageGaps({
   pageFor,
   demos,
   figmaFor: (n) => resolveFigmaLink(specs[n]?.figmaUrl),
+  figmaExpected: (n) => (classOf.get(n) ?? 'library') === 'library',
 });
 
 if (process.argv.includes('--list')) {
