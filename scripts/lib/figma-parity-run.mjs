@@ -8,6 +8,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import ts from 'typescript';
+import { extractCva } from './component-code-model.mjs';
 import { parity } from './figma-parity.mjs';
 import { hdsParityDigest } from './figma-parity-runtime.mjs';
 
@@ -46,12 +48,42 @@ export function loadCode(root) {
     props: spec.props ?? {},
     consumers: spec.consumers ?? [],
   }));
+  const overrides = optional(root, 'figma/mapping-overrides.json', {}).overrides ?? [];
   return {
     components,
     templates: optional(root, 'figma/code-connect.json', {}).templates ?? {},
-    overrides: optional(root, 'figma/mapping-overrides.json', {}).overrides ?? [],
+    overrides,
+    apis: Object.fromEntries(
+      overrides.filter((o) => o.api).map((o) => [o.nodeId, loadApi(root, o.api)]),
+    ),
     icons: manifest.iconSet?.names,
   };
+}
+
+/**
+ * An imperative API a Figma component draws the result of (the Figma Toast is one call of
+ * toast(options)). Its props are the fields of the options interface, read from the source;
+ * a field named after a cva axis in the same module takes that axis's values and default.
+ * Throws when the source or the interface is gone, so a stale pairing fails loudly.
+ */
+export function loadApi(root, api) {
+  const text = readFileSync(path.join(root, api.source), 'utf8');
+  const file = ts.createSourceFile(api.source, text, ts.ScriptTarget.Latest, true);
+  const decl = file.statements.find(
+    (s) => ts.isInterfaceDeclaration(s) && s.name.text === api.options,
+  );
+  if (!decl) throw new Error(`${api.source} has no interface ${api.options} (${api.call})`);
+  const { axes, defaults } = extractCva(text);
+  const props = {};
+  for (const member of decl.members) {
+    if (!ts.isPropertySignature(member) || !member.name) continue;
+    const name = member.name.getText(file);
+    const optional = Boolean(member.questionToken);
+    props[name] = axes[name]
+      ? { type: 'enum', values: axes[name], default: defaults[name], optional }
+      : { type: member.type?.getText(file) ?? 'unknown', optional };
+  }
+  return { call: api.call, figmaOnly: api.figmaOnly ?? {}, props };
 }
 
 /**

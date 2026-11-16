@@ -133,7 +133,12 @@ function copyRoot() {
     mkdirSync(dirname(join(root, f)), { recursive: true });
     cpSync(join(ROOT, f), join(root, f), {
       recursive: true,
-      filter: (src) => !/src\/app\/components\/.+/.test(src) || src.endsWith('.figma.ts'),
+      // The generated templates, plus toast.tsx: the parity run reads ToastOptions from it
+      // (the Figma Toast is paired with toast() in figma/mapping-overrides.json).
+      filter: (src) =>
+        !/src\/app\/components\/.+/.test(src) ||
+        src.endsWith('.figma.ts') ||
+        src.endsWith('/toast.tsx'),
     });
   }
   return root;

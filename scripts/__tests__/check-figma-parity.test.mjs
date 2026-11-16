@@ -22,6 +22,7 @@ import {
   buildParityVariablesScript,
 } from '../lib/figma-parity-scripts.mjs';
 import { runParityCheck } from '../check-figma-parity.mjs';
+import { loadApi } from '../lib/figma-parity-run.mjs';
 
 const KEY = 'LIBRARYKEY0000000000000';
 
@@ -636,5 +637,64 @@ describe('the committed read against the committed code', () => {
     for (const finding of result.findings) {
       expect(finding.accepted, finding.id).toMatch(/hds#\d+|#\d+/);
     }
+  });
+});
+
+describe('parity: a node that draws an API call', () => {
+  const toast = button({
+    name: 'Toast',
+    props: [
+      ['Title', 'TEXT', 'Saved'],
+      ['Tone', 'VARIANT', 'neutral', ['neutral', 'danger']],
+      ['Dismiss', 'VARIANT', 'Rest', ['Rest', 'Hover']],
+    ],
+  });
+  const provider = code({ name: 'ToastProvider', props: { children: { type: 'ReactNode' } } });
+  const api = (over = {}) => ({
+    call: 'toast()',
+    figmaOnly: { Dismiss: 'Close button state preview.' },
+    props: {
+      title: { type: 'string', optional: false },
+      tone: { type: 'enum', values: ['neutral', 'danger'], default: 'neutral', optional: true },
+    },
+    ...over,
+  });
+
+  it('compares the properties with the call options, and takes the call name', () => {
+    expect(
+      kinds(parity({ read: read([toast]), code: { ...provider, apis: { '1:1': api() } } })),
+    ).toEqual([]);
+  });
+
+  it('still reports an option the call does not accept, and a property with no field', () => {
+    const narrow = api({
+      figmaOnly: {},
+      props: { title: { type: 'string' }, tone: { type: 'enum', values: ['neutral'] } },
+    });
+    expect(
+      kinds(parity({ read: read([toast]), code: { ...provider, apis: { '1:1': narrow } } })),
+    ).toEqual([
+      'option-not-in-code:ToastProvider:Tone=danger',
+      'property-not-in-code:ToastProvider:Dismiss',
+    ]);
+  });
+
+  it('reads the options interface and its cva axis from the real toast source', () => {
+    const real = loadApi(process.cwd(), {
+      call: 'toast()',
+      source: 'src/app/components/toast.tsx',
+      options: 'ToastOptions',
+    });
+    expect(Object.keys(real.props)).toEqual(
+      expect.arrayContaining(['title', 'description', 'tone', 'actions']),
+    );
+    expect(real.props.tone).toMatchObject({ type: 'enum', default: 'neutral' });
+    expect(() =>
+      loadApi(process.cwd(), {
+        call: 'x()',
+        source: 'src/app/components/toast.tsx',
+        options: 'Nope',
+      }),
+    ).toThrow(/no interface Nope/);
   });
 });

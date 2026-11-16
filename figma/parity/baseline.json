@@ -4,9 +4,6 @@
     "name-mismatch:TabsTrigger": {
       "reason": "Figma fix: rename the Figma component to the code name (hds#1565, F3)."
     },
-    "name-mismatch:ToastProvider": {
-      "reason": "Code raises a toast with useToast() under ToastProvider; the Figma Toast is one toast (figma/code-connect.json, exempt). Needs a decision on what the Figma Toast links to: hds#1565, Figma fix F9."
-    },
     "axis-not-in-figma:CodeBlock:variant": {
       "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
     },
@@ -42,15 +39,6 @@
     },
     "default-mismatch:Skeleton:Variant": {
       "reason": "Figma fix: make the default variant the code default (hds#1565, F8)."
-    },
-    "property-not-in-code:ToastProvider:Description": {
-      "reason": "Code raises a toast with useToast() under ToastProvider; the Figma Toast is one toast (figma/code-connect.json, exempt). Needs a decision on what the Figma Toast links to: hds#1565, Figma fix F9."
-    },
-    "property-not-in-code:ToastProvider:Tone": {
-      "reason": "Code raises a toast with useToast() under ToastProvider; the Figma Toast is one toast (figma/code-connect.json, exempt). Needs a decision on what the Figma Toast links to: hds#1565, Figma fix F9."
-    },
-    "property-not-in-code:ToastProvider:Dismiss": {
-      "reason": "Code raises a toast with useToast() under ToastProvider; the Figma Toast is one toast (figma/code-connect.json, exempt). Needs a decision on what the Figma Toast links to: hds#1565, Figma fix F9."
     },
     "axis-not-in-figma:CardProgress:tone": {
       "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
