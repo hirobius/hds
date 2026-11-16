@@ -1,0 +1,119 @@
+{
+  "impact": "look",
+  "plain": "Token bundles are smaller; nothing renders differently, and four orphaned utilities are gone.",
+  "steps": [
+    {
+      "id": "behavior/orphaned-safelist",
+      "kind": "behavior",
+      "impact": "none",
+      "plain": "Drops four Tailwind utilities no HDS component uses (a removed badge token, a deprecated weight, drop-shadow); add them in your own CSS if you used them.",
+      "detect": {
+        "regex": ["paddingShift|weight-medium|drop-shadow"]
+      },
+      "facts": [
+        "utility-removed:[font-weight:var(--primitive-typography-weight-medium)]",
+        "utility-removed:pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))]",
+        "utility-removed:pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))]",
+        "utility-removed:drop-shadow"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-delight-base",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--semantic-accent-delight-base"],
+        "cssVarWrites": ["--semantic-accent-delight-base"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-base:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-base:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-delight-deep",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--semantic-accent-delight-deep"],
+        "cssVarWrites": ["--semantic-accent-delight-deep"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-deep:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-deep:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-delight-onDelight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--semantic-accent-delight-onDelight"],
+        "cssVarWrites": ["--semantic-accent-delight-onDelight"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-onDelight:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-onDelight:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-accent-delight-pale",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--semantic-accent-delight-pale"],
+        "cssVarWrites": ["--semantic-accent-delight-pale"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-pale:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-pale:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-border-interactive",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-interactive"],
+        "cssVarWrites": ["--semantic-color-border-interactive"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-interactive:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-interactive:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-border-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-success"],
+        "cssVarWrites": ["--semantic-color-border-success"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-success:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-success:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-color-border-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--semantic-color-border-warning"],
+        "cssVarWrites": ["--semantic-color-border-warning"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-warning:[data-theme=dark]"
+      ]
+    }
+  ]
+}

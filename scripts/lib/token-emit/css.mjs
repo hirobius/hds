@@ -433,6 +433,18 @@ export function renderTokensCSS(raw, allTokens) {
   // Re-declaring each theme-sensitive alias inside the dark block makes it
   // re-compute wherever the attribute lands. Root-level theming is unaffected.
   allDarkLines.push(...darkAliasReemissions(allRootLines, allDarkLines));
+  // A dark line that repeats its :root line word for word, and points only at primitives the dark
+  // block leaves alone, is a no-op on any element (a token whose Light and Dark modes match). Drop it.
+  const rootSet = new Set(allRootLines.map((l) => l.trim()));
+  const darkNames = new Set(allDarkLines.map((l) => l.trim().split(':')[0]));
+  const noOpDark = (line) => {
+    const l = line.trim();
+    if (!rootSet.has(l)) return false;
+    const refs = [...l.matchAll(/var\((--[\w-]+)/g)].map((m) => m[1]);
+    return refs.every((r) => r.startsWith('--primitive-') && !darkNames.has(r));
+  };
+  for (let i = allDarkLines.length - 1; i >= 0; i -= 1)
+    if (noOpDark(allDarkLines[i])) allDarkLines.splice(i, 1);
 
   // Compact density (data-density="compact" on any ancestor): the same mode
   // mechanism as Dark, with the same alias re-emission so a nested compact scope
