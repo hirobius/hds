@@ -1,5 +1,5 @@
 {
-  "$comment": "Figma assets whose code counterpart is NOT a top-level component, so no @figma JSDoc tag can point at them and scripts/check-figma-coverage.mjs would report them forever. Each entry is a deliberate statement that the asset IS mapped, just not the usual way. Keep this small: an entry is an admission that Figma and code model the same thing differently, and the better fix is usually to make them agree. Every entry needs a reason a reviewer can check.",
+  "$comment": "Figma assets whose code counterpart is NOT a top-level component, so no @figma JSDoc tag can point at them and scripts/check-figma-coverage.mjs would report them forever. Each entry is a deliberate statement that the asset IS mapped, just not the usual way. Keep this small: an entry is an admission that Figma and code model the same thing differently, and the better fix is usually to make them agree. Every entry needs a reason a reviewer can check. An entry may also carry codeOnly: { \"<Figma property>\": { \"values\": [code values Figma does not draw], \"reason\": \"...\" } }. The parity gate (scripts/lib/figma-parity.mjs) honours it only for a component with no Code Connect template; a template records codeOnly on its own property in figma/code-connect.json.",
   "overrides": [
     {
       "nodeId": "128:14",
@@ -104,7 +104,7 @@
       "name": "Form",
       "mapsTo": "Form",
       "source": "src/app/components/form.tsx",
-      "reason": "figma/inventory.json still lists 85:94 as the Form component. The parity read of 2026-11-15 shows it is now an example frame (\"_Form (now an example frame)\"), and Form is a layout primitive (figma/disposition.json), so it carries no @figma tag. Remove this entry when the inventory is re-read and no longer lists 85:94."
+      "reason": "figma/inventory.json still lists 85:94 as the Form component. The parity read of 2026-11-15 shows it is now an example frame (\"_Form (now an example frame)\"), and Form is a layout primitive (figma/disposition.json), so it carries no @figma tag. Remove this entry when the inventory is re-read and no longer lists 85:94 (hds#1573)."
     },
     {
       "nodeId": "2352:301",

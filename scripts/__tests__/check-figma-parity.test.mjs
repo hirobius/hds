@@ -323,22 +323,34 @@ describe('parity: variants and properties', () => {
     };
     const figmaBadge = { id: '2:2', name: 'Badge', type: 'ONE', props: [], nests: [] };
     const nested = read([button({ nests: ['Badge'] }), figmaBadge]);
-    const slot = {
+    const template = (over) => ({
       ...code({}, [badge]),
       templates: {
         Button: {
           imports: { '@hirobius/design-system': ['Badge'] },
           properties: { Label: { prop: 'children' } },
+          ...over,
         },
       },
-    };
-    expect(kinds(parity({ read: nested, code: slot }))).toEqual([]);
+    });
+    expect(
+      kinds(parity({ read: nested, code: template({ children: '<Badge>New</Badge>' }) })),
+    ).toEqual([]);
+    // An import alone does not show the parent takes it in.
+    expect(kinds(parity({ read: nested, code: template({}) }))).toEqual([
+      'nesting-mismatch:Button:Badge',
+    ]);
   });
 
   it('reads a TEXT property as the children of a Radix part that only lists asChild', () => {
     const title = button({ props: [['Title', 'TEXT', 'Edit profile']] });
     const radixPart = code({ props: { asChild: { type: 'boolean' } } });
     expect(kinds(parity({ read: read([title]), code: radixPart }))).toEqual([]);
+    // A component with more props than asChild is not a bare text part.
+    const richer = code({ props: { asChild: { type: 'boolean' }, open: { type: 'boolean' } } });
+    expect(kinds(parity({ read: read([title]), code: richer }))).toEqual([
+      'property-not-in-code:Button:Title',
+    ]);
     const noChildren = code({ props: { open: { type: 'boolean' } } });
     expect(kinds(parity({ read: read([title]), code: noChildren }))).toEqual([
       'property-not-in-code:Button:Title',
@@ -358,6 +370,14 @@ describe('parity: variants and properties', () => {
       overrides: [{ nodeId: '1:1', codeOnly: { Gap: { values: ['px4', 'px8'], reason: 'why' } } }],
     };
     expect(kinds(parity({ read: read([gap]), code: recorded }))).toEqual([]);
+    // A component with a template records code-only values there, not in an override.
+    const withTemplate = {
+      ...recorded,
+      templates: { Button: { properties: { Gap: { prop: 'gap' } } } },
+    };
+    expect(kinds(parity({ read: read([gap]), code: withTemplate }))[0]).toMatch(
+      /^option-not-in-figma:Button:Gap:2-/,
+    );
   });
 });
 

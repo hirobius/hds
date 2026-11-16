@@ -295,12 +295,14 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
     const props = component.props ?? {};
     const mappedProps = new Set();
     // "A string prop or children is a text property": one TEXT property may be the children.
-    // A Radix part with asChild (SheetTitle, DialogDescription) takes children too, though its
-    // own props list only asChild: the text is the child either way.
-    let childrenText = Boolean(props.children || props.asChild) && !template;
+    // A Radix text part (SheetTitle, DialogDescription) lists only asChild, yet its text is
+    // its child. Only a part with no other prop qualifies, so a richer component with asChild
+    // still has to map its TEXT properties.
+    const textPart = Object.keys(props).every((key) => key === 'asChild' || key === 'className');
+    let childrenText = Boolean(props.children || (props.asChild && textPart)) && !template;
     // figma/mapping-overrides.json may record code values that Figma does not draw, with one
-    // reason, for a component with no Code Connect template (Stack's px gap steps).
-    const recordedCodeOnly = overrides.get(nodeId)?.codeOnly ?? {};
+    // reason. Only for a component with no Code Connect template: a template records its own.
+    const recordedCodeOnly = template ? {} : (overrides.get(nodeId)?.codeOnly ?? {});
     for (const [name, type, figmaDefault, options] of node.props ?? []) {
       check('properties');
       const problem = propertyNameProblem(name);
@@ -398,11 +400,13 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
       // Icon is an asset family (the icons subpath), not a component a file imports.
       if (!nested || nested.name === component.name || nestedName === 'Icon') continue;
       check('nesting');
-      // A Code Connect template that imports the nested component shows it as slot content
-      // (EmptyState's action, Dock's children): the parent takes it, it does not render it.
-      const slotContent = Object.values(templates[component.name]?.imports ?? {}).some((names) =>
-        names.includes(nestedName),
-      );
+      // A Code Connect template that passes the nested component in, as a prop value or as the
+      // children, shows it is slot content (EmptyState's action, Dock's children): the parent
+      // takes it, it does not render it.
+      const tpl = templates[component.name];
+      const passedIn = new RegExp(`<${nestedName}[\\s/>]`);
+      const slotContent =
+        Boolean(tpl) && passedIn.test(JSON.stringify([tpl.properties ?? {}, tpl.children ?? '']));
       const uses =
         slotContent ||
         (nested.consumers ?? []).includes(component.filePath) ||
