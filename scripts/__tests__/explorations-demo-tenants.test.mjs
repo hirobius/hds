@@ -280,12 +280,12 @@ describe.skipIf(!hasBrowser)('soft-demo: computed, light and dark, on <html> and
     async ({ scope, theme }) => {
       const soft = await measure({ brand: 'soft-demo', theme, scope });
       const dflt = await measure({ theme, scope });
-      const expected = theme === 'light' ? rgb('neutral.100') : rgb('neutral.825');
+      const expected = theme === 'light' ? rgb('neutral.100') : rgb('neutral.750');
 
       expect(soft.raised).toBe(expected);
       expect(soft.roleCard).toBe(expected); // the role alias follows the override, nested too
-      // The soft demo pins its own light fill (neutral.100); the default moved to neutral.150 in hds#522. Dark is neutral.825 since hds#755.
-      expect(dflt.raised).toBe(theme === 'light' ? rgb('neutral.150') : rgb('neutral.825'));
+      // The soft demo pins its own light fill (neutral.100); the default moved to neutral.150 in hds#522. Dark is neutral.750 since the 2026-11-15 ramp lift.
+      expect(dflt.raised).toBe(theme === 'light' ? rgb('neutral.150') : rgb('neutral.750'));
       expect(soft.raised).not.toBe(soft.page);
     },
   );

@@ -19,7 +19,7 @@ Hirobius is a clean, structured visual language that bridges digital precision a
 - **Feedback — Error** (`#B91C1C`): destructive confirms, error banners, validation failures. `semantic.color.feedback.error`.
 - **Feedback — Success** (`#047857`): positive confirmations, completed states. `semantic.color.feedback.success`.
 - **Feedback — Warning** (`#92400E`): cautions, recoverable issues. `semantic.color.feedback.warning`.
-- **Feedback — Info** (`#1E2EFD`): neutral announcements and inline guidance. `semantic.color.feedback.info`.
+- **Feedback — Info** (`OKLCH(.48 .15 262)`): neutral announcements and inline guidance. `semantic.color.feedback.info`.
 
 Feedback hues are never decorative; do not use them as accents. Light and dark mode values are defined per-token in `hirobius.tokens.json`.
 <!-- auto:end:colors -->
@@ -296,6 +296,6 @@ Unresolved rules that the live repo cannot yet answer confidently are tracked as
 <!-- auto:start:build-meta -->
 ---
 
-> Generated from `hirobius.tokens.json` (580 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
+> Generated from `hirobius.tokens.json` (589 tokens) and `public/hds-manifest.json` by `scripts/build-design-md.mjs`.
 > Hand-edit `DESIGN.source.md`; this file (`DESIGN.md`) is overwritten by `pnpm tokens`.
 <!-- auto:end:build-meta -->
