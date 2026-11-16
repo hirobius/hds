@@ -24,6 +24,16 @@
  *                             components whose code, docs and Figma agree, of all
  *                             it maps (check-sync-map's "in sync" line), with that
  *                             file as `source` (hds#1385)
+ *   codeConnect               { templates, source } the generated Code Connect templates on
+ *                             disk (`<module>.figma.ts` carrying the GENERATED marker of
+ *                             scripts/generate-code-connect.mjs, which
+ *                             scripts/check-code-connect.mjs holds one per registry entry)
+ *   figmaParity               { percent, passed, total, readOn, source } the Figma <-> code
+ *                             parity score of scripts/check-figma-parity.mjs over the committed
+ *                             read (figma/parity/read.json, `source`), `readOn` the day of that
+ *                             read. Computed here and rewritten by every parity run
+ *                             (`pnpm check:figma-parity`) through this generator, never typed;
+ *                             absent while there is no read (hds#1566)
  *   version                   package.json version
  *   delivery                  counted offline from git (never the GitHub API), at
  *                             `git merge-base HEAD origin/main`, so it always describes a
@@ -71,6 +81,8 @@ import { collectCounts } from './build-readme-counts.mjs';
 import { runGenerator, rootFromArgv } from './lib/generated-check.mjs';
 import { NONTEXT_PAIRS, PAIRS } from './lib/contrast-pairs.mjs';
 import { collectCoreSet, countCore } from './lib/core-set.mjs';
+import { findGeneratedTemplates } from './generate-code-connect.mjs';
+import { READ_PATH, runParityCheck } from './lib/figma-parity-run.mjs';
 
 export const STATS_PATH = 'public/hds-stats.json';
 const CONSUMER_SNAPSHOT = 'docs/data/consumer-usage.json';
@@ -115,7 +127,28 @@ export function collectStats(root) {
     },
     consumers: consumerSplit(readJson(root, CONSUMER_SNAPSHOT)),
     figmaSync: figmaSync(readJson(root, SYNC_MAP)),
+    codeConnect: {
+      templates: findGeneratedTemplates(root).length,
+      source: 'src/app/components/*.figma.ts',
+    },
   };
+}
+
+/** The parity score block for a gate result, as the stats carry it. */
+export function parityBlock(root, score) {
+  return {
+    percent: score.percent,
+    passed: score.passed,
+    total: score.total,
+    readOn: readJson(root, READ_PATH).readOn,
+    source: READ_PATH,
+  };
+}
+
+/** The score of the parity gate on the read committed under `root`, or null while there is none. */
+export async function collectParity(root) {
+  const { result } = await runParityCheck({ root });
+  return result ? parityBlock(root, result.score) : null;
 }
 
 const gitOut = (root, args) =>
@@ -225,8 +258,9 @@ function committedStats(root) {
  * numbers equal today's, its `generatedFrom` stays; a changed number takes the
  * current HEAD.
  */
-export function renderStats(root, { refreshDelivery = false } = {}) {
-  const stats = collectStats(root);
+export async function renderStats(root, { refreshDelivery = false, parity } = {}) {
+  const score = parity === undefined ? await collectParity(root) : parity;
+  const stats = { ...collectStats(root), ...(score ? { figmaParity: score } : {}) };
   const committed = committedStats(root);
   const held = committed && isDeepStrictEqual(withoutProvenance(committed), stats);
   const generatedFrom = held ? committed.generatedFrom : headSha(root);
@@ -251,7 +285,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   await runGenerator({
     root: ROOT,
     outputs: {
-      [STATS_PATH]: renderStats(ROOT, {
+      [STATS_PATH]: await renderStats(ROOT, {
         refreshDelivery: process.argv.includes('--delivery') && !process.argv.includes('--check'),
       }),
     },

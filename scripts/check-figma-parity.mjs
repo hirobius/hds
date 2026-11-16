@@ -20,6 +20,11 @@
  *     `pnpm check:figma-parity:fresh` is the 14-day form, for a release or a demo).
  * Exit 2 when there is no read yet.
  *
+ * Every run that reads the library also rewrites `figmaParity` in public/hds-stats.json
+ * with its score, through scripts/build-stats-json.mjs (the one generator of that file;
+ * `pnpm stats:build --check` proves it fresh). Nothing is typed by hand. The write is
+ * idempotent, so a run on an unchanged read changes no byte.
+ *
  * Flags: --json (the full result), --verbose (also list the baselined differences),
  * --accept (print baseline entries for the new differences; a person adds the reason).
  *
@@ -29,101 +34,18 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { formatParity, ingestRead, parity } from './lib/figma-parity.mjs';
-import { hdsParityDigest } from './lib/figma-parity-runtime.mjs';
+import { formatParity, ingestRead } from './lib/figma-parity.mjs';
+import {
+  BASELINE_PATH,
+  READ_PATH,
+  REPO,
+  json,
+  loadCode,
+  loadVariables,
+  runParityCheck,
+} from './lib/figma-parity-run.mjs';
 
-const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const READ_PATH = 'figma/parity/read.json';
-export const BASELINE_PATH = 'figma/parity/baseline.json';
-
-const json = (root, rel) => JSON.parse(readFileSync(path.join(root, rel), 'utf8'));
-const optional = (root, rel, fallback) =>
-  existsSync(path.join(root, rel)) ? json(root, rel) : fallback;
-const nodeIdOf = (url) =>
-  url
-    ?.match(/node-id=(\d+)-(\d+)/)
-    ?.slice(1, 3)
-    .join(':') ?? null;
-
-/** The code side, from the records the other gates already hold to the source. */
-export function loadCode(root) {
-  const manifest = json(root, 'public/hds-manifest.json');
-  const disposition = json(root, 'figma/disposition.json');
-  const classes = new Map(Object.values(disposition.components).map((c) => [c.name, c.class]));
-  // figma/code-connect-map.json resolves every library component to its node: the @figma
-  // tag, or the override that pairs a part (TabsTrigger, Sheet.Title) with its own node.
-  const mapped = new Map(
-    (optional(root, 'figma/code-connect-map.json', {}).entries ?? []).map((e) => [
-      e.name,
-      e.nodeId,
-    ]),
-  );
-  const components = Object.entries(manifest.componentSpecs).map(([name, spec]) => ({
-    name,
-    class: classes.get(name) ?? 'internal',
-    deprecated: Boolean(spec.deprecated),
-    filePath: spec.filePath,
-    nodeId: mapped.get(name) ?? nodeIdOf(spec.figmaUrl),
-    props: spec.props ?? {},
-    consumers: spec.consumers ?? [],
-  }));
-  return {
-    components,
-    templates: optional(root, 'figma/code-connect.json', {}).templates ?? {},
-    overrides: optional(root, 'figma/mapping-overrides.json', {}).overrides ?? [],
-    icons: manifest.iconSet?.names,
-  };
-}
-
-/** The variables side: the snapshot's digest, and tokens against the snapshot. */
-export async function loadVariables(root) {
-  const snapshotPath = path.join(root, 'figma/snapshot.json');
-  if (!existsSync(snapshotPath)) return null;
-  const { parseSnapshotFile } = await import('./lib/figma-snapshot.mjs');
-  const snapshotFile = parseSnapshotFile(readFileSync(snapshotPath, 'utf8'));
-  const { runDriftCheck } = await import('./check-figma-drift.mjs');
-  const { report, output } = runDriftCheck({ root });
-  if (!report) throw new Error(`The token drift check did not run: ${output}`);
-  const label = (item) =>
-    `${item.collection ?? 'Styles'}: ${item.what === 'variable' ? '' : `${item.what} `}${item.name}`;
-  // Hirobius/Meta is the release stamp (version, commit). check:figma-release owns it: it
-  // changes on every release, so it is not a difference between a token and a variable.
-  const of = (kind) =>
-    report.items.filter((item) => item.kind === kind && item.collection !== 'Hirobius/Meta');
-  return {
-    snapshotDigest: hdsParityDigest(snapshotFile.snapshot),
-    drift: {
-      total: report.totals.variables + report.totals.textStyles + report.totals.effectStyles,
-      missing: of('missing').map(label),
-      extra: of('extra').map(label),
-      changed: of('changed').map((item) => ({
-        name: `${label(item)}${item.mode ? ` [${item.mode}]` : ''}`,
-        detail: item.mode
-          ? `tokens say ${item.expected}, Figma has ${item.actual}`
-          : `differs in ${(item.fields ?? [item.what]).join(', ')}`,
-      })),
-    },
-    unmanaged: report.unmanagedCollections,
-  };
-}
-
-export async function runParityCheck({ root = REPO, today, maxAgeDays } = {}) {
-  if (!existsSync(path.join(root, READ_PATH))) {
-    return {
-      exitCode: 2,
-      output: `No Figma read yet (${READ_PATH}). Run pnpm figma:parity --emit-read, pass each script to use_figma unmodified, then pnpm figma:parity --ingest <the saved results>.`,
-    };
-  }
-  const result = parity({
-    read: json(root, READ_PATH),
-    code: loadCode(root),
-    variables: await loadVariables(root),
-    baseline: optional(root, BASELINE_PATH, {}),
-    today: maxAgeDays === undefined ? undefined : today,
-    maxAgeDays,
-  });
-  return { exitCode: result.fresh.length || result.stale.length ? 1 : 0, result };
-}
+export { BASELINE_PATH, READ_PATH, loadCode, loadVariables, runParityCheck };
 
 async function emitRead(root, parts) {
   const { buildParityComponentsScript, buildParityVariablesScript, PARITY_COMPONENT_PARTS } =
@@ -170,6 +92,22 @@ function ingest(root, files) {
   );
 }
 
+/** Save the score into the stats through their generator; skipped where a root carries no stats file. */
+async function saveScore(root, score) {
+  const stats = await import('./build-stats-json.mjs');
+  if (!existsSync(path.join(root, stats.STATS_PATH))) return;
+  const { runGenerator } = await import('./lib/generated-check.mjs');
+  await runGenerator({
+    root,
+    outputs: {
+      [stats.STATS_PATH]: await stats.renderStats(root, { parity: stats.parityBlock(root, score) }),
+    },
+    label: 'build-stats-json',
+    fix: 'pnpm stats:build',
+    argv: [],
+  });
+}
+
 async function main(argv) {
   const root = process.env.FIXTURE_DIR ? path.resolve(process.env.FIXTURE_DIR) : REPO;
   const value = (flag) => (argv.includes(flag) ? argv[argv.indexOf(flag) + 1] : undefined);
@@ -191,6 +129,7 @@ async function main(argv) {
     console.error(output);
     process.exit(exitCode);
   }
+  await saveScore(root, result.score);
   if (argv.includes('--json')) console.log(JSON.stringify(result, null, 2));
   else if (argv.includes('--accept')) {
     const accepted = Object.fromEntries(

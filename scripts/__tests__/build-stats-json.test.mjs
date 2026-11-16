@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it } from 'vitest';
 import { readLaneScripts } from '../lib/gate-lanes.mjs';
-import { collectStats, STATS_PATH } from '../build-stats-json.mjs';
+import { collectParity, collectStats, STATS_PATH } from '../build-stats-json.mjs';
 import { readClaims } from '../build-readme-counts.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -40,6 +40,14 @@ describe('collectStats', () => {
     expect(stats.components.patterns).toBe(
       Number(overview.match(/\*\*(\d+)\*\* pattern modules ship/)[1]),
     );
+  });
+
+  it('counts the generated Code Connect templates, one per registry entry', () => {
+    const registry = readJson('figma/code-connect.json');
+    expect(stats.codeConnect).toEqual({
+      templates: Object.keys(registry.templates).length,
+      source: 'src/app/components/*.figma.ts',
+    });
   });
 
   it('takes the typography style count from the manifest', () => {
@@ -106,6 +114,12 @@ const INPUTS = [
   'docs/data/consumer-usage.json',
   'docs/sync-map.json',
   'package.json',
+  'figma',
+  'directions',
+  'accents',
+  'upgrade/releases',
+  'TOKEN_MIGRATION.md',
+  'src/app/components',
   STATS_PATH,
 ];
 const temps = [];
@@ -117,18 +131,29 @@ function copyRoot() {
   temps.push(root);
   for (const f of INPUTS) {
     mkdirSync(dirname(join(root, f)), { recursive: true });
-    cpSync(join(ROOT, f), join(root, f));
+    cpSync(join(ROOT, f), join(root, f), {
+      recursive: true,
+      filter: (src) => !/src\/app\/components\/.+/.test(src) || src.endsWith('.figma.ts'),
+    });
   }
+  // The release stamp reads the commit from git; the copy is a repository too.
+  const git = (...args) =>
+    spawnSync('git', ['-C', root, '-c', 'user.name=t', '-c', 'user.email=t@t', ...args]);
+  git('init', '-q');
+  git('add', '-A');
+  git('commit', '-q', '-m', 'fixture');
   return root;
 }
 const run = (root, ...args) =>
   spawnSync(process.execPath, [SCRIPT, '--root', root, ...args], { encoding: 'utf8' });
 
 describe('committed public/hds-stats.json', () => {
-  it('is what collectStats returns today (generatedFrom and delivery are provenance, not values)', () => {
+  it('is what collectStats returns today (generatedFrom and delivery are provenance, not values)', async () => {
     const { generatedFrom, delivery: _delivery, ...committed } = readJson(STATS_PATH);
     expect(generatedFrom).toMatch(/^[0-9a-f]{40}$/);
-    expect(committed).toEqual(JSON.parse(JSON.stringify(collectStats(ROOT))));
+    const { figmaParity, ...rest } = committed;
+    expect(rest).toEqual(JSON.parse(JSON.stringify(collectStats(ROOT))));
+    expect(figmaParity).toEqual(JSON.parse(JSON.stringify(await collectParity(ROOT))));
   });
 });
 

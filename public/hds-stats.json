@@ -27,6 +27,17 @@
     "total": 132,
     "source": "docs/sync-map.json"
   },
+  "codeConnect": {
+    "templates": 61,
+    "source": "src/app/components/*.figma.ts"
+  },
+  "figmaParity": {
+    "percent": 95.7,
+    "passed": 1515,
+    "total": 1582,
+    "readOn": "2026-11-15",
+    "source": "figma/parity/read.json"
+  },
   "delivery": {
     "commitsOnMain": 1052,
     "mergedPullRequests": 819,
@@ -35,5 +46,5 @@
     "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",
     "asOfDate": "2026-11-06"
   },
-  "generatedFrom": "b8ca4a8b752a2fb48e8804c2c540e039b7c3f49b"
+  "generatedFrom": "8ff65ab31d1de6fe329d02fcc8ec8b783add8d9c"
 }
