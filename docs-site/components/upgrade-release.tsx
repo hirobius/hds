@@ -61,6 +61,9 @@ export function UpgradeReleaseView({
       )}
       <nav aria-label="Other versions">
         <ul className="hds-upgrade-list">
+          <li>
+            <a href={`/changelog/${v}`}>Release notes for {v}</a>
+          </li>
           {previous ? (
             <li>
               <a href={rangeHref(previous, v)}>
