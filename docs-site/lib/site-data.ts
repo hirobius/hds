@@ -5,6 +5,7 @@ import type { LedgerIndex, LedgerRelease } from './upgrade-ledger';
 import type { A11ySpec } from './a11y-contracts';
 import type { CaseStudySources } from './case-study';
 import type { TokenFlowSources } from './start-here';
+import { parseChangelog, type ReleaseNotes } from './release-notes';
 
 /** Walk up from the working directory so this works whether Next runs from docs-site/ or the repo root. */
 export function findUp(relative: string, start = process.cwd()): string {
@@ -87,6 +88,12 @@ export function loadUpgradeReleases(): LedgerRelease[] {
     .filter((f) => f.endsWith('.json'))
     .map((f) => readJson(`upgrade/releases/${f}`) as LedgerRelease);
 }
+
+/** Every release's notes from CHANGELOG.md, newest first (lib/release-notes.ts). */
+export const loadReleaseNotes = (): ReleaseNotes[] =>
+  parseChangelog(
+    readFileSync(join(dirname(findUp('hirobius.tokens.json')), 'CHANGELOG.md'), 'utf8'),
+  );
 
 /** How many library components have a Code Connect template (figma/code-connect.json). */
 export const loadCodeConnectTemplateCount = () =>

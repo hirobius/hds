@@ -1100,6 +1100,28 @@ a code[data-density] {
 .hds-upgrade-page h2 {
   margin-block: var(--primitive-space-6, 1.5rem) var(--primitive-space-2, 0.5rem);
 }
+/* /upgrade and /changelog sit outside the docs layout, so they set their own
+   heading ramp and link cue (the docs prose rules do not reach them). */
+.hds-upgrade-page h1 {
+  margin-block: 0;
+  font-family: var(--semantic-typography-title-font-family);
+  font-size: var(--semantic-typography-title-font-size);
+  font-weight: var(--semantic-typography-title-font-weight);
+  line-height: var(--semantic-typography-title-line-height);
+  letter-spacing: var(--semantic-typography-title-letter-spacing);
+}
+.hds-upgrade-page h2 {
+  font-family: var(--semantic-typography-titleSm-font-family);
+  font-size: var(--semantic-typography-titleSm-font-size);
+  font-weight: var(--semantic-typography-titleSm-font-weight);
+  line-height: var(--semantic-typography-titleSm-line-height);
+  letter-spacing: var(--semantic-typography-titleSm-letter-spacing);
+}
+.hds-upgrade-page a {
+  text-decoration: underline;
+  text-decoration-thickness: min(var(--semantic-link-underlineThickness), 0.125em);
+  text-underline-offset: var(--semantic-link-underlineOffset);
+}
 .hds-upgrade-page pre {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
