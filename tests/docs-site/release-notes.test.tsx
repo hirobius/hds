@@ -81,12 +81,31 @@ describe('parseChangelog', () => {
       { type: 'text', text: 'New ' },
       { type: 'code', text: 'tone' },
       { type: 'text', text: ' on ' },
-      { type: 'strong', text: 'Badge' },
+      { type: 'strong', parts: [{ type: 'text', text: 'Badge' }] },
       { type: 'text', text: ', see ' },
       { type: 'link', text: 'g', href: 'https://e.com' },
       { type: 'text', text: '.' },
     ]);
     expect(inlineParts('hds-link\\_\\_icon')).toEqual([{ type: 'text', text: 'hds-link__icon' }]);
+  });
+
+  it('reads code inside bold, and italics only at a word edge', () => {
+    expect(inlineParts('**The `Hds` aliases are gone**')).toEqual([
+      {
+        type: 'strong',
+        parts: [
+          { type: 'text', text: 'The ' },
+          { type: 'code', text: 'Hds' },
+          { type: 'text', text: ' aliases are gone' },
+        ],
+      },
+    ]);
+    expect(inlineParts('the _imports_ list')).toEqual([
+      { type: 'text', text: 'the ' },
+      { type: 'em', parts: [{ type: 'text', text: 'imports' }] },
+      { type: 'text', text: ' list' },
+    ]);
+    expect(inlineParts('a snake_case_name')).toEqual([{ type: 'text', text: 'a snake_case_name' }]);
   });
 });
 
@@ -97,6 +116,34 @@ describe('the real CHANGELOG.md', () => {
   it('gives every release in the file a page, and every one has notes', () => {
     expect(releases).toHaveLength(headings);
     for (const r of releases) expect(r.groups.length, r.version).toBeGreaterThan(0);
+  });
+
+  it('loses no entry: every top-level bullet under a change heading is on a page', () => {
+    let inChanges = false;
+    let bullets = 0;
+    for (const line of CHANGELOG.split('\n')) {
+      if (line.startsWith('### ')) inChanges = /changes$/i.test(line.trim());
+      else if (line.startsWith('## ')) inChanges = false;
+      else if (inChanges && line.startsWith('- ')) bullets += 1;
+    }
+    const entries = releases.flatMap((r) => r.groups.flatMap((g) => g.entries));
+    expect(entries).toHaveLength(bullets);
+  });
+
+  it('leaves no unrendered bold or code pair in the text', () => {
+    const texts = releases.flatMap((r) =>
+      r.groups.flatMap((g) =>
+        g.entries.flatMap((e) =>
+          e.blocks.flatMap((b) => (b.type === 'p' ? [b.text] : b.type === 'ul' ? b.items : [])),
+        ),
+      ),
+    );
+    const flat = (parts: ReturnType<typeof inlineParts>): string[] =>
+      parts.flatMap((p) => (p.type === 'text' ? [p.text] : 'parts' in p ? flat(p.parts) : []));
+    for (const t of texts) {
+      // A lone backtick is the file's own (one 0.33.0 entry ends cut off at "\`DESIGN."); a pair is not.
+      for (const plain of flat(inlineParts(t))) expect(plain).not.toMatch(/\*\*|`[^`]+`/);
+    }
   });
 
   it('loses no changeset line: every "- <sha>: " entry is on a page', () => {

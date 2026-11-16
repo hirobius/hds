@@ -1,14 +1,36 @@
 import type { ReactNode } from 'react';
-import { inlineParts, type NoteBlock, type ReleaseNotes } from '../lib/release-notes';
+import {
+  inlineParts,
+  type InlinePart,
+  type NoteBlock,
+  type ReleaseNotes,
+} from '../lib/release-notes';
 
 const GITHUB_COMMIT = 'https://github.com/hirobius/hds/commit/';
 
 function Inline({ text }: { text: string }) {
+  return <Parts parts={inlineParts(text)} />;
+}
+
+function Parts({ parts }: { parts: InlinePart[] }) {
   return (
     <>
-      {inlineParts(text).map((part, i): ReactNode => {
+      {parts.map((part, i): ReactNode => {
         if (part.type === 'code') return <code key={i}>{part.text}</code>;
-        if (part.type === 'strong') return <strong key={i}>{part.text}</strong>;
+        if (part.type === 'strong') {
+          return (
+            <strong key={i}>
+              <Parts parts={part.parts} />
+            </strong>
+          );
+        }
+        if (part.type === 'em') {
+          return (
+            <em key={i}>
+              <Parts parts={part.parts} />
+            </em>
+          );
+        }
         if (part.type === 'link') {
           return (
             <a key={i} href={part.href}>

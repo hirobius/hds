@@ -154,14 +154,18 @@ function blocksOf(lines: string[]): NoteBlock[] {
   return blocks;
 }
 
-/** Inline markdown the changelog uses: `code`, **bold** and [links](url). */
+/** Inline markdown the changelog uses: `code`, **bold** (which may hold code), _italic_ and [links](url). */
 export type InlinePart =
   | { type: 'text'; text: string }
   | { type: 'code'; text: string }
-  | { type: 'strong'; text: string }
+  | { type: 'strong'; parts: InlinePart[] }
+  | { type: 'em'; parts: InlinePart[] }
   | { type: 'link'; text: string; href: string };
 
-const INLINE = /`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)\s]+)\)/g;
+// Code first, so a span inside code is never read as bold or italic. An underscore
+// counts as italic only at a word edge, so snake_case and escaped \_ stay text.
+const INLINE =
+  /`([^`]+)`|\*\*(.+?)\*\*|(?<![\w\\])_([^_\s](?:[^_]*[^_\s])?)_(?!\w)|\[([^\]]+)\]\(([^)\s]+)\)/g;
 /** Changesets escapes markdown characters in prose (hds-link\_\_icon). */
 const unescape = (text: string) => text.replace(/\\([\\`*_[\]#<>()|-])/g, '$1');
 
@@ -171,8 +175,9 @@ export function inlineParts(text: string): InlinePart[] {
   for (const m of text.matchAll(INLINE)) {
     if (m.index > last) parts.push({ type: 'text', text: unescape(text.slice(last, m.index)) });
     if (m[1] !== undefined) parts.push({ type: 'code', text: m[1] });
-    else if (m[2] !== undefined) parts.push({ type: 'strong', text: unescape(m[2]) });
-    else parts.push({ type: 'link', text: unescape(m[3]!), href: m[4]! });
+    else if (m[2] !== undefined) parts.push({ type: 'strong', parts: inlineParts(m[2]) });
+    else if (m[3] !== undefined) parts.push({ type: 'em', parts: inlineParts(m[3]) });
+    else parts.push({ type: 'link', text: unescape(m[4]!), href: m[5]! });
     last = m.index + m[0].length;
   }
   if (last < text.length) parts.push({ type: 'text', text: unescape(text.slice(last)) });
