@@ -23,17 +23,21 @@
     "Form": {
       "class": "layout",
       "reason": "Form renders a native <form> with the vertical field gap and no pixels of its own; in Figma that is auto-layout. The library node 85:94 is now an example frame (\"_Form (now an example frame)\", parity read 2026-11-15), so there is no component to tag. FormField (85:81) is the drawn part."
+    },
+    "Stack": {
+      "class": "layout",
+      "reason": "Stack renders a flex box with a token gap and no pixels of its own; in Figma that is auto-layout, and it carries no @figma tag. The library still draws a Stack set (2335:14832) to show Direction and Gap; figma/mapping-overrides.json pairs that set with Stack, so the parity gate still compares its options."
     }
   },
   "summary": {
     "total": 132,
     "byClass": {
-      "library": 79,
+      "library": 78,
       "slot": 31,
-      "layout": 10,
+      "layout": 11,
       "internal": 12
     },
-    "libraryLinked": 79,
+    "libraryLinked": 78,
     "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
@@ -920,11 +924,13 @@
     },
     {
       "name": "Stack",
-      "class": "library",
+      "class": "layout",
       "parent": null,
       "category": "Layout",
       "tier": "primitive",
-      "figmaUrl": null
+      "figmaUrl": null,
+      "overriddenFrom": "library",
+      "overrideReason": "Stack renders a flex box with a token gap and no pixels of its own; in Figma that is auto-layout, and it carries no @figma tag. The library still draws a Stack set (2335:14832) to show Direction and Gap; figma/mapping-overrides.json pairs that set with Stack, so the parity gate still compares its options."
     },
     {
       "name": "Stat",

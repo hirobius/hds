@@ -5,8 +5,8 @@
     "synced": 132,
     "byGap": {},
     "byClass": {
-      "library": 79,
-      "layout": 10,
+      "library": 78,
+      "layout": 11,
       "slot": 31,
       "internal": 12
     },
@@ -15,8 +15,8 @@
       "covered": 79
     },
     "figmaCoverage": {
-      "expected": 79,
-      "covered": 79
+      "expected": 78,
+      "covered": 78
     }
   },
   "rows": [
@@ -1330,12 +1330,12 @@
     },
     {
       "name": "Stack",
-      "class": "library",
+      "class": "layout",
       "filePath": "src/app/components/stack.tsx",
       "docsPage": "/docs/components/stack",
       "figmaUrl": null,
       "figmaVia": "mapping-override",
-      "expectFigma": true,
+      "expectFigma": false,
       "expectDocs": true,
       "gaps": [],
       "synced": true

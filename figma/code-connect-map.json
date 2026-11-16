@@ -517,15 +517,6 @@
       "snippet": "<Spinner />"
     },
     {
-      "name": "Stack",
-      "nodeId": "2335:14832",
-      "componentName": "Stack",
-      "source": "src/app/components/stack.tsx",
-      "sourceUrl": "https://github.com/hirobius/hds/blob/main/src/app/components/stack.tsx",
-      "import": "import { Stack } from '@hirobius/design-system';",
-      "snippet": "<Stack>…</Stack>"
-    },
-    {
       "name": "StatusListItem",
       "nodeId": "88:350",
       "componentName": "StatusListItem",
