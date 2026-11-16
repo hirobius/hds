@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-15T20:18:53.996Z",
+  "generated": "2026-11-15T22:48:28.858Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -336,6 +336,7 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
+        "src/app/components/button.tsx",
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
@@ -4950,6 +4951,7 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
+        "src/app/components/button.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/list.tsx",
@@ -13447,6 +13449,13 @@
         "value": "#4d525b"
       },
       {
+        "path": "primitive.color.neutral.675",
+        "cssVar": "--primitive-color-neutral-675",
+        "type": "color",
+        "description": "Specific value within the neutral range at a defined lightness step.",
+        "value": "#40454f"
+      },
+      {
         "path": "primitive.color.neutral.700",
         "cssVar": "--primitive-color-neutral-700",
         "type": "color",
@@ -13459,6 +13468,13 @@
         "type": "color",
         "description": "The Dark value of surface.selected, at least 1.15:1 above surface.raised.",
         "value": "#272c36"
+      },
+      {
+        "path": "primitive.color.neutral.740",
+        "cssVar": "--primitive-color-neutral-740",
+        "type": "color",
+        "description": "Specific value within the neutral range at a defined lightness step.",
+        "value": "#2e333d"
       },
       {
         "path": "primitive.color.neutral.750",
@@ -13598,7 +13614,7 @@
         "cssVar": "--primitive-color-red-50",
         "type": "color",
         "description": "Specific value within the red range at a defined lightness step.",
-        "value": "#fef2f2"
+        "value": "#fecccc"
       },
       {
         "path": "primitive.color.red.400",
@@ -13615,6 +13631,13 @@
         "value": "#b91c1c"
       },
       {
+        "path": "primitive.color.red.900",
+        "cssVar": "--primitive-color-red-900",
+        "type": "color",
+        "description": "Specific value within the red range at a defined lightness step.",
+        "value": "#621313"
+      },
+      {
         "path": "primitive.color.red.950",
         "cssVar": "--primitive-color-red-950",
         "type": "color",
@@ -13626,7 +13649,7 @@
         "cssVar": "--primitive-color-green-50",
         "type": "color",
         "description": "Specific value within the green range at a defined lightness step.",
-        "value": "#ecfdf5"
+        "value": "#bcf7dc"
       },
       {
         "path": "primitive.color.green.400",
@@ -13641,6 +13664,13 @@
         "type": "color",
         "description": "Specific value within the green range at a defined lightness step.",
         "value": "#047857"
+      },
+      {
+        "path": "primitive.color.green.900",
+        "cssVar": "--primitive-color-green-900",
+        "type": "color",
+        "description": "Specific value within the green range at a defined lightness step.",
+        "value": "#064e3b"
       },
       {
         "path": "primitive.color.green.950",
@@ -13885,7 +13915,7 @@
         "cssVar": "--primitive-color-violet-50",
         "type": "color",
         "description": "Specific value within the violet range at a defined lightness step.",
-        "value": "#f5f3ff"
+        "value": "#ddd6fe"
       },
       {
         "path": "primitive.color.violet.400",
@@ -13900,6 +13930,13 @@
         "type": "color",
         "description": "Specific value within the violet range at a defined lightness step.",
         "value": "#6d28d9"
+      },
+      {
+        "path": "primitive.color.violet.900",
+        "cssVar": "--primitive-color-violet-900",
+        "type": "color",
+        "description": "Specific value within the violet range at a defined lightness step.",
+        "value": "#401882"
       },
       {
         "path": "primitive.color.violet.950",
@@ -13990,7 +14027,7 @@
         "cssVar": "--primitive-color-amber-50",
         "type": "color",
         "description": "Specific value within the amber range at a defined lightness step.",
-        "value": "#fffbeb"
+        "value": "#fde68a"
       },
       {
         "path": "primitive.color.amber.400",
@@ -14000,11 +14037,25 @@
         "value": "#fbbf24"
       },
       {
+        "path": "primitive.color.amber.700",
+        "cssVar": "--primitive-color-amber-700",
+        "type": "color",
+        "description": "Specific value within the amber range at a defined lightness step.",
+        "value": "#b45309"
+      },
+      {
         "path": "primitive.color.amber.800",
         "cssVar": "--primitive-color-amber-800",
         "type": "color",
         "description": "Specific value within the amber range at a defined lightness step.",
         "value": "#92400e"
+      },
+      {
+        "path": "primitive.color.amber.900",
+        "cssVar": "--primitive-color-amber-900",
+        "type": "color",
+        "description": "Specific value within the amber range at a defined lightness step.",
+        "value": "#78350f"
       },
       {
         "path": "primitive.color.amber.950",
@@ -15178,8 +15229,8 @@
         "alias": "{primitive.color.neutral.white}",
         "resolvedValue": "#ffffff",
         "dark": {
-          "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "alias": "{primitive.color.neutral.850}",
+          "resolvedValue": "#151a24"
         }
       },
       {
@@ -15190,8 +15241,8 @@
         "alias": "{primitive.color.neutral.150}",
         "resolvedValue": "#e9eaec",
         "dark": {
-          "alias": "{primitive.color.neutral.825}",
-          "resolvedValue": "#1b202a"
+          "alias": "{primitive.color.neutral.750}",
+          "resolvedValue": "#252a34"
         }
       },
       {
@@ -15202,8 +15253,8 @@
         "alias": "{primitive.color.neutral.250}",
         "resolvedValue": "#dddee0",
         "dark": {
-          "alias": "{primitive.color.neutral.800}",
-          "resolvedValue": "#212630"
+          "alias": "{primitive.color.neutral.740}",
+          "resolvedValue": "#2e333d"
         }
       },
       {
@@ -15286,8 +15337,8 @@
         "alias": "{primitive.color.neutral.300}",
         "resolvedValue": "#d3d4d6",
         "dark": {
-          "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "alias": "{primitive.color.neutral.850}",
+          "resolvedValue": "#151a24"
         }
       },
       {
@@ -15298,8 +15349,8 @@
         "alias": "{primitive.color.neutral.325}",
         "resolvedValue": "#c7c9cc",
         "dark": {
-          "alias": "{primitive.color.neutral.725}",
-          "resolvedValue": "#272c36"
+          "alias": "{primitive.color.neutral.700}",
+          "resolvedValue": "#3b404a"
         }
       },
       {
@@ -15310,8 +15361,8 @@
         "alias": "{primitive.color.neutral.250}",
         "resolvedValue": "#dddee0",
         "dark": {
-          "alias": "{primitive.color.neutral.750}",
-          "resolvedValue": "#252a34"
+          "alias": "{primitive.color.neutral.740}",
+          "resolvedValue": "#2e333d"
         }
       },
       {
@@ -15322,8 +15373,8 @@
         "alias": "{primitive.color.neutral.300}",
         "resolvedValue": "#d3d4d6",
         "dark": {
-          "alias": "{primitive.color.neutral.700}",
-          "resolvedValue": "#3b404a"
+          "alias": "{primitive.color.neutral.675}",
+          "resolvedValue": "#40454f"
         }
       },
       {
@@ -15348,6 +15399,18 @@
         "dark": {
           "alias": "{primitive.color.neutral.550}",
           "resolvedValue": "#5e626a"
+        }
+      },
+      {
+        "path": "semantic.color.surface.softStrong",
+        "cssVar": "--semantic-color-surface-softStrong",
+        "type": "color",
+        "description": "Control-only fill (secondary Button rest), one step past softHover; carries content.primary only.",
+        "alias": "{primitive.color.neutral.350}",
+        "resolvedValue": "#b2b4b8",
+        "dark": {
+          "alias": "{primitive.color.neutral.600}",
+          "resolvedValue": "#4d525b"
         }
       },
       {
@@ -15380,8 +15443,8 @@
         "alias": "{primitive.color.neutral.550}",
         "resolvedValue": "#5e626a",
         "dark": {
-          "alias": "{primitive.color.neutral.450}",
-          "resolvedValue": "#8d9096"
+          "alias": "{primitive.color.neutral.400}",
+          "resolvedValue": "#a0a3a8"
         }
       },
       {
@@ -15474,8 +15537,8 @@
         "alias": "{primitive.color.graphite.250}",
         "resolvedValue": "#b3b8c0",
         "dark": {
-          "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#4d525b"
+          "alias": "{primitive.color.neutral.550}",
+          "resolvedValue": "#5e626a"
         }
       },
       {
@@ -15486,8 +15549,8 @@
         "alias": "{primitive.color.neutral.500}",
         "resolvedValue": "#6f737b",
         "dark": {
-          "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#6f737b"
+          "alias": "{primitive.color.neutral.400}",
+          "resolvedValue": "#a0a3a8"
         }
       },
       {
@@ -15509,8 +15572,8 @@
         "alias": "{primitive.color.graphite.300}",
         "resolvedValue": "#a8aeb8",
         "dark": {
-          "alias": "{primitive.color.neutral.600}",
-          "resolvedValue": "#4d525b"
+          "alias": "{primitive.color.neutral.550}",
+          "resolvedValue": "#5e626a"
         }
       },
       {
@@ -15556,8 +15619,8 @@
         "description": "Primary Button raised edge, computed by raised-edge.mjs: the fill stepped darker; one step under graphite.700 in light.",
         "value": "oklch(0.2646 0.0260 265.37)",
         "dark": {
-          "alias": "oklch(0.7253 0.0044 271.35)",
-          "resolvedValue": "oklch(0.7253 0.0044 271.35)"
+          "alias": "oklch(0.7382 0.0037 260.00)",
+          "resolvedValue": "oklch(0.7382 0.0037 260.00)"
         }
       },
       {
@@ -15576,48 +15639,44 @@
         "path": "semantic.color.edge.danger",
         "cssVar": "--semantic-color-edge-danger",
         "type": "color",
-        "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.",
-        "alias": "{primitive.color.red.400}",
-        "resolvedValue": "#f87171",
+        "description": "danger Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.451 .191 27.5)",
         "dark": {
-          "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "alias": "oklch(.566 .166 22.2)",
+          "resolvedValue": "oklch(.566 .166 22.2)"
         }
       },
       {
         "path": "semantic.color.edge.success",
         "cssVar": "--semantic-color-edge-success",
         "type": "color",
-        "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.",
-        "alias": "{primitive.color.green.400}",
-        "resolvedValue": "#34d399",
+        "description": "success Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.453 .105 165.6)",
         "dark": {
-          "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "alias": "oklch(.628 .153 163.2)",
+          "resolvedValue": "oklch(.628 .153 163.2)"
         }
       },
       {
         "path": "semantic.color.edge.warning",
         "cssVar": "--semantic-color-edge-warning",
         "type": "color",
-        "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.",
-        "alias": "{primitive.color.amber.400}",
-        "resolvedValue": "#fbbf24",
+        "description": "warning Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.5 .145 49)",
         "dark": {
-          "alias": "{primitive.color.neutral.black}",
-          "resolvedValue": "#060a13"
+          "alias": "oklch(.692 .164 84.4)",
+          "resolvedValue": "oklch(.692 .164 84.4)"
         }
       },
       {
         "path": "semantic.color.edge.info",
         "cssVar": "--semantic-color-edge-info",
         "type": "color",
-        "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.",
-        "alias": "{primitive.color.blue.300}",
-        "resolvedValue": "oklch(0.70 0.2903 266.54)",
+        "description": "info Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
+        "value": "oklch(.425 .15 262)",
         "dark": {
-          "alias": "{primitive.color.blue.900}",
-          "resolvedValue": "oklch(0.22 0.05 266.54)"
+          "alias": "oklch(.735 .059 267)",
+          "resolvedValue": "oklch(.735 .059 267)"
         }
       },
       {
@@ -15628,8 +15687,8 @@
         "alias": "{primitive.color.shadow.ink}",
         "resolvedValue": "#282c34",
         "dark": {
-          "alias": "{primitive.color.neutral.500}",
-          "resolvedValue": "#6f737b"
+          "alias": "{primitive.color.neutral.400}",
+          "resolvedValue": "#a0a3a8"
         }
       },
       {
@@ -15669,8 +15728,7 @@
         "path": "semantic.color.feedback.info",
         "cssVar": "--semantic-color-feedback-info",
         "type": "color",
-        "alias": "{primitive.color.blue.500}",
-        "resolvedValue": "#1E2EFD",
+        "value": "oklch(.48 .15 262)",
         "dark": {
           "alias": "{primitive.color.blue.200}",
           "resolvedValue": "oklch(0.88 0.07 266.54)"
@@ -15692,10 +15750,10 @@
         "cssVar": "--semantic-color-feedback-bg-error",
         "type": "color",
         "alias": "{primitive.color.red.50}",
-        "resolvedValue": "#fef2f2",
+        "resolvedValue": "#fecccc",
         "dark": {
-          "alias": "{primitive.color.red.950}",
-          "resolvedValue": "#450a0a"
+          "alias": "{primitive.color.red.900}",
+          "resolvedValue": "#621313"
         }
       },
       {
@@ -15703,10 +15761,10 @@
         "cssVar": "--semantic-color-feedback-bg-success",
         "type": "color",
         "alias": "{primitive.color.green.50}",
-        "resolvedValue": "#ecfdf5",
+        "resolvedValue": "#bcf7dc",
         "dark": {
-          "alias": "{primitive.color.green.950}",
-          "resolvedValue": "#022c22"
+          "alias": "{primitive.color.green.900}",
+          "resolvedValue": "#064e3b"
         }
       },
       {
@@ -15714,18 +15772,18 @@
         "cssVar": "--semantic-color-feedback-bg-warning",
         "type": "color",
         "alias": "{primitive.color.amber.50}",
-        "resolvedValue": "#fffbeb",
+        "resolvedValue": "#fde68a",
         "dark": {
-          "alias": "{primitive.color.amber.950}",
-          "resolvedValue": "#451a03"
+          "alias": "{primitive.color.amber.900}",
+          "resolvedValue": "#78350f"
         }
       },
       {
         "path": "semantic.color.feedback.bg.info",
         "cssVar": "--semantic-color-feedback-bg-info",
         "type": "color",
-        "alias": "{primitive.color.blue.50}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "alias": "{primitive.color.blue.200}",
+        "resolvedValue": "oklch(0.88 0.07 266.54)",
         "dark": {
           "alias": "{primitive.color.blue.800}",
           "resolvedValue": "oklch(0.30 0.07 266.54)"
@@ -15736,10 +15794,22 @@
         "cssVar": "--semantic-color-feedback-bg-inProgress",
         "type": "color",
         "alias": "{primitive.color.violet.50}",
-        "resolvedValue": "#f5f3ff",
+        "resolvedValue": "#ddd6fe",
         "dark": {
-          "alias": "{primitive.color.violet.950}",
-          "resolvedValue": "#2e1065"
+          "alias": "{primitive.color.violet.900}",
+          "resolvedValue": "#401882"
+        }
+      },
+      {
+        "path": "semantic.color.feedback.solid.warning",
+        "cssVar": "--semantic-color-feedback-solid-warning",
+        "type": "color",
+        "description": "Solid warning Button fill. amber.800 reads brown as a fill; the other tones fill with feedback.*.",
+        "alias": "{primitive.color.amber.700}",
+        "resolvedValue": "#b45309",
+        "dark": {
+          "alias": "{primitive.color.amber.400}",
+          "resolvedValue": "#fbbf24"
         }
       },
       {
@@ -17080,10 +17150,10 @@
         "type": "color",
         "description": "Badge background color.",
         "alias": "{semantic.color.feedback.bg.info}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)",
+        "resolvedValue": "oklch(0.88 0.07 266.54)",
         "dark": {
           "alias": "{semantic.color.feedback.bg.info}",
-          "resolvedValue": "oklch(0.96 0.03 266.54)"
+          "resolvedValue": "oklch(0.88 0.07 266.54)"
         }
       },
       {
@@ -17108,15 +17178,15 @@
         "type": "color",
         "description": "Info badge fill.",
         "alias": "{semantic.color.feedback.bg.info}",
-        "resolvedValue": "oklch(0.96 0.03 266.54)"
+        "resolvedValue": "oklch(0.88 0.07 266.54)"
       },
       {
         "path": "component.badge.info.text",
         "cssVar": "--component-badge-info-text",
         "type": "color",
         "description": "Info badge text color.",
-        "alias": "{semantic.color.feedback.info}",
-        "resolvedValue": "#1E2EFD"
+        "alias": "{semantic.color.content.primary}",
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.badge.success.bg",
@@ -17124,15 +17194,15 @@
         "type": "color",
         "description": "Success badge fill.",
         "alias": "{semantic.color.feedback.bg.success}",
-        "resolvedValue": "#ecfdf5"
+        "resolvedValue": "#bcf7dc"
       },
       {
         "path": "component.badge.success.text",
         "cssVar": "--component-badge-success-text",
         "type": "color",
         "description": "Success badge text color.",
-        "alias": "{semantic.color.feedback.success}",
-        "resolvedValue": "#047857"
+        "alias": "{semantic.color.content.primary}",
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.badge.danger.bg",
@@ -17140,15 +17210,15 @@
         "type": "color",
         "description": "Danger badge fill.",
         "alias": "{semantic.color.feedback.bg.error}",
-        "resolvedValue": "#fef2f2"
+        "resolvedValue": "#fecccc"
       },
       {
         "path": "component.badge.danger.text",
         "cssVar": "--component-badge-danger-text",
         "type": "color",
         "description": "Danger badge text color.",
-        "alias": "{semantic.color.feedback.error}",
-        "resolvedValue": "#b91c1c"
+        "alias": "{semantic.color.content.primary}",
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.badge.warning.bg",
@@ -17156,15 +17226,15 @@
         "type": "color",
         "description": "Warning badge fill.",
         "alias": "{semantic.color.feedback.bg.warning}",
-        "resolvedValue": "#fffbeb"
+        "resolvedValue": "#fde68a"
       },
       {
         "path": "component.badge.warning.text",
         "cssVar": "--component-badge-warning-text",
         "type": "color",
         "description": "Warning badge text color.",
-        "alias": "{semantic.color.feedback.warning}",
-        "resolvedValue": "#92400e"
+        "alias": "{semantic.color.content.primary}",
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.badge.inProgress.bg",
@@ -17172,15 +17242,15 @@
         "type": "color",
         "description": "Inprogress badge fill.",
         "alias": "{semantic.color.feedback.bg.inProgress}",
-        "resolvedValue": "#f5f3ff"
+        "resolvedValue": "#ddd6fe"
       },
       {
         "path": "component.badge.inProgress.text",
         "cssVar": "--component-badge-inProgress-text",
         "type": "color",
         "description": "Inprogress badge text color.",
-        "alias": "{semantic.color.feedback.inProgress}",
-        "resolvedValue": "#6d28d9"
+        "alias": "{semantic.color.content.primary}",
+        "resolvedValue": "#0c111b"
       },
       {
         "path": "component.badge.radius",
@@ -17268,7 +17338,7 @@
         "type": "color",
         "description": "Hard raised edge under a danger Button; aliases semantic.color.edge.danger.",
         "alias": "{semantic.color.edge.danger}",
-        "resolvedValue": "#f87171"
+        "resolvedValue": "oklch(.451 .191 27.5)"
       },
       {
         "path": "component.button.edge.success",
@@ -17276,7 +17346,7 @@
         "type": "color",
         "description": "Hard raised edge under a success Button; aliases semantic.color.edge.success.",
         "alias": "{semantic.color.edge.success}",
-        "resolvedValue": "#34d399"
+        "resolvedValue": "oklch(.453 .105 165.6)"
       },
       {
         "path": "component.button.edge.warning",
@@ -17284,7 +17354,7 @@
         "type": "color",
         "description": "Hard raised edge under a warning Button; aliases semantic.color.edge.warning.",
         "alias": "{semantic.color.edge.warning}",
-        "resolvedValue": "#fbbf24"
+        "resolvedValue": "oklch(.5 .145 49)"
       },
       {
         "path": "component.button.edge.info",
@@ -17292,7 +17362,7 @@
         "type": "color",
         "description": "Hard raised edge under a info Button; aliases semantic.color.edge.info.",
         "alias": "{semantic.color.edge.info}",
-        "resolvedValue": "oklch(0.70 0.2903 266.54)"
+        "resolvedValue": "oklch(.425 .15 262)"
       },
       {
         "path": "component.button.depth.edge",
@@ -17539,8 +17609,8 @@
         "cssVar": "--component-button-secondary-bg-rest",
         "type": "color",
         "description": "Secondary button fill: soft tonal, no border.",
-        "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#d3d4d6"
+        "alias": "{semantic.color.surface.softStrong}",
+        "resolvedValue": "#b2b4b8"
       },
       {
         "path": "component.button.secondary.bg.hover",
@@ -17555,8 +17625,8 @@
         "cssVar": "--component-button-secondary-bg-pressed",
         "type": "color",
         "description": "Secondary button pressed fill: back to the soft rest fill while the hard shadow sinks, one step off hover.",
-        "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#d3d4d6"
+        "alias": "{semantic.color.surface.softStrong}",
+        "resolvedValue": "#b2b4b8"
       },
       {
         "path": "component.button.secondary.border.rest",
@@ -17595,16 +17665,16 @@
         "cssVar": "--component-button-tertiary-bg-hover",
         "type": "color",
         "description": "Ghost button hover (wipe) fill.",
-        "alias": "{semantic.color.surface.hover}",
-        "resolvedValue": "#dddee0"
+        "alias": "{semantic.color.surface.softHover}",
+        "resolvedValue": "#c7c9cc"
       },
       {
         "path": "component.button.tertiary.bg.pressed",
         "cssVar": "--component-button-tertiary-bg-pressed",
         "type": "color",
         "description": "Ghost button pressed fill.",
-        "alias": "{semantic.color.surface.soft}",
-        "resolvedValue": "#d3d4d6"
+        "alias": "{semantic.color.surface.softStrong}",
+        "resolvedValue": "#b2b4b8"
       },
       {
         "path": "component.input.bg",

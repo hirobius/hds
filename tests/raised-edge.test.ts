@@ -165,8 +165,8 @@ describe('C2 reference edges (graphite defaults)', () => {
   it('light: primary ≈ #1f2532, one step under the graphite.700 fill', () => {
     near(shipped('Light').primary, '#1f2532', 0);
   });
-  it('dark: primary ≈ #a5a6a9', () => {
-    near(shipped('Dark').primary, '#a5a6a9');
+  it('dark: primary ≈ #a9aaad', () => {
+    near(shipped('Dark').primary, '#a9aaad');
   });
 });
 
@@ -199,23 +199,22 @@ describe('wiring', () => {
 
 // Button secondary and tone edges are tokens (component.button.edge.*), approved values.
 describe('Button edge tokens', () => {
+  // Secondary aliases a primitive. Each tone edge (2026-11-15) is its solid fill one
+  // OKLCH step darker, the same lightness drop as the Secondary edge, stored as a literal.
   const APPROVED: Record<Mode, Record<keyof typeof EDGE_TOKENS, string>> = {
     Light: {
-      secondary: 'neutral.400',
-      danger: 'red.400',
-      success: 'green.400',
-      warning: 'amber.400',
-      info: 'blue.300',
+      secondary: '{primitive.color.neutral.400}',
+      danger: 'oklch(.451 .191 27.5)',
+      success: 'oklch(.453 .105 165.6)',
+      warning: 'oklch(.5 .145 49)',
+      info: 'oklch(.425 .15 262)',
     },
-    // hds#1399: dark tone fills are near-black, so their edge is the darkest step (always
-    // darker than the fill). hds#1422: no page line; the info fill is lifted to blue.800 for
-    // page separation, so its edge is blue.900, one step darker.
     Dark: {
-      secondary: 'neutral.725',
-      danger: 'neutral.black',
-      success: 'neutral.black',
-      warning: 'neutral.black',
-      info: 'blue.900',
+      secondary: '{primitive.color.neutral.725}',
+      danger: 'oklch(.566 .166 22.2)',
+      success: 'oklch(.628 .153 163.2)',
+      warning: 'oklch(.692 .164 84.4)',
+      info: 'oklch(.735 .059 267)',
     },
   };
   const lum = (hex: string) => {
@@ -236,12 +235,10 @@ describe('Button edge tokens', () => {
   });
 
   it.each(MODES.flatMap((m) => TOKEN_KEYS.map((k) => [m, k] as const)))(
-    '%s %s: aliases the approved primitive',
+    '%s %s: holds the approved value',
     (mode, key) => {
       const token = EDGE_TOKENS[key].split('.').reduce((n, k) => n[k], raw);
-      expect(token.$extensions['com.figma.variables'].modes[mode]).toBe(
-        `{primitive.color.${APPROVED[mode][key]}}`,
-      );
+      expect(token.$extensions['com.figma.variables'].modes[mode]).toBe(APPROVED[mode][key]);
     },
   );
 
@@ -270,7 +267,7 @@ describe('computed edges that ship as tokens', () => {
     const hex = (mode: Mode) => resolveHex(raw, EDGE_COMPUTED_TOKENS.primary, mode);
     expect({ Light: hex('Light'), Dark: hex('Dark') }).toEqual({
       Light: '#1f2532',
-      Dark: '#a5a6a9',
+      Dark: '#a9aaad',
     });
     for (const mode of MODES) expect(hex(mode)).toBe(expected(raw, 'primary', mode));
   });
@@ -294,7 +291,7 @@ describe('computed edges that ship as tokens', () => {
       'oklch(0.75 0.0044 271.35)';
     const [drift] = edgeTokenDrift(tree);
     expect(drift).toMatch(
-      /^semantic\.color\.edge\.primary \(Dark\) is #[0-9a-f]{6}; raised-edge computes #a5a6a9$/,
+      /^semantic\.color\.edge\.primary \(Dark\) is #[0-9a-f]{6}; raised-edge computes #a9aaad$/,
     );
     expect(edgeTokenDrift(tree)).toHaveLength(1);
     expect(() => buildEdgeCSS(tree)).toThrow(/semantic\.color\.edge\.primary \(Dark\)/);

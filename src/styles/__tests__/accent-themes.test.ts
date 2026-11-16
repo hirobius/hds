@@ -41,9 +41,10 @@ describe('graphite (default accent)', () => {
     }
   });
 
-  // Light is graphite.700 since hds#1422 (9.8:1 on the page), so its floors are lower.
+  // Light is graphite.700 since hds#1422 (9.8:1 on the page), so its floors are lower. Dark muted
+  // is 11: the 2026-11-15 ramp lifts dark muted to neutral.740 (11.5:1), still far past AA.
   it('stands well clear of the page and the disabled primary fill (hds#887)', () => {
-    const FLOOR = { Light: { page: 9, muted: 7 }, Dark: { page: 15, muted: 13 } } as const;
+    const FLOOR = { Light: { page: 9, muted: 7 }, Dark: { page: 15, muted: 11 } } as const;
     for (const mode of ['Light', 'Dark'] as const) {
       const fill = hex('semantic.color.surface.accent', mode);
       expect(contrastRatio(fill, hex('semantic.color.surface.page', mode))).toBeGreaterThanOrEqual(
@@ -195,7 +196,7 @@ describe('secondary Button hover stays grey under every accent', () => {
     COBALT.component as { button?: { secondary?: { bg?: { hover?: unknown } } } }
   )?.button?.secondary?.bg?.hover;
 
-  it('is bound to semantic.color.surface.softHover', () => {
+  it('is bound to semantic.color.surface.softHover (one step back from the softStrong rest, 2026-11-15)', () => {
     expect(tokenLeaf(HOVER).$value).toBe('{semantic.color.surface.softHover}');
   });
 

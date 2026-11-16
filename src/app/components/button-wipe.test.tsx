@@ -93,7 +93,7 @@ describe('Button hoverEffect', () => {
   const tones = [
     ['danger', 'error'],
     ['success', 'success'],
-    ['warning', 'warning'],
+    ['warning', 'solid-warning'],
     ['info', 'info'],
   ] as const;
   it.each(
@@ -103,13 +103,15 @@ describe('Button hoverEffect', () => {
   )('%s + tone %s wipes in the tone hover colour', (variant, tone, token) => {
     const el = mount({ variant, tone });
     // the button holds the tone fill (no variant hover leak) ...
-    expect(el.className).toContain('hover:bg-feedback-bg-' + tone);
+    expect(el.className).toContain(
+      tone === 'warning' ? 'hover:bg-feedback-solid-warning' : 'hover:bg-feedback-' + tone,
+    );
     expect(el.className).not.toMatch(
       /hover:bg-(background|primary|transparent)\b|secondary-bg-rest/,
     );
     // ... and the layer paints the same fill through the tone's hover brightness
     expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(
-      'var(--semantic-color-feedback-bg-' + token + ')',
+      'var(--semantic-color-feedback-' + token + ')',
     );
     expect(el.style.getPropertyValue('--hds-wipe-f')).toBe('brightness(var(--hds-wipe-b, 0.95))');
     expect(el.style.filter).toBe('none');

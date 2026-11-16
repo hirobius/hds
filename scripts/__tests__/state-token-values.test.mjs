@@ -23,10 +23,12 @@ describe('button state tokens', () => {
   it('bgHover resolves to the accent hover token', () => {
     expect(both('component.button.bgHover')).toEqual(both('semantic.accent.hover'));
   });
-  it('secondary is soft (hds#891): rest and pressed resolve to surface.soft, hover to surface.softHover', () => {
-    expect(both('component.button.secondary.bg.rest')).toEqual(both('semantic.color.surface.soft'));
+  it('secondary is soft (hds#891, deepened 2026-11-15): rest and pressed resolve to surface.softStrong, hover to surface.softHover', () => {
+    expect(both('component.button.secondary.bg.rest')).toEqual(
+      both('semantic.color.surface.softStrong'),
+    );
     expect(both('component.button.secondary.bg.pressed')).toEqual(
-      both('semantic.color.surface.soft'),
+      both('semantic.color.surface.softStrong'),
     );
     expect(both('component.button.secondary.bg.hover')).toEqual(
       both('semantic.color.surface.softHover'),
@@ -50,9 +52,10 @@ describe('badge per-tone tokens', () => {
     });
   }
   for (const [tone, fb] of Object.entries(FEEDBACK)) {
-    it(`${tone} values equal what the tone renders (feedback.${fb})`, () => {
+    // The tone shows in the fill; the label is the plain content colour (2026-11-15).
+    it(`${tone} fills with feedback.bg.${fb} and labels in content.primary`, () => {
       expect(both(`component.badge.${tone}.bg`)).toEqual(both(`semantic.color.feedback.bg.${fb}`));
-      expect(both(`component.badge.${tone}.text`)).toEqual(both(`semantic.color.feedback.${fb}`));
+      expect(both(`component.badge.${tone}.text`)).toEqual(both('semantic.color.content.primary'));
     });
   }
   it('neutral uses surface.overlay fill and content.secondary text', () => {

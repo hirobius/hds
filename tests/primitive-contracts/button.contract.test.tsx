@@ -145,10 +145,10 @@ const variantClasses = (variant: (typeof VARIANTS)[number]) =>
 const TONE_KEEPS: readonly string[] = ['border'];
 
 const toneClasses = (tone: (typeof STATUS_TONES)[number]) => [
+  'text-background',
   'border-transparent',
-  `bg-feedback-bg-${tone}`,
-  `text-feedback-${tone}`,
-  `hover:bg-feedback-bg-${tone}`,
+  tone === 'warning' ? 'bg-feedback-solid-warning' : `bg-feedback-${tone}`,
+  tone === 'warning' ? 'hover:bg-feedback-solid-warning' : `hover:bg-feedback-${tone}`,
   'hover:border-transparent',
   'hover:brightness-95',
   'dark:hover:brightness-110',
@@ -179,7 +179,9 @@ describe('Button tone over variant', () => {
     (variant, tone, shape) => {
       const el = renderButton(variant, tone, shape);
       const classes = classesOf(el);
-      const mustReplace = variantClasses(variant).filter((c) => !TONE_KEEPS.includes(c));
+      const mustReplace = variantClasses(variant).filter(
+        (c) => !TONE_KEEPS.includes(c) && !toneClasses(tone).includes(c),
+      );
 
       expect(classes).toEqual(expect.arrayContaining(toneClasses(tone)));
       expect(classes.filter((c) => mustReplace.includes(c))).toEqual([]);

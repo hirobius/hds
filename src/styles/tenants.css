@@ -81,7 +81,7 @@
     --primitive-color-lilac-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --hds-edge-primary: #4f3295; /* css-ok: raised edge (hds#897) */
-  --hds-edge-primaryHover: #6f52a4; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primaryHover: #7356a9; /* css-ok: raised edge (hds#897) */
 }
 
 /* ── brutalist-demo ────────────────────────────────────────────────────── */

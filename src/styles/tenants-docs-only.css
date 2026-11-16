@@ -113,8 +113,8 @@
   --semantic-color-content-accent: var(
     --primitive-color-mauve-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
-  --hds-edge-primary: #87747d; /* css-ok: raised edge (hds#897) */
-  --hds-edge-primaryHover: #9b8c92; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primary: #8b7881; /* css-ok: raised edge (hds#897) */
+  --hds-edge-primaryHover: #a09097; /* css-ok: raised edge (hds#897) */
 }
 
 /* ── soft-demo ─────────────────────────────────────────────────────────── */
@@ -149,7 +149,7 @@
 [data-brand='soft-demo'][data-theme='dark'],
 [data-tenant='soft-demo'][data-theme='dark'] {
   --semantic-color-surface-raised: var(
-    --primitive-color-neutral-825
+    --primitive-color-neutral-750
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
 }
 [data-brand='soft-demo'][data-density='compact'],
