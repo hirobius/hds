@@ -1481,7 +1481,7 @@
       "governedCategory": true,
       "filePath": "src/app/components/inline-code.tsx",
       "description": "InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2684-55",
       "figmaId": null,
       "preview": {
         "exportName": "InlineCode",
@@ -1563,7 +1563,7 @@
       "componentProperties": [],
       "tier": "primitive",
       "sourcePath": "src/app/components/InlineCode.tsx",
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2684-55",
       "docsPage": "/docs/components/inline-code",
       "publicDataAttributes": [
         "data-copy-glyph",
@@ -12179,9 +12179,9 @@
           "source": "jsdoc"
         }
       ],
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315",
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2683-2224",
       "figmaId": null,
-      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315",
+      "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2683-2224",
       "tier": "pattern",
       "preview": {
         "exportName": "List",

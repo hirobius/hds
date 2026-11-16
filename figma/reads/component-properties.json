@@ -1,7 +1,7 @@
 {
-  "$comment": "Component property definitions read from the HDS library with the Figma MCP tool use_figma (the script `node scripts/figma-code-connect-map.mjs --emit-property-read` prints; ledger 2026-11-15, C4 and C5). Read only. Recorded by hand from the tool results: do not edit except from a new read. scripts/check-code-connect.mjs fails when a template in figma/code-connect.json does not match the node it maps. Property names are without their #id suffix. INSTANCE_SWAP defaults are node ids.",
+  "$comment": "Component property definitions read from the HDS library with the Figma MCP tool use_figma (the script `node scripts/figma-code-connect-map.mjs --emit-property-read` prints; ledger 2026-11-16, row 10). Read only. Recorded by hand from the tool results: do not edit except from a new read. scripts/check-code-connect.mjs fails when a template in figma/code-connect.json does not match the node it maps. Property names are without their #id suffix. INSTANCE_SWAP defaults are node ids.",
   "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
-  "readOn": "2026-11-15",
+  "readOn": "2026-11-16",
   "nodes": {
     "33:34": {
       "name": "Alert",
@@ -222,7 +222,7 @@
           "default": "27:41"
         },
         {
-          "name": "Trail Icon",
+          "name": "Trail icon",
           "type": "INSTANCE_SWAP",
           "default": "27:15"
         },
@@ -243,9 +243,15 @@
           "type": "VARIANT",
           "default": "rest",
           "options": ["rest", "hover", "pressed", "disabled"]
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["neutral", "quiet", "danger", "success", "warning", "info"]
         }
       ],
-      "variants": 48
+      "variants": 68
     },
     "88:85": {
       "name": "Callout",
@@ -253,7 +259,7 @@
       "page": "Callout",
       "props": [
         {
-          "name": "Show Action",
+          "name": "Show action",
           "type": "BOOLEAN",
           "default": true
         },
@@ -314,11 +320,19 @@
       ],
       "variants": 14
     },
-    "128:14": {
+    "2684:52": {
       "name": "CardProgress",
-      "type": "COMPONENT",
+      "type": "COMPONENT_SET",
       "page": "Card",
-      "props": []
+      "props": [
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["neutral", "danger", "success", "warning", "info"]
+        }
+      ],
+      "variants": 5
     },
     "35:29": {
       "name": "Checkbox",
@@ -361,13 +375,19 @@
           "default": "index.ts"
         },
         {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "block",
+          "options": ["block", "inline"]
+        },
+        {
           "name": "Show filename",
           "type": "VARIANT",
           "default": "false",
           "options": ["false", "true"]
         }
       ],
-      "variants": 2
+      "variants": 3
     },
     "82:237": {
       "name": "Combobox",
@@ -526,11 +546,50 @@
       "page": "Dock",
       "props": []
     },
-    "88:352": {
-      "name": "Variant=inline, Framed=false",
-      "type": "COMPONENT",
+    "2337:14631": {
+      "name": "EmptyState",
+      "type": "COMPONENT_SET",
       "page": "EmptyState",
-      "variantOf": "2337:14631"
+      "props": [
+        {
+          "name": "Show icon",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show description",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show action",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Nothing here yet"
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "default": "Items you add will show up here."
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "inline",
+          "options": ["inline", "teaching"]
+        },
+        {
+          "name": "Framed",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "variants": 3
     },
     "2121:839": {
       "name": "ErrorPattern",
@@ -549,41 +608,40 @@
         }
       ]
     },
-    "85:81": {
-      "name": "FormField (form.tsx)",
+    "2337:23270": {
+      "name": "Field",
       "type": "COMPONENT_SET",
-      "page": "Form",
+      "page": "Field",
       "props": [
         {
           "name": "Label",
           "type": "TEXT",
-          "default": "Label"
+          "default": "Status"
         },
         {
-          "name": "Helper",
+          "name": "Value",
           "type": "TEXT",
-          "default": "Helper text goes here"
+          "default": "Operational"
         },
         {
-          "name": "State",
-          "type": "VARIANT",
-          "default": "Default",
-          "options": ["Default", "Error", "Disabled"]
+          "name": "Show value",
+          "type": "BOOLEAN",
+          "default": true
         },
         {
-          "name": "Required",
+          "name": "Tone",
           "type": "VARIANT",
-          "default": "true",
-          "options": ["true", "false"]
+          "default": "neutral",
+          "options": ["neutral", "success", "warning", "danger", "info"]
+        },
+        {
+          "name": "Mono",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
         }
       ],
-      "variants": 6
-    },
-    "85:94": {
-      "name": "_Form (now an example frame)",
-      "type": "COMPONENT",
-      "page": "Deprecated",
-      "props": []
+      "variants": 10
     },
     "2075:87": {
       "name": "FormActions",
@@ -624,22 +682,59 @@
       ],
       "variants": 2
     },
+    "85:81": {
+      "name": "FormField",
+      "type": "COMPONENT_SET",
+      "page": "Form",
+      "props": [
+        {
+          "name": "Label",
+          "type": "TEXT",
+          "default": "Label"
+        },
+        {
+          "name": "Helper",
+          "type": "TEXT",
+          "default": "Helper text goes here"
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Error", "Disabled"]
+        },
+        {
+          "name": "Required",
+          "type": "VARIANT",
+          "default": "true",
+          "options": ["true", "false"]
+        }
+      ],
+      "variants": 6
+    },
     "27:2": {
       "name": "Icon",
       "type": "PAGE",
       "page": "Icon"
     },
-    "89:155": {
+    "2684:55": {
       "name": "InlineCode",
-      "type": "COMPONENT",
+      "type": "COMPONENT_SET",
       "page": "CodeBlock",
       "props": [
         {
           "name": "Code",
           "type": "TEXT",
           "default": "token"
+        },
+        {
+          "name": "Density",
+          "type": "VARIANT",
+          "default": "comfortable",
+          "options": ["comfortable", "compact"]
         }
-      ]
+      ],
+      "variants": 2
     },
     "89:161": {
       "name": "InlineLink",
@@ -725,7 +820,7 @@
         {
           "name": "Size",
           "type": "VARIANT",
-          "default": "sm",
+          "default": "md",
           "options": ["lg", "sm", "md"]
         },
         {
@@ -756,11 +851,102 @@
       ],
       "variants": 3
     },
-    "2353:315": {
+    "2683:2224": {
       "name": "List",
+      "type": "COMPONENT_SET",
+      "page": "List",
+      "props": [
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "inset",
+          "options": ["inset", "plain"]
+        },
+        {
+          "name": "Divider",
+          "type": "VARIANT",
+          "default": "inset",
+          "options": ["inset", "none"]
+        }
+      ],
+      "variants": 3
+    },
+    "2683:1450": {
+      "name": "ListGroup",
       "type": "COMPONENT",
       "page": "List",
-      "props": []
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Applications"
+        },
+        {
+          "name": "Show count",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show action",
+          "type": "BOOLEAN",
+          "default": true
+        }
+      ]
+    },
+    "2352:301": {
+      "name": "ListItem",
+      "type": "COMPONENT_SET",
+      "page": "List",
+      "props": [
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "default": "Product designer"
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "default": "Remote, full time, design systems team"
+        },
+        {
+          "name": "Meta",
+          "type": "TEXT",
+          "default": "Applied 2 days ago"
+        },
+        {
+          "name": "Show leading",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show description",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show meta",
+          "type": "BOOLEAN",
+          "default": true
+        },
+        {
+          "name": "Show divider",
+          "type": "BOOLEAN",
+          "default": false
+        },
+        {
+          "name": "Trailing",
+          "type": "VARIANT",
+          "default": "chevron",
+          "options": ["chevron", "count", "actions", "none"]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "default": "Default",
+          "options": ["Default", "Hover", "Pressed", "Focus"]
+        }
+      ],
+      "variants": 16
     },
     "93:59": {
       "name": "Menu",
@@ -875,11 +1061,19 @@
         }
       ]
     },
-    "86:194": {
-      "name": "Variant=default",
-      "type": "COMPONENT",
+    "2335:4217": {
+      "name": "Pagination",
+      "type": "COMPONENT_SET",
       "page": "Pagination",
-      "variantOf": "2335:4217"
+      "props": [
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "default",
+          "options": ["default", "compact"]
+        }
+      ],
+      "variants": 2
     },
     "93:32": {
       "name": "Popover",
@@ -909,6 +1103,18 @@
       "page": "Progress",
       "props": [
         {
+          "name": "Variant",
+          "type": "VARIANT",
+          "default": "linear",
+          "options": ["linear", "circular"]
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "default": "neutral",
+          "options": ["neutral", "danger", "success", "warning", "info"]
+        },
+        {
           "name": "Type",
           "type": "VARIANT",
           "default": "Determinate",
@@ -921,7 +1127,7 @@
           "options": ["md", "sm", "lg"]
         }
       ],
-      "variants": 6
+      "variants": 12
     },
     "36:17": {
       "name": "Radio",
@@ -1079,7 +1285,7 @@
         {
           "name": "Variant",
           "type": "VARIANT",
-          "default": "text",
+          "default": "rectangular",
           "options": ["text", "rectangular", "circular"]
         }
       ],
@@ -1127,11 +1333,25 @@
       ],
       "variants": 5
     },
-    "89:27": {
-      "name": "Padding=component, Shadow=false",
-      "type": "COMPONENT",
+    "2336:21": {
+      "name": "Surface",
+      "type": "COMPONENT_SET",
       "page": "Surface",
-      "variantOf": "2336:21"
+      "props": [
+        {
+          "name": "Padding",
+          "type": "VARIANT",
+          "default": "component",
+          "options": ["component", "item", "px16", "px24", "none"]
+        },
+        {
+          "name": "Shadow",
+          "type": "VARIANT",
+          "default": "false",
+          "options": ["false", "true"]
+        }
+      ],
+      "variants": 10
     },
     "89:300": {
       "name": "Table",
@@ -1145,19 +1365,13 @@
           "options": ["comfortable", "compact"]
         },
         {
-          "name": "Sortable",
-          "type": "VARIANT",
-          "default": "false",
-          "options": ["false", "true"]
-        },
-        {
-          "name": "StickyHeader",
+          "name": "Sticky header",
           "type": "VARIANT",
           "default": "false",
           "options": ["false", "true"]
         }
       ],
-      "variants": 8
+      "variants": 4
     },
     "86:89": {
       "name": "Tabs",
@@ -1180,7 +1394,7 @@
       "variants": 6
     },
     "86:52": {
-      "name": "TabTrigger",
+      "name": "TabsTrigger",
       "type": "COMPONENT_SET",
       "page": "Tabs",
       "props": [
@@ -1386,7 +1600,7 @@
       "variants": 4
     },
     "93:367": {
-      "name": "Toast",
+      "name": "ToastProvider",
       "type": "COMPONENT_SET",
       "page": "Toast",
       "props": [
@@ -1474,95 +1688,10 @@
       ],
       "variants": 4
     },
-    "93:15": {
-      "name": "Side=top",
-      "type": "COMPONENT",
-      "page": "Tooltip",
-      "variantOf": "2337:13345"
-    },
-    "2337:14631": {
-      "name": "EmptyState",
-      "type": "COMPONENT_SET",
-      "variants": 3,
-      "props": [
-        {
-          "name": "Show icon",
-          "type": "BOOLEAN",
-          "default": true
-        },
-        {
-          "name": "Show description",
-          "type": "BOOLEAN",
-          "default": true
-        },
-        {
-          "name": "Show action",
-          "type": "BOOLEAN",
-          "default": true
-        },
-        {
-          "name": "Title",
-          "type": "TEXT",
-          "default": "Nothing here yet"
-        },
-        {
-          "name": "Description2",
-          "type": "TEXT",
-          "default": "Items you add will show up here."
-        },
-        {
-          "name": "Variant",
-          "type": "VARIANT",
-          "default": "inline",
-          "options": ["inline", "teaching"]
-        },
-        {
-          "name": "Framed",
-          "type": "VARIANT",
-          "default": "false",
-          "options": ["false", "true"]
-        }
-      ],
-      "page": "EmptyState"
-    },
-    "2335:4217": {
-      "name": "Pagination",
-      "type": "COMPONENT_SET",
-      "variants": 2,
-      "props": [
-        {
-          "name": "Variant",
-          "type": "VARIANT",
-          "default": "default",
-          "options": ["default", "compact"]
-        }
-      ],
-      "page": "Pagination"
-    },
-    "2336:21": {
-      "name": "Surface",
-      "type": "COMPONENT_SET",
-      "variants": 10,
-      "props": [
-        {
-          "name": "Padding",
-          "type": "VARIANT",
-          "default": "component",
-          "options": ["component", "item", "px16", "px24", "none"]
-        },
-        {
-          "name": "Shadow",
-          "type": "VARIANT",
-          "default": "false",
-          "options": ["false", "true"]
-        }
-      ],
-      "page": "Surface"
-    },
     "2337:13345": {
       "name": "Tooltip",
       "type": "COMPONENT_SET",
-      "variants": 4,
+      "page": "Tooltip",
       "props": [
         {
           "name": "Label",
@@ -1576,7 +1705,7 @@
           "options": ["top", "bottom", "left", "right"]
         }
       ],
-      "page": "Tooltip"
+      "variants": 4
     }
   }
 }

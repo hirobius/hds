@@ -2,7 +2,7 @@
  * InlineCode — inline code chip for token paths, file paths, and code-adjacent prose.
  * @category Display
  * @tier primitive
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2684-55
  * @a11y component required a11y:inline-code.copy-name With copyable, the copy button is a named button and is renamed Copied once it has copied.
  * @a11y component required a11y:inline-code.keyboard Tab reaches the copy button and Enter and Space copy.
  * @a11y component required a11y:inline-code.copy-status Copying is announced from a polite status region that is mounted before the change.
