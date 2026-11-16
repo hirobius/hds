@@ -111,7 +111,7 @@
       "name": "Toast",
       "mapsTo": "ToastProvider",
       "source": "src/app/components/toast.tsx",
-      "reason": "The Figma Toast is one toast: what toast(options) from useToast() puts on screen. The @figma tag sits on ToastProvider, which owns the viewport, so the parity gate compares the Toast's properties with ToastOptions, read from the source.",
+      "reason": "The Figma Toast is one toast: what toast(options) from useToast() puts on screen. The @figma tag sits on ToastProvider, which owns the viewport, so the parity gate compares the Toast's properties with ToastOptions, read from the source. This is the permanent pairing, not a workaround: it settles hds#1565 F9.",
       "api": {
         "call": "toast()",
         "source": "src/app/components/toast.tsx",

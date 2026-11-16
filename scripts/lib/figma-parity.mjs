@@ -188,9 +188,8 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
     if (node) {
       link(node.id, component);
       // A node paired with an imperative API (the Figma Toast is one toast() call) is named
-      // after what it draws, not after the provider the @figma tag sits on.
-      const drawsCall = apis[node.id]?.call?.replace(/\(\)$/, '').toLowerCase();
-      if (node.name !== component.name && node.name.toLowerCase() !== drawsCall) {
+      // after what it draws: the override records that name, and only an exact match passes.
+      if (node.name !== component.name && node.name !== apis[node.id]?.name) {
         add(
           'name-mismatch',
           component.name,

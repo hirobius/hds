@@ -54,7 +54,9 @@ export function loadCode(root) {
     templates: optional(root, 'figma/code-connect.json', {}).templates ?? {},
     overrides,
     apis: Object.fromEntries(
-      overrides.filter((o) => o.api).map((o) => [o.nodeId, loadApi(root, o.api)]),
+      overrides
+        .filter((o) => o.api)
+        .map((o) => [o.nodeId, { name: o.name, ...loadApi(root, o.api) }]),
     ),
     icons: manifest.iconSet?.names,
   };

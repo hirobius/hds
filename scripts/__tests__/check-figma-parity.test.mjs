@@ -651,6 +651,7 @@ describe('parity: a node that draws an API call', () => {
   });
   const provider = code({ name: 'ToastProvider', props: { children: { type: 'ReactNode' } } });
   const api = (over = {}) => ({
+    name: 'Toast',
     call: 'toast()',
     figmaOnly: { Dismiss: 'Close button state preview.' },
     props: {
@@ -660,7 +661,14 @@ describe('parity: a node that draws an API call', () => {
     ...over,
   });
 
-  it('compares the properties with the call options, and takes the call name', () => {
+  it('reports a node name that is not the recorded one, even in another letter case', () => {
+    const lower = { ...toast, name: 'toast' };
+    expect(
+      kinds(parity({ read: read([lower]), code: { ...provider, apis: { '1:1': api() } } })),
+    ).toEqual(['name-mismatch:ToastProvider']);
+  });
+
+  it('compares the properties with the call options, and takes the recorded name', () => {
     expect(
       kinds(parity({ read: read([toast]), code: { ...provider, apis: { '1:1': api() } } })),
     ).toEqual([]);
