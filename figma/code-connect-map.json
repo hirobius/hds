@@ -247,15 +247,6 @@
       "snippet": "<Field label=\"…\">…</Field>"
     },
     {
-      "name": "Form",
-      "nodeId": "85:94",
-      "componentName": "Form",
-      "source": "src/app/components/form.tsx",
-      "sourceUrl": "https://github.com/hirobius/hds/blob/main/src/app/components/form.tsx",
-      "import": "import { Form } from '@hirobius/design-system/patterns';",
-      "snippet": "<Form />"
-    },
-    {
       "name": "FormActions",
       "nodeId": "2075:87",
       "componentName": "FormActions",

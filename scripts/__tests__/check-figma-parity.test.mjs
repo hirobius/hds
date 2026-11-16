@@ -311,6 +311,54 @@ describe('parity: variants and properties', () => {
     const used = { ...badge, consumers: ['src/button.tsx'] };
     expect(kinds(parity({ read: nested, code: code({}, [used]) }))).toEqual([]);
   });
+
+  it('accepts a nested component the Code Connect template passes in as slot content', () => {
+    const badge = {
+      name: 'Badge',
+      class: 'library',
+      nodeId: '2:2',
+      filePath: 'src/badge.tsx',
+      props: {},
+      consumers: [],
+    };
+    const figmaBadge = { id: '2:2', name: 'Badge', type: 'ONE', props: [], nests: [] };
+    const nested = read([button({ nests: ['Badge'] }), figmaBadge]);
+    const slot = {
+      ...code({}, [badge]),
+      templates: {
+        Button: {
+          imports: { '@hirobius/design-system': ['Badge'] },
+          properties: { Label: { prop: 'children' } },
+        },
+      },
+    };
+    expect(kinds(parity({ read: nested, code: slot }))).toEqual([]);
+  });
+
+  it('reads a TEXT property as the children of a Radix part that only lists asChild', () => {
+    const title = button({ props: [['Title', 'TEXT', 'Edit profile']] });
+    const radixPart = code({ props: { asChild: { type: 'boolean' } } });
+    expect(kinds(parity({ read: read([title]), code: radixPart }))).toEqual([]);
+    const noChildren = code({ props: { open: { type: 'boolean' } } });
+    expect(kinds(parity({ read: read([title]), code: noChildren }))).toEqual([
+      'property-not-in-code:Button:Title',
+    ]);
+  });
+
+  it('honours code-only values a mapping override records for a component with no template', () => {
+    const gap = button({ props: [['Gap', 'VARIANT', 'tight', ['tight', 'normal']]] });
+    const stack = code({
+      props: { gap: { type: 'enum', values: ['tight', 'normal', 'px4', 'px8'], default: 'tight' } },
+    });
+    expect(kinds(parity({ read: read([gap]), code: stack }))[0]).toMatch(
+      /^option-not-in-figma:Button:Gap:2-/,
+    );
+    const recorded = {
+      ...stack,
+      overrides: [{ nodeId: '1:1', codeOnly: { Gap: { values: ['px4', 'px8'], reason: 'why' } } }],
+    };
+    expect(kinds(parity({ read: read([gap]), code: recorded }))).toEqual([]);
+  });
 });
 
 describe('parity: review rules', () => {

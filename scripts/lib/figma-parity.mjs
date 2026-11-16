@@ -295,7 +295,12 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
     const props = component.props ?? {};
     const mappedProps = new Set();
     // "A string prop or children is a text property": one TEXT property may be the children.
-    let childrenText = Boolean(props.children) && !template;
+    // A Radix part with asChild (SheetTitle, DialogDescription) takes children too, though its
+    // own props list only asChild: the text is the child either way.
+    let childrenText = Boolean(props.children || props.asChild) && !template;
+    // figma/mapping-overrides.json may record code values that Figma does not draw, with one
+    // reason, for a component with no Code Connect template (Stack's px gap steps).
+    const recordedCodeOnly = overrides.get(nodeId)?.codeOnly ?? {};
     for (const [name, type, figmaDefault, options] of node.props ?? []) {
       check('properties');
       const problem = propertyNameProblem(name);
@@ -328,6 +333,10 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
       if (type !== 'VARIANT' || !prop || prop.type !== 'enum') continue;
 
       const values = entry?.values ?? {};
+      const codeOnly = new Set([
+        ...Object.keys(entry?.codeOnly ?? {}),
+        ...(recordedCodeOnly[name]?.values ?? []),
+      ]);
       // Only an optional prop with no default can be "not set".
       const unset = prop.optional === true && prop.default === undefined;
       const codeValues = prop.values ?? [];
@@ -349,9 +358,7 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
       const drawn = new Set(options.map((o) => values[o] ?? o).map((o) => o.toLowerCase()));
       if (unset) drawn.add(String(figmaDefault).toLowerCase());
       check('variants');
-      const notDrawn = codeValues.filter(
-        (v) => !drawn.has(v.toLowerCase()) && !entry?.codeOnly?.[v],
-      );
+      const notDrawn = codeValues.filter((v) => !drawn.has(v.toLowerCase()) && !codeOnly.has(v));
       if (notDrawn.length) {
         add(
           'option-not-in-figma',
@@ -360,7 +367,7 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
           { key: `${name}:${setKey(notDrawn)}` },
         );
       }
-      if (prop.default !== undefined && !entry?.codeOnly?.[prop.default]) {
+      if (prop.default !== undefined && !codeOnly.has(prop.default)) {
         check('variants');
         const figmaValue = values[figmaDefault] ?? figmaDefault;
         if (String(figmaValue).toLowerCase() !== String(prop.default).toLowerCase()) {
@@ -391,7 +398,13 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
       // Icon is an asset family (the icons subpath), not a component a file imports.
       if (!nested || nested.name === component.name || nestedName === 'Icon') continue;
       check('nesting');
+      // A Code Connect template that imports the nested component shows it as slot content
+      // (EmptyState's action, Dock's children): the parent takes it, it does not render it.
+      const slotContent = Object.values(templates[component.name]?.imports ?? {}).some((names) =>
+        names.includes(nestedName),
+      );
       const uses =
+        slotContent ||
         (nested.consumers ?? []).includes(component.filePath) ||
         nested.filePath === component.filePath;
       if (!uses) {

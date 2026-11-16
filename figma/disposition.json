@@ -6,7 +6,7 @@
     "layout": "Invisible layout primitive. Renders no pixels of its own; in Figma this is auto-layout, not a component.",
     "internal": "Not part of the consumer-facing surface (utility, template, doc tooling, hidden, or lab)."
   },
-  "generatedAt": "2026-11-15",
+  "generatedAt": "2026-11-16",
   "overrides": {
     "PageHeader": {
       "class": "library",
@@ -19,17 +19,21 @@
     "ErrorPattern": {
       "class": "library",
       "reason": "Drawn in the library on 2026-10-10: headline, message and a Back Button on a raised surface, so Figma carries the error state."
+    },
+    "Form": {
+      "class": "layout",
+      "reason": "Form renders a native <form> with the vertical field gap and no pixels of its own; in Figma that is auto-layout. The library node 85:94 is now an example frame (\"_Form (now an example frame)\", parity read 2026-11-15), so there is no component to tag. FormField (85:81) is the drawn part."
     }
   },
   "summary": {
     "total": 132,
     "byClass": {
-      "library": 80,
+      "library": 79,
       "slot": 31,
-      "layout": 9,
+      "layout": 10,
       "internal": 12
     },
-    "libraryLinked": 80,
+    "libraryLinked": 79,
     "libraryMissing": 0,
     "unexpectedlyLinked": 0
   },
@@ -462,11 +466,13 @@
     },
     {
       "name": "Form",
-      "class": "library",
+      "class": "layout",
       "parent": null,
       "category": "Inputs",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=85-94"
+      "figmaUrl": null,
+      "overriddenFrom": "library",
+      "overrideReason": "Form renders a native <form> with the vertical field gap and no pixels of its own; in Figma that is auto-layout. The library node 85:94 is now an example frame (\"_Form (now an example frame)\", parity read 2026-11-15), so there is no component to tag. FormField (85:81) is the drawn part."
     },
     {
       "name": "FormActions",
