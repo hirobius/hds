@@ -98,151 +98,151 @@
       "reason": "Figma fix: draw the missing options, or record them as codeOnly in figma/code-connect.json (hds#1565, F5)."
     },
     "token-value-mismatch:Hirobius/Primitives: color/cobalt/300": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Primitives: color/cobalt/600": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Primitives: color/lime/300": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Primitives: typography/weight/display": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Primitives: size/interactive/minCompact": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: color/surface/floating": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: color/surface/accent": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: color/surface/soft": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: color/border/default": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: color/border/interactive": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: color/shadow/hard": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: color/state/pressed/overlay": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: space/scale/md": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: space/scale/xl": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: space/surface/padding": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: space/region/gutter": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: space/section/stack": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/hero/font-family": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/hero/font-size": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/hero/font-weight": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/hero/letter-spacing": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/hero/line-height": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/font-family": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/font-size": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/font-weight": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/letter-spacing": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/bodyStrong/line-height": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/font-family": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/font-size": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/font-weight": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/letter-spacing": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: typography/uiRegular/line-height": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: accent/rest": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: accent/content": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: accent/delight/base": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: radius/action": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: focus/radius/control/gapRadius": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: focus/radius/control/ringRadius": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: focus/radius/sm/ringRadius": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: focus/radius/md/gapRadius": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: focus/radius/md/ringRadius": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: focus/radius/lg/ringRadius": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Semantic: link/underlineThickness": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Component: button/secondary/border/hover": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Component: card/focus/ringRadius": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Component: table/cell/paddingX": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Styles: text style typography/hero": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Styles: text style typography/bodyStrong": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Styles: text style typography/uiRegular": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+      "reason": "Code shortened this token's description to free size headroom (#1563), not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-missing-in-figma:Hirobius/Primitives: color/neutral/675": {
       "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
@@ -355,6 +355,9 @@
     "token-value-mismatch:Hirobius/Semantic: color/shadow/hard [Dark]": {
       "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
+    "token-value-mismatch:Hirobius/Semantic: color/feedback/info [Light]": {
+      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+    },
     "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/error [Dark]": {
       "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
@@ -404,9 +407,6 @@
       "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     },
     "token-value-mismatch:Hirobius/Brand: semantic/color/edge/primary/Dark [accent-cobalt]": {
-      "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
-    },
-    "token-value-mismatch:Hirobius/Semantic: color/feedback/info [Light]": {
       "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
     }
   }
