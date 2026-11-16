@@ -7,6 +7,7 @@ import { SiteMark } from '@/components/site-mark';
 import { TopBarTitle } from '@/components/top-bar-title';
 import { SidebarGroupLabel } from '@/components/sidebar-group-label';
 import { SearchTriggerFull, SearchTriggerSmall } from '@/components/search-trigger';
+import { ParityBadge } from '@/components/parity-badge';
 import { FoldHash } from '@/components/fold-hash';
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -18,7 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         children: <TopBarTitle />,
       }}
       slots={{ searchTrigger: { sm: SearchTriggerSmall, full: SearchTriggerFull } }}
-      sidebar={{ components: { Separator: SidebarGroupLabel } }}
+      sidebar={{ components: { Separator: SidebarGroupLabel }, footer: <ParityBadge /> }}
       themeSwitch={{
         component: (
           <div className="hds-docs-display">
