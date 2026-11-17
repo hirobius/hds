@@ -314,7 +314,7 @@ const COMPONENT_SPEC_SEEDS = {
   List: { variantAxes: ['variant'] },
   MetadataList: { variantAxes: ['variant'] },
   Pagination: { variantAxes: ['variant'] },
-  Progress: { variantAxes: ['size'] },
+  Progress: { variantAxes: ['size', 'variant', 'tone'] },
   SegmentedControl: { variantAxes: ['variant', 'size'] },
   Skeleton: { variantAxes: ['variant'] },
   Spinner: { variantAxes: ['size'] },
