@@ -144,15 +144,42 @@ const variantClasses = (variant: (typeof VARIANTS)[number]) =>
  */
 const TONE_KEEPS: readonly string[] = ['border'];
 
-const toneClasses = (tone: (typeof STATUS_TONES)[number]) => [
-  'text-background',
-  'border-transparent',
-  tone === 'warning' ? 'bg-feedback-solid-warning' : `bg-feedback-${tone}`,
-  tone === 'warning' ? 'hover:bg-feedback-solid-warning' : `hover:bg-feedback-${tone}`,
-  'hover:border-transparent',
-  'hover:brightness-95',
-  'dark:hover:brightness-110',
-];
+/**
+ * The classes a status tone sets on each variant (Adrian 2026-11-17): primary is the solid
+ * fill with a page-colour label, secondary the soft feedback.bg tint with the content.primary
+ * label held on hover and press, tertiary the feedback text on a clear face (the default
+ * wipe paints the tint on hover).
+ */
+const toneClasses = (variant: Variant, tone: (typeof STATUS_TONES)[number]) =>
+  variant === 'primary'
+    ? [
+        'text-background',
+        'border-transparent',
+        tone === 'warning' ? 'bg-feedback-solid-warning' : `bg-feedback-${tone}`,
+        'hover:border-transparent',
+        'hover:brightness-95',
+        'dark:hover:brightness-110',
+      ]
+    : variant === 'secondary'
+      ? [
+          'text-foreground',
+          'border-transparent',
+          `bg-feedback-bg-${tone}`,
+          'hover:border-transparent',
+          'hover:brightness-95',
+          'dark:hover:brightness-110',
+        ]
+      : // The default wipe holds a clear face on hover and paints the tint as its layer.
+        [`text-feedback-${tone}`];
+
+/** The variant classes a tone must replace: every colour on a filled variant; text, hover and press fills on tertiary. */
+const mustReplaceOf = (variant: Variant, tone: (typeof STATUS_TONES)[number]) =>
+  variantClasses(variant).filter(
+    (c) =>
+      !TONE_KEEPS.includes(c) &&
+      !toneClasses(variant, tone).includes(c) &&
+      (variant !== 'tertiary' || /^(text-|hover:bg-|active:bg-)/.test(c)),
+  );
 
 /** A toggle's on-state classes, keyed to data-pressed="true". */
 const TOGGLE_ON = [
@@ -166,7 +193,8 @@ describe('Button tone over variant', () => {
   it.each(VARIANTS)('reads the classes variant=%s adds off a rendered Button', (variant) => {
     const own = variantClasses(variant);
     expect(own.length).toBeGreaterThan(0);
-    expect(own.some((c) => c.startsWith('hover:'))).toBe(true);
+    // With the default wipe the hover fill is the theme.css layer, so the state classes are the press.
+    expect(own.some((c) => /^(hover|active):/.test(c))).toBe(true);
     expect(own).not.toContain('inline-flex');
   });
 
@@ -179,11 +207,9 @@ describe('Button tone over variant', () => {
     (variant, tone, shape) => {
       const el = renderButton(variant, tone, shape);
       const classes = classesOf(el);
-      const mustReplace = variantClasses(variant).filter(
-        (c) => !TONE_KEEPS.includes(c) && !toneClasses(tone).includes(c),
-      );
+      const mustReplace = mustReplaceOf(variant, tone);
 
-      expect(classes).toEqual(expect.arrayContaining(toneClasses(tone)));
+      expect(classes).toEqual(expect.arrayContaining(toneClasses(variant, tone)));
       expect(classes.filter((c) => mustReplace.includes(c))).toEqual([]);
       // The toggle on-state sits behind data-[pressed=true]:, which outranks a
       // plain tone class on specificity, so a toned toggle leaves it out.

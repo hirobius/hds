@@ -402,14 +402,9 @@ describe('Button quiet tone, flush and link (hds#863)', () => {
       );
       const c = classesOf(getByRole('button'));
       const fills = c.filter((x) => /^((dark:)?(hover|active|disabled):)?bg-/.test(x));
-      expect(fills.sort()).toEqual(
-        [
-          'active:bg-transparent',
-          'bg-transparent',
-          'disabled:bg-transparent',
-          'hover:bg-transparent',
-        ].sort(),
-      );
+      // No fill class but a transparent one: a tone gives a link only its text colour.
+      expect(fills.filter((x) => !x.endsWith('bg-transparent'))).toEqual([]);
+      expect(fills).toContain('disabled:bg-transparent');
       expect(c.filter((x) => /brightness-(95|110)/.test(x))).toEqual([]);
       expect(c).toContain('active:inset-shadow-transparent');
       expect(c).toContain('underline');

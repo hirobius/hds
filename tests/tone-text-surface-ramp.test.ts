@@ -3,8 +3,10 @@
  *
  * 1. No colored text on soft feedback tints: Badge labels use content.primary, and the
  *    icon colour (feedback.*) still reaches 3:1 on its tint.
- * 2. Toned Buttons are solid fills with a page-coloured label (4.5:1+), a face at 3:1+
- *    against page and raised, and an edge one equal OKLCH step darker than the fill.
+ * 2. A toned primary Button is a solid fill with a page-coloured label (4.5:1+), a face at
+ *    3:1+ against page and raised, and an edge one equal OKLCH step darker than the fill.
+ *    A toned secondary is the soft tint with a content.primary label; a toned tertiary is
+ *    the feedback text, AA on the page and on its tint (Adrian 2026-11-17).
  * 3. The surface ramp: lifted dark surfaces, deeper light Button fills, stronger tints.
  */
 import { describe, it, expect } from 'vitest';
@@ -58,24 +60,58 @@ describe.each(MODES)('tone text is the content color (%s)', (mode) => {
   });
 });
 
-describe('toned Button labels', () => {
+describe('toned Button labels (Adrian 2026-11-17: tone follows the variant)', () => {
+  const classesOf = (variant: 'primary' | 'secondary' | 'tertiary', tone: string) => {
+    const { getByRole, unmount } = render(
+      React.createElement(Button, { variant, tone } as never, 'Sign out anyway'),
+    );
+    const cls = getByRole('button').className.split(' ');
+    unmount();
+    return cls;
+  };
+
   it.each(['danger', 'success', 'warning', 'info'] as const)(
-    '%s labels in the page colour (text-background) on its solid fill, never the feedback colour',
+    '%s: primary labels in the page colour on its solid fill',
     (tone) => {
-      for (const variant of ['primary', 'secondary', 'tertiary'] as const) {
-        const { getByRole, unmount } = render(
-          React.createElement(Button, { variant, tone }, 'Sign out anyway'),
-        );
-        const cls = getByRole('button').className.split(' ');
-        unmount();
-        expect(cls).toContain('text-background');
-        expect(cls.filter((c) => c.startsWith('text-feedback-'))).toEqual([]);
-        expect(cls.filter((c) => c.includes('tone-ring') || c.startsWith('inset-ring'))).toEqual(
-          [],
-        );
-      }
+      const cls = classesOf('primary', tone);
+      expect(cls).toContain('text-background');
+      expect(cls.filter((c) => c.startsWith('text-feedback-'))).toEqual([]);
+      expect(cls.filter((c) => c.includes('tone-ring') || c.startsWith('inset-ring'))).toEqual([]);
     },
   );
+
+  it.each(['danger', 'success', 'warning', 'info'] as const)(
+    '%s: secondary is the soft tint with the content.primary label, never coloured text',
+    (tone) => {
+      const cls = classesOf('secondary', tone);
+      expect(cls).toContain(`bg-feedback-bg-${tone}`);
+      expect(cls).toContain('text-foreground');
+      expect(cls.filter((c) => c.startsWith('text-feedback-'))).toEqual([]);
+    },
+  );
+
+  it.each(['danger', 'success', 'warning', 'info'] as const)(
+    '%s: tertiary is the feedback text and never takes surface.hover',
+    (tone) => {
+      const cls = classesOf('tertiary', tone);
+      expect(cls).toContain(`text-feedback-${tone}`);
+      expect(cls.filter((c) => c.includes('tertiary-bg-hover'))).toEqual([]);
+    },
+  );
+
+  describe.each(MODES)('tertiary text contrast (%s)', (mode) => {
+    it.each(['error', 'success', 'warning', 'info'] as const)(
+      'feedback.%s is AA on the page (rest) and on its own tint (the wipe hover)',
+      (tone) => {
+        expect(
+          ratio(`semantic.color.feedback.${tone}`, surface('page'), mode),
+        ).toBeGreaterThanOrEqual(4.5);
+        expect(
+          ratio(`semantic.color.feedback.${tone}`, `semantic.color.feedback.bg.${tone}`, mode),
+        ).toBeGreaterThanOrEqual(4.5);
+      },
+    );
+  });
 });
 
 describe('surface ramp: lifted dark surfaces, deeper light Button fills', () => {

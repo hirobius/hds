@@ -86,7 +86,6 @@ describe('Button own-colour edge (hds#897)', () => {
     ['secondary', undefined, 'secondary'],
     [undefined, undefined, 'secondary'],
     ['primary', 'danger', 'danger'],
-    ['secondary', 'info', 'info'],
     ['secondary', 'neutral', 'secondary'],
   ] as const)('variant=%s tone=%s sets --hds-edge to the %s edge', (variant, tone, key) => {
     render(
@@ -97,6 +96,17 @@ describe('Button own-colour edge (hds#897)', () => {
     expect(edge(screen.getByRole('button'))).toBe(
       key === 'primary' ? 'var(--hds-edge-primary)' : `var(--component-button-edge-${key})`,
     );
+  });
+
+  it('a toned secondary is a flat tint: no edge and no hard shadow', () => {
+    render(
+      <Button variant="secondary" tone="info">
+        Go
+      </Button>,
+    );
+    const el = screen.getByRole('button');
+    expect(edge(el)).toBe('');
+    expect(el.className).not.toContain('hds-btn-hard');
   });
 
   it('a pressed neutral toggle paints bg-primary, so it takes the primary edge', () => {

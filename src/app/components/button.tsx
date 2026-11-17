@@ -24,13 +24,22 @@ import { NewTabHint, newTabName } from './new-tab-hint';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
-// The classes every status tone shares; each tone adds its own fill and text colour (kept as literals so Tailwind sees them).
-// A status tone is a solid mid-tone fill (Adrian 2026-11-15): 3:1+ against the page and a
-// raised surface (WCAG 1.4.11) with a knock-out label in the page colour (text-background: white in
-// light, near-black in dark, 4.5:1+). Its edge (component.button.edge.<tone>) is the fill one OKLCH step darker, the same drop
-// as the Secondary edge. No stroke. Alert and Badge keep the soft feedback.bg tints.
-const TONE_COMMON =
-  'text-background border-transparent hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:inset-shadow-pressed-overlay/5 disabled:border-transparent';
+// A status tone follows the variant's emphasis (Adrian 2026-11-17), the classes kept as
+// literals so Tailwind sees them:
+// - Primary: a solid mid-tone fill (2026-11-15), 3:1+ against the page and a raised surface
+//   (WCAG 1.4.11), with a knock-out label in the page colour (text-background: white in light,
+//   near-black in dark, 4.5:1+). Its edge (component.button.edge.<tone>) is the fill one OKLCH
+//   step darker, the same drop as the Secondary edge.
+// - Secondary: the soft feedback.bg tint with the content.primary label (no coloured text on a
+//   soft tint, 2026-11-15; 8:1+), held on hover and press (brightness and the pressed wash
+//   mark them). No edge: there is no edge token for a tint, so it sits flat.
+// - Tertiary: the feedback text colour (5.4:1+ on the page) on a clear face; the wipe paints
+//   the same tint on hover, where the text stays 4.5:1+. It never takes surface.hover, where
+//   the text would drop under AA (3.8:1 danger in dark).
+// No stroke on any of them.
+const TINT_COMMON =
+  'border-transparent hover:border-transparent hover:brightness-95 dark:hover:brightness-110 active:inset-shadow-pressed-overlay/5 disabled:border-transparent';
+const TONE_COMMON = `text-background ${TINT_COMMON}`;
 
 /**
  * Pressed state (hds#322): an inset box-shadow wash bound to
@@ -52,8 +61,9 @@ const TONE_COMMON =
  *
  * Secondary is the exception (hds#595): its pressed state is a solid fill bound to
  * `component.button.secondary.bg.pressed` (`active:bg-…`), and `active:inset-shadow-transparent`
- * swaps the wash colour out so nothing stacks on it. A tone restores the wash colour
- * and its own `active:bg-…`, so a toned secondary presses exactly as before. A tone
+ * swaps the wash colour out so nothing stacks on it. That pressed fill sits in the
+ * neutral/quiet compound, so a toned secondary keeps its tint and presses with the
+ * restored wash colour (2026-11-17). A tone
  * also sets `disabled:border-transparent`, replacing secondary's disabled border
  * (`component.button.secondary.border.disabled`, lighter than the rest border).
  * Primary hover binds `component.button.bgHover` and pressed binds
@@ -89,19 +99,23 @@ const buttonVariants = /* @__PURE__ */ cva(
   {
     variants: {
       variant: {
-        primary:
-          'bg-primary text-primary-foreground hover:bg-[color:var(--component-button-bgHover)] active:bg-[color:var(--component-button-bgPressed)] active:inset-shadow-transparent',
+        // Its hover and pressed fills are in the compoundVariants (neutral and quiet tones).
+        primary: 'bg-primary text-primary-foreground active:inset-shadow-transparent',
         // Soft (tonal) fill, no border (hds#891): component.button.secondary.bg.*. Its 3:1 edge
         // against the page is the hard shadow (shadow="hard", the default).
+        // Its hover and pressed fills are in the compoundVariants (neutral and quiet tones), so a
+        // status tone's tint stays put on hover and press.
         secondary:
-          'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground hover:bg-[color:var(--component-button-secondary-bg-hover)] active:bg-[color:var(--component-button-secondary-bg-pressed)] active:inset-shadow-transparent',
+          'bg-[color:var(--component-button-secondary-bg-rest)] text-foreground active:inset-shadow-transparent',
         // Ghost (C2): transparent at rest, no edge and no movement (shadow is forced off
         // below); component.button.tertiary.bg.hover (surface.hover) on hover and, in the
         // neutral tone, the deeper .pressed (surface.soft) on press, wash swapped out like
         // secondary (the compoundVariants: quiet keeps the base wash instead). Ghost and
         // link are the one deliberate flat exception (hds#1387): an edge needs a fill to
         // sit under, and a ghost recedes beside the raised actions next to it.
-        tertiary: 'text-foreground hover:bg-[color:var(--component-button-tertiary-bg-hover)]',
+        // Its hover fill is in the compoundVariants (neutral and quiet tones): a status tone's
+        // text would drop under AA on surface.hover.
+        tertiary: 'text-foreground',
         // Link-styled (hds#863): underlined text, no fill, no inline padding (the compound
         // below), no hard shadow and no wipe (both forced off in the component). It keeps the
         // size's height, so it stays a full touch target in a row; inside running prose use
@@ -134,10 +148,13 @@ const buttonVariants = /* @__PURE__ */ cva(
         // fill: content.secondary on surface.soft is under 4.5:1 in dark. The classes live in
         // the compoundVariants, so a filled variant ignores it.
         quiet: '',
-        danger: `bg-feedback-danger hover:bg-feedback-danger active:bg-feedback-danger ${TONE_COMMON}`,
-        success: `bg-feedback-success hover:bg-feedback-success active:bg-feedback-success ${TONE_COMMON}`,
-        warning: `bg-feedback-solid-warning hover:bg-feedback-solid-warning active:bg-feedback-solid-warning ${TONE_COMMON}`,
-        info: `bg-feedback-info hover:bg-feedback-info active:bg-feedback-info ${TONE_COMMON}`,
+        // A status tone's text colour, kept by tertiary and link (no fill, so the text is the
+        // only place the tone shows). The filled variants replace it, and add their fill, in
+        // the compoundVariants.
+        danger: 'text-feedback-danger',
+        success: 'text-feedback-success',
+        warning: 'text-feedback-warning',
+        info: 'text-feedback-info',
       },
       size: {
         sm: 'h-[var(--component-button-size-sm-height)] px-fixed-xs hds-type-caption hds-touch-row [&_svg]:size-[var(--component-button-size-sm-iconSize)]',
@@ -150,8 +167,8 @@ const buttonVariants = /* @__PURE__ */ cva(
       },
       // Hover fill. `wipe` (the default since hds#888): the variant's own hover fill
       // (see the compoundVariants) is drawn by the `.hds-btn-wipe` layer in theme.css
-      // and wipes across from the edge the pointer crosses; the instant hover fill is
-      // swapped out here. `none` opts out: the fill changes in place.
+      // and wipes across from the edge the pointer crosses; the instant hover fill class
+      // is set only for `none` (the compoundVariants). `none` opts out: the fill changes in place.
       hoverEffect: {
         none: '',
         wipe: 'hds-btn-wipe relative isolate',
@@ -167,23 +184,70 @@ const buttonVariants = /* @__PURE__ */ cva(
       },
     },
     compoundVariants: [
-      // wipe x variant (neutral tone only): hold the rest fill on hover; theme.css
-      // `.hds-btn-wipe` paints the variant's hover fill as the wiping layer. A status
-      // tone keeps its own hover classes, and the layer takes the tone fill plus its
-      // hover brightness (theme.css). Tertiary rests transparent and keeps its
-      // own pressed fill (the layer hides on :active so the press shows).
-      { hoverEffect: 'wipe', tone: 'neutral', variant: 'primary', className: 'hover:bg-primary' },
+      // Status tone x variant (see TONE_COMMON): primary solid, secondary tint, tertiary text.
+      // Each sets every group its variant sets at rest, so the tone replaces the variant in the
+      // cn merge; the variants' hover and pressed fills sit in the neutral/quiet compound below.
+      // Written out per tone, literal class names so Tailwind sees each one (a loop over a map
+      // also gzips larger in the button graph budget).
+      { variant: 'primary', tone: 'danger', className: `bg-feedback-danger ${TONE_COMMON}` },
+      { variant: 'primary', tone: 'success', className: `bg-feedback-success ${TONE_COMMON}` },
       {
-        hoverEffect: 'wipe',
-        tone: 'neutral',
+        variant: 'primary',
+        tone: 'warning',
+        className: `bg-feedback-solid-warning ${TONE_COMMON}`,
+      },
+      { variant: 'primary', tone: 'info', className: `bg-feedback-info ${TONE_COMMON}` },
+      {
         variant: 'secondary',
-        className: 'hover:bg-[color:var(--component-button-secondary-bg-rest)]',
+        tone: 'danger',
+        className: `bg-feedback-bg-danger text-foreground ${TINT_COMMON}`,
       },
       {
-        hoverEffect: 'wipe',
+        variant: 'secondary',
+        tone: 'success',
+        className: `bg-feedback-bg-success text-foreground ${TINT_COMMON}`,
+      },
+      {
+        variant: 'secondary',
+        tone: 'warning',
+        className: `bg-feedback-bg-warning text-foreground ${TINT_COMMON}`,
+      },
+      {
+        variant: 'secondary',
+        tone: 'info',
+        className: `bg-feedback-bg-info text-foreground ${TINT_COMMON}`,
+      },
+      // The neutral pressed fills, and the neutral hover fills when there is no wipe: with the
+      // wipe, theme.css `.hds-btn-wipe` paints the hover fill as the wiping layer and the face
+      // holds its rest fill. A status tone leaves them all out (see TONE_COMMON), so its fill
+      // holds on hover and press.
+      {
+        variant: 'primary',
         tone: ['neutral', 'quiet'],
+        className: 'active:bg-[color:var(--component-button-bgPressed)]',
+      },
+      {
+        variant: 'secondary',
+        tone: ['neutral', 'quiet'],
+        className: 'active:bg-[color:var(--component-button-secondary-bg-pressed)]',
+      },
+      {
+        variant: 'primary',
+        tone: ['neutral', 'quiet'],
+        hoverEffect: 'none',
+        className: 'hover:bg-[color:var(--component-button-bgHover)]',
+      },
+      {
+        variant: 'secondary',
+        tone: ['neutral', 'quiet'],
+        hoverEffect: 'none',
+        className: 'hover:bg-[color:var(--component-button-secondary-bg-hover)]',
+      },
+      {
         variant: 'tertiary',
-        className: 'hover:bg-transparent',
+        tone: ['neutral', 'quiet'],
+        hoverEffect: 'none',
+        className: 'hover:bg-[color:var(--component-button-tertiary-bg-hover)]',
       },
       {
         tone: 'neutral',
@@ -192,31 +256,20 @@ const buttonVariants = /* @__PURE__ */ cva(
           'active:bg-[color:var(--component-button-tertiary-bg-pressed)] active:inset-shadow-transparent',
       },
       { tone: 'quiet', variant: ['tertiary', 'link'], className: 'text-muted-foreground' },
-      // A link is plain text in every tone (owner decision 2026-11-05): a status tone keeps its
-      // text colour, but its fill, hover brightness and pressed wash are swapped out, and the
-      // base disabled fill too. Compound classes come after tone classes, so these win the merge.
+      // A link is plain text in every tone (owner decision 2026-11-05): a status tone gives it
+      // only its text colour (no fill, brightness or tint), the link variant swaps the pressed
+      // wash out, and this compound drops the inline padding and the base disabled fill.
       {
         variant: 'link',
         className:
-          'px-0 bg-transparent hover:bg-transparent active:bg-transparent disabled:bg-transparent hover:brightness-100 dark:hover:brightness-100 active:inset-shadow-transparent',
+          'px-0 disabled:bg-transparent relative hds-focus-after after:pointer-events-none after:absolute after:inset-y-0 after:-inset-x-scale-2xs after:rounded-[var(--semantic-radius-control)]',
       },
-      // A filled tone shows its tone in its solid fill (see TONE_COMMON). A link has no fill:
-      // its text is the only place the tone can show, so a toned link keeps the feedback colour.
-      { variant: 'link', tone: 'danger', className: 'text-feedback-danger' },
-      { variant: 'link', tone: 'success', className: 'text-feedback-success' },
-      { variant: 'link', tone: 'warning', className: 'text-feedback-warning' },
-      { variant: 'link', tone: 'info', className: 'text-feedback-info' },
       // Link focus (hds#1167, matches the Figma Focus drawing): with px-0 a ring on the button
       // would sit right on the glyphs and the underline. A link instead paints the shared ring
       // (.hds-focus-after: semantic.focus.ring.width, gap.width and ring.color) on an ::after
       // box that reaches space.scale.2xs (4px) past the label on each side, with the control
       // radius (4px), so the ring corners are semantic.focus.radius.control (6 / 8). The ::after
       // is absolutely positioned, so the rest box (width, padding, radius) never moves.
-      {
-        variant: 'link',
-        className:
-          'relative hds-focus-after after:pointer-events-none after:absolute after:inset-y-0 after:-inset-x-scale-2xs after:rounded-[var(--semantic-radius-control)]',
-      },
       {
         iconOnly: true,
         size: 'sm',
@@ -411,8 +464,10 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
       : variant === 'primary' || (isToggle && isPressed)
         ? 'primary'
         : 'secondary';
+    // A toned secondary is a flat tint: no edge token exists for a tint (see TONE_COMMON).
+    const flat = variant === 'tertiary' || isLink || (hasTone && variant === 'secondary');
     const edge =
-      shadow === 'hard' && variant !== 'tertiary' && !isLink
+      shadow === 'hard' && !flat
         ? {
             '--hds-edge': BUTTON_EDGE[edgeKey],
             // The hover fill (component.button.bgHover) has its own edge, so an accent's
@@ -426,16 +481,19 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
           style: {
             ...edge,
             '--hds-wipe-fill': hasTone
-              ? `var(--semantic-color-feedback-${tone === 'danger' ? 'error' : tone === 'warning' ? 'solid-warning' : tone})`
+              ? // feedback tokens name danger "error"; the solid warning fill is its own token
+                `var(--semantic-color-feedback-${variant === 'primary' ? (tone === 'warning' ? 'solid-' : '') : 'bg-'}${tone === 'danger' ? 'error' : tone})`
               : edgeKey === 'primary'
                 ? 'var(--component-button-bgHover)'
                 : variant === 'tertiary'
                   ? 'var(--component-button-tertiary-bg-hover)'
                   : 'var(--component-button-secondary-bg-hover)',
-            ...(hasTone && {
-              filter: 'none',
-              '--hds-wipe-f': 'brightness(var(--hds-wipe-b, 0.95))',
-            }),
+            // a tone that fills (primary solid, secondary tint); a toned tertiary only recolours text
+            ...(hasTone &&
+              variant !== 'tertiary' && {
+                filter: 'none',
+                '--hds-wipe-f': 'brightness(var(--hds-wipe-b, 0.95))',
+              }),
             ...style,
           } as React.CSSProperties,
         }
@@ -475,7 +533,7 @@ export const Button = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Button
         size,
         iconOnly,
         hoverEffect: wipe ? 'wipe' : 'none',
-        shadow: variant === 'tertiary' || isLink ? 'none' : shadow,
+        shadow: flat ? 'none' : shadow,
       }),
       isToggle && !hasTone && toggleOnClasses,
       flush && 'px-0',

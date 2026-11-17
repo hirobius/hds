@@ -68,7 +68,8 @@ describe('Button state tokens', () => {
     const c = cls(getByRole('button'));
     expect(c).not.toContain('active:bg-[color:var(--component-button-secondary-bg-pressed)]');
     expect(c).not.toContain('bg-[color:var(--component-button-secondary-bg-rest)]');
-    expect(c).toContain('active:bg-feedback-danger');
+    expect(c).toContain('bg-feedback-bg-danger');
+    expect(c).not.toContain('hover:bg-[color:var(--component-button-secondary-bg-hover)]');
     expect(c).toContain('active:inset-shadow-pressed-overlay/5');
     expect(c).toContain('disabled:border-transparent');
   });
