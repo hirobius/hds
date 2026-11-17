@@ -339,7 +339,7 @@
 
 /* -- Date and time pickers (Input) ---------------------------------------------
  * Input draws the HDS calendar or clock icon in its trailing slot. The browser's
- * glyph turns invisible and covers that slot (the input's end padding), so a
+ * glyph turns invisible and covers that slot (a touch-target-wide strip), so a
  * click there still opens the native picker. Firefox has no such pseudo and
  * draws its own button at the end, so the HDS icon steps aside there. */
 .hds-picker {
@@ -348,7 +348,7 @@
 .hds-picker::-webkit-calendar-picker-indicator {
   position: absolute;
   inset: 0 0 0 auto;
-  width: 2.25rem;
+  width: var(--semantic-size-touchTarget);
   height: auto;
   margin: 0;
   opacity: 0;
