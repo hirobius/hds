@@ -67,7 +67,6 @@
 @source inline("active:bg-[color:var(--component-button-bgPressed)]");
 @source inline("active:bg-[color:var(--component-button-secondary-bg-pressed)]");
 @source inline("active:bg-[color:var(--component-button-tertiary-bg-pressed)]");
-@source inline("active:bg-[color:var(--semantic-accent-pressed)]");
 @source inline("active:bg-[var(--semantic-color-surface-selected)]");
 @source inline("active:bg-transparent");
 @source inline("active:inset-shadow-[0_0_0_9999px]");
@@ -101,7 +100,6 @@
 @source inline("bg-[color:var(--component-button-secondary-bg-rest)]");
 @source inline("bg-[color:var(--component-inlineCode-bg)]");
 @source inline("bg-[color:var(--component-input-bg)]");
-@source inline("bg-[color:var(--semantic-color-feedback-error)]");
 @source inline("bg-[color:var(--semantic-color-surface-raised)]");
 @source inline("bg-[var(--component-tag-activeBackground)]");
 @source inline("bg-[var(--component-tag-background)]");
@@ -258,9 +256,6 @@
 @source inline("flex-shrink-0");
 @source inline("flex-wrap");
 @source inline("focus-visible:outline-none");
-@source inline("focus-visible:ring-2");
-@source inline("focus-visible:ring-accent");
-@source inline("focus-visible:ring-offset-2");
 @source inline("focus:outline-none");
 @source inline("focus:ring-offset-black");
 @source inline("focus:ring-offset-white");
@@ -280,7 +275,6 @@
 @source inline("gap-4");
 @source inline("gap-5");
 @source inline("gap-8");
-@source inline("gap-[inherit]");
 @source inline("gap-[var(--component-list-groupGap)]");
 @source inline("gap-[var(--component-list-headingGap)]");
 @source inline("gap-[var(--component-list-rowPadding)]");
@@ -314,15 +308,11 @@
 @source inline("group");
 @source inline("group-active:border-[var(--semantic-color-border-accent)]");
 @source inline("group-disabled:text-[var(--semantic-color-content-disabled)]");
-@source inline("group-hover:-translate-y-full");
 @source inline("group-hover:bg-[var(--component-tag-activeHover)]");
 @source inline("group-hover:bg-[var(--semantic-color-surface-accentSubtle)]");
 @source inline("group-hover:border-[var(--semantic-color-border-accent)]");
-@source inline("group-hover:origin-left");
-@source inline("group-hover:scale-x-100");
 @source inline("group-hover:text-[var(--semantic-color-content-primary)]");
 @source inline("group-last/item:hidden");
-@source inline("group/card");
 @source inline("group/item");
 @source inline("grow");
 @source inline("h-1.5");
@@ -353,7 +343,6 @@
 @source inline("hover:bg-[color:var(--component-button-secondary-bg-hover)]");
 @source inline("hover:bg-[color:var(--component-button-secondary-bg-rest)]");
 @source inline("hover:bg-[color:var(--component-button-tertiary-bg-hover)]");
-@source inline("hover:bg-[color:var(--semantic-accent-hover)]");
 @source inline("hover:bg-[var(--semantic-color-surface-hover)]");
 @source inline("hover:bg-[var(--semantic-color-surface-raised)]");
 @source inline("hover:bg-[var(--semantic-color-surface-selected)]");
@@ -415,9 +404,7 @@
 @source inline("max-h-60");
 @source inline("max-h-80");
 @source inline("max-h-[50dvh]");
-@source inline("max-h-[calc(100%-2rem)]");
 @source inline("max-h-[calc(100dvh-2*var(--semantic-space-scale-sm))]");
-@source inline("max-h-[calc(100vh-10rem)]");
 @source inline("max-h-[calc(var(--hds-dialog-viewport-height,100dvh)-2*var(--semantic-space-scale-sm))]");
 @source inline("max-h-[var(--radix-dropdown-menu-content-available-height)]");
 @source inline("max-sm:hidden");
@@ -694,10 +681,7 @@
 @source inline("text-5xl");
 @source inline("text-[...onAccent]");
 @source inline("text-[...secondary]");
-@source inline("text-[10px]");
 @source inline("text-[11px]");
-@source inline("text-[12px]");
-@source inline("text-[14px]");
 @source inline("text-[color:var(--component-badge-danger-text)]");
 @source inline("text-[color:var(--component-badge-inProgress-text)]");
 @source inline("text-[color:var(--component-badge-info-text)]");
@@ -706,7 +690,6 @@
 @source inline("text-[color:var(--component-badge-warning-text)]");
 @source inline("text-[color:var(--component-input-text)]");
 @source inline("text-[color:var(--semantic-color-content-primary)]");
-@source inline("text-[color:var(--semantic-color-surface-accent)]");
 @source inline("text-[var(--component-tag-activeText)]");
 @source inline("text-[var(--component-tag-text)]");
 @source inline("text-[var(--semantic-accent-content)]");

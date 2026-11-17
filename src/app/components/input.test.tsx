@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { Input } from './input';
@@ -20,6 +22,49 @@ describe('Input date and time types (hds#393)', () => {
     expect(field.type).toBe(type);
     expect(field.value).toBe(value);
     expect(screen.queryByRole('button')).toBeNull();
+  });
+});
+
+describe('Input picker icon: the HDS icon, not the browser glyph', () => {
+  it.each([
+    ['date', 'lucide-calendar'],
+    ['time', 'lucide-clock'],
+    ['datetime-local', 'lucide-calendar'],
+  ] as const)('a %s field draws the HDS icon in the trailing slot', (type, icon) => {
+    const { container } = render(<Input type={type} label="When" />);
+    const field = screen.getByLabelText('When');
+    expect(field.className).toContain('hds-picker');
+    // The md field leaves the trailing pad for the icon, as for any trailing visual.
+    expect(field.className).toContain('pr-9');
+    const svg = container.querySelector(`svg.${icon}`);
+    expect(svg).not.toBeNull();
+    expect(svg!.getAttribute('class')).toContain('hds-picker-icon');
+    // The slot is aria-hidden and lets the click through to the native picker.
+    const slot = svg!.closest('span')!;
+    expect(slot.getAttribute('aria-hidden')).toBe('true');
+    expect(slot.className).toContain('pointer-events-none');
+  });
+
+  it('a text field has no picker, and a trailingVisual replaces the picker icon', () => {
+    const { container, unmount } = render(<Input label="Name" />);
+    expect(screen.getByLabelText('Name').className).not.toContain('hds-picker');
+    unmount();
+    render(<Input type="date" label="When" trailingVisual={<span data-testid="own" />} />);
+    expect(screen.getByTestId('own')).not.toBeNull();
+    expect(screen.getByLabelText('When').className).not.toContain('hds-picker');
+    expect(container.querySelector('.hds-picker-icon')).toBeNull();
+  });
+
+  it('theme.css hides the browser glyph over the icon slot, and Firefox keeps its own', () => {
+    const css = readFileSync(join(__dirname, '../../styles/theme.css'), 'utf8');
+    const rule =
+      /\.hds-picker::-webkit-calendar-picker-indicator\s*\{([^}]*)\}/.exec(css)?.[1] ?? '';
+    expect(rule).toMatch(/opacity:\s*0/);
+    expect(rule).toMatch(/position:\s*absolute/);
+    expect(rule).toMatch(/cursor:\s*pointer/);
+    expect(css).toMatch(
+      /@supports \(-moz-appearance: none\)\s*\{\s*\.hds-picker-icon\s*\{\s*display:\s*none/,
+    );
   });
 });
 

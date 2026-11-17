@@ -915,6 +915,8 @@
       "    label",
       "    div",
       "      input data-size=\"md\" data-state=\"filled\"",
+      "      span aria-hidden=\"true\"",
+      "        svg",
       "  div",
       "    div",
       "      input aria-label=\"Small input\" data-size=\"sm\" data-state=\"filled\"",
