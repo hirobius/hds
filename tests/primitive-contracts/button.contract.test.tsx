@@ -156,7 +156,6 @@ const toneClasses = (variant: Variant, tone: (typeof STATUS_TONES)[number]) =>
         'text-background',
         'border-transparent',
         tone === 'warning' ? 'bg-feedback-solid-warning' : `bg-feedback-${tone}`,
-        tone === 'warning' ? 'hover:bg-feedback-solid-warning' : `hover:bg-feedback-${tone}`,
         'hover:border-transparent',
         'hover:brightness-95',
         'dark:hover:brightness-110',
@@ -171,7 +170,7 @@ const toneClasses = (variant: Variant, tone: (typeof STATUS_TONES)[number]) =>
           'dark:hover:brightness-110',
         ]
       : // The default wipe holds a clear face on hover and paints the tint as its layer.
-        [`text-feedback-${tone}`, 'hover:bg-transparent'];
+        [`text-feedback-${tone}`];
 
 /** The variant classes a tone must replace: every colour on a filled variant; text, hover and press fills on tertiary. */
 const mustReplaceOf = (variant: Variant, tone: (typeof STATUS_TONES)[number]) =>
@@ -194,7 +193,8 @@ describe('Button tone over variant', () => {
   it.each(VARIANTS)('reads the classes variant=%s adds off a rendered Button', (variant) => {
     const own = variantClasses(variant);
     expect(own.length).toBeGreaterThan(0);
-    expect(own.some((c) => c.startsWith('hover:'))).toBe(true);
+    // With the default wipe the hover fill is the theme.css layer, so the state classes are the press.
+    expect(own.some((c) => /^(hover|active):/.test(c))).toBe(true);
     expect(own).not.toContain('inline-flex');
   });
 

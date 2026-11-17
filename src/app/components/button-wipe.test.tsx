@@ -62,16 +62,20 @@ describe('Button hoverEffect', () => {
     const el = mount({ variant: 'primary' });
     expect(el.className).toContain('hds-btn-wipe');
     expect(el.getAttribute('data-hover-effect')).toBe('wipe');
-    // the instant hover fill is replaced; theme.css paints bgHover on the layer
-    expect(el.className).not.toContain('hover:bg-[color:var(--component-button-bgHover)]');
-    expect(el.className).toContain('hover:bg-primary');
+    // no instant hover fill: the face holds its rest fill and theme.css paints bgHover on the layer
+    expect(el.className).not.toMatch(/(^|\s)hover:bg-/);
+  });
+
+  it.each(['secondary', 'tertiary'] as const)('%s holds its rest fill on hover', (variant) => {
+    expect(mount({ variant }).className).not.toMatch(/(^|\s)hover:bg-/);
   });
 
   it.each([
-    ['secondary', 'hover:bg-[color:var(--component-button-secondary-bg-rest)]'],
-    ['tertiary', 'hover:bg-transparent'],
-  ] as const)('%s holds its rest fill on hover', (variant, cls) => {
-    expect(mount({ variant }).className).toContain(cls);
+    ['primary', 'hover:bg-[color:var(--component-button-bgHover)]'],
+    ['secondary', 'hover:bg-[color:var(--component-button-secondary-bg-hover)]'],
+    ['tertiary', 'hover:bg-[color:var(--component-button-tertiary-bg-hover)]'],
+  ] as const)('%s with hoverEffect="none" changes the fill in place', (variant, cls) => {
+    expect(mount({ variant, hoverEffect: 'none' }).className).toContain(cls);
   });
 
   it('tertiary keeps a pressed fill (the layer hides on :active)', () => {
@@ -98,11 +102,11 @@ describe('Button hoverEffect', () => {
   ] as const;
   it.each(tones)('primary + tone %s wipes in the solid tone fill', (tone, token) => {
     const el = mount({ variant: 'primary', tone });
-    // the button holds the tone fill (no variant hover leak) ...
+    // the button holds the tone fill: no hover fill class at all, so no variant hover leaks ...
     expect(el.className).toContain(
-      tone === 'warning' ? 'hover:bg-feedback-solid-warning' : 'hover:bg-feedback-' + tone,
+      tone === 'warning' ? 'bg-feedback-solid-warning' : 'bg-feedback-' + tone,
     );
-    expect(el.className).not.toMatch(/hover:bg-(background|primary|transparent)\b/);
+    expect(el.className).not.toMatch(/(^|\s)hover:bg-/);
     // ... and the layer paints the same fill through the tone's hover brightness
     expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(
       'var(--semantic-color-feedback-' + token + ')',
