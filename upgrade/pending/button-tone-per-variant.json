@@ -1,0 +1,17 @@
+{
+  "impact": "look",
+  "plain": "A toned secondary Button is now a soft tint with a plain label and no edge, and a toned tertiary Button shows tone-coloured text that the hover fills with the tint; primary is unchanged.",
+  "steps": [
+    {
+      "id": "look/button-tone-per-variant",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A secondary Button with tone danger, success, warning or info shows the soft feedback tint with the content.primary label and no edge, and a tertiary one shows tone-coloured text on a clear face that the hover fills with the tint; check screens that relied on the solid fill.",
+      "detect": {
+        "regex": [
+          "variant=[\"'](secondary|tertiary)[\"'][^>]*tone=[\"'](danger|success|warning|info)[\"']|tone=[\"'](danger|success|warning|info)[\"'][^>]*variant=[\"'](secondary|tertiary)[\"']"
+        ]
+      }
+    }
+  ]
+}

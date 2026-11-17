@@ -96,25 +96,46 @@ describe('Button hoverEffect', () => {
     ['warning', 'solid-warning'],
     ['info', 'info'],
   ] as const;
-  it.each(
-    (['primary', 'secondary', 'tertiary'] as const).flatMap((variant) =>
-      tones.map(([tone, token]) => [variant, tone, token] as const),
-    ),
-  )('%s + tone %s wipes in the tone hover colour', (variant, tone, token) => {
-    const el = mount({ variant, tone });
+  it.each(tones)('primary + tone %s wipes in the solid tone fill', (tone, token) => {
+    const el = mount({ variant: 'primary', tone });
     // the button holds the tone fill (no variant hover leak) ...
     expect(el.className).toContain(
       tone === 'warning' ? 'hover:bg-feedback-solid-warning' : 'hover:bg-feedback-' + tone,
     );
-    expect(el.className).not.toMatch(
-      /hover:bg-(background|primary|transparent)\b|secondary-bg-rest/,
-    );
+    expect(el.className).not.toMatch(/hover:bg-(background|primary|transparent)\b/);
     // ... and the layer paints the same fill through the tone's hover brightness
     expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(
       'var(--semantic-color-feedback-' + token + ')',
     );
     expect(el.style.getPropertyValue('--hds-wipe-f')).toBe('brightness(var(--hds-wipe-b, 0.95))');
     expect(el.style.filter).toBe('none');
+  });
+
+  it.each(tones)('secondary + tone %s wipes in the soft tint', (tone) => {
+    const el = mount({ variant: 'secondary', tone });
+    expect(el.className).toContain('bg-feedback-bg-' + tone);
+    // the tint holds on hover and press: no neutral secondary hover or pressed fill leaks in
+    expect(el.className).not.toMatch(/secondary-bg-(hover|pressed)/);
+    expect(el.className).not.toMatch(
+      /secondary-bg-rest|hover:bg-feedback-(danger|success|info|solid)/,
+    );
+    const tint = tone === 'danger' ? 'error' : tone;
+    expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(
+      'var(--semantic-color-feedback-bg-' + tint + ')',
+    );
+    expect(el.style.getPropertyValue('--hds-wipe-f')).toBe('brightness(var(--hds-wipe-b, 0.95))');
+  });
+
+  it.each(tones)('tertiary + tone %s colours its text and wipes into the tint', (tone) => {
+    const el = mount({ variant: 'tertiary', tone });
+    expect(el.className).toContain('text-feedback-' + tone);
+    // a clear face at rest and never surface.hover: the layer paints the tint on hover
+    expect(el.className).not.toMatch(/(^|\s)bg-feedback-|tertiary-bg-hover/);
+    const tint = tone === 'danger' ? 'error' : tone;
+    expect(el.style.getPropertyValue('--hds-wipe-fill')).toBe(
+      'var(--semantic-color-feedback-bg-' + tint + ')',
+    );
+    expect(el.style.getPropertyValue('--hds-wipe-f')).toBe('');
   });
 
   it('a consumer style still wins over the wipe fill', () => {
