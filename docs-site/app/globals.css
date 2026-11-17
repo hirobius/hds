@@ -1164,29 +1164,6 @@ a code[data-density] {
   flex: none;
 }
 
-/* The case study walkthrough (components/walkthrough-video.tsx, hds#1148): full prose width,
-   the recording's own 16:10 ratio reserved before the poster loads (no layout shift). */
-.hds-walkthrough {
-  margin: var(--semantic-space-scale-lg) 0;
-}
-.hds-walkthrough-video {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1440 / 900;
-  background: var(--semantic-color-surface-raised);
-  border-radius: var(--semantic-radius-action);
-}
-.hds-walkthrough figcaption {
-  margin-top: var(--semantic-space-scale-sm);
-  color: var(--semantic-color-content-secondary);
-  font-family: var(--semantic-typography-caption-font-family);
-  font-size: var(--semantic-typography-caption-font-size);
-  font-weight: var(--semantic-typography-caption-font-weight);
-  letter-spacing: var(--semantic-typography-caption-letter-spacing);
-  line-height: var(--semantic-typography-caption-line-height);
-}
-
 /* "… on components" lists (Elevation, Soft surfaces): a token and its swatch on the left,
    the live components that use it on the right; open rows split by a hairline. */
 .hds-oncomp-row {
@@ -1374,9 +1351,10 @@ a code[data-density] {
   color: var(--semantic-color-content-primary);
 }
 .hds-start-step-body {
-  font-family: var(--semantic-typography-body-font-family);
-  font-size: var(--semantic-typography-ui-font-size);
-  line-height: var(--semantic-typography-body-line-height);
+  font-family: var(--semantic-typography-uiRegular-font-family);
+  font-size: var(--semantic-typography-uiRegular-font-size);
+  font-weight: var(--semantic-typography-uiRegular-font-weight);
+  line-height: var(--semantic-typography-uiRegular-line-height);
   color: var(--semantic-color-content-secondary);
   max-inline-size: 64ch;
 }

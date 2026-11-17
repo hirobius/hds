@@ -3,7 +3,6 @@ import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import type { LedgerIndex, LedgerRelease } from './upgrade-ledger';
 import type { A11ySpec } from './a11y-contracts';
-import type { CaseStudySources } from './case-study';
 import type { TokenFlowSources } from './start-here';
 import { parseChangelog, type ReleaseNotes } from './release-notes';
 
@@ -102,17 +101,6 @@ export const loadCodeConnectTemplateCount = () =>
 /** How many known Figma and code differences the parity gate holds (figma/parity/baseline.json). */
 export const loadParityKnownCount = () =>
   Object.keys((readJson('figma/parity/baseline.json') as { accepted: object }).accepted).length;
-
-/** The repo files behind the case study page's numbers (lib/case-study.ts). */
-export function loadCaseStudySources(): CaseStudySources {
-  const root = dirname(findUp('hirobius.tokens.json'));
-  return {
-    stats: readJson('public/hds-stats.json') as CaseStudySources['stats'],
-    registry: readJson('docs/guardrails/registry.json') as CaseStudySources['registry'],
-    adrFiles: readdirSync(join(root, 'docs', 'adr')),
-    changelog: readFileSync(join(root, 'CHANGELOG.md'), 'utf8'),
-  };
-}
 
 /** Everything the Start here page's worked example reads (lib/start-here.ts). */
 export function loadTokenFlowSources(): TokenFlowSources {

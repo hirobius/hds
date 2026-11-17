@@ -108,11 +108,11 @@ describe('terminalPanelHtml', () => {
 describe('resolveFile', () => {
   const root = mkdtempSync(path.join(tmpdir(), 'wt-'));
   mkdirSync(path.join(root, 'docs'));
-  writeFileSync(path.join(root, 'docs', 'case-study.html'), 'x');
+  writeFileSync(path.join(root, 'docs', 'start-here.html'), 'x');
   writeFileSync(path.join(root, 'index.html'), 'x');
 
   it('resolves extension-less routes to .html', () => {
-    expect(resolveFile(root, '/docs/case-study')).toBe(path.join(root, 'docs', 'case-study.html'));
+    expect(resolveFile(root, '/docs/start-here')).toBe(path.join(root, 'docs', 'start-here.html'));
   });
 
   it('resolves / to index.html', () => {

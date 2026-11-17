@@ -44,7 +44,7 @@ const OUT = path.join(ROOT, 'docs-site', 'public', 'walkthrough');
 const SIZE = { width: 1440, height: 900 };
 const MAX_BYTES = 8 * 1024 * 1024;
 
-if (!existsSync(path.join(SITE, 'docs', 'case-study.html'))) {
+if (!existsSync(path.join(SITE, 'docs', 'start-here.html'))) {
   console.error('✗ walkthrough — docs-site/out is missing. Run `pnpm docs:build` first.');
   process.exit(1);
 }
@@ -67,8 +67,8 @@ if (red.length && !allowRed) {
   console.error('Record after the Figma delta sync makes both green (or pass --allow-red).');
   process.exit(1);
 }
-const caseStudyHtml = readFileSync(path.join(SITE, 'docs', 'case-study.html'), 'utf8');
-const stylesheets = [...caseStudyHtml.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map(
+const startHereHtml = readFileSync(path.join(SITE, 'docs', 'start-here.html'), 'utf8');
+const stylesheets = [...startHereHtml.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map(
   (m) => m[1],
 );
 
@@ -180,17 +180,15 @@ const tone = (code) => (code === 0 ? 'ok' : 'fail');
 let trimMs = 0;
 
 try {
-  // 1 — the case study
-  await go('/docs/case-study');
+  // 1 — the Start here tour (the case study moved to the portfolio)
+  await go('/docs/start-here');
   trimMs = Date.now() - t0;
   await chapter('case-study');
   await hold(4000);
-  await scrollTo('#the-limits');
-  await hold(3500);
-  // The architecture diagram renders on the client (components/mermaid.tsx).
-  await page.waitForSelector('figure.hds-mermaid svg');
-  await scrollTo('#the-architecture');
+  await scrollTo('#one-token-end-to-end');
   await hold(6500);
+  await scrollTo('#what-guards-it');
+  await hold(3500);
 
   // 2 — a component page: live demo, generated API, then its tokens
   await go('/docs/components/button');
@@ -303,9 +301,9 @@ try {
   await hold(9000);
 
   // 6 — close on the numbers
-  await go('/docs/case-study');
+  await go('/docs/start-here');
   await chapter('close');
-  await scrollTo('#the-results');
+  await scrollTo('#the-numbers-today');
   await hold(7000);
   cues[cues.length - 1].end = Date.now() - t0;
 } finally {

@@ -5,7 +5,6 @@ import {
   A11yContractIndex,
   A11yGuarantees,
 } from './components/a11y-contracts';
-import { CaseStudyFacts } from './components/case-study-facts';
 import { CodeConnectCount, ParityKnownCount } from './components/code-connect-count';
 import { ComponentIndex } from './components/component-index';
 import { ComponentPreview } from './components/component-preview';
@@ -19,7 +18,6 @@ import { MdxCode, MdxImg, MdxTable } from './components/mdx-prose';
 import { NumberValueDemo } from './components/number-value-demo';
 import { Mermaid } from './components/mermaid';
 import { MotionRecipesDemo } from './components/motion-recipes-demo';
-import { WalkthroughVideo } from './components/walkthrough-video';
 import { PrinciplesAndPractices } from './components/principles-and-practices';
 import { StartHereFlow, StartHereStats } from './components/start-here';
 import { TokenTable } from './components/token-table';
@@ -53,7 +51,6 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...hdsElements,
     TokenTable,
-    CaseStudyFacts,
     StartHereFlow,
     StartHereStats,
     A11yGuarantees,
@@ -65,7 +62,6 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     OverviewActions,
     IconSample,
     Mermaid,
-    WalkthroughVideo,
     PrinciplesAndPractices,
     NumberValueDemo,
     MotionRecipesDemo,
