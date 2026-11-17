@@ -1,53 +1,11 @@
 {
   "$comment": "The known differences between the Figma library and code (first full read, 2026-11-15). pnpm check:figma-parity fails on a difference that is not here, and on an entry whose difference is gone: fix the difference, then delete its entry, so this list only shrinks. An entry needs a reason a reviewer can check and the issue that removes it. Fix list: hds#1565.",
   "accepted": {
-    "name-mismatch:TabsTrigger": {
-      "reason": "Figma fix: rename the Figma component to the code name (hds#1565, F3)."
-    },
-    "name-mismatch:ToastProvider": {
-      "reason": "Code raises a toast with useToast() under ToastProvider; the Figma Toast is one toast (figma/code-connect.json, exempt). Needs a decision on what the Figma Toast links to: hds#1565, Figma fix F9."
-    },
     "tag-not-on-component:Form": {
       "reason": "Code fix: point the @figma tag at the component set (hds#1565, code fix C2)."
     },
-    "axis-not-in-figma:CodeBlock:variant": {
-      "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
-    },
-    "axis-not-in-figma:InlineCode:density": {
-      "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
-    },
-    "default-mismatch:Input:Size": {
-      "reason": "Figma fix: make the default variant the code default (hds#1565, F8)."
-    },
-    "property-not-in-code:Table:Sortable": {
-      "reason": "Figma fix: remove or rename the property so it maps to a prop; or record the reason in figma/code-connect.json (hds#1565, F6)."
-    },
-    "property-name:Table:StickyHeader": {
-      "reason": "Figma fix: rename the property to the naming contract (hds#1565, F7)."
-    },
-    "property-name:Button:Trail Icon": {
-      "reason": "Figma fix: rename the property to the naming contract (hds#1565, F7)."
-    },
-    "axis-not-in-figma:Button:tone": {
-      "reason": "Button draws tone as the modes of the Figma variable collection \"Button tone\", not as a variant (owner decision 2026-11-05; check-figma-components holds that shape). The collection has no tokens yet: hds#1565, Figma fix F2."
-    },
-    "property-name:Callout:Show Action": {
-      "reason": "Figma fix: rename the property to the naming contract (hds#1565, F7)."
-    },
-    "property-name:EmptyState:Description2": {
-      "reason": "Figma fix: rename the property to the naming contract (hds#1565, F7)."
-    },
     "nesting-mismatch:EmptyState:Button": {
       "reason": "Sample content in the Figma component: the code takes this part as children. Figma fix: mark it as a slot (hds#1565, F10)."
-    },
-    "axis-not-in-figma:Progress:variant": {
-      "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
-    },
-    "axis-not-in-figma:Progress:tone": {
-      "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
-    },
-    "default-mismatch:Skeleton:Variant": {
-      "reason": "Figma fix: make the default variant the code default (hds#1565, F8)."
     },
     "property-not-in-code:ToastProvider:Description": {
       "reason": "Code raises a toast with useToast() under ToastProvider; the Figma Toast is one toast (figma/code-connect.json, exempt). Needs a decision on what the Figma Toast links to: hds#1565, Figma fix F9."
@@ -58,41 +16,17 @@
     "property-not-in-code:ToastProvider:Dismiss": {
       "reason": "Code raises a toast with useToast() under ToastProvider; the Figma Toast is one toast (figma/code-connect.json, exempt). Needs a decision on what the Figma Toast links to: hds#1565, Figma fix F9."
     },
-    "axis-not-in-figma:CardProgress:tone": {
-      "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
-    },
     "property-not-in-code:SheetDescription:Description": {
       "reason": "Figma fix: remove or rename the property so it maps to a prop; or record the reason in figma/code-connect.json (hds#1565, F6)."
     },
     "property-not-in-code:SheetTitle:Title": {
       "reason": "Figma fix: remove or rename the property so it maps to a prop; or record the reason in figma/code-connect.json (hds#1565, F6)."
     },
-    "axis-not-in-figma:List:variant": {
-      "reason": "Figma fix: draw the axis as a variant property (hds#1565, F4)."
-    },
     "nesting-mismatch:Dock:Button": {
       "reason": "Sample content in the Figma component: the code takes this part as children. Figma fix: mark it as a slot (hds#1565, F10)."
     },
-    "property-not-in-code:ListItem:Leading icon": {
-      "reason": "Figma fix: remove or rename the property so it maps to a prop; or record the reason in figma/code-connect.json (hds#1565, F6)."
-    },
-    "property-not-in-code:ListGroup:Variant": {
-      "reason": "Figma fix: remove or rename the property so it maps to a prop; or record the reason in figma/code-connect.json (hds#1565, F6)."
-    },
-    "property-not-in-code:ListGroup:Divider": {
-      "reason": "Figma fix: remove or rename the property so it maps to a prop; or record the reason in figma/code-connect.json (hds#1565, F6)."
-    },
     "collection-not-in-code:Button tone": {
       "reason": "Hand-built in Figma for the condensed Button (hds#1147). No token builds it, so check:figma-drift ignores it. Move its values to tokens or accept it as Figma-only: hds#1565, Figma fix F2."
-    },
-    "name-mismatch:FormField": {
-      "reason": "Figma fix: rename the Figma component to the code name (hds#1565, F3)."
-    },
-    "icon-missing-in-figma:Icon:10-289b8e25": {
-      "reason": "Figma fix: draw the icons the code set added (hds#1565, F1)."
-    },
-    "icon-missing-in-code:Icon:27-a233c236": {
-      "reason": "Figma fix: rename or archive the icons the code set no longer has (lucide renames, hds#1565, F1)."
     },
     "option-not-in-figma:Stack:Gap:18-27ce865c": {
       "reason": "Figma fix: draw the missing options, or record them as codeOnly in figma/code-connect.json (hds#1565, F5)."
@@ -408,6 +342,21 @@
     },
     "token-value-mismatch:Hirobius/Brand: semantic/color/edge/primary/Dark [accent-cobalt]": {
       "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+    },
+    "variables-changed:Hirobius/Primitives": {
+      "reason": "The library's variables changed outside this branch (snapshot-diff 2026-11-17: 92 records, 49 KB; most likely the Sync of the token changes in #1561 and #1563). The diff is too large for a use_figma result, so the re-base needs the Sync plugin's Download JSON, then pnpm figma:snapshot --ingest. Removed by hds#1565."
+    },
+    "variables-changed:Hirobius/Semantic": {
+      "reason": "The library's variables changed outside this branch (snapshot-diff 2026-11-17: 92 records, 49 KB; most likely the Sync of the token changes in #1561 and #1563). The diff is too large for a use_figma result, so the re-base needs the Sync plugin's Download JSON, then pnpm figma:snapshot --ingest. Removed by hds#1565."
+    },
+    "variables-changed:Hirobius/Component": {
+      "reason": "The library's variables changed outside this branch (snapshot-diff 2026-11-17: 92 records, 49 KB; most likely the Sync of the token changes in #1561 and #1563). The diff is too large for a use_figma result, so the re-base needs the Sync plugin's Download JSON, then pnpm figma:snapshot --ingest. Removed by hds#1565."
+    },
+    "variables-changed:Hirobius/Brand": {
+      "reason": "The library's variables changed outside this branch (snapshot-diff 2026-11-17: 92 records, 49 KB; most likely the Sync of the token changes in #1561 and #1563). The diff is too large for a use_figma result, so the re-base needs the Sync plugin's Download JSON, then pnpm figma:snapshot --ingest. Removed by hds#1565."
+    },
+    "variables-changed:textStyles": {
+      "reason": "The library's variables changed outside this branch (snapshot-diff 2026-11-17: 92 records, 49 KB; most likely the Sync of the token changes in #1561 and #1563). The diff is too large for a use_figma result, so the re-base needs the Sync plugin's Download JSON, then pnpm figma:snapshot --ingest. Removed by hds#1565."
     }
   }
 }
