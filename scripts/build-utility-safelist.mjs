@@ -18,8 +18,12 @@
  * lists as removed (`utility-removed:<name>` in its facts) in a pending note
  * (upgrade/pending/*.json) or in the ledger of package.json's version
  * (upgrade/releases/<version>.json, between `changeset version` and the next
- * snapshot). Dropping a utility is therefore opt-in: list its fact in a step,
- * rerun this, and the next build no longer has it.
+ * snapshot), less each arbitrary-value, variant or group class that
+ * src/styles/utilities.css writes by hand and whose value names no Tailwind
+ * theme variable (it ships through that hand-written rule either way, so a line
+ * here would only add Tailwind's duplicate beside it). Dropping a utility that
+ * actually leaves the build is opt-in: list its fact in a step, rerun this, and
+ * the next build no longer has it.
  *
  * One `@source inline("<class>");` per line, so a diff shows each utility. A
  * class Tailwind cannot read back from an inline source (a quote, a
@@ -89,6 +93,40 @@ function documentedRemovals(root, version) {
   return new Set([...notes, join(root, 'upgrade/releases', `${version}.json`)].flatMap(removedIn));
 }
 
+/**
+ * Arbitrary-value, variant and named-group classes (`text-[10px]`, `focus-visible:ring-2`,
+ * `group/card`) that src/styles/utilities.css writes by hand (#698). They ship whatever the
+ * safelist says, so a safelist line for one only adds Tailwind's own rule beside the
+ * hand-written one. A plain theme utility (`gap-2`, `max-w-md`) keeps its line: Tailwind also
+ * declares its theme variable, which consumers may read (check-upgrade-css reports one that goes).
+ */
+function handWritten(root) {
+  const file = join(root, 'src/styles/utilities.css');
+  if (!existsSync(file)) return new Set();
+  const css = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  const names = new Set();
+  for (const [, selectors] of css.matchAll(/([^{}]+)\{[^{}]*\}/g)) {
+    for (const m of selectors.matchAll(/\.((?:\\.|[A-Za-z0-9_-])+)/g)) {
+      const name = m[1].replace(/\\(.)/g, '$1');
+      if (/[[:/]/.test(name)) names.add(name);
+    }
+  }
+  return names;
+}
+
+/** Tailwind's own theme namespaces, the variables a theme utility makes it declare. */
+const THEME_NAMESPACES = [
+  'color',
+  'container',
+  'text',
+  'animate',
+  'ease',
+  'blur',
+  'spacing',
+  'radius',
+  'shadow',
+];
+
 /** True for a class Tailwind reads back unchanged from `@source inline("...")`. */
 const inlinable = (name) => !/["\\{}\s]/.test(name);
 
@@ -103,11 +141,24 @@ export function utilitySafelist(root = REPO) {
   const css = release?.css ?? { bundles: {}, publicClasses: [] };
   const publicClasses = new Set(css.publicClasses ?? []);
   const removed = documentedRemovals(root, version);
+  // A class whose value names a theme variable (`ring-offset-black` reads --color-black) keeps
+  // its line even when hand-written: Tailwind's rule is what declares that variable.
+  const themeVars = new Set(
+    Object.values(css.bundles ?? {}).flatMap((bundle) => Object.keys(bundle.variables ?? {})),
+  );
+  const readsTheme = (name) => {
+    const parts = name.split(':').pop().split('-');
+    return parts.some((_, i) => {
+      const tail = parts.slice(i).join('-');
+      return THEME_NAMESPACES.some((ns) => themeVars.has(`--${ns}-${tail}`));
+    });
+  };
+  const written = new Set([...handWritten(root)].filter((name) => !readsTheme(name)));
   const classes = new Set(
     Object.values(css.bundles ?? {})
       .flatMap((bundle) => bundle.classes ?? [])
       .filter((name) => !name.startsWith('hds-') && !publicClasses.has(name))
-      .filter((name) => !removed.has(name)),
+      .filter((name) => !removed.has(name) && !written.has(name)),
   );
   const sorted = [...classes].sort(byCodeUnit);
   const utilities = sorted.filter(inlinable);
@@ -119,7 +170,8 @@ export function utilitySafelist(root = REPO) {
     '/* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)',
     `   from ${from}: every Tailwind utility that release shipped stays emitted,`,
     '   so deleting the last file that names one never drops it from ./styles.css or',
-    '   ./tokens.css by accident. To drop one, list utility-removed:<class> in a step',
+    '   ./tokens.css by accident. An arbitrary-value, variant or group class utilities.css writes',
+    '   by hand ships anyway, so it has no line here. To drop one, list utility-removed:<class> in a step',
     `   (upgrade/pending/<changeset>.json), then run ${FIX}. */`,
     ...utilities.map((name) => `@source inline("${name}");`),
     '',

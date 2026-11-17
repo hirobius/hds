@@ -91,6 +91,38 @@ describe('utilitySafelist', () => {
     expect(utilitySafelist(root).utilities).toEqual(['sm:inline-block']);
   });
 
+  it('leaves out an arbitrary, variant or group class utilities.css writes by hand, unless it reads a theme variable', () => {
+    const root = releasedWith([
+      'flex',
+      'text-[10px]',
+      'focus-visible:ring-2',
+      'group/card',
+      'focus:ring-offset-black',
+      'gap-2',
+    ]);
+    const file = join(root, 'docs/api/releases/0.20.0.json');
+    const release = JSON.parse(readFileSync(file, 'utf8'));
+    release.css.bundles['./styles.css'].variables = { '--color-black': { ':root': '#000' } };
+    write(root, 'docs/api/releases/0.20.0.json', formatJson(release));
+    write(
+      root,
+      'src/styles/utilities.css',
+      [
+        '/* .flex-comment-only { } */',
+        '@layer utilities {',
+        '  .text-\\[10px\\] { font-size: 10px; }',
+        '  .focus-visible\\:ring-2:focus-visible { outline: 2px solid; }',
+        '  .group\\/card { }',
+        '  .focus\\:ring-offset-black:focus { outline-offset: 2px; }',
+        '  .gap-2 { gap: 0.5rem; }',
+        '}',
+        '',
+      ].join('\n'),
+    );
+    // gap-2 is a plain theme utility and ring-offset-black reads --color-black: both keep a line.
+    expect(utilitySafelist(root).utilities).toEqual(['flex', 'focus:ring-offset-black', 'gap-2']);
+  });
+
   it('skips a class Tailwind cannot read back from an inline source (quotes, backslashes, braces)', () => {
     const { utilities, skipped } = utilitySafelist(
       releasedWith(['flex', 'content-["x"]', 'a\\b', 'grid-{a,b}']),

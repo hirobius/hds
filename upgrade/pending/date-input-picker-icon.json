@@ -1,0 +1,27 @@
+{
+  "impact": "behavior",
+  "plain": "A date, time or datetime-local Input shows the HDS calendar or clock icon at its trailing edge instead of the browser's glyph.",
+  "steps": [
+    {
+      "id": "behavior/Input.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A date, time or datetime-local Input renders an aria-hidden icon span after the field; a test that counts the field's children or snapshots its DOM needs updating.",
+      "detect": {
+        "regex": [
+          "type=[\"'](date|time|datetime-local)[\"'][\\s\\S]{0,200}(toMatchSnapshot|childElementCount|children\\.length)"
+        ]
+      },
+      "facts": ["dom-changed:Input"]
+    },
+    {
+      "id": "look/focus-visible-ring-utilities",
+      "kind": "look",
+      "impact": "look",
+      "plain": "focus-visible:ring-2 now draws only the HDS focus outline, not Tailwind's box-shadow ring under it; add your own ring if you relied on both.",
+      "detect": {
+        "regex": ["focus-visible:ring-(2|accent|offset-2)"]
+      }
+    }
+  ]
+}

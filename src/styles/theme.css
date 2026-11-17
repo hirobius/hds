@@ -337,6 +337,29 @@
   text-box: cap alphabetic;
 }
 
+/* -- Date and time pickers (Input) ---------------------------------------------
+ * Input draws the HDS calendar or clock icon in its trailing slot. The browser's
+ * glyph turns invisible and covers exactly that slot (--hds-picker-w, the trailing
+ * pad Input sets per size), so a click on the icon still opens the native picker
+ * and a click on the text still edits it. Firefox has no such pseudo and draws
+ * its own button at the end, so the HDS icon steps aside there. */
+.hds-picker {
+  position: relative;
+}
+.hds-picker::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: var(--hds-picker-w);
+  height: auto;
+  margin: 0;
+  opacity: 0;
+}
+@supports (-moz-appearance: none) {
+  .hds-picker-icon {
+    display: none;
+  }
+}
+
 /* -- Touch size for small controls (hds#522, hds#750) -------------------------
  * sm Button, Tabs and SegmentedControl triggers, Tag, Disclosure trigger, Input
  * clear, Checkbox/Radio/Toggle rows, Pagination and the copy buttons sit under

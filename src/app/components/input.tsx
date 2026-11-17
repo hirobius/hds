@@ -23,7 +23,7 @@
  */
 
 import * as React from 'react';
-import { Loader2, X } from 'lucide-react';
+import { Calendar, Clock, Loader2, X } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { useFrozenState } from '../context/DemoStateContext';
@@ -136,6 +136,17 @@ const TYPES_WITHOUT_CLEAR: ReadonlySet<InputFieldType> = new Set<InputFieldType>
   'datetime-local',
 ]);
 
+// Picker types draw the HDS icon in the trailing slot, where Select draws its
+// chevron. The browser's own glyph (::-webkit-calendar-picker-indicator) is
+// stretched invisibly over that slot by .hds-picker (theme.css), so a click on the
+// icon still opens the native picker. Firefox draws its own button, which no CSS
+// reaches, so there .hds-picker-icon hides and the native one stays.
+const PICKER_ICON: Partial<Record<InputFieldType, typeof Calendar>> = {
+  date: Calendar,
+  'datetime-local': Calendar,
+  time: Clock,
+};
+
 // ── Per-size adornment + padding (full literal class names for Tailwind JIT) ──
 // Each side of the field takes exactly one pl-*/pr-* class, never a px-*
 // shorthand: tailwind-merge drops a per-side class that precedes px-*
@@ -156,6 +167,8 @@ const ADORNMENT_BY_SIZE = {
     restPadR: 'pr-[var(--component-input-size-sm-paddingX)]',
     leadPad: 'pl-7',
     trailPad: 'pr-7',
+    // The native picker's hit strip spans the trailing pad (theme.css .hds-picker).
+    pickerSteps: 7,
     inset: 'inset-y-0 px-scale-xs',
     iconClass: 'size-3.5',
     iconWrap: '[&_svg]:size-3.5',
@@ -169,6 +182,7 @@ const ADORNMENT_BY_SIZE = {
     restPadR: 'pr-[var(--component-input-paddingX)]',
     leadPad: 'pl-9',
     trailPad: 'pr-9',
+    pickerSteps: 9,
     inset: 'inset-y-0 px-2.5',
     iconClass: 'size-4',
     iconWrap: '[&_svg]:size-4',
@@ -182,6 +196,7 @@ const ADORNMENT_BY_SIZE = {
     restPadR: 'pr-[var(--component-input-size-lg-paddingX)]',
     leadPad: 'pl-11',
     trailPad: 'pr-11',
+    pickerSteps: 11,
     inset: 'inset-y-0 px-fixed-xs',
     iconClass: 'size-5',
     iconWrap: '[&_svg]:size-5',
@@ -265,7 +280,11 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
 
   const padCfg = ADORNMENT_BY_SIZE[size];
   const hasLeading = Boolean(leadingVisual);
-  const hasTrailing = Boolean(trailingVisual);
+  const PickerIcon = PICKER_ICON[type];
+  const trailing =
+    trailingVisual ??
+    (PickerIcon ? <PickerIcon className={cn('hds-picker-icon', padCfg.iconClass)} /> : null);
+  const hasTrailing = Boolean(trailing);
   const hasPrefix = isSlotSet(prefix);
   const hasSuffix = isSlotSet(suffix);
   const inShell = hasPrefix || hasSuffix;
@@ -365,6 +384,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           size !== 'lg' && 'hds-touch-text',
           // The shell draws the ring when slots are present (hds-focus-within).
           inShell ? SHELLED_INPUT : 'hds-focus',
+          PickerIcon && !trailingVisual && 'hds-picker',
           inputClassName,
         )}
         onChange={(event) => {
@@ -374,6 +394,14 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onChange?.(event);
         }}
         {...rest}
+        style={
+          PickerIcon && !trailingVisual
+            ? ({
+                '--hds-picker-w': `calc(var(--spacing) * ${padCfg.pickerSteps})`,
+                ...rest.style,
+              } as React.CSSProperties)
+            : rest.style
+        }
       />
 
       {isLoading && (
@@ -397,7 +425,7 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
             padCfg.iconWrap,
           )}
         >
-          {trailingVisual}
+          {trailing}
         </span>
       )}
 
