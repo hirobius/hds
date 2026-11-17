@@ -183,7 +183,7 @@ try {
   // 1 — the Start here tour (the case study moved to the portfolio)
   await go('/docs/start-here');
   trimMs = Date.now() - t0;
-  await chapter('case-study');
+  await chapter('start-here');
   await hold(4000);
   await scrollTo('#one-token-end-to-end');
   await hold(6500);

@@ -1,8 +1,9 @@
 # Scripted walkthrough (hds#1148)
 
-The walkthrough video on the case study page is recorded by a script, not by a
-person. Re-record it after a change the video shows (the case study, a docs
-page, the release path):
+The walkthrough video is recorded by a script, not by a person. It opens and
+closes on the docs Start here page; the case study it used to open on moved to
+the portfolio (adrianmilsap.com/work/hds-governance). Re-record it after a change
+the video shows (Start here, a docs page, the release path):
 
 ```sh
 pnpm docs:build           # the static site in docs-site/out
@@ -46,7 +47,8 @@ Output, served by the docs site at `/walkthrough/`:
   `data-done`. The only timed waits are `hold()`, the viewer's reading time.
 - No secrets and no private data: panels show repo files and gate output only,
   and no private repository names.
-- The video never autoplays on the page (`components/walkthrough-video.tsx`).
+- The video is muted, so an embed needs no sound controls; do not set it to
+  autoplay. The docs site no longer embeds it (the case study moved, hds#1581).
 
 ## Needs
 

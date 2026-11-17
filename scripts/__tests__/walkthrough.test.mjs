@@ -14,7 +14,7 @@ import {
   terminalPanelHtml,
 } from '../walkthrough/chapters.mjs';
 import { parseRange, resolveFile } from '../walkthrough/serve.mjs';
-import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -26,6 +26,18 @@ describe('CHAPTERS', () => {
       expect(c.id).toMatch(/^[a-z-]+$/);
       expect(c.caption.length).toBeGreaterThan(10);
     }
+  });
+
+  it('names each chapter record.mjs plays, and opens on the Start here page it is named for', () => {
+    const record = readFileSync(
+      path.join(import.meta.dirname, '../walkthrough/record.mjs'),
+      'utf8',
+    );
+    const played = [...record.matchAll(/chapter\('([a-z-]+)'\)/g)].map((m) => m[1]);
+    expect(played).toEqual(CHAPTERS.map((c) => c.id));
+    expect(CHAPTERS[0].id).toBe('start-here');
+    const first = record.indexOf("chapter('start-here')");
+    expect(record.lastIndexOf("go('/docs/start-here')", first)).toBeGreaterThan(-1);
   });
 
   it('names the published package correctly', () => {
