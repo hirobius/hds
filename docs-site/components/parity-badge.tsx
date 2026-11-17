@@ -1,27 +1,34 @@
 import { loadStats } from '../lib/site-data';
 
+type Stats = ReturnType<typeof loadStats>;
+
 /**
- * The Figma parity score and the Code Connect template count, in the sidebar's
- * metadata slot (its footer, beside the display controls). Both come from
- * public/hds-stats.json when the site builds (scripts/build-stats-json.mjs), so
- * the figures cannot go stale or be typed here. Renders nothing while the stats
- * carry no parity read.
+ * The sidebar's metadata slot (its footer, beside the display controls): the
+ * Code Connect template count, and the Figma parity score once every parity
+ * check passes. Until then the score stays in public/hds-stats.json and the
+ * parity gate keeps running; the sidebar just does not show a partial score.
+ * Pure: the figures come in as props, so tests can drive both cases.
  */
-export function ParityBadge() {
-  const { figmaParity, codeConnect } = loadStats();
-  if (!figmaParity) return null;
+export function ParityReadout({
+  figmaParity,
+  codeConnect,
+}: Pick<Stats, 'figmaParity' | 'codeConnect'>) {
+  const complete = Boolean(figmaParity) && figmaParity!.passed === figmaParity!.total;
+  if (!complete && !codeConnect) return null;
   return (
     <dl className="hds-docs-parity" aria-label="Figma and code">
-      <div>
-        <dt>Figma parity</dt>
-        <dd>
-          <data value={figmaParity.percent}>{figmaParity.percent}%</data>
-          <span>
-            {' '}
-            · {figmaParity.passed}/{figmaParity.total} checks, read {figmaParity.readOn}
-          </span>
-        </dd>
-      </div>
+      {complete ? (
+        <div>
+          <dt>Figma parity</dt>
+          <dd>
+            <data value={figmaParity!.percent}>{figmaParity!.percent}%</data>
+            <span>
+              {' '}
+              · {figmaParity!.passed}/{figmaParity!.total} checks, read {figmaParity!.readOn}
+            </span>
+          </dd>
+        </div>
+      ) : null}
       {codeConnect ? (
         <div>
           <dt>Code Connect</dt>
@@ -30,4 +37,10 @@ export function ParityBadge() {
       ) : null}
     </dl>
   );
+}
+
+/** The readout with the figures public/hds-stats.json holds when the site builds. */
+export function ParityBadge() {
+  const { figmaParity, codeConnect } = loadStats();
+  return <ParityReadout figmaParity={figmaParity} codeConnect={codeConnect} />;
 }
