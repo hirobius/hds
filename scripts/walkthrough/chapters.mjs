@@ -8,7 +8,7 @@
 /** The approved script. Captions show on screen and go into the .vtt track. */
 export const CHAPTERS = [
   {
-    id: 'case-study',
+    id: 'start-here',
     caption: 'HDS: one design system for one owner’s apps, built and guarded by agents.',
   },
   {
