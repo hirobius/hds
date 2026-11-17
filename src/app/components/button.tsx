@@ -62,8 +62,9 @@ const TINT_COMMON =
  *
  * Secondary is the exception (hds#595): its pressed state is a solid fill bound to
  * `component.button.secondary.bg.pressed` (`active:bg-…`), and `active:inset-shadow-transparent`
- * swaps the wash colour out so nothing stacks on it. A tone restores the wash colour
- * and its own `active:bg-…`, so a toned secondary presses exactly as before. A tone
+ * swaps the wash colour out so nothing stacks on it. That pressed fill sits in the
+ * neutral/quiet compound, so a toned secondary keeps its tint and presses with the
+ * restored wash colour (2026-11-17). A tone
  * also sets `disabled:border-transparent`, replacing secondary's disabled border
  * (`component.button.secondary.border.disabled`, lighter than the rest border).
  * Primary hover binds `component.button.bgHover` and pressed binds
