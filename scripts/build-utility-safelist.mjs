@@ -18,8 +18,12 @@
  * lists as removed (`utility-removed:<name>` in its facts) in a pending note
  * (upgrade/pending/*.json) or in the ledger of package.json's version
  * (upgrade/releases/<version>.json, between `changeset version` and the next
- * snapshot). Dropping a utility is therefore opt-in: list its fact in a step,
- * rerun this, and the next build no longer has it.
+ * snapshot), less each arbitrary-value, variant or group class that
+ * src/styles/utilities.css writes by hand and whose value names no Tailwind
+ * theme variable (it ships through that hand-written rule either way, so a line
+ * here would only add Tailwind's duplicate beside it). Dropping a utility that
+ * actually leaves the build is opt-in: list its fact in a step, rerun this, and
+ * the next build no longer has it.
  *
  * One `@source inline("<class>");` per line, so a diff shows each utility. A
  * class Tailwind cannot read back from an inline source (a quote, a

@@ -167,6 +167,8 @@ const ADORNMENT_BY_SIZE = {
     restPadR: 'pr-[var(--component-input-size-sm-paddingX)]',
     leadPad: 'pl-7',
     trailPad: 'pr-7',
+    // The native picker's hit strip spans the trailing pad (theme.css .hds-picker).
+    pickerSteps: 7,
     inset: 'inset-y-0 px-scale-xs',
     iconClass: 'size-3.5',
     iconWrap: '[&_svg]:size-3.5',
@@ -180,6 +182,7 @@ const ADORNMENT_BY_SIZE = {
     restPadR: 'pr-[var(--component-input-paddingX)]',
     leadPad: 'pl-9',
     trailPad: 'pr-9',
+    pickerSteps: 9,
     inset: 'inset-y-0 px-2.5',
     iconClass: 'size-4',
     iconWrap: '[&_svg]:size-4',
@@ -193,6 +196,7 @@ const ADORNMENT_BY_SIZE = {
     restPadR: 'pr-[var(--component-input-size-lg-paddingX)]',
     leadPad: 'pl-11',
     trailPad: 'pr-11',
+    pickerSteps: 11,
     inset: 'inset-y-0 px-fixed-xs',
     iconClass: 'size-5',
     iconWrap: '[&_svg]:size-5',
@@ -390,6 +394,14 @@ export const Input = /* @__PURE__ */ React.forwardRef<HTMLInputElement, InputPro
           onChange?.(event);
         }}
         {...rest}
+        style={
+          PickerIcon && !trailingVisual
+            ? ({
+                '--hds-picker-w': `calc(var(--spacing) * ${padCfg.pickerSteps})`,
+                ...rest.style,
+              } as React.CSSProperties)
+            : rest.style
+        }
       />
 
       {isLoading && (
