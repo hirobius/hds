@@ -1,7 +1,8 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
    from docs/api/releases/0.45.0.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
-   ./tokens.css by accident. To drop one, list utility-removed:<class> in a step
+   ./tokens.css by accident. An arbitrary-value, variant or group class utilities.css writes
+   by hand ships anyway, so it has no line here. To drop one, list utility-removed:<class> in a step
    (upgrade/pending/<changeset>.json), then run node scripts/build-utility-safelist.mjs. */
 @source inline("-ml-scale-xs");
 @source inline("-ms-fixed-xs");
@@ -256,7 +257,6 @@
 @source inline("flex-shrink-0");
 @source inline("flex-wrap");
 @source inline("focus-visible:outline-none");
-@source inline("focus:outline-none");
 @source inline("focus:ring-offset-black");
 @source inline("focus:ring-offset-white");
 @source inline("font-medium");
@@ -360,7 +360,6 @@
 @source inline("hover:brightness-95");
 @source inline("hover:scale-102");
 @source inline("hover:shadow-[var(--semantic-elevation-raised-shadow)]");
-@source inline("hover:text");
 @source inline("hover:text-[var(--semantic-color-content-primary)]");
 @source inline("hover:text-foreground");
 @source inline("hover:text-muted-foreground");
@@ -681,7 +680,6 @@
 @source inline("text-5xl");
 @source inline("text-[...onAccent]");
 @source inline("text-[...secondary]");
-@source inline("text-[11px]");
 @source inline("text-[color:var(--component-badge-danger-text)]");
 @source inline("text-[color:var(--component-badge-inProgress-text)]");
 @source inline("text-[color:var(--component-badge-info-text)]");

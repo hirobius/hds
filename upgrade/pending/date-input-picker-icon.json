@@ -1,37 +1,7 @@
 {
   "impact": "behavior",
-  "plain": "A date, time or datetime-local Input shows the HDS calendar or clock icon at its trailing edge instead of the browser's glyph, and seventeen unused utilities are gone.",
+  "plain": "A date, time or datetime-local Input shows the HDS calendar or clock icon at its trailing edge instead of the browser's glyph.",
   "steps": [
-    {
-      "id": "behavior/orphaned-safelist-2",
-      "kind": "behavior",
-      "impact": "none",
-      "plain": "Drops seventeen Tailwind utilities no HDS component uses (old accent and error fills, ad hoc focus rings, pixel text sizes, a card hover sweep); add them in your own CSS if you used them.",
-      "detect": {
-        "regex": [
-          "semantic-accent-(pressed|hover)\\]|feedback-error\\]|surface-accent\\]|ring-offset-2|ring-accent|focus-visible:ring-2|gap-\\[inherit\\]|translate-y-full|origin-left|scale-x-100|group/card|max-h-\\[calc|text-\\[1[024]px\\]"
-        ]
-      },
-      "facts": [
-        "utility-removed:active:bg-[color:var(--semantic-accent-pressed)]",
-        "utility-removed:bg-[color:var(--semantic-color-feedback-error)]",
-        "utility-removed:hover:bg-[color:var(--semantic-accent-hover)]",
-        "utility-removed:text-[color:var(--semantic-color-surface-accent)]",
-        "utility-removed:focus-visible:ring-2",
-        "utility-removed:focus-visible:ring-accent",
-        "utility-removed:focus-visible:ring-offset-2",
-        "utility-removed:gap-[inherit]",
-        "utility-removed:group-hover:-translate-y-full",
-        "utility-removed:group-hover:origin-left",
-        "utility-removed:group-hover:scale-x-100",
-        "utility-removed:group/card",
-        "utility-removed:max-h-[calc(100%-2rem)]",
-        "utility-removed:max-h-[calc(100vh-10rem)]",
-        "utility-removed:text-[10px]",
-        "utility-removed:text-[12px]",
-        "utility-removed:text-[14px]"
-      ]
-    },
     {
       "id": "behavior/Input.dom",
       "kind": "behavior",
@@ -43,6 +13,15 @@
         ]
       },
       "facts": ["dom-changed:Input"]
+    },
+    {
+      "id": "look/focus-visible-ring-utilities",
+      "kind": "look",
+      "impact": "look",
+      "plain": "focus-visible:ring-2 now draws only the HDS focus outline, not Tailwind's box-shadow ring under it; add your own ring if you relied on both.",
+      "detect": {
+        "regex": ["focus-visible:ring-(2|accent|offset-2)"]
+      }
     }
   ]
 }
