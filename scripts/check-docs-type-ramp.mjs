@@ -13,7 +13,7 @@
  * audits them too.
  * Run `pnpm docs:publish` first. Chromium comes from scripts/lib/browser-host.mjs.
  *
- * Usage: node scripts/check-docs-type-ramp.mjs [--dir <path>] [--routes /docs,/docs/case-study] [--include-demos] [--json]
+ * Usage: node scripts/check-docs-type-ramp.mjs [--dir <path>] [--routes /docs,/docs/start-here] [--include-demos] [--json]
  * Exit 0 pass, 1 gaps, 2 setup error. Fixtures: fixtures/check-docs-type-ramp/.
  */
 import fs from 'node:fs';
@@ -24,7 +24,7 @@ import { serveStatic } from './lib/docs-axe.mjs';
 import { launchChromium } from './lib/browser-host.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DEFAULT_ROUTES = ['/docs', '/docs/case-study', '/docs/components/button'];
+const DEFAULT_ROUTES = ['/docs', '/docs/start-here', '/docs/components/button'];
 const VIEWPORTS = [
   { name: '390', width: 390, height: 844 },
   { name: '1440', width: 1440, height: 900 },
