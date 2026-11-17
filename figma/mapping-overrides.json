@@ -2,7 +2,7 @@
   "$comment": "Figma assets whose code counterpart is NOT a top-level component, so no @figma JSDoc tag can point at them and scripts/check-figma-coverage.mjs would report them forever. Each entry is a deliberate statement that the asset IS mapped, just not the usual way. Keep this small: an entry is an admission that Figma and code model the same thing differently, and the better fix is usually to make them agree. Every entry needs a reason a reviewer can check.",
   "overrides": [
     {
-      "nodeId": "128:14",
+      "nodeId": "2684:52",
       "name": "CardProgress",
       "mapsTo": "Card.Progress",
       "source": "src/app/components/card.tsx",
@@ -17,10 +17,10 @@
     },
     {
       "nodeId": "86:52",
-      "name": "TabTrigger",
+      "name": "TabsTrigger",
       "mapsTo": "TabsTrigger",
       "source": "src/app/components/tabs.tsx",
-      "reason": "Figma calls it TabTrigger, code calls it TabsTrigger — one letter apart, which is why no name match found it. It is a part of Tabs and has no docs page of its own, so it takes an override rather than a tag. Worth renaming one side to match; until then this records the pairing."
+      "reason": "A part of Tabs with no docs page of its own, so it takes an override rather than a tag. Figma renamed it from TabTrigger to the code name on 2026-11-16 (hds#1565)."
     },
     {
       "nodeId": "93:58",
@@ -94,24 +94,24 @@
     },
     {
       "nodeId": "85:81",
-      "name": "FormField (form.tsx)",
+      "name": "FormField",
       "mapsTo": "FormField",
       "source": "src/app/components/form.tsx",
-      "reason": "The Figma set on the Form page is FormField of form.tsx (Label, Helper, State, Required). Until 2026-11-15 the Field tag named it by mistake; Field is 2337:23270. form.tsx gives FormField no JSDoc block of its own to carry a tag (its file tag belongs to Form), so the pairing is recorded here. The Figma name should become FormField (hds#1565)."
+      "reason": "The Figma set on the Form page is FormField of form.tsx (Label, Helper, State, Required). Until 2026-11-15 the Field tag named it by mistake; Field is 2337:23270. form.tsx gives FormField no JSDoc block of its own to carry a tag (its file tag belongs to Form), so the pairing is recorded here. Figma renamed it to FormField on 2026-11-16 (hds#1565)."
     },
     {
       "nodeId": "2352:301",
       "name": "ListItem",
       "mapsTo": "ListItem",
       "source": "src/app/components/list.tsx",
-      "reason": "A slot of List (figma/disposition.json), mapped by override as TimelineItem is. The List component 2353:315 is built from ListGroup, which is built from its instances; the item needs its own set for the Trailing and State variants (parity read 2026-11-15)."
+      "reason": "A slot of List (figma/disposition.json), mapped by override as TimelineItem is. The List set 2683:2224 (Variant, Divider; hds#1565) is built from ListGroup, which is built from its instances; the item needs its own set for the Trailing and State variants (parity read 2026-11-15)."
     },
     {
-      "nodeId": "2353:314",
+      "nodeId": "2683:1450",
       "name": "ListGroup",
       "mapsTo": "ListGroup",
       "source": "src/app/components/list.tsx",
-      "reason": "A slot of List (figma/disposition.json), mapped by override as ListItem is. It needs its own set for the Variant and Divider variants (parity read 2026-11-15)."
+      "reason": "A slot of List (figma/disposition.json), mapped by override as ListItem is. A single component since 2026-11-16: the List set carries Variant and Divider, and the old ListGroup set with those axes is on the Archive (deprecated) page (hds#1565)."
     },
     {
       "nodeId": "2335:14832",

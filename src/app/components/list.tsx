@@ -426,7 +426,7 @@ const ListRoot = /* @__PURE__ */ React.forwardRef<HTMLDivElement, ListProps>(fun
 // the List node. The Figma ListGroup and ListItem sets sit on the same page.
 /**
  * List - an inset grouped list: titled groups of tappable rows on a raised surface.
- * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315
+ * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2683-2224
  * @public
  */
 export const List: ListComponent = /* @__PURE__ */ Object.assign(ListRoot, {

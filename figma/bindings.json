@@ -16,7 +16,7 @@
         "list/rowPadding"
       ]
     },
-    "2353:315": {
+    "2683:2224": {
       "name": "List",
       "variables": ["list/groupGap", "list/headingGap"]
     },
@@ -154,7 +154,7 @@
         "disclosure/paddingY"
       ]
     },
-    "89:155": {
+    "2684:55": {
       "name": "InlineCode",
       "variables": ["inlineCode/bg"]
     },

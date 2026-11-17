@@ -1,31 +1,31 @@
 {
   "$comment": "The parity read: every component of the HDS library (properties, variant options, what its default variant nests) and one hash per variable collection. Written by `pnpm figma:parity --ingest` from the results of the read-only use_figma scripts `pnpm figma:parity --emit-read` prints. Do not edit: read the library again. `pnpm check:figma-parity` compares it with code.",
   "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
-  "readOn": "2026-11-15",
-  "takenAt": "2026-11-15T20:17:51.257Z",
+  "readOn": "2026-11-17",
+  "takenAt": "2026-11-17T03:27:14.578Z",
   "variables": {
-    "top": "9200a1bf",
+    "top": "748d2507",
     "collections": [
       {
         "id": "VariableCollectionId:1:2",
         "name": "Hirobius/Primitives",
         "modes": 1,
-        "variables": 212,
-        "hash": "3d437149"
+        "variables": 219,
+        "hash": "405e5475"
       },
       {
         "id": "VariableCollectionId:1:3",
         "name": "Hirobius/Semantic",
         "modes": 2,
-        "variables": 218,
-        "hash": "86cbbf90"
+        "variables": 220,
+        "hash": "d3069a47"
       },
       {
         "id": "VariableCollectionId:1:4",
         "name": "Hirobius/Component",
         "modes": 1,
         "variables": 118,
-        "hash": "e7f45ee7"
+        "hash": "20028f56"
       },
       {
         "id": "VariableCollectionId:2018:712",
@@ -39,7 +39,7 @@
         "name": "Hirobius/Brand",
         "modes": 3,
         "variables": 29,
-        "hash": "7852f694"
+        "hash": "cdcc304d"
       },
       {
         "id": "VariableCollectionId:2018:714",
@@ -60,12 +60,12 @@
         "name": "Hirobius/Meta",
         "modes": 1,
         "variables": 6,
-        "hash": "682fa4b8"
+        "hash": "7711ccda"
       }
     ],
     "textStyles": {
       "count": 15,
-      "hash": "0bab5b07"
+      "hash": "2550f7c1"
     },
     "effectStyles": {
       "count": 8,
@@ -297,7 +297,7 @@
           "id": "2399:11077",
           "name": "Button",
           "type": "SET",
-          "variants": 48,
+          "variants": 68,
           "props": [
             ["Label", "TEXT", "Button"],
             ["Loading", "BOOLEAN", false],
@@ -305,10 +305,16 @@
             ["Show icon", "BOOLEAN", false],
             ["Show trail icon", "BOOLEAN", false],
             ["Icon", "INSTANCE_SWAP", "27:41"],
-            ["Trail Icon", "INSTANCE_SWAP", "27:15"],
+            ["Trail icon", "INSTANCE_SWAP", "27:15"],
             ["Variant", "VARIANT", "secondary", ["primary", "secondary", "tertiary", "link"]],
             ["Size", "VARIANT", "md", ["sm", "md", "lg"]],
-            ["State", "VARIANT", "rest", ["rest", "hover", "pressed", "disabled"]]
+            ["State", "VARIANT", "rest", ["rest", "hover", "pressed", "disabled"]],
+            [
+              "Tone",
+              "VARIANT",
+              "neutral",
+              ["neutral", "quiet", "danger", "success", "warning", "info"]
+            ]
           ],
           "nests": ["Icon"]
         },
@@ -339,7 +345,7 @@
           "type": "SET",
           "variants": 5,
           "props": [
-            ["Show Action", "BOOLEAN", true],
+            ["Show action", "BOOLEAN", true],
             ["Tone", "VARIANT", "info", ["info", "success", "warning", "danger", "accent"]]
           ],
           "nests": ["Icon"]
@@ -367,10 +373,13 @@
           "nests": []
         },
         {
-          "id": "128:14",
+          "id": "2684:52",
           "name": "CardProgress",
-          "type": "ONE",
-          "props": [],
+          "type": "SET",
+          "variants": 5,
+          "props": [
+            ["Tone", "VARIANT", "neutral", ["neutral", "danger", "success", "warning", "info"]]
+          ],
           "nests": []
         }
       ]
@@ -401,19 +410,24 @@
           "id": "89:154",
           "name": "CodeBlock",
           "type": "SET",
-          "variants": 2,
+          "variants": 3,
           "props": [
             ["Code", "TEXT", "const x = 1;"],
             ["Filename", "TEXT", "index.ts"],
+            ["Variant", "VARIANT", "block", ["block", "inline"]],
             ["Show filename", "VARIANT", "false", ["false", "true"]]
           ],
           "nests": []
         },
         {
-          "id": "89:155",
+          "id": "2684:55",
           "name": "InlineCode",
-          "type": "ONE",
-          "props": [["Code", "TEXT", "token"]],
+          "type": "SET",
+          "variants": 2,
+          "props": [
+            ["Code", "TEXT", "token"],
+            ["Density", "VARIANT", "comfortable", ["comfortable", "compact"]]
+          ],
           "nests": []
         }
       ]
@@ -577,7 +591,7 @@
             ["Show description", "BOOLEAN", true],
             ["Show action", "BOOLEAN", true],
             ["Title", "TEXT", "Nothing here yet"],
-            ["Description2", "TEXT", "Items you add will show up here."],
+            ["Description", "TEXT", "Items you add will show up here."],
             ["Variant", "VARIANT", "inline", ["inline", "teaching"]],
             ["Framed", "VARIANT", "false", ["false", "true"]]
           ],
@@ -627,7 +641,7 @@
       "components": [
         {
           "id": "85:81",
-          "name": "FormField (form.tsx)",
+          "name": "FormField",
           "type": "SET",
           "variants": 6,
           "props": [
@@ -789,13 +803,8 @@
           "type": "ONE"
         },
         {
-          "id": "92:58",
-          "name": "Icon/sliders",
-          "type": "ONE"
-        },
-        {
           "id": "92:66",
-          "name": "Icon/trash",
+          "name": "Icon/trash-2",
           "type": "ONE"
         },
         {
@@ -825,12 +834,12 @@
         },
         {
           "id": "92:96",
-          "name": "Icon/more-horizontal",
+          "name": "Icon/ellipsis",
           "type": "ONE"
         },
         {
           "id": "92:101",
-          "name": "Icon/more-vertical",
+          "name": "Icon/ellipsis-vertical",
           "type": "ONE"
         },
         {
@@ -864,16 +873,6 @@
           "type": "ONE"
         },
         {
-          "id": "92:138",
-          "name": "Icon/circle",
-          "type": "ONE"
-        },
-        {
-          "id": "92:141",
-          "name": "Icon/dot",
-          "type": "ONE"
-        },
-        {
           "id": "106:5",
           "name": "Icon/search",
           "type": "ONE"
@@ -890,7 +889,7 @@
         },
         {
           "id": "109:11",
-          "name": "Icon/filter",
+          "name": "Icon/funnel",
           "type": "ONE"
         },
         {
@@ -899,13 +898,8 @@
           "type": "ONE"
         },
         {
-          "id": "109:1227",
-          "name": "Icon/loader-circle",
-          "type": "ONE"
-        },
-        {
           "id": "109:1231",
-          "name": "Icon/home",
+          "name": "Icon/house",
           "type": "ONE"
         },
         {
@@ -924,18 +918,8 @@
           "type": "ONE"
         },
         {
-          "id": "109:1251",
-          "name": "Icon/file",
-          "type": "ONE"
-        },
-        {
           "id": "109:1258",
           "name": "Icon/file-text",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1261",
-          "name": "Icon/folder",
           "type": "ONE"
         },
         {
@@ -949,18 +933,8 @@
           "type": "ONE"
         },
         {
-          "id": "109:1273",
-          "name": "Icon/message-square",
-          "type": "ONE"
-        },
-        {
           "id": "109:1276",
           "name": "Icon/phone",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1280",
-          "name": "Icon/send",
           "type": "ONE"
         },
         {
@@ -974,58 +948,8 @@
           "type": "ONE"
         },
         {
-          "id": "109:1293",
-          "name": "Icon/globe",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1296",
-          "name": "Icon/cloud",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1299",
-          "name": "Icon/zap",
-          "type": "ONE"
-        },
-        {
           "id": "109:1304",
           "name": "Icon/circle-help",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1312",
-          "name": "Icon/grip-vertical",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1317",
-          "name": "Icon/layers",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1323",
-          "name": "Icon/layout-dashboard",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1326",
-          "name": "Icon/shield",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1332",
-          "name": "Icon/chart-bar",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1336",
-          "name": "Icon/trending-up",
-          "type": "ONE"
-        },
-        {
-          "id": "109:1343",
-          "name": "Icon/sparkles",
           "type": "ONE"
         },
         {
@@ -1039,16 +963,6 @@
           "type": "ONE"
         },
         {
-          "id": "109:1358",
-          "name": "Icon/hash",
-          "type": "ONE"
-        },
-        {
-          "id": "2295:2541",
-          "name": "Icon/square-arrow-out-up-right",
-          "type": "ONE"
-        },
-        {
           "id": "2304:2218",
           "name": "Icon/arrow-up",
           "type": "ONE"
@@ -1059,13 +973,28 @@
           "type": "ONE"
         },
         {
-          "id": "2304:2228",
-          "name": "Icon/arrow-up-down",
+          "id": "2680:452",
+          "name": "Icon/banknote",
           "type": "ONE"
         },
         {
-          "id": "2304:2229",
-          "name": "Icon/circle-x",
+          "id": "2680:457",
+          "name": "Icon/briefcase",
+          "type": "ONE"
+        },
+        {
+          "id": "2680:461",
+          "name": "Icon/images",
+          "type": "ONE"
+        },
+        {
+          "id": "2680:467",
+          "name": "Icon/save",
+          "type": "ONE"
+        },
+        {
+          "id": "2680:472",
+          "name": "Icon/wrench",
           "type": "ONE"
         }
       ]
@@ -1113,7 +1042,7 @@
               "Default",
               ["Default", "Focus", "Error", "Disabled", "Filled", "Loading"]
             ],
-            ["Size", "VARIANT", "sm", ["lg", "sm", "md"]],
+            ["Size", "VARIANT", "md", ["lg", "sm", "md"]],
             ["Text style", "VARIANT", "body", ["mono", "body"]]
           ],
           "nests": ["Icon"]
@@ -1159,31 +1088,31 @@
             ["Show description", "BOOLEAN", true],
             ["Show meta", "BOOLEAN", true],
             ["Show divider", "BOOLEAN", false],
-            ["Leading icon", "INSTANCE_SWAP", "109:1258"],
             ["Trailing", "VARIANT", "chevron", ["chevron", "count", "actions", "none"]],
             ["State", "VARIANT", "Default", ["Default", "Hover", "Pressed", "Focus"]]
           ],
           "nests": ["Icon"]
         },
         {
-          "id": "2353:314",
+          "id": "2683:1450",
           "name": "ListGroup",
-          "type": "SET",
-          "variants": 3,
+          "type": "ONE",
           "props": [
             ["Title", "TEXT", "Applications"],
             ["Show count", "BOOLEAN", true],
-            ["Show action", "BOOLEAN", true],
-            ["Variant", "VARIANT", "inset", ["inset", "plain"]],
-            ["Divider", "VARIANT", "inset", ["inset", "none"]]
+            ["Show action", "BOOLEAN", true]
           ],
           "nests": ["Badge", "Button", "ListItem"]
         },
         {
-          "id": "2353:315",
+          "id": "2683:2224",
           "name": "List",
-          "type": "ONE",
-          "props": [],
+          "type": "SET",
+          "variants": 3,
+          "props": [
+            ["Variant", "VARIANT", "inset", ["inset", "plain"]],
+            ["Divider", "VARIANT", "inset", ["inset", "none"]]
+          ],
           "nests": ["ListGroup"]
         }
       ]
@@ -1345,8 +1274,10 @@
           "id": "88:91",
           "name": "Progress",
           "type": "SET",
-          "variants": 6,
+          "variants": 12,
           "props": [
+            ["Variant", "VARIANT", "linear", ["linear", "circular"]],
+            ["Tone", "VARIANT", "neutral", ["neutral", "danger", "success", "warning", "info"]],
             ["Type", "VARIANT", "Determinate", ["Determinate", "Indeterminate"]],
             ["Size", "VARIANT", "sm", ["md", "sm", "lg"]]
           ],
@@ -1484,7 +1415,7 @@
           "name": "Skeleton",
           "type": "SET",
           "variants": 3,
-          "props": [["Variant", "VARIANT", "text", ["text", "rectangular", "circular"]]],
+          "props": [["Variant", "VARIANT", "rectangular", ["text", "rectangular", "circular"]]],
           "nests": []
         }
       ]
@@ -1585,11 +1516,10 @@
           "id": "89:300",
           "name": "Table",
           "type": "SET",
-          "variants": 8,
+          "variants": 4,
           "props": [
             ["Density", "VARIANT", "comfortable", ["comfortable", "compact"]],
-            ["Sortable", "VARIANT", "false", ["false", "true"]],
-            ["StickyHeader", "VARIANT", "false", ["false", "true"]]
+            ["Sticky header", "VARIANT", "false", ["false", "true"]]
           ],
           "nests": ["Table/Cell", "Table/HeaderCell"]
         },
@@ -1635,7 +1565,7 @@
       "components": [
         {
           "id": "86:52",
-          "name": "TabTrigger",
+          "name": "TabsTrigger",
           "type": "SET",
           "variants": 6,
           "props": [
@@ -1654,7 +1584,7 @@
             ["Tabs", "VARIANT", "2", ["2", "3", "4"]],
             ["Variant", "VARIANT", "panel", ["panel", "bare"]]
           ],
-          "nests": ["TabTrigger"]
+          "nests": ["TabsTrigger"]
         }
       ]
     },
@@ -1800,7 +1730,7 @@
       "components": [
         {
           "id": "93:367",
-          "name": "Toast",
+          "name": "ToastProvider",
           "type": "SET",
           "variants": 15,
           "props": [
@@ -2389,6 +2319,140 @@
           "id": "2337:30167",
           "name": "_SpecSheet/OffsetCallout",
           "type": "ONE"
+        }
+      ]
+    },
+    {
+      "id": "2680:475",
+      "name": "Archive (deprecated)",
+      "components": [
+        {
+          "id": "92:58",
+          "name": "_Icon/sliders (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "92:138",
+          "name": "_Icon/circle (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "92:141",
+          "name": "_Icon/dot (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1227",
+          "name": "Icon/loader-circle (archived 2026-11-16, still nested by Button and IconButton spinner)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1251",
+          "name": "_Icon/file (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1261",
+          "name": "_Icon/folder (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1273",
+          "name": "_Icon/message-square (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1280",
+          "name": "_Icon/send (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1293",
+          "name": "_Icon/globe (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1296",
+          "name": "_Icon/cloud (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1299",
+          "name": "_Icon/zap (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1312",
+          "name": "_Icon/grip-vertical (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1317",
+          "name": "_Icon/layers (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1323",
+          "name": "_Icon/layout-dashboard (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1326",
+          "name": "_Icon/shield (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1332",
+          "name": "_Icon/chart-bar (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1336",
+          "name": "_Icon/trending-up (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1343",
+          "name": "_Icon/sparkles (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "109:1358",
+          "name": "_Icon/hash (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "2295:2541",
+          "name": "Icon/square-arrow-out-up-right (archived 2026-11-16, still nested by InlineLink external icon)",
+          "type": "ONE"
+        },
+        {
+          "id": "2304:2228",
+          "name": "_Icon/arrow-up-down (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "2304:2229",
+          "name": "_Icon/circle-x (archived 2026-11-16)",
+          "type": "ONE"
+        },
+        {
+          "id": "2681:20",
+          "name": "_Table (Sortable) (archived 2026-11-16)",
+          "type": "SET",
+          "variants": 4
+        },
+        {
+          "id": "2681:21",
+          "name": "_ListItem (Leading icon) (archived 2026-11-16)",
+          "type": "SET",
+          "variants": 16
+        },
+        {
+          "id": "2353:314",
+          "name": "_ListGroup (Variant, Divider) (archived 2026-11-16)",
+          "type": "SET",
+          "variants": 3
         }
       ]
     }

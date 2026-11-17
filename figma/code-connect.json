@@ -143,8 +143,8 @@
     },
     "Button": {
       "source": "src/app/components/button.tsx",
-      "evidence": "read-2026-11-15",
-      "note": "Figma draws the neutral tone only: the code tone axis (quiet, danger, success, warning, info), hoverEffect and shadow have no Figma property.",
+      "evidence": "read-2026-11-17",
+      "note": "Tone is a Figma VARIANT since 2026-11-16 (neutral on every variant; quiet, danger, success, warning, info at md/rest, each set to its Button tone collection mode). hoverEffect and shadow have no Figma property.",
       "properties": {
         "Label": {
           "type": "TEXT",
@@ -174,7 +174,7 @@
           "prop": "iconLeft",
           "visibleWhen": "Show icon"
         },
-        "Trail Icon": {
+        "Trail icon": {
           "type": "INSTANCE_SWAP",
           "prop": "iconRight",
           "visibleWhen": "Show trail icon"
@@ -203,6 +203,12 @@
               "disabled": true
             }
           }
+        },
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["neutral", "quiet", "danger", "success", "warning", "info"],
+          "default": "neutral",
+          "prop": "tone"
         }
       }
     },
@@ -302,7 +308,7 @@
     },
     "Input": {
       "source": "src/app/components/input.tsx",
-      "evidence": "read-2026-11-15",
+      "evidence": "read-2026-11-17",
       "imports": {
         "lucide-react": ["Search", "X"]
       },
@@ -383,7 +389,7 @@
         "Size": {
           "type": "VARIANT",
           "options": ["lg", "sm", "md"],
-          "default": "sm",
+          "default": "md",
           "prop": "size"
         },
         "Text style": {
@@ -543,9 +549,9 @@
     },
     "Callout": {
       "source": "src/app/components/callout.tsx",
-      "evidence": "read-2026-11-15",
+      "evidence": "read-2026-11-17",
       "properties": {
-        "Show Action": {
+        "Show action": {
           "type": "BOOLEAN",
           "default": true,
           "figmaOnly": "The action is a child the application supplies."
@@ -633,7 +639,7 @@
     },
     "CodeBlock": {
       "source": "src/app/components/code-block.tsx",
-      "evidence": "read-2026-11-15",
+      "evidence": "read-2026-11-17",
       "importFrom": "@hirobius/design-system/patterns",
       "properties": {
         "Code": {
@@ -656,6 +662,12 @@
               "filename": "index.ts"
             }
           }
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["block", "inline"],
+          "default": "block",
+          "prop": "variant"
         }
       }
     },
@@ -911,7 +923,7 @@
     },
     "EmptyState": {
       "source": "src/app/components/empty-state.tsx",
-      "evidence": "read-2026-11-15",
+      "evidence": "read-2026-11-17",
       "imports": {
         "@hirobius/design-system": ["Button"],
         "lucide-react": ["Inbox"]
@@ -950,7 +962,7 @@
           "default": "Nothing here yet",
           "prop": "title"
         },
-        "Description2": {
+        "Description": {
           "type": "TEXT",
           "default": "Items you add will show up here.",
           "prop": "description",
@@ -1039,12 +1051,18 @@
     },
     "InlineCode": {
       "source": "src/app/components/inline-code.tsx",
-      "evidence": "read-2026-11-15",
+      "evidence": "read-2026-11-17",
       "properties": {
         "Code": {
           "type": "TEXT",
           "default": "token",
           "prop": "children"
+        },
+        "Density": {
+          "type": "VARIANT",
+          "options": ["comfortable", "compact"],
+          "default": "comfortable",
+          "prop": "density"
         }
       }
     },
@@ -1110,8 +1128,21 @@
     },
     "List": {
       "source": "src/app/components/list.tsx",
-      "evidence": "read-2026-11-15",
-      "properties": {},
+      "evidence": "read-2026-11-17",
+      "properties": {
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["inset", "plain"],
+          "default": "inset",
+          "prop": "variant"
+        },
+        "Divider": {
+          "type": "VARIANT",
+          "options": ["inset", "none"],
+          "default": "inset",
+          "figmaOnly": "Code takes divider=\"none\" only with variant=\"plain\" (a typed union), so the snippet leaves it out; the Figma Divider option draws that plain-only case."
+        }
+      },
       "children": "<List.Item title=\"Item title\" href={item.href} trailing=\"chevron\" />"
     },
     "Menu": {
@@ -1317,7 +1348,7 @@
     },
     "Progress": {
       "source": "src/app/components/progress.tsx",
-      "evidence": "read-2026-11-15",
+      "evidence": "read-2026-11-17",
       "properties": {
         "Type": {
           "type": "VARIANT",
@@ -1337,6 +1368,18 @@
           "options": ["md", "sm", "lg"],
           "default": "sm",
           "prop": "size"
+        },
+        "Variant": {
+          "type": "VARIANT",
+          "options": ["linear", "circular"],
+          "default": "linear",
+          "prop": "variant"
+        },
+        "Tone": {
+          "type": "VARIANT",
+          "options": ["neutral", "danger", "success", "warning", "info"],
+          "default": "neutral",
+          "prop": "tone"
         }
       }
     },
@@ -1461,12 +1504,12 @@
     },
     "Skeleton": {
       "source": "src/app/components/skeleton.tsx",
-      "evidence": "read-2026-11-15",
+      "evidence": "read-2026-11-17",
       "properties": {
         "Variant": {
           "type": "VARIANT",
           "options": ["text", "rectangular", "circular"],
-          "default": "text",
+          "default": "rectangular",
           "prop": "variant"
         }
       }
