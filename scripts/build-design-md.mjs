@@ -422,14 +422,6 @@ export function buildMotion(raw) {
 }
 
 /**
- * Components — 8 visual atoms covering Google Stitch's DESIGN.md spec:
- * Buttons, Inputs, Cards, Badges, Alerts, Disclosures, Toggles,
- * Segmented Controls. For each: radius source, state model, key tokens.
- *
- * Values are derived from tokens when present; component names are
- * confirmed against public/hds-manifest.json.
- */
-/**
  * What each Button variant looks like. Keyed by the manifest's `variant` values, so a
  * new or renamed variant fails the build here instead of DESIGN.md teaching a Button
  * that does not exist (Fable eval #1: "secondary (outline)" outlived the soft fill).
@@ -457,6 +449,14 @@ export function buttonVariantsSentence(manifest) {
   return `Variants: ${order.map((v) => `\`${v}\` (${BUTTON_VARIANT_LOOK[v]})`).join(', ')}.`;
 }
 
+/**
+ * Components — 8 visual atoms covering Google Stitch's DESIGN.md spec:
+ * Buttons, Inputs, Cards, Badges, Alerts, Disclosures, Toggles,
+ * Segmented Controls. For each: radius source, state model, key tokens.
+ *
+ * Values are derived from tokens when present; component names are
+ * confirmed against public/hds-manifest.json.
+ */
 export function buildComponents(raw, manifest) {
   const inventory = new Set(manifest?.componentInventory ?? []);
   const present = (name) => inventory.has(name);

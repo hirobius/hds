@@ -295,7 +295,7 @@ When building any card component or card-like surface, ALL of the following rule
 | Border radius | \`rounded-lg\` (\`role.radius\` + 4 px: 12 px by default, follows the tenant) | \`var(--component-card-radius)\`, \`rounded-full\`, or any hard-coded value |
 | Padding | \`var(--semantic-space-surface-padding)\` or \`<Surface padding="component">\` | Raw pixel values, Tailwind spacing classes, ad hoc insets |
 | Shadow | Resting cards: none (\`elevation.flat\`). Interactive lifted state: \`shadow.subtle\` via \`elevation.raised\`. Never reach for shadow values directly — bind via \`var(--semantic-elevation-{role}-shadow)\` | Raw \`box-shadow\` values, \`drop-shadow\`, glow, or any depth effect not bound to a role token |
-| Title | \`hds.typeStyles.heading3\` / \`<Text variant="heading3">\` | Any other type style for the primary card heading |
+| Title | \`<Card.Title>\` (the \`title\` role, \`hds.typeStyles.title\`) | Any other type style for the primary card heading |
 | Subtitle / meta | \`hds.typeStyles.caption\` / \`<Text variant="caption">\` + \`var(--semantic-color-content-secondary)\` | Primary color, body size, or custom color for secondary text |
 | Hover (interactive cards only) | \`transform: scale(1.02)\` CSS transform | Background color change, fill swap, border color shift on hover |
 
@@ -399,13 +399,14 @@ ${upgradeMarkdown(ROOT, pkg.version)}
     'llms.txt': index,
     'public/llms-full.txt': full,
   };
-  // Never teach a deprecated API (Fable eval #1): fail the build, not the reader.
+  for (const sl of SLICES) {
+    outputs[`public/llms/${sl.name}.txt`] = `${sliceHeader(sl.name)}${slices[sl.name]}\n`;
+  }
+  // Never teach a deprecated API (Fable eval #1): fail the build, not the reader. Checked
+  // after the slices are added, so public/llms/*.txt is covered too.
   const deprecatedApi = loadDeprecatedNames(ROOT);
   for (const [rel, text] of Object.entries(outputs)) {
     assertNoDeprecatedRecommendations(text, deprecatedApi, rel);
-  }
-  for (const sl of SLICES) {
-    outputs[`public/llms/${sl.name}.txt`] = `${sliceHeader(sl.name)}${slices[sl.name]}\n`;
   }
   if (!write) return outputs;
 

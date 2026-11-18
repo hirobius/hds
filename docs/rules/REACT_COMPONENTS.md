@@ -85,9 +85,9 @@ Every item below is a build error. If an AI agent or human produces any of these
 ### Typography
 
 - **Heading + supporting line = `Stack` + `Text`** — the two lockup components that wrapped this pair were removed in 0.20.0 (hds#394). Compose it from the primitives, never from raw tags or ad hoc margins:
-  - `<Stack gap="xs"><Text variant="heading2" as="h2">Title</Text><Text variant="body" className="text-muted-foreground">Supporting line</Text></Stack>`
-  - pick the heading level with `variant="heading1|heading2|heading3"` (and the matching `as`); the supporting line is always `text-muted-foreground`, and the gap comes from `Stack`, never a margin.
-- **No deprecated typography tokens** — `label`, `labelTechnical`, `micro`, `monoXs`, `monoSm`, `body2`, `displayXl`, `display2`, and `title` are all removed. Update any reference found during review.
+  - `<Stack gap="xs"><Text variant="title" as="h2">Title</Text><Text variant="body" className="text-muted-foreground">Supporting line</Text></Stack>`
+  - pick the heading role with `variant="title|titleSm"` and the heading level with `as`; the supporting line is always `text-muted-foreground`, and the gap comes from `Stack`, never a margin.
+- **No deprecated typography tokens** — `label`, `labelTechnical`, `micro`, `monoXs`, `monoSm`, `body2`, `displayXl` and `display2` are all removed (`title` is the live heading role). Update any reference found during review.
 - **No hardcoded pixels in layout props** — do not pass raw values like `gap="12px"`, `style={{ padding: '10px' }}`, or `mt={15}`. Use the scale names `xs…xl` (8/16/24/32/48px at default density). The layout names (`tight`, `normal`, `inset`, `spacious`), subgrid names (`gap`), and `pxN` keys are legacy aliases being removed. Do NOT pass raw pixel strings like `"12px"` or `"16px"` as gap values.
 - **No tight line-heights** — all `body`, `ui`, and `caption` text must have line-height 1.5.
 
@@ -104,7 +104,7 @@ Prescriptive rules for each component family. Follow these exactly — they are 
 - Border radius: `rounded-lg` (`role.radius` + 4 px: 12 px default, 4 px `brutalist-demo`). Never `var(--component-card-radius)`, a hard-coded value, `rounded-xl`, or `rounded-full`.
 - Padding: `var(--semantic-space-surface-padding)` or `<HdsSurface padding="component">`. No raw pixel values.
 - Shadow: none by default (`elevation.flat`). Lifted/interactive cards use `shadow.subtle` via `elevation.raised` — bind to the role token, never a raw box-shadow value.
-- Title: `hds.typeStyles.heading3` / `<Text variant="h3">`. No other type style for the primary card heading.
+- Title: `<Card.Title>` (the `title` role, `hds.typeStyles.title`). No other type style for the primary card heading.
 - Subtitle / meta: `<Text variant="caption" tone="secondary">` (`hds.typeStyles.caption` + `semantic.color.content.secondary`); never an inline `color` style.
 - Hover (interactive cards only): `transform: scale(1.02)`. Never change background-color, border-color, or opacity as the primary hover signal.
 

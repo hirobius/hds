@@ -54,7 +54,14 @@ export function findDeprecatedRecommendations(text, names) {
     for (const m of scanned.matchAll(/`([^`]+)`/g)) {
       const span = m[1];
       const seen = new Set();
-      if (names.textVariants.has(span.trim())) seen.add(span.trim());
+      // A whole span naming a deprecated Text variant (`heading3`). Plain words that are also
+      // component or file names (`badge`, `eyebrow`, `technical`) count only in code below.
+      const whole = span.trim();
+      if (names.textVariants.has(whole) && /\d|[a-z][A-Z]/.test(whole)) seen.add(whole);
+      // A Text variant named in code: variant="heading3", typeStyles.heading3, typography.heading3.
+      for (const v of span.matchAll(/(?:variant=["']|typeStyles\.|typography\.)(\w+)/g)) {
+        if (names.textVariants.has(v[1])) seen.add(v[1]);
+      }
       for (const id of span.matchAll(/\b([A-Z][A-Za-z]*(?:\.[A-Z][A-Za-z]*)?)\b/g)) {
         const token = id[1];
         if (names.exports.has(token) || names.exports.has(token.replace(/\./g, '')))

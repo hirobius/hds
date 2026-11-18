@@ -1794,3 +1794,33 @@ The first full parity read: every component and component set of the library, an
 | P9  | `use_figma`       | read | parity read, components part 4 of 4                    | OK; 21 pages                                                                                                                                  |
 
 Session total: 8 calls that reached Figma (5 `use_figma` reads, 1 session, 1 skill read, 1 `whoami`). The results are `figma/parity/read.json` (86 pages, 248 components: 80 live, 75 icons, 62 retired, 31 spec sheet kit). Nothing written, nothing deleted, nothing published.
+
+## 2026-11-16 · Daily release check: token changes on main (c3aeecb, 0.45.0)
+
+Plan updated 83 · created 9 · deleted 0 against snapshot ae5ce28a, from #1561 (solid tone Buttons, the B dark ramp) and #1563 (tokens headroom). `check:figma-release` failed. The delta is 3 parts. The parity, Code Connect and spec sheet reads were refreshed after it, because other work redrew List, InlineCode and CardProgress and renamed properties in the library on 2026-11-16.
+
+| #   | Time (UTC) | Tool             | Kind  | Purpose                                          | Result                               |
+| --- | ---------- | ---------------- | ----- | ------------------------------------------------ | ------------------------------------ |
+| 1   | 16:50      | `create_session` | read  | open file session                                | ok, session 3d93908c                 |
+| 2   | 16:51      | `use_figma`      | write | delta-1-of-3.js unmodified                       | ok, post d389c210                    |
+| 3   | 16:52      | `use_figma`      | write | delta-2-of-3.js unmodified                       | ok, post aaa54efd                    |
+| 4   | 16:53      | `use_figma`      | write | delta-3-of-3.js unmodified                       | ok, post b6f607aa, lastPush aa37b79a |
+| 5   | 17:00      | `use_figma`      | read  | parity variables.js unmodified                   | ok, 8 collections                    |
+| 6   | 17:01      | `use_figma`      | read  | parity components-1-of-4.js unmodified           | ok, 22 pages                         |
+| 7   | 17:02      | `use_figma`      | read  | parity components-2-of-4.js unmodified           | ok, 22 pages                         |
+| 8   | 17:03      | `use_figma`      | read  | parity components-3-of-4.js unmodified           | ok, 22 pages                         |
+| 9   | 17:04      | `use_figma`      | read  | parity components-4-of-4.js unmodified           | ok, 21 pages                         |
+| 10  | 17:20      | `use_figma`      | read  | code-connect-map --emit-property-read unmodified | ok, 73 nodes                         |
+| 11  | 17:40      | `use_figma`      | read  | figma-spec-sheets --emit-audit unmodified        | ok, 87 pages                         |
+
+Session total: 11 calls
+
+## 2026-11-18 · Release 0.46.0: meta re-stamp on the regenerated Version PR (#1552, head e0e2378)
+
+#1578 merged (0557c0b2); the Version PR regenerated at e0e2378. Earlier on 2026-11-17 this session ran: delta part 1 refused by the pin (library ahead of main's snapshot), snapshot-diff tooLarge (92 records), receipt.js (last writer: #1578's run f0960b65), then a meta delta on #1578's snapshot (version 0.46.0, commit f950c30; post e867670a). Re-based figma/snapshot.json on that receipt's snapshot.
+
+| #   | Tool        | Kind  | What                                     | Result                                                                                                                                                      |
+| --- | ----------- | ----- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T1  | `use_figma` | write | delta.js (updated 2: releasedAt, commit) | OK: releasedAt 2026-11-18, commit e0e2378; post 8d3b2357. Snapshot rebuilt --from-receipt; drift 0, plan 0/0/0, check:figma-release OK, parity no new drift |
+
+Session total (17 and 18 Nov): 6 calls that reached Figma (1 session, 3 `use_figma` writes of which 1 refused, 2 reads). Nothing deleted, nothing published.

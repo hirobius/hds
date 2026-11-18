@@ -54,6 +54,14 @@ describe('findDeprecatedRecommendations', () => {
     expect(findDeprecatedRecommendations(text, names)).toEqual([]);
   });
 
+  it('flags a deprecated Text variant named in code (variant=, typeStyles., typography.)', () => {
+    const text = 'Title: `<Text variant="heading3">` or `hds.typeStyles.heading3`.';
+    expect(findDeprecatedRecommendations(text, names).map((h) => h.name)).toEqual([
+      'heading3',
+      'heading3',
+    ]);
+  });
+
   it('ignores type-only exports and words that only contain a deprecated name', () => {
     expect(
       findDeprecatedRecommendations('`MetricTilesProps` and `MetricTilesGrid`', names),
@@ -63,12 +71,17 @@ describe('findDeprecatedRecommendations', () => {
 
 describe('the shipped rule documents', () => {
   const live = loadDeprecatedNames(ROOT);
-  it.each(['DESIGN.md', 'public/llms.txt', 'public/llms-full.txt', 'AGENTS.md'])(
-    '%s recommends no deprecated API',
-    (rel) => {
-      expect(findDeprecatedRecommendations(read(rel), live)).toEqual([]);
-    },
-  );
+  it.each([
+    'DESIGN.md',
+    'public/llms.txt',
+    'public/llms-full.txt',
+    'public/llms/components.txt',
+    'public/llms/layout.txt',
+    'AGENTS.md',
+    'docs/rules/REACT_COMPONENTS.md',
+  ])('%s recommends no deprecated API', (rel) => {
+    expect(findDeprecatedRecommendations(read(rel), live)).toEqual([]);
+  });
 
   it('DESIGN.md describes the secondary Button as it renders (no outline)', () => {
     const design = read('DESIGN.md');
