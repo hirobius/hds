@@ -22,22 +22,22 @@ describe('Input contract', () => {
     expect(input).not.toBeNull();
   });
 
-  it('size=sm emits h-8 class on the input', () => {
+  it('size=sm binds the input to semantic.size.controlHeight.sm', () => {
     const { container } = render(<Input size="sm" />);
     const input = container.querySelector('input');
-    expect(input?.className).toContain('h-8');
+    expect(input?.className).toContain('h-[var(--semantic-size-controlHeight-sm)]');
   });
 
-  it('size=md emits h-10 class on the input', () => {
+  it('size=md binds the input to semantic.size.controlHeight.md', () => {
     const { container } = render(<Input size="md" />);
     const input = container.querySelector('input');
-    expect(input?.className).toContain('h-10');
+    expect(input?.className).toContain('h-[var(--semantic-size-controlHeight-md)]');
   });
 
-  it('size=lg emits h-12 class on the input', () => {
+  it('size=lg binds the input to semantic.size.controlHeight.lg', () => {
     const { container } = render(<Input size="lg" />);
     const input = container.querySelector('input');
-    expect(input?.className).toContain('h-12');
+    expect(input?.className).toContain('h-[var(--semantic-size-controlHeight-lg)]');
   });
 
   it('textStyle=mono emits font-mono class', () => {

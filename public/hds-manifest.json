@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-15T22:48:28.858Z",
+  "generated": "2026-11-18T00:25:36.561Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -336,7 +336,6 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
-        "src/app/components/button.tsx",
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
@@ -2084,6 +2083,7 @@
       },
       "consumers": [
         "src/app/components/radio.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/tabs.tsx",
         "src/app/components/theme-toggle.tsx",
         "src/app/hooks/useInteractionState.ts"
@@ -4951,7 +4951,6 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
-        "src/app/components/button.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/list.tsx",
@@ -5190,7 +5189,8 @@
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/nav-list.tsx",
-        "src/app/components/segmented-control.tsx"
+        "src/app/components/segmented-control.tsx",
+        "src/app/components/select.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -16879,6 +16879,30 @@
         "resolvedValue": "32px"
       },
       {
+        "path": "semantic.size.controlHeight.sm",
+        "cssVar": "--semantic-size-controlHeight-sm",
+        "type": "dimension",
+        "description": "Small control height (32px).",
+        "alias": "{primitive.size.32}",
+        "resolvedValue": "32px"
+      },
+      {
+        "path": "semantic.size.controlHeight.md",
+        "cssVar": "--semantic-size-controlHeight-md",
+        "type": "dimension",
+        "description": "Medium control height (40px), the default size.",
+        "alias": "{primitive.size.40}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.controlHeight.lg",
+        "cssVar": "--semantic-size-controlHeight-lg",
+        "type": "dimension",
+        "description": "Large control height (48px).",
+        "alias": "{primitive.size.48}",
+        "resolvedValue": "48px"
+      },
+      {
         "path": "semantic.size.icon.sm",
         "cssVar": "--semantic-size-icon-sm",
         "type": "dimension",
@@ -17480,9 +17504,9 @@
         "path": "component.button.size.sm.height",
         "cssVar": "--component-button-size-sm-height",
         "type": "dimension",
-        "description": "Small button height (36px).",
-        "alias": "{primitive.size.36}",
-        "resolvedValue": "36px"
+        "description": "Small button height (32px): semantic.size.controlHeight.sm, shared with every control of this size.",
+        "alias": "{semantic.size.controlHeight.sm}",
+        "resolvedValue": "32px"
       },
       {
         "path": "component.button.size.sm.itemSpacing",
@@ -17504,7 +17528,7 @@
         "path": "component.button.size.md.paddingY",
         "cssVar": "--component-button-size-md-paddingY",
         "type": "dimension",
-        "description": "Medium button vertical padding (8px; the 44px height drives the box).",
+        "description": "Medium button vertical padding (8px; the 40px height drives the box).",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -17528,9 +17552,9 @@
         "path": "component.button.size.md.height",
         "cssVar": "--component-button-size-md-height",
         "type": "dimension",
-        "description": "Medium button height (44px).",
-        "alias": "{primitive.size.44}",
-        "resolvedValue": "44px"
+        "description": "Medium button height (40px): semantic.size.controlHeight.md, shared with every control of this size.",
+        "alias": "{semantic.size.controlHeight.md}",
+        "resolvedValue": "40px"
       },
       {
         "path": "component.button.size.md.itemSpacing",
@@ -17576,9 +17600,9 @@
         "path": "component.button.size.lg.height",
         "cssVar": "--component-button-size-lg-height",
         "type": "dimension",
-        "description": "Large button height (52px).",
-        "alias": "{primitive.size.52}",
-        "resolvedValue": "52px"
+        "description": "Large button height (48px): semantic.size.controlHeight.lg, shared with every control of this size.",
+        "alias": "{semantic.size.controlHeight.lg}",
+        "resolvedValue": "48px"
       },
       {
         "path": "component.button.size.lg.itemSpacing",
@@ -17926,8 +17950,8 @@
         "path": "component.pagination.compactControlSize",
         "cssVar": "--component-pagination-compactControlSize",
         "type": "dimension",
-        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
-        "alias": "{semantic.size.row.compact}",
+        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square): semantic.size.controlHeight.md.",
+        "alias": "{semantic.size.controlHeight.md}",
         "resolvedValue": "40px"
       },
       {

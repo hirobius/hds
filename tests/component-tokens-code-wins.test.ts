@@ -19,7 +19,7 @@ const PX: Array<[string, string, string]> = [
   ['--component-button-size-sm-paddingX', '12px', 'px-3'],
   [
     '--component-button-size-sm-height',
-    '36px',
+    '32px',
     'h-[var(--component-button-size-sm-height)] (bound, hds#760)',
   ],
   ['--component-button-size-sm-itemSpacing', '8px', 'base gap-2'],

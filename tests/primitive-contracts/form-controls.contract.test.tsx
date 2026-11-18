@@ -317,7 +317,15 @@ describe('SegmentedControl accessibility contract', () => {
     (size) => {
       render(<Seg size={size} />);
       const cls = screen.getByRole('radio', { name: 'Day' }).className;
-      const minH = Number(cls.match(/(?<![:\w-])min-h-\[(\d+)px\]/)?.[1] ?? 0);
+      // The segment is the shared control height (semantic.size.controlHeight: 32px sm,
+      // 40px md) less 2 x the default 4px rail padding and the rail's 1px border each side.
+      const CONTROL_HEIGHT = { sm: 32, md: 40 } as const;
+      const bound = cls.includes(
+        `h-[calc(var(--semantic-size-controlHeight-${size})-2*var(--seg-rail-pad)-2px)]`,
+      );
+      const minH = bound
+        ? CONTROL_HEIGHT[size as 'sm' | 'md'] - 2 * 4 - 2
+        : Number(cls.match(/(?<![:\w-])min-h-\[(\d+)px\]/)?.[1] ?? 0);
       // A pseudo-element grows the hit area past the segment into the rail padding.
       const grow = Number(cls.match(/before:-inset-y-\[(\d+)px\]/)?.[1] ?? 0);
       if (grow > 0) {
