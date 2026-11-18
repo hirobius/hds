@@ -50,7 +50,7 @@ Weights declared: `400` regular, `400` medium (deprecated), `400` mono, `600` se
 | `semantic.typography.caption` | 14px | 13px | 400 | Metadata, help text and labels, in sentence case |
 | `semantic.typography.mono` | 15px | same | 400 | Code and ids, 15px / 1.5 / 400 |
 | `semantic.typography.lineHeight.none` |  | same |  | Semantic alias for leading-none (1) |
-| `semantic.typography.weight.selected` |  | same |  | Label weight of a selected item (600), paired with semantic.color.selected |
+| `semantic.typography.weight.selected` |  | same |  | Selected label weight |
 
 > The ramp is static: tokens store the value every surface renders. **Compact** is the size under `data-density="compact"` (dense apps). Deprecated roles are left out of this table; `hds/no-deprecated-token` names their replacement.
 <!-- auto:end:typography -->

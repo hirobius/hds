@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-18T04:26:56.692Z",
+  "generated": "2026-11-18T15:32:22.218Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -15826,7 +15826,7 @@
         "path": "semantic.color.selected.bg",
         "cssVar": "--semantic-color-selected-bg",
         "type": "color",
-        "description": "Fill of a selected item. Same values as accent.rest, kept apart so the primary Button never moves with it.",
+        "description": "Selected fill (accent.rest values).",
         "alias": "{primitive.color.graphite.700}",
         "resolvedValue": "#3a4457",
         "dark": {
@@ -15838,7 +15838,7 @@
         "path": "semantic.color.selected.fg",
         "cssVar": "--semantic-color-selected-fg",
         "type": "color",
-        "description": "Text and icons on the selected fill. Same values as content.onAccent.",
+        "description": "On the selected fill (onAccent values).",
         "alias": "{primitive.color.neutral.50}",
         "resolvedValue": "#f9fafc",
         "dark": {
@@ -16432,7 +16432,7 @@
         "path": "semantic.typography.weight.selected",
         "cssVar": "--semantic-typography-weight-selected",
         "type": "fontWeight",
-        "description": "Label weight of a selected item (600), paired with semantic.color.selected.",
+        "description": "Selected label weight.",
         "alias": "{primitive.typography.weight.semibold}",
         "resolvedValue": "600"
       },

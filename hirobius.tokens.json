@@ -2341,10 +2341,10 @@
         }
       },
       "selected": {
-        "$description": "The one selected look (Adrian 2026-11-18): a strong fill and a semibold label. Every selectable component reads it.",
+        "$description": "The one selected look.",
         "bg": {
           "$value": "{primitive.color.graphite.700}",
-          "$description": "Fill of a selected item. Same values as accent.rest, kept apart so the primary Button never moves with it.",
+          "$description": "Selected fill (accent.rest values).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2356,7 +2356,7 @@
         },
         "fg": {
           "$value": "{primitive.color.neutral.50}",
-          "$description": "Text and icons on the selected fill. Same values as content.onAccent.",
+          "$description": "On the selected fill (onAccent values).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
@@ -2892,7 +2892,7 @@
         "$type": "fontWeight",
         "selected": {
           "$value": "{primitive.typography.weight.semibold}",
-          "$description": "Label weight of a selected item (600), paired with semantic.color.selected."
+          "$description": "Selected label weight."
         }
       }
     },
