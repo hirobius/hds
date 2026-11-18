@@ -336,7 +336,6 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
-        "src/app/components/button.tsx",
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
@@ -4951,7 +4950,6 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
-        "src/app/components/button.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/list.tsx",
@@ -9691,7 +9689,7 @@
       "categorySource": "jsdoc",
       "governedCategory": true,
       "filePath": "src/app/components/page-header.tsx",
-      "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces.",
+      "description": "Screen header: breadcrumb slot, the title at the one canonical page-title size (the `title` role), a metadata row above the title, a status slot and an actions slot. Every screen has exactly one. `display` and `h1` type are reserved for marketing and landing surfaces.",
       "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
       "figmaId": null,
       "figmaLink": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3",
