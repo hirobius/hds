@@ -2473,8 +2473,8 @@
           }
         },
         "inset": {
-          "$value": "{primitive.space.24}",
-          "$description": "96px hero and landing-page inset padding."
+          "$value": "{primitive.space.32}",
+          "$description": "128px hero and landing-page inset padding (80px below 640px, theme.css)."
         },
         "heroMax": {
           "$value": "{primitive.space.32}",
@@ -2488,16 +2488,16 @@
           "$description": "12px indent level for nested sidebar and TOC groups."
         },
         "gap": {
-          "$value": "{primitive.space.4}",
-          "$description": "16px vertical spacing between items in sidebar and TOC stacks."
+          "$value": "{primitive.space.5}",
+          "$description": "20px vertical spacing between items in sidebar and TOC stacks."
         },
         "sectionGap": {
-          "$value": "{primitive.space.3}",
-          "$description": "12px spacing between sidebar sections and grouped rail blocks."
+          "$value": "{primitive.space.4}",
+          "$description": "16px spacing between sidebar sections and grouped rail blocks."
         },
         "railPadding": {
-          "$value": "{primitive.space.5}",
-          "$description": "20px outer padding for sidebar and TOC rails."
+          "$value": "{primitive.space.6}",
+          "$description": "24px outer padding for sidebar and TOC rails."
         }
       }
     },
@@ -2546,8 +2546,8 @@
       "grid": {
         "gap": {
           "$type": "dimension",
-          "$value": "{semantic.space.scale.lg}",
-          "$description": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px).",
+          "$value": "{semantic.space.scale.md}",
+          "$description": "Grid gap: scale.md (scale.sm below 640px, theme.css). Compact: scale.md (16px).",
           "$extensions": {
             "com.figma.variables": {
               "modes": {

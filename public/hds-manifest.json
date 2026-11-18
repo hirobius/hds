@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-18T00:06:32.453Z",
+  "generated": "2026-11-18T23:13:00.716Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -15998,9 +15998,9 @@
         "path": "semantic.space.section.inset",
         "cssVar": "--semantic-space-section-inset",
         "type": "dimension",
-        "description": "96px hero and landing-page inset padding.",
-        "alias": "{primitive.space.24}",
-        "resolvedValue": "96px"
+        "description": "128px hero and landing-page inset padding (80px below 640px, theme.css).",
+        "alias": "{primitive.space.32}",
+        "resolvedValue": "128px"
       },
       {
         "path": "semantic.space.section.heroMax",
@@ -16022,25 +16022,25 @@
         "path": "semantic.space.sidebar.gap",
         "cssVar": "--semantic-space-sidebar-gap",
         "type": "dimension",
-        "description": "16px vertical spacing between items in sidebar and TOC stacks.",
-        "alias": "{primitive.space.4}",
-        "resolvedValue": "16px"
+        "description": "20px vertical spacing between items in sidebar and TOC stacks.",
+        "alias": "{primitive.space.5}",
+        "resolvedValue": "20px"
       },
       {
         "path": "semantic.space.sidebar.sectionGap",
         "cssVar": "--semantic-space-sidebar-sectionGap",
         "type": "dimension",
-        "description": "12px spacing between sidebar sections and grouped rail blocks.",
-        "alias": "{primitive.space.3}",
-        "resolvedValue": "12px"
+        "description": "16px spacing between sidebar sections and grouped rail blocks.",
+        "alias": "{primitive.space.4}",
+        "resolvedValue": "16px"
       },
       {
         "path": "semantic.space.sidebar.railPadding",
         "cssVar": "--semantic-space-sidebar-railPadding",
         "type": "dimension",
-        "description": "20px outer padding for sidebar and TOC rails.",
-        "alias": "{primitive.space.5}",
-        "resolvedValue": "20px"
+        "description": "24px outer padding for sidebar and TOC rails.",
+        "alias": "{primitive.space.6}",
+        "resolvedValue": "24px"
       },
       {
         "path": "semantic.layout.width.content",
@@ -16098,9 +16098,9 @@
         "path": "semantic.layout.grid.gap",
         "cssVar": "--semantic-layout-grid-gap",
         "type": "dimension",
-        "description": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px).",
-        "alias": "{semantic.space.scale.lg}",
-        "resolvedValue": "40px",
+        "description": "Grid gap: scale.md (scale.sm below 640px, theme.css). Compact: scale.md (16px).",
+        "alias": "{semantic.space.scale.md}",
+        "resolvedValue": "28px",
         "compact": {
           "alias": "{semantic.space.scale.md}",
           "resolvedValue": "28px"

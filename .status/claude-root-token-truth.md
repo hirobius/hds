@@ -1,0 +1,1 @@
+- One winner per spacing token (folio #429): section.inset, sidebar gap/sectionGap/railPadding and layout.grid.gap move from theme.css into the tokens; new check-root-token-overrides gate.
