@@ -115,9 +115,9 @@ describe('one source for the core set', () => {
     const button = await callTool('get_component', { name: 'Button' });
     expect(button.core).toBe(true);
     expect(button.recommended).toBeUndefined();
-    const tiles = await callTool('get_component', { name: 'MetricTiles' });
-    expect(tiles.core).toBeUndefined();
-    expect(tiles.recommended).toBe(true);
+    const page = await callTool('get_component', { name: 'Page' });
+    expect(page.core).toBeUndefined();
+    expect(page.recommended).toBe(true);
   });
 
   it('AGENTS.md imports are the recommended set and the header names it', () => {

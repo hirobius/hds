@@ -25,15 +25,13 @@ function section(text: string, heading: string) {
 describe('llms.txt screen recipe', () => {
   const llms = read('public/llms-full.txt');
 
-  it('names all five screen patterns in "How To Lay Out A Screen"', () => {
+  // MetricTiles is deprecated with no replacement (Fable eval #1): a row of numbers
+  // is a Grid of Cards, and the recipe must not teach the deprecated pattern.
+  it('names the live screen patterns in "How To Lay Out A Screen"', () => {
     const recipe = section(llms, 'How To Lay Out A Screen');
-    for (const name of [
-      'PageHeader',
-      'MetricTiles',
-      'FormActions',
-      'DestructiveSection',
-      'DataTableSection',
-    ]) {
+    expect(recipe).not.toContain('MetricTiles');
+    expect(recipe).toContain('a `Grid` of `Card`s');
+    for (const name of ['PageHeader', 'FormActions', 'DestructiveSection', 'DataTableSection']) {
       expect(recipe, `${name} missing from the layout recipe`).toContain(name);
     }
   });
@@ -74,8 +72,12 @@ describe('DESIGN.md screen rules', () => {
     expect(header, 'no table header row containing "Use instead"').toBeDefined();
   });
 
-  it('has a row for Stat, Card.Metric, Card.Row and MetricTiles', () => {
-    expectRowsLedBy(['Stat', 'Card.Metric', 'Card.Row', 'MetricTiles']);
+  it('leads the number row with a Grid of Cards, never a deprecated metric component', () => {
+    expectRowsLedBy(['Grid', 'Card.Row']);
+    const rows = design.split('\n').filter((l) => l.startsWith('|'));
+    for (const name of ['Stat', 'Card.Metric', 'MetricTiles']) {
+      expect(rows.some((l) => l.split('|')[1]?.includes(`\`${name}\``))).toBe(false);
+    }
   });
 
   // hds#622: StatusTile folded into Card.Row. The row names it, so an agent

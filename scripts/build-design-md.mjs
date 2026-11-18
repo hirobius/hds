@@ -44,6 +44,7 @@ import {
   containerRadius,
 } from './build-handoff.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
+import { assertNoDeprecatedRecommendations, loadDeprecatedNames } from './lib/doc-truth.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -195,7 +196,24 @@ export function buildTypography(raw) {
   const bodyW = uniq(['body', 'ui', 'caption'].map(weightOf));
   const phrase = (ws) => ws.map((w) => `\`${w.value}\` ${w.name}`).join(' / ');
   const monoW = uniq([weightOf('mono')]);
-  const usedWeights = new Set([...headingW, ...bodyW, ...monoW].map((w) => w.name));
+  // Every live role counts (bodyStrong is bold), and so does a component's own label
+  // weight (component.button.fontWeight is semibold): "unused" must mean unused.
+  const liveRoles = Object.keys(semanticTypography).filter(
+    (k) =>
+      !k.startsWith('$') && semanticTypography[k]?.$value && !semanticTypography[k].$deprecated,
+  );
+  const componentWeights = [...walk(raw.component ?? {})]
+    .filter(({ path }) => /fontWeight$/i.test(path[path.length - 1] ?? ''))
+    .map(({ value }) => String(value).match(/^\{primitive\.typography\.weight\.([\w-]+)\}$/)?.[1])
+    .filter(Boolean);
+  const usedWeights = new Set([
+    ...[...headingW, ...bodyW, ...monoW].map((w) => w.name),
+    ...liveRoles
+      .map(weightOf)
+      .filter(Boolean)
+      .map((w) => w.name),
+    ...componentWeights,
+  ]);
   // A deprecated weight (an alias kept for consumers) is retired, not unused.
   const unused = Object.keys(weightMap).filter(
     (k) => !usedWeights.has(k) && !weights[k].$deprecated,
@@ -404,6 +422,34 @@ export function buildMotion(raw) {
 }
 
 /**
+ * What each Button variant looks like. Keyed by the manifest's `variant` values, so a
+ * new or renamed variant fails the build here instead of DESIGN.md teaching a Button
+ * that does not exist (Fable eval #1: "secondary (outline)" outlived the soft fill).
+ */
+export const BUTTON_VARIANT_LOOK = {
+  primary: 'accent fill',
+  secondary: 'soft tonal fill, no border; the default',
+  tertiary: 'ghost: no fill until hover',
+  link: 'underlined text, no fill or padding',
+};
+
+export function buttonVariantsSentence(manifest) {
+  const values = manifest?.componentSpecs?.Button?.props?.variant?.values;
+  if (!Array.isArray(values) || !values.length) {
+    throw new Error('build-design-md: public/hds-manifest.json has no Button `variant` values');
+  }
+  const missing = values.filter((v) => !BUTTON_VARIANT_LOOK[v]);
+  const stale = Object.keys(BUTTON_VARIANT_LOOK).filter((v) => !values.includes(v));
+  if (missing.length || stale.length) {
+    throw new Error(
+      `build-design-md: BUTTON_VARIANT_LOOK is out of step with Button's variants (missing: ${missing.join(', ') || 'none'}; stale: ${stale.join(', ') || 'none'})`,
+    );
+  }
+  const order = Object.keys(BUTTON_VARIANT_LOOK).filter((v) => values.includes(v));
+  return `Variants: ${order.map((v) => `\`${v}\` (${BUTTON_VARIANT_LOOK[v]})`).join(', ')}.`;
+}
+
+/**
  * Components — 8 visual atoms covering Google Stitch's DESIGN.md spec:
  * Buttons, Inputs, Cards, Badges, Alerts, Disclosures, Toggles,
  * Segmented Controls. For each: radius source, state model, key tokens.
@@ -424,7 +470,8 @@ export function buildComponents(raw, manifest) {
       radius: `\`${actionRad}\` (\`semantic.radius.action\`)`,
       states: 'default · hover · focus · active · disabled · loading',
       notes:
-        'Three variants: primary (accent-filled), secondary (outline), tertiary (ghost). Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon-only buttons (`iconOnly`) follow the same token surface. Icon-only actions use `Button iconOnly` with a `label` and an `Icon` from `@hirobius/design-system/icons` in `iconLeft`.',
+        buttonVariantsSentence(manifest) +
+        ' Primary uses `semantic.accent.*` ramp per state. Pressed is a 5% `semantic.color.state.pressed.overlay` wash over the fill (`role.pressed-overlay`: black in light, white in dark), not a brightness filter. Icon-only buttons (`iconOnly`) follow the same token surface. Icon-only actions use `Button iconOnly` with a `label` and an `Icon` from `@hirobius/design-system/icons` in `iconLeft`.',
     },
     {
       name: 'Inputs',
@@ -440,12 +487,12 @@ export function buildComponents(raw, manifest) {
       radius: `\`${cardRad}\` (\`rounded-lg\`, role radius + 4px)`,
       states: 'default · hover (optional parallax) · pressed (when interactive)',
       notes:
-        'Cards default to `elevation.flat` (borderless by default; an opt-in 1px border via `bordered`/`tone`/`accent`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `heading3`. Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows.',
+        'Cards default to `elevation.flat` (borderless by default; an opt-in 1px border via `bordered`/`tone`/`accent`, no shadow). Interactive cards lift to `elevation.raised` (shadow.subtle, no border) on hover. Bind via `semantic.elevation.{role}` — never raw box-shadow values. Radius: `rounded-lg` (role radius + 4 px, follows the tenant knob) — never a hard-coded value. Padding: `var(--semantic-space-surface-padding)`. Title: `title` (`Card.Title`). Meta: `caption` + `var(--semantic-color-content-secondary)`. Hover (interactive): `scale(1.02)` transform + lift to raised. Never: gradients, glow, frosted glass, tinted surfaces, decorative overlays, or inner shadows.',
     },
     {
       name: 'Badges',
       component: 'Badge',
-      radius: `\`${actionRad}\` (\`primitive.radius.4\`)`,
+      radius: `\`${resolveRef(raw.component?.badge?.radius?.$value ?? '{primitive.radius.6}', raw)}\` (\`component.badge.radius\`, \`rounded-sm\`: role radius − 2px)`,
       states: 'neutral · accent · feedback (error/success/warning/info)',
       notes:
         'Single-line status markers. Feedback colors come from `semantic.color.feedback.*`. Never used as decorative chrome.',
@@ -540,7 +587,9 @@ export function renderDesignMd(root) {
   doc = replaceSection(doc, 'motion', buildMotion(raw));
   doc = replaceSection(doc, 'components', buildComponents(raw, manifest));
   doc = replaceSection(doc, 'build-meta', buildMeta(raw));
-  return stripSourceHeader(doc);
+  doc = stripSourceHeader(doc);
+  assertNoDeprecatedRecommendations(doc, loadDeprecatedNames(root), 'DESIGN.md');
+  return doc;
 }
 
 // ── CLI ───────────────────────────────────────────────────────────────────────

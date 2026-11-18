@@ -1,0 +1,1 @@
+Generated rule docs (DESIGN.md, llms*.txt, AGENTS.md, consumer skill, MCP guide) never teach a deprecated API: generators read Button variants from the manifest and fail on anything in deprecations.json (Fable eval #1). A row of numbers is a Grid of Cards.

@@ -27,7 +27,7 @@ export type PageHeaderDescriptionPlacement = 'below' | 'title';
 export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
   /** Trail above the title (a `Breadcrumb`). Omit on a top-level screen. */
   breadcrumb?: React.ReactNode;
-  /** The screen title. Always set in the `heading2` type style; there is no size prop. */
+  /** The screen title. Always set in the `title` role; there is no size prop. */
   title: React.ReactNode;
   /** One supporting line under the title, in secondary body text. Only when it
    *  adds information; longer context belongs in the page body. */
@@ -48,7 +48,7 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
   actions?: React.ReactNode;
   /**
    * Heading element for the title. Changes only the DOM element, never the size:
-   * the size is fixed at `heading2` so every screen reads at the same scale.
+   * the size is fixed at the `title` role so every screen reads at the same scale.
    * Defaults to 1; a screen has exactly one `PageHeader`.
    */
   level?: PageHeaderLevel;
@@ -56,7 +56,7 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
 
 /**
  * Screen header: breadcrumb slot, the title at the one canonical page-title size
- * (`heading2`), a metadata row above the title, a status slot and an actions slot. Every screen has exactly one.
+ * (the `title` role), a metadata row above the title, a status slot and an actions slot. Every screen has exactly one.
  * `display` and `h1` type are reserved for marketing and landing surfaces.
  * @figma https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2121-3
  * @screenPattern

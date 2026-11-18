@@ -16,7 +16,7 @@ For agents building UI with `@hirobius/design-system`. Read this first. It settl
 These are the recommended components: the ratified core set plus every component the needs below name. The ratified core alone is the `core: true` flag in the manifest.
 
 - `@hirobius/design-system`: `Alert`, `AlertDialog`, `Avatar`, `AvatarGroup`, `Badge`, `Blockquote`, `Box`, `Breadcrumb`, `Button`, `Card`, `Checkbox`, `Combobox`, `CommandPalette`, `Container`, `Dialog`, `Disclosure`, `Divider`, `Dock`, `EmptyState`, `Field`, `Grid`, `HdsRouterProvider`, `HdsThemeProvider`, `Icon`, `InlineLink`, `Input`, `Kbd`, `List`, `Menu`, `MetaLine`, `MetadataList`, `NavList`, `Pagination`, `Pin`, `Popover`, `Progress`, `Radio`, `SegmentedControl`, `Select`, `Sidebar`, `Skeleton`, `Slider`, `Spinner`, `Stack`, `Surface`, `Switcher`, `Table`, `Tabs`, `TabsContent`, `TabsList`, `TabsTrigger`, `Tag`, `Text`, `Textarea`, `Timeline`, `Timestamp`, `ToastProvider`, `Toggle`, `Tooltip`, `VisuallyHidden`, `useToast`.
-- `@hirobius/design-system/patterns`: `DataTableSection`, `DestructiveSection`, `Form`, `FormActions`, `MetricTile`, `MetricTiles`, `Page`, `PageHeader`. These are not in the root barrel.
+- `@hirobius/design-system/patterns`: `DataTableSection`, `DestructiveSection`, `Form`, `FormActions`, `Page`, `PageHeader`. These are not in the root barrel.
 - Load one stylesheet once at the app root and put `data-hds` on the root element (`CONSUMING.md`).
 
 ## Pick by need
@@ -29,9 +29,8 @@ One answer per need. Use the components after the arrow; what follows "Not:" is 
 - **Screen title with breadcrumb, status and actions** → `PageHeader`, `Breadcrumb`, `Badge`. Not: Text as the page title, a Stack row of Text and Badge.
   Exactly one per screen: `<PageHeader breadcrumb={<Breadcrumb items={[{ label, href }, { label }]} />} title="…" status={<Badge tone="success">Active</Badge>} />`.
   Import: `import { PageHeader } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
-- **Row of headline numbers (stats, KPIs, counts, totals)** → `MetricTiles`, `MetricTile`. Not: `Stat`, `StatusTile`, `CardMetric`, Card with Text.
-  `<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).
-  Import: `import { MetricTiles, MetricTile } from '@hirobius/design-system/patterns';`
+- **Row of headline numbers (stats, KPIs, counts, totals)** → `Grid`, `Card`, `Text`. Not: `MetricTiles`, `MetricTile`, `Stat`, `StatusTile`, `CardMetric`.
+  `<Grid layout="auto-fill" minItemWidth="12rem"><Card><Text variant="caption">Open projects</Text><Text variant="title">5</Text></Card>…</Grid>`; one Card per number, label in caption, value in title. A state with notes (never a number) is a Card with Card.Row.
 - **Table of records with row actions** → `DataTableSection`, `Badge`, `Button`. Not: Table on its own, Card around a Table.
   `<DataTableSection title="Projects" columns={[{ key, label }]} rows={[{ key, cells: [...], actions: <Stack direction="row" gap="tight">…</Stack> }]} />`; leave the actions column out of `columns`.
   Import: `import { DataTableSection } from '@hirobius/design-system/patterns';` the rest from `@hirobius/design-system`.
