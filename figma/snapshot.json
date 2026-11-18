@@ -1,15 +1,15 @@
 {
-  "checksum": "ae5ce28a",
+  "checksum": "b6f607aa",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-15T16:50:26.931Z",
+    "takenAt": "2026-11-16T16:56:24.542Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "0538943d",
-      "pushedAt": "2026-11-15T16:50:26.857Z",
+      "modelHash": "aa37b79a",
+      "pushedAt": "2026-11-16T16:56:24.477Z",
       "scope": null
     },
     "collections": [
@@ -178,9 +178,31 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 1,
-                  "g": 0.984314,
-                  "b": 0.921569,
+                  "r": 0.992157,
+                  "g": 0.901961,
+                  "b": 0.541176,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2686:25",
+            "name": "color/amber/700",
+            "path": "primitive.color.amber.700",
+            "resolvedType": "COLOR",
+            "description": "Specific value within the amber range at a defined lightness step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-amber-700)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.705882,
+                  "g": 0.32549,
+                  "b": 0.035294,
                   "a": 1
                 }
               }
@@ -203,6 +225,28 @@
                   "r": 0.572549,
                   "g": 0.25098,
                   "b": 0.054902,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2686:26",
+            "name": "color/amber/900",
+            "path": "primitive.color.amber.900",
+            "resolvedType": "COLOR",
+            "description": "Specific value within the amber range at a defined lightness step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-amber-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.470588,
+                  "g": 0.207843,
+                  "b": 0.058824,
                   "a": 1
                 }
               }
@@ -521,7 +565,7 @@
             "name": "color/cobalt/300",
             "path": "primitive.color.cobalt.300",
             "resolvedType": "COLOR",
-            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — dark-mode accent fill and accent text (7.41:1 on black).",
+            "description": "Cobalt accent — dark-mode accent fill and accent text.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -609,7 +653,7 @@
             "name": "color/cobalt/600",
             "path": "primitive.color.cobalt.600",
             "resolvedType": "COLOR",
-            "description": "Cobalt accent (opt-in, data-accent=\"cobalt\") — light-mode accent fill and accent text (white text 8.19:1).",
+            "description": "Cobalt accent — light-mode accent fill and accent text.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -992,9 +1036,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.92549,
-                  "g": 0.992157,
-                  "b": 0.960784,
+                  "r": 0.737255,
+                  "g": 0.968627,
+                  "b": 0.862745,
                   "a": 1
                 }
               }
@@ -1017,6 +1061,28 @@
                   "r": 0.015686,
                   "g": 0.470588,
                   "b": 0.341176,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2686:23",
+            "name": "color/green/900",
+            "path": "primitive.color.green.900",
+            "resolvedType": "COLOR",
+            "description": "Specific value within the green range at a defined lightness step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-green-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.023529,
+                  "g": 0.305882,
+                  "b": 0.231373,
                   "a": 1
                 }
               }
@@ -1335,7 +1401,7 @@
             "name": "color/lime/300",
             "path": "primitive.color.lime.300",
             "resolvedType": "COLOR",
-            "description": "Lime delight accent — delight base (ink text 12.95:1). Delight moments only; never buttons, links or focus.",
+            "description": "Lime delight accent, the delight base. Delight moments only; never buttons, links or focus.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -1969,6 +2035,28 @@
             }
           },
           {
+            "id": "VariableID:2686:20",
+            "name": "color/neutral/675",
+            "path": "primitive.color.neutral.675",
+            "resolvedType": "COLOR",
+            "description": "Specific value within the neutral range at a defined lightness step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-675)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.25098,
+                  "g": 0.270588,
+                  "b": 0.309804,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
             "id": "VariableID:3:9",
             "name": "color/neutral/700",
             "path": "primitive.color.neutral.700",
@@ -2007,6 +2095,28 @@
                   "r": 0.152941,
                   "g": 0.172549,
                   "b": 0.211765,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2686:21",
+            "name": "color/neutral/740",
+            "path": "primitive.color.neutral.740",
+            "resolvedType": "COLOR",
+            "description": "Specific value within the neutral range at a defined lightness step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-neutral-740)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.180392,
+                  "g": 0.2,
+                  "b": 0.239216,
                   "a": 1
                 }
               }
@@ -2291,8 +2401,8 @@
               "Default": {
                 "value": {
                   "r": 0.996078,
-                  "g": 0.94902,
-                  "b": 0.94902,
+                  "g": 0.8,
+                  "b": 0.8,
                   "a": 1
                 }
               }
@@ -2315,6 +2425,28 @@
                   "r": 0.72549,
                   "g": 0.109804,
                   "b": 0.109804,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2686:22",
+            "name": "color/red/900",
+            "path": "primitive.color.red.900",
+            "resolvedType": "COLOR",
+            "description": "Specific value within the red range at a defined lightness step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-red-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.384314,
+                  "g": 0.07451,
+                  "b": 0.07451,
                   "a": 1
                 }
               }
@@ -2576,9 +2708,9 @@
             "valuesByMode": {
               "Default": {
                 "value": {
-                  "r": 0.960784,
-                  "g": 0.952941,
-                  "b": 1,
+                  "r": 0.866667,
+                  "g": 0.839216,
+                  "b": 0.996078,
                   "a": 1
                 }
               }
@@ -2601,6 +2733,28 @@
                   "r": 0.427451,
                   "g": 0.156863,
                   "b": 0.85098,
+                  "a": 1
+                }
+              }
+            }
+          },
+          {
+            "id": "VariableID:2686:24",
+            "name": "color/violet/900",
+            "path": "primitive.color.violet.900",
+            "resolvedType": "COLOR",
+            "description": "Specific value within the violet range at a defined lightness step.",
+            "scopes": [],
+            "hiddenFromPublishing": true,
+            "codeSyntax": {
+              "WEB": "var(--primitive-color-violet-900)"
+            },
+            "valuesByMode": {
+              "Default": {
+                "value": {
+                  "r": 0.25098,
+                  "g": 0.094118,
+                  "b": 0.509804,
                   "a": 1
                 }
               }
@@ -3194,7 +3348,7 @@
             "name": "size/interactive/minCompact",
             "path": "primitive.size.interactive.minCompact",
             "resolvedType": "FLOAT",
-            "description": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA (2.5.8), not the 44px AAA floor (2.5.5).",
+            "description": "Compact inline control target minimum, e.g. a chip's remove button: WCAG 2.2 AA, not the 44px AAA floor.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4112,7 +4266,7 @@
             "name": "typography/weight/display",
             "path": "primitive.typography.weight.display",
             "resolvedType": "FLOAT",
-            "description": "Display, title and title-sm weight, set in Sora 700 (ADR-063). Heading levels differ by size, not weight.",
+            "description": "Display, title and title-sm weight, set in Sora 700. Heading levels differ by size, not weight.",
             "scopes": [],
             "hiddenFromPublishing": true,
             "codeSyntax": {
@@ -4211,7 +4365,7 @@
             "name": "accent/content",
             "path": "semantic.accent.content",
             "resolvedType": "COLOR",
-            "description": "Accent-intent text/icon color on neutral surfaces (graphite) — pair with underline/weight for link affordance. Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Accent-intent text/icon color on neutral surfaces — pair with underline/weight for link affordance. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "SHAPE_FILL",
               "TEXT_FILL",
@@ -4263,7 +4417,7 @@
             "name": "accent/delight/base",
             "path": "semantic.accent.delight.base",
             "resolvedType": "COLOR",
-            "description": "Lime fill for delight moments only (win badge, \"new\" tag, confetti). Never buttons, links or focus. Text: accent.delight.onDelight.",
+            "description": "Lime fill for delight moments only. Never buttons, links or focus. Text: accent.delight.onDelight.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4463,7 +4617,7 @@
             "name": "accent/rest",
             "path": "semantic.accent.rest",
             "resolvedType": "COLOR",
-            "description": "Accent fill at rest — graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Accent fill at rest — graphite.700 in light, near-white in dark. Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -4730,7 +4884,7 @@
             "name": "color/border/default",
             "path": "semantic.color.border.default",
             "resolvedType": "COLOR",
-            "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface (divider-contrast test floor 1.45:1).",
+            "description": "Hairline and divider border. Light is midnight graphite at 1.5–1.7:1 on every light surface.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -4744,8 +4898,8 @@
                 "to": "Hirobius/Primitives: color/graphite/250"
               },
               "Dark": {
-                "alias": "VariableID:3:8",
-                "to": "Hirobius/Primitives: color/neutral/600"
+                "alias": "VariableID:2240:2",
+                "to": "Hirobius/Primitives: color/neutral/550"
               }
             }
           },
@@ -4754,7 +4908,7 @@
             "name": "color/border/interactive",
             "path": "semantic.color.border.interactive",
             "resolvedType": "COLOR",
-            "description": "Border for interactive control boundaries (inputs, selects, secondary buttons); meets the WCAG 1.4.11 3:1 non-text contrast floor.",
+            "description": "Border for interactive control boundaries; meets the WCAG 1.4.11 3:1 non-text contrast floor.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -4768,8 +4922,8 @@
                 "to": "Hirobius/Primitives: color/neutral/500"
               },
               "Dark": {
-                "alias": "VariableID:3:7",
-                "to": "Hirobius/Primitives: color/neutral/500"
+                "alias": "VariableID:3:6",
+                "to": "Hirobius/Primitives: color/neutral/400"
               }
             }
           },
@@ -4792,8 +4946,8 @@
                 "to": "Hirobius/Primitives: color/graphite/300"
               },
               "Dark": {
-                "alias": "VariableID:3:8",
-                "to": "Hirobius/Primitives: color/neutral/600"
+                "alias": "VariableID:2240:2",
+                "to": "Hirobius/Primitives: color/neutral/550"
               }
             }
           },
@@ -5098,8 +5252,8 @@
                 "to": "Hirobius/Primitives: color/neutral/550"
               },
               "Dark": {
-                "alias": "VariableID:2182:3",
-                "to": "Hirobius/Primitives: color/neutral/450"
+                "alias": "VariableID:3:6",
+                "to": "Hirobius/Primitives: color/neutral/400"
               }
             }
           },
@@ -5134,7 +5288,7 @@
             "name": "color/edge/danger",
             "path": "semantic.color.edge.danger",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under danger-tone raised controls: always darker than the fill, a single edge with no page line.",
+            "description": "danger Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5145,12 +5299,20 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:28",
-                "to": "Hirobius/Primitives: color/red/400"
+                "value": {
+                  "r": 0.650917,
+                  "g": 0,
+                  "b": 0.017789,
+                  "a": 1
+                }
               },
               "Dark": {
-                "alias": "VariableID:3:15",
-                "to": "Hirobius/Primitives: color/neutral/black"
+                "value": {
+                  "r": 0.771968,
+                  "g": 0.26084,
+                  "b": 0.278949,
+                  "a": 1
+                }
               }
             }
           },
@@ -5159,7 +5321,7 @@
             "name": "color/edge/info",
             "path": "semantic.color.edge.info",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under info-tone raised controls: always darker than the fill; dark is blue.900 under the blue.800 fill.",
+            "description": "info Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5170,12 +5332,20 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:19",
-                "to": "Hirobius/Primitives: color/blue/300"
+                "value": {
+                  "r": 0.107951,
+                  "g": 0.281239,
+                  "b": 0.622639,
+                  "a": 1
+                }
               },
               "Dark": {
-                "alias": "VariableID:3:26",
-                "to": "Hirobius/Primitives: color/blue/900"
+                "value": {
+                  "r": 0.598096,
+                  "g": 0.66201,
+                  "b": 0.813259,
+                  "a": 1
+                }
               }
             }
           },
@@ -5234,7 +5404,7 @@
             "name": "color/edge/success",
             "path": "semantic.color.edge.success",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under success-tone raised controls: always darker than the fill, a single edge with no page line.",
+            "description": "success Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5245,12 +5415,20 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:32",
-                "to": "Hirobius/Primitives: color/green/400"
+                "value": {
+                  "r": 0,
+                  "g": 0.406929,
+                  "b": 0.281765,
+                  "a": 1
+                }
               },
               "Dark": {
-                "alias": "VariableID:3:15",
-                "to": "Hirobius/Primitives: color/neutral/black"
+                "value": {
+                  "r": 0,
+                  "g": 0.643234,
+                  "b": 0.429308,
+                  "a": 1
+                }
               }
             }
           },
@@ -5259,7 +5437,7 @@
             "name": "color/edge/warning",
             "path": "semantic.color.edge.warning",
             "resolvedType": "COLOR",
-            "description": "Hard raised edge under warning-tone raised controls: always darker than the fill, a single edge with no page line.",
+            "description": "warning Button edge: its solid fill one step darker, the same OKLCH lightness drop as the Secondary edge.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5270,12 +5448,20 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:40",
-                "to": "Hirobius/Primitives: color/amber/400"
+                "value": {
+                  "r": 0.632886,
+                  "g": 0.260115,
+                  "b": 0,
+                  "a": 1
+                }
               },
               "Dark": {
-                "alias": "VariableID:3:15",
-                "to": "Hirobius/Primitives: color/neutral/black"
+                "value": {
+                  "r": 0.794915,
+                  "g": 0.567373,
+                  "b": 0,
+                  "a": 1
+                }
               }
             }
           },
@@ -5299,8 +5485,8 @@
                 "to": "Hirobius/Primitives: color/red/50"
               },
               "Dark": {
-                "alias": "VariableID:3:30",
-                "to": "Hirobius/Primitives: color/red/950"
+                "alias": "VariableID:2686:22",
+                "to": "Hirobius/Primitives: color/red/900"
               }
             }
           },
@@ -5324,8 +5510,8 @@
                 "to": "Hirobius/Primitives: color/violet/50"
               },
               "Dark": {
-                "alias": "VariableID:3:38",
-                "to": "Hirobius/Primitives: color/violet/950"
+                "alias": "VariableID:2686:24",
+                "to": "Hirobius/Primitives: color/violet/900"
               }
             }
           },
@@ -5345,8 +5531,8 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:16",
-                "to": "Hirobius/Primitives: color/blue/50"
+                "alias": "VariableID:3:18",
+                "to": "Hirobius/Primitives: color/blue/200"
               },
               "Dark": {
                 "alias": "VariableID:3:25",
@@ -5374,8 +5560,8 @@
                 "to": "Hirobius/Primitives: color/green/50"
               },
               "Dark": {
-                "alias": "VariableID:3:34",
-                "to": "Hirobius/Primitives: color/green/950"
+                "alias": "VariableID:2686:23",
+                "to": "Hirobius/Primitives: color/green/900"
               }
             }
           },
@@ -5399,8 +5585,8 @@
                 "to": "Hirobius/Primitives: color/amber/50"
               },
               "Dark": {
-                "alias": "VariableID:3:42",
-                "to": "Hirobius/Primitives: color/amber/950"
+                "alias": "VariableID:2686:26",
+                "to": "Hirobius/Primitives: color/amber/900"
               }
             }
           },
@@ -5470,12 +5656,41 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:3:22",
-                "to": "Hirobius/Primitives: color/blue/500"
+                "value": {
+                  "r": 0.167762,
+                  "g": 0.345876,
+                  "b": 0.693071,
+                  "a": 1
+                }
               },
               "Dark": {
                 "alias": "VariableID:3:18",
                 "to": "Hirobius/Primitives: color/blue/200"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2687:20",
+            "name": "color/feedback/solid/warning",
+            "path": "semantic.color.feedback.solid.warning",
+            "resolvedType": "COLOR",
+            "description": "Solid warning Button fill. amber.800 reads brown as a fill; the other tones fill with feedback.*.",
+            "scopes": [
+              "ALL_FILLS",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-feedback-solid-warning)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2686:25",
+                "to": "Hirobius/Primitives: color/amber/700"
+              },
+              "Dark": {
+                "alias": "VariableID:3:40",
+                "to": "Hirobius/Primitives: color/amber/400"
               }
             }
           },
@@ -5534,7 +5749,7 @@
             "name": "color/shadow/hard",
             "path": "semantic.color.shadow.hard",
             "resolvedType": "COLOR",
-            "description": "Hard (blur 0) shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
+            "description": "Hard shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5549,8 +5764,8 @@
                 "to": "Hirobius/Primitives: color/shadow/ink"
               },
               "Dark": {
-                "alias": "VariableID:3:7",
-                "to": "Hirobius/Primitives: color/neutral/500"
+                "alias": "VariableID:3:6",
+                "to": "Hirobius/Primitives: color/neutral/400"
               }
             }
           },
@@ -5559,7 +5774,7 @@
             "name": "color/state/pressed/overlay",
             "path": "semantic.color.state.pressed.overlay",
             "resolvedType": "COLOR",
-            "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class (inset-shadow-pressed-overlay/5).",
+            "description": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class.",
             "scopes": [
               "ALL_FILLS",
               "STROKE_COLOR"
@@ -5584,7 +5799,7 @@
             "name": "color/surface/accent",
             "path": "semantic.color.surface.accent",
             "resolvedType": "COLOR",
-            "description": "Accent fill, midnight graphite: graphite.700 in light (lifted from near-black), near-white in dark. Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
+            "description": "Accent fill, midnight graphite: graphite.700 in light, near-white in dark. Pair with content.onAccent. Varies by brand: its value comes from Hirobius/Brand.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -5634,7 +5849,7 @@
             "name": "color/surface/floating",
             "path": "semantic.color.surface.floating",
             "resolvedType": "COLOR",
-            "description": "Overlay fill (menus, popovers, listboxes, toasts, dialogs). Pair with a border.default hairline to separate from surface.muted.",
+            "description": "Overlay fill. Pair with a border.default hairline to separate from surface.muted.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -5724,8 +5939,8 @@
                 "to": "Hirobius/Primitives: color/neutral/250"
               },
               "Dark": {
-                "alias": "VariableID:2371:2",
-                "to": "Hirobius/Primitives: color/neutral/750"
+                "alias": "VariableID:2686:21",
+                "to": "Hirobius/Primitives: color/neutral/740"
               }
             }
           },
@@ -5749,8 +5964,8 @@
                 "to": "Hirobius/Primitives: color/neutral/250"
               },
               "Dark": {
-                "alias": "VariableID:3:10",
-                "to": "Hirobius/Primitives: color/neutral/800"
+                "alias": "VariableID:2686:21",
+                "to": "Hirobius/Primitives: color/neutral/740"
               }
             }
           },
@@ -5774,8 +5989,8 @@
                 "to": "Hirobius/Primitives: color/neutral/white"
               },
               "Dark": {
-                "alias": "VariableID:3:15",
-                "to": "Hirobius/Primitives: color/neutral/black"
+                "alias": "VariableID:3:11",
+                "to": "Hirobius/Primitives: color/neutral/850"
               }
             }
           },
@@ -5799,8 +6014,8 @@
                 "to": "Hirobius/Primitives: color/neutral/300"
               },
               "Dark": {
-                "alias": "VariableID:3:15",
-                "to": "Hirobius/Primitives: color/neutral/black"
+                "alias": "VariableID:3:11",
+                "to": "Hirobius/Primitives: color/neutral/850"
               }
             }
           },
@@ -5824,8 +6039,8 @@
                 "to": "Hirobius/Primitives: color/neutral/150"
               },
               "Dark": {
-                "alias": "VariableID:2371:3",
-                "to": "Hirobius/Primitives: color/neutral/825"
+                "alias": "VariableID:2371:2",
+                "to": "Hirobius/Primitives: color/neutral/750"
               }
             }
           },
@@ -5874,8 +6089,8 @@
                 "to": "Hirobius/Primitives: color/neutral/325"
               },
               "Dark": {
-                "alias": "VariableID:2364:2146",
-                "to": "Hirobius/Primitives: color/neutral/725"
+                "alias": "VariableID:3:9",
+                "to": "Hirobius/Primitives: color/neutral/700"
               }
             }
           },
@@ -5884,7 +6099,7 @@
             "name": "color/surface/soft",
             "path": "semantic.color.surface.soft",
             "resolvedType": "COLOR",
-            "description": "Soft (tonal) control fill, hds#891: secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
+            "description": "Soft control fill, secondary Button and other borderless controls. Pairs with the hard shadow for its 3:1 boundary.",
             "scopes": [
               "FRAME_FILL",
               "SHAPE_FILL"
@@ -5930,6 +6145,31 @@
             }
           },
           {
+            "id": "VariableID:2686:27",
+            "name": "color/surface/softStrong",
+            "path": "semantic.color.surface.softStrong",
+            "resolvedType": "COLOR",
+            "description": "Control-only fill (secondary Button rest), one step past softHover; carries content.primary only.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-surface-softStrong)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2182:2",
+                "to": "Hirobius/Primitives: color/neutral/350"
+              },
+              "Dark": {
+                "alias": "VariableID:3:8",
+                "to": "Hirobius/Primitives: color/neutral/600"
+              }
+            }
+          },
+          {
             "id": "VariableID:2018:732",
             "name": "color/surface/sunken",
             "path": "semantic.color.surface.sunken",
@@ -5949,8 +6189,8 @@
                 "to": "Hirobius/Primitives: color/neutral/300"
               },
               "Dark": {
-                "alias": "VariableID:3:9",
-                "to": "Hirobius/Primitives: color/neutral/700"
+                "alias": "VariableID:2686:20",
+                "to": "Hirobius/Primitives: color/neutral/675"
               }
             }
           },
@@ -6055,7 +6295,7 @@
             "name": "focus/radius/control/gapRadius",
             "path": "semantic.focus.radius.control.gapRadius",
             "resolvedType": "FLOAT",
-            "description": "Inner edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + semantic.focus.gap.width.",
+            "description": "Inner edge of the focus ring: a 4px control glyph radius + semantic.focus.gap.width.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -6079,7 +6319,7 @@
             "name": "focus/radius/control/ringRadius",
             "path": "semantic.focus.radius.control.ringRadius",
             "resolvedType": "FLOAT",
-            "description": "Outer edge of the focus ring: a 4px control glyph (semantic.radius.control) radius + gap width + semantic.focus.ring.width.",
+            "description": "Outer edge of the focus ring: a 4px control glyph radius + gap width + semantic.focus.ring.width.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -6127,7 +6367,7 @@
             "name": "focus/radius/lg/ringRadius",
             "path": "semantic.focus.radius.lg.ringRadius",
             "resolvedType": "FLOAT",
-            "description": "Outer edge of the focus ring: a rounded-lg (12px) element radius + gap width + semantic.focus.ring.width.",
+            "description": "Outer edge of the focus ring: a rounded-lg element radius + gap width + semantic.focus.ring.width.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -6151,7 +6391,7 @@
             "name": "focus/radius/md/gapRadius",
             "path": "semantic.focus.radius.md.gapRadius",
             "resolvedType": "FLOAT",
-            "description": "Inner edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + semantic.focus.gap.width.",
+            "description": "Inner edge of the focus ring: a rounded-md element radius + semantic.focus.gap.width.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -6175,7 +6415,7 @@
             "name": "focus/radius/md/ringRadius",
             "path": "semantic.focus.radius.md.ringRadius",
             "resolvedType": "FLOAT",
-            "description": "Outer edge of the focus ring: a rounded-md (8px, semantic.radius.action) element radius + gap width + semantic.focus.ring.width.",
+            "description": "Outer edge of the focus ring: a rounded-md element radius + gap width + semantic.focus.ring.width.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -6271,7 +6511,7 @@
             "name": "focus/radius/sm/ringRadius",
             "path": "semantic.focus.radius.sm.ringRadius",
             "resolvedType": "FLOAT",
-            "description": "Outer edge of the focus ring: a rounded-sm (6px) element radius + gap width + semantic.focus.ring.width.",
+            "description": "Outer edge of the focus ring: a rounded-sm element radius + gap width + semantic.focus.ring.width.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -6607,7 +6847,7 @@
             "name": "link/underlineThickness",
             "path": "semantic.link.underlineThickness",
             "resolvedType": "FLOAT",
-            "description": "Text-link underline weight at body size (2px). Text links cap it at 0.125em, so small text keeps a proportionate line.",
+            "description": "Text-link underline weight at body size. Text links cap it at 0.125em, so small text keeps a proportionate line.",
             "scopes": [
               "STROKE_FLOAT"
             ],
@@ -6631,7 +6871,7 @@
             "name": "radius/action",
             "path": "semantic.radius.action",
             "resolvedType": "FLOAT",
-            "description": "Corner radius for action elements (buttons, inputs, badges); Tailwind rounded-md resolves here. Override role.radius to reshape the system.",
+            "description": "Corner radius for action elements; Tailwind rounded-md resolves here. Override role.radius to reshape the system.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -7285,7 +7525,7 @@
             "name": "space/region/gutter",
             "path": "semantic.space.region.gutter",
             "resolvedType": "FLOAT",
-            "description": "Page and region gutter: scale.lg (40px comfortable, 24px compact); theme.css sets scale.sm below 640px. Replaces layout.gutter.",
+            "description": "Page and region gutter: scale.lg; theme.css sets scale.sm below 640px. Replaces layout.gutter.",
             "scopes": [
               "GAP"
             ],
@@ -7357,7 +7597,7 @@
             "name": "space/scale/md",
             "path": "semantic.space.scale.md",
             "resolvedType": "FLOAT",
-            "description": "28px (16px compact). Default of surface.padding: card, dialog and panel insets. layout.normal (deprecated) aliases it. Varies by density: its value comes from Hirobius/Density.",
+            "description": "28px. Default of surface.padding: card, dialog and panel insets. layout.normal aliases it. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -7405,7 +7645,7 @@
             "name": "space/scale/xl",
             "path": "semantic.space.scale.xl",
             "resolvedType": "FLOAT",
-            "description": "64px (32px compact). The gap between sections inside a page. layout.spacious (deprecated) aliases it. Varies by density: its value comes from Hirobius/Density.",
+            "description": "64px. The gap between sections inside a page. layout.spacious aliases it. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -7501,7 +7741,7 @@
             "name": "space/section/stack",
             "path": "semantic.space.section.stack",
             "resolvedType": "FLOAT",
-            "description": "96px vertical rhythm between page sections and major editorial blocks (80px before 2026-10; 48px compact); theme.css sets 64px below 640px. Varies by density: its value comes from Hirobius/Density.",
+            "description": "96px vertical rhythm between page sections and major editorial blocks; theme.css sets 64px below 640px. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -7693,7 +7933,7 @@
             "name": "space/surface/padding",
             "path": "semantic.space.surface.padding",
             "resolvedType": "FLOAT",
-            "description": "Card, dialog and panel inset: scale.md (28px, 16px compact). Tenants override it. Replaces component.padding. Varies by brand and density: its value comes from Hirobius/Density.",
+            "description": "Card, dialog and panel inset: scale.md. Tenants override it. Replaces component.padding. Varies by brand and density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -7833,7 +8073,7 @@
             "name": "typography/bodyStrong/font-family",
             "path": "semantic.typography.bodyStrong.font-family",
             "resolvedType": "STRING",
-            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+            "description": "Variant of body: weight bold, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -7857,7 +8097,7 @@
             "name": "typography/bodyStrong/font-size",
             "path": "semantic.typography.bodyStrong.font-size",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong. Varies by density: its value comes from Hirobius/Density.",
+            "description": "Variant of body: weight bold, what Text with weight bold renders. Matches Figma typography/bodyStrong. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -7881,7 +8121,7 @@
             "name": "typography/bodyStrong/font-weight",
             "path": "semantic.typography.bodyStrong.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+            "description": "Variant of body: weight bold, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -7905,7 +8145,7 @@
             "name": "typography/bodyStrong/letter-spacing",
             "path": "semantic.typography.bodyStrong.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from -0.01em at 18px.",
+            "description": "Variant of body: weight bold, what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from -0.01em at 18px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -7927,7 +8167,7 @@
             "name": "typography/bodyStrong/line-height",
             "path": "semantic.typography.bodyStrong.line-height",
             "resolvedType": "FLOAT",
-            "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from 1.6 × 18px.",
+            "description": "Variant of body: weight bold, what Text with weight bold renders. Matches Figma typography/bodyStrong. Converted from 1.6 × 18px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -8645,7 +8885,7 @@
             "name": "typography/hero/font-family",
             "path": "semantic.typography.hero.font-family",
             "resolvedType": "STRING",
-            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+            "description": "Marketing-only extension above the ramp: covers and marketing headers, never product UI. 120px / 1.05 / 700.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -8669,7 +8909,7 @@
             "name": "typography/hero/font-size",
             "path": "semantic.typography.hero.font-size",
             "resolvedType": "FLOAT",
-            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+            "description": "Marketing-only extension above the ramp: covers and marketing headers, never product UI. 120px / 1.05 / 700.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -8693,7 +8933,7 @@
             "name": "typography/hero/font-weight",
             "path": "semantic.typography.hero.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+            "description": "Marketing-only extension above the ramp: covers and marketing headers, never product UI. 120px / 1.05 / 700.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -8717,7 +8957,7 @@
             "name": "typography/hero/letter-spacing",
             "path": "semantic.typography.hero.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700. Converted from -0.01em at 120px.",
+            "description": "Marketing-only extension above the ramp: covers and marketing headers, never product UI. 120px / 1.05 / 700. Converted from -0.01em at 120px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -8739,7 +8979,7 @@
             "name": "typography/hero/line-height",
             "path": "semantic.typography.hero.line-height",
             "resolvedType": "FLOAT",
-            "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700. Converted from 1.05 × 120px.",
+            "description": "Marketing-only extension above the ramp: covers and marketing headers, never product UI. 120px / 1.05 / 700. Converted from 1.05 × 120px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -9341,7 +9581,7 @@
             "name": "typography/uiRegular/font-family",
             "path": "semantic.typography.uiRegular.font-family",
             "resolvedType": "STRING",
-            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+            "description": "Variant of ui: weight regular, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
             "scopes": [
               "FONT_FAMILY"
             ],
@@ -9365,7 +9605,7 @@
             "name": "typography/uiRegular/font-size",
             "path": "semantic.typography.uiRegular.font-size",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular. Varies by density: its value comes from Hirobius/Density.",
+            "description": "Variant of ui: weight regular, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "FONT_SIZE"
             ],
@@ -9389,7 +9629,7 @@
             "name": "typography/uiRegular/font-weight",
             "path": "semantic.typography.uiRegular.font-weight",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+            "description": "Variant of ui: weight regular, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
             "scopes": [
               "FONT_WEIGHT"
             ],
@@ -9413,7 +9653,7 @@
             "name": "typography/uiRegular/letter-spacing",
             "path": "semantic.typography.uiRegular.letter-spacing",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from -0.01em at 16px.",
+            "description": "Variant of ui: weight regular, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from -0.01em at 16px.",
             "scopes": [
               "LETTER_SPACING"
             ],
@@ -9435,7 +9675,7 @@
             "name": "typography/uiRegular/line-height",
             "path": "semantic.typography.uiRegular.line-height",
             "resolvedType": "FLOAT",
-            "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from 1.5 × 16px.",
+            "description": "Variant of ui: weight regular, for table body cells and other plain UI text. Matches Figma typography/uiRegular. Converted from 1.5 × 16px.",
             "scopes": [
               "LINE_HEIGHT"
             ],
@@ -9502,8 +9742,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:19",
-                "to": "Hirobius/Semantic: color/feedback/error"
+                "alias": "VariableID:10:8",
+                "to": "Hirobius/Semantic: color/content/primary"
               }
             }
           },
@@ -9605,8 +9845,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:23",
-                "to": "Hirobius/Semantic: color/feedback/inProgress"
+                "alias": "VariableID:10:8",
+                "to": "Hirobius/Semantic: color/content/primary"
               }
             }
           },
@@ -9648,8 +9888,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:22",
-                "to": "Hirobius/Semantic: color/feedback/info"
+                "alias": "VariableID:10:8",
+                "to": "Hirobius/Semantic: color/content/primary"
               }
             }
           },
@@ -9814,8 +10054,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:20",
-                "to": "Hirobius/Semantic: color/feedback/success"
+                "alias": "VariableID:10:8",
+                "to": "Hirobius/Semantic: color/content/primary"
               }
             }
           },
@@ -9879,8 +10119,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:21",
-                "to": "Hirobius/Semantic: color/feedback/warning"
+                "alias": "VariableID:10:8",
+                "to": "Hirobius/Semantic: color/content/primary"
               }
             }
           },
@@ -10333,8 +10573,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2229:10",
-                "to": "Hirobius/Semantic: color/surface/soft"
+                "alias": "VariableID:2686:27",
+                "to": "Hirobius/Semantic: color/surface/softStrong"
               }
             }
           },
@@ -10354,8 +10594,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2229:10",
-                "to": "Hirobius/Semantic: color/surface/soft"
+                "alias": "VariableID:2686:27",
+                "to": "Hirobius/Semantic: color/surface/softStrong"
               }
             }
           },
@@ -10384,7 +10624,7 @@
             "name": "button/secondary/border/hover",
             "path": "component.button.secondary.border.hover",
             "resolvedType": "COLOR",
-            "description": "Secondary button hover border. Unused by Button since hds#891 (soft fill, no border); kept for consumers.",
+            "description": "Secondary button hover border. Button no longer draws it; kept for consumers.",
             "scopes": [
               "STROKE_COLOR"
             ],
@@ -10817,8 +11057,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2018:728",
-                "to": "Hirobius/Semantic: color/surface/hover"
+                "alias": "VariableID:2229:11",
+                "to": "Hirobius/Semantic: color/surface/softHover"
               }
             }
           },
@@ -10838,8 +11078,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2229:10",
-                "to": "Hirobius/Semantic: color/surface/soft"
+                "alias": "VariableID:2686:27",
+                "to": "Hirobius/Semantic: color/surface/softStrong"
               }
             }
           },
@@ -10931,7 +11171,7 @@
             "name": "card/focus/ringRadius",
             "path": "component.card.focus.ringRadius",
             "resolvedType": "FLOAT",
-            "description": "Outer edge of the focus ring: an interactive Card (12px) radius + gap width + semantic.focus.ring.width.",
+            "description": "Outer edge of the focus ring: an interactive Card radius + gap width + semantic.focus.ring.width.",
             "scopes": [
               "CORNER_RADIUS"
             ],
@@ -11535,7 +11775,7 @@
             "name": "table/cell/paddingX",
             "path": "component.table.cell.paddingX",
             "resolvedType": "FLOAT",
-            "description": "Table cell inline padding: scale.md (28px, 16px compact). Own token, so tenant surface padding never widens cells.",
+            "description": "Table cell inline padding: scale.md. Own token, so tenant surface padding never widens cells.",
             "scopes": [
               "GAP"
             ],
@@ -12836,25 +13076,25 @@
             "valuesByMode": {
               "Hirobius": {
                 "value": {
-                  "r": 0.647158,
-                  "g": 0.651038,
-                  "b": 0.662675,
+                  "r": 0.661821,
+                  "g": 0.667459,
+                  "b": 0.676552,
                   "a": 1
                 }
               },
               "brutalist-demo": {
                 "value": {
-                  "r": 0.647158,
-                  "g": 0.651038,
-                  "b": 0.662675,
+                  "r": 0.661821,
+                  "g": 0.667459,
+                  "b": 0.676552,
                   "a": 1
                 }
               },
               "accent-cobalt": {
                 "value": {
-                  "r": 0.388235,
-                  "g": 0.423529,
-                  "b": 0.682353,
+                  "r": 0.403922,
+                  "g": 0.439216,
+                  "b": 0.698039,
                   "a": 1
                 }
               }
@@ -14361,7 +14601,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "9b2ad02"
+                "value": "1f2bcc2"
               }
             }
           },
@@ -14483,7 +14723,7 @@
         "id": "S:cf3faa60606fd8f7f7843dbd56f40744ba3bb31a,",
         "name": "typography/bodyStrong",
         "path": "semantic.typography.bodyStrong",
-        "description": "Variant of body: weight bold (700), what Text with weight bold renders. Matches Figma typography/bodyStrong.",
+        "description": "Variant of body: weight bold, what Text with weight bold renders. Matches Figma typography/bodyStrong.",
         "fontFamily": "Sora",
         "fontStyle": "Bold",
         "fontSize": 18,
@@ -14658,7 +14898,7 @@
         "id": "S:227a9b08e4556354f3fbaa4cc39e9a8e3ea167a0,",
         "name": "typography/hero",
         "path": "semantic.typography.hero",
-        "description": "Marketing-only extension above the ramp (ADR-052 addendum): covers and marketing headers, never product UI. 120px / 1.05 / 700.",
+        "description": "Marketing-only extension above the ramp: covers and marketing headers, never product UI. 120px / 1.05 / 700.",
         "fontFamily": "Sora",
         "fontStyle": "Bold",
         "fontSize": 120,
@@ -14808,7 +15048,7 @@
         "id": "S:be7fa533bf6ca9cecde2b81f1fe1261f1382d00f,",
         "name": "typography/uiRegular",
         "path": "semantic.typography.uiRegular",
-        "description": "Variant of ui: weight regular (400), for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
+        "description": "Variant of ui: weight regular, for table body cells and other plain UI text. Matches Figma typography/uiRegular.",
         "fontFamily": "Sora",
         "fontStyle": "Regular",
         "fontSize": 16,
@@ -15171,7 +15411,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:9777ffd19b8614692501188cdbe57d8f0075856efbd47469eb560fc636b43d39",
-  "syncedCommit": "9b2ad02",
-  "syncedHash": "sha256:3673fe70d186a60e2fd5f1a726f46d75308edc6bec9b88171c9d2ee8e1ab6a5a"
+  "tokensHash": "sha256:df41b989c8b6e3c5c41280f5f8f32324dc10d6460d1b53b9997cb69f54af0e1e",
+  "syncedCommit": "1f2bcc2",
+  "syncedHash": "sha256:08be3afd87cb9497a969509daf167667605c60b621332722283de248150e0114"
 }

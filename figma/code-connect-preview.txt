@@ -4,7 +4,7 @@ Snippets are rendered locally from the parsed templates against the Figma proper
 They come from a local emulator of the template runtime, not from Figma, and nothing is published: Dev Mode does not show them.
 <IconInstance /> stands in for a swapped icon instance. Text values are preview defaults, not Figma data.
 
-templates: 61 · property combinations rendered: 2311
+templates: 61 · property combinations rendered: 6211
 
 ## Alert (16 combinations, 16 distinct snippets)
 default                  <Alert title="Heads up">Main alert message content goes here.</Alert>
@@ -59,7 +59,7 @@ Attribution=false        <Blockquote>Quote text</Blockquote>
 ## Breadcrumb (3 combinations, 1 distinct snippets)
 default                  <Breadcrumb items={crumbs} />
 
-## Button (768 combinations, 192 distinct snippets)
+## Button (4608 combinations, 1152 distinct snippets)
 default                  <Button>Button</Button>
 Loading=true             <Button loading>Button</Button>
 Show icon=true           <Button iconLeft={<IconInstance />}>Button</Button>
@@ -70,6 +70,11 @@ Variant=link             <Button variant="link">Button</Button>
 Size=sm                  <Button size="sm">Button</Button>
 Size=lg                  <Button size="lg">Button</Button>
 State=disabled           <Button disabled>Button</Button>
+Tone=quiet               <Button tone="quiet">Button</Button>
+Tone=danger              <Button tone="danger">Button</Button>
+Tone=success             <Button tone="success">Button</Button>
+Tone=warning             <Button tone="warning">Button</Button>
+Tone=info                <Button tone="info">Button</Button>
 
 ## Callout (10 combinations, 5 distinct snippets)
 default                  <Callout>Callout message</Callout>
@@ -98,8 +103,9 @@ Checked=true             <Checkbox label="Checkbox label" checked onChange={setC
 Checked=indeterminate    <Checkbox label="Checkbox label" checked={false} indeterminate onChange={setChecked} />
 State=disabled           <Checkbox label="Checkbox label" checked={false} disabled onChange={setChecked} />
 
-## CodeBlock (2 combinations, 2 distinct snippets)
+## CodeBlock (4 combinations, 4 distinct snippets)
 default                  <CodeBlock code="const x = 1;" />
+Variant=inline           <CodeBlock code="const x = 1;" variant="inline" />
 Show filename=true       <CodeBlock code="const x = 1;" filename="index.ts" />
 
 ## Combobox (36 combinations, 6 distinct snippets)
@@ -159,8 +165,9 @@ Destructive=false        <FormActions secondary={<IconInstance />} primary={<Ico
 Secondary=false          <FormActions destructive={<IconInstance />} primary={<IconInstance />} />
 Layout=bar               <FormActions destructive={<IconInstance />} secondary={<IconInstance />} primary={<IconInstance />} sticky />
 
-## InlineCode (1 combinations, 1 distinct snippets)
+## InlineCode (2 combinations, 2 distinct snippets)
 default                  <InlineCode>token</InlineCode>
+Density=compact          <InlineCode density="compact">token</InlineCode>
 
 ## InlineLink (18 combinations, 3 distinct snippets)
 default                  <InlineLink href={href}>Link text</InlineLink>
@@ -168,25 +175,26 @@ Size=sm                  <InlineLink size="sm" href={href}>Link text</InlineLink
 Size=lg                  <InlineLink size="lg" href={href}>Link text</InlineLink>
 
 ## Input (576 combinations, 384 distinct snippets)
-default                  <Input label="Label" placeholder="Placeholder" size="sm" />
-Show label=false         <Input placeholder="Placeholder" size="sm" />
-Show leading icon=true   <Input label="Label" placeholder="Placeholder" leadingVisual={<Search />} size="sm" />
-Show trailing icon=true  <Input label="Label" placeholder="Placeholder" trailingVisual={<X />} size="sm" />
-Show helper=true         <Input label="Label" placeholder="Placeholder" helperText="Helper text" size="sm" />
-State=Error              <Input label="Label" placeholder="Placeholder" error size="sm" />
-State=Disabled           <Input label="Label" placeholder="Placeholder" disabled size="sm" />
-State=Loading            <Input label="Label" placeholder="Placeholder" loading size="sm" />
+default                  <Input label="Label" placeholder="Placeholder" />
+Show label=false         <Input placeholder="Placeholder" />
+Show leading icon=true   <Input label="Label" placeholder="Placeholder" leadingVisual={<Search />} />
+Show trailing icon=true  <Input label="Label" placeholder="Placeholder" trailingVisual={<X />} />
+Show helper=true         <Input label="Label" placeholder="Placeholder" helperText="Helper text" />
+State=Error              <Input label="Label" placeholder="Placeholder" error />
+State=Disabled           <Input label="Label" placeholder="Placeholder" disabled />
+State=Loading            <Input label="Label" placeholder="Placeholder" loading />
 Size=lg                  <Input label="Label" placeholder="Placeholder" size="lg" />
-Size=md                  <Input label="Label" placeholder="Placeholder" />
-Text style=mono          <Input label="Label" placeholder="Placeholder" size="sm" textStyle="mono" />
+Size=sm                  <Input label="Label" placeholder="Placeholder" size="sm" />
+Text style=mono          <Input label="Label" placeholder="Placeholder" textStyle="mono" />
 
 ## Kbd (3 combinations, 3 distinct snippets)
 default                  <Kbd size="sm">Esc</Kbd>
 Size=md                  <Kbd>Esc</Kbd>
 Size=lg                  <Kbd size="lg">Esc</Kbd>
 
-## List (1 combinations, 1 distinct snippets)
+## List (4 combinations, 2 distinct snippets)
 default                  <List><List.Item title="Item title" href={item.href} trailing="chevron" /></List>
+Variant=plain            <List variant="plain"><List.Item title="Item title" href={item.href} trailing="chevron" /></List>
 
 ## Menu (1 combinations, 1 distinct snippets)
 default                  <Menu><Menu.Trigger asChild><Button>Options</Button></Menu.Trigger><Menu.Content><Menu.Item>Edit</Menu.Item><Menu.Item tone="danger">Delete</Menu.Item></Menu.Content></Menu>
@@ -219,7 +227,7 @@ Variant=compact          <Pagination variant="compact" page={page} count={pageCo
 ## Popover (2 combinations, 1 distinct snippets)
 default                  <Popover><Popover.Trigger asChild><Button>Open</Button></Popover.Trigger><Popover.Content>Popover content goes here. Replace with any layout in instances.</Popover.Content></Popover>
 
-## Progress (6 combinations, 6 distinct snippets)
+## Progress (60 combinations, 6 distinct snippets)
 default                  <Progress value={progress} size="sm" />
 Type=Indeterminate       <Progress size="sm" />
 Size=md                  <Progress value={progress} />
@@ -244,8 +252,8 @@ State=Invalid            <Select label="Label" placeholder="Select option" aria-
 default                  <Sheet><Sheet.Trigger asChild><Button>Sort</Button></Sheet.Trigger><Sheet.Content><Sheet.Header><Sheet.Title>Sort by</Sheet.Title><Sheet.Description>Choose how the list is ordered.</Sheet.Description></Sheet.Header><Sheet.Actions aria-label="Sort order"><Sheet.Action current>Newest</Sheet.Action><Sheet.Action>Company</Sheet.Action></Sheet.Actions></Sheet.Content></Sheet>
 
 ## Skeleton (3 combinations, 3 distinct snippets)
-default                  <Skeleton variant="text" />
-Variant=rectangular      <Skeleton />
+default                  <Skeleton />
+Variant=text             <Skeleton variant="text" />
 Variant=circular         <Skeleton variant="circular" />
 
 ## Slider (4 combinations, 1 distinct snippets)

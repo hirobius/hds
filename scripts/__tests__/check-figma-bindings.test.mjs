@@ -27,7 +27,7 @@ describe('check-figma-bindings', () => {
     expect(t.disclosure).toEqual(['88:453']);
     expect(t.nav).toBeUndefined();
     // hds#1323: List's row tokens live on the ListItem set, which List nests.
-    expect(t.list).toEqual(['2353:315', '2352:301']);
+    expect(t.list).toEqual(['2683:2224', '2352:301']);
   });
 
   it('the snapshot reads a whole set when a tag names one of its variants (hds#1323)', () => {
