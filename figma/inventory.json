@@ -616,10 +616,10 @@
           "variantCount": 5
         },
         {
-          "id": "128:14",
+          "id": "2684:52",
           "name": "CardProgress",
-          "type": "COMPONENT",
-          "variantCount": 1
+          "type": "COMPONENT_SET",
+          "variantCount": 5
         },
         {
           "id": "128:18",
@@ -1058,10 +1058,10 @@
           "variantCount": 2
         },
         {
-          "id": "89:155",
+          "id": "2684:55",
           "name": "InlineCode",
-          "type": "COMPONENT",
-          "variantCount": 1
+          "type": "COMPONENT_SET",
+          "variantCount": 2
         }
       ]
     },
