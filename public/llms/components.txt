@@ -620,7 +620,7 @@ Page — standard page shell. Wraps page content in Container (width constraint)
   - style: CSSProperties
 
 ### PageHeader
-Screen header: breadcrumb slot, the title at the one canonical page-title size (`heading2`), a metadata row above the title, a status slot and an actions slot.…
+Screen header: breadcrumb slot, the title at the one canonical page-title size (the `title` role), a metadata row above the title, a status slot and an actions…
   - actions: ReactNode
   - breadcrumb: ReactNode
   - description: ReactNode

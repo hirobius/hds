@@ -50,7 +50,13 @@ describe('buildTypography', () => {
 });
 
 describe('buildComponents', () => {
-  const table = buildComponents(raw, { componentInventory: ['Card', 'SegmentedControl'] });
+  const manifest = JSON.parse(
+    readFileSync(resolve(__dirname, '../../public/hds-manifest.json'), 'utf8'),
+  );
+  const table = buildComponents(raw, {
+    ...manifest,
+    componentInventory: ['Card', 'SegmentedControl'],
+  });
 
   it('no longer says containers are 8px or forbids 12px', () => {
     expect(table).not.toMatch(/never 12\/16\/20/);

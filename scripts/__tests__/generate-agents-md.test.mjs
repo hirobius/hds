@@ -56,9 +56,9 @@ describe('the consumer guide (mcp/guide.mjs)', () => {
 
   it('gives every need exactly one first answer, and one need per number row', () => {
     const firsts = INTENTS.map((i) => i.use[0]);
-    const metrics = INTENTS.filter((i) => i.use.includes('MetricTiles'));
-    expect(metrics.map((i) => i.id)).toEqual(['metrics']);
-    for (const name of ['Stat', 'CardMetric', 'StatusTile']) {
+    const metrics = INTENTS.filter((i) => i.id === 'metrics');
+    expect(metrics[0].use[0]).toBe('Grid');
+    for (const name of ['MetricTiles', 'MetricTile', 'Stat', 'CardMetric', 'StatusTile']) {
       expect(firsts).not.toContain(name);
       expect(metrics[0].avoid).toContain(name);
     }
@@ -91,14 +91,15 @@ describe('buildAgentsMd', () => {
       for (const name of intent.use) expect(pick).toContain(`\`${name}\``);
     }
     const imports = section(md, 'Imports');
-    expect(imports).toMatch(/@hirobius\/design-system\/patterns`?: .*`MetricTiles`/);
+    expect(imports).toMatch(/@hirobius\/design-system\/patterns`?: .*`PageHeader`/);
+    expect(imports).not.toMatch(/`MetricTiles`/);
     expect(imports).toMatch(/@hirobius\/design-system`?: .*`AlertDialog`/);
     expect(imports).not.toMatch(/`Stat`/);
   });
 
   it('settles the divergences seen in the 2026-10-05 baseline', () => {
     const md = buildAgentsMd(inputs());
-    expect(md).toMatch(/MetricTiles.*Not:.*`Stat`/s);
+    expect(md).toMatch(/headline numbers.*`Grid`.*Not:.*`MetricTiles`.*`Stat`/);
     expect(md).toMatch(/AlertDialog.*Not:.*`Dialog`/s);
     expect(md).toMatch(/useToast/);
     expect(md).toMatch(/raw `<form>`/);

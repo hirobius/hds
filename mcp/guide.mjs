@@ -28,9 +28,9 @@ export const HOOKS = {
  * `avoid` the alternatives agents reached for instead, `how` one line of usage.
  * `keywords` feed search_components ranking. A component named in `avoid` is
  * not wrong in general; it is the wrong answer for that one need, and the
- * server tells an agent so (`insteadFor`). Every need has one answer: the four
- * number components are the case that split the baseline, so a row of numbers
- * is always MetricTiles.
+ * server tells an agent so (`insteadFor`). Every need has one answer. The four
+ * number components (MetricTiles, MetricTile, Stat, Card.Metric) are deprecated
+ * with no replacement, so a row of numbers is a Grid of Cards with the type roles.
  */
 export const INTENTS = [
   {
@@ -66,9 +66,9 @@ export const INTENTS = [
       'count',
       'total',
     ],
-    use: ['MetricTiles', 'MetricTile'],
-    avoid: ['Stat', 'StatusTile', 'CardMetric', 'Card with Text'],
-    how: '`<MetricTiles><MetricTile label="Open projects" value="5" />…</MetricTiles>`; one MetricTile per number. `Stat` is for a number inside prose or a dense list, `Card.Metric` for one inside an existing `Card`, a `Card` with `Card.Row` for a state with notes (never a number; it replaces the deprecated `StatusTile`).',
+    use: ['Grid', 'Card', 'Text'],
+    avoid: ['MetricTiles', 'MetricTile', 'Stat', 'StatusTile', 'CardMetric'],
+    how: '`<Grid layout="auto-fill" minItemWidth="12rem"><Card><Text variant="caption">Open projects</Text><Text variant="title">5</Text></Card>…</Grid>`; one Card per number, label in caption, value in title. A state with notes (never a number) is a Card with Card.Row.',
   },
   {
     id: 'table',
@@ -270,7 +270,7 @@ export const INTENTS = [
  * The recommended set: the ratified core (mcp/core-set.mjs, hds#254) plus every
  * component a need above names, hooks excluded. This is a different set from the
  * ratified core: it adds the patterns and layout parts the guide steers agents to
- * (Page, MetricTiles, ...). list_core and AGENTS.md show this one and say so; the
+ * (Page, Grid, ...). list_core and AGENTS.md show this one and say so; the
  * manifest `core` flag, llms.txt and SKILL.md show the ratified core.
  */
 export function recommendedComponents() {

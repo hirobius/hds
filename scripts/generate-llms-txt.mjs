@@ -42,6 +42,7 @@ import { buildLlmsIndex } from './lib/llms-index.mjs';
 import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
 import { versionLine } from './lib/version-stamp.mjs';
 import { upgradeMarkdown } from './lib/upgrade-digest.mjs';
+import { assertNoDeprecatedRecommendations, loadDeprecatedNames } from './lib/doc-truth.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // `--root <dir>` reads and writes under <dir> (tests).
@@ -398,6 +399,11 @@ ${upgradeMarkdown(ROOT, pkg.version)}
     'llms.txt': index,
     'public/llms-full.txt': full,
   };
+  // Never teach a deprecated API (Fable eval #1): fail the build, not the reader.
+  const deprecatedApi = loadDeprecatedNames(ROOT);
+  for (const [rel, text] of Object.entries(outputs)) {
+    assertNoDeprecatedRecommendations(text, deprecatedApi, rel);
+  }
   for (const sl of SLICES) {
     outputs[`public/llms/${sl.name}.txt`] = `${sliceHeader(sl.name)}${slices[sl.name]}\n`;
   }

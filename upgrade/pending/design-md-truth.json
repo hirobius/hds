@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "An agent that reads DESIGN.md or llms.txt now builds a row of numbers as a Grid of Cards instead of the deprecated MetricTiles; no code change is needed."
+}
