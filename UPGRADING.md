@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.45.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.46.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,69 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.46.0
+
+Released 2026-11-18 (minor). 5 changes to make by hand and 48 that look different.
+
+### Looks different
+
+- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
+- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
+- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
+- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
+- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
+- Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
+- Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
+- Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
+- Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
+- This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
+- This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
+- This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
+- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
+- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
+- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
+- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
+- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- Light info is now a calm blue (#2b58b1) instead of the electric blue.500; info text, icons and the info Button fill look calmer, still 4.5:1 or higher.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
+- A secondary Button with tone danger, success, warning or info shows the soft feedback tint with the content.primary label and no edge, and a tertiary one shows tone-coloured text on a clear face that the hover fills with the tint; check screens that relied on the solid fill.
+- focus-visible:ring-2 now draws only the HDS focus outline, not Tailwind's box-shadow ring under it; add your own ring if you relied on both.
+- Pages themed with the accent-lilac brand (data-brand="accent-lilac") may look different, so check them after upgrading.
+
+### Do by hand
+
+- A date, time or datetime-local Input renders an aria-hidden icon span after the field; a test that counts the field's children or snapshots its DOM needs updating.
+- Only the Card docs demo's markup changed, to show the new truncateFirst example; a Card.Facts without truncateFirst renders as before.
+- Drops focus-visible:ring-ring, a Tailwind focus-ring utility no HDS component uses (focus draws through .hds-focus); use .hds-focus, or add it in your own CSS.
+- Drops four Tailwind utilities no HDS component uses (a removed badge token, a deprecated weight, drop-shadow); add them in your own CSS if you used them.
+- Toned Buttons no longer use the soft-tint hover and active utilities; add them in your own CSS if you used them directly.
 
 ## 0.45.0
 
