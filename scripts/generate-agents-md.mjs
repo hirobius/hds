@@ -40,6 +40,7 @@ import { HOOKS, recommendedComponents } from '../mcp/guide.mjs';
 import { NEEDS_INTRO, needsMarkdown } from './lib/guide-markdown.mjs';
 import { readVoice, voiceMarkdown } from './lib/voice.mjs';
 import { rootFromArgv, runCheck } from './lib/generated-check.mjs';
+import { assertNoDeprecatedRecommendations, loadDeprecatedNames } from './lib/doc-truth.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const AGENTS_PATH = 'AGENTS.md';
@@ -236,6 +237,9 @@ async function main() {
     [FRONT_DOOR_PATH]: buildFrontDoor(registry),
     [DOCS_INDEX_PATH]: buildDocsIndex(registry),
   };
+
+  const deprecatedApi = loadDeprecatedNames(root);
+  assertNoDeprecatedRecommendations(outputs[AGENTS_PATH], deprecatedApi, AGENTS_PATH);
 
   if (process.argv.includes('--check')) {
     // Writes nothing: exit 1 when any of the three differs from a fresh build.

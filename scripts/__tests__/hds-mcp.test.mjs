@@ -126,14 +126,21 @@ describe('hds-mcp over stdio', () => {
 
   it('search_components ranks the pattern for a purpose first, with its import path', async () => {
     const { bytes, data } = await callTool(server, 'search_components', {
-      query: 'row of headline numbers',
+      query: 'table of records with row actions',
     });
     expect(bytes).toBeLessThan(MAX_RESULT_BYTES);
     expect(data.results[0]).toMatchObject({
-      name: 'MetricTiles',
+      name: 'DataTableSection',
       import: '@hirobius/design-system/patterns',
     });
     expect(data.results.length).toBeLessThanOrEqual(8);
+  });
+
+  it('search_components answers a row of numbers with the live Grid, not a deprecated tile', async () => {
+    const { data } = await callTool(server, 'search_components', {
+      query: 'row of headline numbers',
+    });
+    expect(data.results[0]).toMatchObject({ name: 'Grid', import: '@hirobius/design-system' });
   });
 
   it('search_components finds a root component by name', async () => {
@@ -155,7 +162,7 @@ describe('hds-mcp over stdio', () => {
   it('get_component steers a commonly confused component to the guide answer', async () => {
     const { data } = await callTool(server, 'get_component', { name: 'Stat' });
     expect(data.insteadFor).toEqual(
-      expect.arrayContaining([expect.objectContaining({ use: 'MetricTiles' })]),
+      expect.arrayContaining([expect.objectContaining({ use: 'Grid' })]),
     );
     const dialog = await callTool(server, 'get_component', { name: 'dialog' });
     expect(dialog.data.name).toBe('Dialog');
@@ -233,13 +240,7 @@ describe('hds-mcp over stdio', () => {
     const { bytes, data } = await callTool(server, 'list_core', {});
     expect(bytes).toBeLessThan(MAX_RESULT_BYTES);
     expect(data.patterns).toEqual(
-      expect.arrayContaining([
-        'DataTableSection',
-        'FormActions',
-        'MetricTiles',
-        'Page',
-        'PageHeader',
-      ]),
+      expect.arrayContaining(['DataTableSection', 'FormActions', 'Page', 'PageHeader']),
     );
     expect(data.root).toEqual(
       expect.arrayContaining(['AlertDialog', 'Badge', 'Button', 'Kbd', 'Tabs']),
@@ -255,12 +256,12 @@ describe('hds-mcp over stdio', () => {
     const hit = search.data.results.find((r) => r.name === 'Stat');
     const one = await callTool(server, 'get_component', { name: 'Stat' });
     expect(hit.insteadFor).toEqual([
-      { need: expect.stringMatching(/headline numbers/), use: 'MetricTiles' },
+      { need: expect.stringMatching(/headline numbers/), use: 'Grid' },
     ]);
     expect(one.data.insteadFor).toEqual(hit.insteadFor);
     expect(hit.core).toBeUndefined();
     expect(one.data.core).toBeUndefined();
-    const rec = await callTool(server, 'get_component', { name: 'MetricTiles' });
+    const rec = await callTool(server, 'get_component', { name: 'Page' });
     expect(rec.data.recommended).toBe(true);
     expect(rec.data.core).toBeUndefined();
     const core = await callTool(server, 'get_component', { name: 'Button' });

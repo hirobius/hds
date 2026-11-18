@@ -145,24 +145,22 @@ Every screen has exactly one `PageHeader`. The page title is `title` (28px), a f
 
 ### Which one, when
 
-Pick by what the thing is. The first four rows are for a headline number or a state; the rest are for containers and sections.
+Pick by what the thing is. The first two rows are for a headline number or a state; the rest are for containers and sections.
 
-| Component            | Use it for                                                                    | Use instead                                                                  |
-| -------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `MetricTiles`        | The default for any row of headline numbers on a screen. One fixed tile size. | Nothing: start here.                                                         |
-| `Stat`               | An inline number inside prose or a dense list.                                | `MetricTiles` when the number stands alone in a row of its own.              |
-| `Card.Metric`        | A metric inside an existing `Card` only.                                      | `MetricTiles` when there is no enclosing `Card`.                             |
-| `Card.Row`           | State with notes and a trailing badge, never a number (was `StatusTile`).     | `MetricTiles` when the tile is a number; a status row never carries a value. |
-| `Card`               | A titled or interactive content object (header, body, footer, `selectable`).  | `Surface` when there is no title and nothing to press.                       |
-| `Surface`            | A plain padded background around content that has no header of its own.       | `Card` when the content is titled or interactive.                            |
-| `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.   | `FormActions` `destructive` slot for a delete beside a form's own buttons.   |
-| `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                | `Table` alone when there is no heading, toolbar or empty state to show.      |
+| Component            | Use it for                                                                                | Use instead                                                                    |
+| -------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `Grid` of `Card`s    | Any row of headline numbers: one `Card` per number, label in `caption`, value in `title`. | Nothing: start here. (`MetricTiles`, `Stat` and `Card.Metric` are deprecated.) |
+| `Card.Row`           | State with notes and a trailing badge, never a number (was `StatusTile`).                 | A `Card` with the type roles when the tile is a number.                        |
+| `Card`               | A titled or interactive content object (header, body, footer, `selectable`).              | `Surface` when there is no title and nothing to press.                         |
+| `Surface`            | A plain padded background around content that has no header of its own.                   | `Card` when the content is titled or interactive.                              |
+| `DestructiveSection` | The one irreversible action on a screen, with an explanation and a confirm.               | `FormActions` `destructive` slot for a delete beside a form's own buttons.     |
+| `DataTableSection`   | A titled table with a toolbar, row actions and an empty state.                            | `Table` alone when there is no heading, toolbar or empty state to show.        |
 
 Three more needs are props on an existing component, not components of their own. A card people pick from a set is a `Card` with `selectable`, `selected` and `onSelectedChange`, announced as a checkbox. A wrapping row of equal tiles that are not headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`. A count beside a heading is a count `Badge`: `count`, `max` for a `99+` cap and a `label` such as "12 roles", in a `Stack direction="row" gap="xs"` with the heading. A state shown only as a colored marker, with no notes, is a `Badge` with `dot` and a `label` that names the state. An account button is an `Avatar` as the `iconLeft` of a `tertiary` `iconOnly` `Button` (`rounded-full`): initials when signed in, `fallback="icon"` when signed out, and `status="warning"` with a `statusLabel` while unsynced; the Button `label` names the account and its status. Never a hand-drawn icon in a bordered box. A rail that selects in place (master-detail, no routing) is `NavList` with `onSelect` and `selected` on each `NavList.Item`, a button marked `aria-current="true"`; a rail that routes keeps `href` and `current`. The two are exclusive. A second control on a rail row (a posting link, a row menu) is the item's `action`: it renders beside the row's link or button, never inside it. A button whose hover fill should slide in from the edge the pointer enters is a `Button` with `hoverEffect="wipe"` (opt-in, hover-capable pointers only, instant under reduced motion); never hand-roll a hover overlay. The `Kbd` key edge is `--semantic-shadow-key`, a 2px drop in `border.strong`; by default it is the same straight-down hard shadow as the Button (`0 2px 0`, colour `--hds-kbd-edge`, default its own fill stepped darker, `--hds-edge-kbd`).
 
 `Card` and `Surface` share one container radius, `rounded-lg` (`role.radius` + 4 px: 12 px by default, 0 under `brutalist-demo`). Dialogs and alert dialogs use it too. Never read `--component-card-radius` for a container; it ignores the direction or brand.
 
-`MetricTiles` has `min(tiles, 4)` columns, so a row never leaves an empty column, and every tile has one fixed min-height with the value in `title`, the label in `caption` and the sub line in `caption`. Its tone comes from the fixed feedback vocabulary: `neutral | success | warning | danger | info`.
+A row of headline numbers is a `Grid` with `layout="auto-fill"` and `minItemWidth`, so a row never stretches one tile over an empty column. Every tile is a `Card` with the value in `title`, the label in `caption` and any sub line in `caption`.
 
 A pager for one item at a time ("‹ 1 of 4 ›") is `Pagination` with `variant="compact"`; the default variant is for pages of a long result set.
 
