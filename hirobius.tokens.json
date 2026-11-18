@@ -3301,7 +3301,7 @@
         }
       },
       "controlHeight": {
-        "$description": "One height per control size, shared by Button, Input, Select, Tabs, SegmentedControl and Pagination (Fable eval #2). A coarse pointer or a narrow viewport still lifts sm and md to semantic.size.touchTarget (44px).",
+        "$description": "One height per control size, shared by every control. Touch lifts sm and md to touchTarget (44px).",
         "sm": {
           "$value": "{primitive.size.32}",
           "$description": "Small control height (32px)."
