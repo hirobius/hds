@@ -34,9 +34,6 @@
     "token-value-mismatch:Hirobius/Component: button/size/lg/height [Default]": {
       "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
     },
-    "token-value-mismatch:Hirobius/Component: pagination/compactControlSize": {
-      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
-    },
     "token-value-mismatch:Hirobius/Component: pagination/compactControlSize [Default]": {
       "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
     }

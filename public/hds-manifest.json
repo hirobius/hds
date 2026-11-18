@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-18T00:25:36.561Z",
+  "generated": "2026-11-18T14:33:00.547Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -16882,7 +16882,7 @@
         "path": "semantic.size.controlHeight.sm",
         "cssVar": "--semantic-size-controlHeight-sm",
         "type": "dimension",
-        "description": "Small control height (32px).",
+        "description": "32px.",
         "alias": "{primitive.size.32}",
         "resolvedValue": "32px"
       },
@@ -16890,7 +16890,7 @@
         "path": "semantic.size.controlHeight.md",
         "cssVar": "--semantic-size-controlHeight-md",
         "type": "dimension",
-        "description": "Medium control height (40px), the default size.",
+        "description": "40px, the default.",
         "alias": "{primitive.size.40}",
         "resolvedValue": "40px"
       },
@@ -16898,7 +16898,7 @@
         "path": "semantic.size.controlHeight.lg",
         "cssVar": "--semantic-size-controlHeight-lg",
         "type": "dimension",
-        "description": "Large control height (48px).",
+        "description": "48px.",
         "alias": "{primitive.size.48}",
         "resolvedValue": "48px"
       },
@@ -17504,7 +17504,7 @@
         "path": "component.button.size.sm.height",
         "cssVar": "--component-button-size-sm-height",
         "type": "dimension",
-        "description": "Small button height (32px): semantic.size.controlHeight.sm, shared with every control of this size.",
+        "description": "Small button height (32px).",
         "alias": "{semantic.size.controlHeight.sm}",
         "resolvedValue": "32px"
       },
@@ -17552,7 +17552,7 @@
         "path": "component.button.size.md.height",
         "cssVar": "--component-button-size-md-height",
         "type": "dimension",
-        "description": "Medium button height (40px): semantic.size.controlHeight.md, shared with every control of this size.",
+        "description": "Medium button height (40px).",
         "alias": "{semantic.size.controlHeight.md}",
         "resolvedValue": "40px"
       },
@@ -17600,7 +17600,7 @@
         "path": "component.button.size.lg.height",
         "cssVar": "--component-button-size-lg-height",
         "type": "dimension",
-        "description": "Large button height (48px): semantic.size.controlHeight.lg, shared with every control of this size.",
+        "description": "Large button height (48px).",
         "alias": "{semantic.size.controlHeight.lg}",
         "resolvedValue": "48px"
       },
@@ -17950,7 +17950,7 @@
         "path": "component.pagination.compactControlSize",
         "cssVar": "--component-pagination-compactControlSize",
         "type": "dimension",
-        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square): semantic.size.controlHeight.md.",
+        "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
         "alias": "{semantic.size.controlHeight.md}",
         "resolvedValue": "40px"
       },

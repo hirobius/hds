@@ -3301,18 +3301,18 @@
         }
       },
       "controlHeight": {
-        "$description": "One height per control size, shared by every control. Touch lifts sm and md to touchTarget (44px).",
+        "$description": "Shared control height per size.",
         "sm": {
           "$value": "{primitive.size.32}",
-          "$description": "Small control height (32px)."
+          "$description": "32px."
         },
         "md": {
           "$value": "{primitive.size.40}",
-          "$description": "Medium control height (40px), the default size."
+          "$description": "40px, the default."
         },
         "lg": {
           "$value": "{primitive.size.48}",
-          "$description": "Large control height (48px)."
+          "$description": "48px."
         }
       },
       "icon": {
@@ -3731,7 +3731,7 @@
           "height": {
             "$type": "dimension",
             "$value": "{semantic.size.controlHeight.sm}",
-            "$description": "Small button height (32px): semantic.size.controlHeight.sm, shared with every control of this size."
+            "$description": "Small button height (32px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3763,7 +3763,7 @@
           "height": {
             "$type": "dimension",
             "$value": "{semantic.size.controlHeight.md}",
-            "$description": "Medium button height (40px): semantic.size.controlHeight.md, shared with every control of this size."
+            "$description": "Medium button height (40px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3795,7 +3795,7 @@
           "height": {
             "$type": "dimension",
             "$value": "{semantic.size.controlHeight.lg}",
-            "$description": "Large button height (48px): semantic.size.controlHeight.lg, shared with every control of this size."
+            "$description": "Large button height (48px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -4056,7 +4056,7 @@
       "compactControlSize": {
         "$type": "dimension",
         "$value": "{semantic.size.controlHeight.md}",
-        "$description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square): semantic.size.controlHeight.md."
+        "$description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square)."
       }
     },
     "table": {
