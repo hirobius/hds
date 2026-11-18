@@ -378,6 +378,36 @@
     },
     "token-value-mismatch:Hirobius/Brand: semantic/color/edge/primary/Dark [accent-cobalt]": {
       "reason": "Token changed in code by #1561 or #1563, not yet in the library. Adrian runs the Sync and publishes: hds#1569."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: color/selected/bg": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: color/selected/fg": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: typography/weight/selected": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Brand: semantic/color/selected/bg/Light": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Brand: semantic/color/selected/bg/Dark": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Brand: semantic/color/selected/fg/Light": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Brand: semantic/color/selected/fg/Dark": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: tag/activeText [Default]": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: tag/activeBackground [Default]": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: tag/activeBorder [Default]": {
+      "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
     }
   }
 }

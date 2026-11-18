@@ -111,7 +111,9 @@ export function TabsTrigger({
         'relative inline-flex items-center px-fixed-xs py-scale-xs hds-type-ui hds-touch-row transition-[color,background-color,border-color] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
         // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
         'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
-        'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-[var(--semantic-color-surface-selected)]',
+        // Selected (Adrian 2026-11-18): the shared selected fill, fg and weight (semantic.color.selected).
+        // type-ramp-ok: the active label weight is semantic.typography.weight.selected (600)
+        'data-[state=active]:border-b-[color:var(--semantic-color-selected-bg)] data-[state=active]:text-[var(--semantic-color-selected-fg)] data-[state=active]:bg-[var(--semantic-color-selected-bg)] data-[state=active]:[font-weight:var(--semantic-typography-weight-selected)]',
         'hds-focus-inset',
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,

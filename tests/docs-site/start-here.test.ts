@@ -156,11 +156,11 @@ describe('tokenFlow', () => {
           },
         ],
       },
-      'semantic.accent.rest',
+      'semantic.accent.hover',
     );
-    expect(flow.cssLight).toMatch(/^--semantic-accent-rest: var\(--primitive-color-/);
-    expect(flow.cssDark).toMatch(/^--semantic-accent-rest: var\(--primitive-color-/);
-    expect(flow.figma).toBe('Hirobius/Semantic: accent/rest');
+    expect(flow.cssLight).toMatch(/^--semantic-accent-hover: var\(--primitive-color-/);
+    expect(flow.cssDark).toMatch(/^--semantic-accent-hover: var\(--primitive-color-/);
+    expect(flow.figma).toBe('Hirobius/Semantic: accent/hover');
     expect(flow.reactFile).toBe('segmented-control.tsx');
   });
 });

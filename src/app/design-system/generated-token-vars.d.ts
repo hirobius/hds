@@ -353,6 +353,8 @@ declare module 'react' {
     '--semantic-color-feedback-bg-inProgress'?: string | undefined;
     '--semantic-color-feedback-solid-warning'?: string | undefined;
     '--semantic-color-state-pressed-overlay'?: string | undefined;
+    '--semantic-color-selected-bg'?: string | undefined;
+    '--semantic-color-selected-fg'?: string | undefined;
     '--semantic-space-scale-2xs'?: string | undefined;
     '--semantic-space-scale-xs'?: string | undefined;
     '--semantic-space-scale-sm'?: string | undefined;
@@ -494,6 +496,7 @@ declare module 'react' {
     /** @deprecated hds#483, removed in 1.0.0 — use semantic.typography.caption @removeIn 1.0.0 */
     '--semantic-typography-eyebrow-line-height'?: string | undefined;
     '--semantic-typography-lineHeight-none'?: string | undefined;
+    '--semantic-typography-weight-selected'?: string | undefined;
     '--semantic-docs-space-section'?: string | undefined;
     /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) @removeIn 1.0.0 */
     '--semantic-docs-space-paragraph'?: string | undefined;

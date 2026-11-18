@@ -144,16 +144,9 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
       },
 
       // Foreground color — active wins over hover/rest regardless of interaction sub-state.
-      {
-        active: true,
-        variant: 'secondary',
-        className: 'text-[var(--semantic-color-content-primary)]',
-      },
-      {
-        active: true,
-        variant: 'primary',
-        className: 'text-[var(--semantic-color-content-onAccent)]',
-      },
+      // Selected (Adrian 2026-11-18): one look for every selectable component, read from
+      // semantic.color.selected (fill + fg) and semantic.typography.weight.selected.
+      { active: true, className: 'text-[var(--semantic-color-selected-fg)]' },
       {
         active: false,
         interaction: 'hover',
@@ -220,13 +213,13 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
       {
         active: true,
         variant: 'secondary',
-        className: 'bg-[var(--semantic-color-surface-page)]',
+        className: 'bg-[var(--semantic-color-selected-bg)]',
       },
       {
         active: true,
         variant: 'primary',
         interaction: 'rest',
-        className: 'bg-[var(--semantic-accent-rest)]',
+        className: 'bg-[var(--semantic-color-selected-bg)]',
       },
       {
         active: true,
@@ -254,11 +247,7 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
       },
 
       // Ring — shown whenever active (any interaction) or hovered; color follows variant.
-      {
-        active: true,
-        variant: 'secondary',
-        className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive)]',
-      },
+      // The secondary selected segment is the selected fill too; its old 1px edge is gone.
       // Primary selected (C2): the primary fill with the primary hard edge, drawn inset at
       // the bottom because the scrolling rail clips anything below the segment.
       {
@@ -302,12 +291,7 @@ const segmentedControlDescriptionVariants = /* @__PURE__ */ cva(
   {
     variants: SEGMENT_STATE_AXES,
     compoundVariants: [
-      {
-        active: true,
-        interaction: 'rest',
-        variant: 'primary',
-        className: 'text-[var(--semantic-color-content-onAccent)]',
-      },
+      { active: true, className: 'text-[var(--semantic-color-selected-fg)]' },
       { disabled: true, className: 'text-[var(--semantic-color-content-disabled)]' },
     ],
     defaultVariants: SEGMENT_STATE_DEFAULTS,
@@ -330,8 +314,10 @@ const segmentedControlLabelVariants = /* @__PURE__ */ cva(
       // The selected primary segment paints a 3px edge inset at its bottom, so its visible
       // face is 3px shorter and the label read low on it. Lift the label onto the face.
       lifted: { true: '-translate-y-px', false: '' },
+      // type-ramp-ok: the selected label weight is semantic.typography.weight.selected (600), the one selected look
+      selected: { true: '[font-weight:var(--semantic-typography-weight-selected)]', false: '' },
     },
-    defaultVariants: { size: 'md', lifted: false },
+    defaultVariants: { size: 'md', lifted: false, selected: false },
   },
 );
 
@@ -488,7 +474,11 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           <span
             aria-hidden="true"
             className={cn(
-              segmentedControlLabelVariants({ size, lifted: active && variant === 'primary' }),
+              segmentedControlLabelVariants({
+                size,
+                lifted: active && variant === 'primary',
+                selected: active,
+              }),
               'inline-flex items-center justify-center',
             )}
           >
@@ -499,6 +489,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
             className={segmentedControlLabelVariants({
               size,
               lifted: active && variant === 'primary',
+              selected: active,
             })}
           >
             {option.label}

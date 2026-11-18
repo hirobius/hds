@@ -3,7 +3,9 @@
  *
  * The secondary selected segment must read against its track at 3:1 or more
  * (WCAG 1.4.11 non-text) in light and dark, with the control on the page and on
- * a raised Card. The colors come from the rendered classes (which custom
+ * a raised Card. Since the one selected look (Adrian 2026-11-18) the segment is the
+ * selected fill (semantic.color.selected.bg) with no edge, so the fill itself carries
+ * the 3:1. The colors come from the rendered classes (which custom
  * properties the indicator and rail actually paint) resolved against the shipped
  * token sheet: `dist/variables.css` is `src/styles/tokens.generated.css` verbatim
  * plus a banner (scripts/build-vars-css.mjs).
@@ -35,7 +37,6 @@ function renderSecondary() {
   return {
     track: paintedVar(rail.className, /\bbg-\[var\((--[\w-]+)\)\]/),
     fill: paintedVar(indicator.className, /\bbg-\[var\((--[\w-]+)\)\]/),
-    edge: paintedVar(indicator.className, /inset_0_0_0_1px_var\((--[\w-]+)\)/),
     label: paintedVar(selected.className, /\btext-\[var\((--[\w-]+)\)\]/),
   };
 }
@@ -45,20 +46,20 @@ const SURFACES = ['--semantic-color-surface-page', '--semantic-color-surface-rai
 describe('SegmentedControl secondary selected segment contrast (hds#866)', () => {
   for (const theme of ['light', 'dark'] as const) {
     // The rail paints its own fill, so the track is the same on the page and on a Card.
-    it(`the selected edge reads against the track at 3:1 or more (${theme})`, () => {
-      const { track, edge } = renderSecondary();
-      expect(contrastRatio(color(edge, theme), color(track, theme))).toBeGreaterThanOrEqual(3);
+    it(`the selected fill reads against the track at 3:1 or more (${theme})`, () => {
+      const { track, fill } = renderSecondary();
+      expect(contrastRatio(color(fill, theme), color(track, theme))).toBeGreaterThanOrEqual(3);
     });
 
     for (const surface of SURFACES) {
       const on = surface.endsWith('raised') ? 'a raised Card' : 'the page';
-      it(`the selected edge reads against ${on} at 3:1 or more (${theme})`, () => {
-        const { edge } = renderSecondary();
-        expect(contrastRatio(color(edge, theme), color(surface, theme))).toBeGreaterThanOrEqual(3);
+      it(`the selected fill reads against ${on} at 3:1 or more (${theme})`, () => {
+        const { fill } = renderSecondary();
+        expect(contrastRatio(color(fill, theme), color(surface, theme))).toBeGreaterThanOrEqual(3);
       });
     }
 
-    // The label is weight 500 (hds-type-ui), not bold, so it needs the 4.5:1 body-text bar.
+    // The label is semibold (600) at the ui size, not large text, so it keeps the 4.5:1 bar.
     it(`the label reads on the selected fill at 4.5:1 or more (${theme})`, () => {
       const { fill, label } = renderSecondary();
       expect(contrastRatio(color(label, theme), color(fill, theme))).toBeGreaterThanOrEqual(4.5);

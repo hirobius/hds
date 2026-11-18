@@ -1,0 +1,84 @@
+{
+  "impact": "behavior",
+  "plain": "Selected segments, tabs, nav rows, filter tags and the current page now share one strong fill and a semibold label; check a screen that relied on the old grey selected tab or white selected segment.",
+  "steps": [
+    {
+      "id": "value-changed/--component-tag-activeBackground",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--component-tag-activeBackground"],
+        "cssVarWrites": ["--component-tag-activeBackground"]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBackground::root",
+        "css-var-changed:--component-tag-activeBackground:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-activeBackground:[data-theme=dark]",
+        "css-var-changed:--component-tag-activeBackground:[data-accent='cobalt']",
+        "css-var-changed:--component-tag-activeBackground:[data-accent=cobalt]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-tag-activeBorder",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--component-tag-activeBorder"],
+        "cssVarWrites": ["--component-tag-activeBorder"]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBorder::root",
+        "css-var-changed:--component-tag-activeBorder:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-activeBorder:[data-theme=dark]",
+        "css-var-changed:--component-tag-activeBorder:[data-accent='cobalt']",
+        "css-var-changed:--component-tag-activeBorder:[data-accent=cobalt]"
+      ]
+    },
+    {
+      "id": "value-changed/--component-tag-activeText",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.",
+      "detect": {
+        "cssVars": ["--component-tag-activeText"],
+        "cssVarWrites": ["--component-tag-activeText"]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeText::root",
+        "css-var-changed:--component-tag-activeText:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-activeText:[data-theme=dark]"
+      ]
+    },
+    {
+      "id": "look/selected-state",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A selected Tab, a secondary SegmentedControl segment and a current NavList row now take the accent fill with onAccent text and a semibold label (they were grey, white or page-coloured), so check screens that styled them by hand.",
+      "detect": {
+        "regex": [
+          "<Tabs\\b",
+          "<SegmentedControl\\b",
+          "<NavList\\b",
+          "<Pagination\\b",
+          "--semantic-color-surface-selected"
+        ]
+      }
+    },
+    {
+      "id": "behavior/Pagination.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The current Pagination page renders as data-variant=\"primary\" (was \"secondary\") with the selected fill; a test or style that matched the old variant on the current page needs updating.",
+      "detect": {
+        "jsx": ["Pagination"],
+        "regex": [
+          "aria-current=\"page\"[^>]*data-variant=\"secondary\"",
+          "\\[data-variant=.secondary.\\]\\[aria-current"
+        ]
+      },
+      "facts": ["dom-changed:Pagination"]
+    }
+  ]
+}

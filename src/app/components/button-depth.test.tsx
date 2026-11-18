@@ -266,7 +266,7 @@ describe('selected states take the primary fill and the primary edge', () => {
       />,
     );
     const radio = screen.getByRole('radio', { name: /Watched/ });
-    const indicator = radio.querySelector('[class*="--semantic-accent-rest"]')!;
+    const indicator = radio.querySelector('[class*="--semantic-color-selected-bg"]')!;
     expect(indicator).not.toBeNull();
     expect(classes(indicator)).toContain('shadow-[inset_0_-3px_0_var(--hds-edge-primary)]');
   });

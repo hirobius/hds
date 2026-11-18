@@ -184,9 +184,11 @@ const cardVariants = /* @__PURE__ */ cva('flex flex-col bg-card text-card-foregr
 // change (cards are never tinted, and the border belongs to tone/variant), so
 // it composes with every tone and variant. Inset keeps it off hds-focus's
 // outline, which sits 2px outside the edge: selected, focused and both all look
-// different. No transition: the ring snaps, so reduced motion needs no override.
+// different. The ring colour is semantic.color.selected.bg, kept apart from the focus ring
+// (role.ring), so the selected look can move without moving focus (Adrian 2026-11-18). No
+// transition: the ring snaps, so reduced motion needs no override.
 const SELECTABLE_CARD =
-  'cursor-pointer hds-focus data-[selected=true]:ring-2 data-[selected=true]:ring-inset data-[selected=true]:ring-ring';
+  'cursor-pointer hds-focus data-[selected=true]:ring-2 data-[selected=true]:ring-inset data-[selected=true]:ring-[color:var(--semantic-color-selected-bg)]';
 
 // `asChild`: the card is one link or button. The DESIGN.md interactive-card
 // hover — `scale(1.02)` plus the `elevation.raised` shadow, never a fill or

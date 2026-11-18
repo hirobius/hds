@@ -142,7 +142,9 @@ describe('NavList', () => {
 
     it('uses the selected fill on the selected row and the hover fill on the rest', () => {
       renderBetaSelected();
-      expect(screen.getByRole('button', { name: 'Beta' }).className).toContain('surface-selected');
+      expect(screen.getByRole('button', { name: 'Beta' }).className).toContain(
+        'semantic-color-selected-bg',
+      );
       expect(screen.getByRole('button', { name: 'Alpha' }).className).toContain('surface-hover');
     });
 

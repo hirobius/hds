@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-15T22:48:28.858Z",
+  "generated": "2026-11-18T04:22:51.296Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -336,7 +336,6 @@
       "consumers": [
         "src/app/components/async-state.tsx",
         "src/app/components/badge.tsx",
-        "src/app/components/button.tsx",
         "src/app/components/callout.tsx",
         "src/app/components/dialog.tsx",
         "src/app/components/empty-state.tsx",
@@ -4951,7 +4950,6 @@
       "consumers": [
         "src/app/components/alert.tsx",
         "src/app/components/avatar.tsx",
-        "src/app/components/button.tsx",
         "src/app/components/card.tsx",
         "src/app/components/composer.tsx",
         "src/app/components/list.tsx",
@@ -15825,6 +15823,30 @@
         }
       },
       {
+        "path": "semantic.color.selected.bg",
+        "cssVar": "--semantic-color-selected-bg",
+        "type": "color",
+        "description": "Fill of a selected item (segment, tab, nav row, filter tag, current page). Same values as accent.rest, set apart so the primary Button never moves with it.",
+        "alias": "{primitive.color.graphite.700}",
+        "resolvedValue": "#3a4457",
+        "dark": {
+          "alias": "{primitive.color.graphite.50}",
+          "resolvedValue": "#f2f4f8"
+        }
+      },
+      {
+        "path": "semantic.color.selected.fg",
+        "cssVar": "--semantic-color-selected-fg",
+        "type": "color",
+        "description": "Text and icons on the selected fill. Same values as content.onAccent.",
+        "alias": "{primitive.color.neutral.50}",
+        "resolvedValue": "#f9fafc",
+        "dark": {
+          "alias": "{primitive.color.graphite.900}",
+          "resolvedValue": "#1c2638"
+        }
+      },
+      {
         "path": "semantic.space.scale.2xs",
         "cssVar": "--semantic-space-scale-2xs",
         "type": "dimension",
@@ -16405,6 +16427,14 @@
         "description": "Semantic alias for leading-none (1). Display text and badge spans.",
         "alias": "{primitive.typography.lineHeight.none}",
         "resolvedValue": "1"
+      },
+      {
+        "path": "semantic.typography.weight.selected",
+        "cssVar": "--semantic-typography-weight-selected",
+        "type": "fontWeight",
+        "description": "Label weight of a selected item (600), paired with semantic.color.selected.",
+        "alias": "{primitive.typography.weight.semibold}",
+        "resolvedValue": "600"
       },
       {
         "path": "semantic.docs.space.section",
@@ -17093,7 +17123,7 @@
         "cssVar": "--component-tag-activeText",
         "type": "color",
         "description": "Text color when the tag is active.",
-        "alias": "{semantic.color.content.onAccent}",
+        "alias": "{semantic.color.selected.fg}",
         "resolvedValue": "#f9fafc"
       },
       {
@@ -17101,7 +17131,7 @@
         "cssVar": "--component-tag-activeBackground",
         "type": "color",
         "description": "Active tag fill color.",
-        "alias": "{semantic.accent.rest}",
+        "alias": "{semantic.color.selected.bg}",
         "resolvedValue": "#3a4457"
       },
       {
@@ -17109,7 +17139,7 @@
         "cssVar": "--component-tag-activeBorder",
         "type": "color",
         "description": "Active tag border color.",
-        "alias": "{semantic.accent.rest}",
+        "alias": "{semantic.color.selected.bg}",
         "resolvedValue": "#3a4457"
       },
       {

@@ -60,8 +60,10 @@ const tagPillVariants = /* @__PURE__ */ cva(
   {
     variants: {
       selected: {
-        // Selected (C2): the primary fill with the primary hard edge under it, like a pressed toggle.
-        true: 'border-[var(--component-tag-activeBorder)] bg-[var(--component-tag-activeBackground)] text-[var(--component-tag-activeText)] shadow-[0_3px_0_var(--hds-edge-primary)] group-hover:bg-[var(--component-tag-activeHover)]',
+        // Selected (C2): the selected fill (component.tag.active* alias semantic.color.selected) with
+        // the primary hard edge under it, like a pressed toggle, and the selected label weight.
+        // type-ramp-ok: the selected label weight is semantic.typography.weight.selected (600)
+        true: 'border-[var(--component-tag-activeBorder)] bg-[var(--component-tag-activeBackground)] text-[var(--component-tag-activeText)] [font-weight:var(--semantic-typography-weight-selected)] shadow-[0_3px_0_var(--hds-edge-primary)] group-hover:bg-[var(--component-tag-activeHover)]',
         false:
           'border-[var(--component-tag-border)] bg-[var(--component-tag-background)] text-[var(--component-tag-text)] group-hover:border-[var(--semantic-color-border-accent)] group-hover:bg-[var(--semantic-color-surface-accentSubtle)] group-hover:text-[var(--semantic-color-content-primary)] group-active:border-[var(--semantic-color-border-accent)]',
       },

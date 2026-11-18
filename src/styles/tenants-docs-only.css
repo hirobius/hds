@@ -37,10 +37,10 @@
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-tag-activeBackground: var(
-    --semantic-accent-rest
+    --semantic-color-selected-bg
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-tag-activeBorder: var(
-    --semantic-accent-rest
+    --semantic-color-selected-bg
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --component-tag-activeHover: var(
     --semantic-accent-hover
@@ -73,6 +73,9 @@
     --primitive-color-mauve-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-color-content-accent: var(
+    --primitive-color-mauve-600
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-selected-bg: var(
     --primitive-color-mauve-600
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-focus-ring-color: var(
@@ -111,6 +114,9 @@
     --primitive-color-mauve-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-color-content-accent: var(
+    --primitive-color-mauve-300
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-selected-bg: var(
     --primitive-color-mauve-300
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --hds-edge-primary: #8b7881; /* css-ok: raised edge (hds#897) */

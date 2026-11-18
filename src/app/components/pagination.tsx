@@ -137,6 +137,10 @@ export interface PaginationProps
 // icon) instead of the Button base's muted primary fill, so it reads as "not here" without looking
 // like a different control. Tertiary keeps its own hover and pressed fills. They are 40x40 squares
 // (component.pagination.compactControlSize, hds#1150), a step up from the 36px sm Button.
+// The current page: the shared selected fill and fg (semantic.color.selected), at rest and on hover.
+const CURRENT_PAGE_CLASS =
+  'bg-[var(--semantic-color-selected-bg)] text-[var(--semantic-color-selected-fg)] hover:bg-[var(--semantic-color-selected-bg)]';
+
 const compactArrowClass =
   'border border-[color:var(--semantic-color-border-default)] disabled:bg-transparent h-[var(--component-pagination-compactControlSize)] w-[var(--component-pagination-compactControlSize)]';
 
@@ -250,9 +254,11 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
             ) : (
               <li key={token} className={REACH_CLASS[reach]}>
                 <Button
-                  variant={token === page ? 'secondary' : 'tertiary'}
+                  // The current page takes the one selected look (semantic.color.selected): the
+                  // primary shape with the selected fill and fg (Adrian 2026-11-18).
+                  variant={token === page ? 'primary' : 'tertiary'}
                   size="sm"
-                  className="hds-touch-target"
+                  className={cn('hds-touch-target', token === page && CURRENT_PAGE_CLASS)}
                   aria-label={`Page ${token}`}
                   aria-current={token === page ? 'page' : undefined}
                   onClick={() => go(token)}

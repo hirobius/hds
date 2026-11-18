@@ -363,6 +363,8 @@
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-50);
   --semantic-color-feedback-solid-warning: var(--primitive-color-amber-700);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-black);
+  --semantic-color-selected-bg: var(--primitive-color-graphite-700);
+  --semantic-color-selected-fg: var(--primitive-color-neutral-50);
   --semantic-space-scale-2xs: var(--primitive-space-1);
   --semantic-space-scale-xs: var(--primitive-space-2);
   --semantic-space-scale-sm: var(--primitive-space-5);
@@ -504,6 +506,7 @@
   --semantic-typography-eyebrow-letter-spacing: var(--primitive-typography-letterSpacing-text);
   --semantic-typography-eyebrow-line-height: var(--primitive-typography-lineHeight-normal);
   --semantic-typography-lineHeight-none: var(--primitive-typography-lineHeight-none);
+  --semantic-typography-weight-selected: var(--primitive-typography-weight-semibold);
   --semantic-docs-space-section: var(--semantic-space-scale-xl);
   /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.scale.md (24px compact) */
   --semantic-docs-space-paragraph: var(--primitive-space-7);
@@ -605,9 +608,9 @@
   --component-tag-minHeight: var(--primitive-space-6);
   --component-tag-paddingX: var(--primitive-space-3);
   --component-tag-paddingY: var(--primitive-space-2);
-  --component-tag-activeText: var(--semantic-color-content-onAccent);
-  --component-tag-activeBackground: var(--semantic-accent-rest);
-  --component-tag-activeBorder: var(--semantic-accent-rest);
+  --component-tag-activeText: var(--semantic-color-selected-fg);
+  --component-tag-activeBackground: var(--semantic-color-selected-bg);
+  --component-tag-activeBorder: var(--semantic-color-selected-bg);
   --component-tag-activeHover: var(--semantic-accent-hover);
   --component-badge-fontSize: var(--primitive-typography-size-sm);
   --component-badge-fontWeight: var(--primitive-typography-weight-regular);
@@ -795,6 +798,8 @@
   --semantic-color-feedback-bg-inProgress: var(--primitive-color-violet-900);
   --semantic-color-feedback-solid-warning: var(--primitive-color-amber-400);
   --semantic-color-state-pressed-overlay: var(--primitive-color-neutral-white);
+  --semantic-color-selected-bg: var(--primitive-color-graphite-50);
+  --semantic-color-selected-fg: var(--primitive-color-graphite-900);
   --semantic-accent-rest: var(--primitive-color-graphite-50);
   --semantic-accent-hover: var(--primitive-color-graphite-100);
   --semantic-accent-pressed: var(--primitive-color-graphite-200);
@@ -814,9 +819,9 @@
   --component-tag-background: var(--semantic-color-surface-muted);
   --component-tag-text: var(--semantic-color-content-secondary);
   --component-tag-border: var(--semantic-color-surface-muted);
-  --component-tag-activeText: var(--semantic-color-content-onAccent);
-  --component-tag-activeBackground: var(--semantic-accent-rest);
-  --component-tag-activeBorder: var(--semantic-accent-rest);
+  --component-tag-activeText: var(--semantic-color-selected-fg);
+  --component-tag-activeBackground: var(--semantic-color-selected-bg);
+  --component-tag-activeBorder: var(--semantic-color-selected-bg);
   --component-tag-activeHover: var(--semantic-accent-hover);
   --component-badge-text: var(--semantic-color-content-primary);
   --component-badge-neutral-bg: var(--semantic-color-surface-overlay);

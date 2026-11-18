@@ -146,7 +146,7 @@ describe('Tabs (items 4, 21)', () => {
     const active = screen.getByRole('tab', { name: 'One' });
     expect(active.className).not.toMatch(/(^|\s)border-transparent(\s|$)/);
     expect(active.className).toMatch(
-      /data-\[state=active\]:border-b-\[color:var\(--semantic-color-content-primary\)\]/,
+      /data-\[state=active\]:border-b-\[color:var\(--semantic-color-selected-bg\)\]/,
     );
   });
 });
