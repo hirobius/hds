@@ -2479,7 +2479,7 @@
         "heroMax": {
           "$value": "{primitive.space.32}",
           "$description": "128px maximum hero region padding for extra-large displays.",
-          "$deprecated": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)"
+          "$deprecated": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px)"
         }
       },
       "sidebar": {

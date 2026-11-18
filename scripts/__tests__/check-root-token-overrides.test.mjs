@@ -10,7 +10,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { topLevelRootDecls, findRootOverrides } from '../check-root-token-overrides.mjs';
+import { topLevelRootDecls, findRootOverrides, handFiles } from '../check-root-token-overrides.mjs';
 
 const GENERATED = `:root {
   --semantic-space-section-inset: var(--primitive-space-24);
@@ -28,6 +28,14 @@ describe('topLevelRootDecls', () => {
         ['--semantic-space-sidebar-gap', 'var(--primitive-space-4)'],
       ]),
     );
+  });
+
+  it('reads a selector list that names :root and a :root inside @layer or @supports', () => {
+    const css = `:root, [data-hds] { --a: 1; }
+@layer base { :root { --b: 2; } }
+@supports (display: grid) { :root { --c: 3; } }
+html:root { --d: 4; }`;
+    expect([...topLevelRootDecls(css).keys()]).toEqual(['--a', '--b', '--c']);
   });
 
   it('ignores comments', () => {
@@ -61,10 +69,8 @@ describe('the shipped source', () => {
   it('has no hand-written :root that overrides a generated token', () => {
     const root = resolve(import.meta.dirname, '../..');
     const read = (f) => readFileSync(resolve(root, 'src/styles', f), 'utf8');
-    const files = ['theme.css', 'accents.css', 'tenants.css'].map((file) => ({
-      file,
-      css: read(file),
-    }));
+    const files = handFiles().map((file) => ({ file, css: read(file) }));
+    expect(files.map((f) => f.file)).toContain('theme.css');
     expect(findRootOverrides(read('tokens.generated.css'), files)).toEqual([]);
   });
 });

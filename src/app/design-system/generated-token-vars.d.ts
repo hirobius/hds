@@ -373,7 +373,7 @@ declare module 'react' {
     '--semantic-space-component-medium'?: string | undefined;
     '--semantic-space-section-stack'?: string | undefined;
     '--semantic-space-section-inset'?: string | undefined;
-    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) @removeIn 1.0.0 */
+    /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px) @removeIn 1.0.0 */
     '--semantic-space-section-heroMax'?: string | undefined;
     '--semantic-space-sidebar-indent'?: string | undefined;
     '--semantic-space-sidebar-gap'?: string | undefined;

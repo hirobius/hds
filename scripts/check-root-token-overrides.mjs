@@ -15,26 +15,38 @@
  *
  * Exit 0 when clean, 1 on any override.
  */
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const HAND_FILES = ['theme.css', 'accents.css', 'tenants.css'];
+const STYLES = resolve(ROOT, 'src/styles');
+/** Every hand-written stylesheet in src/styles (the generated ones are the source of truth). */
+export const handFiles = () =>
+  readdirSync(STYLES).filter((f) => f.endsWith('.css') && !f.includes('.generated.'));
 
 const norm = (v) => v.replace(/\s+/g, ' ').trim();
 
-/** Custom properties declared in a :root rule at the top level of `css` (not nested in @media etc.). */
+/**
+ * Custom properties a :root rule declares outside any conditional block. Counts a selector
+ * list that names :root (`:root, [data-hds]`) and a :root inside @layer or @supports; a
+ * rule inside @media or @container is a deliberate responsive step and is skipped.
+ * Values compare as text (whitespace folded), so an equal value written another way
+ * (a literal for a var) reads as an override: write the token reference.
+ */
 export function topLevelRootDecls(css) {
   const src = css.replace(/\/\*[\s\S]*?\*\//g, '');
   const out = new Map();
-  let depth = 0;
+  const stack = [];
   let selStart = 0;
   for (let i = 0; i < src.length; i += 1) {
     const ch = src[i];
     if (ch === '{') {
       const selector = src.slice(selStart, i).trim();
-      if (depth === 0 && selector === ':root') {
+      const conditional = stack.some((s) => /^@(media|container)\b/.test(s));
+      const isRoot =
+        !selector.startsWith('@') && selector.split(',').some((part) => part.trim() === ':root');
+      if (isRoot && !conditional) {
         const end = src.indexOf('}', i);
         for (const m of src.slice(i + 1, end).matchAll(/(--[\w-]+)\s*:\s*([^;]+);?/g)) {
           out.set(m[1], norm(m[2]));
@@ -43,12 +55,12 @@ export function topLevelRootDecls(css) {
         selStart = i + 1;
         continue;
       }
-      depth += 1;
+      stack.push(selector);
       selStart = i + 1;
     } else if (ch === '}') {
-      depth = Math.max(0, depth - 1);
+      stack.pop();
       selStart = i + 1;
-    } else if (ch === ';' && depth === 0) {
+    } else if (ch === ';' && stack.length === 0) {
       selStart = i + 1;
     }
   }
@@ -70,10 +82,10 @@ export function findRootOverrides(generatedCss, files) {
 }
 
 function main() {
-  const read = (f) => readFileSync(resolve(ROOT, 'src/styles', f), 'utf8');
+  const read = (f) => readFileSync(resolve(STYLES, f), 'utf8');
   const overrides = findRootOverrides(
     read('tokens.generated.css'),
-    HAND_FILES.map((file) => ({ file, css: read(file) })),
+    handFiles().map((file) => ({ file, css: read(file) })),
   );
   if (overrides.length === 0) {
     console.log('✓ check-root-token-overrides — no hand-written :root overrides a generated token');

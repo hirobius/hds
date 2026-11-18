@@ -475,7 +475,7 @@ export const tokens = {
       section: {
         stack: "var(--semantic-space-section-stack)",
         inset: "var(--semantic-space-section-inset)",
-        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) @removeIn 1.0.0 */
+        /** @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px) @removeIn 1.0.0 */
         heroMax: "var(--semantic-space-section-heroMax)"
       },
       sidebar: {

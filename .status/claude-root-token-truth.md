@@ -1,1 +1,2 @@
 - One winner per spacing token (folio #429): section.inset, sidebar gap/sectionGap/railPadding and layout.grid.gap move from theme.css into the tokens; new check-root-token-overrides gate.
+- Review fixes: the check reads :root in selector lists, @layer and @supports, and scans every hand-written src/styles file; heroMax note says 128px.
