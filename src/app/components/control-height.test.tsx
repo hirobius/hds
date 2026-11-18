@@ -60,7 +60,7 @@ describe('every control binds its height to the shared token', () => {
 
   it.each(SIZES)('Input %s', (size) => {
     const { getByRole } = render(<Input size={size} aria-label="Name" />);
-    const field = getByRole('textbox').closest(`[class*="controlHeight"]`) ?? getByRole('textbox');
+    const field = getByRole('textbox');
     expect(field.className).toContain(token(size));
   });
 
@@ -97,7 +97,8 @@ describe('every control binds its height to the shared token', () => {
         </TabsList>
       </Tabs>,
     );
-    expect(getByRole('tab').className).toContain(token('md'));
+    // A minimum, so a wrapped label grows the tab instead of clipping.
+    expect(getByRole('tab').className).toContain(`min-h-[${token('md')}]`);
   });
 
   it.each(['sm', 'md'] as const)('SegmentedControl %s', (size) => {

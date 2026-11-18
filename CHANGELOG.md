@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.46.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: A date, time or datetime-local Input renders an aria-hidden icon span after the field; a test that counts the field's children or snapshots its DOM needs updating.
+- Do by hand: Only the Card docs demo's markup changed, to show the new truncateFirst example; a Card.Facts without truncateFirst renders as before.
+- Do by hand: Drops focus-visible:ring-ring, a Tailwind focus-ring utility no HDS component uses (focus draws through .hds-focus); use .hds-focus, or add it in your own CSS.
+- Do by hand: Drops four Tailwind utilities no HDS component uses (a removed badge token, a deprecated weight, drop-shadow); add them in your own CSS if you used them.
+- And 49 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0460).
+
+### Minor Changes
+
+- 047d4f2: Button status tones (`danger`, `success`, `warning`, `info`) now follow the variant's emphasis. Primary keeps the solid feedback fill, its page-colour label and its tone edge (`component.button.edge.<tone>`). Secondary is the soft `feedback.bg` tint with the `content.primary` label (no coloured text on a soft tint), held on hover and press, and sits flat, with no edge. Tertiary takes the feedback text colour on a clear face; the hover wipe paints the same tint, where the label stays at 4.5:1 or more, and it never takes the grey hover fill, where the label would fall under AA. Link is unchanged. No prop changes.
+- baaa08c: Card.Facts gains an opt-in `truncateFirst` prop (hds#1550). When true, the first fact clamps to one line with an ellipsis in both layouts, so a long place name no longer wraps; the full text stays in the DOM and in `title`, and the icon keeps its size. Off by default, so nothing changes until you set it.
+- 1f2bcc2: Toned Buttons (danger, success, warning, info) are solid mid-tone fills with a knock-out label in the page colour: white in light, near-black in dark. Each face clears 3:1 against the page and a raised surface. Each edge is its fill one OKLCH step darker, the same drop as the Secondary edge, and there is no stroke. A toned `variant="link"` keeps its feedback text colour. Alert and Badge stay soft tints, and Badge tone labels now use `content.primary`. A new `semantic.color.feedback.solid.warning` gives the warning fill an amber that does not read brown.
+
+  Dark surfaces are lifted: page 850, raised 750, overlay and muted `neutral.740`, sunken `neutral.675`, and dark `content.tertiary` 400. In light, the secondary Button fill moves to the new `surface.softStrong` (350, hover 325), the tertiary hover moves to 325, and tone tints (`feedback.bg.*`) are stronger. Dark Button edges and borders are lighter so they keep 3:1.
+
+### Patch Changes
+
+- 19eacd9: The component manifest (`hds-manifest.json`) now matches the live Figma library (hds#1557). 19 components that gained a Code Connect template declare their variant axes in `variantAxes` (for example `Text`: `variant`, `tone`; `Kbd`: `size`), and three Figma property names the library does not have are gone from `figmaPropertyMapping` (Button `Tone`, Card `Gap`, Dialog `Modal`). No component, prop or token changes.
+- dcbd9e6: Input `type="date"`, `"time"` and `"datetime-local"` draw the HDS calendar or clock icon in the trailing slot, where Select draws its chevron, at the size and colour of Input's other trailing icons. The browser's own glyph is invisible and covers exactly the trailing slot (the trailing pad of each size), so a click on the icon still opens the native picker and a click on the text still edits it. A `trailingVisual` replaces the icon. Firefox draws its own picker button, which CSS cannot restyle, so there the HDS icon steps aside.
+
+  To fit `styles.css`'s budget, the utility safelist no longer repeats an arbitrary-value, variant or group class that `utilities.css` writes by hand (it ships either way). One visible effect: `focus-visible:ring-2` draws only the HDS focus outline, without Tailwind's box-shadow ring under it.
+
+- 8ff65ab: Five components link the right Figma node in the component manifest (`hds-manifest.json`), found by the first full parity read of the library (hds#1565). `EmptyState`, `Surface`, `Pagination` and `Tooltip` now link their component set, where the link named one variant. `Field` links the Field set, where it named the FormField set. No component, prop or token changes.
+- 1632b53: The Figma parity score in `stats.json` rises from 89.2% to 89.6%. The parity check no longer counts five differences that were mistakes in the check: a Radix part's text is its children, a Button passed into a slot is not nesting, and Stack's px gap steps are recorded as code-only. `Form` is now a layout primitive, so it has no `@figma` link in the manifest and no Code Connect map entry. No component or prop changes.
+- e419aec: `@hirobius/design-system/stats.json` carries two more generated fields: `figmaParity` (the Figma and code parity score, `percent`, `passed`, `total`, and the day of the Figma read) and `codeConnect` (the number of generated Code Connect templates). Both are computed from the repo and rewritten by every parity run, never typed. Nothing else in the package changes.
+- ee671ea: The Figma parity score in `stats.json` rises from 89.6% to 89.9%. The parity check now compares the Figma Toast with the options of `toast()` (`ToastOptions`, read from the source), not with `ToastProvider`'s props. Its title, description and tone are checked against real fields, and the tone options against the tone variants. No component or prop changes.
+- 0a7871d: Smaller token bundles with no change in rendering. The 37 longest token descriptions are shorter (issue refs and asides dropped). The dark theme block no longer repeats the 7 declarations that already match `:root`. The safelist drops 4 Tailwind utilities no HDS component uses (a removed badge token, a deprecated weight, drop-shadow).
+
 ## 0.45.0
 
 ### Upgrade

@@ -16,8 +16,8 @@
     "./sheet": "src/sheet.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.45.0",
-  "generatedAt": "2026-11-16",
+  "version": "0.46.0",
+  "generatedAt": "2026-11-18",
   "modules": {
     "(barrel)": [
       "HdsDensity",

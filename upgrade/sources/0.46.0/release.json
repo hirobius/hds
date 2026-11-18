@@ -1,0 +1,50 @@
+{
+  "$comment": "Frozen inputs of the 0.46.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.46.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.46.0",
+  "previous": "0.45.0",
+  "date": "2026-11-18",
+  "summary": "5 changes to make by hand and 48 that look different.",
+  "backfilled": false,
+  "notes": {
+    "button-tone-per-variant": {
+      "needle": "047d4f2: Button status tones (`danger`, `success`,",
+      "source": "CHANGELOG.md:19"
+    },
+    "card-facts-truncate-first": {
+      "needle": "baaa08c: Card.Facts gains an opt-in `truncateFirst`",
+      "source": "CHANGELOG.md:20"
+    },
+    "code-connect-verified-templates": {
+      "needle": "19eacd9: The component manifest (`hds-manifest.json`)",
+      "source": "CHANGELOG.md:27"
+    },
+    "date-input-picker-icon": {
+      "needle": "dcbd9e6: Input `type=\"date\"`, `\"time\"` and",
+      "source": "CHANGELOG.md:28"
+    },
+    "figma-parity-links": {
+      "needle": "8ff65ab: Five components link the right Figma",
+      "source": "CHANGELOG.md:32"
+    },
+    "parity-check-slots": {
+      "needle": "1632b53: The Figma parity score in `stats.json`",
+      "source": "CHANGELOG.md:33"
+    },
+    "parity-score-in-stats": {
+      "needle": "e419aec: `@hirobius/design-system/stats.json`",
+      "source": "CHANGELOG.md:34"
+    },
+    "parity-toast-api": {
+      "needle": "ee671ea: The Figma parity score in `stats.json`",
+      "source": "CHANGELOG.md:35"
+    },
+    "token-bytes-headroom": {
+      "needle": "0a7871d: Smaller token bundles with no change",
+      "source": "CHANGELOG.md:36"
+    },
+    "tone-text-surface-ramp": {
+      "needle": "1f2bcc2: Toned Buttons (danger, success,",
+      "source": "CHANGELOG.md:21"
+    }
+  }
+}

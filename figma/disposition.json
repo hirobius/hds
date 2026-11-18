@@ -604,7 +604,7 @@
       "parent": null,
       "category": "Display",
       "tier": "primitive",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=89-155"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2684-55"
     },
     {
       "name": "InlineLink",
@@ -636,7 +636,7 @@
       "parent": null,
       "category": "Display",
       "tier": "pattern",
-      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2353-315"
+      "figmaUrl": "https://www.figma.com/design/2VgBbVpKiDnu0aftJEVyBQ/HDS-Tokens-Components?node-id=2683-2224"
     },
     {
       "name": "ListEmpty",

@@ -1,0 +1,1002 @@
+{
+  "version": "0.46.0",
+  "date": "2026-11-18",
+  "bump": "minor",
+  "summary": "5 changes to make by hand and 48 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.46.0/value-changed/--component-badge-danger-text",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Badge tone label is now content.primary; if you need a coloured label, set it with className.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-danger-text"
+        ],
+        "cssVarWrites": [
+          "--component-badge-danger-text"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-danger-text::root",
+        "css-var-changed:--component-badge-danger-text:[data-theme=\"dark\"]",
+        "css-var-changed:--component-badge-danger-text:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-badge-inProgress-text",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Badge tone label is now content.primary; if you need a coloured label, set it with className.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-inProgress-text"
+        ],
+        "cssVarWrites": [
+          "--component-badge-inProgress-text"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-inProgress-text::root",
+        "css-var-changed:--component-badge-inProgress-text:[data-theme=\"dark\"]",
+        "css-var-changed:--component-badge-inProgress-text:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-badge-info-text",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Badge tone label is now content.primary; if you need a coloured label, set it with className.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-info-text"
+        ],
+        "cssVarWrites": [
+          "--component-badge-info-text"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-info-text::root",
+        "css-var-changed:--component-badge-info-text:[data-theme=\"dark\"]",
+        "css-var-changed:--component-badge-info-text:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-badge-success-text",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Badge tone label is now content.primary; if you need a coloured label, set it with className.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-success-text"
+        ],
+        "cssVarWrites": [
+          "--component-badge-success-text"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-success-text::root",
+        "css-var-changed:--component-badge-success-text:[data-theme=\"dark\"]",
+        "css-var-changed:--component-badge-success-text:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-badge-warning-text",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Badge tone label is now content.primary; if you need a coloured label, set it with className.",
+      "detect": {
+        "cssVars": [
+          "--component-badge-warning-text"
+        ],
+        "cssVarWrites": [
+          "--component-badge-warning-text"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-badge-warning-text::root",
+        "css-var-changed:--component-badge-warning-text:[data-theme=\"dark\"]",
+        "css-var-changed:--component-badge-warning-text:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-button-secondary-bg-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-pressed"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-pressed::root",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-button-secondary-bg-rest",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.",
+      "detect": {
+        "cssVars": [
+          "--component-button-secondary-bg-rest"
+        ],
+        "cssVarWrites": [
+          "--component-button-secondary-bg-rest"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-secondary-bg-rest::root",
+        "css-var-changed:--component-button-secondary-bg-rest:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-secondary-bg-rest:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-button-tertiary-bg-hover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.",
+      "detect": {
+        "cssVars": [
+          "--component-button-tertiary-bg-hover"
+        ],
+        "cssVarWrites": [
+          "--component-button-tertiary-bg-hover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-tertiary-bg-hover::root",
+        "css-var-changed:--component-button-tertiary-bg-hover:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-tertiary-bg-hover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--component-button-tertiary-bg-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.",
+      "detect": {
+        "cssVars": [
+          "--component-button-tertiary-bg-pressed"
+        ],
+        "cssVarWrites": [
+          "--component-button-tertiary-bg-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-tertiary-bg-pressed::root",
+        "css-var-changed:--component-button-tertiary-bg-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--component-button-tertiary-bg-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--hds-edge-kbd",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-kbd"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-kbd"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-kbd:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-kbd:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--hds-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent='cobalt'][data-theme='dark']",
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--hds-edge-primaryHover",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--hds-edge-primaryHover"
+        ],
+        "cssVarWrites": [
+          "--hds-edge-primaryHover"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primaryHover:[data-accent='cobalt'][data-theme='dark']",
+        "css-var-changed:--hds-edge-primaryHover:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primaryHover:[data-theme=\"dark\"]",
+        "css-var-changed:--hds-edge-primaryHover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--primitive-color-amber-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-amber-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-amber-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-amber-50::root"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--primitive-color-green-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-green-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-green-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-green-50::root"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--primitive-color-red-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-red-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-red-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-red-50::root"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--primitive-color-violet-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-violet-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-violet-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-violet-50::root"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-accent-delight-base",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-delight-base"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-delight-base"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-base:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-base:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-accent-delight-deep",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-delight-deep"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-delight-deep"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-deep:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-deep:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-accent-delight-onDelight",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-delight-onDelight"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-delight-onDelight"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-onDelight:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-onDelight:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-accent-delight-pale",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--semantic-accent-delight-pale"
+        ],
+        "cssVarWrites": [
+          "--semantic-accent-delight-pale"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-accent-delight-pale:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-accent-delight-pale:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-border-default",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-default"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-default"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-default:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-default:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-border-interactive",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-interactive"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-interactive"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-interactive:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-interactive:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-border-strong",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-strong"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-strong"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-strong:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-strong:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-border-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-success"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-success"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-success:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-success:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-border-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-border-warning"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-border-warning"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-border-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-border-warning:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-content-tertiary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-content-tertiary"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-content-tertiary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-content-tertiary:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-content-tertiary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-edge-danger",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-danger"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-danger"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-danger::root",
+        "css-var-changed:--semantic-color-edge-danger:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-danger:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-edge-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-info::root",
+        "css-var-changed:--semantic-color-edge-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-edge-primary",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-primary"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-primary"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-primary:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-primary:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-edge-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-success"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-success"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-success::root",
+        "css-var-changed:--semantic-color-edge-success:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-success:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-edge-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-edge-warning"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-edge-warning"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-edge-warning::root",
+        "css-var-changed:--semantic-color-edge-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-edge-warning:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-feedback-bg-error",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-bg-error"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-bg-error"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-bg-error:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-bg-error:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-feedback-bg-inProgress",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-bg-inProgress"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-bg-inProgress"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-bg-inProgress:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-bg-inProgress:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-feedback-bg-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-bg-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-bg-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-bg-info::root"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-feedback-bg-success",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-bg-success"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-bg-success"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-bg-success:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-bg-success:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-feedback-bg-warning",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-bg-warning"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-bg-warning"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-bg-warning:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-bg-warning:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-feedback-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Light info is now a calm blue (#2b58b1) instead of the electric blue.500; info text, icons and the info Button fill look calmer, still 4.5:1 or higher.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-info::root"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-shadow-hard",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-shadow-hard"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-shadow-hard"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-shadow-hard:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-shadow-hard:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-surface-muted",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-muted"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-muted"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-muted:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-surface-overlay",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-overlay"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-overlay"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-overlay:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-overlay:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-surface-page",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-page"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-page"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-page:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-page:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-surface-pressed",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-pressed"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-pressed"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-pressed:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-pressed:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-surface-raised",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-raised"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-raised"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-raised:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-surface-selected",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-selected"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-selected"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-selected:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-selected:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/value-changed/--semantic-color-surface-sunken",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-surface-sunken"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-surface-sunken"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-surface-sunken:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/look/button-tone-per-variant",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A secondary Button with tone danger, success, warning or info shows the soft feedback tint with the content.primary label and no edge, and a tertiary one shows tone-coloured text on a clear face that the hover fills with the tint; check screens that relied on the solid fill.",
+      "detect": {
+        "regex": [
+          "tone=[\"'{]+\\s*[\"']?(danger|success|warning|info)"
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.46.0/look/focus-visible-ring-utilities",
+      "kind": "look",
+      "impact": "look",
+      "plain": "focus-visible:ring-2 now draws only the HDS focus outline, not Tailwind's box-shadow ring under it; add your own ring if you relied on both.",
+      "detect": {
+        "regex": [
+          "focus-visible:ring-(2|accent|offset-2)"
+        ]
+      },
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.46.0/behavior/Card.dom",
+      "kind": "behavior",
+      "impact": "additive",
+      "plain": "Only the Card docs demo's markup changed, to show the new truncateFirst example; a Card.Facts without truncateFirst renders as before.",
+      "detect": {
+        "regex": [
+          "data-slot=.card-facts."
+        ]
+      },
+      "facts": [
+        "dom-changed:Card"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.46.0/behavior/Input.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A date, time or datetime-local Input renders an aria-hidden icon span after the field; a test that counts the field's children or snapshots its DOM needs updating.",
+      "detect": {
+        "regex": [
+          "type=[\"'](date|time|datetime-local)[\"'][\\s\\S]{0,200}(toMatchSnapshot|childElementCount|children\\.length)"
+        ]
+      },
+      "facts": [
+        "dom-changed:Input"
+      ],
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.46.0/behavior/legacy-focus-ring-utilities",
+      "kind": "behavior",
+      "impact": "none",
+      "plain": "Drops focus-visible:ring-ring, a Tailwind focus-ring utility no HDS component uses (focus draws through .hds-focus); use .hds-focus, or add it in your own CSS.",
+      "detect": {
+        "regex": [
+          "focus-visible:ring-ring"
+        ]
+      },
+      "facts": [
+        "utility-removed:focus-visible:ring-ring"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/behavior/orphaned-safelist",
+      "kind": "behavior",
+      "impact": "none",
+      "plain": "Drops four Tailwind utilities no HDS component uses (a removed badge token, a deprecated weight, drop-shadow); add them in your own CSS if you used them.",
+      "detect": {
+        "regex": [
+          "paddingShift|weight-medium|drop-shadow"
+        ]
+      },
+      "facts": [
+        "utility-removed:[font-weight:var(--primitive-typography-weight-medium)]",
+        "utility-removed:pb-[calc(var(--component-badge-paddingY)+var(--component-badge-paddingShift))]",
+        "utility-removed:pt-[calc(var(--component-badge-paddingY)-var(--component-badge-paddingShift))]",
+        "utility-removed:drop-shadow"
+      ],
+      "source": "CHANGELOG.md:36"
+    },
+    {
+      "id": "0.46.0/behavior/tone-button-tint-utilities",
+      "kind": "behavior",
+      "impact": "none",
+      "plain": "Toned Buttons no longer use the soft-tint hover and active utilities; add them in your own CSS if you used them directly.",
+      "detect": {
+        "regex": [
+          "(hover|active):bg-feedback-bg-"
+        ]
+      },
+      "facts": [
+        "utility-removed:active:bg-feedback-bg-danger",
+        "utility-removed:active:bg-feedback-bg-info",
+        "utility-removed:active:bg-feedback-bg-success",
+        "utility-removed:active:bg-feedback-bg-warning",
+        "utility-removed:hover:bg-feedback-bg-info",
+        "utility-removed:hover:bg-feedback-bg-success",
+        "utility-removed:hover:bg-feedback-bg-warning"
+      ],
+      "source": "CHANGELOG.md:21"
+    },
+    {
+      "id": "0.46.0/tenant/accent-lilac",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the accent-lilac brand (data-brand=\"accent-lilac\") may look different, so check them after upgrading.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?accent-lilac(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-edge-primary:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primaryHover:[data-accent=cobalt][data-theme=dark]",
+        "css-var-changed:--hds-edge-primaryHover:[data-brand=accent-lilac][data-theme=dark],[data-tenant=accent-lilac][data-theme=dark]",
+        "css-var-changed:--hds-edge-primaryHover:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:21"
+    }
+  ]
+}
