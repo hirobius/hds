@@ -3,7 +3,7 @@
  *
  * The secondary selected segment must read against its track at 3:1 or more
  * (WCAG 1.4.11 non-text) in light and dark, with the control on the page and on
- * a raised Card. Since the one selected look (Adrian 2026-11-18) the segment is the
+ * a raised Card. Since the one selected look the segment is the
  * selected fill (semantic.color.selected.bg) with no edge, so the fill itself carries
  * the 3:1. The colors come from the rendered classes (which custom
  * properties the indicator and rail actually paint) resolved against the shipped

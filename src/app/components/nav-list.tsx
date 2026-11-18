@@ -35,7 +35,7 @@ const navListItemVariants = /* @__PURE__ */ cva(
   {
     variants: {
       current: {
-        // Selected (Adrian 2026-11-18): the shared selected fill, fg and weight (semantic.color.selected).
+        // Selected: the shared selected fill, fg and weight (semantic.color.selected).
         // type-ramp-ok: the current row's label weight is semantic.typography.weight.selected (600)
         true: 'bg-[var(--semantic-color-selected-bg)] hover:bg-[var(--semantic-color-selected-bg)] text-[var(--semantic-color-selected-fg)] [font-weight:var(--semantic-typography-weight-selected)]',
         false: '',

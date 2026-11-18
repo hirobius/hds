@@ -255,7 +255,7 @@ export const Pagination = /* @__PURE__ */ React.forwardRef<HTMLElement, Paginati
               <li key={token} className={REACH_CLASS[reach]}>
                 <Button
                   // The current page takes the one selected look (semantic.color.selected): the
-                  // primary shape with the selected fill and fg (Adrian 2026-11-18).
+                  // primary shape with the selected fill and fg.
                   variant={token === page ? 'primary' : 'tertiary'}
                   size="sm"
                   className={cn('hds-touch-target', token === page && CURRENT_PAGE_CLASS)}

@@ -141,7 +141,7 @@ describe('SegmentedControl — indicator and description share one state (hds#10
       />,
     );
     const on = parts('List');
-    // One selected look (Adrian 2026-11-18): the secondary segment takes the selected fill too.
+    // One selected look: the secondary segment takes the selected fill too.
     expect(on.indicator).toContain('bg-[var(--semantic-color-selected-bg)]');
     expect(on.indicator).not.toContain('border-interactive');
     expect(on.description).toContain('text-[var(--semantic-color-selected-fg)]');

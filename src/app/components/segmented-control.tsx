@@ -144,7 +144,7 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
       },
 
       // Foreground color — active wins over hover/rest regardless of interaction sub-state.
-      // Selected (Adrian 2026-11-18): one look for every selectable component, read from
+      // Selected: one look for every selectable component, read from
       // semantic.color.selected (fill + fg) and semantic.typography.weight.selected.
       { active: true, className: 'text-[var(--semantic-color-selected-fg)]' },
       {

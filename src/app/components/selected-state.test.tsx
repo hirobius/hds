@@ -1,5 +1,5 @@
 /**
- * One selected look (Adrian 2026-11-18): every selectable component reads its fill and
+ * One selected look: every selectable component reads its fill and
  * text from semantic.color.selected and its label weight from
  * semantic.typography.weight.selected, so the selected colour can change in one place.
  * The primary Button and the focus ring do not read it.
