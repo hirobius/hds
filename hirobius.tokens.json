@@ -2344,7 +2344,7 @@
         "$description": "The one selected look (Adrian 2026-11-18): a strong fill and a semibold label. Every selectable component reads it.",
         "bg": {
           "$value": "{primitive.color.graphite.700}",
-          "$description": "Fill of a selected item (segment, tab, nav row, filter tag, current page). Same values as accent.rest, set apart so the primary Button never moves with it.",
+          "$description": "Fill of a selected item. Same values as accent.rest, kept apart so the primary Button never moves with it.",
           "$extensions": {
             "com.figma.variables": {
               "modes": {

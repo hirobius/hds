@@ -272,7 +272,7 @@ export const tokenDescriptions: Record<string, string> = {
   "semantic.color.shadow.hard": "Hard shadow for Button and Kbd. Dark uses border.interactive so the soft button keeps a 3:1 edge.",
   "semantic.color.feedback.solid.warning": "Solid warning Button fill. amber.800 reads brown as a fill; the other tones fill with feedback.*.",
   "semantic.color.state.pressed.overlay": "Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class.",
-  "semantic.color.selected.bg": "Fill of a selected item (segment, tab, nav row, filter tag, current page). Same values as accent.rest, set apart so the primary Button never moves with it.",
+  "semantic.color.selected.bg": "Fill of a selected item. Same values as accent.rest, kept apart so the primary Button never moves with it.",
   "semantic.color.selected.fg": "Text and icons on the selected fill. Same values as content.onAccent.",
   "semantic.space.scale.2xs": "4px in both densities: hairline gaps inside a control (icon to its badge, stacked meta lines).",
   "semantic.space.scale.xs": "8px in both densities: control-internal gap (icon to label, chip padding).",

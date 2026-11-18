@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-18T04:22:51.296Z",
+  "generated": "2026-11-18T04:26:56.692Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -15826,7 +15826,7 @@
         "path": "semantic.color.selected.bg",
         "cssVar": "--semantic-color-selected-bg",
         "type": "color",
-        "description": "Fill of a selected item (segment, tab, nav row, filter tag, current page). Same values as accent.rest, set apart so the primary Button never moves with it.",
+        "description": "Fill of a selected item. Same values as accent.rest, kept apart so the primary Button never moves with it.",
         "alias": "{primitive.color.graphite.700}",
         "resolvedValue": "#3a4457",
         "dark": {
