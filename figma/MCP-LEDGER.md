@@ -1814,3 +1814,13 @@ Plan updated 83 · created 9 · deleted 0 against snapshot ae5ce28a, from #1561 
 | 11  | 17:40      | `use_figma`      | read  | figma-spec-sheets --emit-audit unmodified        | ok, 87 pages                         |
 
 Session total: 11 calls
+
+## 2026-11-18 · Release 0.46.0: meta re-stamp on the regenerated Version PR (#1552, head e0e2378)
+
+#1578 merged (0557c0b2); the Version PR regenerated at e0e2378. Earlier on 2026-11-17 this session ran: delta part 1 refused by the pin (library ahead of main's snapshot), snapshot-diff tooLarge (92 records), receipt.js (last writer: #1578's run f0960b65), then a meta delta on #1578's snapshot (version 0.46.0, commit f950c30; post e867670a). Re-based figma/snapshot.json on that receipt's snapshot.
+
+| #   | Tool        | Kind  | What                                     | Result                                                                                                                                                      |
+| --- | ----------- | ----- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T1  | `use_figma` | write | delta.js (updated 2: releasedAt, commit) | OK: releasedAt 2026-11-18, commit e0e2378; post 8d3b2357. Snapshot rebuilt --from-receipt; drift 0, plan 0/0/0, check:figma-release OK, parity no new drift |
+
+Session total (17 and 18 Nov): 6 calls that reached Figma (1 session, 3 `use_figma` writes of which 1 refused, 2 reads). Nothing deleted, nothing published.
