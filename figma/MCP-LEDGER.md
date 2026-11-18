@@ -1824,3 +1824,14 @@ Session total: 11 calls
 | T1  | `use_figma` | write | delta.js (updated 2: releasedAt, commit) | OK: releasedAt 2026-11-18, commit e0e2378; post 8d3b2357. Snapshot rebuilt --from-receipt; drift 0, plan 0/0/0, check:figma-release OK, parity no new drift |
 
 Session total (17 and 18 Nov): 6 calls that reached Figma (1 session, 3 `use_figma` writes of which 1 refused, 2 reads). Nothing deleted, nothing published.
+
+## 2026-11-18 · Daily release check: meta/commit stamp on main (993b2b0, 0.46.0)
+
+Release 0.46.0 was already synced on the Version PR (#1590). Main's plan showed updated 1 · created 0 · deleted 0: only `meta/commit`, the squash SHA. check:figma-release passed before the push.
+
+| #   | Tool             | Kind  | What                              | Result                            |
+| --- | ---------------- | ----- | --------------------------------- | --------------------------------- |
+| 1   | `create_session` | setup | file session for the stamp        | OK                                |
+| 2   | `use_figma`      | write | delta.js (updated 1: meta/commit) | OK: commit d3637ba; post bbc817f1 |
+
+Session total: 2 calls (1 session, 1 write). Nothing deleted, nothing published.
