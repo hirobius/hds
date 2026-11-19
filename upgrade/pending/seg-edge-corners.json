@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "An element with bg-transparent and a background image now shows the image, and the selected SegmentedControl edge follows its rounded corners."
+}
