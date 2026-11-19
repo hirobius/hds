@@ -5,3 +5,4 @@ Selected state, option (a)+(b): semantic.color.selected.bg/fg and semantic.typog
 - Merged main (#1597-#1599): tokens JSON fits; styles.css +118 B over (rule breakdown sent to coordinator).
 - Merged main (#1600): all budgets fit (styles 23.79, tokens.css 24.63, tokens JSON 11.55 kB).
 - NavList current row: muted text follows selected.fg (docs axe contrast fix).
+- Rebaselined 12 selected-state snapshots from CI run 44465752093 renders (diffs checked).
