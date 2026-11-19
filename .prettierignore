@@ -19,6 +19,8 @@ docs/adr/README.md
 src/app/design-system/generated-tokens.ts
 src/app/design-system/generated-token-values.ts
 src/app/design-system/generated-token-descriptions.ts
+src/app/design-system/generated-tokens-values.json
+src/app/design-system/generated-tokens-descriptions.json
 src/app/design-system/generated-token-vars.d.ts
 src/app/design-system/generated-token-refs.ts
 src/styles/tokens.generated.css
