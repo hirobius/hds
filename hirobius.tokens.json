@@ -3300,6 +3300,21 @@
           "$description": "Large control footprint — code-block inline-wrapper min-height / copy-button-matched pre padding."
         }
       },
+      "controlHeight": {
+        "$description": "Shared control height per size.",
+        "sm": {
+          "$value": "{primitive.size.32}",
+          "$description": "32px."
+        },
+        "md": {
+          "$value": "{primitive.size.40}",
+          "$description": "40px, the default."
+        },
+        "lg": {
+          "$value": "{primitive.size.48}",
+          "$description": "48px."
+        }
+      },
       "icon": {
         "$description": "Reserved icon-size role, parallel to the --hds-icon-* bridge in theme.css.",
         "sm": {
@@ -3715,8 +3730,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.36}",
-            "$description": "Small button height (36px)."
+            "$value": "{semantic.size.controlHeight.sm}",
+            "$description": "Small button height (32px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3733,7 +3748,7 @@
           "paddingY": {
             "$type": "dimension",
             "$value": "{primitive.space.2}",
-            "$description": "Medium button vertical padding (8px; the 44px height drives the box)."
+            "$description": "Medium button vertical padding (8px; the 40px height drives the box)."
           },
           "fontSize": {
             "$type": "dimension",
@@ -3747,8 +3762,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.44}",
-            "$description": "Medium button height (44px)."
+            "$value": "{semantic.size.controlHeight.md}",
+            "$description": "Medium button height (40px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -3779,8 +3794,8 @@
           },
           "height": {
             "$type": "dimension",
-            "$value": "{primitive.size.52}",
-            "$description": "Large button height (52px)."
+            "$value": "{semantic.size.controlHeight.lg}",
+            "$description": "Large button height (48px)."
           },
           "itemSpacing": {
             "$type": "dimension",
@@ -4040,7 +4055,7 @@
     "pagination": {
       "compactControlSize": {
         "$type": "dimension",
-        "$value": "{semantic.size.row.compact}",
+        "$value": "{semantic.size.controlHeight.md}",
         "$description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square)."
       }
     },

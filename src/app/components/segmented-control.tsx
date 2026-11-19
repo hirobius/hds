@@ -98,13 +98,14 @@ const segmentedControlItemVariants = /* @__PURE__ */ cva(
   {
     variants: {
       size: {
-        // Rail = item + 2 x 4px padding + 2px border: 22px -> 32px (Button sm), 30px -> 40px (Button/Input md).
+        // Rail = item + 2 x rail padding + 2px border = semantic.size.controlHeight.<size> (32px sm,
+        // 40px md), the one height every control of a size shares (Fable eval #2).
         // WCAG 2.5.8: the 22px segment is under 24px, so an invisible pseudo-element grows the
         // hit area 1px above and below into the rail padding, to 24px, without moving the layout.
         // Default inline padding is a class so it can step down on a phone: five 16px-padded segments are
         // wider than a 390px viewport (bug bash 24, item 15). A consumer segmentPaddingX still wins inline.
-        sm: "min-h-[22px] py-0 px-[var(--semantic-space-scale-xs)] before:absolute before:inset-x-0 before:-inset-y-[1px] before:content-['']",
-        md: 'min-h-[30px] px-[var(--semantic-space-scale-xs)] sm:px-[var(--semantic-space-layout-gap)]',
+        sm: "h-[calc(var(--semantic-size-controlHeight-sm)-2*var(--seg-rail-pad)-2px)] py-0 px-[var(--semantic-space-scale-xs)] before:absolute before:inset-x-0 before:-inset-y-[1px] before:content-['']",
+        md: 'h-[calc(var(--semantic-size-controlHeight-md)-2*var(--seg-rail-pad)-2px)] py-0 px-[var(--semantic-space-scale-xs)] sm:px-[var(--semantic-space-layout-gap)]',
       },
       fullWidth: {
         true: 'w-full min-w-0 flex-1',

@@ -1,0 +1,65 @@
+{
+  "impact": "look",
+  "plain": "Buttons are 4px shorter on desktop (32, 40, 48px) so they line up with Input, Select and Tabs of the same size; check fixed-height rows and toolbars that assumed a 44px Button.",
+  "steps": [
+    {
+      "id": "look/control-heights",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A Button is now 32, 40 or 48px on desktop (was 36, 44, 52), Tabs and SegmentedControl md are 40px and Pagination is 32px, so check a layout that hard-coded the old Button height.",
+      "detect": {
+        "regex": [
+          "--component-button-size-(sm|md|lg)-height",
+          "<Button\\b",
+          "<Tabs\\b",
+          "<SegmentedControl\\b",
+          "<Pagination\\b"
+        ]
+      }
+    },
+    {
+      "id": "value-changed/--component-button-size-lg-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A large Button is 48px tall (was 52px), the same as a large Input; check rows sized to the old height.",
+      "detect": {
+        "cssVars": ["--component-button-size-lg-height"],
+        "cssVarWrites": ["--component-button-size-lg-height"]
+      },
+      "facts": ["css-var-changed:--component-button-size-lg-height::root"]
+    },
+    {
+      "id": "value-changed/--component-button-size-md-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A medium Button is 40px tall on desktop (was 44px), the same as Input and Select, and touch still lifts it to 44px.",
+      "detect": {
+        "cssVars": ["--component-button-size-md-height"],
+        "cssVarWrites": ["--component-button-size-md-height"]
+      },
+      "facts": ["css-var-changed:--component-button-size-md-height::root"]
+    },
+    {
+      "id": "value-changed/--component-button-size-sm-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A small Button is 32px tall on desktop (was 36px), the same as a small Input, and touch still lifts it to 44px.",
+      "detect": {
+        "cssVars": ["--component-button-size-sm-height"],
+        "cssVarWrites": ["--component-button-size-sm-height"]
+      },
+      "facts": ["css-var-changed:--component-button-size-sm-height::root"]
+    },
+    {
+      "id": "value-changed/--component-pagination-compactControlSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The compact Pagination buttons stay 40px square but now read semantic.size.controlHeight.md; nothing looks different.",
+      "detect": {
+        "cssVars": ["--component-pagination-compactControlSize"],
+        "cssVarWrites": ["--component-pagination-compactControlSize"]
+      },
+      "facts": ["css-var-changed:--component-pagination-compactControlSize::root"]
+    }
+  ]
+}

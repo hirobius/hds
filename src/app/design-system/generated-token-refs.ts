@@ -785,6 +785,11 @@ export const tokenRefs = {
         md: "var(--semantic-size-control-md)",
         lg: "var(--semantic-size-control-lg)"
       },
+      controlHeight: {
+        sm: "var(--semantic-size-controlHeight-sm)",
+        md: "var(--semantic-size-controlHeight-md)",
+        lg: "var(--semantic-size-controlHeight-lg)"
+      },
       icon: {
         sm: "var(--semantic-size-icon-sm)",
         md: "var(--semantic-size-icon-md)",

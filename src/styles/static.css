@@ -550,7 +550,7 @@
   padding-inline: 0;
 }
 
-/* Sizes. md is the base rule. sm is 36px tall; a ::before extends its hit area
+/* Sizes. md is the base rule. sm is 32px tall (semantic.size.controlHeight.sm); a ::before extends its hit area
  * to semantic.size.touchTarget (44px) without moving the layout, as Button's
  * hds-touch-row lifts it on touch. */
 .hds-button--sm {

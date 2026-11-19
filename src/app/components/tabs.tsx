@@ -108,7 +108,7 @@ export function TabsTrigger({
     <TabsPrimitive.Trigger
       className={cn(
         // The active indicator (bottom border), tint and text colour fade on the productive token (hds#751)
-        'relative inline-flex items-center px-fixed-xs py-scale-xs hds-type-ui hds-touch-row transition-[color,background-color,border-color] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+        'relative inline-flex min-h-[var(--semantic-size-controlHeight-md)] items-center px-fixed-xs hds-type-ui hds-touch-row transition-[color,background-color,border-color] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
         // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
         'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
         'data-[state=active]:border-b-[color:var(--semantic-color-content-primary)] data-[state=active]:text-foreground data-[state=active]:bg-[var(--semantic-color-surface-selected)]',

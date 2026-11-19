@@ -576,6 +576,9 @@
   --semantic-size-control-sm: var(--primitive-size-8);
   --semantic-size-control-md: var(--primitive-size-20);
   --semantic-size-control-lg: var(--primitive-size-32);
+  --semantic-size-controlHeight-sm: var(--primitive-size-32);
+  --semantic-size-controlHeight-md: var(--primitive-size-40);
+  --semantic-size-controlHeight-lg: var(--primitive-size-48);
   --semantic-size-icon-sm: var(--primitive-size-16);
   --semantic-size-icon-md: var(--primitive-size-20);
   --semantic-size-icon-lg: var(--primitive-size-24);
@@ -655,19 +658,19 @@
   --component-button-size-sm-paddingY: var(--primitive-space-1);
   --component-button-size-sm-fontSize: var(--primitive-typography-size-sm);
   --component-button-size-sm-iconSize: var(--primitive-size-12);
-  --component-button-size-sm-height: var(--primitive-size-36);
+  --component-button-size-sm-height: var(--semantic-size-controlHeight-sm);
   --component-button-size-sm-itemSpacing: var(--primitive-space-2);
   --component-button-size-md-paddingX: var(--primitive-space-4);
   --component-button-size-md-paddingY: var(--primitive-space-2);
   --component-button-size-md-fontSize: var(--primitive-typography-size-base);
   --component-button-size-md-iconSize: var(--primitive-size-16);
-  --component-button-size-md-height: var(--primitive-size-44);
+  --component-button-size-md-height: var(--semantic-size-controlHeight-md);
   --component-button-size-md-itemSpacing: var(--primitive-space-2);
   --component-button-size-lg-paddingX: var(--primitive-space-6);
   --component-button-size-lg-paddingY: var(--primitive-space-4);
   --component-button-size-lg-fontSize: var(--primitive-typography-size-base);
   --component-button-size-lg-iconSize: var(--primitive-size-20);
-  --component-button-size-lg-height: var(--primitive-size-52);
+  --component-button-size-lg-height: var(--semantic-size-controlHeight-lg);
   --component-button-size-lg-itemSpacing: var(--primitive-space-2);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
@@ -714,7 +717,7 @@
   --component-inlineLink-size-md-iconSize: var(--primitive-size-16);
   --component-inlineLink-size-lg-fontSize: var(--primitive-typography-size-title);
   --component-inlineLink-size-lg-iconSize: var(--primitive-size-24);
-  --component-pagination-compactControlSize: var(--semantic-size-row-compact);
+  --component-pagination-compactControlSize: var(--semantic-size-controlHeight-md);
   --component-table-cell-paddingX: var(--semantic-space-scale-md);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */

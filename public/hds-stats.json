@@ -7,7 +7,7 @@
     "patterns": 14
   },
   "tokens": {
-    "total": 589
+    "total": 592
   },
   "contrast": {
     "textPairs": 44,
@@ -32,9 +32,9 @@
     "source": "src/app/components/*.figma.ts"
   },
   "figmaParity": {
-    "percent": 99,
-    "passed": 1604,
-    "total": 1619,
+    "percent": 98.3,
+    "passed": 1596,
+    "total": 1622,
     "readOn": "2026-11-16",
     "source": "figma/parity/read.json"
   },
@@ -46,5 +46,5 @@
     "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",
     "asOfDate": "2026-11-06"
   },
-  "generatedFrom": "993b2b06e55b417ec23dd872af116f6084a09697"
+  "generatedFrom": "412f94633577da8be7cea887b213bf0ce076d6db"
 }
