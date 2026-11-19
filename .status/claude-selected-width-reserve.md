@@ -1,1 +1,2 @@
 - Selected labels keep their semibold width (Tabs, Tag, SegmentedControl) so neighbours do not shift.
+- Copy attribute is data-hds-text (HDS-internal prefix).
