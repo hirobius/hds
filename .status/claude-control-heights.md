@@ -2,3 +2,4 @@ One height token per control size, semantic.size.controlHeight sm/md/lg = 32/40/
 
 - CI fixes: tokens JSON budget (shorter descriptions), visual baselines for the height change (92 PNGs, CI-flagged only), main 993b2b0 merged.
 - Visual baselines now taken from the CI image's own renders (run 44336623680 artifacts); local Chromium antialiasing differed.
+- Rebaselined segmented-control-label-md (CI render): sub-pixel label shift from #1596's docs grid gap, box and centring unchanged.
