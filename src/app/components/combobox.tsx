@@ -317,7 +317,7 @@ export const Combobox = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, Comb
             disabled={disabled}
             onClick={() => setOpen((o) => !o)}
             className={cn(
-              'hds-focus flex h-10 items-center justify-between gap-scale-xs rounded-md border',
+              'hds-focus flex h-[var(--semantic-size-controlHeight-md)] hds-touch-row items-center justify-between gap-scale-xs rounded-md border',
               // aria-invalid (set by FormField or the caller) draws the same red border as Input.
               ariaInvalid ? 'border-destructive' : 'border-input',
               FORM_CONTROL_WIDTH,

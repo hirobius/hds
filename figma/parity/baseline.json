@@ -4,6 +4,81 @@
     "collection-not-in-code:Button tone": {
       "reason": "Hand-built in Figma for the condensed Button (hds#1147). No token builds it, so check:figma-drift ignores it. Move its values to tokens or accept it as Figma-only: hds#1565, Figma fix F2."
     },
+    "token-value-mismatch:Hirobius/Semantic: space/section/inset": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/section/inset [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/section/inset [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/gap": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/gap [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/gap [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/sectionGap": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/sectionGap [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/sectionGap [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/railPadding": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/railPadding [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/railPadding [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: layout/grid/gap": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Density: semantic/layout/grid/gap [Comfortable]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: size/controlHeight/sm": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: size/controlHeight/md": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-missing-in-figma:Hirobius/Semantic: size/controlHeight/lg": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: button/size/sm/height": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: button/size/sm/height [Default]": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: button/size/md/paddingY": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: button/size/md/height": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: button/size/md/height [Default]": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: button/size/lg/height": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: button/size/lg/height [Default]": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
+    "token-value-mismatch:Hirobius/Component: pagination/compactControlSize [Default]": {
+      "reason": "Figma value update on hold: code moved to semantic.size.controlHeight (32/40/48); the library gets it in the parity pass, not by an agent (hds#1565)."
+    },
     "token-missing-in-figma:Hirobius/Semantic: color/selected/bg": {
       "reason": "Figma value update on hold: code added semantic.color.selected and semantic.typography.weight.selected (one selected look); the library gets them in the parity pass, not by an agent (hds#1565)."
     },

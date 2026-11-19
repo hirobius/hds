@@ -29,7 +29,7 @@ ruleTester.run('no-deprecated-token', rule, {
           messageId: 'deprecated',
           data: {
             text: '--semantic-space-section-heroMax',
-            note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)',
+            note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px)',
             fix: ' Use --semantic-space-section-inset.',
           },
         },
@@ -50,7 +50,7 @@ ruleTester.run('no-deprecated-token', rule, {
           messageId: 'deprecated',
           data: {
             text: 'py-section-heroMax',
-            note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)',
+            note: '2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px)',
             fix: ' Use py-section-inset.',
           },
         },

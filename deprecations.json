@@ -449,7 +449,7 @@
       "replacementCssVar": "--semantic-space-section-inset",
       "replacementTailwind": "section-inset",
       "removeIn": "1.0.0",
-      "note": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px)"
+      "note": "2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px)"
     },
     {
       "path": "semantic.typography.h1",

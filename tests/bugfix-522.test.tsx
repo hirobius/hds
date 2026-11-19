@@ -193,7 +193,7 @@ describe('Layout', () => {
       <Select label="Plan" options={[{ value: 'a', label: 'A' }]} value="a" onChange={() => {}} />,
     );
     const trigger = screen.getByRole('combobox');
-    expect(trigger.className).toMatch(/\bh-10\b/);
+    expect(trigger.className).toContain('h-[var(--semantic-size-controlHeight-md)]');
     expect(trigger.className).not.toMatch(/\bpy-2\b/);
     expect(trigger.className).toMatch(/\bbg-background\b/);
     expect(trigger.className).not.toMatch(/\bbg-muted\b/);

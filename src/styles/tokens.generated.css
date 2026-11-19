@@ -384,13 +384,13 @@
   --semantic-space-subgrid-gap: var(--primitive-space-1);
   --semantic-space-component-medium: var(--primitive-space-3);
   --semantic-space-section-stack: var(--primitive-space-24);
-  --semantic-space-section-inset: var(--primitive-space-24);
-  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) */
+  --semantic-space-section-inset: var(--primitive-space-32);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px) */
   --semantic-space-section-heroMax: var(--primitive-space-32);
   --semantic-space-sidebar-indent: var(--primitive-space-3);
-  --semantic-space-sidebar-gap: var(--primitive-space-4);
-  --semantic-space-sidebar-sectionGap: var(--primitive-space-3);
-  --semantic-space-sidebar-railPadding: var(--primitive-space-5);
+  --semantic-space-sidebar-gap: var(--primitive-space-5);
+  --semantic-space-sidebar-sectionGap: var(--primitive-space-4);
+  --semantic-space-sidebar-railPadding: var(--primitive-space-6);
   --semantic-layout-width-content: var(--primitive-size-width-760);
   --semantic-layout-width-max: var(--primitive-size-width-1200);
   --semantic-layout-width-shell: var(--primitive-size-width-1180);
@@ -398,7 +398,7 @@
   --semantic-layout-content-maxWidth: var(--primitive-size-width-760);
   --semantic-layout-prose-maxWidth: var(--primitive-size-width-50ch);
   --semantic-layout-section-paddingY: var(--primitive-space-24);
-  --semantic-layout-grid-gap: var(--semantic-space-scale-lg);
+  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
   --semantic-layout-grid-columns-mobile: var(--primitive-grid-columns-1);
   --semantic-layout-grid-columns-tablet: var(--primitive-grid-columns-2);
   --semantic-layout-grid-columns-desktop: var(--primitive-grid-columns-3);
@@ -579,6 +579,9 @@
   --semantic-size-control-sm: var(--primitive-size-8);
   --semantic-size-control-md: var(--primitive-size-20);
   --semantic-size-control-lg: var(--primitive-size-32);
+  --semantic-size-controlHeight-sm: var(--primitive-size-32);
+  --semantic-size-controlHeight-md: var(--primitive-size-40);
+  --semantic-size-controlHeight-lg: var(--primitive-size-48);
   --semantic-size-icon-sm: var(--primitive-size-16);
   --semantic-size-icon-md: var(--primitive-size-20);
   --semantic-size-icon-lg: var(--primitive-size-24);
@@ -658,19 +661,19 @@
   --component-button-size-sm-paddingY: var(--primitive-space-1);
   --component-button-size-sm-fontSize: var(--primitive-typography-size-sm);
   --component-button-size-sm-iconSize: var(--primitive-size-12);
-  --component-button-size-sm-height: var(--primitive-size-36);
+  --component-button-size-sm-height: var(--semantic-size-controlHeight-sm);
   --component-button-size-sm-itemSpacing: var(--primitive-space-2);
   --component-button-size-md-paddingX: var(--primitive-space-4);
   --component-button-size-md-paddingY: var(--primitive-space-2);
   --component-button-size-md-fontSize: var(--primitive-typography-size-base);
   --component-button-size-md-iconSize: var(--primitive-size-16);
-  --component-button-size-md-height: var(--primitive-size-44);
+  --component-button-size-md-height: var(--semantic-size-controlHeight-md);
   --component-button-size-md-itemSpacing: var(--primitive-space-2);
   --component-button-size-lg-paddingX: var(--primitive-space-6);
   --component-button-size-lg-paddingY: var(--primitive-space-4);
   --component-button-size-lg-fontSize: var(--primitive-typography-size-base);
   --component-button-size-lg-iconSize: var(--primitive-size-20);
-  --component-button-size-lg-height: var(--primitive-size-52);
+  --component-button-size-lg-height: var(--semantic-size-controlHeight-lg);
   --component-button-size-lg-itemSpacing: var(--primitive-space-2);
   --component-button-primary-textDisabled: var(--semantic-color-content-disabled);
   --component-button-primary-bgDisabled: var(--semantic-color-surface-muted);
@@ -717,7 +720,7 @@
   --component-inlineLink-size-md-iconSize: var(--primitive-size-16);
   --component-inlineLink-size-lg-fontSize: var(--primitive-typography-size-title);
   --component-inlineLink-size-lg-iconSize: var(--primitive-size-24);
-  --component-pagination-compactControlSize: var(--semantic-size-row-compact);
+  --component-pagination-compactControlSize: var(--semantic-size-controlHeight-md);
   --component-table-cell-paddingX: var(--semantic-space-scale-md);
 
   /* ── Role aliases (shadcn vocabulary) ──────────────────────────────────── */

@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 658 tokens, aliases, and TS refs in one shot.
+Checks all 661 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -427,12 +427,12 @@ Semantic spacing aliases group primitive increments by usage context. The audit 
 | `semantic.space.subgrid.gap`         | `4px`                  | 4px cap-height and inline cluster spacing.                                                              |
 | `semantic.space.component.medium`    | `12px`                 | 12px adjacent form fields and medium intra-component gaps.                                              |
 | `semantic.space.section.stack`       | `96px`                 | 96px vertical rhythm between page sections and major editorial blocks; theme.css sets 64px below 640px. |
-| `semantic.space.section.inset`       | `96px`                 | 96px hero and landing-page inset padding.                                                               |
+| `semantic.space.section.inset`       | `128px`                | 128px hero and landing-page inset padding (80px below 640px, theme.css).                                |
 | `semantic.space.section.heroMax`     | `128px`                | 128px maximum hero region padding for extra-large displays.                                             |
 | `semantic.space.sidebar.indent`      | `12px`                 | 12px indent level for nested sidebar and TOC groups.                                                    |
-| `semantic.space.sidebar.gap`         | `16px`                 | 16px vertical spacing between items in sidebar and TOC stacks.                                          |
-| `semantic.space.sidebar.sectionGap`  | `12px`                 | 12px spacing between sidebar sections and grouped rail blocks.                                          |
-| `semantic.space.sidebar.railPadding` | `20px`                 | 20px outer padding for sidebar and TOC rails.                                                           |
+| `semantic.space.sidebar.gap`         | `20px`                 | 20px vertical spacing between items in sidebar and TOC stacks.                                          |
+| `semantic.space.sidebar.sectionGap`  | `16px`                 | 16px spacing between sidebar sections and grouped rail blocks.                                          |
+| `semantic.space.sidebar.railPadding` | `24px`                 | 24px outer padding for sidebar and TOC rails.                                                           |
 
 <!-- auto:end:semantic-space -->
 

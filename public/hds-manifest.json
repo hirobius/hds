@@ -2083,6 +2083,7 @@
       },
       "consumers": [
         "src/app/components/radio.tsx",
+        "src/app/components/select.tsx",
         "src/app/components/tabs.tsx",
         "src/app/components/theme-toggle.tsx",
         "src/app/hooks/useInteractionState.ts"
@@ -5188,7 +5189,8 @@
         "src/app/components/breadcrumb.tsx",
         "src/app/components/disclosure.tsx",
         "src/app/components/nav-list.tsx",
-        "src/app/components/segmented-control.tsx"
+        "src/app/components/segmented-control.tsx",
+        "src/app/components/select.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],
@@ -16022,9 +16024,9 @@
         "path": "semantic.space.section.inset",
         "cssVar": "--semantic-space-section-inset",
         "type": "dimension",
-        "description": "96px hero and landing-page inset padding.",
-        "alias": "{primitive.space.24}",
-        "resolvedValue": "96px"
+        "description": "128px hero and landing-page inset padding (80px below 640px, theme.css).",
+        "alias": "{primitive.space.32}",
+        "resolvedValue": "128px"
       },
       {
         "path": "semantic.space.section.heroMax",
@@ -16046,25 +16048,25 @@
         "path": "semantic.space.sidebar.gap",
         "cssVar": "--semantic-space-sidebar-gap",
         "type": "dimension",
-        "description": "16px vertical spacing between items in sidebar and TOC stacks.",
-        "alias": "{primitive.space.4}",
-        "resolvedValue": "16px"
+        "description": "20px vertical spacing between items in sidebar and TOC stacks.",
+        "alias": "{primitive.space.5}",
+        "resolvedValue": "20px"
       },
       {
         "path": "semantic.space.sidebar.sectionGap",
         "cssVar": "--semantic-space-sidebar-sectionGap",
         "type": "dimension",
-        "description": "12px spacing between sidebar sections and grouped rail blocks.",
-        "alias": "{primitive.space.3}",
-        "resolvedValue": "12px"
+        "description": "16px spacing between sidebar sections and grouped rail blocks.",
+        "alias": "{primitive.space.4}",
+        "resolvedValue": "16px"
       },
       {
         "path": "semantic.space.sidebar.railPadding",
         "cssVar": "--semantic-space-sidebar-railPadding",
         "type": "dimension",
-        "description": "20px outer padding for sidebar and TOC rails.",
-        "alias": "{primitive.space.5}",
-        "resolvedValue": "20px"
+        "description": "24px outer padding for sidebar and TOC rails.",
+        "alias": "{primitive.space.6}",
+        "resolvedValue": "24px"
       },
       {
         "path": "semantic.layout.width.content",
@@ -16122,9 +16124,9 @@
         "path": "semantic.layout.grid.gap",
         "cssVar": "--semantic-layout-grid-gap",
         "type": "dimension",
-        "description": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px).",
-        "alias": "{semantic.space.scale.lg}",
-        "resolvedValue": "40px",
+        "description": "Grid gap: scale.md (scale.sm below 640px, theme.css). Compact: scale.md (16px).",
+        "alias": "{semantic.space.scale.md}",
+        "resolvedValue": "28px",
         "compact": {
           "alias": "{semantic.space.scale.md}",
           "resolvedValue": "28px"
@@ -16909,6 +16911,30 @@
         "resolvedValue": "32px"
       },
       {
+        "path": "semantic.size.controlHeight.sm",
+        "cssVar": "--semantic-size-controlHeight-sm",
+        "type": "dimension",
+        "description": "32px.",
+        "alias": "{primitive.size.32}",
+        "resolvedValue": "32px"
+      },
+      {
+        "path": "semantic.size.controlHeight.md",
+        "cssVar": "--semantic-size-controlHeight-md",
+        "type": "dimension",
+        "description": "40px, the default.",
+        "alias": "{primitive.size.40}",
+        "resolvedValue": "40px"
+      },
+      {
+        "path": "semantic.size.controlHeight.lg",
+        "cssVar": "--semantic-size-controlHeight-lg",
+        "type": "dimension",
+        "description": "48px.",
+        "alias": "{primitive.size.48}",
+        "resolvedValue": "48px"
+      },
+      {
         "path": "semantic.size.icon.sm",
         "cssVar": "--semantic-size-icon-sm",
         "type": "dimension",
@@ -17510,9 +17536,9 @@
         "path": "component.button.size.sm.height",
         "cssVar": "--component-button-size-sm-height",
         "type": "dimension",
-        "description": "Small button height (36px).",
-        "alias": "{primitive.size.36}",
-        "resolvedValue": "36px"
+        "description": "Small button height (32px).",
+        "alias": "{semantic.size.controlHeight.sm}",
+        "resolvedValue": "32px"
       },
       {
         "path": "component.button.size.sm.itemSpacing",
@@ -17534,7 +17560,7 @@
         "path": "component.button.size.md.paddingY",
         "cssVar": "--component-button-size-md-paddingY",
         "type": "dimension",
-        "description": "Medium button vertical padding (8px; the 44px height drives the box).",
+        "description": "Medium button vertical padding (8px; the 40px height drives the box).",
         "alias": "{primitive.space.2}",
         "resolvedValue": "8px"
       },
@@ -17558,9 +17584,9 @@
         "path": "component.button.size.md.height",
         "cssVar": "--component-button-size-md-height",
         "type": "dimension",
-        "description": "Medium button height (44px).",
-        "alias": "{primitive.size.44}",
-        "resolvedValue": "44px"
+        "description": "Medium button height (40px).",
+        "alias": "{semantic.size.controlHeight.md}",
+        "resolvedValue": "40px"
       },
       {
         "path": "component.button.size.md.itemSpacing",
@@ -17606,9 +17632,9 @@
         "path": "component.button.size.lg.height",
         "cssVar": "--component-button-size-lg-height",
         "type": "dimension",
-        "description": "Large button height (52px).",
-        "alias": "{primitive.size.52}",
-        "resolvedValue": "52px"
+        "description": "Large button height (48px).",
+        "alias": "{semantic.size.controlHeight.lg}",
+        "resolvedValue": "48px"
       },
       {
         "path": "component.button.size.lg.itemSpacing",
@@ -17957,7 +17983,7 @@
         "cssVar": "--component-pagination-compactControlSize",
         "type": "dimension",
         "description": "Width and height of the compact Pagination's bordered Previous and Next buttons (40px square).",
-        "alias": "{semantic.size.row.compact}",
+        "alias": "{semantic.size.controlHeight.md}",
         "resolvedValue": "40px"
       },
       {
