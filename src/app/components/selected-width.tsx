@@ -1,4 +1,7 @@
-/** @internal — not part of @hirobius/design-system public API surface. */
+/**
+ * @internal — not part of @hirobius/design-system public API surface.
+ * @doc-ignore shared helper for Tabs, Tag and SegmentedControl labels, not an HDS component
+ */
 import * as React from 'react';
 
 /**
