@@ -138,7 +138,7 @@ version it leaves in and the replacement:
 
 ```text
 "--semantic-space-section-heroMax" is a deprecated token (2026-10 zero-use audit, removed in
-1.0.0 — use semantic.space.section.inset (96px)). Use --semantic-space-section-inset.
+1.0.0 — use semantic.space.section.inset (128px)). Use --semantic-space-section-inset.
 ```
 
 The list is `rules/deprecated-tokens.json`, which the token build writes, so a
