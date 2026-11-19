@@ -55,6 +55,12 @@
 @source "../**/*.{ts,tsx}";
 @source not "../**/*.test.{ts,tsx}";
 @source not "../**/__tests__";
+/* Code that never renders: the token prose index (generated-token-descriptions.ts, 48 kB of
+   descriptions whose words read as class names: "gap-8", "mt-auto"), the Code Connect
+   templates (*.figma.ts) and test fixtures. */
+@source not "../app/design-system/generated-token-descriptions.ts";
+@source not "../**/*.figma.ts";
+@source not "../**/__fixtures__";
 
 /* hds#449: every utility the last release shipped stays emitted until a ledger
    step lists its removal, so narrowing the scan (above) or deleting the last
