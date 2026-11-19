@@ -37,7 +37,8 @@ const navListItemVariants = /* @__PURE__ */ cva(
       current: {
         // Selected: the shared selected fill, fg and weight (semantic.color.selected).
         // type-ramp-ok: the current row's label weight is semantic.typography.weight.selected (600)
-        true: 'bg-[var(--semantic-color-selected-bg)] hover:bg-[var(--semantic-color-selected-bg)] text-[var(--semantic-color-selected-fg)] [font-weight:var(--semantic-typography-weight-selected)]',
+        // Muted text inside the row (a meta line) follows selected.fg, or it fails contrast on the fill.
+        true: 'bg-[var(--semantic-color-selected-bg)] hover:bg-[var(--semantic-color-selected-bg)] text-[var(--semantic-color-selected-fg)] [--role-muted-foreground:var(--semantic-color-selected-fg)] [font-weight:var(--semantic-typography-weight-selected)]',
         false: '',
       },
     },

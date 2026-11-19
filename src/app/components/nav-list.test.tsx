@@ -231,3 +231,27 @@ describe('NavList', () => {
     });
   });
 });
+
+// docs axe (nav-list, light + dark): a meta line in the current row kept text-muted-foreground
+// (content.secondary) on the selected fill and failed contrast. Inside the current row the
+// muted role follows the selected text colour.
+describe('NavList current row: muted text on the selected fill', () => {
+  afterEach(cleanup);
+  it('re-points the muted role to selected.fg in the current row only', () => {
+    render(
+      <NavList aria-label="Jobs">
+        <NavListItem href="/a" current>
+          <p className="text-muted-foreground">Acme Cloud</p>
+        </NavListItem>
+        <NavListItem href="/b">
+          <p className="text-muted-foreground">Other</p>
+        </NavListItem>
+      </NavList>,
+    );
+    const [current, other] = screen.getAllByRole('link');
+    expect(current.className).toContain(
+      '[--role-muted-foreground:var(--semantic-color-selected-fg)]',
+    );
+    expect(other.className).not.toContain('--role-muted-foreground');
+  });
+});
