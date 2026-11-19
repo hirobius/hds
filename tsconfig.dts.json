@@ -21,6 +21,7 @@
     "src/index.ts",
     "src/lib/utils.ts",
     "src/app/design-system/tokens.ts",
+    "src/app/design-system/token-descriptions.ts",
     "src/lib/manifest-entry.ts",
     "src/app/context/index.ts",
     "src/form/index.ts",
