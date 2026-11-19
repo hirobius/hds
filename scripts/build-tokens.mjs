@@ -32,6 +32,7 @@ import { collectDeprecations } from './lib/token-deprecations.mjs';
 import { writeStableArtifact } from './lib/stable-artifact.mjs';
 import { readTokenSource } from './lib/token-source.mjs';
 import { walkTokens } from './lib/token-tree.mjs';
+import { stripDescriptions, collectDescriptions } from './lib/token-split.mjs';
 import { validateTokens } from './lib/token-validate.mjs';
 import { renderTokensCSS } from './lib/token-emit/css.mjs';
 import {
@@ -110,6 +111,17 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     tokenVarsDts,
   );
   writeFileSync(join(ROOT, 'src', 'app', 'design-system', 'generated-token-refs.ts'), tokenRefsTs);
+  const sourceJson = JSON.parse(readFileSync(join(ROOT, 'hirobius.tokens.json'), 'utf8'));
+  // The /tokens export ships values only and /tokens/descriptions the descriptions, so the
+  // budgeted tokens JSON graph does not carry 10 kB of prose (scripts/lib/token-split.mjs).
+  writeFileSync(
+    join(ROOT, 'src', 'app', 'design-system', 'generated-tokens-values.json'),
+    JSON.stringify(stripDescriptions(sourceJson)) + '\n',
+  );
+  writeFileSync(
+    join(ROOT, 'src', 'app', 'design-system', 'generated-tokens-descriptions.json'),
+    JSON.stringify(collectDescriptions(sourceJson), null, 2) + '\n',
+  );
   const manifest = buildManifest(allTokens, raw);
   // Stable write: the `generated` ISO timestamp is volatile — only rewrite the
   // manifest when its substantive content changes, so unchanged builds don't
