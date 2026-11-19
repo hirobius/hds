@@ -1,0 +1,4 @@
+{
+  "impact": "none",
+  "plain": "A Tabs, Tag or SegmentedControl text label now sits in a span.hds-selected-width that holds its semibold width, so a test that reads a Tag pill's classes through getByText should use closest()."
+}

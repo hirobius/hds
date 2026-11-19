@@ -31,6 +31,7 @@ import { cva } from 'class-variance-authority';
 import { Check, X, type LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
+import { SelectedWidth } from './selected-width';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -161,10 +162,8 @@ export const Tag = /* @__PURE__ */ React.forwardRef<HTMLButtonElement, TagProps>
       {leading ? <Icon icon={leading} size="small" color="currentColor" aria-hidden /> : null}
       {onDismiss ? (
         <span className="min-w-0 truncate">{showCopied ? copiedLabel : children}</span>
-      ) : showCopied ? (
-        copiedLabel
       ) : (
-        children
+        <SelectedWidth>{showCopied ? copiedLabel : children}</SelectedWidth>
       )}
     </>
   );

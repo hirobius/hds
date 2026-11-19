@@ -199,6 +199,21 @@
 
   /* background-color only, like Tailwind's own: the shorthand also reset background-image,
    * which cancelled the SegmentedControl's fill-and-edge gradient. */
+  /* SelectedWidth (#1593): a hidden, zero-height semibold copy of the label (data-text) sets
+   * the box width, so the box is always the selected width and neighbours do not shift. */
+  .hds-selected-width {
+    display: inline-block;
+  }
+  .hds-selected-width::after {
+    content: attr(data-text);
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    /* type-ramp-ok: the selected label weight (semantic.typography.weight.selected), the one selected look */
+    font-weight: var(--semantic-typography-weight-selected);
+  }
+
   .bg-transparent {
     background-color: transparent;
   }

@@ -1,0 +1,1 @@
+- Selected labels keep their semibold width (Tabs, Tag, SegmentedControl) so neighbours do not shift.
