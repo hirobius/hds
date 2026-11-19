@@ -69,7 +69,6 @@
 @source inline("active:bg-[color:var(--component-button-secondary-bg-pressed)]");
 @source inline("active:bg-[color:var(--component-button-tertiary-bg-pressed)]");
 @source inline("active:bg-[var(--semantic-color-surface-selected)]");
-@source inline("active:bg-transparent");
 @source inline("active:inset-shadow-[0_0_0_9999px]");
 @source inline("active:inset-shadow-pressed-overlay/5");
 @source inline("active:inset-shadow-transparent");
@@ -197,7 +196,6 @@
 @source inline("cursor-pointer");
 @source inline("cursor-text");
 @source inline("dark");
-@source inline("dark:hover:brightness-100");
 @source inline("dark:hover:brightness-110");
 @source inline("data-[active=true]:bg-[var(--semantic-color-surface-sunken)]");
 @source inline("data-[active=true]:ring-2");
@@ -241,7 +239,6 @@
 @source inline("disabled:text-[var(--component-button-primary-textDisabled)]");
 @source inline("disabled:text-[var(--semantic-color-content-disabled)]");
 @source inline("duration-150");
-@source inline("duration-300");
 @source inline("duration-[var(--hds-motion-productive-duration)]");
 @source inline("ease-[var(--hds-motion-productive-easing)]");
 @source inline("ease-out");
@@ -342,7 +339,6 @@
 @source inline("hidden");
 @source inline("hover:bg-[color:var(--component-button-bgHover)]");
 @source inline("hover:bg-[color:var(--component-button-secondary-bg-hover)]");
-@source inline("hover:bg-[color:var(--component-button-secondary-bg-rest)]");
 @source inline("hover:bg-[color:var(--component-button-tertiary-bg-hover)]");
 @source inline("hover:bg-[var(--semantic-color-surface-hover)]");
 @source inline("hover:bg-[var(--semantic-color-surface-raised)]");
@@ -352,12 +348,10 @@
 @source inline("hover:bg-accent");
 @source inline("hover:bg-background");
 @source inline("hover:bg-feedback-bg-danger");
-@source inline("hover:bg-primary");
 @source inline("hover:bg-transparent");
 @source inline("hover:border-feedback-danger");
 @source inline("hover:border-ring");
 @source inline("hover:border-transparent");
-@source inline("hover:brightness-100");
 @source inline("hover:brightness-95");
 @source inline("hover:scale-102");
 @source inline("hover:shadow-[var(--semantic-elevation-raised-shadow)]");
@@ -432,11 +426,8 @@
 @source inline("mb-8");
 @source inline("mb-fixed-md");
 @source inline("md:grid-cols-2");
-@source inline("md:w-auto");
 @source inline("min-h-0");
 @source inline("min-h-10");
-@source inline("min-h-[22px]");
-@source inline("min-h-[30px]");
 @source inline("min-h-[var(--component-list-rowMinHeight)]");
 @source inline("min-h-[var(--component-tag-minHeight)]");
 @source inline("min-h-[var(--primitive-size-interactive-minCompact)]");
@@ -546,8 +537,6 @@
 @source inline("pr-[var(--semantic-space-subgrid-gap)]");
 @source inline("pr-fixed-2xs");
 @source inline("pr-fixed-lg");
-@source inline("pr-fixed-sm");
-@source inline("pr-fixed-xs");
 @source inline("pr-scale-xl");
 @source inline("pr-scale-xs");
 @source inline("pt-0");
@@ -578,7 +567,6 @@
 @source inline("py-0");
 @source inline("py-1.5");
 @source inline("py-2");
-@source inline("py-3");
 @source inline("py-[var(--component-badge-paddingY)]");
 @source inline("py-[var(--component-disclosure-paddingY)]");
 @source inline("py-[var(--component-tag-paddingY)]");
