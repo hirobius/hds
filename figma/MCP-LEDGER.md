@@ -1835,3 +1835,15 @@ Release 0.46.0 was already synced on the Version PR (#1590). Main's plan showed 
 | 2   | `use_figma`      | write | delta.js (updated 1: meta/commit) | OK: commit d3637ba; post bbc817f1 |
 
 Session total: 2 calls (1 session, 1 write). Nothing deleted, nothing published.
+
+## 2026-11-19 · Daily release check: token changes on main (595232c, 0.46.0)
+
+Main's plan showed updated 15 · created 10 · deleted 0: #1592 (control heights), #1593 and #1601 (selected look), #1599 (token descriptions), plus `meta/commit`. One delta.js part.
+
+| #   | Tool             | Kind  | What                                      | Result                       |
+| --- | ---------------- | ----- | ----------------------------------------- | ---------------------------- |
+| 1   | `create_session` | setup | file session for the delta                | OK                           |
+| 2   | `use_figma`      | write | delta.js (updated 15, created 10)         | Bad Gateway: outcome unknown |
+| 3   | `use_figma`      | read  | lastPush + syncReceipt head (check row 2) | Bad Gateway: outcome unknown |
+
+Stopped: the Figma endpoint returned Bad Gateway twice, so row 2's outcome is unknown. Next run: read `lastPush` and `syncReceipt` first. If the receipt's commit is 595232c, collect it with receipt.js and rebuild the snapshot; if not, delta.js's base checksum (bbc817f1) still guards a re-run. Session total: 3 calls. Nothing deleted, nothing published.
