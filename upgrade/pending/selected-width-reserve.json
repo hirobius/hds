@@ -6,7 +6,7 @@
       "id": "behavior/SegmentedControl.dom",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "Each text segment label is now wrapped in a span.hds-selected-width with data-text, so a selector or test that expects the label as the segment's direct text needs one more level.",
+      "plain": "Each text segment label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the label as the segment's direct text needs one more level.",
       "detect": {
         "jsx": ["SegmentedControl"],
         "regex": [
@@ -19,7 +19,7 @@
       "id": "behavior/Tabs.dom",
       "kind": "behavior",
       "impact": "behavior",
-      "plain": "Each text TabsTrigger label is now wrapped in a span.hds-selected-width with data-text, so a selector or test that expects the trigger's direct text needs one more level.",
+      "plain": "Each text TabsTrigger label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the trigger's direct text needs one more level.",
       "detect": {
         "jsx": ["Tabs"],
         "regex": [

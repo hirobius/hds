@@ -199,13 +199,13 @@
 
   /* background-color only, like Tailwind's own: the shorthand also reset background-image,
    * which cancelled the SegmentedControl's fill-and-edge gradient. */
-  /* SelectedWidth (#1593): a hidden, zero-height semibold copy of the label (data-text) sets
+  /* SelectedWidth (#1593): a hidden, zero-height semibold copy of the label (data-hds-text) sets
    * the box width, so the box is always the selected width and neighbours do not shift. */
   .hds-selected-width {
     display: inline-block;
   }
   .hds-selected-width::after {
-    content: attr(data-text);
+    content: attr(data-hds-text);
     display: block;
     height: 0;
     overflow: hidden;

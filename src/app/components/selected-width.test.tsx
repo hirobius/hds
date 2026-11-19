@@ -1,7 +1,7 @@
 /**
  * A label that turns semibold when selected must not change its box, or its neighbours
  * shift on every selection (the SegmentedControl md shot went 103px to 104px, #1593).
- * Plain-text labels carry data-text; CSS draws a hidden zero-height semibold copy, so the
+ * Plain-text labels carry data-hds-text; CSS draws a hidden zero-height semibold copy, so the
  * box is always the semibold width and the DOM still holds one text.
  */
 import { describe, it, expect, afterEach } from 'vitest';
@@ -14,11 +14,11 @@ import { SegmentedControl } from './segmented-control';
 afterEach(cleanup);
 
 describe('SelectedWidth', () => {
-  it('carries the label as data-text for the hidden semibold copy, with one DOM text', () => {
+  it('carries the label as data-hds-text for the hidden semibold copy, with one DOM text', () => {
     const { container } = render(<SelectedWidth>Overview</SelectedWidth>);
     const box = container.firstElementChild!;
     expect(box.className).toContain('hds-selected-width');
-    expect(box.getAttribute('data-text')).toBe('Overview');
+    expect(box.getAttribute('data-hds-text')).toBe('Overview');
     expect(screen.getAllByText('Overview')).toHaveLength(1);
   });
 
