@@ -1,0 +1,31 @@
+{
+  "impact": "look",
+  "plain": "styles.css and tokens.css drop 12 Tailwind utilities that no HDS component, docs page or Hirobius app uses; add any you rely on to your own CSS.",
+  "steps": [
+    {
+      "id": "behavior/unused-safelist-utilities",
+      "kind": "behavior",
+      "impact": "look",
+      "plain": "These 12 utilities no longer ship in styles.css or tokens.css, so an element that used one from HDS's stylesheet loses that style unless your own Tailwind build emits it.",
+      "detect": {
+        "regex": [
+          "(?<![\\w:-])(active:bg\\-transparent|dark:hover:brightness\\-100|duration\\-300|hover:bg\\-\\[color:var\\(\\-\\-component\\-button\\-secondary\\-bg\\-rest\\)\\]|hover:bg\\-primary|hover:brightness\\-100|md:w\\-auto|min\\-h\\-\\[22px\\]|min\\-h\\-\\[30px\\]|pr\\-fixed\\-sm|pr\\-fixed\\-xs|py\\-3)(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "utility-removed:active:bg-transparent",
+        "utility-removed:dark:hover:brightness-100",
+        "utility-removed:duration-300",
+        "utility-removed:hover:bg-[color:var(--component-button-secondary-bg-rest)]",
+        "utility-removed:hover:bg-primary",
+        "utility-removed:hover:brightness-100",
+        "utility-removed:md:w-auto",
+        "utility-removed:min-h-[22px]",
+        "utility-removed:min-h-[30px]",
+        "utility-removed:pr-fixed-sm",
+        "utility-removed:pr-fixed-xs",
+        "utility-removed:py-3"
+      ]
+    }
+  ]
+}

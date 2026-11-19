@@ -227,19 +227,19 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
         active: true,
         variant: 'primary',
         interaction: 'rest',
-        className: 'bg-[var(--semantic-accent-rest)]',
+        className: '[--seg-fill:var(--semantic-accent-rest)]',
       },
       {
         active: true,
         variant: 'primary',
         interaction: 'hover',
-        className: 'bg-[var(--semantic-accent-hover)]',
+        className: '[--seg-fill:var(--semantic-accent-hover)]',
       },
       {
         active: true,
         variant: 'primary',
         interaction: 'pressed',
-        className: 'bg-[var(--semantic-accent-pressed)]',
+        className: '[--seg-fill:var(--semantic-accent-pressed)]',
       },
       {
         active: false,
@@ -260,12 +260,16 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
         variant: 'secondary',
         className: 'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive)]',
       },
-      // Primary selected (C2): the primary fill with the primary hard edge, drawn inset at
-      // the bottom because the scrolling rail clips anything below the segment.
+      // Primary selected (C2): the primary fill (--seg-fill, set per interaction above) with
+      // the primary hard edge, drawn inside at the bottom because the scrolling rail clips
+      // anything below the segment. Fill and edge are ONE background image over a
+      // transparent colour: an inset shadow, or an edge layer over a fill colour, leaves the
+      // fill's anti-aliased rim at the rounded bottom corners (a light line in dark mode).
       {
         active: true,
         variant: 'primary',
-        className: 'shadow-[inset_0_-3px_0_var(--hds-edge-primary)]',
+        className:
+          'bg-[image:linear-gradient(to_top,var(--hds-edge-primary)_3px,var(--seg-fill)_3px)]',
       },
       {
         active: false,
@@ -289,7 +293,7 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
       {
         disabled: true,
         variant: 'primary',
-        className: 'bg-[var(--semantic-color-surface-raised)] shadow-none',
+        className: 'bg-[var(--semantic-color-surface-raised)] bg-none shadow-none',
       },
     ],
     defaultVariants: SEGMENT_STATE_DEFAULTS,
