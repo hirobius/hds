@@ -2339,6 +2339,33 @@
             }
           }
         }
+      },
+      "selected": {
+        "$description": "The one selected look.",
+        "bg": {
+          "$value": "{primitive.color.graphite.700}",
+          "$description": "Selected fill (accent.rest values).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.graphite.700}",
+                "Dark": "{primitive.color.graphite.50}"
+              }
+            }
+          }
+        },
+        "fg": {
+          "$value": "{primitive.color.neutral.50}",
+          "$description": "On the selected fill (onAccent values).",
+          "$extensions": {
+            "com.figma.variables": {
+              "modes": {
+                "Light": "{primitive.color.neutral.50}",
+                "Dark": "{primitive.color.graphite.900}"
+              }
+            }
+          }
+        }
       }
     },
     "space": {
@@ -2859,6 +2886,13 @@
           "$type": "number",
           "$value": "{primitive.typography.lineHeight.none}",
           "$description": "Semantic alias for leading-none (1). Display text and badge spans."
+        }
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "selected": {
+          "$value": "{primitive.typography.weight.semibold}",
+          "$description": "Selected label weight."
         }
       }
     },
@@ -3457,17 +3491,17 @@
       },
       "activeText": {
         "$type": "color",
-        "$value": "{semantic.color.content.onAccent}",
+        "$value": "{semantic.color.selected.fg}",
         "$description": "Text color when the tag is active."
       },
       "activeBackground": {
         "$type": "color",
-        "$value": "{semantic.accent.rest}",
+        "$value": "{semantic.color.selected.bg}",
         "$description": "Active tag fill color."
       },
       "activeBorder": {
         "$type": "color",
-        "$value": "{semantic.accent.rest}",
+        "$value": "{semantic.color.selected.bg}",
         "$description": "Active tag border color."
       },
       "activeHover": {

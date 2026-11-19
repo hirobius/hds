@@ -26,17 +26,19 @@ import { safeHref } from '../../lib/safe-href';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 // `current` is a component-specific state flag (not one of the contract's four
-// axes), like Breadcrumb's: hover is surface.hover and the open row is
-// surface.selected (one step deeper), so the two never read the same. The weight stays
-// on the ui role (medium): the type ramp has no heavier row weight, so the fill
-// and aria-current carry the state.
+// axes), like Breadcrumb's: hover is surface.hover and the open row takes the one selected
+// look (semantic.color.selected fill and fg, semantic.typography.weight.selected), so the
+// two never read the same.
 // eslint-disable-next-line tailwindcss/no-arbitrary-value -- hover/selected fills are token-driven; var()-based, no Tailwind-theme utility exists
 const navListItemVariants = /* @__PURE__ */ cva(
   'hds-focus hds-type-ui block rounded-md px-fixed-xs py-scale-xs text-foreground no-underline transition-colors hover:bg-[var(--semantic-color-surface-hover)]',
   {
     variants: {
       current: {
-        true: 'bg-[var(--semantic-color-surface-selected)] hover:bg-[var(--semantic-color-surface-selected)]',
+        // Selected: the shared selected fill, fg and weight (semantic.color.selected).
+        // type-ramp-ok: the current row's label weight is semantic.typography.weight.selected (600)
+        // Muted text inside the row (a meta line) follows selected.fg, or it fails contrast on the fill.
+        true: 'bg-[var(--semantic-color-selected-bg)] hover:bg-[var(--semantic-color-selected-bg)] text-[var(--semantic-color-selected-fg)] [--role-muted-foreground:var(--semantic-color-selected-fg)] [font-weight:var(--semantic-typography-weight-selected)]',
         false: '',
       },
     },

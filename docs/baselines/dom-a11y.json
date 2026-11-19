@@ -1254,7 +1254,7 @@
       "        button aria-label=\"Page 2\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
       "      li aria-hidden=\"true\"",
       "      li",
-      "        button aria-current=\"page\" aria-label=\"Page 3\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"secondary\"",
+      "        button aria-current=\"page\" aria-label=\"Page 3\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"primary\"",
       "      li",
       "        button aria-label=\"Page 4\" data-hover-effect=\"wipe\" data-size=\"sm\" data-variant=\"tertiary\"",
       "      li",

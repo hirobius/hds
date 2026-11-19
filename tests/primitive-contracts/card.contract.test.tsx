@@ -134,7 +134,7 @@ const VARIANT_BORDERS = [
 const SELECTED_RING = [
   'data-[selected=true]:ring-2',
   'data-[selected=true]:ring-inset',
-  'data-[selected=true]:ring-ring',
+  'data-[selected=true]:ring-[color:var(--semantic-color-selected-bg)]',
 ];
 
 function renderCard(

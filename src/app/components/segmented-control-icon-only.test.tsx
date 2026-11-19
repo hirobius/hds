@@ -73,7 +73,7 @@ describe('SegmentedControl icon-only options (hds#1439)', () => {
     const radio = screen.getByRole('radio', { name: 'List view' });
     expect(radio.className).toContain('rounded-[var(--seg-inner-radius)]');
     expect(radio.querySelector('[aria-hidden="true"]')!.className).toContain(
-      '[--seg-fill:var(--semantic-accent-rest)]',
+      '[--seg-fill:var(--semantic-color-selected-bg)]',
     );
   });
 

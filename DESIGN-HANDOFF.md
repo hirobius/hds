@@ -51,7 +51,7 @@ pnpm tokens:verify
 
 <!-- auto:start:token-count -->
 
-Checks all 658 tokens, aliases, and TS refs in one shot.
+Checks all 661 tokens, aliases, and TS refs in one shot.
 <!-- auto:end:token-count -->
 
 ### Key pipeline rules
@@ -286,6 +286,8 @@ These semantic states alias the original `primitive.color.blue.*` tones in OKLCH
 | `semantic.color.feedback.bg.inProgress` | {primitive.color.violet.50}     | {primitive.color.violet.900}    |                                                                                                                              |
 | `semantic.color.feedback.solid.warning` | {primitive.color.amber.700}     | {primitive.color.amber.400}     | Solid warning Button fill. amber.800 reads brown as a fill; the other tones fill with feedback.*.                            |
 | `semantic.color.state.pressed.overlay`  | {primitive.color.neutral.black} | {primitive.color.neutral.white} | Opaque pressed wash over a control's own fill: black in light, white in dark. Alpha in the class.                            |
+| `semantic.color.selected.bg`            | {primitive.color.graphite.700}  | {primitive.color.graphite.50}   | Selected fill (accent.rest values).                                                                                          |
+| `semantic.color.selected.fg`            | {primitive.color.neutral.50}    | {primitive.color.graphite.900}  | On the selected fill (onAccent values).                                                                                      |
 
 <!-- auto:end:semantic-color -->
 
@@ -321,6 +323,7 @@ CSS helper vars such as hds.hover and hds.fill are implementation-only aliases f
 | `h3`              | 28px       | 700    | 1.25        | -0.01em        | deprecated: use semantic.typography.title                                                                        |
 | `eyebrow`         | 14px       | 400    | 1.5         | -0.01em        | deprecated: use semantic.typography.caption                                                                      |
 | `lineHeight.none` |            |        |             |                | Semantic alias for leading-none (1). Display text and badge spans.                                               |
+| `weight.selected` |            |        |             |                | Selected label weight.                                                                                           |
 
 > Token JSON stores static max sizes. Responsive `clamp()` overrides live in `theme.css`.
 

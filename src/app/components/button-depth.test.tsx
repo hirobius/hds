@@ -266,7 +266,7 @@ describe('selected states take the primary fill and the primary edge', () => {
       />,
     );
     const radio = screen.getByRole('radio', { name: /Watched/ });
-    const indicator = radio.querySelector('[class*="--semantic-accent-rest"]')!;
+    const indicator = radio.querySelector('[class*="--semantic-color-selected-bg"]')!;
     expect(indicator).not.toBeNull();
     // The edge is a background layer clipped with the fill, not an inset shadow: an inset
     // shadow leaves the fill's anti-aliased rim showing at the rounded bottom corners, a

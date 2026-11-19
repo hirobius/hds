@@ -153,7 +153,9 @@ describe('cobalt accent theme (accents/cobalt/tokens.json)', () => {
   it('swaps only accent tokens', () => {
     const vars = [...ACCENTS_CSS.matchAll(/^\s*(--[\w-]+):/gm)].map((m) => m[1]);
     expect(vars.length).toBeGreaterThan(0);
-    for (const v of vars) expect(v).toMatch(/accent|primary|ring|button|tag-active|nav-.*Active/i);
+    // semantic.color.selected mirrors the accent (the one selected look), so a theme sets it too.
+    for (const v of vars)
+      expect(v).toMatch(/accent|primary|ring|button|tag-active|nav-.*Active|color-selected/i);
   });
 });
 

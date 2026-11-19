@@ -115,25 +115,25 @@ describe('SegmentedControl — indicator and description share one state (hds#10
     return { indicator: indicator.className, description: description.className };
   }
 
-  it('primary: the selected segment paints the accent fill and onAccent description', () => {
+  it('primary: the selected segment paints the selected fill and selected description', () => {
     render(
       <SegmentedControl aria-label="View" value="list" onChange={() => {}} options={DESCRIBED} />,
     );
     const on = parts('List');
-    expect(on.indicator).toContain('[--seg-fill:var(--semantic-accent-rest)]');
+    expect(on.indicator).toContain('[--seg-fill:var(--semantic-color-selected-bg)]');
     expect(on.indicator).toContain(
       'bg-[image:linear-gradient(to_top,var(--hds-edge-primary)_3px,var(--seg-fill)_3px)]',
     );
     // The colour layer stays transparent: the fill is painted by the one gradient layer.
     expect(on.indicator).toContain('bg-transparent');
-    expect(on.description).toContain('text-[var(--semantic-color-content-onAccent)]');
+    expect(on.description).toContain('text-[var(--semantic-color-selected-fg)]');
     expect(on.description).not.toContain('text-[var(--semantic-color-content-secondary)]');
     const off = parts('Grid');
     expect(off.indicator).toContain('bg-transparent');
     expect(off.description).toContain('text-[var(--semantic-color-content-secondary)]');
   });
 
-  it('secondary: the selected segment paints the page fill and keeps the secondary description', () => {
+  it('secondary: the selected segment paints the selected fill and selected description', () => {
     render(
       <SegmentedControl
         aria-label="View"
@@ -144,11 +144,9 @@ describe('SegmentedControl — indicator and description share one state (hds#10
       />,
     );
     const on = parts('List');
-    expect(on.indicator).toContain('bg-[var(--semantic-color-surface-page)]');
-    expect(on.indicator).toContain(
-      'shadow-[inset_0_0_0_1px_var(--semantic-color-border-interactive)]',
-    );
-    expect(on.description).toContain('text-[var(--semantic-color-content-secondary)]');
-    expect(on.description).not.toContain('onAccent');
+    // One selected look: the secondary segment takes the selected fill too.
+    expect(on.indicator).toContain('bg-[var(--semantic-color-selected-bg)]');
+    expect(on.indicator).not.toContain('border-interactive');
+    expect(on.description).toContain('text-[var(--semantic-color-selected-fg)]');
   });
 });

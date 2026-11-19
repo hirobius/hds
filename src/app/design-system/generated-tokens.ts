@@ -439,6 +439,10 @@ export const tokens = {
         pressed: {
           overlay: "var(--semantic-color-state-pressed-overlay)"
         }
+      },
+      selected: {
+        bg: "var(--semantic-color-selected-bg)",
+        fg: "var(--semantic-color-selected-fg)"
       }
     },
     space: {
@@ -515,6 +519,9 @@ export const tokens = {
     typography: {
       lineHeight: {
         none: "var(--semantic-typography-lineHeight-none)"
+      },
+      weight: {
+        selected: "var(--semantic-typography-weight-selected)"
       }
     },
     docs: {

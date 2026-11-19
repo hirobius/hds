@@ -2,7 +2,7 @@ import { startHereStats, tokenFlow } from '../lib/start-here';
 import { loadStats, loadTokenFlowSources } from '../lib/site-data';
 
 /** The token the Start here page follows. Its value, CSS lines, component and Figma name are read from the repo. */
-const EXAMPLE_TOKEN = 'semantic.accent.rest';
+const EXAMPLE_TOKEN = 'semantic.accent.hover';
 
 /**
  * One token, end to end, as an ordered list of steps on a rail (no cards). Every value and file

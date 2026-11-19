@@ -54,7 +54,7 @@ describe('SegmentedControl link mode (hds#1438)', () => {
     const a = screen.getByRole('link', { name: 'Find' });
     const indicator = a.querySelector('[aria-hidden="true"]')!;
     expect(indicator.className).toContain('rounded-[var(--seg-inner-radius)]');
-    expect(indicator.className).toContain('[--seg-fill:var(--semantic-accent-rest)]');
+    expect(indicator.className).toContain('[--seg-fill:var(--semantic-color-selected-bg)]');
     expect(a.className).toContain('rounded-[var(--seg-inner-radius)]');
     const rail = screen.getByRole('list');
     expect(rail.className).toContain('rounded-[var(--seg-rail-radius)]');

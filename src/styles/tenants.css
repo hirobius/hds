@@ -51,6 +51,12 @@
   --semantic-color-content-onAccent: var(
     --primitive-color-neutral-white
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-selected-bg: var(
+    --primitive-color-lilac-500
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
+  --semantic-color-selected-fg: var(
+    --primitive-color-neutral-white
+  ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
   --semantic-focus-ring-color: var(
     --semantic-color-border-accent
   ); /* css-ok: tenant palette primitive */ /* tier-ok: tenant primitive override is the override mechanism — semantic alias */
