@@ -1,0 +1,66 @@
+{
+  "impact": "look",
+  "plain": "styles.css and tokens.css drop 47 utilities that no HDS component, docs page or Hirobius app uses; add any you rely on to your own CSS.",
+  "steps": [
+    {
+      "id": "behavior/unscanned-utilities",
+      "kind": "behavior",
+      "impact": "look",
+      "plain": "These 47 utilities no longer ship in styles.css or tokens.css, so an element that used one from HDS's stylesheet loses that style unless your own Tailwind build emits it.",
+      "detect": {
+        "regex": [
+          "(?<![\\w:-])(bg\\-\\[var\\(\\-\\-semantic\\-accent\\-hover\\)\\]|bg\\-\\[var\\(\\-\\-semantic\\-accent\\-pressed\\)\\]|bg\\-\\[var\\(\\-\\-semantic\\-accent\\-rest\\)\\]|bg\\-page|bg\\-raised|bg\\-surface\\-raised|flex\\-shrink\\-0|gap\\-1\\.5|gap\\-10|gap\\-12|gap\\-2\\.5|gap\\-5|gap\\-8|gap\\-x\\-8|gap\\-y\\-4|h\\-48|list\\-item|mb\\-12|mb\\-3|mb\\-4|md:grid\\-cols\\-2|mr\\-1|mt\\-10|mt\\-3|mt\\-8|mt\\-auto|opacity\\-40|origin\\-right|overflow\\-visible|overflow\\-x\\-hidden|p\\-12|p\\-8|pb\\-12|pl\\-fixed\\-xs|pt\\-3|pt\\-4|pt\\-8|scale\\-x\\-0|shadow\\-\\[inset_0_\\-3px_0_var\\(\\-\\-hds\\-edge\\-primary\\)\\]|space\\-y\\-4|text\\-accent|text\\-inverse\\-primary|top\\-full|transition\\-all|w\\-48|w\\-80|z\\-30)(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "utility-removed:bg-[var(--semantic-accent-hover)]",
+        "utility-removed:bg-[var(--semantic-accent-pressed)]",
+        "utility-removed:bg-[var(--semantic-accent-rest)]",
+        "utility-removed:bg-page",
+        "utility-removed:bg-raised",
+        "utility-removed:bg-surface-raised",
+        "utility-removed:flex-shrink-0",
+        "utility-removed:gap-1.5",
+        "utility-removed:gap-10",
+        "utility-removed:gap-12",
+        "utility-removed:gap-2.5",
+        "utility-removed:gap-5",
+        "utility-removed:gap-8",
+        "utility-removed:gap-x-8",
+        "utility-removed:gap-y-4",
+        "utility-removed:h-48",
+        "utility-removed:list-item",
+        "utility-removed:mb-12",
+        "utility-removed:mb-3",
+        "utility-removed:mb-4",
+        "utility-removed:md:grid-cols-2",
+        "utility-removed:mr-1",
+        "utility-removed:mt-10",
+        "utility-removed:mt-3",
+        "utility-removed:mt-8",
+        "utility-removed:mt-auto",
+        "utility-removed:opacity-40",
+        "utility-removed:origin-right",
+        "utility-removed:overflow-visible",
+        "utility-removed:overflow-x-hidden",
+        "utility-removed:p-12",
+        "utility-removed:p-8",
+        "utility-removed:pb-12",
+        "utility-removed:pl-fixed-xs",
+        "utility-removed:pt-3",
+        "utility-removed:pt-4",
+        "utility-removed:pt-8",
+        "utility-removed:scale-x-0",
+        "utility-removed:shadow-[inset_0_-3px_0_var(--hds-edge-primary)]",
+        "utility-removed:space-y-4",
+        "utility-removed:text-accent",
+        "utility-removed:text-inverse-primary",
+        "utility-removed:top-full",
+        "utility-removed:transition-all",
+        "utility-removed:w-48",
+        "utility-removed:w-80",
+        "utility-removed:z-30"
+      ]
+    }
+  ]
+}
