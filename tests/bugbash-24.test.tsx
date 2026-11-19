@@ -443,7 +443,9 @@ describe('Overflow (item 15) and shape (item 16)', () => {
       </>,
     );
     expect(screen.getByText('b').closest('[data-tone]')!.className).toMatch(/max-w-full/);
-    expect(screen.getByText('t').className).toMatch(/max-w-full/);
+    expect(screen.getByText('t').closest('span:not(.hds-selected-width)')!.className).toMatch(
+      /max-w-full/,
+    );
   });
   it('Alert and Callout share padding and the action radius (rounded-md follows role.radius)', () => {
     const a = render(<Alert tone="info">x</Alert>).container.firstElementChild as HTMLElement;

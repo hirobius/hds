@@ -1,0 +1,43 @@
+{
+  "impact": "behavior",
+  "plain": "A Tabs, Tag or SegmentedControl text label now sits in a span.hds-selected-width that holds its semibold width, so a test that reads a Tag pill's classes through getByText should use closest().",
+  "steps": [
+    {
+      "id": "behavior/SegmentedControl.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Each text segment label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the label as the segment's direct text needs one more level.",
+      "detect": {
+        "jsx": ["SegmentedControl"],
+        "regex": [
+          "getByText\\([^)]*\\)\\.(className|parentElement)|\\[role=.?radio.?\\]\\s*>\\s*span"
+        ]
+      },
+      "facts": ["dom-changed:SegmentedControl"]
+    },
+    {
+      "id": "behavior/Tabs.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Each text TabsTrigger label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the trigger's direct text needs one more level.",
+      "detect": {
+        "jsx": ["Tabs"],
+        "regex": [
+          "getByRole\\(['\\\"]tab['\\\"][^)]*\\)\\.(textContent|firstChild|childNodes)|\\[role=.?tab.?\\]\\s*>\\s*span"
+        ]
+      },
+      "facts": ["dom-changed:Tabs"]
+    },
+    {
+      "id": "behavior/Tag.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A text Tag label is now wrapped in a span.hds-selected-width, so a test that reads the pill's classes through getByText should use closest() to reach the pill.",
+      "detect": {
+        "jsx": ["Tag"],
+        "regex": ["getByText\\([^)]*\\)\\.(className|classList|closest)"]
+      },
+      "facts": ["dom-changed:Tag"]
+    }
+  ]
+}

@@ -28,6 +28,7 @@ import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
+import { SelectedWidth } from './selected-width';
 
 /**
  * The tab set itself. Tagged here rather than in the file block because
@@ -104,6 +105,7 @@ export function TabsTrigger({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  const { children, ...rest } = props;
   return (
     <TabsPrimitive.Trigger
       className={cn(
@@ -118,8 +120,10 @@ export function TabsTrigger({
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,
       )}
-      {...props}
-    />
+      {...rest}
+    >
+      <SelectedWidth>{children}</SelectedWidth>
+    </TabsPrimitive.Trigger>
   );
 }
 

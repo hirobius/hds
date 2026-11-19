@@ -2084,6 +2084,7 @@
       "consumers": [
         "src/app/components/radio.tsx",
         "src/app/components/select.tsx",
+        "src/app/components/selected-width.tsx",
         "src/app/components/tabs.tsx",
         "src/app/components/theme-toggle.tsx",
         "src/app/hooks/useInteractionState.ts"
@@ -2687,6 +2688,7 @@
         "src/app/components/grid.tsx",
         "src/app/components/pin.tsx",
         "src/app/components/reveal.tsx",
+        "src/app/components/selected-width.tsx",
         "src/app/components/sidebar.tsx",
         "src/app/components/stack.tsx",
         "src/app/components/surface.tsx",
@@ -5190,7 +5192,8 @@
         "src/app/components/disclosure.tsx",
         "src/app/components/nav-list.tsx",
         "src/app/components/segmented-control.tsx",
-        "src/app/components/select.tsx"
+        "src/app/components/select.tsx",
+        "src/app/components/selected-width.tsx"
       ],
       "tokenMapping": {},
       "variantAxes": [],

@@ -248,7 +248,7 @@ describe('selected states take the primary fill and the primary edge', () => {
 
   it('selected filter chip (Tag)', () => {
     render(<Tag active>Hiring now</Tag>);
-    const pill = screen.getByText('Hiring now');
+    const pill = screen.getByText('Hiring now').closest('span:not(.hds-selected-width)')!;
     expect(classes(pill)).toContain('bg-[var(--component-tag-activeBackground)]');
     expect(classes(pill)).toContain('shadow-[0_3px_0_var(--hds-edge-primary)]');
   });

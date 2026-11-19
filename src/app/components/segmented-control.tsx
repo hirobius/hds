@@ -46,6 +46,7 @@ import { isDevelopment } from '../../lib/env';
 import { warnOncePlain } from '../../lib/deprecation';
 import { useHdsRouter } from '../context/RouterContext';
 import { scrollEdgeFadeStyle, useKeepSelectedInView, useScrollEdgeFade } from './scroll-edge-fade';
+import { SelectedWidth } from './selected-width';
 
 // ── Variants ───────────────────────────────────────────────────────────────────
 
@@ -497,7 +498,7 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
               selected: active,
             })}
           >
-            {option.label}
+            <SelectedWidth>{option.label}</SelectedWidth>
           </span>
         )}
         {option.description && (

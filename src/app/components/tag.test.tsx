@@ -14,7 +14,7 @@ describe('Tag disabled state', () => {
         Remote
       </Tag>,
     );
-    const pill = screen.getByText('Remote');
+    const pill = screen.getByText('Remote').closest('span:not(.hds-selected-width)')!;
     expect(pill.className).toContain(
       'group-disabled:text-[var(--semantic-color-content-disabled)]',
     );
@@ -32,7 +32,7 @@ describe('Tag leading icon', () => {
 
   it('spaces the icon from the label with the shared token gap', () => {
     render(<Tag icon={Hash}>tokens</Tag>);
-    const pill = screen.getByText('tokens').closest('span');
+    const pill = screen.getByText('tokens').closest('span:not(.hds-selected-width)');
     expect(pill?.className).toContain('gap-scale-xs');
   });
 
