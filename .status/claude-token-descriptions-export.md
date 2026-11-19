@@ -1,1 +1,2 @@
 - /tokens ships values only; descriptions move to /tokens/descriptions (tokenDescriptions). Tokens JSON graph 22 to 11.5 kB gzip.
+- Generated split JSON files are now Prettier-ignored so pnpm tokens does not churn them.
