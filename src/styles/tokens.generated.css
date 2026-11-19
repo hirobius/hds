@@ -382,13 +382,13 @@
   --semantic-space-subgrid-gap: var(--primitive-space-1);
   --semantic-space-component-medium: var(--primitive-space-3);
   --semantic-space-section-stack: var(--primitive-space-24);
-  --semantic-space-section-inset: var(--primitive-space-24);
-  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (96px) */
+  --semantic-space-section-inset: var(--primitive-space-32);
+  /* @deprecated 2026-10 zero-use audit, removed in 1.0.0 — use semantic.space.section.inset (128px) */
   --semantic-space-section-heroMax: var(--primitive-space-32);
   --semantic-space-sidebar-indent: var(--primitive-space-3);
-  --semantic-space-sidebar-gap: var(--primitive-space-4);
-  --semantic-space-sidebar-sectionGap: var(--primitive-space-3);
-  --semantic-space-sidebar-railPadding: var(--primitive-space-5);
+  --semantic-space-sidebar-gap: var(--primitive-space-5);
+  --semantic-space-sidebar-sectionGap: var(--primitive-space-4);
+  --semantic-space-sidebar-railPadding: var(--primitive-space-6);
   --semantic-layout-width-content: var(--primitive-size-width-760);
   --semantic-layout-width-max: var(--primitive-size-width-1200);
   --semantic-layout-width-shell: var(--primitive-size-width-1180);
@@ -396,7 +396,7 @@
   --semantic-layout-content-maxWidth: var(--primitive-size-width-760);
   --semantic-layout-prose-maxWidth: var(--primitive-size-width-50ch);
   --semantic-layout-section-paddingY: var(--primitive-space-24);
-  --semantic-layout-grid-gap: var(--semantic-space-scale-lg);
+  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
   --semantic-layout-grid-columns-mobile: var(--primitive-grid-columns-1);
   --semantic-layout-grid-columns-tablet: var(--primitive-grid-columns-2);
   --semantic-layout-grid-columns-desktop: var(--primitive-grid-columns-3);

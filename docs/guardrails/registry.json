@@ -115,7 +115,8 @@
       "node scripts/check-guardrail-drift.mjs",
       "node scripts/check-skills-lock.mjs",
       "node scripts/check-lockfile-integrity.mjs",
-      "node scripts/check-skill-content.mjs"
+      "node scripts/check-skill-content.mjs",
+      "node scripts/check-root-token-overrides.mjs"
     ],
     "ralph-gate": [
       "pnpm manifest:generate",
@@ -1408,6 +1409,17 @@
       "owner": "Adrian",
       "source": "agent",
       "firingChannel": "post-merge"
+    },
+    {
+      "id": "check-root-token-overrides",
+      "description": "Fails when a hand-written top-level :root in src/styles re-declares a generated token with a different value (folio #429: theme.css made section.inset 128px against the token's 96px, so the token lost once styles.css loaded). A rule inside @media or under another selector is allowed.",
+      "severity": "error",
+      "gateScript": "scripts/check-root-token-overrides.mjs",
+      "fixturePath": null,
+      "owner": "Adrian",
+      "source": "human",
+      "firingChannel": "pnpm-meta",
+      "scope": "full-tree"
     }
   ]
 }

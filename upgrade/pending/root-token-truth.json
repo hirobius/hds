@@ -1,0 +1,61 @@
+{
+  "impact": "look",
+  "plain": "The tokens now carry the spacing styles.css already rendered, so only a consumer that read variables.css or the token JSON without styles.css sees larger section insets, sidebar spacing and a smaller grid gap.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-layout-grid-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The grid gap token is now scale.md (it was scale.lg), which styles.css already applied.",
+      "detect": {
+        "cssVars": ["--semantic-layout-grid-gap"],
+        "cssVarWrites": ["--semantic-layout-grid-gap"]
+      },
+      "facts": ["css-var-changed:--semantic-layout-grid-gap::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-section-inset",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The section inset token is now 128px (80px below 640px), which styles.css already applied.",
+      "detect": {
+        "cssVars": ["--semantic-space-section-inset"],
+        "cssVarWrites": ["--semantic-space-section-inset"]
+      },
+      "facts": ["css-var-changed:--semantic-space-section-inset::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-sidebar-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The sidebar item gap token is now 20px (it was 16px), which styles.css already applied.",
+      "detect": {
+        "cssVars": ["--semantic-space-sidebar-gap"],
+        "cssVarWrites": ["--semantic-space-sidebar-gap"]
+      },
+      "facts": ["css-var-changed:--semantic-space-sidebar-gap::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-sidebar-railPadding",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The sidebar rail padding token is now 24px (it was 20px), which styles.css already applied.",
+      "detect": {
+        "cssVars": ["--semantic-space-sidebar-railPadding"],
+        "cssVarWrites": ["--semantic-space-sidebar-railPadding"]
+      },
+      "facts": ["css-var-changed:--semantic-space-sidebar-railPadding::root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-sidebar-sectionGap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The sidebar section gap token is now 16px (it was 12px), which styles.css already applied.",
+      "detect": {
+        "cssVars": ["--semantic-space-sidebar-sectionGap"],
+        "cssVarWrites": ["--semantic-space-sidebar-sectionGap"]
+      },
+      "facts": ["css-var-changed:--semantic-space-sidebar-sectionGap::root"]
+    }
+  ]
+}

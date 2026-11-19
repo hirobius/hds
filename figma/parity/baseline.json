@@ -3,6 +3,48 @@
   "accepted": {
     "collection-not-in-code:Button tone": {
       "reason": "Hand-built in Figma for the condensed Button (hds#1147). No token builds it, so check:figma-drift ignores it. Move its values to tokens or accept it as Figma-only: hds#1565, Figma fix F2."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/section/inset": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/section/inset [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/section/inset [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/gap": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/gap [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/gap [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/sectionGap": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/sectionGap [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/sectionGap [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/railPadding": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/railPadding [Light]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/sidebar/railPadding [Dark]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Semantic: layout/grid/gap": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
+    },
+    "token-value-mismatch:Hirobius/Density: semantic/layout/grid/gap [Comfortable]": {
+      "reason": "Token moved to the value styles.css already rendered (theme.css :root override removed, folio #429); the Figma variable follows on the next sync: hds#1565."
     }
   }
 }

@@ -77,13 +77,10 @@
   --semantic-space-layout-gap: var(--semantic-space-scale-md);
   /* section.stack (96px, 48px compact) comes from tokens.generated.css: a copy here
    * would out-rank its [data-density="compact"] rule on <html>. */
-  --semantic-space-section-inset: var(--primitive-space-32); /* 128px */
-  --semantic-layout-grid-gap: var(--semantic-space-scale-md);
+  /* section.inset, layout.grid.gap and the sidebar spacings come from tokens.generated.css
+   * too: a :root copy here with another value made the token lose once styles.css loaded
+   * (folio #429). check-root-token-overrides fails on one. Their phone steps stay below. */
   --semantic-layout-section-paddingY: var(--primitive-space-24); /* 96px (was 80px) */
-
-  --semantic-space-sidebar-gap: var(--primitive-space-5); /* 20px — increased from 16px */
-  --semantic-space-sidebar-sectionGap: var(--primitive-space-4); /* 16px — increased from 12px */
-  --semantic-space-sidebar-railPadding: var(--primitive-space-6); /* 24px — increased from 20px */
 
   /* -- Display-hero scale — extra-large single-use type (e.g. 404 page) ------- */
   --hds-display-hero-size: clamp(8rem, 25vw, 20rem);
