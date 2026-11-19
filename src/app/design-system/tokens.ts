@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import tokensJson from '../../../hirobius.tokens.json';
+import tokensJson from './generated-tokens-values.json';
 import { tokenValues } from './generated-token-values';
 import { tokenRefs, spaceScale } from './generated-token-refs';
 import { motion as motionRoles } from './motion-tokens';
@@ -498,7 +498,10 @@ export { hds };
 // exist under dist/types: attw InternalResolutionError). The JSON is its own
 // module in dist/m/ (preserveModules), so a bundler drops it when only `hds`
 // is imported (hds#1205).
-/** Raw DTCG design tokens (the contents of `hirobius.tokens.json`). */
+/**
+ * Raw DTCG design tokens: `hirobius.tokens.json` without its `$description` prose, which
+ * ships separately as `tokenDescriptions` from `@hirobius/design-system/tokens/descriptions`.
+ */
 export const tokens = tokensJson;
 
 // Re-exported so consuming apps get the full token API from a single subpath

@@ -1,0 +1,1 @@
+- Drop 12 shipped utilities unused by HDS, folio, job-hunt and ops (checked each); frees about 180 B in styles.css for #1597 and #1593.

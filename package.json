@@ -47,6 +47,11 @@
       "import": "./dist/tokens.js",
       "default": "./dist/tokens.js"
     },
+    "./tokens/descriptions": {
+      "types": "./dist/types/src/app/design-system/token-descriptions.d.ts",
+      "import": "./dist/token-descriptions.js",
+      "default": "./dist/token-descriptions.js"
+    },
     "./cn": {
       "types": "./dist/types/src/lib/utils.d.ts",
       "import": "./dist/cn.js",

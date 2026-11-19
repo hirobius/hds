@@ -48,6 +48,7 @@ Subpath exports:
 - `@hirobius/design-system/variables.css`
 - `@hirobius/design-system/static.css`
 - `@hirobius/design-system/tokens`
+- `@hirobius/design-system/tokens/descriptions`
 - `@hirobius/design-system/cn`
 - `@hirobius/design-system/manifest`
 - `@hirobius/design-system/contexts`

@@ -117,6 +117,10 @@ export default defineConfig({
         cn: path.resolve(__dirname, 'src/lib/utils.ts'),
         // Subpath: token bridge (TS constants → CSS variables).
         tokens: path.resolve(__dirname, 'src/app/design-system/tokens.ts'),
+        'token-descriptions': path.resolve(
+          __dirname,
+          'src/app/design-system/token-descriptions.ts',
+        ),
         // Subpath: full hds-manifest.json as a JSON-as-ESM module.
         manifest: path.resolve(__dirname, 'src/lib/manifest-entry.ts'),
         // Subpath: app-shell context providers (theme/language/tenant/font)

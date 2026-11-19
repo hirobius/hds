@@ -290,11 +290,13 @@
     border-color: transparent;
   }
 
+  /* background-color only, like Tailwind's own: the shorthand also reset background-image,
+   * which cancelled the SegmentedControl's fill-and-edge gradient. */
   .bg-transparent {
-    background: transparent;
+    background-color: transparent;
   }
   .bg-current {
-    background: currentColor;
+    background-color: currentColor;
   }
   .bg-\[color\:var\(--semantic-color-feedback-error\)\] {
     background: var(--semantic-color-feedback-error);

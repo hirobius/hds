@@ -1,0 +1,2 @@
+- SegmentedControl selected edge follows the corners (roleflame report, 390 dark); bg-transparent/bg-current set background-color only.
+- Merged main (#1598); fits every budget.
