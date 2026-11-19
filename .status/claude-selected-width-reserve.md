@@ -1,2 +1,3 @@
 - Selected labels keep their semibold width (Tabs, Tag, SegmentedControl) so neighbours do not shift.
 - Copy attribute is data-hds-text (HDS-internal prefix).
+- Rebaselined 6 docs shots (tabs, tag, segmented-control) from CI run 44476522485: labels hold semibold width.
