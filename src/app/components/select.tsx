@@ -137,9 +137,10 @@ export const Select = /* @__PURE__ */ forwardRef<HTMLButtonElement, SelectProps>
           aria-describedby={ariaDescribedBy}
           aria-invalid={ariaInvalid}
           className={cn(
-            // h-10 is the one md control height shared with Input, Combobox and Button;
-            // the trigger had py-2 and rendered 38px (hds#522). bg-background matches Input.
-            'hds-focus group flex h-10 w-full items-center justify-between gap-scale-xs rounded-md border px-fixed-xs hds-type-ui',
+            // semantic.size.controlHeight.md is the one md control height shared with Input,
+            // Combobox, Button, Tabs and SegmentedControl (Fable eval #2; the trigger had py-2 and
+            // rendered 38px, hds#522). bg-background matches Input.
+            'hds-focus group flex h-[var(--semantic-size-controlHeight-md)] hds-touch-row w-full items-center justify-between gap-scale-xs rounded-md border px-fixed-xs hds-type-ui',
             'bg-background text-foreground transition-colors',
             // aria-invalid (set by FormField or the caller) draws the same red border as Input.
             ariaInvalid

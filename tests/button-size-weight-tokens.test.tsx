@@ -30,7 +30,7 @@ function resolveVar(name: string): string {
   throw new Error(`could not resolve ${name}`);
 }
 
-const HEIGHT = { sm: '36px', md: '44px', lg: '52px' } as const;
+const HEIGHT = { sm: '32px', md: '40px', lg: '48px' } as const;
 
 describe('Button height tokens (hds#760)', () => {
   it.each(Object.entries(HEIGHT))('%s height token resolves to %s', (size, px) => {

@@ -39,9 +39,11 @@ const inputVariants = /* @__PURE__ */ cva(
   {
     variants: {
       size: {
-        sm: 'h-8 hds-type-caption',
-        md: 'h-10 hds-type-ui',
-        lg: 'h-12 hds-type-body',
+        // One height per size for every control: semantic.size.controlHeight (Fable eval #2).
+        // hds-touch-row lifts sm and md to 44px on touch (the old h-8/h-10 hook did that).
+        sm: 'h-[var(--semantic-size-controlHeight-sm)] hds-touch-row hds-type-caption',
+        md: 'h-[var(--semantic-size-controlHeight-md)] hds-touch-row hds-type-ui',
+        lg: 'h-[var(--semantic-size-controlHeight-lg)] hds-type-body',
       },
       textStyle: {
         body: 'font-sans',

@@ -562,6 +562,9 @@ declare module 'react' {
     '--semantic-size-control-sm'?: string | undefined;
     '--semantic-size-control-md'?: string | undefined;
     '--semantic-size-control-lg'?: string | undefined;
+    '--semantic-size-controlHeight-sm'?: string | undefined;
+    '--semantic-size-controlHeight-md'?: string | undefined;
+    '--semantic-size-controlHeight-lg'?: string | undefined;
     '--semantic-size-icon-sm'?: string | undefined;
     '--semantic-size-icon-md'?: string | undefined;
     '--semantic-size-icon-lg'?: string | undefined;

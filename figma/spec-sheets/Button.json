@@ -48,7 +48,7 @@
         },
         "height": {
           "token": "component.button.size.sm.height",
-          "value": "36px"
+          "value": "32px"
         },
         "itemSpacing": {
           "token": "component.button.size.sm.itemSpacing",
@@ -77,7 +77,7 @@
         },
         "height": {
           "token": "component.button.size.md.height",
-          "value": "44px"
+          "value": "40px"
         },
         "itemSpacing": {
           "token": "component.button.size.md.itemSpacing",
@@ -106,7 +106,7 @@
         },
         "height": {
           "token": "component.button.size.lg.height",
-          "value": "52px"
+          "value": "48px"
         },
         "itemSpacing": {
           "token": "component.button.size.lg.itemSpacing",
