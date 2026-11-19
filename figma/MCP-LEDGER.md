@@ -1845,5 +1845,6 @@ Main's plan showed updated 15 · created 10 · deleted 0: #1592 (control heights
 | 1   | `create_session` | setup | file session for the delta                | OK                           |
 | 2   | `use_figma`      | write | delta.js (updated 15, created 10)         | Bad Gateway: outcome unknown |
 | 3   | `use_figma`      | read  | lastPush + syncReceipt head (check row 2) | Bad Gateway: outcome unknown |
+| 4   | `use_figma`      | read  | same read, once more                      | Bad Gateway                  |
 
-Stopped: the Figma endpoint returned Bad Gateway twice, so row 2's outcome is unknown. Next run: read `lastPush` and `syncReceipt` first. If the receipt's commit is 595232c, collect it with receipt.js and rebuild the snapshot; if not, delta.js's base checksum (bbc817f1) still guards a re-run. Session total: 3 calls. Nothing deleted, nothing published.
+Stopped: the Figma endpoint returned Bad Gateway three times, so row 2's outcome is unknown. Next run: read `lastPush` and `syncReceipt` first. If the receipt's commit is 595232c, collect it with receipt.js and rebuild the snapshot; if not, delta.js's base checksum (bbc817f1) still guards a re-run. Session total: 4 calls. Nothing deleted, nothing published.
