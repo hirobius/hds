@@ -2,3 +2,4 @@ Selected state, option (a)+(b): semantic.color.selected.bg/fg and semantic.typog
 
 - Review fixes: DESIGN.md names the one selected look; dated attribution removed from code comments.
 - Merged main (#1592, #1596); blocked on size budgets (styles +143 B, tokens JSON +105 B, tokens.css +23 B) pending Adrian's call.
+- Merged main (#1597-#1599): tokens JSON fits; styles.css +118 B over (rule breakdown sent to coordinator).
