@@ -114,14 +114,30 @@ describe('runSteps', () => {
     expect(runSteps(false)[2]).toEqual(gate);
     expect(runSteps(true)[2]).toEqual(gate);
   });
+  it('refuses a parity read older than 14 days before building (hds#1565)', () => {
+    const gate = ['pnpm', ['check:figma-parity:fresh']];
+    expect(runSteps(false)[3]).toEqual(gate);
+    expect(runSteps(true)[3]).toEqual(gate);
+  });
+  it('pnpm release runs the same fresh parity gate before it publishes', () => {
+    const pkg = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
+    const release = pkg.scripts.release;
+    expect(pkg.scripts['check:figma-parity:fresh']).toMatch(
+      /check-figma-parity\.mjs --max-age 14$/,
+    );
+    expect(release).toContain('pnpm check:figma-parity:fresh');
+    expect(release.indexOf('check:figma-parity:fresh')).toBeLessThan(
+      release.indexOf('changeset publish'),
+    );
+  });
   it('then builds, smokes, scans the tarball, and ends with the publish step', () => {
     const steps = runSteps(true);
-    expect(steps.slice(3, 6)).toEqual([
+    expect(steps.slice(4, 7)).toEqual([
       ['pnpm', ['build:lib']],
       ['pnpm', ['smoke:consumer', '--skip-build']],
       ['node', ['scripts/check-pack-scan.mjs']],
     ]);
-    expect(steps[6]).toEqual(publishStep(true));
+    expect(steps[7]).toEqual(publishStep(true));
   });
 });
 
