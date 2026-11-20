@@ -286,14 +286,8 @@
 }
 
 @media (max-width: 639px) {
-  :root {
-    --semantic-space-region-gutter: var(--semantic-space-scale-sm);
-    --semantic-space-layout-gap: var(--semantic-space-scale-sm);
-    --semantic-space-section-stack: var(--primitive-space-16); /* 64px (was 48px) */
-    --semantic-space-section-inset: var(--primitive-space-20); /* 80px (was 64px) */
-    --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
-    --semantic-layout-section-paddingY: var(--primitive-space-16); /* 64px (was 48px) */
-  }
+  /* The phone token steps (gutters, section stack and inset, grid gap) live in
+   * responsive-tokens.css, the one source variables.css shares. */
 
   /* -- Mobile overflow guard ------------------------------------------------
    * Prevent the root document from scrolling horizontally. Individual
@@ -1394,18 +1388,8 @@ input[data-search-input='true'] {
   --semantic-space-layout-gap: var(--semantic-space-scale-md);
 }
 
-/* Under 640px the :root rules above re-point the gutters at scale.sm and raise
- * section.stack to 64px. Compact keeps the gutters on scale.sm (12px) and holds
- * section.stack at 48px: a dense app never grows its rhythm on a phone. Declared
- * after the :root rule with the same specificity, so it wins on <html> too. */
-@media (max-width: 639px) {
-  [data-density='compact'] {
-    --semantic-space-region-gutter: var(--semantic-space-scale-sm);
-    --semantic-space-layout-gap: var(--semantic-space-scale-sm);
-    --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
-    --semantic-space-section-stack: var(--primitive-space-12);
-  }
-}
+/* The compact density's phone steps (gutters on scale.sm, section.stack held at 48px) are in
+ * responsive-tokens.css with the :root ones, after them, so compact still wins on <html>. */
 
 /* Instant theme switch (hds#1399): ThemeProvider sets data-hds-theme-switching on <html> for
  * one frame while it flips data-theme, so no colour, background or shadow fades between

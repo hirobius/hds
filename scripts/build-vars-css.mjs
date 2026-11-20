@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TOKENS = path.join(ROOT, 'src', 'styles', 'tokens.generated.css');
 const ACCENTS = path.join(ROOT, 'src', 'styles', 'accents.css');
+const RESPONSIVE = path.join(ROOT, 'src', 'styles', 'responsive-tokens.css');
 const OUT = path.join(ROOT, 'dist', 'variables.css');
 
 const BANNER =
@@ -39,12 +40,19 @@ export function offendingSelectors(css) {
 }
 
 /**
- * The variables.css text: banner, token vars, then the accent blocks. Accents
- * come last so `[data-accent]` wins over `:root` at equal specificity, the same
- * order theme.css imports them in. Throws when either input is not host-safe.
+ * The variables.css text: banner, token vars, the accent blocks, then the phone-width
+ * steps. Accents follow the tokens so `[data-accent]` wins over `:root` at equal
+ * specificity, the same order theme.css imports them in; the phone steps come last, as
+ * index.css puts them, so they win over the desktop values (and a [data-density] step over
+ * its :root one). Without them a consumer that loads variables.css first paints desktop
+ * values and jumps when styles.css loads. Throws when an input is not host-safe.
  */
-export function varsCss(tokensCss, accentsCss) {
-  const bad = [...offendingSelectors(tokensCss), ...offendingSelectors(accentsCss)];
+export function varsCss(tokensCss, accentsCss, responsiveCss = '') {
+  const bad = [
+    ...offendingSelectors(tokensCss),
+    ...offendingSelectors(accentsCss),
+    ...offendingSelectors(responsiveCss),
+  ];
   if (bad.length > 0) {
     throw new Error(
       `build-vars-css: refusing to emit — non-vars selectors found:\n${bad
@@ -53,12 +61,16 @@ export function varsCss(tokensCss, accentsCss) {
         .join('\n')}`,
     );
   }
-  return `${BANNER}${tokensCss}\n${accentsCss}`;
+  return `${BANNER}${tokensCss}\n${accentsCss}${responsiveCss ? `\n${responsiveCss}` : ''}`;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    const css = varsCss(readFileSync(TOKENS, 'utf8'), readFileSync(ACCENTS, 'utf8'));
+    const css = varsCss(
+      readFileSync(TOKENS, 'utf8'),
+      readFileSync(ACCENTS, 'utf8'),
+      readFileSync(RESPONSIVE, 'utf8'),
+    );
     writeFileSync(OUT, css);
     console.log(`build-vars-css — wrote dist/variables.css (${css.length} bytes, vars-only)`);
   } catch (error) {

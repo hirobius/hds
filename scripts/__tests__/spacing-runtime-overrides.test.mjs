@@ -53,8 +53,8 @@ describe('runtime overrides sit on the new names and on scale steps', () => {
     expect(css).not.toMatch(/--semantic-space-component-padding\s*:/);
   });
 
-  it('theme.css sets region.gutter responsively from scale steps, not raw px', () => {
-    const css = read('src/styles/theme.css');
+  it('theme.css and responsive-tokens.css set region.gutter responsively from scale steps, not raw px', () => {
+    const css = `${read('src/styles/theme.css')}\n${read('src/styles/responsive-tokens.css')}`;
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-lg);');
     expect(css).toContain('--semantic-space-region-gutter: var(--semantic-space-scale-sm);');
     expect(css).not.toMatch(/--semantic-space-layout-gutter\s*:/);
@@ -96,6 +96,8 @@ const PAGE_CSS = [
   read('src/styles/tenants.css'),
   read('src/styles/tenants-docs-only.css'),
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
+  // index.css imports the phone-width steps after theme.css, so a phone step still wins.
+  read('src/styles/responsive-tokens.css'),
 ].join('\n');
 
 const PROBE =

@@ -1,0 +1,35 @@
+/**
+ * Phone-width token steps (below 640px): the ONE source of every value that changes at the phone
+ * breakpoint. Where it ships:
+ *   - styles.css and tokens.css: index.css imports this file after theme.css, so a phone step
+ *     still wins over the :root and [data-density] rules above it at equal specificity.
+ *   - variables.css: scripts/build-vars-css.mjs appends it after the token and accent blocks.
+ * A consumer that loads variables.css first (folio) therefore paints the phone values at once
+ * instead of the desktop ones followed by a jump when styles.css loads (layout shift, 0.46 and
+ * 0.47). Do not copy a declaration into theme.css: scripts/__tests__/build-vars-css.test.mjs
+ * fails when one is there. Only :root and [data-density] selectors belong here (variables.css
+ * must stay host-safe).
+ */
+@media (max-width: 639px) {
+  :root {
+    --semantic-space-region-gutter: var(--semantic-space-scale-sm);
+    --semantic-space-layout-gap: var(--semantic-space-scale-sm);
+    --semantic-space-section-stack: var(--primitive-space-16); /* 64px (was 48px) */
+    --semantic-space-section-inset: var(--primitive-space-20); /* 80px (was 64px) */
+    --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
+    --semantic-layout-section-paddingY: var(--primitive-space-16); /* 64px (was 48px) */
+  }
+}
+
+/* Under 640px the :root rules above re-point the gutters at scale.sm and raise
+ * section.stack to 64px. Compact keeps the gutters on scale.sm (12px) and holds
+ * section.stack at 48px: a dense app never grows its rhythm on a phone. Declared
+ * after the :root rule with the same specificity, so it wins on <html> too. */
+@media (max-width: 639px) {
+  [data-density='compact'] {
+    --semantic-space-region-gutter: var(--semantic-space-scale-sm);
+    --semantic-space-layout-gap: var(--semantic-space-scale-sm);
+    --semantic-layout-grid-gap: var(--semantic-space-scale-sm);
+    --semantic-space-section-stack: var(--primitive-space-12);
+  }
+}

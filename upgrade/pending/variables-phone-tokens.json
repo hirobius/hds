@@ -1,0 +1,72 @@
+{
+  "impact": "look",
+  "plain": "Below 640px, variables.css now carries the phone-width token values that only styles.css had, so a page that loads variables.css first no longer shifts when styles.css loads.",
+  "steps": [
+    {
+      "id": "value-changed/--semantic-layout-grid-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "detect": {
+        "cssVars": ["--semantic-layout-grid-gap"],
+        "cssVarWrites": ["--semantic-layout-grid-gap"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width: 639px) :root",
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width: 639px) [data-density='compact']"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-layout-section-paddingY",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "detect": {
+        "cssVars": ["--semantic-layout-section-paddingY"],
+        "cssVarWrites": ["--semantic-layout-section-paddingY"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-section-paddingY:@media (max-width: 639px) :root"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-region-gutter",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "detect": {
+        "cssVars": ["--semantic-space-region-gutter"],
+        "cssVarWrites": ["--semantic-space-region-gutter"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-region-gutter:@media (max-width: 639px) :root",
+        "css-var-changed:--semantic-space-region-gutter:@media (max-width: 639px) [data-density='compact']"
+      ]
+    },
+    {
+      "id": "value-changed/--semantic-space-section-inset",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "detect": {
+        "cssVars": ["--semantic-space-section-inset"],
+        "cssVarWrites": ["--semantic-space-section-inset"]
+      },
+      "facts": ["css-var-changed:--semantic-space-section-inset:@media (max-width: 639px) :root"]
+    },
+    {
+      "id": "value-changed/--semantic-space-section-stack",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "detect": {
+        "cssVars": ["--semantic-space-section-stack"],
+        "cssVarWrites": ["--semantic-space-section-stack"]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-section-stack:@media (max-width: 639px) :root",
+        "css-var-changed:--semantic-space-section-stack:@media (max-width: 639px) [data-density='compact']"
+      ]
+    }
+  ]
+}
