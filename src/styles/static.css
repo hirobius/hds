@@ -594,6 +594,16 @@
   height: var(--component-button-size-lg-iconSize);
 }
 
+/* Touch size, as theme.css .hds-touch-row lifts the React Button: on a coarse pointer or a
+ * narrow viewport md (40px) grows to semantic.size.touchTarget (44px). sm is excluded: its
+ * ::before already extends the hit area without moving the layout. lg is 48px and stays. A
+ * fine pointer on a wide viewport matches neither query, so desktop density is unchanged. */
+@media (max-width: 639px), (pointer: coarse) {
+  .hds-button:not(.hds-button--sm) {
+    min-height: var(--semantic-size-touchTarget);
+  }
+}
+
 /* Disabled, last so it wins over every variant's rest, hover and press fill. */
 .hds-button:disabled,
 .hds-button[aria-disabled='true'] {

@@ -2,7 +2,7 @@
   "version": "0.47.0",
   "date": "2026-11-20",
   "bump": "minor",
-  "summary": "5 changes to make by hand (1 breaking) and 18 that look different.",
+  "summary": "5 changes to make by hand (1 breaking) and 19 that look different.",
   "backfilled": false,
   "steps": [
     {
@@ -481,6 +481,13 @@
         ]
       },
       "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.47.0/look/seg-edge-corners",
+      "kind": "look",
+      "impact": "look",
+      "plain": "An element with bg-transparent and a background image now shows the image, and the selected SegmentedControl edge follows its rounded corners.",
+      "source": "CHANGELOG.md:29"
     },
     {
       "id": "0.47.0/look/selected-state",

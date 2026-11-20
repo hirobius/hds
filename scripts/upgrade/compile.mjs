@@ -249,7 +249,9 @@ function aroundName(plain, name) {
  * The bullets of one list. Steps whose plain lines differ only in their
  * subject's name, with the same tail (the codemod, the removal), share one
  * bullet that names them in step order: 0.20.0 removes 103 names with one
- * sentence. Every other step is a bullet of its own.
+ * sentence. Steps whose plain lines are identical and name no subject (the three
+ * Tag colour variables of 0.47.0) share one bullet too, with the line said once.
+ * Every other step is a bullet of its own.
  * @param {any[]} steps
  * @param {(step: any) => string} tailOf the text after the plain line
  * @returns {{ steps: any[], text: string }[]}
@@ -259,12 +261,15 @@ function bulletsOf(steps, tailOf) {
   for (const step of steps) {
     const tail = tailOf(step);
     const parts = aroundName(step.plain, subject(step));
-    const key = parts ? `${parts.join('\u0000')}\u0000${tail}` : `step\u0000${step.id}`;
+    const key = parts
+      ? `${parts.join('\u0000')}\u0000${tail}`
+      : `same\u0000${step.plain}\u0000${tail}`;
     if (!groups.has(key)) groups.set(key, { steps: [], parts, tail });
     groups.get(key).steps.push(step);
   }
   return [...groups.values()].map(({ steps: members, parts, tail }) => {
-    if (members.length === 1) return { steps: members, text: `${md(members[0].plain)}${tail}` };
+    if (members.length === 1 || !parts)
+      return { steps: members, text: `${md(members[0].plain)}${tail}` };
     const these = parts[0] === '' ? 'Each of these' : 'each of these';
     const sentence = md(`${parts[0]}${these}${parts[1]}`).replace(/\.$/, '');
     return { steps: members, text: `${sentence}: ${codeList(members.map(subject))}.${tail}` };

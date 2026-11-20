@@ -77,6 +77,22 @@ describe('.hds-button in static.css', () => {
     expect(rule.slice(0, rule.indexOf('}'))).toMatch(/height: var\(--semantic-size-touchTarget\)/);
   });
 
+  it('lifts md and lg to the 44px touch target on phones, under the media query theme.css uses', () => {
+    const theme = read('src/styles/theme.css');
+    const query = '@media (max-width: 639px), (pointer: coarse) {';
+    // The React Button's hook (.hds-touch-row) and the static class share one query.
+    expect(theme).toContain(query);
+    const start = css.indexOf(query);
+    expect(start, 'static.css has the touch media query').toBeGreaterThan(-1);
+    const block = css.slice(start, css.indexOf('\n}\n', start));
+    // Every size but sm (whose ::before already extends its hit area) gets the lift.
+    expect(block).toMatch(
+      /\.hds-button:not\(\.hds-button--sm\)\s*\{[^}]*min-height: var\(--semantic-size-touchTarget\)/,
+    );
+    // A 44px floor does not shrink the 48px lg.
+    expect(block).not.toMatch(/max-height/);
+  });
+
   it('transitions on the productive motion tokens', () => {
     const rule = css.slice(css.indexOf('.hds-button {'));
     const body = rule.slice(0, rule.indexOf('}'));

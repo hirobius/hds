@@ -770,6 +770,27 @@ describe('UPGRADING.md: steps that share one sentence share one bullet', () => {
     );
   });
 
+  it('collapses steps with one identical sentence that names no subject into one bullet', () => {
+    const SAME =
+      'The Tag active colours now come from the selected tokens, so nothing looks different.';
+    const look = (name) => ({
+      id: `0.13.0/value-changed/${name}`,
+      kind: 'value-changed',
+      impact: 'look',
+      plain: SAME,
+      source: 'x',
+    });
+    const ledger = {
+      ...LEDGER_0_13,
+      steps: [look('--tag-a'), look('--tag-b'), look('--tag-c')],
+    };
+    const { upgrading } = compileOutputs({
+      repo: historyRepo({ ledgers: [LEDGER_0_11, LEDGER_0_12, ledger] }),
+    });
+    const section = upgrading.slice(upgrading.indexOf('## 0.13.0'), upgrading.indexOf('## 0.12.0'));
+    expect(section.split(SAME).length - 1, 'the sentence appears once').toBe(1);
+  });
+
   it('groups the same way in the Upgrade block, so a big release still fits in five lines', () => {
     const block = upgradeBlock(LEDGER_0_13, { command: false, bin: { 'hds-move': 'x.mjs' } });
     expect(block.slice(6)).toEqual([

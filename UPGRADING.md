@@ -22,7 +22,7 @@ There are no backports before 1.0: a fix ships as a new release, never as a patc
 
 ## 0.47.0
 
-Released 2026-11-20 (minor). 5 changes to make by hand (1 breaking) and 18 that look different.
+Released 2026-11-20 (minor). 5 changes to make by hand (1 breaking) and 19 that look different.
 
 ### Looks different
 
@@ -31,14 +31,13 @@ Released 2026-11-20 (minor). 5 changes to make by hand (1 breaking) and 18 that 
 - A small Button is 32px tall on desktop (was 36px), the same as a small Input, and touch still lifts it to 44px.
 - The compact Pagination buttons stay 40px square but now read semantic.size.controlHeight.md; nothing looks different.
 - The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.
-- The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.
-- The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.
 - The grid gap token is now scale.md (it was scale.lg), which styles.css already applied.
 - The section inset token is now 128px (80px below 640px), which styles.css already applied.
 - The sidebar item gap token is now 20px (it was 16px), which styles.css already applied.
 - The sidebar rail padding token is now 24px (it was 20px), which styles.css already applied.
 - The sidebar section gap token is now 16px (it was 12px), which styles.css already applied.
 - A Button is now 32, 40 or 48px on desktop (was 36, 44, 52), Tabs and SegmentedControl md are 40px and Pagination is 32px, so check a layout that hard-coded the old Button height.
+- An element with bg-transparent and a background image now shows the image, and the selected SegmentedControl edge follows its rounded corners.
 - A selected Tab, a secondary SegmentedControl segment and a current NavList row now take the accent fill with onAccent text and a semibold label (they were grey, white or page-coloured), so check screens that styled them by hand.
 - SegmentedControl, Tabs and Tag labels sit centred in their box, about 3px lower than before.
 - The active Tabs trigger has no bottom edge now, only the selected fill, so its label sits 1px lower.
@@ -60,50 +59,11 @@ Released 2026-11-18 (minor). 5 changes to make by hand and 48 that look differen
 ### Looks different
 
 - The Badge tone label is now content.primary; if you need a coloured label, set it with className.
-- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
-- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
-- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
-- The Badge tone label is now content.primary; if you need a coloured label, set it with className.
-- Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
-- Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
-- Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
 - Secondary and tertiary Button fills moved on the ramp; drop any local override that deepened them.
 - This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
-- This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
-- This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
 - This primitive was added or retuned for the tone fills and edges; if you read it directly, check your contrast.
 - The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
-- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
-- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
-- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
-- The dark block no longer repeats this variable; it resolves to the same value as before, so nothing looks different.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
 - Light info is now a calm blue (#2b58b1) instead of the electric blue.500; info text, icons and the info Button fill look calmer, still 4.5:1 or higher.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
-- This value moved with the retuned ramp and still meets WCAG AA; no action needed unless you hard-coded the old value.
 - A secondary Button with tone danger, success, warning or info shows the soft feedback tint with the content.primary label and no edge, and a tertiary one shows tone-coloured text on a clear face that the hover fills with the tint; check screens that relied on the solid fill.
 - focus-visible:ring-2 now draws only the HDS focus outline, not Tailwind's box-shadow ring under it; add your own ring if you relied on both.
 - Pages themed with the accent-lilac brand (data-brand="accent-lilac") may look different, so check them after upgrading.
@@ -611,7 +571,6 @@ Released 2026-10-19 (minor). 5 changes to make by hand (3 breaking) and 33 that 
 - Code and ids (the mono role) are now 15px (were 13px); if you read this variable for your own code styling, expect text two pixels larger.
 - Body weight is now 450 (was 400); if you read this variable for your own text it renders slightly heavier, and Plus Jakarta Sans must load as a variable font (fonts.css does this).
 - Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.
-- Dark-mode hover and pressed accent fills are now lighter (graphite-100 and graphite-50), so on-accent labels pass AA; drop any held contrast floor on this pair.
 - Body text is now 18px (was 16px); check where you read this variable for layout, such as fixed-height blocks or character-count widths.
 - Caption text (metadata and help text) is now 14px (was 12px); check tight metadata rows and badges you size by hand.
 - The display role now follows --hds-font-family-display (Sora by default), not the body dial; set that dial to change hero headings.
@@ -627,10 +586,8 @@ Released 2026-10-19 (minor). 5 changes to make by hand (3 breaking) and 33 that 
 - Titles now use weight 800 in Sora; re-take heading screenshots.
 - Small titles now follow --hds-font-family-display (Sora by default), not the body dial; set that dial to change them.
 - Small headings are now 18px (were 16px); check where you read this variable for layout.
-- Titles now use weight 800 in Sora; re-take heading screenshots.
 - UI text (controls, nav, table text) is now 16px (was 14px); check where you read this variable for layout, such as fixed-height rows or toolbars.
 - Plus Jakarta Sans now ships as one variable face (weights 200 to 800) in fonts.css; if you pointed at the old 400, 500 or 700 files, import fonts.css again or load your own.
-- This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.
 - This static Plus Jakarta Sans face is folded into the variable face in fonts.css; import fonts.css again, or load your own file for this weight.
 - Table now has a bordered frame, a tinted header, taller body rows with vertical rules and regular-weight body text, and wide content scrolls inside the table instead of spilling past it; re-take Table screenshots and drop any wrapper you added to stop clipping.
 
@@ -739,7 +696,6 @@ Released 2026-10-12 (minor). 11 changes to make by hand (11 breaking) and 24 tha
 
 - This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
 - This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
 - Accent-intent text and icons (such as links) now render in graphite instead of a dark apple green.
 - Hovered accent text now shifts within the graphite scale instead of toward a darker apple green.
 - The accent fill on hover is now a deeper graphite (light mode) or lighter warm-grey (dark mode) instead of a green.
@@ -751,16 +707,6 @@ Released 2026-10-12 (minor). 11 changes to make by hand (11 breaking) and 24 tha
 - Text and icons on accent fills are now near-white in light mode and dark graphite in dark mode (the fill inverts per theme), instead of a dark neutral in both modes.
 - Accent background surfaces now render in warm graphite that inverts per theme instead of a bright apple green.
 - Faint accent background surfaces are now a pale graphite tint instead of a pale apple green.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the code-font dial (--hds-font-family-mono) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
-- This variable now follows the font dial (--hds-font-family) at any scope; if you overrode it directly, override the dial instead.
 
 ### Do by hand
 
