@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "A medium static .hds-button is 44px tall on phones and touch screens (was 40px); check rows built from static markup on narrow screens."
+}

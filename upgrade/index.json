@@ -330,7 +330,7 @@
       "date": "2026-11-20",
       "bump": "minor",
       "breaking": 1,
-      "summary": "5 changes to make by hand (1 breaking) and 18 that look different."
+      "summary": "5 changes to make by hand (1 breaking) and 19 that look different."
     }
   ],
   "deprecated": [
