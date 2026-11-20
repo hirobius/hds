@@ -10,6 +10,7 @@
  * through its own helpers: the README claims, the manifest's own styleCount,
  * the printed rows of check-contrast, the consumer snapshot file.
  */
+import { PARITY_DEFINITION } from '../lib/figma-parity.mjs';
 import { spawnSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -153,6 +154,17 @@ describe('committed public/hds-stats.json', () => {
     const { figmaParity, ...rest } = committed;
     expect(rest).toEqual(JSON.parse(JSON.stringify(collectStats(ROOT))));
     expect(figmaParity).toEqual(JSON.parse(JSON.stringify(await collectParity(ROOT))));
+  });
+});
+
+describe('figmaParity block', () => {
+  it('publishes its read date, the per-area checks and the definition with the score', () => {
+    const { figmaParity } = readJson(STATS_PATH);
+    expect(figmaParity.readOn).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(figmaParity.definition).toBe(PARITY_DEFINITION);
+    const areas = Object.values(figmaParity.checks);
+    expect(areas.reduce((n, a) => n + a.total, 0)).toBe(figmaParity.total);
+    expect(areas.reduce((n, a) => n + a.passed, 0)).toBe(figmaParity.passed);
   });
 });
 

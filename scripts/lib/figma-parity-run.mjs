@@ -115,8 +115,31 @@ export async function loadVariables(root) {
   return {
     snapshotDigest: hdsParityDigest(snapshotFile.snapshot),
     drift: {
-      total: report.totals.variables + report.totals.textStyles + report.totals.effectStyles,
-      missing: of('missing').map(label),
+      // One check per variable (its definition: name, type, scopes, description, code
+      // syntax), one per variable per mode (its value or alias), one per style.
+      // An extra (in Figma, in no token) is a check that fails, so it is counted too.
+      total:
+        of('extra').length +
+        report.totals.variables +
+        report.totals.values +
+        report.totals.textStyles +
+        report.totals.effectStyles,
+      // A missing variable fails its definition check and its value in every mode; a
+      // missing mode fails the value of every variable in the collection.
+      missing: of('missing').map((item) => {
+        const shape = report.totals.byCollection[item.collection];
+        if (item.collection && !shape) throw new Error(`No model collection ${item.collection}.`);
+        const checks =
+          item.what === 'variable'
+            ? 1 + shape.modes
+            : item.what === 'mode'
+              ? shape.variables
+              : // A missing collection: its variables are listed one by one, so it adds none.
+                item.what === 'collection'
+                ? 0
+                : 1;
+        return { name: label(item), checks };
+      }),
       extra: of('extra').map(label),
       changed: of('changed').map((item) => ({
         name: `${label(item)}${item.mode ? ` [${item.mode}]` : ''}`,
