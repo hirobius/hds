@@ -28,7 +28,10 @@ publishes through npm Trusted Publishing (OIDC): no npm token, no laptop login.
    the gate instead takes Figma's `meta/commit` when it is the snapshot's
    `syncedCommit` and its `syncedHash` (the git blob ids of the synced inputs at
    that commit) equals main's (hds#1359). One
-   Release run, no snapshot PR after the merge.
+   Release run, no snapshot PR after the merge. Next it runs
+   `pnpm check:figma-parity:fresh`, which refuses a parity read
+   (`figma/parity/read.json`) older than 14 days, so the published parity number
+   is never older than that (hds#1565). Re-read with `pnpm figma:parity --emit-read`.
 3. **Review.** The PR needs an independent `Reviewed: PASS — <sha>` comment for
    its head commit, from someone other than the author. A new push voids it.
 4. **Merge** the PR (the orchestrator, after the Figma meta sync in step 2 and

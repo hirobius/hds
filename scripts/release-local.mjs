@@ -119,6 +119,9 @@ export function runSteps(publish) {
     // refuse a release Figma does not show yet (check-figma-release step 4).
     // The rest of that gate stays in `pnpm release`.
     ['node', ['scripts/check-figma-release.mjs', '--meta']],
+    // The parity number the release publishes (hds-stats.json figmaParity) must come
+    // from a read of the library no older than 14 days (hds#1565).
+    ['pnpm', ['check:figma-parity:fresh']],
     ['pnpm', ['build:lib']],
     ['pnpm', ['smoke:consumer', '--skip-build']],
     // Tarball scan (ops#27): 0.12/0.13 shipped client PII. Packs the real
