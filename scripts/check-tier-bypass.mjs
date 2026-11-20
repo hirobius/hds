@@ -9,6 +9,7 @@
  * Allowlisted files (may reference --primitive-* by design):
  *   - src/styles/tokens.generated.css — generated; defines all CSS custom properties
  *   - src/styles/theme.css          — bridges primitives to semantic vars
+ *   - src/styles/responsive-tokens.css — the phone-width steps moved out of theme.css; same bridge role
  *   - src/app/design-system/generated-tokens.ts — generated TS constants
  *   - src/app/design-system/component-tokens.ts — the token-bridge slice components import (hds#1519)
  *
@@ -30,6 +31,9 @@ const ALLOWLIST = new Set([
   // hds#449: the generated utility safelist keeps already-shipped utilities emitted; it adds none.
   join(ROOT, 'src', 'styles', 'utility-safelist.generated.css'),
   join(ROOT, 'src', 'styles', 'theme.css'),
+  // The phone-width token steps moved out of theme.css so variables.css can share them; they
+  // bridge primitives to semantic vars the same way.
+  join(ROOT, 'src', 'styles', 'responsive-tokens.css'),
   join(ROOT, 'src', 'app', 'design-system', 'generated-tokens.ts'),
   join(ROOT, 'src', 'app', 'design-system', 'generated-token-refs.ts'),
   // tokens.ts is the JS token bridge — it intentionally exposes primitive vars
