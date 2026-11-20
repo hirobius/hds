@@ -8,7 +8,10 @@
  * runs the real gate on the committed read, baseline and code: it is what makes
  * `pnpm test` fail on new drift.
  */
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect } from 'vitest';
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import {
   ingestRead,
   indexRead,
@@ -22,7 +25,7 @@ import {
   buildParityVariablesScript,
 } from '../lib/figma-parity-scripts.mjs';
 import { runParityCheck } from '../check-figma-parity.mjs';
-import { loadApi } from '../lib/figma-parity-run.mjs';
+import { loadApi, loadVariables } from '../lib/figma-parity-run.mjs';
 
 const KEY = 'LIBRARYKEY0000000000000';
 
@@ -741,5 +744,36 @@ describe('parity: a node that draws an API call', () => {
         options: 'Nope',
       }),
     ).toThrow(/no interface Nope/);
+  });
+});
+
+describe('parity: variable checks from the real drift output', () => {
+  const temps = [];
+  afterEach(() => {
+    while (temps.length) rmSync(temps.pop(), { recursive: true, force: true });
+  });
+  const copy = () => {
+    const root = mkdtempSync(join(tmpdir(), 'hds-parity-count-'));
+    temps.push(root);
+    for (const f of ['hirobius.tokens.json', 'package.json', 'figma', 'directions', 'accents']) {
+      cpSync(join(process.cwd(), f), join(root, f), { recursive: true });
+    }
+    return root;
+  };
+
+  it('a new two-mode token adds three checks and fails all three', async () => {
+    const before = await loadVariables(copy());
+    const root = copy();
+    const file = join(root, 'hirobius.tokens.json');
+    const tokens = JSON.parse(readFileSync(file, 'utf8'));
+    tokens.semantic.space.parityProbe = { $value: '{primitive.space.4}', $description: 'probe' };
+    writeFileSync(file, JSON.stringify(tokens));
+    const after = await loadVariables(root);
+    // Hirobius/Semantic has two modes: one definition check plus one value per mode.
+    expect(after.drift.total - before.drift.total).toBe(3);
+    expect(after.drift.missing).toContainEqual({
+      name: 'Hirobius/Semantic: space/parityProbe',
+      checks: 3,
+    });
   });
 });

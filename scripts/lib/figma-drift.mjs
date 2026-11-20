@@ -160,7 +160,13 @@ export function figmaDrift(model, snapshotFile, { renames = {} } = {}) {
       variables: model.collections.reduce((n, c) => n + c.variables.length, 0),
       // One value per variable per mode: what a per-value parity claim counts.
       values: model.collections.reduce((n, c) => n + c.variables.length * c.modes.length, 0),
-      modesByCollection: Object.fromEntries(model.collections.map((c) => [c.name, c.modes.length])),
+      // Per collection, so a missing variable or mode can fail every value it hides.
+      byCollection: Object.fromEntries(
+        model.collections.map((c) => [
+          c.name,
+          { modes: c.modes.length, variables: c.variables.length },
+        ]),
+      ),
       textStyles: model.textStyles.length,
       effectStyles: model.effectStyles.length,
     },
