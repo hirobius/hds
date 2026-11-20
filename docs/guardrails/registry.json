@@ -496,13 +496,13 @@
     },
     {
       "id": "check-figma-parity",
-      "description": "Figma <-> code parity gate (hds#1565). Compares the committed full read of the library (figma/parity/read.json: every component, its property definitions and variant options, what it nests, the icons, and one hash per variable collection) with code: the manifest props and enum values, the @figma links, figma/mapping-overrides.json, the Code Connect registry, and the token drift check against figma/snapshot.json. Fails on a difference that is not in figma/parity/baseline.json, and on a baseline entry whose difference is gone, so the known list only shrinks. Prints a parity score per area. --emit-read writes the read-only use_figma scripts, --ingest verifies their results and writes the read; --max-age <days> (pnpm check:figma-parity:fresh) also fails on an old read. Also runs in pnpm test through scripts/__tests__/check-figma-parity.test.mjs.",
+      "description": "Figma <-> code parity gate (hds#1565). Compares the committed full read of the library (figma/parity/read.json: every component, its property definitions and variant options, what it nests, the icons, and one hash per variable collection) with code: the manifest props and enum values, the @figma links, figma/mapping-overrides.json, the Code Connect registry, and the token drift check against figma/snapshot.json. Fails on a difference that is not in figma/parity/baseline.json, and on a baseline entry whose difference is gone, so the known list only shrinks. Prints a parity score per area. --emit-read writes the read-only use_figma scripts, --ingest verifies their results and writes the read; --max-age <days> (pnpm check:figma-parity:fresh, 14 days) also fails on an old read; `pnpm release` runs that form after check:figma-release, so a release refuses a read older than 14 days (hds#1565). Also runs in pnpm test through scripts/__tests__/check-figma-parity.test.mjs.",
       "severity": "error",
       "gateScript": "scripts/check-figma-parity.mjs",
       "fixturePath": null,
       "owner": "Adrian",
       "source": "agent",
-      "firingChannel": "on-demand",
+      "firingChannel": "pnpm-meta",
       "supportsJson": true
     },
     {
