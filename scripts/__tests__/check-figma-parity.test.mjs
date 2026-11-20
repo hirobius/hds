@@ -503,6 +503,43 @@ describe('parity: variables, age and baseline', () => {
     ]);
   });
 
+  it('counts a missing variable as a failed definition check plus one per mode', () => {
+    // 2 variables x 2 modes: 2 definition checks + 4 value checks + 1 collection hash.
+    const result = parity({
+      read: liveRead('h1'),
+      code: code(),
+      variables: variables('h1', {
+        drift: {
+          total: 6,
+          missing: [{ name: 'Semantic: color/new', checks: 3 }],
+          extra: [],
+          changed: [],
+        },
+      }),
+    });
+    expect(kinds(result)).toEqual(['token-missing-in-figma:Semantic: color/new']);
+    expect(result.score.areas.variables).toMatchObject({ total: 9, passed: 6 });
+  });
+
+  it('counts one failed check per mode whose value differs', () => {
+    const result = parity({
+      read: liveRead('h1'),
+      code: code(),
+      variables: variables('h1', {
+        drift: {
+          total: 6,
+          missing: [],
+          extra: [],
+          changed: [
+            { name: 'Semantic: space/a [Light]', detail: 'tokens say 8, Figma has 4' },
+            { name: 'Semantic: space/a [Dark]', detail: 'tokens say 8, Figma has 4' },
+          ],
+        },
+      }),
+    });
+    expect(result.score.areas.variables).toMatchObject({ total: 9, passed: 7 });
+  });
+
   it('fails on an old read only when an age limit is given', () => {
     const base = { read: read([button()]), code: code() };
     expect(kinds(parity({ ...base, today: '2026-12-25', maxAgeDays: 14 }))).toEqual([

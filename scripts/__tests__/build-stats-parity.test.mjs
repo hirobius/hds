@@ -9,6 +9,7 @@
  * committed field equals the gate's own score; a parity run writes it into a
  * root whose copy is stale; and --check fails on a hand-typed value.
  */
+import { PARITY_DEFINITION } from '../lib/figma-parity.mjs';
 import { spawnSync } from 'node:child_process';
 import {
   cpSync,
@@ -86,6 +87,13 @@ describe('figmaParity in public/hds-stats.json', () => {
       total: result.score.total,
       readOn: readJson(ROOT, 'figma/parity/read.json').readOn,
       source: 'figma/parity/read.json',
+      checks: Object.fromEntries(
+        Object.entries(result.score.areas).map(([area, a]) => [
+          area,
+          { passed: a.passed, total: a.total },
+        ]),
+      ),
+      definition: PARITY_DEFINITION,
     });
   });
 

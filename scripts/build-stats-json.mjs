@@ -28,7 +28,7 @@
  *                             disk (`<module>.figma.ts` carrying the GENERATED marker of
  *                             scripts/generate-code-connect.mjs, which
  *                             scripts/check-code-connect.mjs holds one per registry entry)
- *   figmaParity               { percent, passed, total, readOn, source } the Figma <-> code
+ *   figmaParity               { percent, passed, total, readOn, source, checks, definition }: the Figma <-> code
  *                             parity score of scripts/check-figma-parity.mjs over the committed
  *                             read (figma/parity/read.json, `source`), `readOn` the day of that
  *                             read. Computed here and rewritten by every parity run
@@ -83,6 +83,7 @@ import { NONTEXT_PAIRS, PAIRS } from './lib/contrast-pairs.mjs';
 import { collectCoreSet, countCore } from './lib/core-set.mjs';
 import { findGeneratedTemplates } from './generate-code-connect.mjs';
 import { READ_PATH, runParityCheck } from './lib/figma-parity-run.mjs';
+import { PARITY_DEFINITION } from './lib/figma-parity.mjs';
 
 export const STATS_PATH = 'public/hds-stats.json';
 const CONSUMER_SNAPSHOT = 'docs/data/consumer-usage.json';
@@ -142,6 +143,10 @@ export function parityBlock(root, score) {
     total: score.total,
     readOn: readJson(root, READ_PATH).readOn,
     source: READ_PATH,
+    checks: Object.fromEntries(
+      Object.entries(score.areas).map(([area, a]) => [area, { passed: a.passed, total: a.total }]),
+    ),
+    definition: PARITY_DEFINITION,
   };
 }
 

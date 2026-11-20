@@ -115,8 +115,21 @@ export async function loadVariables(root) {
   return {
     snapshotDigest: hdsParityDigest(snapshotFile.snapshot),
     drift: {
-      total: report.totals.variables + report.totals.textStyles + report.totals.effectStyles,
-      missing: of('missing').map(label),
+      // One check per variable (its definition: name, type, scopes, description, code
+      // syntax), one per variable per mode (its value or alias), one per style.
+      total:
+        report.totals.variables +
+        report.totals.values +
+        report.totals.textStyles +
+        report.totals.effectStyles,
+      // A missing variable fails its definition check and its value in every mode.
+      missing: of('missing').map((item) => ({
+        name: label(item),
+        checks:
+          item.what === 'variable'
+            ? 1 + (report.totals.modesByCollection[item.collection] ?? 0)
+            : 1,
+      })),
       extra: of('extra').map(label),
       changed: of('changed').map((item) => ({
         name: `${label(item)}${item.mode ? ` [${item.mode}]` : ''}`,

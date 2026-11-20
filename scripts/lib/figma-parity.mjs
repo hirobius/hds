@@ -43,6 +43,21 @@
 
 export const SEVERITIES = ['high', 'medium', 'low'];
 
+/**
+ * What the parity number means, in one paragraph. public/hds-stats.json publishes it
+ * next to the score (scripts/build-stats-json.mjs), so the claim and its definition
+ * come from the same code and are never typed by hand.
+ */
+export const PARITY_DEFINITION =
+  'Figma parity is the share of checks that pass when code is compared with the last committed read of the HDS Figma library (figma/parity/read.json, dated by readOn). ' +
+  'One check is one fact compared on both sides. ' +
+  'Components: each library component in code has a linked Figma component with the same name, each live Figma component maps to code, and each icon exists on both sides. ' +
+  'Variants and properties: each Figma property maps to a prop or a recorded reason and follows the naming contract, each variant option is a value code accepts, each code value is drawn, and the defaults match. ' +
+  'Nesting: each component a Figma default variant nests is one the code component renders. ' +
+  'Variables: each token has its variable or style with the same name, type, scopes, description and code syntax (one check per variable), the same value or alias in every mode (one check per variable per mode), and each variable collection, text style set and effect style set in the read hashes to figma/snapshot.json, the record those values are compared with. ' +
+  'Not compared: layout and geometry inside a drawn component, which variable a layer binds, documentation pages, and the Hirobius/Meta release stamp (check:figma-release owns it). ' +
+  'A known difference in figma/parity/baseline.json still counts as a failed check.';
+
 /** Who fixes a finding kind: the code records, or the Figma library. */
 const KINDS = {
   'missing-in-figma': { severity: 'high', area: 'components', fix: 'figma' },
@@ -469,8 +484,10 @@ export function parity({ read, code, variables, baseline = {}, today, maxAgeDays
       }
     }
     checks.variables.total += variables.drift.total;
-    for (const item of variables.drift.missing) {
-      add('token-missing-in-figma', item, `Token ${item} has no Figma variable or style.`);
+    for (const entry of variables.drift.missing) {
+      const { name, checks: weight = 1 } = typeof entry === 'string' ? { name: entry } : entry;
+      add('token-missing-in-figma', name, `Token ${name} has no Figma variable or style.`);
+      checks.variables.failed += weight - 1;
     }
     for (const item of variables.drift.extra) {
       add('token-extra-in-figma', item, `Figma has ${item}; no token builds it.`);
