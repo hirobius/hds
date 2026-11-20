@@ -1862,3 +1862,21 @@ Figma calls then stopped on the coordinator's instruction (approval prompts). Op
 | 4   | `use_figma`      | write | delta.js (updated 3: version 0.47.0, releasedAt, commit 8f90925) | ok, post fcb0b5ce; snapshot rebuilt --from-receipt, check:figma-release OK |
 
 Nothing deleted, nothing published.
+
+## 2026-11-20 · Parity pass, part 2: Button tone retired, Variables page, fresh read (hds#1565)
+
+Session 62f8d5cc, after the 0.47.0 meta sync. Earlier this day: the Button tone rebind (fully applied, verified), the token delta (post 8d1eb225) and the meta delta (post fcb0b5ce).
+
+| #     | Tool             | Kind  | What                                                                    | Result                                            |
+| ----- | ---------------- | ----- | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| 1     | `use_figma`      | write | rename collection 2399:10128 to "DEPRECATED – Button tone (unused)"     | ok, 22 variables, nothing binds it                |
+| 2     | `use_figma`      | read  | text styles, layout variables, Foundations: Color frame                 | ok                                                |
+| 3     | `use_figma`      | write | new page "Variables" (2742:20): sheet 2742:21, header, 7 section shells | ok                                                |
+| 4–7   | `use_figma`      | write | rows: Role, Meta, Density; Brand, Component; Semantic; Primitives       | ok, 642 rows, 1,311 cells                         |
+| 8     | `use_figma`      | write | fixes: column headers fill, Density font-size samples bound             | ok, nothing deleted                               |
+| 9     | `use_figma`      | write | caption text; 1px bound stroke on every cell                            | ok                                                |
+| 10–15 | `get_screenshot` | read  | Variables page, Semantic section, header                                | ok, 1x (tool maximum)                             |
+| 16–20 | `use_figma`      | read  | parity variables.js and components 1–4 of 4, unmodified                 | ok, 88 pages                                      |
+| 21    | `use_figma`      | read  | snapshot-diff.js unmodified                                             | ok, 6 changed records (the rename), live 7f10c7c1 |
+
+Nothing deleted, nothing published. Adrian: delete the DEPRECATED collection when ready (Variables panel > collection menu > Delete collection), then publish.
