@@ -33,10 +33,15 @@ const HOST_SAFE = /(:root|\[data-theme|\[data-density|\[data-accent|\.dark)/;
 
 /** Rule lines whose selector is not host-safe (empty when the sheet is safe). */
 export function offendingSelectors(css) {
-  return css
-    .split('\n')
-    .filter((line) => /^[^\s/}@][^{]*\{/.test(line))
-    .filter((line) => !HOST_SAFE.test(line));
+  return (
+    css
+      // Comments first: a ` * text {` line inside one is not a rule.
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .split('\n')
+      // Indented lines count too: a rule inside @media (the phone-width steps) is indented.
+      .filter((line) => /^\s*[^\s}@][^{]*\{\s*$/.test(line))
+      .filter((line) => !HOST_SAFE.test(line))
+  );
 }
 
 /**

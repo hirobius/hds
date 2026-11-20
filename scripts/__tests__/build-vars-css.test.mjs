@@ -5,7 +5,7 @@
  * restyle a host element).
  */
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { offendingSelectors, varsCss } from '../build-vars-css.mjs';
 
@@ -33,6 +33,12 @@ describe('variables.css', () => {
 
   it('refuses an input with a selector that could restyle the host', () => {
     expect(() => varsCss(tokens, 'body {\n  color: red;\n}\n')).toThrow(/non-vars selectors/);
+  });
+
+  it('refuses a non-host-safe selector nested inside @media, where it is indented', () => {
+    const nested = '@media (max-width: 639px) {\n  body {\n    margin: 0;\n  }\n}\n';
+    expect(offendingSelectors(nested)).toHaveLength(1);
+    expect(() => varsCss(tokens, accents, nested)).toThrow(/non-vars selectors/);
   });
 
   it('refuses a universal `*` rule too (it would reach every host element)', () => {
@@ -71,14 +77,32 @@ describe('phone-width tokens: one source, in every entry', () => {
     expect(offendingSelectors(css)).toEqual([]);
   });
 
-  it('theme.css no longer declares them: a second copy would drift', () => {
-    const theme = read('src/styles/theme.css');
-    const phone = [...theme.matchAll(/@media \(max-width: 639px\) \{([\s\S]*?)\n\}/g)].map(
-      (m) => m[1],
+  it('no other stylesheet declares them inside a phone-width media block: a copy would drift', () => {
+    /** The bodies of every @media block (any nesting) whose condition mentions 639 or 640. */
+    const phoneBodies = (css) => {
+      const out = [];
+      for (const m of css.matchAll(/@media([^{]*)\{/g)) {
+        if (!/63[0-9]|64[0-9]/.test(m[1])) continue;
+        let depth = 1;
+        let i = m.index + m[0].length;
+        const start = i;
+        while (i < css.length && depth > 0) {
+          if (css[i] === '{') depth += 1;
+          else if (css[i] === '}') depth -= 1;
+          i += 1;
+        }
+        out.push(css.slice(start, i - 1));
+      }
+      return out;
+    };
+    const files = readdirSync(join(ROOT, 'src/styles')).filter(
+      (f) => f.endsWith('.css') && f !== 'responsive-tokens.css',
     );
-    for (const block of phone)
-      for (const [name] of decls)
-        expect(block, `${name} in a theme.css phone block`).not.toContain(name);
+    expect(files).toContain('theme.css');
+    for (const file of files)
+      for (const body of phoneBodies(read(`src/styles/${file}`)))
+        for (const [name] of decls)
+          expect(body, `${name} in a phone-width block of ${file}`).not.toContain(`${name}:`);
   });
 
   it('index.css imports the source after theme.css, so a phone step still wins', () => {
