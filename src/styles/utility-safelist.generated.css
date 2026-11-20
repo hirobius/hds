@@ -1,5 +1,5 @@
 /* GENERATED FILE — do not edit. Written by scripts/build-utility-safelist.mjs (hds#449)
-   from docs/api/releases/0.46.0.json: every Tailwind utility that release shipped stays emitted,
+   from docs/api/releases/0.47.0.json: every Tailwind utility that release shipped stays emitted,
    so deleting the last file that names one never drops it from ./styles.css or
    ./tokens.css by accident. An arbitrary-value, variant or group class utilities.css writes
    by hand ships anyway, so it has no line here. To drop one, list utility-removed:<class> in a step
@@ -37,6 +37,7 @@
 @source inline("[&_svg]:size-[var(--component-button-size-sm-iconSize)]");
 @source inline("[--hds-focus-color:var(--semantic-color-feedback-error)]");
 @source inline("[--hds-local-list-text-start:var(--component-list-rowPadding)]");
+@source inline("[--role-muted-foreground:var(--semantic-color-selected-fg)]");
 @source inline("[--seg-inner-radius:max(0px,calc(var(--seg-rail-radius)-var(--seg-rail-pad)-1px))]");
 @source inline("[--seg-rail-radius:calc(var(--role-radius)+min(var(--role-radius),4px))]");
 @source inline("[-ms-overflow-style:none]");
@@ -52,6 +53,7 @@
 @source inline("[font-weight:var(--primitive-typography-weight-bold)]");
 @source inline("[font-weight:var(--primitive-typography-weight-regular)]");
 @source inline("[font-weight:var(--semantic-typography-mono-font-weight)]");
+@source inline("[font-weight:var(--semantic-typography-weight-selected)]");
 @source inline("[font:inherit]");
 @source inline("[inset-inline:0]");
 @source inline("[letter-spacing:var(--semantic-typography-mono-letter-spacing)]");
@@ -110,6 +112,7 @@
 @source inline("bg-[var(--semantic-color-content-disabled)]");
 @source inline("bg-[var(--semantic-color-content-onAccent)]");
 @source inline("bg-[var(--semantic-color-content-secondary)]");
+@source inline("bg-[var(--semantic-color-selected-bg)]");
 @source inline("bg-[var(--semantic-color-surface-accent)]");
 @source inline("bg-[var(--semantic-color-surface-accentSubtle)]");
 @source inline("bg-[var(--semantic-color-surface-inverse)]");
@@ -137,6 +140,7 @@
 @source inline("bg-feedback-warning");
 @source inline("bg-muted");
 @source inline("bg-muted-foreground");
+@source inline("bg-none");
 @source inline("bg-popover");
 @source inline("bg-primary");
 @source inline("bg-scrim/60");
@@ -212,10 +216,14 @@
 @source inline("data-[pressed=true]:hover:bg-primary/90");
 @source inline("data-[pressed=true]:text-primary-foreground");
 @source inline("data-[selected=true]:ring-2");
+@source inline("data-[selected=true]:ring-[color:var(--semantic-color-selected-bg)]");
 @source inline("data-[selected=true]:ring-inset");
 @source inline("data-[selected=true]:ring-ring");
+@source inline("data-[state=active]:[font-weight:var(--semantic-typography-weight-selected)]");
+@source inline("data-[state=active]:bg-[var(--semantic-color-selected-bg)]");
 @source inline("data-[state=active]:bg-[var(--semantic-color-surface-selected)]");
 @source inline("data-[state=active]:border-b-[color:var(--semantic-color-content-primary)]");
+@source inline("data-[state=active]:text-[var(--semantic-color-selected-fg)]");
 @source inline("data-[state=active]:text-foreground");
 @source inline("data-[state=disabled]:bg-muted");
 @source inline("data-[state=disabled]:cursor-not-allowed");
@@ -310,6 +318,8 @@
 @source inline("h-6");
 @source inline("h-7");
 @source inline("h-8");
+@source inline("h-[calc(var(--semantic-size-controlHeight-md)-2*var(--seg-rail-pad)-2px)]");
+@source inline("h-[calc(var(--semantic-size-controlHeight-sm)-2*var(--seg-rail-pad)-2px)]");
 @source inline("h-[var(--component-badge-height)]");
 @source inline("h-[var(--component-button-size-lg-height)]");
 @source inline("h-[var(--component-button-size-md-height)]");
@@ -317,6 +327,9 @@
 @source inline("h-[var(--component-pagination-compactControlSize)]");
 @source inline("h-[var(--semantic-size-control-md)]");
 @source inline("h-[var(--semantic-size-control-sm)]");
+@source inline("h-[var(--semantic-size-controlHeight-lg)]");
+@source inline("h-[var(--semantic-size-controlHeight-md)]");
+@source inline("h-[var(--semantic-size-controlHeight-sm)]");
 @source inline("h-auto");
 @source inline("h-full");
 @source inline("h-px");
@@ -326,6 +339,7 @@
 @source inline("hover:bg-[color:var(--component-button-bgHover)]");
 @source inline("hover:bg-[color:var(--component-button-secondary-bg-hover)]");
 @source inline("hover:bg-[color:var(--component-button-tertiary-bg-hover)]");
+@source inline("hover:bg-[var(--semantic-color-selected-bg)]");
 @source inline("hover:bg-[var(--semantic-color-surface-hover)]");
 @source inline("hover:bg-[var(--semantic-color-surface-raised)]");
 @source inline("hover:bg-[var(--semantic-color-surface-selected)]");
@@ -413,6 +427,7 @@
 @source inline("min-h-[var(--component-tag-minHeight)]");
 @source inline("min-h-[var(--primitive-size-interactive-minCompact)]");
 @source inline("min-h-[var(--semantic-size-control-lg)]");
+@source inline("min-h-[var(--semantic-size-controlHeight-md)]");
 @source inline("min-h-[var(--semantic-size-row-comfortable)]");
 @source inline("min-h-[var(--semantic-size-row-compact)]");
 @source inline("min-h-[var(--semantic-size-touchTarget)]");
@@ -652,6 +667,7 @@
 @source inline("text-[var(--semantic-color-feedback-info)]");
 @source inline("text-[var(--semantic-color-feedback-success)]");
 @source inline("text-[var(--semantic-color-feedback-warning)]");
+@source inline("text-[var(--semantic-color-selected-fg)]");
 @source inline("text-background");
 @source inline("text-base");
 @source inline("text-card-foreground");
@@ -688,6 +704,7 @@
 @source inline("transition-[border-color,box-shadow,color]");
 @source inline("transition-[color,background-color,border-color,filter,box-shadow,translate]");
 @source inline("transition-[color,background-color,border-color]");
+@source inline("transition-[color,background-color]");
 @source inline("transition-[color,outline-color,transform]");
 @source inline("transition-[colors,filter]");
 @source inline("transition-[scale,box-shadow]");
