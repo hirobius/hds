@@ -1,0 +1,58 @@
+{
+  "$comment": "Frozen inputs of the 0.47.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.47.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.47.0",
+  "previous": "0.46.0",
+  "date": "2026-11-20",
+  "summary": "5 changes to make by hand (1 breaking) and 18 that look different.",
+  "backfilled": false,
+  "notes": {
+    "control-heights": {
+      "needle": "36eae29: Every control of a size now has",
+      "source": "CHANGELOG.md:19"
+    },
+    "css-dead-rules": {
+      "needle": "1f3c5ed: styles.css and tokens.css drop 47",
+      "source": "CHANGELOG.md:20"
+    },
+    "design-md-truth": {
+      "needle": "993b2b0: The generated rule documents (`DESIGN.md`,",
+      "source": "CHANGELOG.md:27"
+    },
+    "drop-unused-utilities": {
+      "needle": "6ac0e65: styles.css and tokens.css no longer",
+      "source": "CHANGELOG.md:21"
+    },
+    "root-token-truth": {
+      "needle": "d1c2333: One winner per spacing token: `semantic.space.section.inset`",
+      "source": "CHANGELOG.md:28"
+    },
+    "seg-edge-corners": {
+      "needle": "d2e8a2e: SegmentedControl: the selected primary",
+      "source": "CHANGELOG.md:29"
+    },
+    "segmented-selected-fill": {
+      "needle": "d19cf9c: SegmentedControl: the selected segment",
+      "source": "CHANGELOG.md:30"
+    },
+    "selected-state": {
+      "needle": "648e3c3: One selected look across every selectable",
+      "source": "CHANGELOG.md:22"
+    },
+    "selected-width-centred": {
+      "needle": "d19cf9c: SegmentedControl, Tabs and Tag:",
+      "source": "CHANGELOG.md:31"
+    },
+    "selected-width-reserve": {
+      "needle": "18e0361: Tabs, Tag and SegmentedControl keep",
+      "source": "CHANGELOG.md:32"
+    },
+    "tabs-selected-fill": {
+      "needle": "d19cf9c: Tabs: the active tab is a fill only",
+      "source": "CHANGELOG.md:33"
+    },
+    "token-descriptions-export": {
+      "needle": "6a52dd5: `tokens` from `@hirobius/design-system/tokens`",
+      "source": "CHANGELOG.md:23"
+    }
+  }
+}

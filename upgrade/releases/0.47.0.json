@@ -1,0 +1,674 @@
+{
+  "version": "0.47.0",
+  "date": "2026-11-20",
+  "bump": "minor",
+  "summary": "5 changes to make by hand (1 breaking) and 18 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.47.0/removed/tokens-descriptions",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Replace tokens.<path>.$description with tokenDescriptions['<path>'] imported from @hirobius/design-system/tokens/descriptions.",
+      "detect": {
+        "regex": [
+          "\\.\\$description\\b"
+        ]
+      },
+      "facts": [
+        "key-removed:./tokens:tokens.$description",
+        "key-removed:./tokens:tokens.component.badge.bg.$description",
+        "key-removed:./tokens:tokens.component.badge.fontSize.$description",
+        "key-removed:./tokens:tokens.component.badge.fontWeight.$description",
+        "key-removed:./tokens:tokens.component.badge.height.$description",
+        "key-removed:./tokens:tokens.component.badge.minWidth.$description",
+        "key-removed:./tokens:tokens.component.badge.paddingX.$description",
+        "key-removed:./tokens:tokens.component.badge.paddingY.$description",
+        "key-removed:./tokens:tokens.component.badge.radius.$description",
+        "key-removed:./tokens:tokens.component.badge.text.$description",
+        "key-removed:./tokens:tokens.component.button.bg.$description",
+        "key-removed:./tokens:tokens.component.button.bgHover.$description",
+        "key-removed:./tokens:tokens.component.button.bgPressed.$description",
+        "key-removed:./tokens:tokens.component.button.depth.$description",
+        "key-removed:./tokens:tokens.component.button.focus.$description",
+        "key-removed:./tokens:tokens.component.button.fontWeight.$description",
+        "key-removed:./tokens:tokens.component.button.paddingX.$description",
+        "key-removed:./tokens:tokens.component.button.paddingY.$description",
+        "key-removed:./tokens:tokens.component.button.radius.$description",
+        "key-removed:./tokens:tokens.component.button.text.$description",
+        "key-removed:./tokens:tokens.component.card.focus.$description",
+        "key-removed:./tokens:tokens.component.card.padding.$description",
+        "key-removed:./tokens:tokens.component.disclosure.paddingY.$description",
+        "key-removed:./tokens:tokens.component.inlineCode.bg.$description",
+        "key-removed:./tokens:tokens.component.inlineLink.iconGap.$description",
+        "key-removed:./tokens:tokens.component.inlineLink.iconSize.$description",
+        "key-removed:./tokens:tokens.component.input.focus.$description",
+        "key-removed:./tokens:tokens.component.input.paddingX.$description",
+        "key-removed:./tokens:tokens.component.list.groupGap.$description",
+        "key-removed:./tokens:tokens.component.list.headingGap.$description",
+        "key-removed:./tokens:tokens.component.list.leadingSize.$description",
+        "key-removed:./tokens:tokens.component.list.rowMinHeight.$description",
+        "key-removed:./tokens:tokens.component.list.rowPadding.$description",
+        "key-removed:./tokens:tokens.component.nav.paddingY.$description",
+        "key-removed:./tokens:tokens.component.pagination.compactControlSize.$description",
+        "key-removed:./tokens:tokens.component.tag.activeBackground.$description",
+        "key-removed:./tokens:tokens.component.tag.activeBorder.$description",
+        "key-removed:./tokens:tokens.component.tag.activeHover.$description",
+        "key-removed:./tokens:tokens.component.tag.activeText.$description",
+        "key-removed:./tokens:tokens.component.tag.background.$description",
+        "key-removed:./tokens:tokens.component.tag.border.$description",
+        "key-removed:./tokens:tokens.component.tag.focus.$description",
+        "key-removed:./tokens:tokens.component.tag.fontSize.$description",
+        "key-removed:./tokens:tokens.component.tag.fontWeight.$description",
+        "key-removed:./tokens:tokens.component.tag.lineHeight.$description",
+        "key-removed:./tokens:tokens.component.tag.minHeight.$description",
+        "key-removed:./tokens:tokens.component.tag.minWidth.$description",
+        "key-removed:./tokens:tokens.component.tag.paddingX.$description",
+        "key-removed:./tokens:tokens.component.tag.paddingY.$description",
+        "key-removed:./tokens:tokens.component.tag.radius.$description",
+        "key-removed:./tokens:tokens.component.tag.text.$description",
+        "key-removed:./tokens:tokens.primitive.$description",
+        "key-removed:./tokens:tokens.primitive.blur.$description",
+        "key-removed:./tokens:tokens.primitive.blur.16.$description",
+        "key-removed:./tokens:tokens.primitive.blur.2.$description",
+        "key-removed:./tokens:tokens.primitive.blur.4.$description",
+        "key-removed:./tokens:tokens.primitive.blur.8.$description",
+        "key-removed:./tokens:tokens.primitive.breakpoint.$description",
+        "key-removed:./tokens:tokens.primitive.color.amber.$description",
+        "key-removed:./tokens:tokens.primitive.color.blue.$description",
+        "key-removed:./tokens:tokens.primitive.color.graphite.$description",
+        "key-removed:./tokens:tokens.primitive.color.green.$description",
+        "key-removed:./tokens:tokens.primitive.color.lilac.$description",
+        "key-removed:./tokens:tokens.primitive.color.mauve.$description",
+        "key-removed:./tokens:tokens.primitive.color.neutral.$description",
+        "key-removed:./tokens:tokens.primitive.color.projectBrand.$description",
+        "key-removed:./tokens:tokens.primitive.color.red.$description",
+        "key-removed:./tokens:tokens.primitive.color.stone.$description",
+        "key-removed:./tokens:tokens.primitive.color.violet.$description",
+        "key-removed:./tokens:tokens.primitive.duration.extended.$description",
+        "key-removed:./tokens:tokens.primitive.duration.instant.$description",
+        "key-removed:./tokens:tokens.primitive.duration.long.$description",
+        "key-removed:./tokens:tokens.primitive.duration.medium.$description",
+        "key-removed:./tokens:tokens.primitive.duration.short.$description",
+        "key-removed:./tokens:tokens.primitive.duration.stagger.$description",
+        "key-removed:./tokens:tokens.primitive.easing.accelerate.$description",
+        "key-removed:./tokens:tokens.primitive.easing.decelerate.$description",
+        "key-removed:./tokens:tokens.primitive.easing.effectsDefault.$description",
+        "key-removed:./tokens:tokens.primitive.easing.effectsFast.$description",
+        "key-removed:./tokens:tokens.primitive.easing.effectsSlow.$description",
+        "key-removed:./tokens:tokens.primitive.easing.elastic.$description",
+        "key-removed:./tokens:tokens.primitive.easing.emphasized.$description",
+        "key-removed:./tokens:tokens.primitive.easing.spatialDefault.$description",
+        "key-removed:./tokens:tokens.primitive.easing.spatialFast.$description",
+        "key-removed:./tokens:tokens.primitive.easing.spatialSlow.$description",
+        "key-removed:./tokens:tokens.primitive.inlineIcon.$description",
+        "key-removed:./tokens:tokens.primitive.inlineIcon.gap.$description",
+        "key-removed:./tokens:tokens.primitive.inlineIcon.size.$description",
+        "key-removed:./tokens:tokens.primitive.radius.10.$description",
+        "key-removed:./tokens:tokens.primitive.radius.14.$description",
+        "key-removed:./tokens:tokens.primitive.scale.$description",
+        "key-removed:./tokens:tokens.primitive.scale.96.$description",
+        "key-removed:./tokens:tokens.primitive.scale.97.$description",
+        "key-removed:./tokens:tokens.primitive.scale.98.$description",
+        "key-removed:./tokens:tokens.primitive.shadow.color.$description",
+        "key-removed:./tokens:tokens.primitive.size.$description",
+        "key-removed:./tokens:tokens.primitive.size.10.$description",
+        "key-removed:./tokens:tokens.primitive.size.12.$description",
+        "key-removed:./tokens:tokens.primitive.size.120.$description",
+        "key-removed:./tokens:tokens.primitive.size.16.$description",
+        "key-removed:./tokens:tokens.primitive.size.20.$description",
+        "key-removed:./tokens:tokens.primitive.size.22.$description",
+        "key-removed:./tokens:tokens.primitive.size.24.$description",
+        "key-removed:./tokens:tokens.primitive.size.32.$description",
+        "key-removed:./tokens:tokens.primitive.size.36.$description",
+        "key-removed:./tokens:tokens.primitive.size.40.$description",
+        "key-removed:./tokens:tokens.primitive.size.44.$description",
+        "key-removed:./tokens:tokens.primitive.size.48.$description",
+        "key-removed:./tokens:tokens.primitive.size.52.$description",
+        "key-removed:./tokens:tokens.primitive.size.56.$description",
+        "key-removed:./tokens:tokens.primitive.size.64.$description",
+        "key-removed:./tokens:tokens.primitive.size.8.$description",
+        "key-removed:./tokens:tokens.primitive.size.80.$description",
+        "key-removed:./tokens:tokens.primitive.size.96.$description",
+        "key-removed:./tokens:tokens.primitive.size.interactive.$description",
+        "key-removed:./tokens:tokens.primitive.space.$description",
+        "key-removed:./tokens:tokens.primitive.space.px10.$description",
+        "key-removed:./tokens:tokens.primitive.space.px3.$description",
+        "key-removed:./tokens:tokens.primitive.space.px6.$description",
+        "key-removed:./tokens:tokens.primitive.strokeWidth.$description",
+        "key-removed:./tokens:tokens.primitive.strokeWidth.100.$description",
+        "key-removed:./tokens:tokens.primitive.strokeWidth.150.$description",
+        "key-removed:./tokens:tokens.primitive.strokeWidth.175.$description",
+        "key-removed:./tokens:tokens.primitive.strokeWidth.200.$description",
+        "key-removed:./tokens:tokens.primitive.strokeWidth.250.$description",
+        "key-removed:./tokens:tokens.primitive.zIndex.$description",
+        "key-removed:./tokens:tokens.role.$description",
+        "key-removed:./tokens:tokens.role.accent-foreground.$description",
+        "key-removed:./tokens:tokens.role.accent.$description",
+        "key-removed:./tokens:tokens.role.background.$description",
+        "key-removed:./tokens:tokens.role.border.$description",
+        "key-removed:./tokens:tokens.role.card-foreground.$description",
+        "key-removed:./tokens:tokens.role.card.$description",
+        "key-removed:./tokens:tokens.role.destructive-foreground.$description",
+        "key-removed:./tokens:tokens.role.destructive.$description",
+        "key-removed:./tokens:tokens.role.foreground.$description",
+        "key-removed:./tokens:tokens.role.input.$description",
+        "key-removed:./tokens:tokens.role.muted-foreground.$description",
+        "key-removed:./tokens:tokens.role.muted.$description",
+        "key-removed:./tokens:tokens.role.popover-foreground.$description",
+        "key-removed:./tokens:tokens.role.popover.$description",
+        "key-removed:./tokens:tokens.role.pressed-overlay.$description",
+        "key-removed:./tokens:tokens.role.primary-foreground.$description",
+        "key-removed:./tokens:tokens.role.primary.$description",
+        "key-removed:./tokens:tokens.role.radius.$description",
+        "key-removed:./tokens:tokens.role.ring.$description",
+        "key-removed:./tokens:tokens.role.scrim.$description",
+        "key-removed:./tokens:tokens.role.secondary-foreground.$description",
+        "key-removed:./tokens:tokens.role.secondary.$description",
+        "key-removed:./tokens:tokens.semantic.accent.content.$description",
+        "key-removed:./tokens:tokens.semantic.accent.contentHover.$description",
+        "key-removed:./tokens:tokens.semantic.accent.disabled.$description",
+        "key-removed:./tokens:tokens.semantic.accent.hover.$description",
+        "key-removed:./tokens:tokens.semantic.accent.inactive.$description",
+        "key-removed:./tokens:tokens.semantic.accent.pressed.$description",
+        "key-removed:./tokens:tokens.semantic.accent.rest.$description",
+        "key-removed:./tokens:tokens.semantic.accent.subtle.$description",
+        "key-removed:./tokens:tokens.semantic.borderWidth.default.$description",
+        "key-removed:./tokens:tokens.semantic.borderWidth.emphasis.$description",
+        "key-removed:./tokens:tokens.semantic.borderWidth.icon.$description",
+        "key-removed:./tokens:tokens.semantic.docs.$description",
+        "key-removed:./tokens:tokens.semantic.elevation.flat.$description",
+        "key-removed:./tokens:tokens.semantic.elevation.floating.$description",
+        "key-removed:./tokens:tokens.semantic.elevation.overlay.$description",
+        "key-removed:./tokens:tokens.semantic.elevation.raised.$description",
+        "key-removed:./tokens:tokens.semantic.focus.$description",
+        "key-removed:./tokens:tokens.semantic.focus.radius.$description",
+        "key-removed:./tokens:tokens.semantic.link.underlineOffset.$description",
+        "key-removed:./tokens:tokens.semantic.link.underlineThickness.$description",
+        "key-removed:./tokens:tokens.semantic.motion.blurReveal.$description",
+        "key-removed:./tokens:tokens.semantic.motion.blurSwap.$description",
+        "key-removed:./tokens:tokens.semantic.motion.distance.$description",
+        "key-removed:./tokens:tokens.semantic.motion.exit.$description",
+        "key-removed:./tokens:tokens.semantic.motion.expressive.$description",
+        "key-removed:./tokens:tokens.semantic.motion.nudge.$description",
+        "key-removed:./tokens:tokens.semantic.motion.productive.$description",
+        "key-removed:./tokens:tokens.semantic.motion.scaleDialog.$description",
+        "key-removed:./tokens:tokens.semantic.motion.scaleMenu.$description",
+        "key-removed:./tokens:tokens.semantic.motion.scaleTooltip.$description",
+        "key-removed:./tokens:tokens.semantic.motion.slide.$description",
+        "key-removed:./tokens:tokens.semantic.motion.spatial.$description",
+        "key-removed:./tokens:tokens.semantic.motion.transitionColor.$description",
+        "key-removed:./tokens:tokens.semantic.motion.transitionShadow.$description",
+        "key-removed:./tokens:tokens.semantic.radius.action.$description",
+        "key-removed:./tokens:tokens.semantic.radius.control.$description",
+        "key-removed:./tokens:tokens.semantic.radius.scale.$description",
+        "key-removed:./tokens:tokens.semantic.shadow.floating.$description",
+        "key-removed:./tokens:tokens.semantic.shadow.overlay.$description",
+        "key-removed:./tokens:tokens.semantic.shadow.subtle.$description",
+        "key-removed:./tokens:tokens.semantic.size.$description",
+        "key-removed:./tokens:tokens.semantic.size.avatar.$description",
+        "key-removed:./tokens:tokens.semantic.size.control.$description",
+        "key-removed:./tokens:tokens.semantic.size.icon.$description",
+        "key-removed:./tokens:tokens.semantic.size.listRow.$description",
+        "key-removed:./tokens:tokens.semantic.size.row.$description",
+        "key-removed:./tokens:tokens.semantic.size.tile.$description",
+        "key-removed:./tokens:tokens.semantic.size.touchTarget.$description",
+        "key-removed:./tokens:tokens.semantic.space.$description",
+        "key-removed:./tokens:tokens.semantic.space.fixed.$description",
+        "key-removed:./tokens:tokens.semantic.space.region.$description",
+        "key-removed:./tokens:tokens.semantic.space.scale.$description",
+        "key-removed:./tokens:tokens.semantic.space.surface.$description",
+        "key-removed:./tokens:tokens.semantic.typography.$description",
+        "key-removed:./tokens:tokens.semantic.typography.body.$description",
+        "key-removed:./tokens:tokens.semantic.typography.bodyStrong.$description",
+        "key-removed:./tokens:tokens.semantic.typography.caption.$description",
+        "key-removed:./tokens:tokens.semantic.typography.display.$description",
+        "key-removed:./tokens:tokens.semantic.typography.eyebrow.$description",
+        "key-removed:./tokens:tokens.semantic.typography.h1.$description",
+        "key-removed:./tokens:tokens.semantic.typography.h2.$description",
+        "key-removed:./tokens:tokens.semantic.typography.h3.$description",
+        "key-removed:./tokens:tokens.semantic.typography.hero.$description",
+        "key-removed:./tokens:tokens.semantic.typography.mono.$description",
+        "key-removed:./tokens:tokens.semantic.typography.title.$description",
+        "key-removed:./tokens:tokens.semantic.typography.titleSm.$description",
+        "key-removed:./tokens:tokens.semantic.typography.ui.$description",
+        "key-removed:./tokens:tokens.semantic.typography.uiItalic.$description",
+        "key-removed:./tokens:tokens.semantic.typography.uiRegular.$description",
+        "key-removed:./tokens:tokens.semantic.zIndex.$description",
+        "key-removed:./tokens:tokens.semantic.zIndex.control.$description",
+        "key-removed:./tokens:tokens.semantic.zIndex.sticky.$description"
+      ],
+      "source": "CHANGELOG.md:23"
+    },
+    {
+      "id": "0.47.0/value-changed/--component-button-size-lg-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A large Button is 48px tall (was 52px), the same as a large Input; check rows sized to the old height.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-lg-height"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-lg-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-lg-height::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.47.0/value-changed/--component-button-size-md-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A medium Button is 40px tall on desktop (was 44px), the same as Input and Select, and touch still lifts it to 44px.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-md-height"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-md-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-md-height::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.47.0/value-changed/--component-button-size-sm-height",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "A small Button is 32px tall on desktop (was 36px), the same as a small Input, and touch still lifts it to 44px.",
+      "detect": {
+        "cssVars": [
+          "--component-button-size-sm-height"
+        ],
+        "cssVarWrites": [
+          "--component-button-size-sm-height"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-button-size-sm-height::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.47.0/value-changed/--component-pagination-compactControlSize",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The compact Pagination buttons stay 40px square but now read semantic.size.controlHeight.md; nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--component-pagination-compactControlSize"
+        ],
+        "cssVarWrites": [
+          "--component-pagination-compactControlSize"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-pagination-compactControlSize::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.47.0/value-changed/--component-tag-activeBackground",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeBackground"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeBackground"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBackground::root",
+        "css-var-changed:--component-tag-activeBackground:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-activeBackground:[data-theme=dark]",
+        "css-var-changed:--component-tag-activeBackground:[data-accent='cobalt']",
+        "css-var-changed:--component-tag-activeBackground:[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.47.0/value-changed/--component-tag-activeBorder",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeBorder"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeBorder"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeBorder::root",
+        "css-var-changed:--component-tag-activeBorder:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-activeBorder:[data-theme=dark]",
+        "css-var-changed:--component-tag-activeBorder:[data-accent='cobalt']",
+        "css-var-changed:--component-tag-activeBorder:[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.47.0/value-changed/--component-tag-activeText",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.",
+      "detect": {
+        "cssVars": [
+          "--component-tag-activeText"
+        ],
+        "cssVarWrites": [
+          "--component-tag-activeText"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--component-tag-activeText::root",
+        "css-var-changed:--component-tag-activeText:[data-theme=\"dark\"]",
+        "css-var-changed:--component-tag-activeText:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.47.0/value-changed/--semantic-layout-grid-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The grid gap token is now scale.md (it was scale.lg), which styles.css already applied.",
+      "detect": {
+        "cssVars": [
+          "--semantic-layout-grid-gap"
+        ],
+        "cssVarWrites": [
+          "--semantic-layout-grid-gap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-grid-gap::root"
+      ],
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.47.0/value-changed/--semantic-space-section-inset",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The section inset token is now 128px (80px below 640px), which styles.css already applied.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-section-inset"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-section-inset"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-section-inset::root"
+      ],
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.47.0/value-changed/--semantic-space-sidebar-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The sidebar item gap token is now 20px (it was 16px), which styles.css already applied.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-sidebar-gap"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-sidebar-gap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-sidebar-gap::root"
+      ],
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.47.0/value-changed/--semantic-space-sidebar-railPadding",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The sidebar rail padding token is now 24px (it was 20px), which styles.css already applied.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-sidebar-railPadding"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-sidebar-railPadding"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-sidebar-railPadding::root"
+      ],
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.47.0/value-changed/--semantic-space-sidebar-sectionGap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The sidebar section gap token is now 16px (it was 12px), which styles.css already applied.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-sidebar-sectionGap"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-sidebar-sectionGap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-sidebar-sectionGap::root"
+      ],
+      "source": "CHANGELOG.md:28"
+    },
+    {
+      "id": "0.47.0/look/control-heights",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A Button is now 32, 40 or 48px on desktop (was 36, 44, 52), Tabs and SegmentedControl md are 40px and Pagination is 32px, so check a layout that hard-coded the old Button height.",
+      "detect": {
+        "regex": [
+          "--component-button-size-(sm|md|lg)-height",
+          "<Button\\b",
+          "<Tabs\\b",
+          "<SegmentedControl\\b",
+          "<Pagination\\b"
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.47.0/look/selected-state",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A selected Tab, a secondary SegmentedControl segment and a current NavList row now take the accent fill with onAccent text and a semibold label (they were grey, white or page-coloured), so check screens that styled them by hand.",
+      "detect": {
+        "regex": [
+          "<Tabs\\b",
+          "<SegmentedControl\\b",
+          "<NavList\\b",
+          "<Pagination\\b",
+          "--semantic-color-surface-selected"
+        ]
+      },
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.47.0/look/selected-width-centred",
+      "kind": "look",
+      "impact": "look",
+      "plain": "SegmentedControl, Tabs and Tag labels sit centred in their box, about 3px lower than before.",
+      "source": "CHANGELOG.md:31"
+    },
+    {
+      "id": "0.47.0/look/tabs-selected-fill",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The active Tabs trigger has no bottom edge now, only the selected fill, so its label sits 1px lower.",
+      "source": "CHANGELOG.md:33"
+    },
+    {
+      "id": "0.47.0/behavior/Pagination.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "The current Pagination page renders as data-variant=\"primary\" (was \"secondary\") with the selected fill; a test or style that matched the old variant on the current page needs updating.",
+      "detect": {
+        "jsx": [
+          "Pagination"
+        ],
+        "regex": [
+          "aria-current=\"page\"[^>]*data-variant=\"secondary\"",
+          "\\[data-variant=.secondary.\\]\\[aria-current"
+        ]
+      },
+      "facts": [
+        "dom-changed:Pagination"
+      ],
+      "source": "CHANGELOG.md:22"
+    },
+    {
+      "id": "0.47.0/behavior/SegmentedControl.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Each text segment label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the label as the segment's direct text needs one more level.",
+      "detect": {
+        "jsx": [
+          "SegmentedControl"
+        ],
+        "regex": [
+          "getByText\\([^)]*\\)\\.(className|parentElement)|\\[role=.?radio.?\\]\\s*>\\s*span"
+        ]
+      },
+      "facts": [
+        "dom-changed:SegmentedControl"
+      ],
+      "source": "CHANGELOG.md:32"
+    },
+    {
+      "id": "0.47.0/behavior/Tabs.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "Each text TabsTrigger label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the trigger's direct text needs one more level.",
+      "detect": {
+        "jsx": [
+          "Tabs"
+        ],
+        "regex": [
+          "getByRole\\(['\\\"]tab['\\\"][^)]*\\)\\.(textContent|firstChild|childNodes)|\\[role=.?tab.?\\]\\s*>\\s*span"
+        ]
+      },
+      "facts": [
+        "dom-changed:Tabs"
+      ],
+      "source": "CHANGELOG.md:32"
+    },
+    {
+      "id": "0.47.0/behavior/Tag.dom",
+      "kind": "behavior",
+      "impact": "behavior",
+      "plain": "A text Tag label is now wrapped in a span.hds-selected-width, so a test that reads the pill's classes through getByText should use closest() to reach the pill.",
+      "detect": {
+        "jsx": [
+          "Tag"
+        ],
+        "regex": [
+          "getByText\\([^)]*\\)\\.(className|classList|closest)"
+        ]
+      },
+      "facts": [
+        "dom-changed:Tag"
+      ],
+      "source": "CHANGELOG.md:32"
+    },
+    {
+      "id": "0.47.0/behavior/unscanned-utilities",
+      "kind": "behavior",
+      "impact": "look",
+      "plain": "These 47 utilities no longer ship in styles.css or tokens.css, so an element that used one from HDS's stylesheet loses that style unless your own Tailwind build emits it.",
+      "detect": {
+        "regex": [
+          "(?<![\\w:-])(bg\\-\\[var\\(\\-\\-semantic\\-accent\\-hover\\)\\]|bg\\-\\[var\\(\\-\\-semantic\\-accent\\-pressed\\)\\]|bg\\-\\[var\\(\\-\\-semantic\\-accent\\-rest\\)\\]|bg\\-page|bg\\-raised|bg\\-surface\\-raised|flex\\-shrink\\-0|gap\\-1\\.5|gap\\-10|gap\\-12|gap\\-2\\.5|gap\\-5|gap\\-8|gap\\-x\\-8|gap\\-y\\-4|h\\-48|list\\-item|mb\\-12|mb\\-3|mb\\-4|md:grid\\-cols\\-2|mr\\-1|mt\\-10|mt\\-3|mt\\-8|mt\\-auto|opacity\\-40|origin\\-right|overflow\\-visible|overflow\\-x\\-hidden|p\\-12|p\\-8|pb\\-12|pl\\-fixed\\-xs|pt\\-3|pt\\-4|pt\\-8|scale\\-x\\-0|shadow\\-\\[inset_0_\\-3px_0_var\\(\\-\\-hds\\-edge\\-primary\\)\\]|space\\-y\\-4|text\\-accent|text\\-inverse\\-primary|top\\-full|transition\\-all|w\\-48|w\\-80|z\\-30)(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "utility-removed:bg-[var(--semantic-accent-rest)]",
+        "utility-removed:bg-page",
+        "utility-removed:bg-raised",
+        "utility-removed:bg-surface-raised",
+        "utility-removed:flex-shrink-0",
+        "utility-removed:gap-1.5",
+        "utility-removed:gap-10",
+        "utility-removed:gap-12",
+        "utility-removed:gap-2.5",
+        "utility-removed:gap-5",
+        "utility-removed:gap-8",
+        "utility-removed:gap-x-8",
+        "utility-removed:gap-y-4",
+        "utility-removed:h-48",
+        "utility-removed:list-item",
+        "utility-removed:mb-12",
+        "utility-removed:mb-3",
+        "utility-removed:mb-4",
+        "utility-removed:md:grid-cols-2",
+        "utility-removed:mr-1",
+        "utility-removed:mt-10",
+        "utility-removed:mt-3",
+        "utility-removed:mt-8",
+        "utility-removed:mt-auto",
+        "utility-removed:opacity-40",
+        "utility-removed:origin-right",
+        "utility-removed:overflow-visible",
+        "utility-removed:overflow-x-hidden",
+        "utility-removed:p-12",
+        "utility-removed:p-8",
+        "utility-removed:pb-12",
+        "utility-removed:pl-fixed-xs",
+        "utility-removed:pt-3",
+        "utility-removed:pt-4",
+        "utility-removed:pt-8",
+        "utility-removed:scale-x-0",
+        "utility-removed:shadow-[inset_0_-3px_0_var(--hds-edge-primary)]",
+        "utility-removed:space-y-4",
+        "utility-removed:text-accent",
+        "utility-removed:text-inverse-primary",
+        "utility-removed:top-full",
+        "utility-removed:transition-all",
+        "utility-removed:w-48",
+        "utility-removed:w-80",
+        "utility-removed:z-30"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.47.0/behavior/unused-safelist-utilities",
+      "kind": "behavior",
+      "impact": "look",
+      "plain": "These 12 utilities no longer ship in styles.css or tokens.css, so an element that used one from HDS's stylesheet loses that style unless your own Tailwind build emits it.",
+      "detect": {
+        "regex": [
+          "(?<![\\w:-])(active:bg\\-transparent|dark:hover:brightness\\-100|duration\\-300|hover:bg\\-\\[color:var\\(\\-\\-component\\-button\\-secondary\\-bg\\-rest\\)\\]|hover:bg\\-primary|hover:brightness\\-100|md:w\\-auto|min\\-h\\-\\[22px\\]|min\\-h\\-\\[30px\\]|pr\\-fixed\\-sm|pr\\-fixed\\-xs|py\\-3)(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "utility-removed:active:bg-transparent",
+        "utility-removed:dark:hover:brightness-100",
+        "utility-removed:duration-300",
+        "utility-removed:hover:bg-[color:var(--component-button-secondary-bg-rest)]",
+        "utility-removed:hover:bg-primary",
+        "utility-removed:hover:brightness-100",
+        "utility-removed:md:w-auto",
+        "utility-removed:min-h-[22px]",
+        "utility-removed:min-h-[30px]",
+        "utility-removed:pr-fixed-sm",
+        "utility-removed:pr-fixed-xs",
+        "utility-removed:py-3"
+      ],
+      "source": "CHANGELOG.md:21"
+    }
+  ]
+}

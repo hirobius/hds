@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.47.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Replace tokens.\<path>.\$description with tokenDescriptions\['\<path>'] imported from @hirobius/design-system/tokens/descriptions.
+- Do by hand: The current Pagination page renders as data-variant="primary" (was "secondary") with the selected fill; a test or style that matched the old variant on the current page needs updating.
+- Do by hand: Each text segment label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the label as the segment's direct text needs one more level.
+- Do by hand: Each text TabsTrigger label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the trigger's direct text needs one more level.
+- And 19 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0470).
+
+### Minor Changes
+
+- 36eae29: Every control of a size now has one height: `semantic.size.controlHeight.sm | md | lg` (32, 40 and 48px). Button (was 36 / 44 / 52), Input, Select, Combobox, Tabs, SegmentedControl and Pagination read it, so a Button beside an Input lines up. A coarse pointer or a narrow viewport still lifts sm and md controls to 44px (`hds-touch-row`). `component.button.size.*.height` and `component.pagination.compactControlSize` now alias the new token. No prop changes.
+- 1f3c5ed: styles.css and tokens.css drop 47 utilities that no HDS component, docs page or Hirobius app (folio, job-hunt, ops) uses. The upgrade note lists every class. Tailwind no longer scans code that never renders: the token prose index (`generated-token-descriptions.ts`, whose words read as class names), the Code Connect templates (`*.figma.ts`) and test fixtures. Utilities that carry a Tailwind theme variable (`text-base` to `text-5xl`, `font-semibold`, `max-w-md`, `max-w-7xl`, `focus:ring-offset-*`) stay, so no CSS variable is removed.
+- 6ac0e65: styles.css and tokens.css no longer ship 12 Tailwind utilities that no HDS component, docs page or Hirobius app (folio, job-hunt, ops) uses: `active:bg-transparent`, `dark:hover:brightness-100`, `duration-300`, `hover:bg-[color:var(--component-button-secondary-bg-rest)]`, `hover:bg-primary`, `hover:brightness-100`, `md:w-auto`, `min-h-[22px]`, `min-h-[30px]`, `pr-fixed-sm`, `pr-fixed-xs` and `py-3`. This frees size-budget room for the SegmentedControl edge fix and the one selected look without raising a budget.
+- 648e3c3: One selected look across every selectable component (Adrian 2026-11-18). New tokens: `semantic.color.selected.bg` (the accent fill), `semantic.color.selected.fg` (onAccent text) and `semantic.typography.weight.selected` (600). SegmentedControl (both variants), Tabs, NavList, Tag, the current Pagination page and a selected Card now read them: a strong fill and a semibold label, and on Card the selected ring colour, kept apart from the focus ring. The secondary SegmentedControl and Tabs change most (they were a page or grey fill); the primary Button and the focus ring are unchanged. No prop changes.
+- 6a52dd5: `tokens` from `@hirobius/design-system/tokens` no longer carries `$description` text; it ships every value, type and extension as before. The descriptions moved to a new subpath, `@hirobius/design-system/tokens/descriptions`, as `tokenDescriptions`: a map from a token's dot path to its description. The tokens JSON graph drops from 22 kB to 11.5 kB gzip, so an app that needs only values loads less. `hirobius.tokens.json` itself is unchanged and still ships whole.
+
+### Patch Changes
+
+- 993b2b0: The generated rule documents (`DESIGN.md`, `llms.txt`, `llms-full.txt`, `AGENTS.md`, the consumer skill and the MCP guide) no longer teach a deprecated API. A row of headline numbers is now a `Grid` of `Card`s with the type roles; `MetricTiles`, `Stat` and `Card.Metric` stay deprecated with no replacement. The Button row lists the four variants from the manifest (secondary is a soft tonal fill, not an outline), the Card title is the `title` role and the Badge radius is `component.badge.radius` (6px). The generators now fail when a document recommends anything in `deprecations.json`. No component or token changes.
+- d1c2333: One winner per spacing token: `semantic.space.section.inset` is now 128px (80px below 640px), `semantic.space.sidebar.gap`/`sectionGap`/`railPadding` 20/16/24px and `semantic.layout.grid.gap` scale.md in the token source, matching what styles.css already rendered. theme.css no longer re-declares them, so tokens.css, styles.css and variables.css agree and a lazily loaded styles.css no longer shifts the layout. A new check fails on a hand-written `:root` that overrides a generated token.
+- d2e8a2e: SegmentedControl: the selected primary segment's raised edge now follows the segment's rounded corners. It was an inset shadow over the fill, which left the fill's anti-aliased rim showing at the bottom corners (a light line under the edge in dark mode). Fill and edge are now one background layer. `.bg-transparent` and `.bg-current` now set `background-color` only, as in Tailwind, instead of the `background` shorthand that also cleared `background-image`.
+- d19cf9c: SegmentedControl: the selected segment is a fill (`semantic.color.selected.bg` / `selected.fg`) in every variant and theme. The primary variant no longer draws a raised key with a 3px bottom edge, and its label is no longer lifted by 1px. No prop changes.
+- d19cf9c: SegmentedControl, Tabs and Tag: the label no longer rides about 3px above centre. The selected-width helper (`.hds-selected-width`) now aligns to the line top, so its hidden zero-height copy no longer adds a 7px gap under the text. No prop changes.
+- 18e0361: Tabs, Tag and SegmentedControl keep a text label at its selected (semibold) width in every state, so selecting one no longer nudges its neighbours by a pixel or two. A plain-text label now sits in a `span.hds-selected-width` whose hidden, zero-height `::after` holds the semibold copy (from `data-hds-text`). The DOM still holds the text once, so screen readers and `getByText` see one label; a test that read a Tag pill's classes through `getByText` now gets the inner span and should use `.closest()`. Pagination needs nothing: its Button label is already semibold in every state.
+- d19cf9c: Tabs: the active tab is a fill only (`semantic.color.selected` bg, fg and weight). The 2px bottom border is gone, so one cue marks the selection. The focus ring stays inset and the trigger height is unchanged. The `panel` TabsContent default is unchanged.
+
 ## 0.46.0
 
 ### Upgrade

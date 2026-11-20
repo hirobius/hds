@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.46.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.47.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,39 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.47.0
+
+Released 2026-11-20 (minor). 5 changes to make by hand (1 breaking) and 18 that look different.
+
+### Looks different
+
+- A large Button is 48px tall (was 52px), the same as a large Input; check rows sized to the old height.
+- A medium Button is 40px tall on desktop (was 44px), the same as Input and Select, and touch still lifts it to 44px.
+- A small Button is 32px tall on desktop (was 36px), the same as a small Input, and touch still lifts it to 44px.
+- The compact Pagination buttons stay 40px square but now read semantic.size.controlHeight.md; nothing looks different.
+- The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.
+- The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.
+- The Tag active colours now come from semantic.color.selected, with the same values as before, so nothing looks different.
+- The grid gap token is now scale.md (it was scale.lg), which styles.css already applied.
+- The section inset token is now 128px (80px below 640px), which styles.css already applied.
+- The sidebar item gap token is now 20px (it was 16px), which styles.css already applied.
+- The sidebar rail padding token is now 24px (it was 20px), which styles.css already applied.
+- The sidebar section gap token is now 16px (it was 12px), which styles.css already applied.
+- A Button is now 32, 40 or 48px on desktop (was 36, 44, 52), Tabs and SegmentedControl md are 40px and Pagination is 32px, so check a layout that hard-coded the old Button height.
+- A selected Tab, a secondary SegmentedControl segment and a current NavList row now take the accent fill with onAccent text and a semibold label (they were grey, white or page-coloured), so check screens that styled them by hand.
+- SegmentedControl, Tabs and Tag labels sit centred in their box, about 3px lower than before.
+- The active Tabs trigger has no bottom edge now, only the selected fill, so its label sits 1px lower.
+- These 47 utilities no longer ship in styles.css or tokens.css, so an element that used one from HDS's stylesheet loses that style unless your own Tailwind build emits it.
+- These 12 utilities no longer ship in styles.css or tokens.css, so an element that used one from HDS's stylesheet loses that style unless your own Tailwind build emits it.
+
+### Do by hand
+
+- Replace tokens.\<path>.\$description with tokenDescriptions\['\<path>'] imported from @hirobius/design-system/tokens/descriptions.
+- The current Pagination page renders as data-variant="primary" (was "secondary") with the selected fill; a test or style that matched the old variant on the current page needs updating.
+- Each text segment label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the label as the segment's direct text needs one more level.
+- Each text TabsTrigger label is now wrapped in a span.hds-selected-width with data-hds-text, so a selector or test that expects the trigger's direct text needs one more level.
+- A text Tag label is now wrapped in a span.hds-selected-width, so a test that reads the pill's classes through getByText should use closest() to reach the pill.
 
 ## 0.46.0
 

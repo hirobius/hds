@@ -3,6 +3,7 @@
   "entries": {
     ".": "src/index.ts",
     "./tokens": "src/app/design-system/tokens.ts",
+    "./tokens/descriptions": "src/app/design-system/token-descriptions.ts",
     "./cn": "src/lib/utils.ts",
     "./manifest": "src/lib/manifest-entry.ts",
     "./contexts": "src/app/context/index.ts",
@@ -16,8 +17,8 @@
     "./sheet": "src/sheet.ts",
     "./icons": "src/icons.ts"
   },
-  "version": "0.46.0",
-  "generatedAt": "2026-11-18",
+  "version": "0.47.0",
+  "generatedAt": "2026-11-20",
   "modules": {
     "(barrel)": [
       "HdsDensity",
@@ -231,6 +232,7 @@
       "useToast"
     ],
     "@subpath/tokens": ["ct", "default", "hds", "tokenValues", "tokens"],
+    "@subpath/tokens/descriptions": ["tokenDescriptions"],
     "@subpath/cn": ["SPACING_KEYS", "cn"],
     "@subpath/manifest": ["default"],
     "@subpath/contexts": [
