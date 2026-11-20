@@ -1,8 +1,8 @@
 {
-  "checksum": "fcb0b5ce",
+  "checksum": "7f10c7c1",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-20T20:29:46.042Z",
+    "takenAt": "2026-11-20T23:26:00.612Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
@@ -13948,7 +13948,7 @@
       },
       {
         "id": "VariableCollectionId:2399:10128",
-        "name": "Button tone",
+        "name": "DEPRECATED – Button tone (unused)",
         "key": null,
         "hiddenFromPublishing": false,
         "defaultMode": "neutral",
@@ -13976,27 +13976,27 @@
             "valuesByMode": {
               "neutral": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "quiet": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "danger": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "success": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "warning": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "info": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               }
             }
           },
@@ -14015,27 +14015,27 @@
             "valuesByMode": {
               "neutral": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "quiet": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "danger": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "success": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "warning": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "info": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               }
             }
           },
@@ -14054,27 +14054,27 @@
             "valuesByMode": {
               "neutral": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "quiet": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "danger": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "success": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "warning": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "info": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               }
             }
           },
@@ -14659,7 +14659,7 @@
               },
               "quiet": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "danger": {
                 "alias": "VariableID:10:24",
@@ -14694,11 +14694,11 @@
             "valuesByMode": {
               "neutral": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "quiet": {
                 "alias": "VariableID:2399:10129",
-                "to": "Button tone: transparent"
+                "to": "DEPRECATED – Button tone (unused): transparent"
               },
               "danger": {
                 "alias": "VariableID:10:24",
@@ -15654,7 +15654,5 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:32a66c05d575461537b986be0e388fda3b96192dcb68ab4f66fb6db2be7ef6f6",
-  "syncedCommit": "8f90925",
-  "syncedHash": "sha256:367ea2b5ecce36788055b017a192bd5ed6f5edc05920bcb941242bcd1932a64b"
+  "tokensHash": "sha256:32a66c05d575461537b986be0e388fda3b96192dcb68ab4f66fb6db2be7ef6f6"
 }

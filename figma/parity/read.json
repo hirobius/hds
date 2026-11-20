@@ -1,10 +1,10 @@
 {
   "$comment": "The parity read: every component of the HDS library (properties, variant options, what its default variant nests) and one hash per variable collection. Written by `pnpm figma:parity --ingest` from the results of the read-only use_figma scripts `pnpm figma:parity --emit-read` prints. Do not edit: read the library again. `pnpm check:figma-parity` compares it with code.",
   "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
-  "readOn": "2026-11-16",
-  "takenAt": "2026-11-16T16:58:36.107Z",
+  "readOn": "2026-11-20",
+  "takenAt": "2026-11-20T23:19:14.951Z",
   "variables": {
-    "top": "748d2507",
+    "top": "0092af7f",
     "collections": [
       {
         "id": "VariableCollectionId:1:2",
@@ -17,15 +17,15 @@
         "id": "VariableCollectionId:1:3",
         "name": "Hirobius/Semantic",
         "modes": 2,
-        "variables": 220,
-        "hash": "d3069a47"
+        "variables": 226,
+        "hash": "ddd5ba0d"
       },
       {
         "id": "VariableCollectionId:1:4",
         "name": "Hirobius/Component",
         "modes": 1,
         "variables": 118,
-        "hash": "20028f56"
+        "hash": "892d1a3a"
       },
       {
         "id": "VariableCollectionId:2018:712",
@@ -38,29 +38,29 @@
         "id": "VariableCollectionId:2018:713",
         "name": "Hirobius/Brand",
         "modes": 3,
-        "variables": 29,
-        "hash": "cdcc304d"
+        "variables": 33,
+        "hash": "8f7142e3"
       },
       {
         "id": "VariableCollectionId:2018:714",
         "name": "Hirobius/Density",
         "modes": 2,
         "variables": 18,
-        "hash": "57aeb75a"
+        "hash": "7319912b"
       },
       {
         "id": "VariableCollectionId:2399:10128",
-        "name": "Button tone",
+        "name": "DEPRECATED – Button tone (unused)",
         "modes": 6,
         "variables": 22,
-        "hash": "56a8319c"
+        "hash": "6bae8aca"
       },
       {
         "id": "VariableCollectionId:2419:23",
         "name": "Hirobius/Meta",
         "modes": 1,
         "variables": 6,
-        "hash": "7711ccda"
+        "hash": "d074c9c7"
       }
     ],
     "textStyles": {
@@ -106,6 +106,11 @@
     {
       "id": "20:4",
       "name": "Foundations: Typography",
+      "components": []
+    },
+    {
+      "id": "2742:20",
+      "name": "Variables",
       "components": []
     },
     {
@@ -316,7 +321,7 @@
               ["neutral", "quiet", "danger", "success", "warning", "info"]
             ]
           ],
-          "nests": ["Icon", "_Icon/loader-circle (archived 2026-11-16)"]
+          "nests": ["Icon"]
         },
         {
           "id": "2399:26744",
@@ -331,7 +336,7 @@
             ["Size", "VARIANT", "md", ["sm", "md", "lg"]],
             ["State", "VARIANT", "rest", ["rest", "hover", "pressed", "disabled"]]
           ],
-          "nests": ["Icon", "_Icon/loader-circle (archived 2026-11-16)"]
+          "nests": ["Icon"]
         }
       ]
     },
@@ -1014,7 +1019,7 @@
             ["State", "VARIANT", "Default", ["Default", "Hover", "Focus"]],
             ["Size", "VARIANT", "md", ["md", "sm", "lg"]]
           ],
-          "nests": ["_Icon/square-arrow-out-up-right (archived 2026-11-16)"]
+          "nests": ["Icon"]
         }
       ]
     },
@@ -2343,7 +2348,7 @@
         },
         {
           "id": "109:1227",
-          "name": "_Icon/loader-circle (archived 2026-11-16)",
+          "name": "Icon/loader-circle (archived 2026-11-16, still nested by Button and IconButton spinner)",
           "type": "ONE"
         },
         {
@@ -2423,7 +2428,7 @@
         },
         {
           "id": "2295:2541",
-          "name": "_Icon/square-arrow-out-up-right (archived 2026-11-16)",
+          "name": "Icon/square-arrow-out-up-right (archived 2026-11-16, still nested by InlineLink external icon)",
           "type": "ONE"
         },
         {

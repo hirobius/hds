@@ -1,20 +1,8 @@
 {
   "$comment": "The known differences between the Figma library and code (first full read, 2026-11-15). pnpm check:figma-parity fails on a difference that is not here, and on an entry whose difference is gone: fix the difference, then delete its entry, so this list only shrinks. An entry needs a reason a reviewer can check and the issue that removes it. Fix list: hds#1565.",
   "accepted": {
-    "collection-not-in-code:Button tone": {
-      "reason": "Hand-built in Figma for the condensed Button (hds#1147). No token builds it, so check:figma-drift ignores it. Move its values to tokens or accept it as Figma-only: hds#1565, Figma fix F2."
-    },
-    "variables-changed:Hirobius/Semantic": {
-      "reason": "The 2026-11-20 token delta (post 8d1eb225) changed this collection after the parity read of 2026-11-16; figma/snapshot.json records the new state (drift 0). Removed by the next parity read (pnpm figma:parity --emit-read, then --ingest): hds#1565."
-    },
-    "variables-changed:Hirobius/Component": {
-      "reason": "The 2026-11-20 token delta (post 8d1eb225) changed this collection after the parity read of 2026-11-16; figma/snapshot.json records the new state (drift 0). Removed by the next parity read (pnpm figma:parity --emit-read, then --ingest): hds#1565."
-    },
-    "variables-changed:Hirobius/Brand": {
-      "reason": "The 2026-11-20 token delta (post 8d1eb225) changed this collection after the parity read of 2026-11-16; figma/snapshot.json records the new state (drift 0). Removed by the next parity read (pnpm figma:parity --emit-read, then --ingest): hds#1565."
-    },
-    "variables-changed:Hirobius/Density": {
-      "reason": "The 2026-11-20 token delta (post 8d1eb225) changed this collection after the parity read of 2026-11-16; figma/snapshot.json records the new state (drift 0). Removed by the next parity read (pnpm figma:parity --emit-read, then --ingest): hds#1565."
+    "collection-not-in-code:DEPRECATED – Button tone (unused)": {
+      "reason": "Retired 2026-11-20 (hds#1565 F2): no layer binds it; Button and IconButton now bind the semantic and component variables code uses. Renamed so nobody picks it. Only Adrian deletes in the library: Variables panel > collection menu > Delete collection. The next parity read then drops this entry."
     }
   }
 }
