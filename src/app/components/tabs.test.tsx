@@ -35,6 +35,17 @@ describe('Tabs', () => {
     expect(screen.getByRole('tabpanel').textContent).toBe('A');
   });
 
+  it('marks the active tab with the selected fill only: no bottom edge, a focus ring stays', () => {
+    render(<Example />);
+    for (const tab of screen.getAllByRole('tab')) {
+      expect(tab.className).not.toMatch(/(^|\s)(data-\[state=active\]:)?border-b/);
+      expect(tab.className).toContain('hds-focus-inset');
+    }
+    const cls = screen.getAllByRole('tab')[0].className;
+    expect(cls).toContain('data-[state=active]:bg-[var(--semantic-color-selected-bg)]');
+    expect(cls).toContain('data-[state=active]:text-[var(--semantic-color-selected-fg)]');
+  });
+
   it('draws the focus ring inset, so the scrolling list (overflow-x-auto) cannot clip it', () => {
     render(<Example />);
     expectInsetFocusRing();

@@ -221,19 +221,19 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
         active: true,
         variant: 'primary',
         interaction: 'rest',
-        className: '[--seg-fill:var(--semantic-color-selected-bg)]',
+        className: 'bg-[var(--semantic-color-selected-bg)]',
       },
       {
         active: true,
         variant: 'primary',
         interaction: 'hover',
-        className: '[--seg-fill:var(--semantic-accent-hover)]',
+        className: 'bg-[var(--semantic-accent-hover)]',
       },
       {
         active: true,
         variant: 'primary',
         interaction: 'pressed',
-        className: '[--seg-fill:var(--semantic-accent-pressed)]',
+        className: 'bg-[var(--semantic-accent-pressed)]',
       },
       {
         active: false,
@@ -248,19 +248,8 @@ const segmentedControlIndicatorVariants = /* @__PURE__ */ cva(
         className: 'bg-[var(--semantic-color-surface-accentSubtle)]',
       },
 
-      // Ring — shown whenever active (any interaction) or hovered; color follows variant.
-      // The secondary selected segment is the selected fill too; its old 1px edge is gone.
-      // Primary selected (C2): the primary fill (--seg-fill, set per interaction above) with
-      // the primary hard edge, drawn inside at the bottom because the scrolling rail clips
-      // anything below the segment. Fill and edge are ONE background image over a
-      // transparent colour: an inset shadow, or an edge layer over a fill colour, leaves the
-      // fill's anti-aliased rim at the rounded bottom corners (a light line in dark mode).
-      {
-        active: true,
-        variant: 'primary',
-        className:
-          'bg-[image:linear-gradient(to_top,var(--hds-edge-primary)_3px,var(--seg-fill)_3px)]',
-      },
+      // Ring — shown on hover only. A selected segment is a fill (selected.bg / selected.fg),
+      // never an edge or a raised key: no bottom ledge in either variant or theme.
       {
         active: false,
         interaction: 'hover',
@@ -317,13 +306,10 @@ const segmentedControlLabelVariants = /* @__PURE__ */ cva(
       // grew to 34px instead of Button sm's 32px. A 1x line box fits; the glyphs stay 16px.
       // type-ramp-ok: the ui role's size and weight stay; only the sm line box drops to the semantic lineHeight.none token (hds#1214)
       size: { sm: 'leading-[var(--semantic-typography-lineHeight-none)]', md: '' },
-      // The selected primary segment paints a 3px edge inset at its bottom, so its visible
-      // face is 3px shorter and the label read low on it. Lift the label onto the face.
-      lifted: { true: '-translate-y-px', false: '' },
       // type-ramp-ok: the selected label weight is semantic.typography.weight.selected (600), the one selected look
       selected: { true: '[font-weight:var(--semantic-typography-weight-selected)]', false: '' },
     },
-    defaultVariants: { size: 'md', lifted: false, selected: false },
+    defaultVariants: { size: 'md', selected: false },
   },
 );
 
@@ -482,7 +468,6 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
             className={cn(
               segmentedControlLabelVariants({
                 size,
-                lifted: active && variant === 'primary',
                 selected: active,
               }),
               'inline-flex items-center justify-center',
@@ -494,7 +479,6 @@ export const SegmentedControl = /* @__PURE__ */ forwardRef<HTMLDivElement, Segme
           <span
             className={segmentedControlLabelVariants({
               size,
-              lifted: active && variant === 'primary',
               selected: active,
             })}
           >

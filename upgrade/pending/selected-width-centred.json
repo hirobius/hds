@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "SegmentedControl, Tabs and Tag labels sit centred in their box, about 3px lower than before."
+}

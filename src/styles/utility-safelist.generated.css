@@ -104,6 +104,8 @@
 @source inline("bg-[var(--component-tag-activeBackground)]");
 @source inline("bg-[var(--component-tag-background)]");
 @source inline("bg-[var(--role-muted,var(--semantic-color-surface-raised))]");
+@source inline("bg-[var(--semantic-accent-hover)]");
+@source inline("bg-[var(--semantic-accent-pressed)]");
 @source inline("bg-[var(--semantic-color-border-default)]");
 @source inline("bg-[var(--semantic-color-content-disabled)]");
 @source inline("bg-[var(--semantic-color-content-onAccent)]");

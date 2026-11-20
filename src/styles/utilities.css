@@ -203,6 +203,10 @@
    * the box width, so the box is always the selected width and neighbours do not shift. */
   .hds-selected-width {
     display: inline-block;
+    /* An inline-block's baseline is its last line box; the zero-height ::after block puts that
+     * at the box's bottom, so the label rode 7px above the line and sat off-centre in a
+     * SegmentedControl segment. Aligning to the line top drops the baseline from the sum. */
+    vertical-align: top;
   }
   .hds-selected-width::after {
     content: attr(data-hds-text);

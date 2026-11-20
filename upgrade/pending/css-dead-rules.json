@@ -13,8 +13,6 @@
         ]
       },
       "facts": [
-        "utility-removed:bg-[var(--semantic-accent-hover)]",
-        "utility-removed:bg-[var(--semantic-accent-pressed)]",
         "utility-removed:bg-[var(--semantic-accent-rest)]",
         "utility-removed:bg-page",
         "utility-removed:bg-raised",
