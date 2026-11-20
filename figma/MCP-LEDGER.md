@@ -1851,3 +1851,14 @@ Delta on main 595232c: updated 15 · created 10 · deleted 0 against snapshot bb
 | 7   | `use_figma`      | write | Button tone rebind script (retry)                    | interrupted: no result came back; may be partly applied. Not retried                |
 
 Figma calls then stopped on the coordinator's instruction (approval prompts). Open: verify call 7 in the library, finish the Button tone rebind, re-read parity. Nothing deleted, nothing published.
+
+## 2026-11-20 · Release 0.47.0: meta sync on the Version PR (#1594, head 8f90925)
+
+| #   | Tool             | Kind  | What                                                             | Result                                                                     |
+| --- | ---------------- | ----- | ---------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| 1   | `create_session` | setup | file session                                                     | ok, 62f8d5cc                                                               |
+| 2   | `use_figma`      | read  | Button and IconButton: Button tone bindings, modes               | 0 bindings, 0 modes: the earlier rebind (call 7 above) was fully applied   |
+| 3   | `get_screenshot` | read  | Button set 2399:11077, after                                     | ok, matches code                                                           |
+| 4   | `use_figma`      | write | delta.js (updated 3: version 0.47.0, releasedAt, commit 8f90925) | ok, post fcb0b5ce; snapshot rebuilt --from-receipt, check:figma-release OK |
+
+Nothing deleted, nothing published.
