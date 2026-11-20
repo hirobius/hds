@@ -5,7 +5,7 @@
  * depth is one token set, component.button.depth.{edge,hoverOffset,pressedOffset}
  * (hds#1387), shared by every raised variant, tone, size and icon-only Button. No top
  * highlight, no soft drop shadow. Tertiary is the ghost: no edge, no movement. Selected
- * states take the primary fill and the primary edge.
+ * states take the primary fill; a selected SegmentedControl segment takes no edge.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -238,7 +238,7 @@ describe('wipe', () => {
   });
 });
 
-describe('selected states take the primary fill and the primary edge', () => {
+describe('selected states take the primary fill; a selected SegmentedControl segment takes no edge', () => {
   it('pressed toggle', () => {
     render(<Button defaultPressed>On</Button>);
     const el = screen.getByRole('button');

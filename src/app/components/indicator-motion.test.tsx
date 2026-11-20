@@ -29,7 +29,7 @@ describe('indicator motion (hds#751)', () => {
     expect(cls).not.toMatch(/(^|\s)ease-(out|in|in-out|linear)(\s|$)/);
   });
 
-  it('times the active Tabs indicator and colour on the productive token', () => {
+  it('times the active Tabs fill and colour on the productive token', () => {
     render(
       <Tabs defaultValue="a">
         <TabsList>
@@ -39,7 +39,7 @@ describe('indicator motion (hds#751)', () => {
       </Tabs>,
     );
     const cls = screen.getByRole('tab', { name: 'A' }).className;
-    expect(cls).toContain('transition-[color,background-color,border-color]');
+    expect(cls).toContain('transition-[color,background-color]');
     expect(cls).toContain(TOKEN_DURATION);
     expect(cls).toContain(TOKEN_EASING);
     expect(cls).not.toMatch(/(^|\s)transition-colors(\s|$)/);

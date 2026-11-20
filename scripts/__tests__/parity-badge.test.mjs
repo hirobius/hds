@@ -68,7 +68,7 @@ describe('ParityBadge', () => {
   });
 
   it('is a labelled description list, so a reader hears the term and its value', () => {
-    expect(view({ figmaParity: complete })).toMatch(/<dl[^>]*aria-label="Figma and code"/);
+    expect(view({ figmaParity: complete })).toMatch(/<dl[^>]*aria-label="Figma parity"/);
   });
 
   it('has no figure typed into its source', () => {

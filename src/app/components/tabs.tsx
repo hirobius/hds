@@ -1,14 +1,14 @@
 /**
- * Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
+ * Tabs — Radix-backed tabs (Root, List, Trigger, Content).
  *
- * Underline pattern (hds#891 soft surfaces):
+ * Selected-fill pattern (hds#891 soft surfaces):
  *   - TabsList draws no divider at rest: space below it (mb-6) separates the
  *     strip from its panel.
- *   - TabsTrigger has a transparent `border-b-2` at rest, so the active 2px
- *     underline takes no extra height when it appears.
- *   - Active state pairs the underline with a `surface.selected` fill that
- *     extends down into TabsContent — the active tab visually "claims" its
- *     content panel (folder-tab affordance, modern-soft).
+ *   - The active tab is a fill (`semantic.color.selected` bg, fg and weight),
+ *     never an edge: no underline, so one cue marks the selection. Trigger
+ *     height comes from `min-h` (controlHeight.md), so it does not change.
+ *   - The `panel` TabsContent default sits on `surface.selected`, pulled up
+ *     under the strip (folder-tab affordance, modern-soft).
  *
  * Overflow:
  *   TabsList is horizontally scrollable (`overflow-x-auto whitespace-nowrap`)
@@ -109,13 +109,12 @@ export function TabsTrigger({
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        // The active indicator (bottom border), tint and text colour fade on the productive token (hds#751)
-        'relative inline-flex min-h-[var(--semantic-size-controlHeight-md)] items-center px-fixed-xs hds-type-ui hds-touch-row transition-[color,background-color,border-color] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
-        // border colour via arbitrary values: utilities.css ships an unlayered .border-transparent that beats Tailwind's data-[state=active] variants (bug bash 24, item 4)
-        'border-b-2 border-b-[color:transparent] text-muted-foreground rounded-t-md', // impeccable-disable-line border-accent-on-rounded -- false positive: the bottom edge and top corners never touch
+        // The active fill and text colour fade on the productive token (hds#751)
+        'relative inline-flex min-h-[var(--semantic-size-controlHeight-md)] items-center px-fixed-xs hds-type-ui hds-touch-row transition-[color,background-color] duration-[var(--hds-motion-productive-duration)] ease-[var(--hds-motion-productive-easing)]',
+        'text-muted-foreground rounded-t-md',
         // Selected: the shared selected fill, fg and weight (semantic.color.selected).
         // type-ramp-ok: the active label weight is semantic.typography.weight.selected (600)
-        'data-[state=active]:border-b-[color:var(--semantic-color-selected-bg)] data-[state=active]:text-[var(--semantic-color-selected-fg)] data-[state=active]:bg-[var(--semantic-color-selected-bg)] data-[state=active]:[font-weight:var(--semantic-typography-weight-selected)]',
+        'data-[state=active]:text-[var(--semantic-color-selected-fg)] data-[state=active]:bg-[var(--semantic-color-selected-bg)] data-[state=active]:[font-weight:var(--semantic-typography-weight-selected)]',
         'hds-focus-inset',
         'disabled:pointer-events-none disabled:text-[var(--semantic-color-content-disabled)]',
         className,

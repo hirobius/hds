@@ -1817,7 +1817,7 @@ The tab set itself. Tagged here rather than in the file block because TabsList a
   - value: string
 
 ### TabsContent
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
+Tabs — Radix-backed tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - forceMount: true
   - value: string
@@ -1830,7 +1830,7 @@ The tab strip. When tabs scroll out of view it fades the hidden edge (`data-over
   - loop: boolean
 
 ### TabsTrigger
-Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
+Tabs — Radix-backed tabs (Root, List, Trigger, Content).
   - asChild: boolean
   - value: string
 

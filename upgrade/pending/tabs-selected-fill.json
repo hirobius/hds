@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "The active Tabs trigger has no bottom edge now, only the selected fill, so its label sits 1px lower."
+}

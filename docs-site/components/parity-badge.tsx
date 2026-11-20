@@ -14,19 +14,17 @@ export function ParityReadout({ figmaParity }: Pick<Stats, 'figmaParity'>) {
   const complete = Boolean(figmaParity) && figmaParity!.passed === figmaParity!.total;
   if (!complete) return null;
   return (
-    <dl className="hds-docs-parity" aria-label="Figma and code">
-      {complete ? (
-        <div>
-          <dt>Figma parity</dt>
-          <dd>
-            <data value={figmaParity!.percent}>{figmaParity!.percent}%</data>
-            <span>
-              {' '}
-              · {figmaParity!.passed}/{figmaParity!.total} checks, read {figmaParity!.readOn}
-            </span>
-          </dd>
-        </div>
-      ) : null}
+    <dl className="hds-docs-parity" aria-label="Figma parity">
+      <div>
+        <dt>Figma parity</dt>
+        <dd>
+          <data value={figmaParity!.percent}>{figmaParity!.percent}%</data>
+          <span>
+            {' '}
+            · {figmaParity!.passed}/{figmaParity!.total} checks, read {figmaParity!.readOn}
+          </span>
+        </dd>
+      </div>
     </dl>
   );
 }

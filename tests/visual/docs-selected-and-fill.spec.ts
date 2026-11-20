@@ -91,20 +91,25 @@ for (const size of SIZES) {
         const fit = await page.evaluate(() => {
           const region = document.querySelector<HTMLElement>('.hds-demo-frame [role="region"]')!;
           const table = region.querySelector<HTMLElement>('[role="table"]')!;
-          const edge = region.getBoundingClientRect().right;
           const cells = [
             ...table.querySelectorAll<HTMLElement>('[role="columnheader"], [role="cell"]'),
           ];
-          const right = Math.max(...cells.map((c) => c.getBoundingClientRect().right));
+          // Right edge of the last cell, in the table's own coordinates (scroll-independent).
+          const tableLeft = table.getBoundingClientRect().left;
+          const cellsRight =
+            Math.max(...cells.map((c) => c.getBoundingClientRect().right)) - tableLeft;
           return {
-            gap: Math.abs(edge - right),
             tableW: table.getBoundingClientRect().width,
             regionW: region.clientWidth,
+            cellsRight,
           };
         });
         // The grid is at least as wide as the region, and its cells reach the region's right edge
         // (a table that scrolls keeps its cells inside the scrolled width, so compare widths too).
         expect(fit.tableW).toBeGreaterThanOrEqual(fit.regionW - 1);
+        expect(fit.cellsRight, 'header and rows span the full grid width').toBeGreaterThanOrEqual(
+          fit.tableW - 1,
+        );
       });
     });
   }

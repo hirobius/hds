@@ -134,7 +134,7 @@ describe('CodeBlock (items 5, 9)', () => {
 });
 
 describe('Tabs (items 4, 21)', () => {
-  it('the active trigger carries a visible underline: no unlayered .border-transparent class', () => {
+  it('the active trigger is a fill only: no bottom edge, no unlayered .border-transparent class', () => {
     render(
       <Tabs defaultValue="one">
         <TabsList>
@@ -145,8 +145,9 @@ describe('Tabs (items 4, 21)', () => {
     );
     const active = screen.getByRole('tab', { name: 'One' });
     expect(active.className).not.toMatch(/(^|\s)border-transparent(\s|$)/);
-    expect(active.className).toMatch(
-      /data-\[state=active\]:border-b-\[color:var\(--semantic-color-selected-bg\)\]/,
+    expect(active.className).not.toMatch(/border-b/);
+    expect(active.className).toContain(
+      'data-[state=active]:bg-[var(--semantic-color-selected-bg)]',
     );
   });
 });
