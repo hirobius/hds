@@ -39,6 +39,25 @@ describe('check-motion', () => {
     expect(check(src).ok).toBe(true);
   });
 
+  // hds#1536: Disclosure tweens grid-template-rows on the whole intent var
+  // (duration plus easing in theme.css), not on its `-duration` part.
+  it('passes a transition on a whole motion-intent variable (the Disclosure pattern)', () => {
+    const src =
+      "const tween = 'all var(--hds-motion-productive)';\n" +
+      'export const D = ({ show, onClick }) => (\n  <>\n    <button onClick={onClick}>Toggle</button>\n' +
+      "    <div className=\"grid\" style={{ gridTemplateRows: show ? '1fr' : '0fr', transition: tween }} />\n  </>\n);\n";
+    expect(check(src).ok).toBe(true);
+  });
+
+  it('fails a transition with a raw duration or an easing variable alone', () => {
+    const raw =
+      "export const B = () => <button style={{ transition: 'grid-template-rows 200ms ease' }}>Go</button>;\n";
+    expect(check(raw).ok).toBe(false);
+    const easingOnly =
+      "export const B = () => <button style={{ transition: 'all 200ms var(--hds-motion-productive-easing)' }}>Go</button>;\n";
+    expect(check(easingOnly).ok).toBe(false);
+  });
+
   it('fails a button with no motion', () => {
     expect(check(button('px-2')).ok).toBe(false);
   });
