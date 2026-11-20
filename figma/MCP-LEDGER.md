@@ -1835,3 +1835,19 @@ Release 0.46.0 was already synced on the Version PR (#1590). Main's plan showed 
 | 2   | `use_figma`      | write | delta.js (updated 1: meta/commit) | OK: commit d3637ba; post bbc817f1 |
 
 Session total: 2 calls (1 session, 1 write). Nothing deleted, nothing published.
+
+## 2026-11-20 · Parity pass: token delta, Button tone retired, Variables page (hds#1565)
+
+Delta on main 595232c: updated 15 · created 10 · deleted 0 against snapshot bbc817f1. Then the Button tone rebind, the Variables specimen page and a fresh parity read.
+
+| #   | Tool             | Kind  | What                                                 | Result                                                                              |
+| --- | ---------------- | ----- | ---------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 1   | `create_session` | setup | file session                                         | ok, 56a18dd8                                                                        |
+| 2   | `use_figma`      | read  | collections, pages, Button tone variables            | ok, 8 collections, Button tone 22 vars × 6 modes                                    |
+| 3   | `use_figma`      | write | delta.js unmodified (updated 15 · created 10)        | ok, post 8d1eb225; snapshot rebuilt --from-receipt, drift 0, check:figma-release OK |
+| 4   | `use_figma`      | read  | Button page: Button tone bindings and explicit modes | ok, 1,022 bindings, 84 explicit modes                                               |
+| 5   | `get_screenshot` | read  | Button set 2399:11077, before                        | ok                                                                                  |
+| 6   | `use_figma`      | write | Button tone rebind script (first try)                | error before any write: a property read on a Variable; safe to retry                |
+| 7   | `use_figma`      | write | Button tone rebind script (retry)                    | interrupted: no result came back; may be partly applied. Not retried                |
+
+Figma calls then stopped on the coordinator's instruction (approval prompts). Open: verify call 7 in the library, finish the Button tone rebind, re-read parity. Nothing deleted, nothing published.

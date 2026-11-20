@@ -32,8 +32,8 @@
     "source": "src/app/components/*.figma.ts"
   },
   "figmaParity": {
-    "percent": 97.7,
-    "passed": 1593,
+    "percent": 99.6,
+    "passed": 1624,
     "total": 1629,
     "readOn": "2026-11-16",
     "source": "figma/parity/read.json"
@@ -46,5 +46,5 @@
     "asOf": "9337c30d53b9f7c310ed53a7cfc230e116e7cd82",
     "asOfDate": "2026-11-06"
   },
-  "generatedFrom": "9f780b1e3b1c71d684ca5f9293e9e4e7993f83c2"
+  "generatedFrom": "595232c2e246a521aca6b8d885da1eeae8da0a8f"
 }

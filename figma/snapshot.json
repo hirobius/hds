@@ -1,15 +1,15 @@
 {
-  "checksum": "bbc817f1",
+  "checksum": "8d1eb225",
   "snapshot": {
     "schemaVersion": 1,
-    "takenAt": "2026-11-18T16:49:48.273Z",
+    "takenAt": "2026-11-20T06:53:21.922Z",
     "file": {
       "name": "HDS Tokens & Components",
       "key": "2VgBbVpKiDnu0aftJEVyBQ"
     },
     "lastPush": {
-      "modelHash": "3d00eb0d",
-      "pushedAt": "2026-11-18T16:49:48.208Z",
+      "modelHash": "cb9631ca",
+      "pushedAt": "2026-11-20T06:53:21.822Z",
       "scope": null
     },
     "collections": [
@@ -5745,6 +5745,57 @@
             }
           },
           {
+            "id": "VariableID:2734:20",
+            "name": "color/selected/bg",
+            "path": "semantic.color.selected.bg",
+            "resolvedType": "COLOR",
+            "description": "Selected fill (accent.rest values). Varies by brand: its value comes from Hirobius/Brand.",
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-selected-bg)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2734:26",
+                "to": "Hirobius/Brand: semantic/color/selected/bg/Light"
+              },
+              "Dark": {
+                "alias": "VariableID:2734:27",
+                "to": "Hirobius/Brand: semantic/color/selected/bg/Dark"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2734:21",
+            "name": "color/selected/fg",
+            "path": "semantic.color.selected.fg",
+            "resolvedType": "COLOR",
+            "description": "On the selected fill (onAccent values). Varies by brand: its value comes from Hirobius/Brand.",
+            "scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL",
+              "STROKE_COLOR"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-color-selected-fg)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2734:28",
+                "to": "Hirobius/Brand: semantic/color/selected/fg/Light"
+              },
+              "Dark": {
+                "alias": "VariableID:2734:29",
+                "to": "Hirobius/Brand: semantic/color/selected/fg/Dark"
+              }
+            }
+          },
+          {
             "id": "VariableID:2229:12",
             "name": "color/shadow/hard",
             "path": "semantic.color.shadow.hard",
@@ -6703,7 +6754,7 @@
             "name": "layout/grid/gap",
             "path": "semantic.layout.grid.gap",
             "resolvedType": "FLOAT",
-            "description": "Grid gap: scale.lg; theme.css points it at scale.md at runtime. Compact: scale.md (16px). Varies by density: its value comes from Hirobius/Density.",
+            "description": "Grid gap: scale.md (scale.sm below 640px, theme.css). Compact: scale.md (16px). Varies by density: its value comes from Hirobius/Density.",
             "scopes": [
               "GAP"
             ],
@@ -7157,6 +7208,78 @@
               "Dark": {
                 "alias": "VariableID:7:25",
                 "to": "Hirobius/Primitives: size/8"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2734:25",
+            "name": "size/controlHeight/lg",
+            "path": "semantic.size.controlHeight.lg",
+            "resolvedType": "FLOAT",
+            "description": "48px.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-size-controlHeight-lg)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:7:33",
+                "to": "Hirobius/Primitives: size/48"
+              },
+              "Dark": {
+                "alias": "VariableID:7:33",
+                "to": "Hirobius/Primitives: size/48"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2734:24",
+            "name": "size/controlHeight/md",
+            "path": "semantic.size.controlHeight.md",
+            "resolvedType": "FLOAT",
+            "description": "40px, the default.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-size-controlHeight-md)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:7:32",
+                "to": "Hirobius/Primitives: size/40"
+              },
+              "Dark": {
+                "alias": "VariableID:7:32",
+                "to": "Hirobius/Primitives: size/40"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2734:23",
+            "name": "size/controlHeight/sm",
+            "path": "semantic.size.controlHeight.sm",
+            "resolvedType": "FLOAT",
+            "description": "32px.",
+            "scopes": [
+              "WIDTH_HEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-size-controlHeight-sm)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:7:31",
+                "to": "Hirobius/Primitives: size/32"
+              },
+              "Dark": {
+                "alias": "VariableID:7:31",
+                "to": "Hirobius/Primitives: size/32"
               }
             }
           },
@@ -7717,7 +7840,7 @@
             "name": "space/section/inset",
             "path": "semantic.space.section.inset",
             "resolvedType": "FLOAT",
-            "description": "96px hero and landing-page inset padding.",
+            "description": "128px hero and landing-page inset padding (80px below 640px, theme.css).",
             "scopes": [
               "GAP"
             ],
@@ -7727,12 +7850,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:17",
-                "to": "Hirobius/Primitives: space/24"
+                "alias": "VariableID:5:18",
+                "to": "Hirobius/Primitives: space/32"
               },
               "Dark": {
-                "alias": "VariableID:5:17",
-                "to": "Hirobius/Primitives: space/24"
+                "alias": "VariableID:5:18",
+                "to": "Hirobius/Primitives: space/32"
               }
             }
           },
@@ -7765,7 +7888,7 @@
             "name": "space/sidebar/gap",
             "path": "semantic.space.sidebar.gap",
             "resolvedType": "FLOAT",
-            "description": "16px vertical spacing between items in sidebar and TOC stacks.",
+            "description": "20px vertical spacing between items in sidebar and TOC stacks.",
             "scopes": [
               "GAP"
             ],
@@ -7775,12 +7898,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:5:9",
+                "to": "Hirobius/Primitives: space/5"
               },
               "Dark": {
-                "alias": "VariableID:5:8",
-                "to": "Hirobius/Primitives: space/4"
+                "alias": "VariableID:5:9",
+                "to": "Hirobius/Primitives: space/5"
               }
             }
           },
@@ -7813,7 +7936,7 @@
             "name": "space/sidebar/railPadding",
             "path": "semantic.space.sidebar.railPadding",
             "resolvedType": "FLOAT",
-            "description": "20px outer padding for sidebar and TOC rails.",
+            "description": "24px outer padding for sidebar and TOC rails.",
             "scopes": [
               "GAP"
             ],
@@ -7823,12 +7946,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:9",
-                "to": "Hirobius/Primitives: space/5"
+                "alias": "VariableID:5:10",
+                "to": "Hirobius/Primitives: space/6"
               },
               "Dark": {
-                "alias": "VariableID:5:9",
-                "to": "Hirobius/Primitives: space/5"
+                "alias": "VariableID:5:10",
+                "to": "Hirobius/Primitives: space/6"
               }
             }
           },
@@ -7837,7 +7960,7 @@
             "name": "space/sidebar/sectionGap",
             "path": "semantic.space.sidebar.sectionGap",
             "resolvedType": "FLOAT",
-            "description": "12px spacing between sidebar sections and grouped rail blocks.",
+            "description": "16px spacing between sidebar sections and grouped rail blocks.",
             "scopes": [
               "GAP"
             ],
@@ -7847,12 +7970,12 @@
             },
             "valuesByMode": {
               "Light": {
-                "alias": "VariableID:5:7",
-                "to": "Hirobius/Primitives: space/3"
+                "alias": "VariableID:5:8",
+                "to": "Hirobius/Primitives: space/4"
               },
               "Dark": {
-                "alias": "VariableID:5:7",
-                "to": "Hirobius/Primitives: space/3"
+                "alias": "VariableID:5:8",
+                "to": "Hirobius/Primitives: space/4"
               }
             }
           },
@@ -9691,6 +9814,30 @@
                 "value": 24
               }
             }
+          },
+          {
+            "id": "VariableID:2734:22",
+            "name": "typography/weight/selected",
+            "path": "semantic.typography.weight.selected",
+            "resolvedType": "FLOAT",
+            "description": "Selected label weight.",
+            "scopes": [
+              "FONT_WEIGHT"
+            ],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {
+              "WEB": "var(--semantic-typography-weight-selected)"
+            },
+            "valuesByMode": {
+              "Light": {
+                "alias": "VariableID:2371:4",
+                "to": "Hirobius/Primitives: typography/weight/semibold"
+              },
+              "Dark": {
+                "alias": "VariableID:2371:4",
+                "to": "Hirobius/Primitives: typography/weight/semibold"
+              }
+            }
           }
         ]
       },
@@ -10706,7 +10853,7 @@
             "name": "button/size/lg/height",
             "path": "component.button.size.lg.height",
             "resolvedType": "FLOAT",
-            "description": "Large button height (52px).",
+            "description": "Large button height (48px).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -10716,8 +10863,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2272:4",
-                "to": "Hirobius/Primitives: size/52"
+                "alias": "VariableID:2734:25",
+                "to": "Hirobius/Semantic: size/controlHeight/lg"
               }
             }
           },
@@ -10826,7 +10973,7 @@
             "name": "button/size/md/height",
             "path": "component.button.size.md.height",
             "resolvedType": "FLOAT",
-            "description": "Medium button height (44px).",
+            "description": "Medium button height (40px).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -10836,8 +10983,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2272:3",
-                "to": "Hirobius/Primitives: size/44"
+                "alias": "VariableID:2734:24",
+                "to": "Hirobius/Semantic: size/controlHeight/md"
               }
             }
           },
@@ -10906,7 +11053,7 @@
             "name": "button/size/md/paddingY",
             "path": "component.button.size.md.paddingY",
             "resolvedType": "FLOAT",
-            "description": "Medium button vertical padding (8px; the 44px height drives the box).",
+            "description": "Medium button vertical padding (8px; the 40px height drives the box).",
             "scopes": [
               "GAP"
             ],
@@ -10946,7 +11093,7 @@
             "name": "button/size/sm/height",
             "path": "component.button.size.sm.height",
             "resolvedType": "FLOAT",
-            "description": "Small button height (36px).",
+            "description": "Small button height (32px).",
             "scopes": [
               "WIDTH_HEIGHT"
             ],
@@ -10956,8 +11103,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2272:2",
-                "to": "Hirobius/Primitives: size/36"
+                "alias": "VariableID:2734:23",
+                "to": "Hirobius/Semantic: size/controlHeight/sm"
               }
             }
           },
@@ -11765,8 +11912,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:2061:894",
-                "to": "Hirobius/Semantic: size/row/compact"
+                "alias": "VariableID:2734:24",
+                "to": "Hirobius/Semantic: size/controlHeight/md"
               }
             }
           },
@@ -11806,8 +11953,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:12:21",
-                "to": "Hirobius/Semantic: accent/rest"
+                "alias": "VariableID:2734:20",
+                "to": "Hirobius/Semantic: color/selected/bg"
               }
             }
           },
@@ -11826,8 +11973,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:12:21",
-                "to": "Hirobius/Semantic: accent/rest"
+                "alias": "VariableID:2734:20",
+                "to": "Hirobius/Semantic: color/selected/bg"
               }
             }
           },
@@ -11869,8 +12016,8 @@
             },
             "valuesByMode": {
               "Default": {
-                "alias": "VariableID:10:13",
-                "to": "Hirobius/Semantic: color/content/onAccent"
+                "alias": "VariableID:2734:21",
+                "to": "Hirobius/Semantic: color/selected/fg"
               }
             }
           },
@@ -13137,6 +13284,102 @@
             }
           },
           {
+            "id": "VariableID:2734:27",
+            "name": "semantic/color/selected/bg/Dark",
+            "path": "brand.semantic.color.selected.bg.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.selected.bg in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:2",
+                "to": "Hirobius/Primitives: color/graphite/50"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:5",
+                "to": "Hirobius/Primitives: color/cobalt/300"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2734:26",
+            "name": "semantic/color/selected/bg/Light",
+            "path": "brand.semantic.color.selected.bg.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.selected.bg in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:9",
+                "to": "Hirobius/Primitives: color/graphite/700"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:2187:8",
+                "to": "Hirobius/Primitives: color/cobalt/600"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2734:29",
+            "name": "semantic/color/selected/fg/Dark",
+            "path": "brand.semantic.color.selected.fg.Dark",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.selected.fg in Dark. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:2146:11",
+                "to": "Hirobius/Primitives: color/graphite/900"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:3:15",
+                "to": "Hirobius/Primitives: color/neutral/black"
+              }
+            }
+          },
+          {
+            "id": "VariableID:2734:28",
+            "name": "semantic/color/selected/fg/Light",
+            "path": "brand.semantic.color.selected.fg.Light",
+            "resolvedType": "COLOR",
+            "description": "Brand value of semantic.color.selected.fg in Light. Hirobius: the base token. Overridden by accent-cobalt ([data-brand=\"accent-cobalt\"]).",
+            "scopes": [],
+            "hiddenFromPublishing": false,
+            "codeSyntax": {},
+            "valuesByMode": {
+              "Hirobius": {
+                "alias": "VariableID:3:2",
+                "to": "Hirobius/Primitives: color/neutral/50"
+              },
+              "brutalist-demo": {
+                "alias": "VariableID:3:2",
+                "to": "Hirobius/Primitives: color/neutral/50"
+              },
+              "accent-cobalt": {
+                "alias": "VariableID:3:14",
+                "to": "Hirobius/Primitives: color/neutral/white"
+              }
+            }
+          },
+          {
             "id": "VariableID:2606:50",
             "name": "semantic/color/surface/accent/Dark",
             "path": "brand.semantic.color.surface.accent.Dark",
@@ -13352,8 +13595,8 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Comfortable": {
-                "alias": "VariableID:5:13",
-                "to": "Hirobius/Primitives: space/10"
+                "alias": "VariableID:5:11",
+                "to": "Hirobius/Primitives: space/7"
               },
               "Compact": {
                 "alias": "VariableID:5:8",
@@ -14601,7 +14844,7 @@
             "codeSyntax": {},
             "valuesByMode": {
               "Default": {
-                "value": "d3637ba"
+                "value": "648e3c3"
               }
             }
           },
@@ -15411,7 +15654,7 @@
     "mismatches": [],
     "checksum": "99955183"
   },
-  "tokensHash": "sha256:df41b989c8b6e3c5c41280f5f8f32324dc10d6460d1b53b9997cb69f54af0e1e",
-  "syncedCommit": "d3637ba",
-  "syncedHash": "sha256:6d79397392fab008ddef5ccc2d71b052f106f420f22e9e4591653936ef18ce9d"
+  "tokensHash": "sha256:32a66c05d575461537b986be0e388fda3b96192dcb68ab4f66fb6db2be7ef6f6",
+  "syncedCommit": "648e3c3",
+  "syncedHash": "sha256:d39e1078717cd6627138fb966997656bf9081911d627d69445f87eb4e20dfcb6"
 }
