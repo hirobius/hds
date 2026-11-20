@@ -3,7 +3,7 @@
   "focus": "Finish the 0.41.0 release: Sora static weights (Regular, SemiBold, Bold) in code and Figma, then the delta sync on the Version PR.",
   "phase": "active",
   "note": "State is derived: ops reads release from package.json and next/blocked from issue labels. Only focus and phase are written by hand.",
-  "updatedAt": "2026-11-20T17:55:20Z",
+  "updatedAt": "2026-11-20T18:08:37Z",
   "consistency": {
     "date": "2026-10-31",
     "source": "harness",
