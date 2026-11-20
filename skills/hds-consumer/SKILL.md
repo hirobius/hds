@@ -172,9 +172,9 @@ Components you may import from `@hirobius/design-system`. Providers, hooks and h
 - `NavListItem` — One row of a NavList.
 - `Pagination` — Paged navigation with first/last anchors, sibling pages, and ellipses.
 - `Tabs` — The tab set itself.
-- `TabsContent` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
+- `TabsContent` — Tabs — Radix-backed tabs (Root, List, Trigger, Content).
 - `TabsList` — The tab strip.
-- `TabsTrigger` — Tabs — Radix-backed underline tabs (Root, List, Trigger, Content).
+- `TabsTrigger` — Tabs — Radix-backed tabs (Root, List, Trigger, Content).
 
 ### Overlays
 
