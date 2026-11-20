@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { openThemed } from './theme';
 
 /**
@@ -49,19 +49,28 @@ async function expectSelectedIsFill(
   );
 }
 
+const ROUTE = '/docs/patterns/data-table-section';
+
+/** Open the route in a theme, with the mobile sidebar drawer open on a phone. */
+async function openDocs(page: Page, width: number, theme: (typeof THEMES)[number], drawer = true) {
+  await openThemed(page, ROUTE, theme);
+  if (drawer && width < 768) {
+    await page
+      .getByRole('button', { name: /menu|sidebar/i })
+      .first()
+      .click();
+  }
+}
+
 for (const size of SIZES) {
   for (const theme of THEMES) {
     test.describe(`docs chrome ${size.name} ${theme}`, () => {
       test.use({ viewport: { width: size.width, height: size.height } });
 
-      test('Settings popover and theme control: selected is a fill', async ({ page }) => {
-        await openThemed(page, '/docs/patterns/data-table-section', theme);
-        if (size.width < 768) {
-          await page
-            .getByRole('button', { name: /menu|sidebar/i })
-            .first()
-            .click();
-        }
+      test('Settings popover and theme control: selected is a fill; no Code Connect line', async ({
+        page,
+      }) => {
+        await openDocs(page, size.width, theme);
         const trigger = page.locator('[data-docs-switch-trigger]:visible').first();
         await trigger.click();
         const popover = page.getByRole('dialog', { name: 'Display settings' });
@@ -70,25 +79,15 @@ for (const size of SIZES) {
           await expectSelectedIsFill(popover.getByRole('radiogroup', { name: label }));
         }
         await page.keyboard.press('Escape');
+        // The footer's metadata slot no longer shows the Code Connect template count.
+        await expect(page.getByText(/Code Connect|\d+ templates/)).toHaveCount(0);
         await expectSelectedIsFill(
           page.getByRole('radiogroup', { name: 'Theme' }).locator('visible=true').first(),
         );
       });
 
-      test('the sidebar footer has no Code Connect line', async ({ page }) => {
-        await openThemed(page, '/docs/patterns/data-table-section', theme);
-        if (size.width < 768) {
-          await page
-            .getByRole('button', { name: /menu|sidebar/i })
-            .first()
-            .click();
-        }
-        await expect(page.getByText(/Code Connect/)).toHaveCount(0);
-        await expect(page.getByText(/\d+ templates/)).toHaveCount(0);
-      });
-
       test('the table fills its container', async ({ page }) => {
-        await openThemed(page, '/docs/patterns/data-table-section', theme);
+        await openDocs(page, size.width, theme, false);
         const fit = await page.evaluate(() => {
           const region = document.querySelector<HTMLElement>('.hds-demo-frame [role="region"]')!;
           const table = region.querySelector<HTMLElement>('[role="table"]')!;

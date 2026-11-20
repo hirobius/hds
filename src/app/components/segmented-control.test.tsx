@@ -120,10 +120,9 @@ describe('SegmentedControl — indicator and description share one state (hds#10
       <SegmentedControl aria-label="View" value="list" onChange={() => {}} options={DESCRIBED} />,
     );
     const on = parts('List');
-    expect(on.indicator).toContain('bg-[var(--semantic-color-selected-bg)]');
     // Selected is a fill, never an edge: no raised key, no bottom ledge (hds docs fix).
-    expect(on.indicator).not.toContain('hds-edge');
-    expect(on.indicator).not.toContain('linear-gradient');
+    expect(on.indicator).not.toMatch(/hds-edge|linear-gradient/);
+    expect(on.indicator).toContain('bg-[var(--semantic-color-selected-bg)]');
     expect(on.description).toContain('text-[var(--semantic-color-selected-fg)]');
     expect(on.description).not.toContain('text-[var(--semantic-color-content-secondary)]');
     const off = parts('Grid');
