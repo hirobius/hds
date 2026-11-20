@@ -268,13 +268,9 @@ describe('selected states take the primary fill and the primary edge', () => {
     const radio = screen.getByRole('radio', { name: /Watched/ });
     const indicator = radio.querySelector('[class*="--semantic-color-selected-bg"]')!;
     expect(indicator).not.toBeNull();
-    // The edge is a background layer clipped with the fill, not an inset shadow: an inset
-    // shadow leaves the fill's anti-aliased rim showing at the rounded bottom corners, a
-    // light line under the edge in dark mode (roleflame, 390 dark).
-    expect(classes(indicator)).toContain(
-      'bg-[image:linear-gradient(to_top,var(--hds-edge-primary)_3px,var(--seg-fill)_3px)]',
-    );
-    expect(classes(indicator)).not.toContain('shadow-[inset_0_-3px_0_var(--hds-edge-primary)]');
+    // Selected is a fill, never an edge: the indicator carries no edge layer or inset shadow.
+    expect(classes(indicator)).not.toContain('--hds-edge-primary');
+    expect(classes(indicator)).not.toContain('linear-gradient');
   });
 });
 

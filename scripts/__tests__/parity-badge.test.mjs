@@ -32,30 +32,35 @@ describe('ParityBadge', () => {
     html = renderToStaticMarkup(createElement(mod.ParityBadge));
   });
 
-  it('hides the parity score until every check passes, and keeps the Code Connect count', () => {
-    const out = view({ figmaParity: partial, codeConnect });
-    expect(out).not.toContain('Figma parity');
-    expect(out).not.toContain('1436');
-    expect(out).toContain('<dt>Code Connect</dt>');
-    expect(out).toContain('61 templates');
+  it('hides the parity score until every check passes', () => {
+    const out = view({ figmaParity: partial });
+    expect(out).toBe('');
   });
 
-  it('shows the parity score once passed equals total, beside the Code Connect count', () => {
-    const out = view({ figmaParity: complete, codeConnect });
+  it('shows the parity score once passed equals total', () => {
+    const out = view({ figmaParity: complete });
     expect(out).toContain('<dt>Figma parity</dt>');
     expect(out).toContain('>100%<');
     expect(out).toContain('1597/1597 checks, read 2026-12-01');
-    expect(out).toContain('61 templates');
   });
 
-  it('renders nothing with no parity read and no Code Connect count', () => {
-    expect(view({ figmaParity: partial, codeConnect: undefined })).toBe('');
+  it('never shows the Code Connect count in the sidebar footer', () => {
+    const out = view({ figmaParity: complete, codeConnect });
+    expect(out).not.toContain('Code Connect');
+    expect(out).not.toContain('templates');
+    expect(html).not.toContain('Code Connect');
+    expect(html).not.toContain('templates');
+    // The data stays: hds-stats.json still carries the count.
+    expect(typeof stats.codeConnect.templates).toBe('number');
+  });
+
+  it('renders nothing with no parity read', () => {
+    expect(view({ figmaParity: partial, codeConnect })).toBe('');
     expect(view({})).toBe('');
   });
 
-  it('renders the figures the stats hold: the count always, the score only at 100%', () => {
+  it('renders the score only at 100%, from the stats', () => {
     const { percent, passed, total } = stats.figmaParity;
-    expect(html).toContain(`${stats.codeConnect.templates} templates`);
     if (passed === total) expect(html).toContain(`>${percent}%<`);
     else expect(html).not.toContain('Figma parity');
     // The data and the gate stay: hds-stats.json still carries the score.
@@ -63,9 +68,7 @@ describe('ParityBadge', () => {
   });
 
   it('is a labelled description list, so a reader hears the term and its value', () => {
-    expect(view({ figmaParity: complete, codeConnect })).toMatch(
-      /<dl[^>]*aria-label="Figma and code"/,
-    );
+    expect(view({ figmaParity: complete })).toMatch(/<dl[^>]*aria-label="Figma and code"/);
   });
 
   it('has no figure typed into its source', () => {

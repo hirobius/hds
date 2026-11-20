@@ -115,10 +115,8 @@ describe('SegmentedControl label fit (hds#1214)', () => {
     for (const l of labels('md')) expect(l.className).not.toContain('lineHeight-none');
   });
 
-  it('lifts only the selected primary label off the inset edge', () => {
-    const [active, ...rest] = labels('sm');
-    expect(active.className).toContain('-translate-y-px');
-    for (const l of rest) expect(l.className).not.toContain('-translate-y-px');
+  it('does not lift the selected primary label: selected is a fill with no bottom edge', () => {
+    for (const l of labels('sm')) expect(l.className).not.toContain('-translate-y-px');
   });
 
   it('does not lift the secondary label, which has no bottom edge', () => {
