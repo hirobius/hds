@@ -85,6 +85,7 @@ This section outranks the process rules below. It does not outrank the hard rule
 - Pick the cheapest model that can do the job. Give the reason in one line in the dispatch description.
 - Default to minimum effort.
 - Use `isolation: "worktree"` when two agents can touch the same file.
+- A coordinator session never runs the Agent tool in its own thread. It delegates to worker sessions. See `docs/agent/sub-agents.md`.
 
 ## Lint (detail: `docs/agent/lint-fix.md`)
 
