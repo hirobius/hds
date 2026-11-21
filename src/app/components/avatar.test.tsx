@@ -16,16 +16,16 @@ describe('Avatar', () => {
   });
 
   it('renders the image when src is provided', () => {
-    const { container } = render(<Avatar src="/u.png" alt="Adrian Milsap" />);
+    const { container } = render(<Avatar src="/u.png" alt="Jordan Lee" />);
     const img = container.querySelector('img');
     expect(img).not.toBeNull();
-    expect(img?.getAttribute('alt')).toBe('Adrian Milsap');
+    expect(img?.getAttribute('alt')).toBe('Jordan Lee');
   });
 
   it('derives two-letter initials from a multi-word alt when no src', () => {
-    const { container } = render(<Avatar alt="Adrian Milsap" />);
+    const { container } = render(<Avatar alt="Jordan Lee" />);
     expect(container.querySelector('img')).toBeNull();
-    expect(screen.getByText('AM')).not.toBeNull();
+    expect(screen.getByText('JL')).not.toBeNull();
   });
 
   it('uses the first two letters for a single-word name', () => {
@@ -34,17 +34,17 @@ describe('Avatar', () => {
   });
 
   it('prefers explicit initials over the derived ones', () => {
-    render(<Avatar alt="Adrian Milsap" initials="HD" />);
+    render(<Avatar alt="Jordan Lee" initials="HD" />);
     expect(screen.getByText('HD')).not.toBeNull();
   });
 
   it('falls back to initials when the image fails to load', () => {
-    const { container } = render(<Avatar src="/broken.png" alt="Adrian Milsap" />);
+    const { container } = render(<Avatar src="/broken.png" alt="Jordan Lee" />);
     const img = container.querySelector('img');
     expect(img).not.toBeNull();
     fireEvent.error(img!);
     expect(container.querySelector('img')).toBeNull();
-    expect(screen.getByText('AM')).not.toBeNull();
+    expect(screen.getByText('JL')).not.toBeNull();
   });
 });
 
@@ -73,7 +73,7 @@ describe('Avatar icon fallback (Roleforge signed-out account)', () => {
   });
 
   it('still prefers a loaded image over the icon fallback', () => {
-    const { container } = render(<Avatar src="/u.png" alt="Adrian Milsap" fallback="icon" />);
+    const { container } = render(<Avatar src="/u.png" alt="Jordan Lee" fallback="icon" />);
     expect(container.querySelector('img')).not.toBeNull();
     expect(container.querySelector('svg[data-hds-icon]')).toBeNull();
   });
@@ -81,13 +81,13 @@ describe('Avatar icon fallback (Roleforge signed-out account)', () => {
 
 describe('Avatar status dot', () => {
   it('a11y:avatar.status-named - renders a Badge dot named by statusLabel', () => {
-    render(<Avatar alt="Adrian Milsap" status="warning" statusLabel="Not synced" />);
+    render(<Avatar alt="Jordan Lee" status="warning" statusLabel="Not synced" />);
     const dot = screen.getByRole('img', { name: 'Not synced' });
     expect(dot.getAttribute('data-tone')).toBe('warning');
   });
 
   it('hides an unnamed dot from assistive technology', () => {
-    const { container } = render(<Avatar alt="Adrian Milsap" status="success" />);
+    const { container } = render(<Avatar alt="Jordan Lee" status="success" />);
     const dot = container.querySelector('[data-tone="success"]');
     expect(dot).not.toBeNull();
     expect(dot?.getAttribute('aria-hidden')).toBe('true');
