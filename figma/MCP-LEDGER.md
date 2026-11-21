@@ -1880,3 +1880,17 @@ Session 62f8d5cc, after the 0.47.0 meta sync. Earlier this day: the Button tone 
 | 21    | `use_figma`      | read  | snapshot-diff.js unmodified                                             | ok, 6 changed records (the rename), live 7f10c7c1 |
 
 Nothing deleted, nothing published. Adrian: delete the DEPRECATED collection when ready (Variables panel > collection menu > Delete collection), then publish.
+
+## 2026-11-20/21 · Parity pass, part 3: Table dividers, roleflame, 100% read (hds#1565)
+
+| #    | Tool             | Kind  | What                                                                        | Result                                            |
+| ---- | ---------------- | ----- | --------------------------------------------------------------------------- | ------------------------------------------------- |
+| 1    | `use_figma`      | read  | Table page 111:6 frames                                                     | ok                                                |
+| 2–3  | `get_screenshot` | read  | Table set 89:300, Table spec sheet 2304:9553                                | ok                                                |
+| 4    | `use_figma`      | read  | Table variant structure                                                     | ok, Token cells 1px short                         |
+| 5    | `use_figma`      | write | Table set: 48 header and body cells fill the row height                     | ok, dividers aligned; nothing deleted             |
+| 6    | `get_screenshot` | read  | Table set after                                                             | ok                                                |
+| 7    | `use_figma`      | read  | snapshot-diff.js unmodified, after Adrian deleted the DEPRECATED collection | ok, 23 removed records, live 755ddce1             |
+| 8–12 | `use_figma`      | read  | parity variables.js and components 1–4 of 4, unmodified                     | ok; components identical to the 20 Nov 23:19 read |
+
+The roleflame file (not the library) was worked in its own session; its calls are not library calls. Nothing deleted in the library, nothing published.
