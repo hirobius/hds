@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.47.1
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Looks different: Below 640px, variables.css now sets --semantic-layout-grid-gap to 20px (12px under compact), as styles.css already did; it was 28px (16px compact) there.
+- Looks different: Below 640px, variables.css now sets --semantic-layout-section-paddingY to 64px, as styles.css already did; it was 96px there.
+- Looks different: Below 640px, variables.css now sets --semantic-space-layout-gap to 20px (12px under compact), as styles.css already did; variables.css did not define it at any width before, and still does not above 640px.
+- Looks different: Below 640px, variables.css now sets --semantic-space-region-gutter to 20px (12px under compact), as styles.css already did; it was 40px (24px compact) there.
+- And 4 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0471).
+
+### Patch Changes
+
+- f505613: An icon-only Button is at least 44px wide on phones and coarse pointers, under the same `(max-width: 639px), (pointer: coarse)` query as the 44px height. The React `md` icon-only Button was 40px wide beside a height already lifted to 44px; it is now a 44px square there. In static.css, `.hds-button` (every size but `--sm`) also takes `min-width: 44px` under that query (a text button narrower than 44px, such as a one or two letter label, widens to it; longer ones are unchanged), and the `--sm` hit area, which was 44px tall, is now centred and at least 44px wide under that query (its 32px layout does not change; React sm icon-only grows its layout to 44px, static only its hit area). Desktop is unchanged.
+- 3749afc: Static `.hds-button` (static.css) now lifts to the 44px touch target on phones and coarse pointers, under the same `(max-width: 639px), (pointer: coarse)` query as the React Button's `.hds-touch-row`. A medium link or button in static markup grows from 40px to 44px there; `.hds-button--sm` keeps its extended hit area and `--lg` stays 48px. Desktop is unchanged. The upgrade ledger also fixes two 0.47.0 release-note slips: one Tag line was printed three times, and the `seg-edge-corners` note now counts as a look change.
+- 1579caf: `variables.css` now ships the phone-width token steps (below 640px), so a page that loads it before `styles.css` paints the phone values at once instead of the desktop ones followed by a layout shift when `styles.css` loads (0.46 and 0.47). The steps move to one source, `responsive-tokens.css`, which `styles.css` and `tokens.css` take through `index.css`; `theme.css` no longer holds a copy. A test fails when a copy comes back.
+
 ## 0.47.0
 
 ### Upgrade

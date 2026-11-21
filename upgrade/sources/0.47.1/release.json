@@ -1,0 +1,22 @@
+{
+  "$comment": "Frozen inputs of the 0.47.1 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.47.1 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.47.1",
+  "previous": "0.47.0",
+  "date": "2026-11-21",
+  "summary": "8 that look different.",
+  "backfilled": false,
+  "notes": {
+    "icon-button-touch-target": {
+      "needle": "f505613: An icon-only Button is at least",
+      "source": "CHANGELOG.md:19"
+    },
+    "static-button-touch-target": {
+      "needle": "3749afc: Static `.hds-button` (static.css)",
+      "source": "CHANGELOG.md:20"
+    },
+    "variables-phone-tokens": {
+      "needle": "1579caf: `variables.css` now ships the phone-width",
+      "source": "CHANGELOG.md:21"
+    }
+  }
+}

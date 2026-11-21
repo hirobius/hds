@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.47.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.47.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,21 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.47.1
+
+Released 2026-11-21 (patch). 8 that look different.
+
+### Looks different
+
+- Below 640px, variables.css now sets --semantic-layout-grid-gap to 20px (12px under compact), as styles.css already did; it was 28px (16px compact) there.
+- Below 640px, variables.css now sets --semantic-layout-section-paddingY to 64px, as styles.css already did; it was 96px there.
+- Below 640px, variables.css now sets --semantic-space-layout-gap to 20px (12px under compact), as styles.css already did; variables.css did not define it at any width before, and still does not above 640px.
+- Below 640px, variables.css now sets --semantic-space-region-gutter to 20px (12px under compact), as styles.css already did; it was 40px (24px compact) there.
+- Below 640px, variables.css now sets --semantic-space-section-inset to 80px, as styles.css already did; it was 128px there.
+- Below 640px, variables.css now sets --semantic-space-section-stack to 64px (48px under compact, as before), as styles.css already did; it was 96px there.
+- On phones and touch screens an icon-only md Button is a 44px square (was 40px wide), and static .hds-button icon buttons (and labels under 44px wide) are at least 44px wide; check toolbars built from them at narrow widths.
+- A medium static .hds-button is 44px tall on phones and touch screens (was 40px); check rows built from static markup on narrow screens.
 
 ## 0.47.0
 
