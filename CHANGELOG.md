@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.48.0
+
+### Upgrade
+
+```sh
+npx @hirobius/design-system@latest upgrade
+```
+
+- Do by hand: Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it.
+- Do by hand: Read tokenValues.primitive.color.info instead of tokenValues.primitive.color.blue; the values are the same.
+- Do by hand: Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them.
+- Do by hand: Read tokens.primitive.color.info instead of tokens.primitive.color.blue; the values are the same.
+- And 7 more: see [UPGRADING.md](https://github.com/hirobius/hds/blob/main/UPGRADING.md#0480).
+
+### Minor Changes
+
+- 63c356f: Rename the `primitive.color.blue` ramp to `primitive.color.info` (same values; feedback only, never an accent) and delete `primitive.color.projectBrand.microsoftGameDev.*` (a client brand does not belong in the shared library). The `--hds-accent-50..900` aliases now track the real accent ramp (graphite, or cobalt under `data-accent="cobalt"`) and are deprecated. The `--primitive-color-blue-*` CSS names and `hds.color.blue` stay one release as deprecated aliases of info.
+
 ## 0.47.1
 
 ### Upgrade
