@@ -46,7 +46,7 @@ export type AvatarStatus = 'neutral' | 'info' | 'success' | 'warning' | 'danger'
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-/** Up to two leading letters from a name, e.g. "Adrian Milsap" → "AM". */
+/** Up to two leading letters from a name, e.g. "Jordan Lee" → "JL". */
 function deriveInitials(name?: string): string {
   if (!name) return '';
   const words = name.trim().split(/\s+/).filter(Boolean);
