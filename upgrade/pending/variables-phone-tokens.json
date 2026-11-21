@@ -6,7 +6,7 @@
       "id": "value-changed/--semantic-layout-grid-gap",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "plain": "Below 640px, variables.css now sets --semantic-layout-grid-gap to 20px (12px under compact), as styles.css already did; it was 28px (16px compact) there.",
       "detect": {
         "cssVars": ["--semantic-layout-grid-gap"],
         "cssVarWrites": ["--semantic-layout-grid-gap"]
@@ -20,7 +20,7 @@
       "id": "value-changed/--semantic-layout-section-paddingY",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "plain": "Below 640px, variables.css now sets --semantic-layout-section-paddingY to 64px, as styles.css already did; it was 96px there.",
       "detect": {
         "cssVars": ["--semantic-layout-section-paddingY"],
         "cssVarWrites": ["--semantic-layout-section-paddingY"]
@@ -30,10 +30,20 @@
       ]
     },
     {
+      "id": "value-changed/--semantic-space-layout-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets --semantic-space-layout-gap to 20px (12px under compact), as styles.css already did; variables.css did not define it at any width before, and still does not above 640px.",
+      "detect": {
+        "cssVars": ["--semantic-space-layout-gap"],
+        "cssVarWrites": ["--semantic-space-layout-gap"]
+      }
+    },
+    {
       "id": "value-changed/--semantic-space-region-gutter",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "plain": "Below 640px, variables.css now sets --semantic-space-region-gutter to 20px (12px under compact), as styles.css already did; it was 40px (24px compact) there.",
       "detect": {
         "cssVars": ["--semantic-space-region-gutter"],
         "cssVarWrites": ["--semantic-space-region-gutter"]
@@ -47,7 +57,7 @@
       "id": "value-changed/--semantic-space-section-inset",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "plain": "Below 640px, variables.css now sets --semantic-space-section-inset to 80px, as styles.css already did; it was 128px there.",
       "detect": {
         "cssVars": ["--semantic-space-section-inset"],
         "cssVarWrites": ["--semantic-space-section-inset"]
@@ -58,7 +68,7 @@
       "id": "value-changed/--semantic-space-section-stack",
       "kind": "value-changed",
       "impact": "look",
-      "plain": "Below 640px, variables.css now sets this variable to its phone value (section stack 64px, was 96px), as styles.css already did, so a page that loaded variables.css first no longer shifts when styles.css loads.",
+      "plain": "Below 640px, variables.css now sets --semantic-space-section-stack to 64px (48px under compact, as before), as styles.css already did; it was 96px there.",
       "detect": {
         "cssVars": ["--semantic-space-section-stack"],
         "cssVarWrites": ["--semantic-space-section-stack"]
