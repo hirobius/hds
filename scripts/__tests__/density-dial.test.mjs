@@ -12,7 +12,8 @@ import { fileURLToPath } from 'url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
-const theme = read('src/styles/theme.css');
+// The phone-width steps live in responsive-tokens.css; index.css imports it right after theme.css.
+const theme = `${read('src/styles/theme.css')}\n${read('src/styles/responsive-tokens.css')}`;
 const generated = read('src/styles/tokens.generated.css');
 
 const SCALE = ['xs', 'sm', 'md', 'lg', 'xl'];

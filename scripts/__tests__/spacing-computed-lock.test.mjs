@@ -279,6 +279,8 @@ const PAGE_CSS = [
   read('src/styles/tokens.generated.css'),
   read('src/styles/tenants.css'),
   read('src/styles/theme.css').replace(/^@(import|config)[^;]*;/gm, ''),
+  // index.css imports the phone-width steps after theme.css, so a phone step still wins.
+  read('src/styles/responsive-tokens.css'),
 ].join('\n');
 
 const CHROMIUM = chromiumForTests();
@@ -456,7 +458,8 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('spacing matches c506c3b', () => {
         const locked = lockedCells(fixture.cells);
         const want = lockedValues(fixture, key).map((v, i) =>
           expected(fixture.emitted[key], locked[i], v),
-        );        const got = computed[key].split(' ');
+        );
+        const got = computed[key].split(' ');
         const diffs = fixture.cells
           .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))
           .filter(Boolean);
@@ -531,7 +534,8 @@ describe.skipIf(CAPTURE || CAPTURE_LAYOUT)('the layout components match 8e53a8a'
         itemPad && locked[i].split('|')[1] === 'compact'
           ? '12px'
           : expected(measuredDecl(key), locked[i], v),
-      );      const got = computed[key].split(' ');
+      );
+      const got = computed[key].split(' ');
       const diffs = fixture.cells
         .map((cell, i) => (want[i] === got[i] ? null : `${cell}: ${want[i]} -> ${got[i]}`))
         .filter(Boolean);
