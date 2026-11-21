@@ -1,0 +1,124 @@
+{
+  "version": "0.47.1",
+  "date": "2026-11-21",
+  "bump": "patch",
+  "summary": "7 that look different.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.47.1/value-changed/--semantic-layout-grid-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets --semantic-layout-grid-gap to 20px (12px under compact), as styles.css already did; it was 28px (16px compact) there.",
+      "detect": {
+        "cssVars": [
+          "--semantic-layout-grid-gap"
+        ],
+        "cssVarWrites": [
+          "--semantic-layout-grid-gap"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width: 639px) :root",
+        "css-var-changed:--semantic-layout-grid-gap:@media (max-width: 639px) [data-density='compact']"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.47.1/value-changed/--semantic-layout-section-paddingY",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets --semantic-layout-section-paddingY to 64px, as styles.css already did; it was 96px there.",
+      "detect": {
+        "cssVars": [
+          "--semantic-layout-section-paddingY"
+        ],
+        "cssVarWrites": [
+          "--semantic-layout-section-paddingY"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-layout-section-paddingY:@media (max-width: 639px) :root"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.47.1/value-changed/--semantic-space-layout-gap",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets --semantic-space-layout-gap to 20px (12px under compact), as styles.css already did; variables.css did not define it at any width before, and still does not above 640px.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-layout-gap"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-layout-gap"
+        ]
+      },
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.47.1/value-changed/--semantic-space-region-gutter",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets --semantic-space-region-gutter to 20px (12px under compact), as styles.css already did; it was 40px (24px compact) there.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-region-gutter"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-region-gutter"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-region-gutter:@media (max-width: 639px) :root",
+        "css-var-changed:--semantic-space-region-gutter:@media (max-width: 639px) [data-density='compact']"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.47.1/value-changed/--semantic-space-section-inset",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets --semantic-space-section-inset to 80px, as styles.css already did; it was 128px there.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-section-inset"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-section-inset"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-section-inset:@media (max-width: 639px) :root"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.47.1/value-changed/--semantic-space-section-stack",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "Below 640px, variables.css now sets --semantic-space-section-stack to 64px (48px under compact, as before), as styles.css already did; it was 96px there.",
+      "detect": {
+        "cssVars": [
+          "--semantic-space-section-stack"
+        ],
+        "cssVarWrites": [
+          "--semantic-space-section-stack"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-space-section-stack:@media (max-width: 639px) :root",
+        "css-var-changed:--semantic-space-section-stack:@media (max-width: 639px) [data-density='compact']"
+      ],
+      "source": "CHANGELOG.md:20"
+    },
+    {
+      "id": "0.47.1/look/static-button-touch-target",
+      "kind": "look",
+      "impact": "look",
+      "plain": "A medium static .hds-button is 44px tall on phones and touch screens (was 40px); check rows built from static markup on narrow screens.",
+      "source": "CHANGELOG.md:19"
+    }
+  ]
+}
