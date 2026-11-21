@@ -21,6 +21,7 @@ Give the reason for the model and the effort in one line in the dispatch descrip
 
 Standing rule, set by Adrian on 2026-11-21.
 
-- A coordinator session does not run sub-agents (the Agent tool) in its own thread.
+- A coordinator or orchestrator session never runs sub-agents (the Agent tool) in its own thread.
 - It sends each task and each review to a separate worker session. It uses `create_session` and `send_message`.
 - The coordinator thread only coordinates, merges, and reports. This keeps its context free.
+- Mandatory skills that spawn sub-agents (for example `/code-review`, `/implement-spec`, `impeccable`) still run. Run them in a worker session, never in the coordinator thread. Worker sessions may use sub-agents as usual.
