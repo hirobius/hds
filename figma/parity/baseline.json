@@ -1,72 +1,6 @@
 {
   "$comment": "The known differences between the Figma library and code (first full read, 2026-11-15). pnpm check:figma-parity fails on a difference that is not here, and on an entry whose difference is gone: fix the difference, then delete its entry, so this list only shrinks. An entry needs a reason a reviewer can check and the issue that removes it. Fix list: hds#1565.",
   "accepted": {
-    "token-missing-in-figma:Hirobius/Primitives: color/info/50": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/100": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/200": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/300": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/400": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/450": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/500": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/600": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/700": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/800": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-missing-in-figma:Hirobius/Primitives: color/info/900": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/100": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/200": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/300": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/400": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/450": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/50": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/500": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/600": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/700": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/800": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-extra-in-figma:Hirobius/Primitives: color/blue/900": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
     "token-extra-in-figma:Hirobius/Primitives: color/projectBrand/microsoftGameDev/100": {
       "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
     },
@@ -76,19 +10,43 @@
     "token-extra-in-figma:Hirobius/Primitives: color/projectBrand/microsoftGameDev/900": {
       "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
     },
+    "token-value-mismatch:Hirobius/Primitives: color/info/50": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/100": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/200": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/300": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/400": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/450": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/500": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/600": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/700": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/800": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-value-mismatch:Hirobius/Primitives: color/info/900": {
+      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
     "token-value-mismatch:Hirobius/Semantic: color/feedback/info": {
       "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
     },
-    "token-value-mismatch:Hirobius/Semantic: color/feedback/info [Dark]": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
     "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/info": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/info [Light]": {
-      "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
-    },
-    "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/info [Dark]": {
       "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
     }
   }

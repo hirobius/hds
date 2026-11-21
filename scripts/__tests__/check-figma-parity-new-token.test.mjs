@@ -21,6 +21,7 @@ const INPUTS = [
   'hirobius.tokens.json',
   'public/hds-manifest.json',
   'package.json',
+  'TOKEN_MIGRATION.md',
   'figma',
   'src/app/components',
   'directions',
