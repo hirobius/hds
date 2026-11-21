@@ -41,18 +41,18 @@ export const tokenRefs = {
         white: "var(--primitive-color-neutral-white)",
         black: "var(--primitive-color-neutral-black)"
       },
-      blue: {
-        "50": "var(--primitive-color-blue-50)",
-        "100": "var(--primitive-color-blue-100)",
-        "200": "var(--primitive-color-blue-200)",
-        "300": "var(--primitive-color-blue-300)",
-        "400": "var(--primitive-color-blue-400)",
-        "450": "var(--primitive-color-blue-450)",
-        "500": "var(--primitive-color-blue-500)",
-        "600": "var(--primitive-color-blue-600)",
-        "700": "var(--primitive-color-blue-700)",
-        "800": "var(--primitive-color-blue-800)",
-        "900": "var(--primitive-color-blue-900)"
+      info: {
+        "50": "var(--primitive-color-info-50)",
+        "100": "var(--primitive-color-info-100)",
+        "200": "var(--primitive-color-info-200)",
+        "300": "var(--primitive-color-info-300)",
+        "400": "var(--primitive-color-info-400)",
+        "450": "var(--primitive-color-info-450)",
+        "500": "var(--primitive-color-info-500)",
+        "600": "var(--primitive-color-info-600)",
+        "700": "var(--primitive-color-info-700)",
+        "800": "var(--primitive-color-info-800)",
+        "900": "var(--primitive-color-info-900)"
       },
       red: {
         "50": "var(--primitive-color-red-50)",
@@ -160,13 +160,6 @@ export const tokenRefs = {
         "700": "var(--primitive-color-stone-700)",
         "800": "var(--primitive-color-stone-800)",
         "950": "var(--primitive-color-stone-950)"
-      },
-      projectBrand: {
-        microsoftGameDev: {
-          "100": "var(--primitive-color-projectBrand-microsoftGameDev-100)",
-          "500": "var(--primitive-color-projectBrand-microsoftGameDev-500)",
-          "900": "var(--primitive-color-projectBrand-microsoftGameDev-900)"
-        }
       },
       shadow: {
         ink: "var(--primitive-color-shadow-ink)"

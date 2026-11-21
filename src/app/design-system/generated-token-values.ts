@@ -52,7 +52,7 @@ export const tokenValues = {
         white: "#ffffff",
         black: "#060a13"
       },
-      blue: {
+      info: {
         "50": "oklch(0.96 0.03 266.54)",
         "100": "oklch(0.92 0.04 266.54)",
         "200": "oklch(0.88 0.07 266.54)",
@@ -164,13 +164,6 @@ export const tokenValues = {
         "700": "#75593A",
         "800": "#5C432A",
         "950": "#3A2E1F"
-      },
-      projectBrand: {
-        microsoftGameDev: {
-          "100": "#E5E5FC",
-          "500": "#6d31fb",
-          "900": "oklch(0.22 0.16 304)"
-        }
       },
       shadow: {
         ink: "#282c34"

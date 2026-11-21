@@ -108,52 +108,52 @@
           "$description": "Specific value within the neutral range at a defined lightness step."
         }
       },
-      "blue": {
+      "info": {
         "50": {
           "$value": "oklch(0.96 0.03 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "100": {
           "$value": "oklch(0.92 0.04 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "200": {
           "$value": "oklch(0.88 0.07 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "300": {
           "$value": "oklch(0.70 0.2903 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "400": {
           "$value": "oklch(0.65 0.2903 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "450": {
           "$value": "oklch(0.56 0.29 266.60)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "500": {
           "$value": "#1E2EFD",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "600": {
           "$value": "oklch(0.45 0.2903 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "700": {
           "$value": "oklch(0.44 0.2903 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "800": {
           "$value": "oklch(0.30 0.07 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
         "900": {
           "$value": "oklch(0.22 0.05 266.54)",
-          "$description": "Specific value within the blue range at a defined lightness step."
+          "$description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent."
         },
-        "$description": "Discrete values within the blue range at defined lightness steps."
+        "$description": "Info feedback ramp (renamed from blue in 0.48.0). Feedback only; never an accent."
       },
       "red": {
         "$description": "Discrete values within the red range at defined lightness steps.",
@@ -446,7 +446,7 @@
           "$value": "#2a1659",
           "$description": "Specific value within the lilac range at a defined lightness step."
         },
-        "$description": "Lilac ramp at fixed lightness steps. Mirrors the blue ramp's stops; available to brand overlays."
+        "$description": "Lilac ramp at fixed lightness steps. Mirrors the info ramp's stops; available to brand overlays."
       },
       "amber": {
         "$description": "Discrete values within the amber range at defined lightness steps.",
@@ -509,24 +509,6 @@
           "$description": "Stone 950 — near-black warm tone; dark-mode subtle accent surface."
         },
         "$description": "Warm stone/brown accent ramp, unused by directions; published for consumer brand overlays via the brand bridge."
-      },
-      "projectBrand": {
-        "microsoftGameDev": {
-          "100": {
-            "$value": "#E5E5FC",
-            "$description": "Light support tone for the Microsoft Game Dev project brand."
-          },
-          "500": {
-            "$value": "#6d31fb",
-            "$description": "Primary accent tone for the Microsoft Game Dev project brand."
-          },
-          "900": {
-            "$value": "oklch(0.22 0.16 304)",
-            "$description": "Dark support tone for the Microsoft Game Dev project brand."
-          },
-          "$description": "Project-specific brand colors used in portfolio contexts."
-        },
-        "$description": "Project-specific brand color families reserved for portfolio surfaces."
       },
       "shadow": {
         "ink": {
@@ -2224,12 +2206,13 @@
         },
         "info": {
           "$type": "color",
+          "$description": "Info feedback text and icon colour (primitive.color.info ramp in dark mode). Feedback only; never an accent.",
           "$value": "oklch(.48 .15 262)",
           "$extensions": {
             "com.figma.variables": {
               "modes": {
                 "Light": "oklch(.48 .15 262)",
-                "Dark": "{primitive.color.blue.200}"
+                "Dark": "{primitive.color.info.200}"
               }
             }
           }
@@ -2285,12 +2268,13 @@
           },
           "info": {
             "$type": "color",
-            "$value": "{primitive.color.blue.200}",
+            "$description": "Info feedback background (primitive.color.info ramp). Feedback only; never an accent.",
+            "$value": "{primitive.color.info.200}",
             "$extensions": {
               "com.figma.variables": {
                 "modes": {
-                  "Light": "{primitive.color.blue.200}",
-                  "Dark": "{primitive.color.blue.800}"
+                  "Light": "{primitive.color.info.200}",
+                  "Dark": "{primitive.color.info.800}"
                 }
               }
             }

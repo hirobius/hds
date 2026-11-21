@@ -8,7 +8,7 @@
  *
  * Checks:
  *   I1-I10  - legacy --hds-accent* / --hds-color-brand helpers alias semantic token vars
- *   I11     - --hds-color-brand-rgb matches RGB components of primitive.color.blue.500
+ *   I11     - --hds-color-brand-rgb matches RGB components of primitive.color.info.500
  *   I12     - --hds-font-family includes primitive.typography.family.primary[0]
  *   I13     - --hds-font-mono includes primitive.typography.family.mono[0] (if var exists)
  *
@@ -78,7 +78,7 @@ for (const [id, helper, expected] of bridgeChecks) {
   }
 }
 
-const brandHex = raw.primitive?.color?.blue?.['500']?.['$value'];
+const brandHex = raw.primitive?.color?.info?.['500']?.['$value'];
 if (brandHex) {
   const rgb = hexToRGB(brandHex);
   if (rgb) {
@@ -93,10 +93,10 @@ if (brandHex) {
       }
     }
   } else {
-    errors.push(`I11 primitive.color.blue.500 value "${brandHex}" is not a 6-digit hex`);
+    errors.push(`I11 primitive.color.info.500 value "${brandHex}" is not a 6-digit hex`);
   }
 } else {
-  errors.push('I11 primitive.color.blue.500 not found in hirobius.tokens.json');
+  errors.push('I11 primitive.color.info.500 not found in hirobius.tokens.json');
 }
 
 const primaryFontArr = raw.primitive?.typography?.family?.primary?.['$value'];

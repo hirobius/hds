@@ -48,6 +48,13 @@
     },
     {
       "kind": "export",
+      "name": "hds.color.blue",
+      "removeIn": "0.49.0",
+      "notice": "primitive.color.blue was renamed info (feedback only); use `info`.",
+      "file": "src/app/design-system/tokens.ts"
+    },
+    {
+      "kind": "export",
       "name": "hds.semantic.typography.label",
       "removeIn": "1.0.0",
       "notice": "hds#483 — use `typeStyles.ui`.",

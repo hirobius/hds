@@ -23,7 +23,7 @@ const FONT_FAMILY_MONO = 'var(--primitive-typography-family-mono)';
 const hds = {
   // ── Colors ──────────────────────────────────────────────────────────────────
   color: {
-    brand: 'var(--primitive-color-blue-500)', // primitive — use only where dark mode adaptation isn't needed (e.g. bg fills)
+    brand: 'var(--primitive-color-info-500)', // primitive — use only where dark mode adaptation isn't needed (e.g. bg fills)
     content: {
       primary: 'var(--semantic-color-content-primary)', // semantic — main content and headings
       secondary: 'var(--semantic-color-content-secondary)', // semantic — subdued content and captions
@@ -32,7 +32,7 @@ const hds = {
       accent: 'var(--semantic-color-content-accent)', // semantic — links and interactive content
       onAccent: 'var(--semantic-color-content-onAccent)', // semantic — content on accent surfaces
     },
-    brandPressed: 'var(--primitive-color-blue-600)',
+    brandPressed: 'var(--primitive-color-info-600)',
     brandRGB: '30,46,253',
     white: 'var(--primitive-color-neutral-white)',
 
@@ -47,18 +47,35 @@ const hds = {
       },
     },
 
+    info: {
+      '50': 'var(--primitive-color-info-50)',
+      '100': 'var(--primitive-color-info-100)',
+      '200': 'var(--primitive-color-info-200)',
+      '300': 'var(--primitive-color-info-300)',
+      '400': 'var(--primitive-color-info-400)',
+      '450': 'var(--primitive-color-info-450)',
+      '500': 'var(--primitive-color-info-500)',
+      '600': 'var(--primitive-color-info-600)',
+      '700': 'var(--primitive-color-info-700)',
+      '800': 'var(--primitive-color-info-800)',
+      '900': 'var(--primitive-color-info-900)',
+    },
+    /**
+     * @deprecated primitive.color.blue was renamed info (feedback only); use `info`.
+     * @removeIn 0.49.0
+     */
     blue: {
-      '50': 'var(--primitive-color-blue-50)',
-      '100': 'var(--primitive-color-blue-100)',
-      '200': 'var(--primitive-color-blue-200)',
-      '300': 'var(--primitive-color-blue-300)',
-      '400': 'var(--primitive-color-blue-400)',
-      '450': 'var(--primitive-color-blue-450)',
-      '500': 'var(--primitive-color-blue-500)',
-      '600': 'var(--primitive-color-blue-600)',
-      '700': 'var(--primitive-color-blue-700)',
-      '800': 'var(--primitive-color-blue-800)',
-      '900': 'var(--primitive-color-blue-900)',
+      '50': 'var(--primitive-color-info-50)',
+      '100': 'var(--primitive-color-info-100)',
+      '200': 'var(--primitive-color-info-200)',
+      '300': 'var(--primitive-color-info-300)',
+      '400': 'var(--primitive-color-info-400)',
+      '450': 'var(--primitive-color-info-450)',
+      '500': 'var(--primitive-color-info-500)',
+      '600': 'var(--primitive-color-info-600)',
+      '700': 'var(--primitive-color-info-700)',
+      '800': 'var(--primitive-color-info-800)',
+      '900': 'var(--primitive-color-info-900)',
     },
 
     feedback: {
@@ -75,8 +92,8 @@ const hds = {
         light: tokenValues.primitive.color.red['700'],
       },
       info: {
-        dark: tokenValues.primitive.color.blue['300'],
-        light: tokenValues.primitive.color.blue['500'],
+        dark: tokenValues.primitive.color.info['300'],
+        light: tokenValues.primitive.color.info['500'],
       },
     },
   },

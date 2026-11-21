@@ -2,7 +2,7 @@
   "name": "Hirobius Design System",
   "description": "Three-tier design token system for Adrian Milsap's portfolio site. Tokens flow primitive → semantic → component. All visual decisions trace back to hirobius.tokens.json.",
   "version": "1",
-  "generated": "2026-11-21T01:42:25.344Z",
+  "generated": "2026-11-21T02:26:32.046Z",
   "source": "hirobius.tokens.json",
   "format": "W3C DTCG 2025.10",
   "docs": "https://hirobius-design-system.vercel.app/",
@@ -13536,80 +13536,80 @@
         "value": "#060a13"
       },
       {
-        "path": "primitive.color.blue.50",
-        "cssVar": "--primitive-color-blue-50",
+        "path": "primitive.color.info.50",
+        "cssVar": "--primitive-color-info-50",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.96 0.03 266.54)"
       },
       {
-        "path": "primitive.color.blue.100",
-        "cssVar": "--primitive-color-blue-100",
+        "path": "primitive.color.info.100",
+        "cssVar": "--primitive-color-info-100",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.92 0.04 266.54)"
       },
       {
-        "path": "primitive.color.blue.200",
-        "cssVar": "--primitive-color-blue-200",
+        "path": "primitive.color.info.200",
+        "cssVar": "--primitive-color-info-200",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.88 0.07 266.54)"
       },
       {
-        "path": "primitive.color.blue.300",
-        "cssVar": "--primitive-color-blue-300",
+        "path": "primitive.color.info.300",
+        "cssVar": "--primitive-color-info-300",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.70 0.2903 266.54)"
       },
       {
-        "path": "primitive.color.blue.400",
-        "cssVar": "--primitive-color-blue-400",
+        "path": "primitive.color.info.400",
+        "cssVar": "--primitive-color-info-400",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.65 0.2903 266.54)"
       },
       {
-        "path": "primitive.color.blue.450",
-        "cssVar": "--primitive-color-blue-450",
+        "path": "primitive.color.info.450",
+        "cssVar": "--primitive-color-info-450",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.56 0.29 266.60)"
       },
       {
-        "path": "primitive.color.blue.500",
-        "cssVar": "--primitive-color-blue-500",
+        "path": "primitive.color.info.500",
+        "cssVar": "--primitive-color-info-500",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "#1E2EFD"
       },
       {
-        "path": "primitive.color.blue.600",
-        "cssVar": "--primitive-color-blue-600",
+        "path": "primitive.color.info.600",
+        "cssVar": "--primitive-color-info-600",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.45 0.2903 266.54)"
       },
       {
-        "path": "primitive.color.blue.700",
-        "cssVar": "--primitive-color-blue-700",
+        "path": "primitive.color.info.700",
+        "cssVar": "--primitive-color-info-700",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.44 0.2903 266.54)"
       },
       {
-        "path": "primitive.color.blue.800",
-        "cssVar": "--primitive-color-blue-800",
+        "path": "primitive.color.info.800",
+        "cssVar": "--primitive-color-info-800",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.30 0.07 266.54)"
       },
       {
-        "path": "primitive.color.blue.900",
-        "cssVar": "--primitive-color-blue-900",
+        "path": "primitive.color.info.900",
+        "cssVar": "--primitive-color-info-900",
         "type": "color",
-        "description": "Specific value within the blue range at a defined lightness step.",
+        "description": "Specific value within the info range at a defined lightness step. Feedback only (semantic.color.feedback.info); never an accent.",
         "value": "oklch(0.22 0.05 266.54)"
       },
       {
@@ -14122,27 +14122,6 @@
         "type": "color",
         "description": "Stone 950 — near-black warm tone; dark-mode subtle accent surface.",
         "value": "#3A2E1F"
-      },
-      {
-        "path": "primitive.color.projectBrand.microsoftGameDev.100",
-        "cssVar": "--primitive-color-projectBrand-microsoftGameDev-100",
-        "type": "color",
-        "description": "Light support tone for the Microsoft Game Dev project brand.",
-        "value": "#E5E5FC"
-      },
-      {
-        "path": "primitive.color.projectBrand.microsoftGameDev.500",
-        "cssVar": "--primitive-color-projectBrand-microsoftGameDev-500",
-        "type": "color",
-        "description": "Primary accent tone for the Microsoft Game Dev project brand.",
-        "value": "#6d31fb"
-      },
-      {
-        "path": "primitive.color.projectBrand.microsoftGameDev.900",
-        "cssVar": "--primitive-color-projectBrand-microsoftGameDev-900",
-        "type": "color",
-        "description": "Dark support tone for the Microsoft Game Dev project brand.",
-        "value": "oklch(0.22 0.16 304)"
       },
       {
         "path": "primitive.color.shadow.ink",
@@ -15731,9 +15710,10 @@
         "path": "semantic.color.feedback.info",
         "cssVar": "--semantic-color-feedback-info",
         "type": "color",
+        "description": "Info feedback text and icon colour (primitive.color.info ramp in dark mode). Feedback only; never an accent.",
         "value": "oklch(.48 .15 262)",
         "dark": {
-          "alias": "{primitive.color.blue.200}",
+          "alias": "{primitive.color.info.200}",
           "resolvedValue": "oklch(0.88 0.07 266.54)"
         }
       },
@@ -15785,10 +15765,11 @@
         "path": "semantic.color.feedback.bg.info",
         "cssVar": "--semantic-color-feedback-bg-info",
         "type": "color",
-        "alias": "{primitive.color.blue.200}",
+        "description": "Info feedback background (primitive.color.info ramp). Feedback only; never an accent.",
+        "alias": "{primitive.color.info.200}",
         "resolvedValue": "oklch(0.88 0.07 266.54)",
         "dark": {
-          "alias": "{primitive.color.blue.800}",
+          "alias": "{primitive.color.info.800}",
           "resolvedValue": "oklch(0.30 0.07 266.54)"
         }
       },

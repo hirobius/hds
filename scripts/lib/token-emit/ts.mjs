@@ -196,8 +196,8 @@ function deriveFallbackDescription(path) {
 
   if (normalized.startsWith('primitive.color.neutral'))
     return 'Neutral ramp step for surfaces and text.';
-  if (normalized.startsWith('primitive.color.blue'))
-    return 'Brand blue ramp step for accents and interactive states.';
+  if (normalized.startsWith('primitive.color.info'))
+    return 'Info feedback ramp step (feedback only; never an accent).';
   if (normalized.startsWith('primitive.color.red'))
     return 'Feedback red ramp step for error states.';
   if (normalized.startsWith('primitive.color.green'))

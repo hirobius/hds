@@ -177,17 +177,34 @@
   --hds-anim-skeleton: var(--hds-motion-spatial-duration) ease-in-out infinite;
   --hds-anim-spin: calc(var(--hds-motion-spatial-duration) * 8) linear;
 
-  /* -- Accent ramp (blue scale aliases — raw stop access) --------------------- */
-  --hds-accent-50: var(--primitive-color-blue-50);
-  --hds-accent-100: var(--primitive-color-blue-100);
-  --hds-accent-200: var(--primitive-color-blue-200);
-  --hds-accent-300: var(--primitive-color-blue-300);
-  --hds-accent-400: var(--primitive-color-blue-400);
-  --hds-accent-500: var(--primitive-color-blue-500);
-  --hds-accent-600: var(--primitive-color-blue-600);
-  --hds-accent-700: var(--primitive-color-blue-700);
-  --hds-accent-800: var(--primitive-color-blue-800);
-  --hds-accent-900: var(--primitive-color-blue-900);
+  /* -- Accent ramp (raw stop access) ------------------------------------------ */
+  /* @deprecated (0.48.0): the --hds-accent-<stop> aliases used to point at the blue ramp; they now track the
+     real accent ramp (graphite by default, cobalt under data-accent="cobalt"). Use --semantic-accent-* instead.
+     Removed in 1.0.0. No component reads them. */
+  --hds-accent-50: var(--primitive-color-graphite-50);
+  --hds-accent-100: var(--primitive-color-graphite-100);
+  --hds-accent-200: var(--primitive-color-graphite-200);
+  --hds-accent-300: var(--primitive-color-graphite-300);
+  --hds-accent-400: var(--primitive-color-graphite-400);
+  --hds-accent-500: var(--primitive-color-graphite-500);
+  --hds-accent-600: var(--primitive-color-graphite-600);
+  --hds-accent-700: var(--primitive-color-graphite-700);
+  --hds-accent-800: var(--primitive-color-graphite-800);
+  --hds-accent-900: var(--primitive-color-graphite-900);
+
+  /* @deprecated (0.48.0): primitive.color.blue was renamed primitive.color.info (feedback only; never an accent).
+     These --primitive-color-blue-<stop> names stay one release as aliases of the info ramp. Removed in 0.49.0. */
+  --primitive-color-blue-50: var(--primitive-color-info-50);
+  --primitive-color-blue-100: var(--primitive-color-info-100);
+  --primitive-color-blue-200: var(--primitive-color-info-200);
+  --primitive-color-blue-300: var(--primitive-color-info-300);
+  --primitive-color-blue-400: var(--primitive-color-info-400);
+  --primitive-color-blue-450: var(--primitive-color-info-450);
+  --primitive-color-blue-500: var(--primitive-color-info-500);
+  --primitive-color-blue-600: var(--primitive-color-info-600);
+  --primitive-color-blue-700: var(--primitive-color-info-700);
+  --primitive-color-blue-800: var(--primitive-color-info-800);
+  --primitive-color-blue-900: var(--primitive-color-info-900);
 
   /* -- Density-aware spacing (comfortable = default) ------------------------- */
   /* Legacy bridge for the deprecated hds.density.* (hds#206); each step tracks its scale twin. */
@@ -377,6 +394,20 @@
     /* type-ramp-ok: iOS's 16px no-zoom floor is a platform threshold, not a type role */
     font-size: var(--primitive-typography-size-base);
   }
+}
+
+:root[data-accent='cobalt'] {
+  /* @deprecated (0.48.0): see the --hds-accent-<stop> note in :root. Tracks the cobalt ramp. */
+  --hds-accent-50: var(--primitive-color-cobalt-50);
+  --hds-accent-100: var(--primitive-color-cobalt-100);
+  --hds-accent-200: var(--primitive-color-cobalt-200);
+  --hds-accent-300: var(--primitive-color-cobalt-300);
+  --hds-accent-400: var(--primitive-color-cobalt-400);
+  --hds-accent-500: var(--primitive-color-cobalt-500);
+  --hds-accent-600: var(--primitive-color-cobalt-600);
+  --hds-accent-700: var(--primitive-color-cobalt-700);
+  --hds-accent-800: var(--primitive-color-cobalt-800);
+  --hds-accent-900: var(--primitive-color-cobalt-900);
 }
 
 /* --- Dark mode --------------------------------------------------------------- */

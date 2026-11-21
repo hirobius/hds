@@ -1,0 +1,65 @@
+{
+  "impact": "breaking",
+  "plain": "The blue ramp is now the info ramp (same values, feedback only), and the Microsoft Game Dev project brand colours are gone.",
+  "steps": [
+    {
+      "id": "removed/tokenValues.primitive.color.blue",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Read tokenValues.primitive.color.info instead of tokenValues.primitive.color.blue; the values are the same.",
+      "detect": {
+        "regex": ["\\btokenValues\\.primitive\\.color\\.blue\\b"]
+      },
+      "facts": ["key-removed:./tokens:tokenValues.primitive.color.blue"]
+    },
+    {
+      "id": "removed/tokenValues.primitive.color.projectBrand",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them.",
+      "detect": {
+        "regex": ["\\btokenValues\\.primitive\\.color\\.projectBrand\\b"]
+      },
+      "facts": ["key-removed:./tokens:tokenValues.primitive.color.projectBrand"]
+    },
+    {
+      "id": "removed/tokens.primitive.color.blue",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Read tokens.primitive.color.info instead of tokens.primitive.color.blue; the values are the same.",
+      "detect": {
+        "regex": ["\\btokens\\.primitive\\.color\\.blue\\b"]
+      },
+      "facts": ["key-removed:./tokens:tokens.primitive.color.blue"]
+    },
+    {
+      "id": "removed/tokens.primitive.color.projectBrand",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them.",
+      "detect": {
+        "regex": ["\\btokens\\.primitive\\.color\\.projectBrand\\b"]
+      },
+      "facts": ["key-removed:./tokens:tokens.primitive.color.projectBrand"]
+    },
+    {
+      "id": "deprecated/--primitive-color-blue",
+      "kind": "deprecated",
+      "impact": "behavior",
+      "plain": "Change var(--primitive-color-blue-<stop>) to var(--primitive-color-info-<stop>); the old names stay as aliases for one release and are removed in 0.49.0.",
+      "detect": {
+        "regex": ["--primitive-color-blue-\\d+"]
+      },
+      "removeIn": "0.49.0"
+    },
+    {
+      "id": "look/--hds-accent-stops",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The --hds-accent-50 to --hds-accent-900 aliases now follow the accent ramp (graphite, or cobalt under data-accent) instead of blue; use --semantic-accent-* instead, as the aliases are deprecated.",
+      "detect": {
+        "regex": ["--hds-accent-\\d+"]
+      }
+    }
+  ]
+}
