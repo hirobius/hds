@@ -124,7 +124,11 @@ describe('figmaParity in public/hds-stats.json', () => {
 
   it('fails stats --check when the score is typed by hand, and a rewrite repairs it', () => {
     const root = copyRoot();
-    edit(root, (s) => ({ ...s, figmaParity: { ...s.figmaParity, percent: 100 } }));
+    // Any value but the real score: 100 is a real score too.
+    edit(root, (s) => ({
+      ...s,
+      figmaParity: { ...s.figmaParity, percent: s.figmaParity.percent === 1 ? 2 : 1 },
+    }));
     const check = node('build-stats-json.mjs', root, '--check');
     expect(check.status).toBe(1);
     expect(check.stderr).toContain('pnpm stats:build');
