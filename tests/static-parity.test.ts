@@ -98,11 +98,16 @@ describe('.hds-button in static.css', () => {
     expect(block).not.toMatch(/max-height/);
   });
 
-  it('centres the sm hit area and widens it to 44px, so a 32px icon-only sm is tappable', () => {
-    const rule = css.slice(css.indexOf('.hds-button--sm::before {'));
+  it('centres the sm hit area and widens it to 44px on touch only, so a 32px icon-only sm is tappable', () => {
+    const query = '@media (max-width: 639px), (pointer: coarse) {';
+    const block = css.slice(css.indexOf(query), css.indexOf('\n}\n', css.indexOf(query)));
+    const rule = block.slice(block.indexOf('.hds-button--sm::before {'));
     const body = rule.slice(0, rule.indexOf('}'));
     expect(body).toMatch(/width: max\(100%, var\(--semantic-size-touchTarget\)\)/);
     expect(body).toMatch(/translate: -50% -50%/);
+    // Outside the query the hit area keeps its width (fine pointer, wide viewport: unchanged).
+    const base = css.slice(css.indexOf('.hds-button--sm::before {'));
+    expect(base.slice(0, base.indexOf('}'))).toMatch(/inset-inline: 0/);
   });
 
   it('transitions on the productive motion tokens', () => {
