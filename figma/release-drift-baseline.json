@@ -1,0 +1,19 @@
+{
+  "accepted": [
+    {
+      "kind": "extra",
+      "name": "color/projectBrand/microsoftGameDev/100",
+      "reason": "Removed from code in 0.48.0 (client brand; hds#1618). Awaiting Adrian's prune with the promote plugin. Delete this entry when the prune runs; 0.48.0 is the release that clears it."
+    },
+    {
+      "kind": "extra",
+      "name": "color/projectBrand/microsoftGameDev/500",
+      "reason": "Removed from code in 0.48.0 (client brand; hds#1618). Awaiting Adrian's prune with the promote plugin. Delete this entry when the prune runs; 0.48.0 is the release that clears it."
+    },
+    {
+      "kind": "extra",
+      "name": "color/projectBrand/microsoftGameDev/900",
+      "reason": "Removed from code in 0.48.0 (client brand; hds#1618). Awaiting Adrian's prune with the promote plugin. Delete this entry when the prune runs; 0.48.0 is the release that clears it."
+    }
+  ]
+}

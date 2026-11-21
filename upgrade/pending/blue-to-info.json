@@ -56,10 +56,11 @@
       "id": "look/--hds-accent-stops",
       "kind": "look",
       "impact": "look",
-      "plain": "The --hds-accent-50 to --hds-accent-900 aliases now follow the accent ramp (graphite, or cobalt under data-accent) instead of blue; use --semantic-accent-* instead, as the aliases are deprecated.",
+      "plain": "The --hds-accent-<stop> aliases now follow the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead, as the aliases go in 0.49.0.",
       "detect": {
         "regex": ["--hds-accent-\\d+"]
-      }
+      },
+      "removeIn": "0.49.0"
     },
     {
       "id": "removed/--primitive-color-projectBrand-microsoftGameDev-100",
@@ -383,6 +384,21 @@
         "css-var-changed:--semantic-color-feedback-info:[data-theme=\"dark\"]",
         "css-var-changed:--semantic-color-feedback-info:[data-theme=dark]"
       ]
+    },
+    {
+      "id": "manual/regenerate-light-scope",
+      "kind": "manual",
+      "impact": "behavior",
+      "plain": "If you keep a copy of the HDS tokens generated from the installed package (folio: components/study/hds-light-scope.css), regenerate it after upgrading (folio: npm run gen:hds-light-scope); the old copy still reads --primitive-color-blue-200."
+    },
+    {
+      "id": "manual/rename-blue-500-reads",
+      "kind": "manual",
+      "impact": "behavior",
+      "plain": "Replace var(--primitive-color-blue-500) with var(--primitive-color-info-500) before 0.49.0 (job-hunt: src/burn/burn.css:17, src/theme/base.css:739 and :833).",
+      "detect": {
+        "regex": ["--primitive-color-blue-500"]
+      }
     }
   ]
 }

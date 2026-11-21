@@ -181,7 +181,7 @@
   /* -- Accent ramp (raw stop access) ------------------------------------------ */
   /* @deprecated (0.48.0): the --hds-accent-<stop> aliases used to point at the blue ramp; they now track the
      real accent ramp (graphite by default, cobalt under data-accent="cobalt"). Use --semantic-accent-* instead.
-     Removed in 1.0.0. No component reads them. */
+     Removed in 0.49.0. No component reads them. */
   --hds-accent-50: var(--primitive-color-graphite-50);
   --hds-accent-100: var(--primitive-color-graphite-100);
   --hds-accent-200: var(--primitive-color-graphite-200);
