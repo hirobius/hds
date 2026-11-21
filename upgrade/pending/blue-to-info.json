@@ -46,9 +46,9 @@
       "id": "deprecated/--primitive-color-blue",
       "kind": "deprecated",
       "impact": "behavior",
-      "plain": "Change var(--primitive-color-blue-<stop>) to var(--primitive-color-info-<stop>); the old names stay as aliases for one release and are removed in 0.49.0.",
+      "plain": "Change var(--primitive-color-blue-<stop>) and hds.color.blue to the info names (--primitive-color-info-<stop>, hds.color.info); the old names stay as aliases for one release and are removed in 0.49.0.",
       "detect": {
-        "regex": ["--primitive-color-blue-\\d+"]
+        "regex": ["--primitive-color-blue-\\d+", "\\bhds\\.color\\.blue\\b"]
       },
       "removeIn": "0.49.0"
     },
