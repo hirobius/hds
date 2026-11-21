@@ -567,10 +567,12 @@
 .hds-button--sm::before {
   content: '';
   position: absolute;
-  inset-inline: 0;
+  /* Centred and at least 44px wide, so an icon-only sm (32px) is as tappable as a labelled one. */
+  left: 50%;
   top: 50%;
+  width: max(100%, var(--semantic-size-touchTarget));
   height: var(--semantic-size-touchTarget);
-  translate: 0 -50%;
+  translate: -50% -50%;
 }
 
 .hds-button--sm svg {
@@ -596,11 +598,14 @@
 
 /* Touch size, as theme.css .hds-touch-row lifts the React Button: on a coarse pointer or a
  * narrow viewport md (40px) grows to semantic.size.touchTarget (44px). sm is excluded: its
- * ::before already extends the hit area without moving the layout. lg is 48px and stays. A
- * fine pointer on a wide viewport matches neither query, so desktop density is unchanged. */
+ * ::before already extends the hit area without moving the layout. lg is 48px and stays. The
+ * width lifts too, for an icon-only button with a fixed width; a text button is wider than
+ * 44px, so the floor never changes it. A fine pointer on a wide viewport matches neither
+ * query, so desktop density is unchanged. */
 @media (max-width: 639px), (pointer: coarse) {
   .hds-button:not(.hds-button--sm) {
     min-height: var(--semantic-size-touchTarget);
+    min-width: var(--semantic-size-touchTarget);
   }
 }
 

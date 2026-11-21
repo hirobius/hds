@@ -275,7 +275,12 @@ const buttonVariants = /* @__PURE__ */ cva(
         size: 'sm',
         className: 'w-[var(--component-button-size-sm-height)] hds-touch-target',
       },
-      { iconOnly: true, size: 'md', className: 'w-[var(--component-button-size-md-height)]' },
+      // md: hds-touch-row lifts the height to 44 on a phone; hds-touch-target lifts the width with it.
+      {
+        iconOnly: true,
+        size: 'md',
+        className: 'w-[var(--component-button-size-md-height)] hds-touch-target',
+      },
       { iconOnly: true, size: 'lg', className: 'w-[var(--component-button-size-lg-height)]' },
     ],
     defaultVariants: {

@@ -1,0 +1,4 @@
+{
+  "impact": "look",
+  "plain": "On phones and touch screens an icon-only md Button is a 44px square (was 40px wide), and static .hds-button icon buttons are at least 44px wide; check toolbars built from them at narrow widths."
+}
