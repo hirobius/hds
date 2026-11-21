@@ -49,6 +49,21 @@ describe('Button height tokens (hds#760)', () => {
   );
 });
 
+describe('Button icon-only touch target', () => {
+  // The width comes from the size height token (40 / 32 / 48). On a coarse pointer or a phone the
+  // height already lifts to 44 (hds-touch-row); the width must lift with it, or md is a 40x44
+  // oblong whose tap area is 40px wide. lg is 48 and needs nothing.
+  it.each(['sm', 'md'] as const)('%s icon-only lifts its width with hds-touch-target', (size) => {
+    const { getByRole } = render(<Button size={size} iconOnly label="Go" iconLeft={<svg />} />);
+    expect(getByRole('button').className).toContain('hds-touch-target');
+  });
+
+  it('a text md Button does not take hds-touch-target (it is wider than 44px already)', () => {
+    const { getByRole } = render(<Button size="md">Go</Button>);
+    expect(getByRole('button').className).not.toContain('hds-touch-target');
+  });
+});
+
 describe('Button label weight token (hds#760)', () => {
   it('resolves to 600', () => {
     expect(resolveVar('--component-button-fontWeight')).toBe('600');
