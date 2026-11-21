@@ -411,7 +411,7 @@ import {
 
 `TenantProvider` writes `data-brand` (and the `data-tenant` alias) for the
 `slug` you pass: one of the package's directions (`accent-lilac`,
-`brutalist-demo`) or the slug of your own brand block from §12.3. ADR-035
+`soft-demo`) or the slug of your own brand block from §12.3. ADR-035
 names the layers: a **direction** ships in the package, a **brand** is yours and
 never does, and theme and density are the viewer's **preferences**.
 

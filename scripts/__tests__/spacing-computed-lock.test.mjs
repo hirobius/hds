@@ -217,11 +217,12 @@ const layoutEmitted = Object.fromEntries(LAYOUT_PROBES.map((p) => [p.key, emitLa
 
 // ── The cells ─────────────────────────────────────────────────────────────────
 
-const TENANTS = ['base', 'accent-lilac', 'brutalist-demo'];
+const TENANTS = ['base', 'accent-lilac'];
 /**
- * The fixtures also recorded concrete-creations, the client overlay that left
- * the package in ADR-035. They cannot be recaptured (they come from older
- * commits), so its cells are dropped on read; the remaining cells stay locked.
+ * The fixtures also recorded concrete-creations (a client overlay that left
+ * the package in ADR-035) and brutalist-demo (a direction removed in 0.49.0).
+ * They cannot be recaptured (they come from older commits), so their cells
+ * are dropped on read; the remaining cells stay locked.
  */
 const lockedCells = (cells) => cells.filter((key) => TENANTS.includes(key.split('|')[0]));
 /** The recorded per-cell values, in cell order, minus the dropped slug's. */

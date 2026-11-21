@@ -246,7 +246,7 @@ describe('validateRefs', () => {
 describe('readTenants', () => {
   it('maps each direction of this repository to a demo (ADR-035)', () => {
     const tenants = readTenants(path.resolve(import.meta.dirname, '..', '..', 'directions'));
-    expect(tenants['brutalist-demo']).toEqual({ demo: true });
+    expect(tenants['soft-demo']).toEqual({ demo: true });
     expect(tenants['accent-lilac']).toEqual({ demo: true });
     // No client tenant lives in this repo (ADR-035): every direction is a demo,
     // so no entry reads as not a demo.

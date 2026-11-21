@@ -38,18 +38,18 @@ describe('canonical overridable spacing tokens', () => {
 });
 
 describe('runtime overrides sit on the new names and on scale steps', () => {
-  it('brutalist-demo overrides surface.padding with scale.sm, scale.xs under compact', () => {
-    const overlay = JSON.parse(read('directions/brutalist-demo/tokens.json'));
+  it('soft-demo overrides surface.padding with scale.lg, scale.md under compact', () => {
+    const overlay = JSON.parse(read('directions/soft-demo/tokens.json'));
     const leaf = overlay.semantic.space.surface.padding;
-    expect(leaf.$value).toBe('{semantic.space.scale.sm}');
-    expect(leaf.$extensions['com.figma.variables'].modes.Compact).toBe('{semantic.space.scale.xs}');
+    expect(leaf.$value).toBe('{semantic.space.scale.lg}');
+    expect(leaf.$extensions['com.figma.variables'].modes.Compact).toBe('{semantic.space.scale.md}');
     expect(overlay.semantic.space.component).toBeUndefined();
   });
 
-  it('tenants.css overrides the new var and no removed alias', () => {
-    const css = read('src/styles/tenants.css');
-    expect(css).toMatch(/--semantic-space-surface-padding: var\(\s*--semantic-space-scale-sm\s*\)/);
-    expect(css).toMatch(/--semantic-space-surface-padding: var\(\s*--semantic-space-scale-xs\s*\)/);
+  it('the compiled direction CSS overrides the new var and no removed alias', () => {
+    const css = `${read('src/styles/tenants.css')}\n${read('src/styles/tenants-docs-only.css')}`;
+    expect(css).toMatch(/--semantic-space-surface-padding: var\(\s*--semantic-space-scale-lg\s*\)/);
+    expect(css).toMatch(/--semantic-space-surface-padding: var\(\s*--semantic-space-scale-md\s*\)/);
     expect(css).not.toMatch(/--semantic-space-component-padding\s*:/);
   });
 
@@ -80,7 +80,6 @@ const hasBrowser = Boolean(CHROMIUM);
 const SURFACE_PX = {
   base: [28, 16],
   'accent-lilac': [28, 16],
-  'brutalist-demo': [20, 8],
   // Design-explorations demo directions (hds#628): soft-demo opens surfaces up (scale.lg, scale.md
   // compact); accent-pair-demo changes colour only.
   'soft-demo': [40, 16],

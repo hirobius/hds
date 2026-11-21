@@ -38,7 +38,7 @@ directions/
   accent-lilac/
     tokens.json
     metadata.json
-  brutalist-demo/
+  soft-demo/
     tokens.json
     metadata.json
     README.md
@@ -236,14 +236,14 @@ value, in addition to the base `[data-brand="X"]` block carrying the
 }
 ```
 
-compiles to:
+compiles to (an illustrative `example-sharp` direction; `directions/soft-demo/` is the shipped exemplar):
 
 ```css
-[data-brand='brutalist-demo'] {
+[data-brand='example-sharp'] {
   --role-radius: 0px;
   --semantic-space-surface-padding: var(--semantic-space-scale-sm);
 }
-[data-brand='brutalist-demo'][data-density='compact'] {
+[data-brand='example-sharp'][data-density='compact'] {
   --semantic-space-surface-padding: var(--semantic-space-scale-xs);
 }
 ```

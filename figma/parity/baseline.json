@@ -48,6 +48,36 @@
     },
     "token-value-mismatch:Hirobius/Semantic: color/feedback/bg/info": {
       "reason": "Code renamed primitive.color.blue to primitive.color.info, and deleted projectBrand.microsoftGameDev, in 0.48.0 (hds#1565 fix list). Figma follows from code: the next sync renames or removes the variable and rebinds semantic feedback info; Adrian publishes. Remove this entry after that sync."
+    },
+    "token-extra-in-figma:Hirobius/Brand: mode brutalist-demo": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry."
+    },
+    "token-extra-in-figma:Hirobius/Brand: role/radius": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry."
+    },
+    "token-extra-in-figma:Hirobius/Brand: semantic/space/surface/padding/Comfortable": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry."
+    },
+    "token-extra-in-figma:Hirobius/Brand: semantic/space/surface/padding/Compact": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry."
+    },
+    "token-extra-in-figma:Hirobius/Density: semantic/space/surface/padding": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/surface/padding": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry. The semantic variable still aliases the Density variable."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/surface/padding [Light]": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry. The semantic variable still aliases the Density variable."
+    },
+    "token-value-mismatch:Hirobius/Semantic: space/surface/padding [Dark]": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry. The semantic variable still aliases the Density variable."
+    },
+    "token-value-mismatch:Hirobius/Role: radius": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry. The role variable still aliases the Brand variable."
+    },
+    "token-value-mismatch:Hirobius/Role: radius [Default]": {
+      "reason": "Code removed the brutalist-demo direction (Adrian's decision 2026-11-21; the removal PR for hds#1618's follow-up cleanup, hds#1565). Figma still holds the Brand mode and the variables it carried. Figma follows from code: Adrian deletes the mode and the leftover Brand/Density variables by hand, then the next snapshot clears this entry. The role variable still aliases the Brand variable."
     }
   }
 }

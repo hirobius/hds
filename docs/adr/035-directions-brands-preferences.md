@@ -59,3 +59,5 @@ Three nouns, used the same way in HDS, site-engine, ops, Figma and folio. `GLOSS
 - hds#628's `soft-demo` and `accent-pair-demo` are created under `directions/`, never with a deployment or a legal entity.
 - The Figma collection is still named `Hirobius/Brand`; renaming it to `Hirobius/Direction` is a Figma-side change for a later sync, not a code change.
 - Each consumer themes itself: ops and the storefront through the bridge or a local overlay, site-engine through its skins. No repo other than this one holds a direction; no repo at all holds another client's brand.
+
+> **Note (2026-11-21):** the `brutalist-demo` direction was removed in HDS 0.49.0 (Adrian's decision). `soft-demo` is now the example of the directions feature. The text above is kept as written.

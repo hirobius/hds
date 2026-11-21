@@ -1,8 +1,8 @@
 /**
  * Containers share one corner radius that follows the tenant knob (hds#338).
  * `rounded-lg` is `calc(var(--role-radius) + min(var(--role-radius), 4px))`
- * (tailwind.config.tokens.cjs): 12 px by default, and 0 under `brutalist-demo`
- * (radius 0), so cards follow the brand radius (hds#806).
+ * (tailwind.config.tokens.cjs): 12 px by default, and 24 under `soft-demo`
+ * (radius 20), so cards follow the brand radius (hds#806).
  * `--component-card-radius` ignores tenants, so no container may read it.
  */
 import { describe, it, expect, afterEach } from 'vitest';
@@ -58,7 +58,7 @@ describe('container radius', () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const cfg = require('../tailwind.config.tokens.cjs');
     expect(cfg.theme.extend.borderRadius.lg).toBe(formula);
-    // brutalist-demo (0) -> 0, default (8) -> 12, soft-demo (20) -> 24.
+    // a square direction (0) -> 0, default (8) -> 12, soft-demo (20) -> 24.
     const lg = (r: number) => r + Math.min(r, 4);
     expect(lg(0)).toBe(0);
     expect(lg(8)).toBe(12);

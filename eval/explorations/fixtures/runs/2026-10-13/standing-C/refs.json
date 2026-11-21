@@ -1,5 +1,5 @@
 {
-  "tenant": "brutalist-demo",
+  "tenant": "accent-lilac",
   "searches": [
     { "tool": "get_inspiration", "query": "dashboard section headers with a soft fade" }
   ],

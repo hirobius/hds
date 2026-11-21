@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, type ReactNode } from 'react';
  * ADR-035) or a slug the consumer's own brand overlay declares. A client's
  * brand never ships in this package, so no client slug is listed here.
  */
-export type TenantSlug = 'hirobius' | 'accent-lilac' | 'brutalist-demo' | (string & {});
+export type TenantSlug = 'hirobius' | 'accent-lilac' | 'soft-demo' | (string & {});
 
 interface TenantCtx {
   /** Active tenant slug, or null in single-tenant mode. */

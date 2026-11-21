@@ -394,7 +394,7 @@ describe.skipIf(!hasBrowser)(
     );
 
     it('is scoped: the supporting variables do not exist outside the tenant', async () => {
-      for (const brand of ['', 'soft-demo', 'accent-lilac', 'brutalist-demo']) {
+      for (const brand of ['', 'soft-demo', 'accent-lilac']) {
         const m = await measure({ brand });
         expect(m.supportRest, brand || 'default').toBe(TRANSPARENT);
         expect(m.supportContent, brand || 'default').not.toBe(rgb('stone.700'));
