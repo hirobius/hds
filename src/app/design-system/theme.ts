@@ -37,7 +37,7 @@ export function ct(isDark: boolean) {
 
     // Brand & semantic
     accent: hds.color.brand,
-    blueBar: isDark ? hds.color.blue['400'] : hds.color.blue['300'],
+    blueBar: isDark ? hds.color.info['400'] : hds.color.info['300'],
     success: hds.color.feedback.success[th],
     danger: hds.color.feedback.error[th],
     warning: hds.color.feedback.warning[th],

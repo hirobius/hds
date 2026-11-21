@@ -183,7 +183,7 @@ describe('colorGalleries swatch fills (hds#846)', () => {
 
   it('fills a primitive from its own variable and a semantic token from what it aliases', () => {
     const find = (token: string) => swatches.find((s) => s.token === token)!;
-    expect(find('primitive.color.blue.500').fill).toBe('var(--primitive-color-blue-500)');
+    expect(find('primitive.color.info.500').fill).toBe('var(--primitive-color-info-500)');
     const page = find('semantic.color.surface.page');
     expect(page.fill).toBe('var(--primitive-color-neutral-white)');
     expect(page.darkFill).toBe('var(--primitive-color-neutral-850)');

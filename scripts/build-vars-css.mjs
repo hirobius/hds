@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TOKENS = path.join(ROOT, 'src', 'styles', 'tokens.generated.css');
+const DEPRECATED = path.join(ROOT, 'src', 'styles', 'deprecated-aliases.css');
 const ACCENTS = path.join(ROOT, 'src', 'styles', 'accents.css');
 const RESPONSIVE = path.join(ROOT, 'src', 'styles', 'responsive-tokens.css');
 const OUT = path.join(ROOT, 'dist', 'variables.css');
@@ -52,11 +53,12 @@ export function offendingSelectors(css) {
  * its :root one). Without them a consumer that loads variables.css first paints desktop
  * values and jumps when styles.css loads. Throws when an input is not host-safe.
  */
-export function varsCss(tokensCss, accentsCss, responsiveCss = '') {
+export function varsCss(tokensCss, accentsCss, responsiveCss = '', deprecatedCss = '') {
   const bad = [
     ...offendingSelectors(tokensCss),
     ...offendingSelectors(accentsCss),
     ...offendingSelectors(responsiveCss),
+    ...offendingSelectors(deprecatedCss),
   ];
   if (bad.length > 0) {
     throw new Error(
@@ -66,7 +68,7 @@ export function varsCss(tokensCss, accentsCss, responsiveCss = '') {
         .join('\n')}`,
     );
   }
-  return `${BANNER}${tokensCss}\n${accentsCss}${responsiveCss ? `\n${responsiveCss}` : ''}`;
+  return `${BANNER}${tokensCss}\n${deprecatedCss ? `${deprecatedCss}\n` : ''}${accentsCss}${responsiveCss ? `\n${responsiveCss}` : ''}`;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -75,6 +77,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       readFileSync(TOKENS, 'utf8'),
       readFileSync(ACCENTS, 'utf8'),
       readFileSync(RESPONSIVE, 'utf8'),
+      readFileSync(DEPRECATED, 'utf8'),
     );
     writeFileSync(OUT, css);
     console.log(`build-vars-css — wrote dist/variables.css (${css.length} bytes, vars-only)`);

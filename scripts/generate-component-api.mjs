@@ -650,10 +650,10 @@ function normalizeHdsTokenPath(raw) {
   if (root === 'color') {
     if (rest[0] === 'content' || rest[0] === 'surface' || rest[0] === 'feedback')
       return ['semantic', 'color', ...rest].join('.');
-    if (rest[0] === 'brand') return 'primitive.color.blue.500';
-    if (rest[0] === 'brandPressed') return 'primitive.color.blue.600';
+    if (rest[0] === 'brand') return 'primitive.color.info.500';
+    if (rest[0] === 'brandPressed') return 'primitive.color.info.600';
     if (rest[0] === 'white') return 'primitive.color.neutral.white';
-    if (rest[0] === 'blue') return ['primitive', 'color', ...rest].join('.');
+    if (rest[0] === 'info') return ['primitive', 'color', ...rest].join('.');
     return undefined;
   }
 
