@@ -1,8 +1,8 @@
 {
   "$comment": "The parity read: every component of the HDS library (properties, variant options, what its default variant nests) and one hash per variable collection. Written by `pnpm figma:parity --ingest` from the results of the read-only use_figma scripts `pnpm figma:parity --emit-read` prints. Do not edit: read the library again. `pnpm check:figma-parity` compares it with code.",
   "fileKey": "2VgBbVpKiDnu0aftJEVyBQ",
-  "readOn": "2026-11-20",
-  "takenAt": "2026-11-20T23:19:14.951Z",
+  "readOn": "2026-11-21",
+  "takenAt": "2026-11-21T00:58:25.614Z",
   "variables": {
     "top": "0092af7f",
     "collections": [
@@ -47,13 +47,6 @@
         "modes": 2,
         "variables": 18,
         "hash": "7319912b"
-      },
-      {
-        "id": "VariableCollectionId:2399:10128",
-        "name": "DEPRECATED – Button tone (unused)",
-        "modes": 6,
-        "variables": 22,
-        "hash": "6bae8aca"
       },
       {
         "id": "VariableCollectionId:2419:23",

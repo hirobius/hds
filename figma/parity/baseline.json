@@ -1,8 +1,4 @@
 {
   "$comment": "The known differences between the Figma library and code (first full read, 2026-11-15). pnpm check:figma-parity fails on a difference that is not here, and on an entry whose difference is gone: fix the difference, then delete its entry, so this list only shrinks. An entry needs a reason a reviewer can check and the issue that removes it. Fix list: hds#1565.",
-  "accepted": {
-    "collection-not-in-code:DEPRECATED – Button tone (unused)": {
-      "reason": "Retired 2026-11-20 (hds#1565 F2): no layer binds it; Button and IconButton now bind the semantic and component variables code uses. Renamed so nobody picks it. Only Adrian deletes in the library: Variables panel > collection menu > Delete collection. The next parity read then drops this entry."
-    }
-  }
+  "accepted": {}
 }
