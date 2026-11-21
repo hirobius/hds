@@ -72,8 +72,7 @@ const leavesOf = (overlay) => {
 };
 
 describe(`${BRAND_MODES_FILE}`, () => {
-  it('lists at least one direction, and nothing shaped like a client', () => {
-    expect(config.directions.length).toBeGreaterThan(0);
+  it('lists no client-shaped direction (none may be listed: brutalist-demo left in 0.49.0)', () => {
     for (const slug of config.directions) {
       expect(directionProblems(readJson('directions', slug, 'metadata.json')), slug).toEqual([]);
     }
@@ -122,7 +121,8 @@ describe(`${BRAND_MODES_FILE}`, () => {
         }
       }
     }
-    expect(checked).toBeGreaterThan(0);
+    // With no listed direction nothing is carried; the accents are checked elsewhere.
+    if (config.directions.length > 0) expect(checked).toBeGreaterThan(0);
   });
 
   it('adds no mention of any unlisted tenant to the model', () => {

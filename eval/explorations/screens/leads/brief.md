@@ -88,11 +88,11 @@ All three: axe finds 0 serious or critical issues, in light and dark, at 1280 an
 
 The harness captures every direction full page at 1280 and 390 wide, in light and in dark (four PNGs), and axe-scans each of the four. Design for both widths; the screen note above says which one leads.
 
-| Direction   | Tenant, declared in `refs.json`                                                                                                                                 |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A, Faithful | `null`: today's rules at the HDS default                                                                                                                        |
-| B, Ceiling  | One demo tenant that moves tokens only. Today: `brutalist-demo` (sharp, dense) or `accent-lilac`. When they land: `soft-demo` (hds#505) and `accent-pair-demo`. |
-| C, Wildcard | A demo tenant, or `null`                                                                                                                                        |
+| Direction   | Tenant, declared in `refs.json`                                                                                                             |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| A, Faithful | `null`: today's rules at the HDS default                                                                                                    |
+| B, Ceiling  | One demo tenant that moves tokens only. Today: `soft-demo` (hds#505: pill actions, roomier surfaces), `accent-lilac` or `accent-pair-demo`. |
+| C, Wildcard | A demo tenant, or `null`                                                                                                                    |
 
 The harness applies the tenant to the template's scope element; do not add a tenant wrapper of your own. Only a tenant with `"demo": true` in its `metadata.json` is accepted. A client tenant fails the gate, and a slug that does not exist yet fails it too.
 

@@ -56,7 +56,7 @@ const baseOnAccentNode = getByPath(baseRaw, 'semantic.color.content.onAccent');
 
 // Every direction that overrides the accent surface (ADR-035: directions/ holds
 // the shared art directions; a client's brand never lives here). A direction
-// that leaves the accent alone (brutalist-demo: shape and density only) has
+// that leaves the accent alone (a shape-and-density-only direction) has
 // nothing to pair and is skipped.
 const DIRECTIONS_DIR = resolve(ROOT, 'directions');
 const TENANTS = listDirectionSlugs(DIRECTIONS_DIR)

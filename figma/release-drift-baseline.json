@@ -14,6 +14,31 @@
       "kind": "extra",
       "name": "color/projectBrand/microsoftGameDev/900",
       "reason": "Removed from code in 0.48.0 (client brand; hds#1618). Awaiting Adrian's prune with the promote plugin. Delete this entry when the prune runs; 0.48.0 is the release that clears it."
+    },
+    {
+      "kind": "extra",
+      "name": "brutalist-demo",
+      "reason": "Removed from code in the release after 0.48.0 (brutalist-demo direction removed, Adrian's decision 2026-11-21; hds#1618 precedent). Awaiting Adrian's manual delete in Figma and a new snapshot. Delete this entry when the delete is done."
+    },
+    {
+      "kind": "extra",
+      "name": "role/radius",
+      "reason": "Removed from code in the release after 0.48.0 (brutalist-demo direction removed, Adrian's decision 2026-11-21; hds#1618 precedent). Awaiting Adrian's manual delete in Figma and a new snapshot. Delete this entry when the delete is done."
+    },
+    {
+      "kind": "extra",
+      "name": "semantic/space/surface/padding/Comfortable",
+      "reason": "Removed from code in the release after 0.48.0 (brutalist-demo direction removed, Adrian's decision 2026-11-21; hds#1618 precedent). Awaiting Adrian's manual delete in Figma and a new snapshot. Delete this entry when the delete is done."
+    },
+    {
+      "kind": "extra",
+      "name": "semantic/space/surface/padding/Compact",
+      "reason": "Removed from code in the release after 0.48.0 (brutalist-demo direction removed, Adrian's decision 2026-11-21; hds#1618 precedent). Awaiting Adrian's manual delete in Figma and a new snapshot. Delete this entry when the delete is done."
+    },
+    {
+      "kind": "extra",
+      "name": "semantic/space/surface/padding",
+      "reason": "Removed from code in the release after 0.48.0 (brutalist-demo direction removed, Adrian's decision 2026-11-21; hds#1618 precedent). Awaiting Adrian's manual delete in Figma and a new snapshot. Delete this entry when the delete is done."
     }
   ]
 }

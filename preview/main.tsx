@@ -106,7 +106,6 @@ function useMeasurements(hostRef: React.RefObject<HTMLElement>, knobs: Knobs) {
 
 const BRANDS = [
   { value: '', label: 'default' },
-  { value: 'brutalist-demo', label: 'brutalist' },
   { value: 'accent-lilac', label: 'lilac' },
   { value: 'soft-demo', label: 'soft' },
   { value: 'accent-pair-demo', label: 'accent pair' },
@@ -334,8 +333,9 @@ function App() {
             ))}
           </dl>
           <p className="pv-foot">
-            Set <code>brand</code> to <em>brutalist</em>: one token override (
-            <code>role.radius: 0</code>) squares every control. That is the knob working.
+            Set <code>brand</code> to <em>soft</em>: one token override (
+            <code>role.radius: 20px</code>) rounds every control to a pill. That is the knob
+            working.
           </p>
         </aside>
       </div>

@@ -145,3 +145,5 @@ Concretely:
   `accent-lilac`).
 - Unblocks ISSUE-04's Brutalist exemplar and, transitively, the visual
   baseline snapshots in ISSUE-02 (#126).
+
+> **Note (2026-11-21):** the `brutalist-demo` direction was removed in HDS 0.49.0 (Adrian's decision). `soft-demo` is now the example of the directions feature. The text above is kept as written.

@@ -1,0 +1,24 @@
+{
+  "impact": "look",
+  "plain": "The brutalist-demo direction is removed, so a page that sets brand to brutalist-demo loses its square corners and tighter surface padding; switch it to soft-demo or compile your own overlay with brandOverlayCss.",
+  "steps": [
+    {
+      "id": "tenant/brutalist-demo",
+      "kind": "tenant",
+      "impact": "look",
+      "plain": "Pages themed with the brutalist-demo brand (data-brand=\"brutalist-demo\") now get the default 8px radius and 24px surface padding, so check them after upgrading and move them to another direction or your own brand overlay.",
+      "detect": {
+        "regex": [
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?brutalist-demo(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?brutalist-demo(?![\\w-])",
+          "(?:\\bbrand|data-brand|data-tenant)\\s*=\\s*\\{?\\s*[\"'`]?brutalist-demo(?![\\w-])"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--role-radius:[data-brand=brutalist-demo],[data-tenant=brutalist-demo]",
+        "css-var-changed:--semantic-space-surface-padding:[data-brand=brutalist-demo],[data-tenant=brutalist-demo]",
+        "css-var-changed:--semantic-space-surface-padding:[data-brand=brutalist-demo][data-density=compact],[data-tenant=brutalist-demo][data-density=compact]"
+      ]
+    }
+  ]
+}

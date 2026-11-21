@@ -1001,20 +1001,20 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
   }
 
   it('emits a density-invariant leaf (role.radius) only in the base [data-brand] block', () => {
-    const tenantsDir = writeTenantFixture('brutalist-demo', {
+    const tenantsDir = writeTenantFixture('example-sharp', {
       role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
     });
     const { css, tenants, errors } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
     expect(errors).toHaveLength(0);
-    expect(tenants).toEqual(['brutalist-demo']);
+    expect(tenants).toEqual(['example-sharp']);
     expect(css).toContain(
-      '[data-brand="brutalist-demo"],\n[data-tenant="brutalist-demo"] {\n  --role-radius: 0px;',
+      '[data-brand="example-sharp"],\n[data-tenant="example-sharp"] {\n  --role-radius: 0px;',
     );
-    expect(css).not.toContain('[data-brand="brutalist-demo"][data-density="compact"]');
+    expect(css).not.toContain('[data-brand="example-sharp"][data-density="compact"]');
   });
 
   it('emits a [data-brand][data-density="compact"] block for a leaf with a Compact mode', () => {
-    const tenantsDir = writeTenantFixture('brutalist-demo', {
+    const tenantsDir = writeTenantFixture('example-sharp', {
       role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
       semantic: {
         space: {
@@ -1033,17 +1033,17 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
 
     // Base block: comfortable baseline + density-invariant radius.
     expect(css).toContain(
-      '[data-brand="brutalist-demo"],\n[data-tenant="brutalist-demo"] {\n  --role-radius: 0px;',
+      '[data-brand="example-sharp"],\n[data-tenant="example-sharp"] {\n  --role-radius: 0px;',
     );
     expect(css).toContain('--semantic-space-component-padding: var(--primitive-space-4);');
 
     // Density block: only the leaf carrying a Compact mode, tightened further.
     expect(css).toContain(
-      '[data-brand="brutalist-demo"][data-density="compact"],\n[data-tenant="brutalist-demo"][data-density="compact"] {\n  --semantic-space-component-padding: var(--primitive-space-2);',
+      '[data-brand="example-sharp"][data-density="compact"],\n[data-tenant="example-sharp"][data-density="compact"] {\n  --semantic-space-component-padding: var(--primitive-space-2);',
     );
     // role.radius has no Compact mode — must not appear in the density block.
     const densityBlock = css.slice(
-      css.indexOf('[data-brand="brutalist-demo"][data-density="compact"]'),
+      css.indexOf('[data-brand="example-sharp"][data-density="compact"]'),
     );
     expect(densityBlock).not.toContain('--role-radius');
   });
@@ -1065,7 +1065,7 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
       padding: { $value: '{semantic.space.surface.padding}', $deprecated: 'use surface.padding' },
     };
     base.semantic.space.unrelated = { $value: '{semantic.space.surface.padding}' };
-    const tenantsDir = writeTenantFixture('brutalist-demo', {
+    const tenantsDir = writeTenantFixture('example-sharp', {
       semantic: {
         space: {
           surface: {
@@ -1084,8 +1084,8 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
     expect(errors).toHaveLength(0);
 
     const baseBlock = css.slice(
-      css.indexOf('[data-brand="brutalist-demo"],'),
-      css.indexOf('[data-brand="brutalist-demo"][data-density="compact"]'),
+      css.indexOf('[data-brand="example-sharp"],'),
+      css.indexOf('[data-brand="example-sharp"][data-density="compact"]'),
     );
     expect(baseBlock).toContain(
       '--semantic-space-surface-padding: var(--semantic-space-scale-sm);',
@@ -1094,7 +1094,7 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
       '--semantic-space-component-padding: var(--semantic-space-surface-padding);',
     );
     const densityBlock = css.slice(
-      css.indexOf('[data-brand="brutalist-demo"][data-density="compact"]'),
+      css.indexOf('[data-brand="example-sharp"][data-density="compact"]'),
     );
     expect(densityBlock).toContain(
       '--semantic-space-surface-padding: var(--semantic-space-scale-xs);',
@@ -1138,14 +1138,14 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
   });
 
   it('keeps the header comment closed until its own terminator, so the first tenant rule stays valid CSS', () => {
-    const tenantsDir = writeTenantFixture('brutalist-demo', {
+    const tenantsDir = writeTenantFixture('example-sharp', {
       role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
     });
     const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
     // A stray "*/" inside the header ends the comment early; the rest of the
     // header then becomes part of the first rule's selector and browsers drop
     // that whole rule.
-    const firstRule = css.indexOf('[data-brand="brutalist-demo"]');
+    const firstRule = css.indexOf('[data-brand="example-sharp"]');
     const headerEnd = css.indexOf('*/') + 2;
     const between = css.slice(headerEnd, firstRule).replace(/\/\*[\s\S]*?\*\//g, '');
     expect(between.trim()).toBe('');
@@ -1160,7 +1160,7 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
   });
 
   it('omits the Compact value when it is identical to the rest value (mirrors dark-mode dedupe)', () => {
-    const tenantsDir = writeTenantFixture('brutalist-demo', {
+    const tenantsDir = writeTenantFixture('example-sharp', {
       semantic: {
         space: {
           component: {
@@ -1174,7 +1174,7 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
       },
     });
     const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
-    expect(css).not.toContain('[data-brand="brutalist-demo"][data-density="compact"]');
+    expect(css).not.toContain('[data-brand="example-sharp"][data-density="compact"]');
   });
 
   // ── Lightning CSS contract ─────────────────────────────────────────────────
@@ -1201,7 +1201,7 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
   }
 
   it('generates tenant CSS that Lightning CSS parses without a single warning', () => {
-    const tenantsDir = writeTenantFixture('brutalist-demo', {
+    const tenantsDir = writeTenantFixture('example-sharp', {
       role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
       semantic: {
         space: {
@@ -1230,7 +1230,7 @@ describe('buildTenantCSS — brand x density combinatorial block (ADR-022)', () 
   it('catches the header-comment defect this guards against', () => {
     // Proof of firing: closing the header comment early turns the rest of the
     // header into the first rule's selector, and Lightning CSS says so.
-    const tenantsDir = writeTenantFixture('brutalist-demo', {
+    const tenantsDir = writeTenantFixture('example-sharp', {
       role: { radius: { $type: 'dimension', $value: { value: 0, unit: 'px' } } },
     });
     const { css } = buildTenantCSS(tenantsDir, SHAPE_DENSITY_BASE_RAW);
