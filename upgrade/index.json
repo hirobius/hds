@@ -1,6 +1,6 @@
 {
   "package": "@hirobius/design-system",
-  "latest": "0.47.1",
+  "latest": "0.48.0",
   "floor": "0.9.0",
   "versions": [
     {
@@ -338,9 +338,21 @@
       "bump": "patch",
       "breaking": 0,
       "summary": "8 that look different."
+    },
+    {
+      "version": "0.48.0",
+      "date": "2026-11-22",
+      "bump": "minor",
+      "breaking": 7,
+      "summary": "9 changes to make by hand (7 breaking), 24 that look different and 1 deprecation."
     }
   ],
   "deprecated": [
+    {
+      "name": "--primitive-color-blue",
+      "removeIn": "0.49.0",
+      "step": "0.48.0/deprecated/--primitive-color-blue"
+    },
     {
       "name": "Blockquote.size",
       "removeIn": "1.0.0",

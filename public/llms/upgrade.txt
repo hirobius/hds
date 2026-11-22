@@ -1,12 +1,12 @@
 # Hirobius Design System - upgrade slice
 
-Version: 0.47.1
+Version: 0.48.0
 
 See `public/llms.txt` for the index. Generated from the same sections as llms-full.txt.
 
 ## Upgrading
 
-This text describes @hirobius/design-system 0.47.1. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
+This text describes @hirobius/design-system 0.48.0. To move a project to the newest release, run `npx @hirobius/design-system@latest upgrade` from its root: it runs the codemods, bumps the dependency, installs, typechecks, and lists what is left to do by hand. `npx @hirobius/design-system@latest upgrade --check` changes nothing and exits 1 while work is left. It also refreshes the `hds-consumer` skill when the project has a `.claude/skills/` folder. The full guide is `UPGRADING.md`; the machine-readable record is `upgrade/index.json`.
 
 Every name a release removed, moved or renamed, and what to use instead:
 
@@ -285,11 +285,19 @@ Every name a release removed, moved or renamed, and what to use instead:
 | `tokens.component.badge.paddingShift` | The component.badge.paddingShift token (--component-badge-paddingShift, the 1px label lift) is gone because Badge pads evenly now; stop reading it, there is no replacement. | 0.43.0 |
 | `external-icon-utilities` | styles.css no longer ships four group-hover and group-focus-visible translate utilities and transition-[translate], which only InlineLink's external icon used (hds#1530); if your markup writes one, compile it with your own Tailwind. | 0.44.0 |
 | `tokens-descriptions` | Replace tokens.<path>.$description with tokenDescriptions['<path>'] imported from @hirobius/design-system/tokens/descriptions. | 0.47.0 |
+| `--primitive-color-projectBrand-microsoftGameDev-100` | Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it. | 0.48.0 |
+| `--primitive-color-projectBrand-microsoftGameDev-500` | Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it. | 0.48.0 |
+| `--primitive-color-projectBrand-microsoftGameDev-900` | Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it. | 0.48.0 |
+| `tokenValues.primitive.color.blue` | Read tokenValues.primitive.color.info instead of tokenValues.primitive.color.blue; the values are the same. | 0.48.0 |
+| `tokenValues.primitive.color.projectBrand` | Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them. | 0.48.0 |
+| `tokens.primitive.color.blue` | Read tokens.primitive.color.info instead of tokens.primitive.color.blue; the values are the same. | 0.48.0 |
+| `tokens.primitive.color.projectBrand` | Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them. | 0.48.0 |
 
 ## Deprecated: do not use in new code
 
 Still exported, but on the way out: do not write new code with them.
 
+- `--primitive-color-blue` (removed in 0.49.0): Change var(--primitive-color-blue-<stop>) and hds.color.blue to the info names (--primitive-color-info-<stop>, hds.color.info); the old names stay as aliases for one release and are removed in 0.49.0.
 - `Blockquote.size` (removed in 1.0.0): Blockquote has one size (md); the size prop, including sm and lg, still renders as before until removed.
 - `Box-sx-layout-names` (removed in 1.0.0): Box sx spacing names 'tight', 'normal', 'inset' and 'spacious' still work but are deprecated, and a development build warns once for each; use 'sm' to 'xl' instead.
 - `CardMetric` (removed in 1.0.0): Card.Metric is deprecated and still works; no replacement is planned, so compose a Card with the type roles (caption label, display or title value).

@@ -1,6 +1,6 @@
 # Upgrading @hirobius/design-system
 
-This file only knows the releases up to the version you have installed, 0.47.1. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
+This file only knows the releases up to the version you have installed, 0.48.0. For newer releases, run `npx @hirobius/design-system@latest upgrade`: it always fetches the newest steps.
 
 ## How to upgrade
 
@@ -19,6 +19,30 @@ A release npm marks deprecated ("Broken: use …") was yanked, and npm `latest` 
 3. Once a fixed version ships, run `npx @hirobius/design-system@latest upgrade` again; it skips versions npm marks deprecated.
 
 There are no backports before 1.0: a fix ships as a new release, never as a patch to an older line.
+
+## 0.48.0
+
+Released 2026-11-22 (minor). 9 changes to make by hand (7 breaking), 24 that look different and 1 deprecation.
+
+### Looks different
+
+- The --hds-accent-\<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-\* instead.
+- The --primitive-color-blue-\<stop> alias now points at --primitive-color-info-\<stop> with the same colour; read the info name, as the alias goes in 0.49.0.
+- The info feedback colour now reads from the primitive.color.info ramp with the same colour; no change is needed.
+- The --hds-accent-\<stop> aliases now follow the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-\* instead, as the aliases go in 0.49.0.
+
+### Coming next
+
+- Change var(--primitive-color-blue-\<stop>) and hds.color.blue to the info names (--primitive-color-info-\<stop>, hds.color.info); the old names stay as aliases for one release and are removed in 0.49.0.
+
+### Do by hand
+
+- Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it.
+- Read tokenValues.primitive.color.info instead of tokenValues.primitive.color.blue; the values are the same.
+- Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them.
+- Read tokens.primitive.color.info instead of tokens.primitive.color.blue; the values are the same.
+- If you keep a copy of the HDS tokens generated from the installed package (folio: components/study/hds-light-scope.css), regenerate it after upgrading (folio: npm run gen:hds-light-scope); the old copy still reads --primitive-color-blue-200.
+- Replace var(--primitive-color-blue-500) with var(--primitive-color-info-500) before 0.49.0 (job-hunt: src/burn/burn.css:17, src/theme/base.css:739 and :833).
 
 ## 0.47.1
 

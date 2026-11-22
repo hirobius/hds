@@ -1,0 +1,596 @@
+{
+  "version": "0.48.0",
+  "date": "2026-11-22",
+  "bump": "minor",
+  "summary": "9 changes to make by hand (7 breaking), 24 that look different and 1 deprecation.",
+  "backfilled": false,
+  "steps": [
+    {
+      "id": "0.48.0/removed/--primitive-color-projectBrand-microsoftGameDev-100",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-projectBrand-microsoftGameDev-100"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-projectBrand-microsoftGameDev-100"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-projectBrand-microsoftGameDev-100"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/removed/--primitive-color-projectBrand-microsoftGameDev-500",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-projectBrand-microsoftGameDev-500"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-projectBrand-microsoftGameDev-500"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-projectBrand-microsoftGameDev-500"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/removed/--primitive-color-projectBrand-microsoftGameDev-900",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare the Microsoft Game Dev brand colour in your own tenant CSS; HDS no longer ships it.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-projectBrand-microsoftGameDev-900"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-projectBrand-microsoftGameDev-900"
+        ]
+      },
+      "facts": [
+        "css-var-removed:--primitive-color-projectBrand-microsoftGameDev-900"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/removed/tokenValues.primitive.color.blue",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Read tokenValues.primitive.color.info instead of tokenValues.primitive.color.blue; the values are the same.",
+      "detect": {
+        "regex": [
+          "\\btokenValues\\.primitive\\.color\\.blue\\b"
+        ]
+      },
+      "facts": [
+        "key-removed:./tokens:tokenValues.primitive.color.blue"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/removed/tokenValues.primitive.color.projectBrand",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them.",
+      "detect": {
+        "regex": [
+          "\\btokenValues\\.primitive\\.color\\.projectBrand\\b"
+        ]
+      },
+      "facts": [
+        "key-removed:./tokens:tokenValues.primitive.color.projectBrand"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/removed/tokens.primitive.color.blue",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Read tokens.primitive.color.info instead of tokens.primitive.color.blue; the values are the same.",
+      "detect": {
+        "regex": [
+          "\\btokens\\.primitive\\.color\\.blue\\b"
+        ]
+      },
+      "facts": [
+        "key-removed:./tokens:tokens.primitive.color.blue"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/removed/tokens.primitive.color.projectBrand",
+      "kind": "removed",
+      "impact": "breaking",
+      "plain": "Declare the Microsoft Game Dev brand colours in your own tenant tokens; HDS no longer ships them.",
+      "detect": {
+        "regex": [
+          "\\btokens\\.primitive\\.color\\.projectBrand\\b"
+        ]
+      },
+      "facts": [
+        "key-removed:./tokens:tokens.primitive.color.projectBrand"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/deprecated/--primitive-color-blue",
+      "kind": "deprecated",
+      "impact": "behavior",
+      "plain": "Change var(--primitive-color-blue-<stop>) and hds.color.blue to the info names (--primitive-color-info-<stop>, hds.color.info); the old names stay as aliases for one release and are removed in 0.49.0.",
+      "detect": {
+        "regex": [
+          "--primitive-color-blue-\\d+",
+          "\\bhds\\.color\\.blue\\b"
+        ]
+      },
+      "removeIn": "0.49.0",
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-100",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-100"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-100"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-100::root",
+        "css-var-changed:--hds-accent-100::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-200",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-200"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-200"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-200::root",
+        "css-var-changed:--hds-accent-200::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-300",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-300"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-300"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-300::root",
+        "css-var-changed:--hds-accent-300::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-400",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-400"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-400"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-400::root",
+        "css-var-changed:--hds-accent-400::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-50"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-50::root",
+        "css-var-changed:--hds-accent-50::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-500",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-500"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-500"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-500::root",
+        "css-var-changed:--hds-accent-500::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-600",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-600"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-600"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-600::root",
+        "css-var-changed:--hds-accent-600::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-700",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-700"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-700"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-700::root",
+        "css-var-changed:--hds-accent-700::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-800",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-800"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-800"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-800::root",
+        "css-var-changed:--hds-accent-800::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--hds-accent-900",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> alias now follows the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead.",
+      "detect": {
+        "cssVars": [
+          "--hds-accent-900"
+        ],
+        "cssVarWrites": [
+          "--hds-accent-900"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--hds-accent-900::root",
+        "css-var-changed:--hds-accent-900::root[data-accent=cobalt]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-100",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-100"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-100"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-100::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-200",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-200"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-200"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-200::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-300",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-300"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-300"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-300::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-400",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-400"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-400"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-400::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-450",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-450"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-450"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-450::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-50",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-50"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-50"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-50::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-500",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-500"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-500"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-500::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-600",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-600"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-600"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-600::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-700",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-700"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-700"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-700::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-800",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-800"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-800"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-800::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--primitive-color-blue-900",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The --primitive-color-blue-<stop> alias now points at --primitive-color-info-<stop> with the same colour; read the info name, as the alias goes in 0.49.0.",
+      "detect": {
+        "cssVars": [
+          "--primitive-color-blue-900"
+        ],
+        "cssVarWrites": [
+          "--primitive-color-blue-900"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--primitive-color-blue-900::root"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--semantic-color-feedback-bg-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The info feedback colour now reads from the primitive.color.info ramp with the same colour; no change is needed.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-bg-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-bg-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-bg-info::root",
+        "css-var-changed:--semantic-color-feedback-bg-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-bg-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/value-changed/--semantic-color-feedback-info",
+      "kind": "value-changed",
+      "impact": "look",
+      "plain": "The info feedback colour now reads from the primitive.color.info ramp with the same colour; no change is needed.",
+      "detect": {
+        "cssVars": [
+          "--semantic-color-feedback-info"
+        ],
+        "cssVarWrites": [
+          "--semantic-color-feedback-info"
+        ]
+      },
+      "facts": [
+        "css-var-changed:--semantic-color-feedback-info:[data-theme=\"dark\"]",
+        "css-var-changed:--semantic-color-feedback-info:[data-theme=dark]"
+      ],
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/look/--hds-accent-stops",
+      "kind": "look",
+      "impact": "look",
+      "plain": "The --hds-accent-<stop> aliases now follow the accent ramp (graphite, or cobalt under data-accent) instead of blue; read --semantic-accent-* instead, as the aliases go in 0.49.0.",
+      "detect": {
+        "regex": [
+          "--hds-accent-\\d+"
+        ]
+      },
+      "removeIn": "0.49.0",
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/manual/regenerate-light-scope",
+      "kind": "manual",
+      "impact": "behavior",
+      "plain": "If you keep a copy of the HDS tokens generated from the installed package (folio: components/study/hds-light-scope.css), regenerate it after upgrading (folio: npm run gen:hds-light-scope); the old copy still reads --primitive-color-blue-200.",
+      "source": "CHANGELOG.md:19"
+    },
+    {
+      "id": "0.48.0/manual/rename-blue-500-reads",
+      "kind": "manual",
+      "impact": "behavior",
+      "plain": "Replace var(--primitive-color-blue-500) with var(--primitive-color-info-500) before 0.49.0 (job-hunt: src/burn/burn.css:17, src/theme/base.css:739 and :833).",
+      "detect": {
+        "regex": [
+          "--primitive-color-blue-500"
+        ]
+      },
+      "source": "CHANGELOG.md:19"
+    }
+  ]
+}

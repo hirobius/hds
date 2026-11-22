@@ -1,0 +1,14 @@
+{
+  "$comment": "Frozen inputs of the 0.48.0 ledger, written by scripts/upgrade/compile.mjs --release when changeset version cut the release (hds#451): the upgrade notes its changesets carried, frozen under notes/, each citing its changeset's CHANGELOG entry, numbered as the file read when 0.48.0 shipped. The summary is upgrade/pending/summary.txt as main had it, or counted from the steps; the date is the day the Version PR was last regenerated.",
+  "version": "0.48.0",
+  "previous": "0.47.1",
+  "date": "2026-11-22",
+  "summary": "9 changes to make by hand (7 breaking), 24 that look different and 1 deprecation.",
+  "backfilled": false,
+  "notes": {
+    "blue-to-info": {
+      "needle": "63c356f: Rename the `primitive.color.blue`",
+      "source": "CHANGELOG.md:19"
+    }
+  }
+}
