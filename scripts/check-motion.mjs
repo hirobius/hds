@@ -14,7 +14,7 @@
  *
  *   A) Imports from "motion/react" and uses motion.* or AnimatePresence
  *   B) Uses a CSS transition referencing an hds.duration.* token, a
- *      --primitive/--semantic-duration-* var, or a Tailwind `transition-` or
+ *      --primitive/--semantic-duration-* or --hds-motion-* var, or a Tailwind `transition-` or
  *      `animate-` utility (the form 0.13.0's Tailwind + cva migration produces)
  *   C) Is annotated with // motion-ok: <reason> to document intentional exemption
  *
@@ -59,6 +59,10 @@
  * v4 (2026-11-05, hds#751): A `// motion-ok:` exemption on a file that already
  *                  satisfies A or B fails as stale. It claimed "no motion" over
  *                  code that animates, and it skipped the hard-coded value check.
+ *
+ * v5 (2026-11-15, hds#1536): A transition on a whole motion-intent var,
+ *                  `var(--hds-motion-productive)`, counts as B. Disclosure moved
+ *                  to that form (hds#1516) and was reported as having no motion.
  *
  * Usage: pnpm check:micromotion
  * Exempt: a `// motion-ok: <reason>` line comment anywhere in the file, only
@@ -118,7 +122,11 @@ const MOTION_PATTERNS = [
   /["'\s]transition(?:-(?:all|colors|opacity|transform|shadow))?["'\s]/,
   /["'\s]animate-[a-z]/, // Tailwind animation utilities
   /var\(--(?:primitive|semantic)-duration-/, // duration token as a raw CSS var
-  /var\(--hds-motion-[a-z]+-duration\)/, // motion-intent duration (theme.css zeroes it under reduced motion)
+  // Motion-intent token as a raw CSS var: the `-duration` part, or the whole
+  // intent (`--hds-motion-productive` is duration plus easing in theme.css, the
+  // form Disclosure's grid-rows tween uses, hds#1536). theme.css zeroes the
+  // duration under reduced motion. An `-easing` var alone sets no duration.
+  /var\(--hds-motion-[a-z]+(?:-duration)?\)/,
   /["'\s]hds-ext-icon["'\s]/, // external-link arrow: theme.css .hds-ext-icon eases its translate on the productive token (hds#1530)
 ];
 
